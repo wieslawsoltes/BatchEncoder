@@ -74,7 +74,7 @@ BOOL CHistogram::Create(const RECT &rc, CWnd *pParentWnd, UINT uID, bool bVisibl
         rc.right - rc.left,
         rc.bottom - rc.top,
         pParentWnd->GetSafeHwnd(),
-        (HMENU) uID);
+        (HMENU)(UINT_PTR)uID);
 	if(!bRet)
 		return FALSE;
 
