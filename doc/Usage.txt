@@ -1,7 +1,7 @@
 ﻿Command-line interface help:
 
 BatchEncoder Audio Conversion GUI 
-            http://www.BatchEncoder.com/
+            https://github.com/wieslawsoltes/BatchEncoder
             Copyright (C) Wiesław Šoltés
             All rights reserved.
 

@@ -1,6 +1,6 @@
 ﻿//
 // BatchEncoder (Audio Conversion GUI)
-// Copyright (C) 2005-2008 Wiesław Šoltés <wisodev@users.sourceforge.net>
+// Copyright (C) 2005-2017 Wiesław Šoltés <wieslaw.soltes@gmail.com>
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -19,9 +19,9 @@
 #pragma once
 
 #define MAIN_APP_NAME           _T("BatchEncoder")
-#define MAIN_APP_NAME_VER       _T("BatchEncoder Version 1.0.0.0 (C) 2005-2008 Wieslaw Soltes")
-#define MAIN_APP_WEBSITE        _T("http://www.BatchEncoder.com/")
-#define MAIN_APP_EMAIL          _T("wisodev@users.sourceforge.net")
+#define MAIN_APP_NAME_VER       _T("BatchEncoder Version 1.0.0.0 Copyright (C) 2005-2017 Wieslaw Soltes")
+#define MAIN_APP_WEBSITE        _T("https://github.com/wieslawsoltes/BatchEncoder")
+#define MAIN_APP_EMAIL          _T("wieslaw.soltes@gmail.com")
 #define MAIN_APP_HELP           _T("BatchEncoder.pdf")
 #define MAIN_APP_CONFIG         _T("BatchEncoder.config")
 #define MAIN_APP_LOG            _T("BatchEncoder.log")

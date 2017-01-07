@@ -264,7 +264,7 @@ BEGIN
             VALUE "FileDescription", "BatchEncoder (Audio Conversion GUI)"
             VALUE "FileVersion", "1.0.0.0"
             VALUE "InternalName", "BatchEncoder.exe"
-            VALUE "LegalCopyright", "Copyright (C) 2005-2008 Wieslaw Soltes. All rights reserved."
+            VALUE "LegalCopyright", "Copyright (C) 2005-2017 Wieslaw Soltes. All rights reserved."
             VALUE "OriginalFilename", "BatchEncoder.exe"
             VALUE "ProductName", "BatchEncoder"
             VALUE "ProductVersion", "1.0.0.0"

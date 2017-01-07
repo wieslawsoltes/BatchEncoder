@@ -1,4 +1,4 @@
-﻿Package files for SourceForge.net:
+﻿Package files for release:
 
 [BatchEncoder-A.B.C.D-installer.exe]
 

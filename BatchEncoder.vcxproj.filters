@@ -348,8 +348,5 @@
     <CustomBuild Include="doc\Usage.txt">
       <Filter>Resource Files</Filter>
     </CustomBuild>
-    <CustomBuild Include="doc\Wishlist.txt">
-      <Filter>Resource Files</Filter>
-    </CustomBuild>
   </ItemGroup>
 </Project>
