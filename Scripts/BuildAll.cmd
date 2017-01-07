@@ -1,7 +1,7 @@
 @echo off
 rem
 rem BatchEncoder (Audio Conversion GUI)
-rem Copyright (C) 2005-2008 Wieslaw Soltes <wisodev@users.sourceforge.net>
+rem Copyright (C) 2005-2017 Wieslaw Soltes <wieslaw.soltes@gmail.com>
 rem
 rem This program is free software; you can redistribute it and/or modify
 rem it under the terms of the GNU General Public License as published by
