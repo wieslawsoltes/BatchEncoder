@@ -310,64 +310,10 @@
     <Image Include="res\ProgressIcon12.ico" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Config\BatchEncoder.config" />
-    <None Include="Help\BatchEncoder.odt" />
-    <None Include="Help\BatchEncoder.pdf" />
-    <None Include="Presets\Presets_AAC_Faac.presets" />
-    <None Include="Presets\Presets_AC3_Aften.presets" />
-    <None Include="Presets\Presets_APE_Mac.presets" />
-    <None Include="Presets\Presets_FLAC_Flac.presets" />
-    <None Include="Presets\Presets_M4A_Faac.presets" />
-    <None Include="Presets\Presets_M4A_neroAacEnc.presets" />
-    <None Include="Presets\Presets_MP3_Lame.presets" />
-    <None Include="Presets\Presets_MP4_Faac.presets" />
-    <None Include="Presets\Presets_MP4_neroAacEnc.presets" />
-    <None Include="Presets\Presets_MPC_MpcEnc.presets" />
-    <None Include="Presets\Presets_OFR_Ofr.presets" />
-    <None Include="Presets\Presets_OGG_OggEnc.presets" />
-    <None Include="Presets\Presets_TAK_Takc.presets" />
-    <None Include="Presets\Presets_TTA_TtaEnc.presets" />
-    <None Include="Presets\Presets_WAV_Ssrc.presets" />
-    <None Include="Presets\Presets_WV_WavPack.presets" />
     <None Include="res\BatchEncoder.rc2" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="res\BatchEncoder.rc" />
-  </ItemGroup>
-  <ItemGroup>
-    <CustomBuild Include="doc\Changelog.txt">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </CustomBuild>
-    <CustomBuild Include="doc\Copying.txt">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </CustomBuild>
-    <CustomBuild Include="doc\License.txt">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </CustomBuild>
-    <CustomBuild Include="doc\Packages.txt">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </CustomBuild>
-    <CustomBuild Include="doc\Readme.txt">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </CustomBuild>
-    <CustomBuild Include="doc\Todo.txt">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </CustomBuild>
-    <CustomBuild Include="doc\Unicows.txt">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </CustomBuild>
-    <CustomBuild Include="doc\Usage.txt">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </CustomBuild>
-    <Text Include="doc\VERSION.TXT" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="TinyXml.vcxproj">

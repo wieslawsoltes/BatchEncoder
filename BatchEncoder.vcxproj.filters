@@ -252,64 +252,7 @@
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Config\BatchEncoder.config">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="Help\BatchEncoder.odt">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="Help\BatchEncoder.pdf">
-      <Filter>Resource Files</Filter>
-    </None>
     <None Include="res\BatchEncoder.rc2">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="Presets\Presets_AAC_Faac.presets">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="Presets\Presets_AC3_Aften.presets">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="Presets\Presets_APE_Mac.presets">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="Presets\Presets_FLAC_Flac.presets">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="Presets\Presets_M4A_Faac.presets">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="Presets\Presets_M4A_neroAacEnc.presets">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="Presets\Presets_MP3_Lame.presets">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="Presets\Presets_MP4_Faac.presets">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="Presets\Presets_MP4_neroAacEnc.presets">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="Presets\Presets_MPC_MpcEnc.presets">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="Presets\Presets_OFR_Ofr.presets">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="Presets\Presets_OGG_OggEnc.presets">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="Presets\Presets_TAK_Takc.presets">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="Presets\Presets_TTA_TtaEnc.presets">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="Presets\Presets_WAV_Ssrc.presets">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="Presets\Presets_WV_WavPack.presets">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>
@@ -317,36 +260,5 @@
     <ResourceCompile Include="res\BatchEncoder.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="doc\VERSION.TXT">
-      <Filter>Resource Files</Filter>
-    </Text>
-  </ItemGroup>
-  <ItemGroup>
-    <CustomBuild Include="doc\Changelog.txt">
-      <Filter>Resource Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="doc\Copying.txt">
-      <Filter>Resource Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="doc\License.txt">
-      <Filter>Resource Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="doc\Packages.txt">
-      <Filter>Resource Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="doc\Readme.txt">
-      <Filter>Resource Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="doc\Todo.txt">
-      <Filter>Resource Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="doc\Unicows.txt">
-      <Filter>Resource Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="doc\Usage.txt">
-      <Filter>Resource Files</Filter>
-    </CustomBuild>
   </ItemGroup>
 </Project>
