@@ -3,10 +3,10 @@
 |---------------------------------|-----------------|
 | File path                       | How many times  |
 |---------------------------------|-----------------|
-| doc\Changelog.txt               | 1               |
-| Help\BatchEncoder.odt           | 1               |
-| Help\BatchEncoder.pdf           | 1               |
-| res\BatchEncoder.rc             | 4               |
+| CHANGELOG.txt                   | 1               |
+| Manual\BatchEncoder.odt         | 1               |
+| Manual\BatchEncoder.pdf         | 1               |
+| src\res\BatchEncoder.rc         | 4               |
 | Scripts\CreatePackage.cmd       | 1               |
 | Scripts\SetupVersion.inc        | 1               |
 | src\Config.h                    | 1               |
