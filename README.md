@@ -1,11 +1,11 @@
-# BatchEncoder
+﻿# BatchEncoder
 
 [![Build status](https://ci.appveyor.com/api/projects/status/gf82ojfu97e7udx7/branch/master?svg=true)](https://ci.appveyor.com/project/wieslawsoltes/batchencoder/branch/master)
 
 ## License
 
 BatchEncoder (Audio Conversion GUI)
-Copyright (C) 2005-2008 Wies³aw Šoltés
+Copyright (C) 2005-2008 Wiesław Šoltés
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
