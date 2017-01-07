@@ -1,4 +1,4 @@
-LIBRARY GetProgress.dll
+LIBRARY GetProgress_MppDec.dll
 EXPORTS
 
 GetProgress             @1

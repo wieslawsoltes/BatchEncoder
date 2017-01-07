@@ -15,192 +15,192 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\AboutDlg.cpp">
+    <ClCompile Include="AboutDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\AdvancedDlg.cpp">
+    <ClCompile Include="AdvancedDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\BatchEncoder.cpp">
+    <ClCompile Include="BatchEncoder.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\BatchEncoderDlg.cpp">
+    <ClCompile Include="BatchEncoderDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\CommandLine.cpp">
+    <ClCompile Include="CommandLine.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Config.cpp">
+    <ClCompile Include="Config.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\ConversionStatus.cpp">
+    <ClCompile Include="ConversionStatus.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\CopyFileDlg.cpp">
+    <ClCompile Include="CopyFileDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\DropList.cpp">
+    <ClCompile Include="DropList.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\FileListCtrl.cpp">
+    <ClCompile Include="FileListCtrl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\FormatsDlg.cpp">
+    <ClCompile Include="FormatsDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Histogram.cpp">
+    <ClCompile Include="Histogram.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Hyperlink.cpp">
+    <ClCompile Include="Hyperlink.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\LameHistogram.cpp">
+    <ClCompile Include="LameHistogram.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\MyButton.cpp">
+    <ClCompile Include="MyButton.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\MyStatic.cpp">
+    <ClCompile Include="MyStatic.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\MyStatusBarCtrl.cpp">
+    <ClCompile Include="MyStatusBarCtrl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\NewItemData.cpp">
+    <ClCompile Include="NewItemData.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\OptionsParser.cpp">
+    <ClCompile Include="OptionsParser.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\PresetsDlg.cpp">
+    <ClCompile Include="PresetsDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\ResizeDialog.cpp">
+    <ClCompile Include="ResizeDialog.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\StdAfx.cpp">
+    <ClCompile Include="StdAfx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\TiXmlDocumentW.cpp">
+    <ClCompile Include="TiXmlDocumentW.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\UnicodeUtf8.cpp">
+    <ClCompile Include="UnicodeUtf8.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Utf8String.cpp">
+    <ClCompile Include="Utf8String.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Utilities.cpp">
+    <ClCompile Include="Utilities.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\WorkThread.cpp">
+    <ClCompile Include="WorkThread.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\XmlResource.cpp">
+    <ClCompile Include="XmlResource.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\AboutDlg.h">
+    <ClInclude Include="AboutDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\AdvancedDlg.h">
+    <ClInclude Include="AdvancedDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\BatchEncoder.h">
+    <ClInclude Include="BatchEncoder.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\BatchEncoderDlg.h">
+    <ClInclude Include="BatchEncoderDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\CommandLine.h">
+    <ClInclude Include="CommandLine.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Config.h">
+    <ClInclude Include="Config.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\ConversionStatus.h">
+    <ClInclude Include="ConversionStatus.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\CopyFileDlg.h">
+    <ClInclude Include="CopyFileDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\DropList.h">
+    <ClInclude Include="DropList.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\FileListCtrl.h">
+    <ClInclude Include="FileListCtrl.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\FormatsDlg.h">
+    <ClInclude Include="FormatsDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Histogram.h">
+    <ClInclude Include="Histogram.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Hyperlink.h">
+    <ClInclude Include="Hyperlink.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\LameHistogram.h">
+    <ClInclude Include="LameHistogram.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\LListExtensions.h">
+    <ClInclude Include="LListExtensions.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\LListFiles.h">
+    <ClInclude Include="LListFiles.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\LListPresets.h">
+    <ClInclude Include="LListPresets.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\MyButton.h">
+    <ClInclude Include="MyButton.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\MyStatic.h">
+    <ClInclude Include="MyStatic.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\MyStatusBarCtrl.h">
+    <ClInclude Include="MyStatusBarCtrl.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\NewItemData.h">
+    <ClInclude Include="NewItemData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\OptionsParser.h">
+    <ClInclude Include="OptionsParser.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\PresetsDlg.h">
+    <ClInclude Include="PresetsDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\ResizeDialog.h">
+    <ClInclude Include="ResizeDialog.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="res\resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\StdAfx.h">
+    <ClInclude Include="StdAfx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\TimeCount.h">
+    <ClInclude Include="TimeCount.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\TiXmlDocumentW.h">
+    <ClInclude Include="TiXmlDocumentW.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\TransMove.h">
+    <ClInclude Include="TransMove.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\UnicodeUtf8.h">
+    <ClInclude Include="UnicodeUtf8.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Utf8String.h">
+    <ClInclude Include="Utf8String.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Utilities.h">
+    <ClInclude Include="Utilities.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\WorkThread.h">
+    <ClInclude Include="WorkThread.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\XmlResource.h">
+    <ClInclude Include="XmlResource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

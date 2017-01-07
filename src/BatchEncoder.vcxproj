@@ -22,6 +22,7 @@
     <ProjectGuid>{746662AD-C2A1-43B7-87D2-BC45FE80B52B}</ProjectGuid>
     <RootNamespace>BatchEncoder</RootNamespace>
     <Keyword>MFCProj</Keyword>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
@@ -74,23 +75,23 @@
     <_ProjectFileVersion>14.0.25431.1</_ProjectFileVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <OutDir>$(Configuration)\$(Platform)\</OutDir>
-    <IntDir>$(Configuration)\$(Platform)\</IntDir>
+    <OutDir>bin\$(Configuration)\$(Platform)\</OutDir>
+    <IntDir>obj\$(Configuration)\$(Platform)\</IntDir>
     <LinkIncremental>true</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <OutDir>$(Configuration)\$(Platform)\</OutDir>
-    <IntDir>$(Configuration)\$(Platform)\</IntDir>
+    <OutDir>bin\$(Configuration)\$(Platform)\</OutDir>
+    <IntDir>obj\$(Configuration)\$(Platform)\</IntDir>
     <LinkIncremental>true</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <OutDir>$(Configuration)\$(Platform)\</OutDir>
-    <IntDir>$(Configuration)\$(Platform)\</IntDir>
+    <OutDir>bin\$(Configuration)\$(Platform)\</OutDir>
+    <IntDir>obj\$(Configuration)\$(Platform)\</IntDir>
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <OutDir>$(Configuration)\$(Platform)\</OutDir>
-    <IntDir>$(Configuration)\$(Platform)\</IntDir>
+    <OutDir>bin\$(Configuration)\$(Platform)\</OutDir>
+    <IntDir>obj\$(Configuration)\$(Platform)\</IntDir>
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -222,75 +223,75 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\AboutDlg.cpp" />
-    <ClCompile Include="src\AdvancedDlg.cpp" />
-    <ClCompile Include="src\BatchEncoder.cpp" />
-    <ClCompile Include="src\BatchEncoderDlg.cpp" />
-    <ClCompile Include="src\CommandLine.cpp" />
-    <ClCompile Include="src\Config.cpp" />
-    <ClCompile Include="src\ConversionStatus.cpp" />
-    <ClCompile Include="src\CopyFileDlg.cpp" />
-    <ClCompile Include="src\DropList.cpp" />
-    <ClCompile Include="src\FileListCtrl.cpp" />
-    <ClCompile Include="src\FormatsDlg.cpp" />
-    <ClCompile Include="src\Histogram.cpp" />
-    <ClCompile Include="src\Hyperlink.cpp" />
-    <ClCompile Include="src\LameHistogram.cpp" />
-    <ClCompile Include="src\MyButton.cpp" />
-    <ClCompile Include="src\MyStatic.cpp" />
-    <ClCompile Include="src\MyStatusBarCtrl.cpp" />
-    <ClCompile Include="src\NewItemData.cpp" />
-    <ClCompile Include="src\OptionsParser.cpp" />
-    <ClCompile Include="src\PresetsDlg.cpp" />
-    <ClCompile Include="src\ResizeDialog.cpp" />
-    <ClCompile Include="src\StdAfx.cpp">
+    <ClCompile Include="AboutDlg.cpp" />
+    <ClCompile Include="AdvancedDlg.cpp" />
+    <ClCompile Include="BatchEncoder.cpp" />
+    <ClCompile Include="BatchEncoderDlg.cpp" />
+    <ClCompile Include="CommandLine.cpp" />
+    <ClCompile Include="Config.cpp" />
+    <ClCompile Include="ConversionStatus.cpp" />
+    <ClCompile Include="CopyFileDlg.cpp" />
+    <ClCompile Include="DropList.cpp" />
+    <ClCompile Include="FileListCtrl.cpp" />
+    <ClCompile Include="FormatsDlg.cpp" />
+    <ClCompile Include="Histogram.cpp" />
+    <ClCompile Include="Hyperlink.cpp" />
+    <ClCompile Include="LameHistogram.cpp" />
+    <ClCompile Include="MyButton.cpp" />
+    <ClCompile Include="MyStatic.cpp" />
+    <ClCompile Include="MyStatusBarCtrl.cpp" />
+    <ClCompile Include="NewItemData.cpp" />
+    <ClCompile Include="OptionsParser.cpp" />
+    <ClCompile Include="PresetsDlg.cpp" />
+    <ClCompile Include="ResizeDialog.cpp" />
+    <ClCompile Include="StdAfx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="src\TiXmlDocumentW.cpp" />
-    <ClCompile Include="src\UnicodeUtf8.cpp" />
-    <ClCompile Include="src\Utf8String.cpp" />
-    <ClCompile Include="src\Utilities.cpp" />
-    <ClCompile Include="src\WorkThread.cpp" />
-    <ClCompile Include="src\XmlResource.cpp" />
+    <ClCompile Include="TiXmlDocumentW.cpp" />
+    <ClCompile Include="UnicodeUtf8.cpp" />
+    <ClCompile Include="Utf8String.cpp" />
+    <ClCompile Include="Utilities.cpp" />
+    <ClCompile Include="WorkThread.cpp" />
+    <ClCompile Include="XmlResource.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="res\resource.h" />
-    <ClInclude Include="src\AboutDlg.h" />
-    <ClInclude Include="src\AdvancedDlg.h" />
-    <ClInclude Include="src\BatchEncoder.h" />
-    <ClInclude Include="src\BatchEncoderDlg.h" />
-    <ClInclude Include="src\CommandLine.h" />
-    <ClInclude Include="src\Config.h" />
-    <ClInclude Include="src\ConversionStatus.h" />
-    <ClInclude Include="src\CopyFileDlg.h" />
-    <ClInclude Include="src\DropList.h" />
-    <ClInclude Include="src\FileListCtrl.h" />
-    <ClInclude Include="src\FormatsDlg.h" />
-    <ClInclude Include="src\Histogram.h" />
-    <ClInclude Include="src\Hyperlink.h" />
-    <ClInclude Include="src\LameHistogram.h" />
-    <ClInclude Include="src\LListExtensions.h" />
-    <ClInclude Include="src\LListFiles.h" />
-    <ClInclude Include="src\LListPresets.h" />
-    <ClInclude Include="src\MyButton.h" />
-    <ClInclude Include="src\MyStatic.h" />
-    <ClInclude Include="src\MyStatusBarCtrl.h" />
-    <ClInclude Include="src\NewItemData.h" />
-    <ClInclude Include="src\OptionsParser.h" />
-    <ClInclude Include="src\PresetsDlg.h" />
-    <ClInclude Include="src\ResizeDialog.h" />
-    <ClInclude Include="src\StdAfx.h" />
-    <ClInclude Include="src\TimeCount.h" />
-    <ClInclude Include="src\TiXmlDocumentW.h" />
-    <ClInclude Include="src\TransMove.h" />
-    <ClInclude Include="src\UnicodeUtf8.h" />
-    <ClInclude Include="src\Utf8String.h" />
-    <ClInclude Include="src\Utilities.h" />
-    <ClInclude Include="src\WorkThread.h" />
-    <ClInclude Include="src\XmlResource.h" />
+    <ClInclude Include="AboutDlg.h" />
+    <ClInclude Include="AdvancedDlg.h" />
+    <ClInclude Include="BatchEncoder.h" />
+    <ClInclude Include="BatchEncoderDlg.h" />
+    <ClInclude Include="CommandLine.h" />
+    <ClInclude Include="Config.h" />
+    <ClInclude Include="ConversionStatus.h" />
+    <ClInclude Include="CopyFileDlg.h" />
+    <ClInclude Include="DropList.h" />
+    <ClInclude Include="FileListCtrl.h" />
+    <ClInclude Include="FormatsDlg.h" />
+    <ClInclude Include="Histogram.h" />
+    <ClInclude Include="Hyperlink.h" />
+    <ClInclude Include="LameHistogram.h" />
+    <ClInclude Include="LListExtensions.h" />
+    <ClInclude Include="LListFiles.h" />
+    <ClInclude Include="LListPresets.h" />
+    <ClInclude Include="MyButton.h" />
+    <ClInclude Include="MyStatic.h" />
+    <ClInclude Include="MyStatusBarCtrl.h" />
+    <ClInclude Include="NewItemData.h" />
+    <ClInclude Include="OptionsParser.h" />
+    <ClInclude Include="PresetsDlg.h" />
+    <ClInclude Include="ResizeDialog.h" />
+    <ClInclude Include="StdAfx.h" />
+    <ClInclude Include="TimeCount.h" />
+    <ClInclude Include="TiXmlDocumentW.h" />
+    <ClInclude Include="TransMove.h" />
+    <ClInclude Include="UnicodeUtf8.h" />
+    <ClInclude Include="Utf8String.h" />
+    <ClInclude Include="Utilities.h" />
+    <ClInclude Include="WorkThread.h" />
+    <ClInclude Include="XmlResource.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Logo\BatchEncoder.bmp" />

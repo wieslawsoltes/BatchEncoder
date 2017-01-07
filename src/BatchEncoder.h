@@ -22,7 +22,7 @@
     #error "Include 'StdAfx.h' before including this file for PCH"
 #endif // __AFXWIN_H__
 
-#include "..\res\resource.h"
+#include "res\resource.h"
 
 // main program command-line configuration flags
 typedef struct TBATCHENCODER_OPTIONS

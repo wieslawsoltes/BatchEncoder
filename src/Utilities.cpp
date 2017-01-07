@@ -45,7 +45,7 @@ void LastError(LPTSTR lpszFunction)
         _stprintf(szBuf, _T("Function: %s\nError code: %u\nError message: %s"), 
             lpszFunction, 
             dwError, 
-            (PCHAR) lpMsgBuf);
+            (PWCHAR) lpMsgBuf);
 
         ::MessageBox(NULL, szBuf, _T("ERROR"), MB_OK | MB_ICONERROR); 
         ::LocalFree(lpMsgBuf);
