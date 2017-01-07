@@ -296,10 +296,7 @@ bool ConvertFile(CBatchEncoderDlg *pDlg,
 
     // this pipes are not inherited by child process
     // SetHandleInformation used only in NT systems
-    OSVERSIONINFO osvi;
-    osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
-    ::GetVersionEx(&osvi);
-    if(osvi.dwPlatformId == VER_PLATFORM_WIN32_NT)
+    if(::IsWindowsXPOrGreater())
     {
         if(bUseReadPipes == true)
         {

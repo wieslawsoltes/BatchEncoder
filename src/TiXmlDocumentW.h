@@ -20,11 +20,11 @@
 
 // NOTE:
 // get TinyXml library from http:/www.sourceforge.net/projects/tinyxml/
-// and unpack source package to 'tinyXml\src' dir
+// and unpack source package to 'TinyXml\tinyxml' dir
 
 #pragma once
 
-#include "tinyxml\tinyxml.h"
+#include "..\TinyXml\tinyxml\tinyxml.h"
 
 class CTiXmlDocumentW : public TiXmlDocument
 {

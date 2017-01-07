@@ -105,7 +105,7 @@ void CHyperlink::PreSubclassWindow()
     colorVisited = RGB(128, 0, 128);
 
     SetWindowLong(this->GetSafeHwnd(), GWL_STYLE, GetStyle() | SS_NOTIFY);
-    m_hCursor = ::LoadCursor(NULL, MAKEINTRESOURCE(IDC_HAND));
+    m_hCursor = ::LoadCursor(NULL, IDC_HAND);
 
     if(m_hCursor == NULL)
     {

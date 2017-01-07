@@ -26,7 +26,6 @@ typedef bool (*fncCopyCallback) (int nProgress); // nProgress = 0..100
     #define LastError(x)
 #endif
 
-bool IsWindowsVer(WORD wMajor = 5, WORD wMinor = 1, bool bStrict = false);
 void DoTheShutdown();
 void LaunchAndWait(LPCTSTR file, LPCTSTR params, BOOL bWait);
 unsigned int StringLenght(register TCHAR *str);

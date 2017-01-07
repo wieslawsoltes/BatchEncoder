@@ -64,5 +64,7 @@
 #include <direct.h>
 #include <afxdhtml.h>
 
+#include <VersionHelpers.h>
+
 #include "TiXmlDocumentW.h"
 #include "Config.h"

@@ -71,8 +71,8 @@ public:
         
         if(bHaveProc)
             return true;
-
-        if(::GetVersion() < 0x0500)
+		
+        if(!::IsWindowsXPOrGreater())
             return false;
 
         this->Reset();

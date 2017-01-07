@@ -317,7 +317,7 @@
     <ResourceCompile Include="res\BatchEncoder.rc" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="TinyXml.vcxproj">
+    <ProjectReference Include="..\TinyXml\TinyXml.vcxproj">
       <Project>{284538ac-d315-437e-ad31-d40934a43236}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
