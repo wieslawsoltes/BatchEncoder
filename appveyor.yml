@@ -1,0 +1,6 @@
+version: '{build}'
+image: Visual Studio 2015
+build:
+  project: BatchEncoder.sln
+  verbosity: minimal
+test: off
