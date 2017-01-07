@@ -16,8 +16,6 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //
 
-/* $Id: Histogram.cpp 437 2008-03-24 12:15:45Z wisodev $ */
-
 #pragma once
 
 #include "StdAfx.h"

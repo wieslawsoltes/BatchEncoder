@@ -11,5 +11,3 @@
 - Multi-cpu/multi-core support.
 
 - File list sorting.
-
-$Id: Todo.txt 437 2008-03-24 12:15:45Z wisodev $

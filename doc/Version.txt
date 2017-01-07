@@ -11,5 +11,3 @@
 | Scripts\SetupVersion.inc        | 1               |
 | src\Config.h                    | 1               |
 |---------------------------------|-----------------|
-
-$Id: Version.txt 437 2008-03-24 12:15:45Z wisodev $

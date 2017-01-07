@@ -14,8 +14,6 @@
 ; along with this program; if not, write to the Free Software
 ; Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-; $Id: SetupScript.iss 437 2008-03-24 12:15:45Z wisodev $
-
 ; Using:
 ; Inno Setup Compiler v5.1.6 (http://www.innosetup.com/)
 ; Inno Setup Preprocessor (ISPP) v5.1.2.0 (http://ispp.sourceforge.net/)

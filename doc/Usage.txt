@@ -124,5 +124,3 @@ TOOLS:
 -h, -?, --help                      Show program help (html format).
 
 When 'on' or 'off' is not specified the 'on' is used if not declared else.
-
-$Id: Usage.txt 437 2008-03-24 12:15:45Z wisodev $

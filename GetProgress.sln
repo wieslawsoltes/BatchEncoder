@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GetProgress_FaacEnc", "Progress\FaacEnc\GetProgress_FaacEnc.vcxproj", "{43F9C4B5-C344-41ED-BA5F-4B5698C50C01}"
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GetProgress_FaadDec", "Progress\FaadDec\GetProgress_FaadDec.vcxproj", "{35EAA98F-BEF3-4964-81AA-0E795B0A2F81}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GetProgress_FlacDec", "Progress\FlacDec\GetProgress_FlacDec.vcxproj", "{1455B5C0-9983-4B31-BC36-A594EDFC56F2}"
@@ -43,6 +41,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GetProgress_WavPackEnc", "P
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GetProgress_WvUnpackDec", "Progress\WvUnpackDec\GetProgress_WvUnpackDec.vcxproj", "{52804B48-6330-4882-8BB9-0B3AA5B49062}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GetProgress_FaacEnc", "Progress\FaacEnc\GetProgress_FaacEnc.vcxproj", "{43F9C4B5-C344-41ED-BA5F-4B5698C50C01}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -51,14 +51,6 @@ Global
 		Release|x64 = Release|x64
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{43F9C4B5-C344-41ED-BA5F-4B5698C50C01}.Debug|Win32.ActiveCfg = Debug|Win32
-		{43F9C4B5-C344-41ED-BA5F-4B5698C50C01}.Debug|Win32.Build.0 = Debug|Win32
-		{43F9C4B5-C344-41ED-BA5F-4B5698C50C01}.Debug|x64.ActiveCfg = Debug|x64
-		{43F9C4B5-C344-41ED-BA5F-4B5698C50C01}.Debug|x64.Build.0 = Debug|x64
-		{43F9C4B5-C344-41ED-BA5F-4B5698C50C01}.Release|Win32.ActiveCfg = Release|Win32
-		{43F9C4B5-C344-41ED-BA5F-4B5698C50C01}.Release|Win32.Build.0 = Release|Win32
-		{43F9C4B5-C344-41ED-BA5F-4B5698C50C01}.Release|x64.ActiveCfg = Release|x64
-		{43F9C4B5-C344-41ED-BA5F-4B5698C50C01}.Release|x64.Build.0 = Release|x64
 		{35EAA98F-BEF3-4964-81AA-0E795B0A2F81}.Debug|Win32.ActiveCfg = Debug|Win32
 		{35EAA98F-BEF3-4964-81AA-0E795B0A2F81}.Debug|Win32.Build.0 = Debug|Win32
 		{35EAA98F-BEF3-4964-81AA-0E795B0A2F81}.Debug|x64.ActiveCfg = Debug|x64
@@ -211,6 +203,14 @@ Global
 		{52804B48-6330-4882-8BB9-0B3AA5B49062}.Release|Win32.Build.0 = Release|Win32
 		{52804B48-6330-4882-8BB9-0B3AA5B49062}.Release|x64.ActiveCfg = Release|x64
 		{52804B48-6330-4882-8BB9-0B3AA5B49062}.Release|x64.Build.0 = Release|x64
+		{43F9C4B5-C344-41ED-BA5F-4B5698C50C01}.Debug|Win32.ActiveCfg = Debug|Win32
+		{43F9C4B5-C344-41ED-BA5F-4B5698C50C01}.Debug|Win32.Build.0 = Debug|Win32
+		{43F9C4B5-C344-41ED-BA5F-4B5698C50C01}.Debug|x64.ActiveCfg = Debug|x64
+		{43F9C4B5-C344-41ED-BA5F-4B5698C50C01}.Debug|x64.Build.0 = Debug|x64
+		{43F9C4B5-C344-41ED-BA5F-4B5698C50C01}.Release|Win32.ActiveCfg = Release|Win32
+		{43F9C4B5-C344-41ED-BA5F-4B5698C50C01}.Release|Win32.Build.0 = Release|Win32
+		{43F9C4B5-C344-41ED-BA5F-4B5698C50C01}.Release|x64.ActiveCfg = Release|x64
+		{43F9C4B5-C344-41ED-BA5F-4B5698C50C01}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

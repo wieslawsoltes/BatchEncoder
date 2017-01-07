@@ -9,5 +9,3 @@
 UnicoWS.lib 
 
 kernel32.lib advapi32.lib user32.lib gdi32.lib shell32.lib comdlg32.lib version.lib mpr.lib rasapi32.lib winmm.lib winspool.lib vfw32.lib secur32.lib oleacc.lib oledlg.lib sensapi.lib
-
-$Id: Unicows.txt 437 2008-03-24 12:15:45Z wisodev $

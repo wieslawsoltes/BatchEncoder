@@ -11,5 +11,3 @@
 [BatchEncoder-A.B.C.D-src.zip]
 
   Packed source distribution for Microsoft Visual C++.
-
-$Id: Packages.txt 437 2008-03-24 12:15:45Z wisodev $

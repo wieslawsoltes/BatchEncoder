@@ -18,5 +18,3 @@ Changes in 0.0.0.1 (2006-12-06):
 
 Changes in 0.0.0.0 (2005-12-05):
   - Start of project 'theFrontend'.
-
-$Id: Changelog.txt 438 2008-03-24 12:38:11Z wisodev $
