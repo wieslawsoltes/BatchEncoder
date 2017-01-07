@@ -1,0 +1,355 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\AboutDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\AdvancedDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BatchEncoder.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BatchEncoderDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CommandLine.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Config.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ConversionStatus.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CopyFileDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\DropList.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\FileListCtrl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\FormatsDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Histogram.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Hyperlink.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\LameHistogram.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MyButton.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MyStatic.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MyStatusBarCtrl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\NewItemData.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\OptionsParser.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\PresetsDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ResizeDialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\StdAfx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\TiXmlDocumentW.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\UnicodeUtf8.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Utf8String.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Utilities.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\WorkThread.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\XmlResource.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\AboutDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\AdvancedDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BatchEncoder.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BatchEncoderDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CommandLine.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Config.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ConversionStatus.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CopyFileDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\DropList.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\FileListCtrl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\FormatsDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Histogram.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Hyperlink.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\LameHistogram.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\LListExtensions.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\LListFiles.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\LListPresets.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MyButton.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MyStatic.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MyStatusBarCtrl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\NewItemData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\OptionsParser.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\PresetsDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ResizeDialog.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="res\resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\StdAfx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TimeCount.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TiXmlDocumentW.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TransMove.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UnicodeUtf8.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Utf8String.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Utilities.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\WorkThread.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\XmlResource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Logo\BatchEncoder.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\BatchEncoder.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\logo-small.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\ProgressIcon01.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\ProgressIcon02.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\ProgressIcon03.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\ProgressIcon04.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\ProgressIcon05.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\ProgressIcon06.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\ProgressIcon07.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\ProgressIcon08.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\ProgressIcon09.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\ProgressIcon10.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\ProgressIcon11.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\ProgressIcon12.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Config\BatchEncoder.config">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Help\BatchEncoder.odt">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Help\BatchEncoder.pdf">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\BatchEncoder.rc2">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Presets\Presets_AAC_Faac.presets">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Presets\Presets_AC3_Aften.presets">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Presets\Presets_APE_Mac.presets">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Presets\Presets_FLAC_Flac.presets">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Presets\Presets_M4A_Faac.presets">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Presets\Presets_M4A_neroAacEnc.presets">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Presets\Presets_MP3_Lame.presets">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Presets\Presets_MP4_Faac.presets">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Presets\Presets_MP4_neroAacEnc.presets">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Presets\Presets_MPC_MpcEnc.presets">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Presets\Presets_OFR_Ofr.presets">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Presets\Presets_OGG_OggEnc.presets">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Presets\Presets_TAK_Takc.presets">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Presets\Presets_TTA_TtaEnc.presets">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Presets\Presets_WAV_Ssrc.presets">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Presets\Presets_WV_WavPack.presets">
+      <Filter>Resource Files</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="res\BatchEncoder.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="doc\VERSION.TXT">
+      <Filter>Resource Files</Filter>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="doc\Changelog.txt">
+      <Filter>Resource Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="doc\Copying.txt">
+      <Filter>Resource Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="doc\License.txt">
+      <Filter>Resource Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="doc\Packages.txt">
+      <Filter>Resource Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="doc\Readme.txt">
+      <Filter>Resource Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="doc\Todo.txt">
+      <Filter>Resource Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="doc\Unicows.txt">
+      <Filter>Resource Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="doc\Usage.txt">
+      <Filter>Resource Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="doc\Wishlist.txt">
+      <Filter>Resource Files</Filter>
+    </CustomBuild>
+  </ItemGroup>
+</Project>

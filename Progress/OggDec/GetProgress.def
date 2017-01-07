@@ -1,0 +1,4 @@
+LIBRARY GetProgress.dll
+EXPORTS
+
+GetProgress             @1

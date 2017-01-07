@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<Presets>
+    <Preset name="Lossless (Fast compression)" options="-f" />
+    <Preset name="Lossless (Normal compression)" options="" />
+    <Preset name="Lossless (Best compression)" options="-h" />
+</Presets>

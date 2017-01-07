@@ -1,0 +1,15 @@
+﻿Files in witch program version is stored:
+
+|---------------------------------|-----------------|
+| File path                       | How many times  |
+|---------------------------------|-----------------|
+| doc\Changelog.txt               | 1               |
+| Help\BatchEncoder.odt           | 1               |
+| Help\BatchEncoder.pdf           | 1               |
+| res\BatchEncoder.rc             | 4               |
+| Scripts\CreatePackage.cmd       | 1               |
+| Scripts\SetupVersion.inc        | 1               |
+| src\Config.h                    | 1               |
+|---------------------------------|-----------------|
+
+$Id: Version.txt 437 2008-03-24 12:15:45Z wisodev $

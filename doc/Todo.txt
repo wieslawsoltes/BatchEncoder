@@ -1,0 +1,15 @@
+﻿BatchEncoder TODOLIST
+
+- Add support for tags.
+
+- Fix GetProgress for SSRC.
+
+- Create installer for command-line tools.
+
+- Create manual (pdf and odt).
+
+- Multi-cpu/multi-core support.
+
+- File list sorting.
+
+$Id: Todo.txt 437 2008-03-24 12:15:45Z wisodev $

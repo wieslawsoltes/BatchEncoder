@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<Presets>
+    <Preset name="VBR Quality 10" options="-q 10 -w --mpeg-vers 4" />
+    <Preset name="VBR Quality 25" options="-q 25 -w --mpeg-vers 4" />
+    <Preset name="VBR Quality 50" options="-q 50 -w --mpeg-vers 4" />
+    <Preset name="VBR Quality 75" options="-q 75 -w --mpeg-vers 4" />
+    <Preset name="VBR Quality 100" options="-q 100 -w --mpeg-vers 4" />
+    <Preset name="VBR Quality 125" options="-q 125 -w --mpeg-vers 4" />
+    <Preset name="VBR Quality 150" options="-q 150 -w --mpeg-vers 4" />
+    <Preset name="VBR Quality 175" options="-q 175 -w --mpeg-vers 4" />
+    <Preset name="VBR Quality 200" options="-q 200 -w --mpeg-vers 4" />
+    <Preset name="VBR Quality 225" options="-q 225 -w --mpeg-vers 4" />
+    <Preset name="VBR Quality 250" options="-q 250 -w --mpeg-vers 4" />
+    <Preset name="VBR Quality 275" options="-q 275 -w --mpeg-vers 4" />
+    <Preset name="VBR Quality 300" options="-q 300 -w --mpeg-vers 4" />
+    <Preset name="VBR Quality 325" options="-q 325 -w --mpeg-vers 4" />
+    <Preset name="VBR Quality 350" options="-q 350 -w --mpeg-vers 4" />
+    <Preset name="VBR Quality 375" options="-q 375 -w --mpeg-vers 4" />
+    <Preset name="VBR Quality 400" options="-q 400 -w --mpeg-vers 4" />
+    <Preset name="VBR Quality 425" options="-q 425 -w --mpeg-vers 4" />
+    <Preset name="VBR Quality 450" options="-q 450 -w --mpeg-vers 4" />
+    <Preset name="VBR Quality 475" options="-q 475 -w --mpeg-vers 4" />
+    <Preset name="VBR Quality 500" options="-q 500 -w --mpeg-vers 4" />
+    <Preset name="ABR 96 kbit/s" options="-b 96 -w --mpeg-vers 4" />
+    <Preset name="ABR 128 kbit/s" options="-b 128 -w --mpeg-vers 4" />
+    <Preset name="ABR 192 kbit/s" options="-q 400 -c 20000 -b 192 -w --mpeg-vers 4" />
+    <Preset name="ABR 256 kbit/s" options="-q 450 -c 22050 -b 256 -w --mpeg-vers 4" />
+    <Preset name="ABR 320 kbit/s" options="-q 500 -c 22050 -b 320 -w --mpeg-vers 4" />
+</Presets>

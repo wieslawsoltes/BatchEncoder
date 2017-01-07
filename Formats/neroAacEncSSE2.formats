@@ -1,0 +1,5 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<Formats>
+    <Format name="ENC_M4A" template="$EXE $OPTIONS -ignorelength -if $INFILE -of $OUTFILE" input="true" output="false" function="- none -">neroAacEnc_sse2.exe</Format>
+    <Format name="ENC_MP4" template="$EXE $OPTIONS -ignorelength -if $INFILE -of $OUTFILE" input="true" output="false" function="- none -">neroAacEnc_sse2.exe</Format>
+</Formats>

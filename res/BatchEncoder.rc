@@ -1,0 +1,667 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// Polish resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_PLK)
+#ifdef _WIN32
+LANGUAGE LANG_POLISH, SUBLANG_DEFAULT
+#pragma code_page(1250)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#include ""BatchEncoder.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""         // Standard components\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+#endif    // Polish resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON                    "BatchEncoder.ico"
+IDI_ICON_PROGRESS_01    ICON                    "ProgressIcon01.ico"
+IDI_ICON_PROGRESS_02    ICON                    "ProgressIcon02.ico"
+IDI_ICON_PROGRESS_03    ICON                    "ProgressIcon03.ico"
+IDI_ICON_PROGRESS_04    ICON                    "ProgressIcon04.ico"
+IDI_ICON_PROGRESS_05    ICON                    "ProgressIcon05.ico"
+IDI_ICON_PROGRESS_06    ICON                    "ProgressIcon06.ico"
+IDI_ICON_PROGRESS_07    ICON                    "ProgressIcon07.ico"
+IDI_ICON_PROGRESS_08    ICON                    "ProgressIcon08.ico"
+IDI_ICON_PROGRESS_09    ICON                    "ProgressIcon09.ico"
+IDI_ICON_PROGRESS_10    ICON                    "ProgressIcon10.ico"
+IDI_ICON_PROGRESS_11    ICON                    "ProgressIcon11.ico"
+IDI_ICON_PROGRESS_12    ICON                    "ProgressIcon12.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_BATCHENCODER_DIALOG DIALOGEX 0, 0, 416, 250
+STYLE DS_SETFONT | DS_FIXEDSYS | DS_CENTER | WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "BatchEncoder"
+MENU IDR_MENU_MAIN
+FONT 8, "MS Shell Dlg", 0, 0, 0x1
+BEGIN
+    CONTROL         "",IDC_EDIT_INPUT_FILES,"SysListView32",LVS_REPORT | LVS_SHOWSELALWAYS | LVS_EDITLABELS | LVS_ALIGNLEFT | LVS_NOSORTHEADER | WS_TABSTOP,5,40,406,172,WS_EX_CLIENTEDGE
+    CONTROL         "O&utput path:",IDC_CHECK_OUT_PATH,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,5,218,55,12
+    PUSHBUTTON      "&...",IDC_BUTTON_BROWSE_PATH,307,218,50,12
+    EDITTEXT        IDC_EDIT_OUT_PATH,64,218,239,12,ES_AUTOHSCROLL | NOT WS_BORDER,WS_EX_CLIENTEDGE
+    CONTROL         "",IDC_PROGRESS_WORK,"msctls_progress32",0x0,5,218,352,12,WS_EX_CLIENTEDGE
+    PUSHBUTTON      "Conve&rt",IDC_BUTTON_RUN,361,218,50,12
+    GROUPBOX        "Output",IDC_STATIC_GROUP_OUTPUT,5,3,406,31
+    COMBOBOX        IDC_COMBO_FORMAT,45,14,175,96,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_COMBO_PRESETS,256,14,148,96,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    RTEXT           "preset:",IDC_STATIC_TEXT_PRESET,223,14,30,12,SS_CENTERIMAGE
+    RTEXT           "format:",IDC_STATIC_TEXT_FORMAT,12,14,30,12,SS_CENTERIMAGE
+END
+
+IDD_DIALOG_PRESETS DIALOGEX 0, 0, 416, 202
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_POPUP | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
+CAPTION "Configure Presets"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    PUSHBUTTON      "&Cancel",IDCANCEL,359,183,50,12
+    COMBOBOX        IDC_COMBO_PD_FORMAT,7,7,130,96,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    EDITTEXT        IDC_EDIT_PD_PATH_TO_CONFIG,141,7,268,12,ES_AUTOHSCROLL | ES_READONLY
+    EDITTEXT        IDC_EDIT_PD_NAME,7,167,158,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_PD_OPTIONS,169,167,186,12,ES_AUTOHSCROLL
+    PUSHBUTTON      "C&hange",IDC_BUTTON_PD_UPDATE_PRESET,169,183,50,12,NOT WS_VISIBLE
+    PUSHBUTTON      "&Add",IDC_BUTTON_PD_ADD_PRESET,359,167,50,12
+    PUSHBUTTON      "&Delete",IDC_BUTTON_PD_REMOVE_PRESETS,359,140,50,12
+    PUSHBUTTON      "Dele&te All",IDC_BUTTON_PD_REMOVE_ALL_PRESETS,359,124,50,12
+    PUSHBUTTON      "move &Up",IDC_BUTTON_PD_UP,359,25,50,12
+    PUSHBUTTON      "move Dow&n",IDC_BUTTON_PD_DOWN,359,41,50,12
+    CONTROL         "",IDC_EDIT_PD_PRESETS,"SysListView32",LVS_REPORT | LVS_SINGLESEL | LVS_SHOWSELALWAYS | LVS_ALIGNLEFT | LVS_NOSORTHEADER | WS_TABSTOP,7,25,348,127,WS_EX_CLIENTEDGE
+    PUSHBUTTON      "&Load",IDC_BUTTON_PD_LOAD_PRESETS,7,183,50,12
+    PUSHBUTTON      "&Save",IDC_BUTTON_PD_UPDATE,61,183,50,12
+    PUSHBUTTON      "Sa&ve As",IDC_BUTTON_PD_SAVE_PRESETS,115,183,50,12
+    LTEXT           "Name:",IDC_STATIC_PD_TEXT_NAME,7,156,158,8
+    LTEXT           "Command-line options:",IDC_STATIC_PD_TEXT_OPTIONS,169,156,186,8
+    PUSHBUTTON      "&OK",IDOK,305,183,50,12
+END
+
+IDD_DIALOG_FORMATS DIALOGEX 0, 0, 416, 220
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_POPUP | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
+CAPTION "Configure Formats"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    PUSHBUTTON      "&Cancel",IDCANCEL,359,201,50,12
+    PUSHBUTTON      "&Save As",IDC_BUTTON_SAVE_CONFIG,61,201,50,12
+    PUSHBUTTON      "&Load",IDC_BUTTON_LOAD_CONFIG,7,201,50,12
+    PUSHBUTTON      "&Defaults",IDC_BUTTON_DEFAULT_CONFIG,115,201,50,12
+    PUSHBUTTON      "&OK",IDOK,305,201,50,12
+    CONTROL         "",IDC_EDIT_FD_FORMATS,"SysListView32",LVS_REPORT | LVS_SINGLESEL | LVS_SHOWSELALWAYS | LVS_ALIGNLEFT | LVS_NOSORTHEADER | WS_TABSTOP,7,7,402,136,WS_EX_CLIENTEDGE
+    PUSHBUTTON      "&...",IDC_BUTTON_FD_BROWSE,359,185,50,12
+    CONTROL         "Input",IDC_CHECK_FD_PIPES_INPUT,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,161,36,12
+    CONTROL         "Output",IDC_CHECK_FD_PIPES_OUTPUT,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,178,36,12
+    EDITTEXT        IDC_EDIT_FD_CLI_PATH,61,185,294,12,ES_AUTOHSCROLL
+    PUSHBUTTON      "C&hange",IDC_BUTTON_FD_UPDATE_PRESET,251,201,50,12,NOT WS_VISIBLE
+    LTEXT           "Command-line executable path:",IDC_STATIC_FD_TEXT_PATH,61,174,152,8
+    EDITTEXT        IDC_EDIT_FD_CLI_TEMPLATE,61,158,152,12,ES_AUTOHSCROLL
+    LTEXT           "Command-line template:",IDC_STATIC_FD_TEXT_TEMPLATE,61,147,152,8
+    GROUPBOX        "Pipes:",IDC_STATIC_GROUP_FD_PIPES,7,147,50,50
+    LTEXT           "Progress function:",IDC_STATIC_FD_TEXT_PROGRESS,217,147,192,8
+    EDITTEXT        IDC_EDIT_FD_CLI_PROGRESS,217,158,138,12,ES_AUTOHSCROLL
+    PUSHBUTTON      "&...",IDC_BUTTON_FD_BROWSE_PROGRESS,359,158,50,12
+END
+
+IDD_DIALOG_ABOUT DIALOGEX 0, 0, 382, 172
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+CAPTION "About BatchEncoder"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    PUSHBUTTON      "OK",IDOK,325,153,50,12
+    CONTROL         113,IDC_STATIC,"Static",SS_BITMAP,7,7,368,50,WS_EX_STATICEDGE
+    CTEXT           "app name",IDC_STATIC_TEXT_APP_NAME,7,63,368,12,SS_CENTERIMAGE
+    CTEXT           "website",IDC_STATIC_TEXT_WEBSITE,7,77,368,12,SS_CENTERIMAGE
+    CTEXT           "e-mail",IDC_STATIC_TEXT_EMAIL,7,91,368,12,SS_CENTERIMAGE
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ | SS_SUNKEN,7,146,368,1,WS_EX_STATICEDGE
+    CTEXT           "This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; version 2 of the License.",IDC_STATIC_LICENSE,7,114,368,23
+END
+
+IDD_DIALOG_COPYFILE DIALOGEX 0, 0, 312, 60
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION
+EXSTYLE WS_EX_TOOLWINDOW
+CAPTION "Copying file..."
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    PUSHBUTTON      "&Cancel",IDC_BUTTON_COPY_STOP,131,42,50,12
+    RTEXT           "From:",IDC_STATIC,7,7,19,8
+    LTEXT           "<in_file>",IDC_STATIC_TEXT_FROM,29,7,276,8,SS_PATHELLIPSIS
+    RTEXT           "To:",IDC_STATIC,7,17,19,8
+    LTEXT           "<out_file>",IDC_STATIC_TEXT_TO,29,17,276,8,SS_PATHELLIPSIS
+    CONTROL         "",IDC_PROGRESS_COPY_FILE,"msctls_progress32",0x0,7,30,298,8,WS_EX_CLIENTEDGE
+END
+
+IDD_DIALOG_ADVANCED DIALOGEX 0, 0, 350, 178
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Advanced Options"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    PUSHBUTTON      "&Cancel",IDCANCEL,293,158,50,12
+    GROUPBOX        "Encoder/Decoder Priority",IDC_STATIC,7,7,165,47
+    RTEXT           "thread:",IDC_STATIC,13,18,36,12,SS_CENTERIMAGE
+    COMBOBOX        IDC_COMBO_PRIORITY_THREAD,53,18,113,96,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    RTEXT           "process:",IDC_STATIC,13,34,36,12,SS_CENTERIMAGE
+    COMBOBOX        IDC_COMBO_PRIORITY_PROCESS,53,34,113,96,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    GROUPBOX        "Miscellaneous",IDC_STATIC,7,58,165,44
+    CONTROL         "&Delete output file on error.",IDC_CHECK_OPTION_DELETE,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,13,69,153,11
+    CONTROL         "&Stop conversion process when error occurs.",IDC_CHECK_OPTION_ERROR,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,13,84,153,12
+    PUSHBUTTON      "&...",IDC_BUTTON_BROWSE_LOG,136,117,30,12
+    EDITTEXT        IDC_EDIT_CONSOLE_LOG_FILE,13,117,119,12,ES_AUTOHSCROLL | NOT WS_BORDER,WS_EX_CLIENTEDGE
+    CONTROL         "&ANSI",IDC_RADIO_ENCODING_ANSI,"Button",BS_AUTORADIOBUTTON,53,133,30,12
+    CONTROL         "&Unicode",IDC_RADIO_ENCODING_UNICODE,"Button",BS_AUTORADIOBUTTON,89,133,38,12
+    CONTROL         "U&TF-8",IDC_RADIO_ENCODING_UTF8,"Button",BS_AUTORADIOBUTTON,134,133,32,12
+    LTEXT           "Encoding:",IDC_STATIC,13,133,36,12,SS_CENTERIMAGE
+    GROUPBOX        "Console log file path:",IDC_STATIC,7,106,165,45
+    PUSHBUTTON      "&OK",IDOK,239,158,50,12
+    GROUPBOX        "Colors",IDC_STATIC,178,7,165,144
+    CONTROL         "",IDC_COLOR_0,"Static",SS_OWNERDRAW | SS_NOTIFY,293,20,44,10
+    CONTROL         "",IDC_COLOR_1,"Static",SS_OWNERDRAW | SS_NOTIFY,293,34,44,10
+    CONTROL         "",IDC_COLOR_2,"Static",SS_OWNERDRAW | SS_NOTIFY,293,48,44,10
+    CONTROL         "",IDC_COLOR_3,"Static",SS_OWNERDRAW | SS_NOTIFY,293,62,44,10
+    CONTROL         "",IDC_COLOR_4,"Static",SS_OWNERDRAW | SS_NOTIFY,293,76,44,10
+    CONTROL         "",IDC_COLOR_5,"Static",SS_OWNERDRAW | SS_NOTIFY,293,90,44,10
+    CONTROL         "",IDC_COLOR_6,"Static",SS_OWNERDRAW | SS_NOTIFY,293,104,44,10
+    CONTROL         "",IDC_COLOR_7,"Static",SS_OWNERDRAW | SS_NOTIFY,293,118,44,10
+    CONTROL         "",IDC_COLOR_8,"Static",SS_OWNERDRAW | SS_NOTIFY,293,132,44,10
+    RTEXT           "Conversion Status Text Error:",IDC_STATIC,184,34,105,10,SS_CENTERIMAGE
+    RTEXT           "Conversion Status Text:",IDC_STATIC,184,20,105,10,SS_CENTERIMAGE
+    RTEXT           "Conversion Status Progress:",IDC_STATIC,184,48,105,10,SS_CENTERIMAGE
+    RTEXT           "Conversion Status Border:",IDC_STATIC,184,62,105,10,SS_CENTERIMAGE
+    RTEXT           "Conversion Status Back:",IDC_STATIC,184,76,105,10,SS_CENTERIMAGE
+    RTEXT           "Histogram LR:",IDC_STATIC,184,90,105,10,SS_CENTERIMAGE
+    RTEXT           "Histogram MS:",IDC_STATIC,184,104,105,10,SS_CENTERIMAGE
+    RTEXT           "Histogram Border:",IDC_STATIC,184,118,105,10,SS_CENTERIMAGE
+    RTEXT           "Histogram Back:",IDC_STATIC,184,132,105,10,SS_CENTERIMAGE
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,0
+ PRODUCTVERSION 1,0,0,0
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904e4"
+        BEGIN
+            VALUE "FileDescription", "BatchEncoder (Audio Conversion GUI)"
+            VALUE "FileVersion", "1.0.0.0"
+            VALUE "InternalName", "BatchEncoder.exe"
+            VALUE "LegalCopyright", "Copyright (C) 2005-2008 Wieslaw Soltes. All rights reserved."
+            VALUE "OriginalFilename", "BatchEncoder.exe"
+            VALUE "ProductName", "BatchEncoder"
+            VALUE "ProductVersion", "1.0.0.0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1252
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    IDD_BATCHENCODER_DIALOG, DIALOG
+    BEGIN
+        VERTGUIDE, 5
+        VERTGUIDE, 12
+        VERTGUIDE, 42
+        VERTGUIDE, 45
+        VERTGUIDE, 60
+        VERTGUIDE, 64
+        VERTGUIDE, 220
+        VERTGUIDE, 223
+        VERTGUIDE, 253
+        VERTGUIDE, 256
+        VERTGUIDE, 303
+        VERTGUIDE, 307
+        VERTGUIDE, 357
+        VERTGUIDE, 361
+        VERTGUIDE, 404
+        VERTGUIDE, 411
+        HORZGUIDE, 3
+        HORZGUIDE, 14
+        HORZGUIDE, 26
+        HORZGUIDE, 34
+        HORZGUIDE, 40
+        HORZGUIDE, 212
+        HORZGUIDE, 218
+        HORZGUIDE, 230
+    END
+
+    IDD_DIALOG_PRESETS, DIALOG
+    BEGIN
+        VERTGUIDE, 7
+        VERTGUIDE, 57
+        VERTGUIDE, 61
+        VERTGUIDE, 111
+        VERTGUIDE, 115
+        VERTGUIDE, 137
+        VERTGUIDE, 141
+        VERTGUIDE, 165
+        VERTGUIDE, 169
+        VERTGUIDE, 269
+        VERTGUIDE, 305
+        VERTGUIDE, 355
+        VERTGUIDE, 359
+        VERTGUIDE, 409
+        BOTTOMMARGIN, 201
+        HORZGUIDE, 7
+        HORZGUIDE, 19
+        HORZGUIDE, 25
+        HORZGUIDE, 37
+        HORZGUIDE, 41
+        HORZGUIDE, 53
+        HORZGUIDE, 108
+        HORZGUIDE, 120
+        HORZGUIDE, 124
+        HORZGUIDE, 136
+        HORZGUIDE, 140
+        HORZGUIDE, 152
+        HORZGUIDE, 156
+        HORZGUIDE, 164
+        HORZGUIDE, 167
+        HORZGUIDE, 179
+        HORZGUIDE, 183
+        HORZGUIDE, 195
+    END
+
+    IDD_DIALOG_FORMATS, DIALOG
+    BEGIN
+        VERTGUIDE, 7
+        VERTGUIDE, 14
+        VERTGUIDE, 50
+        VERTGUIDE, 57
+        VERTGUIDE, 61
+        VERTGUIDE, 165
+        VERTGUIDE, 213
+        VERTGUIDE, 217
+        VERTGUIDE, 301
+        VERTGUIDE, 305
+        VERTGUIDE, 355
+        VERTGUIDE, 359
+        VERTGUIDE, 402
+        VERTGUIDE, 409
+        HORZGUIDE, 7
+        HORZGUIDE, 147
+        HORZGUIDE, 155
+        HORZGUIDE, 158
+        HORZGUIDE, 170
+        HORZGUIDE, 174
+        HORZGUIDE, 182
+        HORZGUIDE, 185
+        HORZGUIDE, 197
+        HORZGUIDE, 201
+        HORZGUIDE, 213
+    END
+
+    IDD_DIALOG_ABOUT, DIALOG
+    BEGIN
+        RIGHTMARGIN, 199
+        VERTGUIDE, 7
+        VERTGUIDE, 325
+        VERTGUIDE, 375
+        HORZGUIDE, 7
+        HORZGUIDE, 57
+        HORZGUIDE, 63
+        HORZGUIDE, 75
+        HORZGUIDE, 77
+        HORZGUIDE, 89
+        HORZGUIDE, 91
+        HORZGUIDE, 103
+        HORZGUIDE, 105
+        HORZGUIDE, 114
+        HORZGUIDE, 137
+        HORZGUIDE, 146
+        HORZGUIDE, 165
+    END
+
+    IDD_DIALOG_COPYFILE, DIALOG
+    BEGIN
+        VERTGUIDE, 7
+        VERTGUIDE, 26
+        VERTGUIDE, 29
+        VERTGUIDE, 131
+        VERTGUIDE, 156
+        VERTGUIDE, 181
+        VERTGUIDE, 305
+        HORZGUIDE, 7
+        HORZGUIDE, 15
+        HORZGUIDE, 17
+        HORZGUIDE, 25
+        HORZGUIDE, 30
+        HORZGUIDE, 38
+        HORZGUIDE, 42
+        HORZGUIDE, 54
+    END
+
+    IDD_DIALOG_ADVANCED, DIALOG
+    BEGIN
+        VERTGUIDE, 7
+        VERTGUIDE, 13
+        VERTGUIDE, 49
+        VERTGUIDE, 53
+        VERTGUIDE, 68
+        VERTGUIDE, 118
+        VERTGUIDE, 122
+        VERTGUIDE, 166
+        VERTGUIDE, 172
+        VERTGUIDE, 178
+        VERTGUIDE, 184
+        VERTGUIDE, 239
+        VERTGUIDE, 289
+        VERTGUIDE, 293
+        VERTGUIDE, 337
+        VERTGUIDE, 343
+        HORZGUIDE, 7
+        HORZGUIDE, 18
+        HORZGUIDE, 145
+        HORZGUIDE, 151
+        HORZGUIDE, 158
+        HORZGUIDE, 170
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_MENU_MAIN MENU 
+BEGIN
+    POPUP "&File"
+    BEGIN
+        MENUITEM "&Load list...\tCtrl+L",       ID_FILE_LOADLIST
+        MENUITEM "&Save list...\tCtrl+S",       ID_FILE_SAVELIST
+        MENUITEM SEPARATOR
+        MENUITEM "Cl&ear list\tCtrl+E",         ID_FILE_CLEARLIST
+        MENUITEM SEPARATOR
+        MENUITEM "Create batch-file...\tCtrl+B", ID_FILE_CREATE_BATCH_FILE
+        MENUITEM SEPARATOR
+        MENUITEM "E&xit",                       ID_FILE_EXIT
+    END
+    POPUP "&Edit"
+    BEGIN
+        MENUITEM "&Add Files\tF5",              ID_EDIT_ADDFILES
+        MENUITEM "Add Dire&ctory\tF6",          ID_EDIT_ADDDIR
+        MENUITEM SEPARATOR
+        MENUITEM "Rena&me\tF2",                 ID_EDIT_RENAME
+        MENUITEM SEPARATOR
+        MENUITEM "Rese&t Time/Status\tF3",      ID_EDIT_RESETTIME
+        MENUITEM "Reset Output/Preset\tF4",     ID_EDIT_RESETOUTPUT
+        MENUITEM SEPARATOR
+        MENUITEM "&Remove\tDEL",                ID_EDIT_REMOVE
+        MENUITEM "Cro&p\tINS",                  ID_EDIT_CROP
+        MENUITEM SEPARATOR
+        MENUITEM "Remove Chec&ked\tCtrl++",     ID_EDIT_REMOVECHECKED
+        MENUITEM "Remove Unc&hecked\tCtrl+-",   ID_EDIT_REMOVEUNCHECKED
+        MENUITEM SEPARATOR
+        MENUITEM "Check S&elected\tShift++",    ID_EDIT_CHECKSELECTED
+        MENUITEM "&Uncheck Selected\tShift+-",  ID_EDIT_UNCHECKSELECTED
+        MENUITEM SEPARATOR
+        MENUITEM "&Select All\tCtrl+A",         ID_EDIT_SELECTALL
+        MENUITEM "Select &None\tCtrl+N",        ID_EDIT_SELECTNONE
+        MENUITEM "&Invert Selection\tCtrl+I",   ID_EDIT_INVERTSELECTION
+        MENUITEM SEPARATOR
+        MENUITEM "&Open File\tCtrl+O",          ID_EDIT_OPEN
+        MENUITEM "Open &Directory\tCtrl+Shift+O", ID_EDIT_EXPLORE
+    END
+    POPUP "&View"
+    BEGIN
+        MENUITEM "Show &gridlines\tCtrl+G",     ID_VIEW_SHOWGRIDLINES
+        MENUITEM SEPARATOR
+        MENUITEM "Start &with progress window\tCtrl+Shift+P", ID_VIEW_STARTWITHEXTENDEDPROGRESS
+        MENUITEM SEPARATOR
+        MENUITEM "Show &progress window\tCtrl+P", ID_VIEW_TOOGLEEXTENDEDPROGRESS
+        MENUITEM "Show &histogram window\tCtrl+H", ID_VIEW_TOOGLEHISTOGRAMWINDOW
+    END
+    POPUP "&Action"
+    BEGIN
+        MENUITEM "Conve&rt\tF9",                ID_ACTION_CONVERT
+    END
+    POPUP "&Options"
+    BEGIN
+        MENUITEM "Stay on &top\tF10",           ID_OPTIONS_STAYONTOP
+        MENUITEM SEPARATOR
+        MENUITEM "Show tray &icon\tF11",        ID_OPTIONS_SHOWTRAYICON
+        MENUITEM SEPARATOR
+        MENUITEM "&Log console output\tF12",    ID_OPTIONS_LOGCONSOLEOUTPUT
+        MENUITEM "Sho&w console log\tCtrl+F12", ID_OPTIONS_SHOWLOGLIST
+        MENUITEM "Delete console lo&g\tShift+F12", ID_OPTIONS_DELETELOG
+        MENUITEM SEPARATOR
+        MENUITEM "&Delete source file when done\tCtrl+D", ID_OPTIONS_DELETESOURCEFILEWHENDONE
+        MENUITEM SEPARATOR
+        MENUITEM "&Shutdown when finished\tCtrl+Q", ID_OPTIONS_SHUTDOWN_WHEN_FINISHED
+        MENUITEM SEPARATOR
+        MENUITEM "Don't save settings on e&xit\tCtrl+X", ID_OPTIONS_DO_NOT_SAVE
+        MENUITEM SEPARATOR
+        MENUITEM "Configure &presets...\tF7",   ID_OPTIONS_CONFIGUREPRESETS
+        MENUITEM "Configure &formats...\tF8",   ID_OPTIONS_CONFIGUREFORMAT
+        MENUITEM SEPARATOR
+        MENUITEM "For&ce console window\tCtrl+Shift+F", ID_OPTIONS_FORCECONSOLEWINDOW
+        MENUITEM SEPARATOR
+        MENUITEM "&Advanced...\tCtrl+Shift+A",  ID_OPTIONS_ADVANCED
+    END
+    POPUP "&Help"
+    BEGIN
+        MENUITEM "&Help\tF1",                   ID_HELP_HELP
+        MENUITEM SEPARATOR
+        MENUITEM "&Website",                    ID_HELP_WEBSITE
+        MENUITEM SEPARATOR
+        MENUITEM "&About...",                   ID_HELP_ABOUT
+    END
+END
+
+IDR_MENU_TRAY MENU 
+BEGIN
+    POPUP "&Tray Menu"
+    BEGIN
+        MENUITEM "E&xit",                       ID_TRAYMENU_EXIT
+    END
+END
+
+IDR_MENU_STAT MENU 
+BEGIN
+    POPUP "&Status Menu"
+    BEGIN
+        MENUITEM "&Reset conversion status",    ID_STATUSMENU_RESETCONVERSIONSTATUS
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_BITMAP_LOGO_SMALL   BITMAP                  "..\\Logo\\BatchEncoder.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Accelerator
+//
+
+IDR_ACCELERATOR_BATCHENCODER ACCELERATORS 
+BEGIN
+    VK_F4,          ID_ACCELERATOR_ALT_F4,  VIRTKEY, ALT, NOINVERT
+    "A",            ID_ACCELERATOR_CTRL_A,  VIRTKEY, CONTROL, NOINVERT
+    "D",            ID_ACCELERATOR_CTRL_D,  VIRTKEY, CONTROL, NOINVERT
+    "E",            ID_ACCELERATOR_CTRL_E,  VIRTKEY, CONTROL, NOINVERT
+    VK_F12,         ID_ACCELERATOR_CTRL_F12, VIRTKEY, CONTROL, NOINVERT
+    "G",            ID_ACCELERATOR_CTRL_G,  VIRTKEY, CONTROL, NOINVERT
+    "H",            ID_ACCELERATOR_CTRL_H,  VIRTKEY, CONTROL, NOINVERT
+    "I",            ID_ACCELERATOR_CTRL_I,  VIRTKEY, CONTROL, NOINVERT
+    "L",            ID_ACCELERATOR_CTRL_L,  VIRTKEY, CONTROL, NOINVERT
+    VK_SUBTRACT,    ID_ACCELERATOR_CTRL_MINUS, VIRTKEY, CONTROL, NOINVERT
+    "N",            ID_ACCELERATOR_CTRL_N,  VIRTKEY, CONTROL, NOINVERT
+    "O",            ID_ACCELERATOR_CTRL_O,  VIRTKEY, CONTROL, NOINVERT
+    "P",            ID_ACCELERATOR_CTRL_P,  VIRTKEY, CONTROL, NOINVERT
+    VK_ADD,         ID_ACCELERATOR_CTRL_PLUS, VIRTKEY, CONTROL, NOINVERT
+    "Q",            ID_ACCELERATOR_CTRL_Q,  VIRTKEY, CONTROL, NOINVERT
+    "S",            ID_ACCELERATOR_CTRL_S,  VIRTKEY, CONTROL, NOINVERT
+    "A",            ID_ACCELERATOR_CTRL_SHIFT_A, VIRTKEY, SHIFT, CONTROL, NOINVERT
+    "D",            ID_ACCELERATOR_CTRL_SHIFT_D, VIRTKEY, SHIFT, CONTROL, NOINVERT
+    "F",            ID_ACCELERATOR_CTRL_SHIFT_F, VIRTKEY, SHIFT, CONTROL, NOINVERT
+    "L",            ID_ACCELERATOR_CTRL_SHIFT_L, VIRTKEY, SHIFT, CONTROL, NOINVERT
+    "O",            ID_ACCELERATOR_CTRL_SHIFT_O, VIRTKEY, SHIFT, CONTROL, NOINVERT
+    "P",            ID_ACCELERATOR_CTRL_SHIFT_P, VIRTKEY, SHIFT, CONTROL, NOINVERT
+    "S",            ID_ACCELERATOR_CTRL_SHIFT_S, VIRTKEY, SHIFT, CONTROL, NOINVERT
+    "X",            ID_ACCELERATOR_CTRL_X,  VIRTKEY, CONTROL, NOINVERT
+    VK_F1,          ID_ACCELERATOR_F1,      VIRTKEY, NOINVERT
+    VK_F10,         ID_ACCELERATOR_F10,     VIRTKEY, NOINVERT
+    VK_F11,         ID_ACCELERATOR_F11,     VIRTKEY, NOINVERT
+    VK_F12,         ID_ACCELERATOR_F12,     VIRTKEY, NOINVERT
+    VK_F2,          ID_ACCELERATOR_F2,      VIRTKEY, NOINVERT
+    VK_F3,          ID_ACCELERATOR_F3,      VIRTKEY, NOINVERT
+    VK_F4,          ID_ACCELERATOR_F4,      VIRTKEY, NOINVERT
+    VK_F5,          ID_ACCELERATOR_F5,      VIRTKEY, NOINVERT
+    VK_F6,          ID_ACCELERATOR_F6,      VIRTKEY, NOINVERT
+    VK_F7,          ID_ACCELERATOR_F7,      VIRTKEY, NOINVERT
+    VK_F8,          ID_ACCELERATOR_F8,      VIRTKEY, NOINVERT
+    VK_F9,          ID_ACCELERATOR_F9,      VIRTKEY, NOINVERT
+    VK_F12,         ID_ACCELERATOR_SHIFT_F12, VIRTKEY, SHIFT, NOINVERT
+    VK_SUBTRACT,    ID_ACCELERATOR_SHIFT_MINUS, VIRTKEY, SHIFT, NOINVERT
+    VK_ADD,         ID_ACCELERATOR_SHIFT_PLUS, VIRTKEY, SHIFT, NOINVERT
+    "B",            ID_ACCELERATOR_CTRL_B,  VIRTKEY, CONTROL, NOINVERT
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// PRESET
+//
+
+IDR_PRESET_AAC_FAAC     PRESET                  "..\\Presets\\Presets_AAC_Faac.presets"
+IDR_PRESET_APE_MAC      PRESET                  "..\\Presets\\Presets_APE_Mac.presets"
+IDR_PRESET_FLAC_FLAC    PRESET                  "..\\Presets\\Presets_FLAC_Flac.presets"
+IDR_PRESET_M4A_FAAC     PRESET                  "..\\Presets\\Presets_M4A_Faac.presets"
+IDR_PRESET_MP3_LAME     PRESET                  "..\\Presets\\Presets_MP3_Lame.presets"
+IDR_PRESET_MP4_FAAC     PRESET                  "..\\Presets\\Presets_MP4_Faac.presets"
+IDR_PRESET_MPC_MPCENC   PRESET                  "..\\Presets\\Presets_MPC_MpcEnc.presets"
+IDR_PRESET_OGG_OGGENC   PRESET                  "..\\Presets\\Presets_OGG_OggEnc.presets"
+IDR_PRESET_AC3_AFTEN    PRESET                  "..\\Presets\\Presets_AC3_Aften.presets"
+IDR_PRESET_WV_WAVPACK   PRESET                  "..\\Presets\\Presets_WV_WavPack.presets"
+IDR_PRESET_TTA_TTAENC   PRESET                  "..\\Presets\\Presets_TTA_TtaEnc.presets"
+IDR_PRESET_OFR_OFR      PRESET                  "..\\Presets\\Presets_OFR_Ofr.presets"
+IDR_PRESET_WAV_SSRC     PRESET                  "..\\Presets\\Presets_WAV_Ssrc.presets"
+IDR_PRESET_MP4_NERO     PRESET                  "..\\Presets\\Presets_MP4_neroAacEnc.presets"
+IDR_PRESET_M4A_NERO     PRESET                  "..\\Presets\\Presets_M4A_neroAacEnc.presets"
+IDR_PRESET_TAK_TAKC     PRESET                  "..\\Presets\\Presets_TAK_Takc.presets"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// CONFIG
+//
+
+IDR_CONFIG_BATCHENCODER CONFIG                  "..\\Config\\BatchEncoder.config"
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#include "BatchEncoder.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"         // Standard components
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

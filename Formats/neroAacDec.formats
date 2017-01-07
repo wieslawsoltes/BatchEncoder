@@ -1,0 +1,5 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<Formats>
+    <Format name="DEC_MP4" template="$EXE $OPTIONS -if $INFILE -of $OUTFILE" input="true" output="false" function="- none -">neroAacDec.exe</Format>
+    <Format name="DEC_M4A" template="$EXE $OPTIONS -if $INFILE -of $OUTFILE" input="true" output="false" function="- none -">neroAacDec.exe</Format>
+</Formats>
