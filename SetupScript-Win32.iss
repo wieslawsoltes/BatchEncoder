@@ -1,6 +1,5 @@
 #define ProgramName "BatchEncoder"
-#define ProgramVersion "1.0.0.0"
-#define ProgramBuild "x64"
+#define ProgramBuild "Win32"
 #define ProgramCopyright "Copyright (C) 2005-2017 Wieslaw Soltes"
 #define ProgramWebsite "https://github.com/wieslawsoltes/BatchEncoder"
 #define BasePath "."
@@ -14,7 +13,7 @@ AppVerName          ={#ProgramName} {#ProgramVersion}
 AppCopyright        ={#ProgramCopyright}
 DefaultDirName      ={pf}\{#ProgramName} ({#ProgramBuild})
 OutputDir           =.
-OutputBaseFilename  ={#ProgramName}-{#ProgramBuild}-{#ProgramVersion}
+OutputBaseFilename  ={#ProgramName}-{#ProgramVersion}-{#ProgramBuild}
 VersionInfoVersion  ={#ProgramVersion}
 DefaultGroupName    ={#ProgramName} ({#ProgramBuild})
 AppPublisher        ={#ProgramWebsite}
@@ -40,6 +39,7 @@ Name: presets; Description: Presets; Types: full compact
 Name: formats; Description: Formats; Types: full compact
 Name: progress; Description: Progress Functions; Types: full compact
 Name: docs; Description: Documents; Types: full
+Name: unicows; Description: UnicoWS; Types: full compact
 
 [Tasks]
 
@@ -55,6 +55,7 @@ Source: {#BasePath}\data\Formats\*.formats; DestDir: {app}; Flags: ignoreversion
 Source: {#BasePath}\*.txt; DestDir: {app}; Flags: ignoreversion; Components: docs
 Source: {#BasePath}\*.md; DestDir: {app}; Flags: ignoreversion; Components: docs
 Source: {#BasePath}\src\bin\Release\{#ProgramBuild}\*.progress; DestDir: {app}; Flags: ignoreversion; Components: progress
+Source: {#BasePath}\UnicoWS\UnicoWS.dll; DestDir: {app}; Flags: ignoreversion; Components: unicows
 
 [INI]
 

@@ -5,7 +5,7 @@ install:
 before_build:
 - git submodule update --init
 build_script:
-- ps: .\build.ps1 -Target "Build"
+- ps: .\build.ps1 -Target "Package"
 test: off
 artifacts:
   - path: artifacts\*.zip
