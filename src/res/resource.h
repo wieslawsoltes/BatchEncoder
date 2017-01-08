@@ -114,7 +114,6 @@
 #define IDC_COLOR_8                     1066
 #define ID_HELP_ABOUT                   32771
 #define ID_FILE_EXIT                    32772
-#define ID_HELP_HELP                    32773
 #define ID_HELP_WEBSITE                 32774
 #define ID_EDIT_ADDDIR                  32775
 #define ID_EDIT_OPEN                    32778
@@ -161,7 +160,6 @@
 #define ID_ACCELERATOR_F7               32819
 #define ID_ACCELERATOR_F8               32820
 #define ID_ACCELERATOR_CTRL_SHIFT_A     32821
-#define ID_ACCELERATOR_F1               32822
 #define ID_TRAYMENU_EXIT                32823
 #define ID_VIEW_SHOWGRIDLINES           32824
 #define ID_OPTIONS_SHUTDOWN_WHEN_FINISHED 32825

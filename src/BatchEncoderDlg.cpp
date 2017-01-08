@@ -332,7 +332,6 @@ BEGIN_MESSAGE_MAP(CBatchEncoderDlg, CResizeDialog)
     ON_COMMAND(ID_OPTIONS_DO_NOT_SAVE, OnOptionsDoNotSave)
     ON_COMMAND(ID_OPTIONS_FORCECONSOLEWINDOW, OnOptionsForceConsoleWindow)
     ON_COMMAND(ID_OPTIONS_ADVANCED, OnOptionsAdvanced)
-    ON_COMMAND(ID_HELP_HELP, OnHelpHelp)
     ON_COMMAND(ID_HELP_WEBSITE, OnHelpWebsite)
     ON_COMMAND(ID_HELP_ABOUT, OnHelpAbout)
     ON_COMMAND(ID_ACCELERATOR_CTRL_L, OnFileLoadList)
@@ -372,7 +371,6 @@ BEGIN_MESSAGE_MAP(CBatchEncoderDlg, CResizeDialog)
     ON_COMMAND(ID_ACCELERATOR_CTRL_SHIFT_F, OnOptionsForceConsoleWindow)
     ON_COMMAND(ID_ACCELERATOR_CTRL_SHIFT_A, OnOptionsAdvanced)
     ON_COMMAND(ID_ACCELERATOR_CTRL_D, OnOptionsDeleteSourceFileWhenDone)
-    ON_COMMAND(ID_ACCELERATOR_F1, OnHelpHelp)
     ON_COMMAND(ID_ACCELERATOR_CTRL_H, OnShowHistogram)
     ON_COMMAND(ID_ACCELERATOR_CTRL_P, OnShowCnvStatus)
     ON_WM_NCLBUTTONDOWN()
@@ -4384,15 +4382,6 @@ void CBatchEncoderDlg::OnOptionsShutdownWhenFinished()
         this->GetMenu()->CheckMenuItem(ID_OPTIONS_SHUTDOWN_WHEN_FINISHED, MF_UNCHECKED);
     else
         this->GetMenu()->CheckMenuItem(ID_OPTIONS_SHUTDOWN_WHEN_FINISHED, MF_CHECKED);
-}
-
-void CBatchEncoderDlg::OnHelpHelp()
-{
-    if(bRunning == true)
-        return;
-
-    ::UpdatePath();
-    ::LaunchAndWait(MAIN_APP_HELP, _T(""), FALSE);
 }
 
 void CBatchEncoderDlg::OnHelpWebsite()

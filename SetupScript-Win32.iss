@@ -55,10 +55,7 @@ Source: {#BasePath}\data\Config\BatchEncoder.config; DestDir: {app}; Flags: igno
 Source: {#BasePath}\data\Presets\*.presets; DestDir: {app}; Flags: ignoreversion; Components: presets
 Source: {#BasePath}\data\Formats\*.formats; DestDir: {app}; Flags: ignoreversion; Components: formats
 Source: {#BasePath}\src\bin\Release\{#ProgramBuild}\*.progress; DestDir: {app}; Flags: ignoreversion; Components: progress
-
-#ifdef ProgramBuildWin32
 Source: {#BasePath}\UnicoWS\UnicoWS.dll; DestDir: {app}; Flags: ignoreversion; Components: unicows
-#endif
 
 [INI]
 

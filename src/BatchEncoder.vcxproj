@@ -124,6 +124,12 @@
       <DataExecutionPrevention />
       <TargetMachine>MachineX86</TargetMachine>
     </Link>
+    <PostBuildEvent>
+      <Command>copy ..\data\Config\*.config $(OutDir)
+copy ..\data\Presets\*.presets $(OutDir)
+copy ..\data\Formats\*.formats $(OutDir)
+copy ..\UnicoWS\UnicoWS.dll $(OutDir)</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Midl>
@@ -155,6 +161,11 @@
       <DataExecutionPrevention />
       <TargetMachine>MachineX64</TargetMachine>
     </Link>
+    <PostBuildEvent>
+      <Command>copy ..\data\Config\*.config $(OutDir)
+copy ..\data\Presets\*.presets $(OutDir)
+copy ..\data\Formats\*.formats $(OutDir)</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Midl>
@@ -188,6 +199,12 @@
       <DataExecutionPrevention />
       <TargetMachine>MachineX86</TargetMachine>
     </Link>
+    <PostBuildEvent>
+      <Command>copy ..\data\Config\*.config $(OutDir)
+copy ..\data\Presets\*.presets $(OutDir)
+copy ..\data\Formats\*.formats $(OutDir)
+copy ..\UnicoWS\UnicoWS.dll $(OutDir)</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Midl>
@@ -221,6 +238,11 @@
       <DataExecutionPrevention />
       <TargetMachine>MachineX64</TargetMachine>
     </Link>
+    <PostBuildEvent>
+      <Command>copy ..\data\Config\*.config $(OutDir)
+copy ..\data\Presets\*.presets $(OutDir)
+copy ..\data\Formats\*.formats $(OutDir)</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AboutDlg.cpp" />

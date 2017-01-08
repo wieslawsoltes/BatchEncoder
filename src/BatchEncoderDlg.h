@@ -279,7 +279,6 @@ public:
     afx_msg void OnOptionsForceConsoleWindow();
     afx_msg void OnOptionsAdvanced();
 public:
-    afx_msg void OnHelpHelp();
     afx_msg void OnHelpWebsite();
     afx_msg void OnHelpAbout();
 public:

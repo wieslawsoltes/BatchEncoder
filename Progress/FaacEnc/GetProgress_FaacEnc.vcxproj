@@ -111,6 +111,9 @@
       <TargetMachine>MachineX86</TargetMachine>
       <ProfileGuidedDatabase>$(OutDir)$(TargetName).pgd</ProfileGuidedDatabase>
     </Link>
+    <PostBuildEvent>
+      <Command>copy /Y $(OutDir)$(TargetName)$(TargetExt) ..\..\src\bin\$(Configuration)\$(Platform)\$(TargetName).progress</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -139,6 +142,9 @@
       <TargetMachine>MachineX86</TargetMachine>
       <ProfileGuidedDatabase>$(OutDir)$(TargetName).pgd</ProfileGuidedDatabase>
     </Link>
+    <PostBuildEvent>
+      <Command>copy /Y $(OutDir)$(TargetName)$(TargetExt) ..\..\src\bin\$(Configuration)\$(Platform)\$(TargetName).progress</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Midl>
@@ -166,6 +172,9 @@
       <TargetMachine>MachineX64</TargetMachine>
       <ProfileGuidedDatabase>$(OutDir)$(TargetName).pgd</ProfileGuidedDatabase>
     </Link>
+    <PostBuildEvent>
+      <Command>copy /Y $(OutDir)$(TargetName)$(TargetExt) ..\..\src\bin\$(Configuration)\$(Platform)\$(TargetName).progress</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Midl>
@@ -197,6 +206,9 @@
       <TargetMachine>MachineX64</TargetMachine>
       <ProfileGuidedDatabase>$(OutDir)$(TargetName).pgd</ProfileGuidedDatabase>
     </Link>
+    <PostBuildEvent>
+      <Command>copy /Y $(OutDir)$(TargetName)$(TargetExt) ..\..\src\bin\$(Configuration)\$(Platform)\$(TargetName).progress</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="GetProgress.cpp" />

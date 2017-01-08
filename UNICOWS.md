@@ -1,4 +1,4 @@
-﻿ADDING UNICOWS.DLL TO VISUAL STUDIO PROJECT:
+﻿# ADDING UNICOWS.DLL TO VISUAL STUDIO PROJECT:
 
 1. Add 'wWinMainCRTStartup' string to (Linker > Advanced > Entry Point) 
 

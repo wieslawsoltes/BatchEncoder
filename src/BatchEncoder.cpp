@@ -69,8 +69,7 @@ enum CL_OPTIONS_CONST
     CLOP_CONFIGURE_FORMATS,
     CLOP_COPYFILE,
     CLOP_WEBSITE,
-    CLOP_ABOUT,
-    CLOP_HELP,
+    CLOP_ABOUT
 };
 
 const COptionsParser::CL_OPTIONS clOptions[] = 
@@ -109,7 +108,6 @@ const COptionsParser::CL_OPTIONS clOptions[] =
     { _T("copyfile;c"),                   CLOP_COPYFILE,                  2,  true  },
     { _T("website;w"),                    CLOP_WEBSITE,                   0,  false },
     { _T("about;a"),                      CLOP_ABOUT,                     0,  false },
-    { _T("help;h;?"),                     CLOP_HELP,                      0,  false },
     { NULL,                               0,                              0,  false }
 };
 
@@ -567,14 +565,6 @@ BOOL CBatchEncoderApp::InitInstance()
                     CAboutDlg dlg;
                     m_pMainWnd = &dlg;
                     dlg.DoModal();
-
-                    bExit = true;
-                }
-                break;
-            case CLOP_HELP:
-                {
-                    ::UpdatePath();
-                    ::LaunchAndWait(MAIN_APP_HELP, _T(""), FALSE);
 
                     bExit = true;
                 }
