@@ -31,6 +31,7 @@ BackColorDirection  =toptobottom
 BackSolid           =no
 UserInfoPage        =no
 LicenseFile         =.\COPYING.TXT
+ArchitecturesInstallIn64BitMode=x64
 
 [Components]
 
