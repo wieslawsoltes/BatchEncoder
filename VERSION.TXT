@@ -4,10 +4,9 @@
 | File path                       | How many times  |
 |---------------------------------|-----------------|
 | CHANGELOG.txt                   | 1               |
-| Manual\BatchEncoder.odt         | 1               |
-| Manual\BatchEncoder.pdf         | 1               |
-| src\res\BatchEncoder.rc         | 4               |
-| Scripts\CreatePackage.cmd       | 1               |
-| Scripts\SetupVersion.inc        | 1               |
-| src\Config.h                    | 1               |
+| data\Manual\BatchEncoder.odt    | 1               |
+| data\Manual\BatchEncoder.pdf    | 1               |
+| src\version.h                   | 4               |
+| CreatePackage.cmd               | 1               |
+| SetupVersion.inc                | 1               |
 |---------------------------------|-----------------|

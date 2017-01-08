@@ -1,13 +1,18 @@
 // Microsoft Visual C++ generated resource script.
 //
 #include "resource.h"
+#include "version.h"
 
 #define APSTUDIO_READONLY_SYMBOLS
 /////////////////////////////////////////////////////////////////////////////
 //
 // Generated from the TEXTINCLUDE 2 resource.
 //
+#ifndef APSTUDIO_INVOKED
+#include "targetver.h"
+#endif
 #include "afxres.h"
+#include "verrsrc.h"
 
 /////////////////////////////////////////////////////////////////////////////
 #undef APSTUDIO_READONLY_SYMBOLS
@@ -34,7 +39,11 @@ END
 
 2 TEXTINCLUDE 
 BEGIN
+    "#ifndef APSTUDIO_INVOKED\r\n"
+    "#include ""targetver.h""\r\n"
+    "#endif\r\n"
     "#include ""afxres.h""\r\n"
+    "#include ""verrsrc.h""\r\n"
     "\0"
 END
 
@@ -245,29 +254,27 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 1,0,0,0
- PRODUCTVERSION 1,0,0,0
+FILEVERSION VER_FILE_VERSION
+PRODUCTVERSION VER_PRODUCT_VERSION
  FILEFLAGSMASK 0x3fL
-#ifdef _DEBUG
- FILEFLAGS 0x1L
-#else
- FILEFLAGS 0x0L
-#endif
- FILEOS 0x4L
- FILETYPE 0x1L
+ FILEFLAGSMASK 0x3fL
+ FILEFLAGS VER_FILEFLAGS
+ FILEOS VOS_NT_WINDOWS32
+ FILETYPE VER_FILETYPE
  FILESUBTYPE 0x0L
 BEGIN
     BLOCK "StringFileInfo"
     BEGIN
         BLOCK "040904e4"
         BEGIN
-            VALUE "FileDescription", "BatchEncoder (Audio Conversion GUI)"
-            VALUE "FileVersion", "1.0.0.0"
-            VALUE "InternalName", "BatchEncoder.exe"
-            VALUE "LegalCopyright", "Copyright (C) 2005-2017 Wieslaw Soltes. All rights reserved."
-            VALUE "OriginalFilename", "BatchEncoder.exe"
-            VALUE "ProductName", "BatchEncoder"
-            VALUE "ProductVersion", "1.0.0.0"
+            VALUE "CompanyName", VER_FILE_COMPANY_NAME_STR "\0"
+            VALUE "FileDescription", VER_FILE_DESCRIPTION_STR "\0"
+            VALUE "FileVersion", VER_FILE_VERSION_LONG_STR "\0"
+            VALUE "InternalName", VER_INTERNAL_NAME_STR "\0"
+            VALUE "LegalCopyright", VER_COPYRIGHT_STR "\0"
+            VALUE "OriginalFilename", VER_ORIGINAL_FILENAME_STR "\0"
+            VALUE "ProductName", VER_PRODUCTNAME_STR "\0"
+            VALUE "ProductVersion", VER_PRODUCT_VERSION_STR "\0"
         END
     END
     BLOCK "VarFileInfo"

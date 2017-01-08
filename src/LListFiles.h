@@ -20,8 +20,6 @@
 
 #include <afxtempl.h>
 
-#include "Config.h"
-
 class CLListFiles 
 {
 private:

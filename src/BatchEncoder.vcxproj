@@ -228,7 +228,6 @@
     <ClCompile Include="BatchEncoder.cpp" />
     <ClCompile Include="BatchEncoderDlg.cpp" />
     <ClCompile Include="CommandLine.cpp" />
-    <ClCompile Include="Config.cpp" />
     <ClCompile Include="ConversionStatus.cpp" />
     <ClCompile Include="CopyFileDlg.cpp" />
     <ClCompile Include="DropList.cpp" />
@@ -264,7 +263,6 @@
     <ClInclude Include="BatchEncoder.h" />
     <ClInclude Include="BatchEncoderDlg.h" />
     <ClInclude Include="CommandLine.h" />
-    <ClInclude Include="Config.h" />
     <ClInclude Include="ConversionStatus.h" />
     <ClInclude Include="CopyFileDlg.h" />
     <ClInclude Include="DropList.h" />
@@ -284,12 +282,14 @@
     <ClInclude Include="PresetsDlg.h" />
     <ClInclude Include="ResizeDialog.h" />
     <ClInclude Include="StdAfx.h" />
+    <ClInclude Include="targetver.h" />
     <ClInclude Include="TimeCount.h" />
     <ClInclude Include="TiXmlDocumentW.h" />
     <ClInclude Include="TransMove.h" />
     <ClInclude Include="UnicodeUtf8.h" />
     <ClInclude Include="Utf8String.h" />
     <ClInclude Include="Utilities.h" />
+    <ClInclude Include="version.h" />
     <ClInclude Include="WorkThread.h" />
     <ClInclude Include="XmlResource.h" />
   </ItemGroup>

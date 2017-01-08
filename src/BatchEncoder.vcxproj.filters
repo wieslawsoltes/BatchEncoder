@@ -25,15 +25,21 @@
     <Filter Include="Source Files\Dialogs">
       <UniqueIdentifier>{e5c94674-0e76-46a1-bfb2-d2ab733b8272}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Lists">
+      <UniqueIdentifier>{6fffc217-d498-4966-aa95-d33a4c50bbde}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Xml">
+      <UniqueIdentifier>{cce341be-f5d9-4331-8431-c6b4f6d33179}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Xml">
+      <UniqueIdentifier>{f6b31c12-6182-4625-8cef-830303fb90cf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BatchEncoder.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="CommandLine.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Config.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ConversionStatus.cpp">
@@ -52,9 +58,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="StdAfx.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="TiXmlDocumentW.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="UnicodeUtf8.cpp">
@@ -111,15 +114,15 @@
     <ClCompile Include="FileListCtrl.cpp">
       <Filter>Source Files\Controls</Filter>
     </ClCompile>
+    <ClCompile Include="TiXmlDocumentW.cpp">
+      <Filter>Source Files\Xml</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BatchEncoder.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="CommandLine.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Config.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ConversionStatus.h">
@@ -129,15 +132,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="LameHistogram.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="LListExtensions.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="LListFiles.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="LListPresets.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="NewItemData.h">
@@ -153,9 +147,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="TimeCount.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="TiXmlDocumentW.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="TransMove.h">
@@ -214,6 +205,24 @@
     </ClInclude>
     <ClInclude Include="FileListCtrl.h">
       <Filter>Header Files\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="version.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LListFiles.h">
+      <Filter>Header Files\Lists</Filter>
+    </ClInclude>
+    <ClInclude Include="LListExtensions.h">
+      <Filter>Header Files\Lists</Filter>
+    </ClInclude>
+    <ClInclude Include="LListPresets.h">
+      <Filter>Header Files\Lists</Filter>
+    </ClInclude>
+    <ClInclude Include="TiXmlDocumentW.h">
+      <Filter>Header Files\Xml</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
