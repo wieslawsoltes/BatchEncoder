@@ -34,13 +34,13 @@ For specific options for each format use help available for command-line tools.
 
 ## Screenshots
 
-![File List](screenshots/FileList.png)]
+[![File List](screenshots/FileList.png)](https://github.com/wieslawsoltes/BatchEncoder/blob/master/screenshots/FileList.png)
 
-![File List Converting](screenshots/FileListConverting.png)]
+[![File List Converting](screenshots/FileListConverting.png)](https://github.com/wieslawsoltes/BatchEncoder/blob/master/screenshots/FileListConvertingFileList.png)
 
-![Progress Window](screenshots/ProgressWindow.png)]
+[![Progress Window](screenshots/ProgressWindow.png)](https://github.com/wieslawsoltes/BatchEncoder/blob/master/screenshots/ProgressWindow.png)
 
-![Histogram Window](screenshots/HistogramWindow.png)]
+[![Histogram Window](screenshots/HistogramWindow.png)](https://github.com/wieslawsoltes/BatchEncoder/blob/master/screenshots/HistogramWindow.png)
 
 ## Command-Line
 
