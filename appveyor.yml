@@ -1,6 +1,19 @@
-version: '{build}'
 image: Visual Studio 2015
-build:
-  project: BatchEncoder.sln
-  verbosity: minimal
+install:
+  - choco install -y InnoSetup
+  - set PATH="C:\Program Files\7-Zip";"C:\Program Files (x86)\Inno Setup 5";%PATH%
+before_build:
+- git submodule update --init
+build_script:
+- ps: .\build.ps1 -Target "Build"
 test: off
+artifacts:
+  - path: artifacts\*.zip
+  - path: artifacts\*.exe
+notifications:
+- provider: Webhook
+  url: https://webhooks.gitter.im/e/0c1424f914b1fb57cb44
+  method: POST
+  on_build_success: true
+  on_build_failure: true
+  on_build_status_changed: true
