@@ -27,13 +27,13 @@
 #include "SetupVersion.inc"
 
 ; Set program copyright information.
-#define ProgramCopyright "Copyright (C) 2005-2008 Wieslaw Soltes"
+#define ProgramCopyright "Copyright (C) 2005-2017 Wieslaw Soltes"
 
 ; Set program website url.
-#define ProgramWebsite "http://www.BatchEncoder.com/"
+#define ProgramWebsite "https://github.com/wieslawsoltes/BatchEncoder"
 
 ; Base pathe for included files.
-#define BasePath ".."
+#define BasePath "."
 
 [Setup]
 
