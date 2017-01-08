@@ -1,5 +1,7 @@
 ﻿# BatchEncoder
 
+[![Gitter](https://badges.gitter.im/wieslawsoltes/batchencoder.svg)](https://gitter.im/wieslawsoltes/batchencoder?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
+
 [![Build status](https://ci.appveyor.com/api/projects/status/gf82ojfu97e7udx7/branch/master?svg=true)](https://ci.appveyor.com/project/wieslawsoltes/batchencoder/branch/master)
 
 ## About
