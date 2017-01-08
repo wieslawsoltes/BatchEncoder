@@ -18,7 +18,7 @@ var target = Argument("target", "Default");
 
 var platforms = new [] { "Win32", "x64" }.ToList();
 var configurations = new [] { "Debug", "Release" }.ToList();
-var solution = "./EncWAVtoAC3.sln";
+var solution = "./BatchEncoder.sln";
 var versionHeaderPath = (FilePath)File("./src/version.h");
 var installerScript = MakeAbsolute((FilePath)File("SetupScript.iss"));
 var installerScriptAMD64 = MakeAbsolute((FilePath)File("SetupScriptAMD64.iss"));
@@ -26,7 +26,6 @@ var iscc = @"C:/Program Files (x86)/Inno Setup 5/ISCC.exe";
 var artifactsDir = (DirectoryPath)Directory("./artifacts");
 var binDir = (DirectoryPath)Directory("./src/bin");
 var objDir = (DirectoryPath)Directory("./src/obj");
-var aftenBinDir = (DirectoryPath)Directory("./src/aften/windows/output");
 
 ///////////////////////////////////////////////////////////////////////////////
 // VERSION
@@ -75,20 +74,12 @@ Task("Package-Binaries-x86")
     .IsDependentOn("Build")
     .Does(() =>
 {
-    var output = "EncWAVtoAC3-" + version;
+    var output = "BatchEncoder-" + version;
     var outputDir = artifactsDir.Combine(output);
     var outputZip = artifactsDir.CombineWithFilePath(output + ".zip");
-    var langDir = outputDir.Combine("Lang");
-    var aftenDll = "libaften.dll";
-    var aftenDllsWin32 = new [] { 
-        "libaftendll_x86",
-        "libaftendll_x86_SSE",
-        "libaftendll_x86_SSE2",
-        "libaftendll_x86_SSE3",
-    };
-    var exeFile = File("./src/bin/Release/Win32/EncWAVtoAC3.exe");
-    var enginesFile = File("./engines/unicode/Win32/EncWAVtoAC3.engines");
-    var portableFile = File("EncWAVtoAC3.portable");
+    var exeFile = File("./src/bin/Release/Win32/BatchEncoder.exe");
+    var enginesFile = File("./engines/unicode/Win32/BatchEncoder.engines");
+    var portableFile = File("BatchEncoder.portable");
 
     CleanDirectory(outputDir);
 
@@ -101,14 +92,6 @@ Task("Package-Binaries-x86")
 
     CleanDirectory(langDir);
     CopyFiles("./lang/*.txt", langDir);
-    
-    foreach (var dir in aftenDllsWin32)
-    {
-        CleanDirectory(outputDir.Combine(dir));
-        CopyFileToDirectory(
-            aftenBinDir.Combine(dir).CombineWithFilePath(aftenDll), 
-            outputDir.Combine(dir));
-    }
 
     Zip(outputDir, outputZip);
 });
@@ -117,19 +100,12 @@ Task("Package-Binaries-AMD64")
     .IsDependentOn("Build")
     .Does(() =>
 {
-    var output = "EncWAVtoAC3-" + version + "-AMD64";
+    var output = "BatchEncoder-" + version + "-AMD64";
     var outputDir = artifactsDir.Combine(output);
     var outputZip = artifactsDir.CombineWithFilePath(output + ".zip");
-    var langDir = outputDir.Combine("Lang");
-    var aftenDll = "libaften.dll";
-    var aftenDllsWin32 = new [] { 
-        "libaftendll_AMD64",
-        "libaftendll_AMD64_SSE2",
-        "libaftendll_AMD64_SSE3"
-    };
-    var exeFile = File("./src/bin/Release/x64/EncWAVtoAC3.exe");
-    var enginesFile = File("./engines/unicode/Win64/EncWAVtoAC3.engines");
-    var portableFile = File("EncWAVtoAC3.portable");
+    var exeFile = File("./src/bin/Release/x64/BatchEncoder.exe");
+    var enginesFile = File("./engines/unicode/Win64/BatchEncoder.engines");
+    var portableFile = File("BatchEncoder.portable");
 
     CleanDirectory(outputDir);
 
@@ -142,14 +118,6 @@ Task("Package-Binaries-AMD64")
 
     CleanDirectory(langDir);
     CopyFiles("./lang/*.txt", langDir);
-    
-    foreach (var dir in aftenDllsWin32)
-    {
-        CleanDirectory(outputDir.Combine(dir));
-        CopyFileToDirectory(
-            aftenBinDir.Combine(dir).CombineWithFilePath(aftenDll), 
-            outputDir.Combine(dir));
-    }
 
     Zip(outputDir, outputZip);
 });
