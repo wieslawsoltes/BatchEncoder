@@ -18,11 +18,10 @@ BatchEncoder is an audio files conversion software.
 ## About
 
 BatchEncoder is an audio files conversion software. It supports most of popular audio file formats 
-including lossy and lossless compression. The main program window is simple in usage and design. 
-BatchEncoder is basically GUI front-end for command-line tools. All it does is creating background 
-processes and passing arguments to it with options you select from presets/format menu and additionally 
-adding input and output file paths. This help file describes very basic futures and usage of the application. 
-For specific options for each format use help available for command-line tools.
+including lossy and lossless compression. The program is very simple to use. 
+BatchEncoder is basically GUI front-end for command-line tools. All it does is create background 
+processes and pass arguments to it with options set in presets/format menu and additionally 
+adds input and output file paths. For specific options for each format use help available for command-line tools.
 
 ## Features
 
