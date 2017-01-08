@@ -90,8 +90,8 @@ Task("Package-Binaries-x86")
     CopyFileToDirectory(enginesFile, outputDir);
     CopyFileToDirectory(portableFile, outputDir);
 
-    CleanDirectory(langDir);
-    CopyFiles("./lang/*.txt", langDir);
+    //CleanDirectory(langDir);
+    //CopyFiles("./lang/*.txt", langDir);
 
     Zip(outputDir, outputZip);
 });
@@ -116,8 +116,8 @@ Task("Package-Binaries-AMD64")
     CopyFileToDirectory(enginesFile, outputDir);
     CopyFileToDirectory(portableFile, outputDir);
 
-    CleanDirectory(langDir);
-    CopyFiles("./lang/*.txt", langDir);
+    //CleanDirectory(langDir);
+    //CopyFiles("./lang/*.txt", langDir);
 
     Zip(outputDir, outputZip);
 });
