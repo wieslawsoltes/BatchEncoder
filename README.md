@@ -27,8 +27,8 @@ For specific options for each format use help available for command-line tools.
 ## Features
 
 * Audio conversion utility GUI.
-* Supports most popular audio formats.
-* Easly configurable by newbies.
+* Support for most popular audio formats.
+* Easily configurable by newbies.
 * Advanced options for experienced users.
 * Open-source, fast and simple.
 
@@ -148,25 +148,6 @@ For specific options for each format use help available for command-line tools.
     
     When 'on' or 'off' is not specified the 'on' is used if not declared else.
 
-## Supported OS
-
-The program is build by default as UNICODE enabled using UnicoWS for older ANSI systems.
-
-Currently supported operating systems:
-
-* Microsoft Windows Vista SP1 (http://www.microsoft.com/)
-* Microsoft Windows Vista (http://www.microsoft.com/)
-* Microsoft Windows XP SP2 (http://www.microsoft.com/)
-* Microsoft Windows 2000 SP4 (http://www.microsoft.com/)
-* Microsoft Windows Mev (http://www.microsoft.com/)
-* Microsoft Windows 98 SE (http://www.microsoft.com/)
-* Microsoft Windows 95 OSR2 with IE 5.0 (http://www.microsoft.com/)
-* Unix/Linux using Wine (http://www.winehq.org/)
-
-It is possible to run the program in other versions of Windows or in other operating systems, 
-but the authors are testing program only on this versions of OS's. If you have successfully tested 
-and used this program without any trouble in other OS then send an e-mail or post this on the program forums.
-
 ## System requirements
 
 It depends on encoders/decoders requirements. Standalone program works with few megabytes 
@@ -176,29 +157,6 @@ the better it goes. With older hardware you may experience some troubles with hi
 Specially when they are using assembly optimizations like MMX, SSE, SSE2, SSE3 or any other CPU specific. 
 So please check all the details about your hardware and used tools before complaining to the authors 
 of BatchEncoder in forums or via the e-mail.
-
-## Screen resolution
-
-The minimum supported resolution is 640x480 with 256 colors.
-
-## Program version numbering
-
-BatchEncoder A.B.C.D <release>
-
-    if (B == 0) && (C == 0) && (D == 0) <release>	== Stable
-    if (B > 0) && (C == 0) && (D == 0) <release> == Stable (patch/fix)
-    if (C != 0) && (D == 0) <release> == Beta
-    if (C == 0) && (D != 0) <release> == Alpha
-
-Simplifying all the science we get:
-
-    A for a major stable release (C and D are equal to zero).
-    B for a minor stable patch/fix release (C and D are equal to zero).
-    C for a beta release.
-    D for an alpha release.
-
-For example 1.0.0.5 is alpha release, 1.0.5.0 is a beta release, 1.0.0.0 is stable release 
-and 1.1.0.0 is stable release with minor patch/fix.
 
 ## Configuration files extensions
 
@@ -229,7 +187,7 @@ help or write an e-mail to the authors.
 
 To build program from sources you will need the following components:
 
-### Microsoft Visual C++ 9.0
+### Microsoft Visual C++
 
 Check Microsoft(R) website http://www.microsoft.com/ for more informations about Visual C++.
 
