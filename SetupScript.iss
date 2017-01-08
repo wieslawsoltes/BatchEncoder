@@ -1,16 +1,8 @@
-; Set program base name.
 #define ProgramName "BatchEncoder"
-
-; Set program release number.
-#include "SetupVersion.inc"
-
-; Set program copyright information.
+#define ProgramVersion "1.0.0.0"
+#define ProgramBuild "Win32"
 #define ProgramCopyright "Copyright (C) 2005-2017 Wieslaw Soltes"
-
-; Set program website url.
 #define ProgramWebsite "https://github.com/wieslawsoltes/BatchEncoder"
-
-; Base pathe for included files.
 #define BasePath "."
 
 [Setup]
@@ -38,7 +30,7 @@ BackColor2          =clBlack
 BackColorDirection  =toptobottom
 BackSolid           =no
 UserInfoPage        =no
-LicenseFile         =SetupLicense.inc
+LicenseFile         =.\COPYING.TXT
 
 [Components]
 
@@ -58,13 +50,11 @@ Name: quicklaunchicon; Description: {cm:CreateQuickLaunchIcon}; GroupDescription
 
 [Files]
 
-Source: {#BasePath}\Release\{#ProgramBuild}\BatchEncoder.exe; DestDir: {app}; Flags: ignoreversion; Components: main
-Source: {#BasePath}\Config\BatchEncoder.config; DestDir: {app}; Flags: ignoreversion; Components: config
-Source: {#BasePath}\Presets\*.presets; DestDir: {app}; Flags: ignoreversion; Components: presets
-Source: {#BasePath}\Formats\*.formats; DestDir: {app}; Flags: ignoreversion; Components: formats
-Source: {#BasePath}\Progress\Release\{#ProgramBuild}\*.progress; DestDir: {app}; Flags: ignoreversion; Components: progress
-Source: {#BasePath}\Help\*.pdf; DestDir: {app}; Flags: ignoreversion; Components: help
-Source: {#BasePath}\doc\*.txt; DestDir: {app}; Flags: ignoreversion; Components: docs
+Source: {#BasePath}\src\bin\Release\{#ProgramBuild}\BatchEncoder.exe; DestDir: {app}; Flags: ignoreversion; Components: main
+Source: {#BasePath}\data\Config\BatchEncoder.config; DestDir: {app}; Flags: ignoreversion; Components: config
+Source: {#BasePath}\data\Presets\*.presets; DestDir: {app}; Flags: ignoreversion; Components: presets
+Source: {#BasePath}\data\Formats\*.formats; DestDir: {app}; Flags: ignoreversion; Components: formats
+Source: {#BasePath}\src\bin\Release\{#ProgramBuild}\*.progress; DestDir: {app}; Flags: ignoreversion; Components: progress
 
 #ifdef ProgramBuildWin32
 Source: {#BasePath}\UnicoWS\UnicoWS.dll; DestDir: {app}; Flags: ignoreversion; Components: unicows
@@ -77,8 +67,7 @@ Filename: {app}\{#ProgramName}.url; Section: InternetShortcut; Key: URL; String:
 [Icons]
 
 Name: {group}\{#ProgramName}; Filename: {app}\BatchEncoder.exe; WorkingDir: {app}; Components: main
-Name: {group}\{#ProgramName} License; Filename: {app}\License.txt; WorkingDir: {app}; Components: docs
-Name: {group}\{#ProgramName} Help; Filename: {app}\BatchEncoder.pdf; WorkingDir: {app}; Components: help
+Name: {group}\{#ProgramName} License; Filename: {app}\COPYING.TXT; WorkingDir: {app}; Components: docs
 Name: {group}\{#ProgramName} Web Site; Filename: {app}\{#ProgramName}.url; WorkingDir: {app}
 Name: {group}\Uninstall {#ProgramName}; Filename: {uninstallexe}; WorkingDir: {app}
 Name: {userdesktop}\{#ProgramName}; Filename: {app}\BatchEncoder.exe; WorkingDir: {app}; Tasks: desktopicon; Components: main
