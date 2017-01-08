@@ -126,7 +126,7 @@ Task("Package-Installer-Win32")
     .Does(() =>
 {
     StartProcess(iscc, new ProcessSettings { 
-        Arguments = "\"" + installerScriptWin32.FullPath + "\"" + " " + "/DProgramVersion=" + version, 
+        Arguments = "\"" + installerScriptWin32.FullPath + "\"" + " " + "/DVERSION=" + version, 
         WorkingDirectory = MakeAbsolute(artifactsDir) });
 });
 
@@ -135,7 +135,7 @@ Task("Package-Installer-x64")
     .Does(() =>
 {
     StartProcess(iscc, new ProcessSettings { 
-        Arguments = "\"" + installerScriptx64.FullPath + "\"" + " " + "/DProgramVersion=" + version, 
+        Arguments = "\"" + installerScriptx64.FullPath + "\"" + " " + "/DVERSION=" + version, 
         WorkingDirectory = MakeAbsolute(artifactsDir) });
 });
 
