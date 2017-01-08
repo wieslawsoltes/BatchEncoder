@@ -32,6 +32,16 @@ For specific options for each format use help available for command-line tools.
 * Advanced options for experienced users.
 * Open-source, fast and simple.
 
+## Screenshots
+
+![File List](screenshots/FileList.png)]
+
+![File List Converting](screenshots/FileListConverting.png)]
+
+![Progress Window](screenshots/ProgressWindow.png)]
+
+![Histogram Window](screenshots/HistogramWindow.png)]
+
 ## Command-Line
 
     USAGE: BatchEncoder
