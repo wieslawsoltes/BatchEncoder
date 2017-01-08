@@ -26,9 +26,9 @@ For specific options for each format use help available for command-line tools.
 
 ## Features
 
-* Audio conversion utility GUI.
-* Support for most popular audio formats.
-* Easily configurable by newbies.
+* Audio conversion GUI.
+* Supports popular audio formats.
+* Easily configurable by new users.
 * Advanced options for experienced users.
 * Open-source, fast and simple.
 
