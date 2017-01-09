@@ -114,7 +114,7 @@
     <ClCompile Include="FileListCtrl.cpp">
       <Filter>Source Files\Controls</Filter>
     </ClCompile>
-    <ClCompile Include="TiXmlDocumentW.cpp">
+    <ClCompile Include="XMLDocumentW.cpp">
       <Filter>Source Files\Xml</Filter>
     </ClCompile>
   </ItemGroup>
@@ -221,7 +221,7 @@
     <ClInclude Include="LListPresets.h">
       <Filter>Header Files\Lists</Filter>
     </ClInclude>
-    <ClInclude Include="TiXmlDocumentW.h">
+    <ClInclude Include="XMLDocumentW.h">
       <Filter>Header Files\Xml</Filter>
     </ClInclude>
   </ItemGroup>

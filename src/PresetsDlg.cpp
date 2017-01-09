@@ -432,26 +432,19 @@ void CPresetsDlg::LoadConfigFile(CString szFileXml)
 {
     ::UpdatePath();
 
-    CTiXmlDocumentW doc;
+    CXMLDocumentW doc;
     if(doc.LoadFileW(szFileXml) == true)
     {
-        TiXmlHandle hDoc(&doc);
-        TiXmlElement* pElem;
-
-        TiXmlHandle hRoot(0);
-
         // Root = Presets
-        pElem = hDoc.FirstChildElement().Element();
-        if(!pElem) 
+        tinyxml2::XMLElement* pRootElem = doc.FirstChildElement();
+        if(!pRootElem)
         {
             MessageBox(_T("Failed to load file!"), _T("ERROR"), MB_OK | MB_ICONERROR);
             return;
         }
 
-        hRoot = TiXmlHandle(pElem);
-
         // check for "Presets"
-        const char *szRoot = pElem->Value();
+        const char *szRoot = pRootElem->Value();
         const char *szRootName = "Presets";
         if(strcmp(szRootName, szRoot)  != 0)
         {
@@ -464,9 +457,9 @@ void CPresetsDlg::LoadConfigFile(CString szFileXml)
 
         // clear list view
         m_LstPresets.DeleteAllItems();
-
+        
         // Preset
-        TiXmlElement* pPresetsNode = hRoot.FirstChild("Preset").Element();
+        tinyxml2::XMLElement* pPresetsNode = pRootElem->FirstChildElement("Preset");
         for(pPresetsNode; pPresetsNode; pPresetsNode = pPresetsNode->NextSiblingElement())
         {
             const char *pszName = pPresetsNode->Attribute("name");
@@ -506,22 +499,22 @@ void CPresetsDlg::SaveConfigFile(CString szFileXml)
 
     ::UpdatePath();
 
-    CTiXmlDocumentW doc;
+    CXMLDocumentW doc;
 
-    TiXmlDeclaration* decl = new TiXmlDeclaration("1.0", "UTF-8", "");
+    tinyxml2::XMLDeclaration* decl = doc.NewDeclaration("xml version=\"1.0\" encoding=\"UTF-8\"");
     doc.LinkEndChild(decl);
 
     CString szBuff;
     CUtf8String m_Utf8;
 
     // root: Presets
-    TiXmlElement *pPresetsNode = new TiXmlElement("Presets");  
+    tinyxml2::XMLElement *pPresetsNode = doc.NewElement("Presets");  
     doc.LinkEndChild(pPresetsNode);  
     int nPresets = m_ListPresets.GetSize();
     for(int i = 0; i < nPresets; i++)
     {
         // Preset
-        TiXmlElement *preset =  new TiXmlElement("Preset");  
+        tinyxml2::XMLElement *preset =  doc.NewElement("Preset");  
         pPresetsNode->LinkEndChild(preset);
 
         CString szName = m_ListPresets.GetPresetName(i);

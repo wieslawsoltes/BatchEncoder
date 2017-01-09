@@ -393,26 +393,19 @@ void CFormatsDlg::OnBnClickedButtonLoadConfig()
 
         CString szFileXml = fd.GetPathName();
 
-        CTiXmlDocumentW doc;
+        CXMLDocumentW doc;
         if(doc.LoadFileW(szFileXml) == true)
         {
-            TiXmlHandle hDoc(&doc);
-            TiXmlElement* pElem;
-
-            TiXmlHandle hRoot(0);
-
             // Root = Formats
-            pElem = hDoc.FirstChildElement().Element();
-            if(!pElem) 
+            tinyxml2::XMLElement* pRootElem = doc.FirstChildElement();
+            if(!pRootElem)
             {
                 MessageBox(_T("Failed to load file!"), _T("ERROR"), MB_OK | MB_ICONERROR);
                 return;
             }
 
-            hRoot = TiXmlHandle(pElem);
-
             // check for "Formats"
-            const char *szRoot = pElem->Value(); 
+            const char *szRoot = pRootElem->Value();
             const char *szRootName = "Formats";
             if(strcmp(szRootName, szRoot) != 0)
             {
@@ -420,13 +413,13 @@ void CFormatsDlg::OnBnClickedButtonLoadConfig()
                 return;
             }
 
-            // load all elemetns
-            pElem = hRoot.FirstChild("Format").Element();
-            for(pElem; pElem; pElem = pElem->NextSiblingElement())
+            // load all elements
+            tinyxml2::XMLElement* pFormatElem = pRootElem->FirstChildElement("Format");
+            for(pFormatElem; pFormatElem; pFormatElem = pFormatElem->NextSiblingElement())
             {
                 int nFormat = -1;
 
-                const char *pszName = pElem->Attribute("name");
+                const char *pszName = pFormatElem->Attribute("name");
                 if(pszName != NULL)
                 {
                     CString szBuff = GetConfigString(pszName);
@@ -446,13 +439,13 @@ void CFormatsDlg::OnBnClickedButtonLoadConfig()
                     continue;
                 }
 
-                const char *pszTemplate = pElem->Attribute("template");
+                const char *pszTemplate = pFormatElem->Attribute("template");
                 if(pszTemplate != NULL)
                 {
                     szFormatTemplate[nFormat] = GetConfigString(pszTemplate);
                 }
 
-                const char *pszPipesInput = pElem->Attribute("input");
+                const char *pszPipesInput = pFormatElem->Attribute("input");
                 if(pszPipesInput != NULL)
                 {
                     CString szBuff = GetConfigString(pszPipesInput);
@@ -462,7 +455,7 @@ void CFormatsDlg::OnBnClickedButtonLoadConfig()
                         bFormatInput[nFormat] = false;
                 }
 
-                const char *pszPipesOutput = pElem->Attribute("output");
+                const char *pszPipesOutput = pFormatElem->Attribute("output");
                 if(pszPipesOutput != NULL)
                 {
                     CString szBuff = GetConfigString(pszPipesOutput);
@@ -472,13 +465,13 @@ void CFormatsDlg::OnBnClickedButtonLoadConfig()
                         bFormatOutput[nFormat] = false;
                 }
 
-                const char *pszFunction = pElem->Attribute("function");
+                const char *pszFunction = pFormatElem->Attribute("function");
                 if(pszFunction != NULL)
                 {
                     szFormatFunction[nFormat] = GetConfigString(pszFunction);
                 }
 
-                const char *tmpBuff = pElem->GetText();
+                const char *tmpBuff = pFormatElem->GetText();
                 szFormatPath[nFormat] = GetConfigString(tmpBuff);
 
                 m_LstFormats.SetItemText(nFormat, 1, szFormatTemplate[nFormat]);
@@ -512,15 +505,15 @@ void CFormatsDlg::OnBnClickedButtonSaveConfig()
 
         CString szFileXml = fd.GetPathName();
 
-        CTiXmlDocumentW doc;
-
-        TiXmlDeclaration* decl = new TiXmlDeclaration("1.0", "UTF-8", ""); 
+        CXMLDocumentW doc;
+        
+        tinyxml2::XMLDeclaration* decl = doc.NewDeclaration("xml version=\"1.0\" encoding=\"UTF-8\"");
         doc.LinkEndChild(decl);  
 
         // root: Formats
-        TiXmlElement *formats = new TiXmlElement("Formats");  
+        tinyxml2::XMLElement *formats = doc.NewElement("Formats");
+
         doc.LinkEndChild(formats);  
-        TiXmlElement *format;  
 
         for(int i = 0; i < NUM_FORMAT_NAMES; i++)
         {
@@ -532,9 +525,9 @@ void CFormatsDlg::OnBnClickedButtonSaveConfig()
             bFormatOutput[i] = (m_LstFormats.GetItemText(i, 4).Compare(_T("true")) == 0) ? true : false;
             szFormatFunction[i] = m_LstFormats.GetItemText(i, 5);
 
-            format = new TiXmlElement("Format");
+            tinyxml2::XMLElement *format = doc.NewElement("Format");
 
-            format->LinkEndChild(new TiXmlText(m_Utf8.Create(szFormatPath[i])));
+            format->LinkEndChild(doc.NewText(m_Utf8.Create(szFormatPath[i])));
             m_Utf8.Clear();
 
             format->SetAttribute("name", m_Utf8.Create(g_szFormatNames[i]));

@@ -84,7 +84,7 @@
 // XML
 //
 
-#include "TiXmlDocumentW.h"
+#include "XMLDocumentW.h"
 
 //
 // CONFIG

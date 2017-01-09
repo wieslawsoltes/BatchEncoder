@@ -16,21 +16,17 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //
 
-// handle UNICODE file names with TinyXml
-
-// NOTE:
-// get TinyXml library from http:/www.sourceforge.net/projects/tinyxml/
-// and unpack source package to 'TinyXml\tinyxml' dir
+// TinyXml2 https://github.com/leethomason/tinyxml2
 
 #pragma once
 
-#include "..\TinyXml\tinyxml\tinyxml.h"
+#include "xml\tinyxml2.h"
 
-class CTiXmlDocumentW : public TiXmlDocument
+class CXMLDocumentW : public tinyxml2::XMLDocument
 {
 public:
-    CTiXmlDocumentW();
-    virtual ~CTiXmlDocumentW();
+    CXMLDocumentW();
+    virtual ~CXMLDocumentW();
 public:
     bool LoadFileW(CString szFileName);
     bool SaveFileW(CString szFileName);

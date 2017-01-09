@@ -1084,20 +1084,13 @@ CString CBatchEncoderDlg::GetEncoderOpt(int nOutputFormat, int nPreset)
 
 bool CBatchEncoderDlg::LoadPresets(CString szPresetsFName, CLListPresets *m_ListPresets)
 {
-    CTiXmlDocumentW doc;
+    CXMLDocumentW doc;
     if(doc.LoadFileW(szPresetsFName) == true)
     {
-        TiXmlHandle hDoc(&doc);
-        TiXmlElement* pElem;
-
-        TiXmlHandle hRoot(0);
-
         // root: Prestes
-        pElem = hDoc.FirstChildElement().Element();
+        tinyxml2::XMLElement* pElem = doc.FirstChildElement();
         if(!pElem) 
             return false;
-
-        hRoot = TiXmlHandle(pElem);
 
         // check for "Presets"
         const char *szRoot = pElem->Value(); 
@@ -1110,7 +1103,7 @@ bool CBatchEncoderDlg::LoadPresets(CString szPresetsFName, CLListPresets *m_List
 
         // fill list with new presets
         int nIndex = 0;
-		TiXmlElement* pFilesNode = hRoot.FirstChild("Preset").Element();
+        tinyxml2::XMLElement* pFilesNode = pElem->FirstChildElement("Preset");
 		for(pFilesNode; pFilesNode; pFilesNode = pFilesNode->NextSiblingElement())
 		{
 			const char *pszName = pFilesNode->Attribute("name");
@@ -1274,7 +1267,7 @@ bool CBatchEncoderDlg::LoadSettings()
 {
     ::UpdatePath();
 
-    CTiXmlDocumentW doc;
+    CXMLDocumentW doc;
 
     // try to load default config file
     if(doc.LoadFileW(szMainConfigFile) == false)
@@ -1325,30 +1318,25 @@ bool CBatchEncoderDlg::LoadSettings()
         }
     }
 
-    TiXmlHandle hDoc(&doc);
-    TiXmlElement* pElem;
-    TiXmlHandle hRoot(0);
-
-    pElem = hDoc.FirstChildElement().Element();
-    if(!pElem) 
+    tinyxml2::XMLElement* pRootElem = doc.FirstChildElement();
+    if(!pRootElem)
         return false;
 
-    hRoot = TiXmlHandle(pElem);
-
     // root: "BatchEncoder"
-    const char *szRoot = pElem->Value(); 
+    const char *szRoot = pRootElem->Value();
     const char *szRootName = "BatchEncoder"; 
     if(strcmp(szRootName, szRoot) != 0)
         return false;
 
     // root: Settings
+    tinyxml2::XMLElement* pSettingsElem = pRootElem->FirstChildElement("Settings");
     CString szSetting[NUM_PROGRAM_SETTINGS];
     for(int i = 0; i < NUM_PROGRAM_SETTINGS; i++)
     {
-        pElem = hRoot.FirstChild("Settings").FirstChild(g_szSettingsTags[i]).Element();
-        if(pElem)
+        tinyxml2::XMLElement* pSettingElem = pSettingsElem->FirstChildElement(g_szSettingsTags[i]);
+        if(pSettingElem)
         {
-            const char *tmpBuff = pElem->GetText();
+            const char *tmpBuff = pSettingElem->GetText();
             szSetting[i] = GetConfigString(tmpBuff);
         }
         else
@@ -1383,12 +1371,13 @@ bool CBatchEncoderDlg::LoadSettings()
     */
 
     // NOTE: colors can be in decimal, hexadecimal, or octal integer format
+    tinyxml2::XMLElement* pColorsElem = pRootElem->FirstChildElement("Colors");
     CString szColor[NUM_PROGRAM_COLORS];
     for(int i = 0; i < NUM_PROGRAM_COLORS; i++)
     {
-        pElem = hRoot.FirstChild("Colors").FirstChild(g_szColorsTags[i]).Element();
-        if(pElem)
-            szColor[i] = GetConfigString(pElem->GetText());
+        tinyxml2::XMLElement* pColorElem = pColorsElem->FirstChildElement(g_szColorsTags[i]);
+        if(pColorElem)
+            szColor[i] = GetConfigString(pColorElem->GetText());
         else
             szColor[i] = _T("");
     }
@@ -1468,12 +1457,13 @@ bool CBatchEncoderDlg::LoadSettings()
     // root: Presets
     if(this->m_pFo->bHavePresets == false)
     {
+        tinyxml2::XMLElement* pPresetsElem = pRootElem->FirstChildElement("Presets");
         for(int i = 0; i < NUM_PRESET_FILES; i++)
         {
-            pElem = hRoot.FirstChild("Presets").FirstChild(g_szPresetTags[i]).Element();
-            if(pElem)
+            tinyxml2::XMLElement* pPresetElem = pPresetsElem->FirstChildElement(g_szPresetTags[i]);
+            if(pPresetElem)
             {
-                const char *tmpBuff = pElem->GetText();
+                const char *tmpBuff = pPresetElem->GetText();
                 this->szPresetsFile[i] = GetConfigString(tmpBuff);
             }
             else
@@ -1490,12 +1480,13 @@ bool CBatchEncoderDlg::LoadSettings()
         // same code as in CFormatsDlg::OnBnClickedButtonLoadConfig()
         // only FirstChild("Formats").FirstChild("Format") is different
 
-        pElem = hRoot.FirstChild("Formats").FirstChild("Format").Element();
-        for(pElem; pElem; pElem = pElem->NextSiblingElement())
+        tinyxml2::XMLElement* pFormatsElem = pRootElem->FirstChildElement("Formats");
+        tinyxml2::XMLElement* pFormatElem = pFormatsElem->FirstChildElement("Format");
+        for(pFormatElem; pFormatElem; pFormatElem = pFormatElem->NextSiblingElement())
         {
             int nFormat = -1;
 
-            const char *pszName = pElem->Attribute("name");
+            const char *pszName = pFormatElem->Attribute("name");
             if(pszName != NULL)
             {
                 CString szBuff = GetConfigString(pszName);
@@ -1515,13 +1506,13 @@ bool CBatchEncoderDlg::LoadSettings()
                 continue;
             }
 
-            const char *pszTemplate = pElem->Attribute("template");
+            const char *pszTemplate = pFormatElem->Attribute("template");
             if(pszTemplate != NULL)
             {
                 szFormatTemplate[nFormat] = GetConfigString(pszTemplate);
             }
 
-            const char *pszPipesInput = pElem->Attribute("input");
+            const char *pszPipesInput = pFormatElem->Attribute("input");
             if(pszPipesInput != NULL)
             {
                 CString szBuff = GetConfigString(pszPipesInput);
@@ -1531,7 +1522,7 @@ bool CBatchEncoderDlg::LoadSettings()
                     bFormatInput[nFormat] = false;
             }
 
-            const char *pszPipesOutput = pElem->Attribute("output");
+            const char *pszPipesOutput = pFormatElem->Attribute("output");
             if(pszPipesOutput != NULL)
             {
                 CString szBuff = GetConfigString(pszPipesOutput);
@@ -1541,18 +1532,19 @@ bool CBatchEncoderDlg::LoadSettings()
                     bFormatOutput[nFormat] = false;
             }
 
-            const char *pszFunction = pElem->Attribute("function");
+            const char *pszFunction = pFormatElem->Attribute("function");
             if(pszFunction != NULL)
             {
                 szFormatFunction[nFormat] = GetConfigString(pszFunction);
             }
 
-            const char *tmpBuff = pElem->GetText();
+            const char *tmpBuff = pFormatElem->GetText();
             szFormatPath[nFormat] = GetConfigString(tmpBuff);
         }
     }
 
     // root: Browse
+    tinyxml2::XMLElement* pBrowseElem = pRootElem->FirstChildElement("Browse");
     for(int i = 0; i < NUM_BROWSE_PATH; i++)
     {
         char szPathTag[32];
@@ -1560,9 +1552,9 @@ bool CBatchEncoderDlg::LoadSettings()
         ZeroMemory(szPathTag, sizeof(szPathTag));
         sprintf(szPathTag, "Path_%02d", i);
 
-        pElem = hRoot.FirstChild("Browse").FirstChild(szPathTag).Element();
-        if(pElem)
-            this->szBrowsePath[i] = GetConfigString(pElem->GetText());
+        tinyxml2::XMLElement* pPathTagElem = pBrowseElem->FirstChildElement("szPathTag");
+        if(pPathTagElem)
+            this->szBrowsePath[i] = GetConfigString(pPathTagElem->GetText());
         else
             this->szBrowsePath[i] = ::GetExeFilePath();
     }
@@ -1572,8 +1564,8 @@ bool CBatchEncoderDlg::LoadSettings()
     // check for outpath if not presets set to default value
     if(this->szBrowsePath[4].Compare(_T("")) != 0)
     {
-            this->m_EdtOutPath.SetWindowText(this->szBrowsePath[4]);
-            szLastBrowse = this->szBrowsePath[4];
+        this->m_EdtOutPath.SetWindowText(this->szBrowsePath[4]);
+        szLastBrowse = this->szBrowsePath[4];
     }
     else
     {
@@ -1591,7 +1583,8 @@ bool CBatchEncoderDlg::LoadSettings()
         NewItemData nid;
         ::InitNewItemData(nid);
 
-        TiXmlElement* pFilesNode = hRoot.FirstChild("Files").FirstChild().Element();
+        tinyxml2::XMLElement* pFilesElem = pRootElem->FirstChildElement("Files");
+        tinyxml2::XMLElement* pFilesNode = pFilesElem->FirstChildElement();
         for(pFilesNode; pFilesNode; pFilesNode = pFilesNode->NextSiblingElement())
         {
             char *pszAttrib[NUM_FILE_ATTRIBUTES];
@@ -2024,17 +2017,17 @@ bool CBatchEncoderDlg::LoadSettings()
 bool CBatchEncoderDlg::SaveSettings()
 {
     // save all settings to file
-	CTiXmlDocumentW doc;
- 	TiXmlDeclaration *decl = new TiXmlDeclaration("1.0", "UTF-8", "");
+	CXMLDocumentW doc;
+
+    tinyxml2::XMLDeclaration* decl = doc.NewDeclaration("xml version=\"1.0\" encoding=\"UTF-8\"");
 	doc.LinkEndChild(decl);
- 
+    
     // root: BatchEncoder
-	TiXmlElement *root = new TiXmlElement("BatchEncoder");
+    tinyxml2::XMLElement *root = doc.NewElement("BatchEncoder");
 	doc.LinkEndChild(root);
 
     // root: Settings
-    TiXmlElement *stg;
-	TiXmlElement *settings = new TiXmlElement("Settings");  
+    tinyxml2::XMLElement *settings = doc.NewElement("Settings");
 	root->LinkEndChild(settings); 
 
     CString szSetting[NUM_PROGRAM_SETTINGS];
@@ -2135,15 +2128,15 @@ bool CBatchEncoderDlg::SaveSettings()
     {
         CUtf8String szBuffUtf8;
 
-        stg = new TiXmlElement(g_szSettingsTags[i]);
-        stg->LinkEndChild(new TiXmlText(szBuffUtf8.Create(szSetting[i])));  
+        tinyxml2::XMLElement *stg = doc.NewElement(g_szSettingsTags[i]);
+        stg->LinkEndChild(doc.NewText(szBuffUtf8.Create(szSetting[i])));
         settings->LinkEndChild(stg);
         szBuffUtf8.Clear();
     }
 
     // root: Colors
-    TiXmlElement *clr;
-	TiXmlElement *colors = new TiXmlElement("Colors");  
+    tinyxml2::XMLElement *clr;
+    tinyxml2::XMLElement *colors = doc.NewElement("Colors");
 	root->LinkEndChild(colors); 
 
     CString szColor[NUM_PROGRAM_COLORS];
@@ -2172,31 +2165,30 @@ bool CBatchEncoderDlg::SaveSettings()
     {
         CUtf8String szBuffUtf8;
 
-        clr = new TiXmlElement(g_szColorsTags[i]);
-        clr->LinkEndChild(new TiXmlText(szBuffUtf8.Create(szColor[i])));  
+        clr = doc.NewElement(g_szColorsTags[i]);
+        clr->LinkEndChild(doc.NewText(szBuffUtf8.Create(szColor[i])));
         colors->LinkEndChild(clr);
         szBuffUtf8.Clear();
     }
 
     // root: Presets
-	TiXmlElement* preset;
-	TiXmlElement *presets = new TiXmlElement("Presets");  
+    tinyxml2::XMLElement *presets = doc.NewElement("Presets");
 	root->LinkEndChild(presets);  
 
     for(int i = 0; i < NUM_PRESET_FILES; i++)
     {
         CUtf8String szBuffUtf8;
 
-        preset = new TiXmlElement(g_szPresetTags[i]);  
-        preset->LinkEndChild(new TiXmlText(szBuffUtf8.Create(this->szPresetsFile[i])));  
+        tinyxml2::XMLElement* preset = doc.NewElement(g_szPresetTags[i]);
+        preset->LinkEndChild(doc.NewText(szBuffUtf8.Create(this->szPresetsFile[i])));  
         presets->LinkEndChild(preset); 
         szBuffUtf8.Clear();
     }
 
     // root: Formats
-    TiXmlElement *formats = new TiXmlElement("Formats");  
+    tinyxml2::XMLElement *formats = doc.NewElement("Formats");
     root->LinkEndChild(formats);
-    TiXmlElement *format;  
+    tinyxml2::XMLElement *format;  
 
     // NOTE:
     // same code as in CFormatsDlg::OnBnClickedButtonSaveConfig()
@@ -2206,9 +2198,9 @@ bool CBatchEncoderDlg::SaveSettings()
     {
         CUtf8String m_Utf8;
 
-        format = new TiXmlElement("Format");
+        format = doc.NewElement("Format");
 
-        format->LinkEndChild(new TiXmlText(m_Utf8.Create(szFormatPath[i])));
+        format->LinkEndChild(doc.NewText(m_Utf8.Create(szFormatPath[i])));
         m_Utf8.Clear();
 
         format->SetAttribute("name", m_Utf8.Create(g_szFormatNames[i]));
@@ -2227,8 +2219,7 @@ bool CBatchEncoderDlg::SaveSettings()
     }
 
     // root: Browse
-	TiXmlElement* path;
-	TiXmlElement *browse = new TiXmlElement("Browse");  
+	tinyxml2::XMLElement *browse = doc.NewElement("Browse");  
 	root->LinkEndChild(browse);  
 
     // NOTE: 
@@ -2246,20 +2237,20 @@ bool CBatchEncoderDlg::SaveSettings()
         ZeroMemory(szPathTag, sizeof(szPathTag));
         sprintf(szPathTag, "Path_%02d", i);
 
-        path = new TiXmlElement(szPathTag);  
-        path->LinkEndChild(new TiXmlText(szBuffUtf8.Create(this->szBrowsePath[i])));  
+        tinyxml2::XMLElement* path = doc.NewElement(szPathTag);
+        path->LinkEndChild(doc.NewText(szBuffUtf8.Create(this->szBrowsePath[i])));  
         browse->LinkEndChild(path); 
         szBuffUtf8.Clear();
     }
 
     // root: Files
-    TiXmlElement *filesNode = new TiXmlElement("Files");  
+    tinyxml2::XMLElement *filesNode = doc.NewElement("Files");  
     root->LinkEndChild(filesNode);  
     int nFiles = this->m_LstInputFiles.GetItemCount();
     for(int i = 0; i < nFiles; i++)
     {
         // File
-        TiXmlElement *file =  new TiXmlElement("File");  
+        tinyxml2::XMLElement *file =  doc.NewElement("File");  
         filesNode->LinkEndChild(file);
 
         CString szData[NUM_FILE_ATTRIBUTES];
@@ -3082,7 +3073,7 @@ void CBatchEncoderDlg::OnDropFiles(HDROP hDropInfo)
             bHandleDrop = true;
     }
 
-    // NOTE: under Win9x this does not work, we use seperate thread to handle drop
+    // NOTE: under Win9x this does not work, we use separate thread to handle drop
     // this->HandleDropFiles(hDropInfo);
 
     CResizeDialog::OnDropFiles(hDropInfo);
@@ -3387,26 +3378,21 @@ void CBatchEncoderDlg::OnEnKillFocusEditOutPath()
 
 bool CBatchEncoderDlg::LoadList(CString szFileXml, bool bAddToListCtrl)
 {
-    CTiXmlDocumentW doc;
+    CXMLDocumentW doc;
     if(doc.LoadFileW(szFileXml) == true)
     {
-        TiXmlHandle hDoc(&doc);
-        TiXmlElement* pElem;
-
-        TiXmlHandle hRoot(0);
+        tinyxml2::XMLElement* pRootElem;
 
         // root: Files
-        pElem = hDoc.FirstChildElement().Element();
-        if(!pElem) 
+        pRootElem = doc.FirstChildElement();
+        if(!pRootElem)
         {
             // MessageBox(_T("Failed to load file!"), _T("ERROR"), MB_OK | MB_ICONERROR);
             return false;
         }
 
-        hRoot = TiXmlHandle(pElem);
-
         // check for "Files"
-        const char *pszRoot = pElem->Value(); 
+        const char *pszRoot = pRootElem->Value();
         const char *pszRootName = "Files";
         if(strcmp(pszRootName, pszRoot) != 0)
         {
@@ -3422,7 +3408,7 @@ bool CBatchEncoderDlg::LoadList(CString szFileXml, bool bAddToListCtrl)
         NewItemData nid;
         ::InitNewItemData(nid);
 
-        TiXmlElement* pFilesNode = hRoot.FirstChild("File").Element();
+        tinyxml2::XMLElement* pFilesNode = pRootElem->FirstChildElement("File");
         for(pFilesNode; pFilesNode; pFilesNode = pFilesNode->NextSiblingElement())
         {
             char *pszAttrib[NUM_FILE_ATTRIBUTES];
@@ -3470,15 +3456,16 @@ bool CBatchEncoderDlg::LoadList(CString szFileXml, bool bAddToListCtrl)
 
 bool CBatchEncoderDlg::SaveList(CString szFileXml, bool bUseListCtrl)
 {
-    CTiXmlDocumentW doc;
-    TiXmlDeclaration* decl = new TiXmlDeclaration("1.0", "UTF-8", "");
+    CXMLDocumentW doc;
+
+    tinyxml2::XMLDeclaration* decl = doc.NewDeclaration("xml version=\"1.0\" encoding=\"UTF-8\"");
     doc.LinkEndChild(decl);  
 
     CString szBuff;
     CUtf8String m_Utf8;
 
     // root: Files
-    TiXmlElement *filesNode = new TiXmlElement("Files");  
+    tinyxml2::XMLElement *filesNode = doc.NewElement("Files");  
     doc.LinkEndChild(filesNode); 
 
     int nFiles = 0;
@@ -3490,7 +3477,7 @@ bool CBatchEncoderDlg::SaveList(CString szFileXml, bool bUseListCtrl)
     for(int i = 0; i < nFiles; i++)
     {
         // File
-        TiXmlElement *file =  new TiXmlElement("File");  
+        tinyxml2::XMLElement *file =  doc.NewElement("File");  
         filesNode->LinkEndChild(file);
 
         CString szData[NUM_FILE_ATTRIBUTES];
@@ -3654,7 +3641,7 @@ void CBatchEncoderDlg::OnEditAddFiles()
     const DWORD dwMaxSize = (4096 * MAX_PATH);
     try
     {
-        // allocate emmory for file buffer
+        // allocate memory for file buffer
         pFiles = (TCHAR *) malloc(dwMaxSize);
         if(pFiles == NULL)
         {
@@ -3667,7 +3654,7 @@ void CBatchEncoderDlg::OnEditAddFiles()
         // zero memory
         ZeroMemory(pFiles, dwMaxSize);
 
-        // init File Open dialog
+        // initialize File Open dialog
         CFileDialog fd(TRUE, 
             _T(""), 
             0, 
@@ -3869,7 +3856,7 @@ void CBatchEncoderDlg::OnEditRemoveUnchecked()
         m_LstInputFiles.DeleteAllItems();
     }
 
-    // NOTE: uncheck all items
+    // NOTE: un-check all items
     /*
     int nCount = m_LstInputFiles.GetItemCount();
     if(nCount > 0)
