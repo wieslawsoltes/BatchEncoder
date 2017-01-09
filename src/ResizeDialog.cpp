@@ -69,7 +69,7 @@ void CResizeDialog::InitVars()
     m_bUseMaxTrack = FALSE;
     m_bUseMaxRect = FALSE;
 
-    // TODO: find howto create XP style sizegrip
+    // TODO: find how-to create XP style size-grip
     m_bShowGrip = FALSE;
 
     m_szGripSize.cx = GetSystemMetrics(SM_CXVSCROLL);

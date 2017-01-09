@@ -194,7 +194,7 @@ void CConversionStatus::SetFontMemDC(bool bBold, COLORREF crBack, COLORREF crTex
     // select proper font to MemDC
     m_MemDC->SelectObject((bBold == true) ? this->m_pFontBold : this->m_pFontNormal);
 
-    // set text face and backgound color
+    // set text face and background color
     m_MemDC->SetBkColor(crBack);
     m_MemDC->SetTextColor(crText);
     m_MemDC->SetTextAlign(TA_LEFT | TA_NOUPDATECP);
@@ -216,7 +216,7 @@ void CConversionStatus::DrawPercentageMemDC(bool bBold, CRect &rcText, CString &
     // select proper font to MemDC
     m_MemDC->SelectObject((bBold == true) ? this->m_pFontBold : this->m_pFontNormal);
 
-    // set text face and backgound mode
+    // set text face and background mode
     m_MemDC->SetBkMode(TRANSPARENT);
     m_MemDC->SetTextColor(crText);
     m_MemDC->SetTextAlign(TA_CENTER | TA_NOUPDATECP);
@@ -607,7 +607,7 @@ void CConversionStatus::Erase(bool bPaint = true)
     this->GetClientRect(rc);
 
     // draw background rectangle
-    rc.right += 1; // becose we are using FillSolidRect
+    rc.right += 1; // because we are using FillSolidRect
     m_MemDC->FillSolidRect(rc, crBack);
 
     if (bPaint)
@@ -661,8 +661,8 @@ void CConversionStatus::OnLButtonDblClk(UINT nFlags, CPoint point)
 void CConversionStatus::OnMButtonDown(UINT nFlags, CPoint point)
 {
     // NOTE: 
-    // when user pressed mouse Middle Button show filelist/show conversion status
-    // only if clicked over filelist/conversion status area
+    // when user pressed mouse Middle Button show file list/show conversion status
+    // only if clicked over file list/conversion status area
     ((CBatchEncoderDlg *) this->GetParent())->OnShowCnvStatus();
 
     CStatic::OnMButtonDown(nFlags, point);

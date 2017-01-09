@@ -39,12 +39,12 @@ END_MESSAGE_MAP()
 
 void CMyStatusBarCtrl::OnNMRclick(NMHDR *pNMHDR, LRESULT *pResult)
 {
-    // check if the converion process is on
+    // check if the conversion process is on
     CBatchEncoderDlg *pDlg = (CBatchEncoderDlg *)GetParent();
     if (pDlg->bRunning == true)
         return;
 
-    // show statusbar popup menu
+    // show status-bar popup menu
     POINT point;
     GetCursorPos(&point);
 

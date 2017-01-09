@@ -27,7 +27,7 @@
 // TODO: 
 // - check if LAME is showing histogram,
 //   first output lines shows some info,
-//   or check commandline args for vbr stuff
+//   or check command-line args for vbr stuff
 int GetHistogram_LameEnc(char *szLineBuff, int nLineLen, PLAME_ENC_HISTOGRAM plehData)
 {
     // search for histogram data
@@ -35,13 +35,13 @@ int GetHistogram_LameEnc(char *szLineBuff, int nLineLen, PLAME_ENC_HISTOGRAM ple
 
     char szBuff[64];
 
-    // position of closing ']' is hardcoded
+    // position of closing ']' is hard-coded
     if (nLineLen >= 10)
     {
         // NOTE: if we get starting '[' then we don't need
         //       more checks, it's only in one case that '[' occurs
 
-        // check for starting '[', position is hardcoded
+        // check for starting '[', position is hard-coded
         if (szLineBuff[4] == '[')
         {
             szBuff[0] = szLineBuff[0];
@@ -53,7 +53,7 @@ int GetHistogram_LameEnc(char *szLineBuff, int nLineLen, PLAME_ENC_HISTOGRAM ple
 
             // find closing ']'
             //
-            // NOTE: start of search position is hardcoded to 5th char
+            // NOTE: start of search position is hard-coded to 5th char
             //       if you get errors check LAME output
             //       and change this position in code below 
             int i;

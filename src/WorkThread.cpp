@@ -154,7 +154,7 @@ DWORD WINAPI WriteThread(LPVOID lpParam)
     pReadData->bError = false;
     pReadData->bFinished = false;
 
-    // open existing source file with readpnly flag
+    // open existing source file with read-only flag
     hFile = ::CreateFile(pReadData->szFileName,
         GENERIC_READ | GENERIC_WRITE,
         0,
@@ -219,15 +219,15 @@ bool ConvertFile(CBatchEncoderDlg *pDlg,
     // if there is no input pipes and output pipes are enabled
     // we can not get progress status for out ProgressBars
     // so for encoder/decoder mode treat this as an error
-    // and for transcoding thread this as decoder to encoder piping
+    // and for trans-coding thread this as decoder to encoder piping
 
     // TODO: handle bUseWritePipes flag mostly like bUseReadPipes
 
     // NOTE: bUseReadPipes
     // if true use pipes to read source file and send the data to console stdin
-    // if false create full commandline and read from stdout/stderr convertion progress
+    // if false create full command-line and read from stdout/stderr conversion progress
 
-    // log cosnsole text output
+    // log console text output
     bool bLogConsoleOutput = false;
 
     CMenu *mainMenu = pDlg->GetMenu();
@@ -363,7 +363,7 @@ bool ConvertFile(CBatchEncoderDlg *pDlg,
     // TODO: 
     // when read pipes are disabled and write pipes enabled
     // we maybe can get stderr progress from console
-    // this was tested not tested with commandline tools
+    // this was tested not tested with command-line tools
 
     if ((bUseReadPipes == false) && (bUseWritePipes == false))
     {
@@ -396,7 +396,7 @@ bool ConvertFile(CBatchEncoderDlg *pDlg,
     int nProgress = 0;
     CTimeCount countTime;
 
-    // init convertion time counter
+    // init conversion time counter
     countTime.InitCounter();
 
     // and start it right now
@@ -580,7 +580,7 @@ bool ConvertFile(CBatchEncoderDlg *pDlg,
         // because seeking on written file is impossible
         // this means that file headers can not be written
 
-        // NOTE: write pipes are designed for transcoding only
+        // NOTE: write pipes are designed for trans-coding only
 
         if (bUseWritePipes == true)
         {
@@ -657,8 +657,8 @@ bool ConvertFile(CBatchEncoderDlg *pDlg,
             // ::ResumeThread(pInfo.hThread);
 
             // NOTE: 
-            // is there a need to check console output codepage
-            // all apps should be using system codepage
+            // is there a need to check console output code-page
+            // all apps should be using system code-page
             // or they are using UNICODE output?
             char szReadBuff[512];
             char szLineBuff[512];
@@ -916,7 +916,7 @@ bool ConvertFile(CBatchEncoderDlg *pDlg,
         }
     }
 
-    // finished, stop convertion time counter
+    // finished, stop conversion time counter
     countTime.StopCounter();
 
     if (pDlg->bForceConsoleWindow == false)
@@ -935,7 +935,7 @@ bool ConvertFile(CBatchEncoderDlg *pDlg,
                 switch (dwRet)
                 {
                 case WAIT_FAILED:
-                    // failed, propobly process has finished, but error could be to
+                    // failed, probably process has finished, but error could be to
                     ::TerminateProcess(hProc, 0);
                     break;
                 case WAIT_ABANDONED:
@@ -946,7 +946,7 @@ bool ConvertFile(CBatchEncoderDlg *pDlg,
                     break;
                 case WAIT_TIMEOUT:
                     // time-out interval elapsed
-                    // object's state is nonsignaled
+                    // object's state is non-signaled
                     // used when user had pressed stop button
                     ::TerminateProcess(hProc, 0);
                     break;
@@ -954,12 +954,12 @@ bool ConvertFile(CBatchEncoderDlg *pDlg,
             }
             else
             {
-                // don't wait for process to terminate becose
+                // don't wait for process to terminate because
                 // this code is only executed when user pressed Stop
                 ::TerminateProcess(hProc, 0);
 
                 // wait for process to terminate = 5 seconds max
-                // this is becose process must release file handles
+                // this is because process must release file handles
                 // and we need to delete it if there was an error
                 ::WaitForSingleObject(hProc, 5000);
             }
@@ -987,8 +987,8 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
 {
     // NOTE:
     // input and output filenames are UNICODE but
-    // we can convert it to OS current codepage using CharToOem
-    // this should work if UNICODE chars are in codepage of OS
+    // we can convert it to OS current code-page using CharToOem
+    // this should work if UNICODE chars are in code-page of OS
 
     ::UpdatePath();
 
@@ -1001,11 +1001,11 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
     ZeroMemory(szCommandLine, sizeof(szCommandLine));
 
     // check for delete flag
-    bool bDeleteAfterConverion = false;
+    bool bDeleteAfterconversion = false;
     if (pDlg->GetMenu()->GetMenuState(ID_OPTIONS_DELETESOURCEFILEWHENDONE, MF_BYCOMMAND) == MF_CHECKED)
-        bDeleteAfterConverion = true;
+        bDeleteAfterconversion = true;
     else
-        bDeleteAfterConverion = false;
+        bDeleteAfterconversion = false;
 
     // check for output path
     CString szOutPath;
@@ -1037,10 +1037,10 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
     // process all checked files
     for (int i = 0; i < nFiles; i++)
     {
-        // get next file name and check if we need to encode/decode/transcode
+        // get next file name and check if we need to encode/decode/trans-code
         if (pDlg->m_LstInputFiles.GetCheck(i) == TRUE)
         {
-            // update statusbar conversion status
+            // update status-bar conversion status
             nProcessedFiles++;
 
             nErrors = (nProcessedFiles - 1) - nDoneWithoutError;
@@ -1060,13 +1060,13 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
             // scroll list to ensure the item is visible
             pDlg->m_LstInputFiles.EnsureVisible(i, FALSE);
 
-            // TODO: when transcoding on decode pass sum the decode+encode passes as one
-            //       in the total progressbar calculations
+            // TODO: when trans-coding on decode pass sum the decode+encode passes as one
+            //       in the total progress-bar calculations
 
             // processing modes:
             // 0 - encoding - input is WAV file and we only have to encode
             // 1 - decoding - we only have to decode input file to WAV
-            // 2 - transcoding - we need to decode input file to encoder stdin stream
+            // 2 - trans-coding - we need to decode input file to encoder stdin stream
             int nProcessingMode = -1;
 
             // get input file format
@@ -1139,8 +1139,8 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
             // TODO: use CopyOneFile(...) in case 1
             // [1] Input is WAV, [Output is WAV], No Resmapling          = Copy Input File (using SSRC without options)
             // [2] Input is WAV, [Output is WAV], Resmapling             = Encode Input File (using SSRC)
-            // [3] Input need decoding, [Output is WAV], No Resampling   = Decode Input File (using Decoder)
-            // [4] Input need decoding, [Output is WAV], Resampling      = Decode and Encode (using Decoder and SSRC)
+            // [3] Input need decoding, [Output is WAV], No Resmapling   = Decode Input File (using Decoder)
+            // [4] Input need decoding, [Output is WAV], Resmapling      = Decode and Encode (using Decoder and SSRC)
             if (nOutputFormat == 0)
             {
                 bool bNeedResampling = (szEncoderOptions.GetLength() > 0) ? true : false;
@@ -1162,7 +1162,7 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
                     nProcessingMode = 2;
             }
 
-            // build proper commandline depending on processing mode:
+            // build proper command-line depending on processing mode:
             CString csExecute;
             bool bDecode = false;
             int nTool = -1;
@@ -1200,7 +1200,7 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
                 // TODO: validate the command-line template
 
                 // build full command line for decoder (DECODER-EXE + OPTIONS + INFILE + OUTFILE) 
-                // this is basic model, some of encoder may have different commandline structure
+                // this is basic model, some of encoder may have different command-line structure
                 csExecute = pDlg->szFormatTemplate[(NUM_OUTPUT_EXT + nIntputFormat - 1)];
                 csExecute.Replace(_T("$EXE"), _T("\"$EXE\""));
                 csExecute.Replace(_T("$EXE"), szDecoderExePath);
@@ -1242,7 +1242,7 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
                     if (nProcessingMode == 1)
                         nDoneWithoutError++;
 
-                    if (bDeleteAfterConverion == true)
+                    if (bDeleteAfterconversion == true)
                         ::DeleteFile(szOrgInputFile);
 
                     if (nProcessingMode == 1)
@@ -1312,7 +1312,7 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
                 // TODO: validate the command-line template
 
                 // build full command line for encoder (ENCODER-EXE + OPTIONS + INFILE + OUTFILE)
-                // this is basic model, some of encoder may have different commandline structure
+                // this is basic model, some of encoder may have different command-line structure
                 csExecute = pDlg->szFormatTemplate[nOutputFormat];
                 csExecute.Replace(_T("$EXE"), _T("\"$EXE\""));
                 csExecute.Replace(_T("$EXE"), szEncoderExePath);
@@ -1352,7 +1352,7 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
                 {
                     nDoneWithoutError++;
 
-                    if (bDeleteAfterConverion == true)
+                    if (bDeleteAfterconversion == true)
                         ::DeleteFile(szOrgInputFile);
 
                     pDlg->m_LstInputFiles.SetCheck(i, FALSE);

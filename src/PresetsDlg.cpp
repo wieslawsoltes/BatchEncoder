@@ -122,7 +122,7 @@ BOOL CPresetsDlg::OnInitDialog()
     // in standalone editor only one-at-time file editing is allowed
     if (bStandAlone == false)
     {
-        // file format combobox
+        // file format combo-box
         for (int i = 0; i < NUM_PRESET_FILES; i++)
             m_CmbFormat.InsertString(i, g_szPresetNames[i]);
 

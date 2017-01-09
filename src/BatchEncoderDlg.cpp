@@ -384,7 +384,7 @@ BOOL CBatchEncoderDlg::OnInitDialog()
     SetIcon(m_hIcon, TRUE);
     SetIcon(m_hIcon, FALSE);
 
-    // create statusbar control
+    // create status-bar control
     VERIFY(m_StatusBar.Create(WS_CHILD | WS_VISIBLE | CCS_BOTTOM | SBARS_SIZEGRIP,
         CRect(0, 0, 0, 0),
         this,
@@ -412,7 +412,7 @@ BOOL CBatchEncoderDlg::OnInitDialog()
     // main dialog title with version number
     this->SetWindowText(MAIN_APP_NAME);
 
-    // output file format combobox 
+    // output file format combo-box 
     for (int i = 0; i < NUM_PRESET_FILES; i++)
         m_CmbFormat.InsertString(i, g_szPresetNames[i]);
 
@@ -453,7 +453,7 @@ BOOL CBatchEncoderDlg::OnInitDialog()
     // hide ProgressBar when not running conversion process
     this->m_FileProgress.ShowWindow(SW_HIDE);
 
-    // disable window toogle items
+    // disable window toggle items
     this->GetMenu()->EnableMenuItem(ID_VIEW_TOOGLEEXTENDEDPROGRESS, MF_GRAYED);
     this->GetMenu()->EnableMenuItem(ID_VIEW_TOOGLEHISTOGRAMWINDOW, MF_GRAYED);
 
@@ -504,7 +504,7 @@ BOOL CBatchEncoderDlg::OnInitDialog()
         return FALSE;
     }
 
-    // update statusbar message text
+    // update status-bar message text
     this->UpdateStatusBar();
 
     // clean options flags
@@ -523,7 +523,7 @@ BOOL CBatchEncoderDlg::OnInitDialog()
 
 BOOL CBatchEncoderDlg::PreTranslateMessage(MSG* pMsg)
 {
-    // translate here all accelerators, becose by default they are not translated
+    // translate here all accelerators, because by default they are not translated
     if (m_hAccel != NULL)
     {
         if (::TranslateAccelerator(this->GetSafeHwnd(), m_hAccel, pMsg))
@@ -554,13 +554,13 @@ bool CBatchEncoderDlg::CreateBatchFile(CString szFileName, bool bUseListCtrl)
 
     fp.Write(szPrefix, (UINT)strlen(szPrefix));
 
-    bool bDeleteAfterConverion = false;
+    bool bDeleteAfterconversion = false;
     if (bUseListCtrl == true)
     {
         if (this->GetMenu()->GetMenuState(ID_OPTIONS_DELETESOURCEFILEWHENDONE, MF_BYCOMMAND) == MF_CHECKED)
-            bDeleteAfterConverion = true;
+            bDeleteAfterconversion = true;
         else
-            bDeleteAfterConverion = false;
+            bDeleteAfterconversion = false;
     }
     else
     {
@@ -719,7 +719,7 @@ bool CBatchEncoderDlg::CreateBatchFile(CString szFileName, bool bUseListCtrl)
 
             fp.Write(szLineEnd, (UINT)strlen(szLineEnd));
 
-            if (bDeleteAfterConverion == true)
+            if (bDeleteAfterconversion == true)
             {
                 fp.Write(szPreDel, (UINT)strlen(szPreDel));
 
@@ -760,7 +760,7 @@ bool CBatchEncoderDlg::CreateBatchFile(CString szFileName, bool bUseListCtrl)
 
             fp.Write(szLineEnd, (UINT)strlen(szLineEnd));
 
-            if ((bDeleteAfterConverion == true) || (nProcessingMode == 2))
+            if ((bDeleteAfterconversion == true) || (nProcessingMode == 2))
             {
                 fp.Write(szPreDel, (UINT)strlen(szPreDel));
 
@@ -1083,7 +1083,7 @@ bool CBatchEncoderDlg::LoadPresets(CString szPresetsFName, CLListPresets *m_List
     CXMLDocumentW doc;
     if (doc.LoadFileW(szPresetsFName) == true)
     {
-        // root: Prestes
+        // root: Presets
         tinyxml2::XMLElement* pElem = doc.FirstChildElement();
         if (!pElem)
             return false;
@@ -1143,7 +1143,7 @@ void CBatchEncoderDlg::FillPresetComboBox(CLListPresets *m_ListPresets, int nSel
         // reset ComboBox content
         this->m_CmbPresets.ResetContent();
 
-        // insert all preset names to combobox
+        // insert all preset names to combo-box
         for (int i = 0; i < nSize; i++)
         {
             CString szPresetName = m_ListPresets->GetPresetName(i);
@@ -1249,7 +1249,7 @@ void CBatchEncoderDlg::ShowGridlines(bool bShow)
     }
     else
     {
-        // check if we have gridlines on
+        // check if we have grid-lines on
         if (dwExStyle & LVS_EX_GRIDLINES)
         {
             dwExStyle = dwExStyle ^ LVS_EX_GRIDLINES;
@@ -1557,7 +1557,7 @@ bool CBatchEncoderDlg::LoadSettings()
 
     // NOTE:
     // this is special case for this->szBrowsePath[4]
-    // check for outpath if not presets set to default value
+    // check for out-path if not presets set to default value
     if (this->szBrowsePath[4].Compare(_T("")) != 0)
     {
         this->m_EdtOutPath.SetWindowText(this->szBrowsePath[4]);
@@ -1658,7 +1658,7 @@ bool CBatchEncoderDlg::LoadSettings()
     }
 
     // 1
-    // Description: get selected format in formats combobox
+    // Description: get selected format in formats combo-box
     if (szSetting[1].Compare(_T("")) != 0)
     {
         nSelFormatIndex = stoi(szSetting[1]);
@@ -1672,7 +1672,7 @@ bool CBatchEncoderDlg::LoadSettings()
     }
 
     // 2
-    // Description: output path checkbox state
+    // Description: output path check-box state
     if (szSetting[2].Compare(_T("")) != 0)
     {
         if (szSetting[2].Compare(_T("true")) == 0)
@@ -1692,7 +1692,7 @@ bool CBatchEncoderDlg::LoadSettings()
     }
 
     // 3
-    // Description: debug checkbox state
+    // Description: debug check-box state
     if (szSetting[3].Compare(_T("")) != 0)
     {
         if (szSetting[3].Compare(_T("true")) == 0)
@@ -1776,7 +1776,7 @@ bool CBatchEncoderDlg::LoadSettings()
     }
 
     // 9
-    // Description: show gridlines in ListCtrl
+    // Description: show grid-lines in ListCtrl
     if (szSetting[9].Compare(_T("")) != 0)
     {
         if (szSetting[9].Compare(_T("true")) == 0)
@@ -2489,7 +2489,7 @@ void CBatchEncoderDlg::OnBnClickedButtonConvert()
         bSafeCheck = true;
 
         // note that TerminateThread is not used
-        // if you wan't do this i nasty way uncommnet
+        // if you want do this i nasty way uncomment
         // the line below but I do'nt recommend this
         // ::TerminateThread(hThread, 0);
 
@@ -2593,8 +2593,8 @@ void CBatchEncoderDlg::OnClose()
         return;
 
     // TODO: 
-    // - kill worker thread and any running commandline tool
-    // - don't save settings on readonly media
+    // - kill worker thread and any running command-line tool
+    // - don't save settings on read-only media
     //   check if the path to exe is on read only media
     //   if true then do not save settings to disk
 
@@ -2684,7 +2684,7 @@ void CBatchEncoderDlg::OnCbnSelchangeComboFormat()
     int nSelIndex = this->m_CmbFormat.GetCurSel();
     if (nSelIndex != -1)
     {
-        // update presets combobox
+        // update presets combo-box
         int nSelPresetIndex = this->m_CmbPresets.GetCurSel();
         int nSelFormatIndex = this->m_CmbFormat.GetCurSel();
 
@@ -2702,7 +2702,7 @@ void CBatchEncoderDlg::OnBnClickedButtonBrowsePath()
     if (bRunning == true)
         return;
 
-    // browse for ouput directory for converted files
+    // browse for output directory for converted files
     LPMALLOC pMalloc;
     BROWSEINFO bi;
     LPITEMIDLIST pidlDesktop;
@@ -2843,7 +2843,7 @@ bool CBatchEncoderDlg::InsertToList(NewItemData &nid)
         ulSize.LowPart = FindFileData.nFileSizeLow;
         nFileSize = ulSize.QuadPart;
 
-        // add new node to filelist
+        // add new node to file-list
         nid.nItem = m_FileList.InsertNode(nid.szFileName,
             nid.szName,
             nFileSize,
@@ -2864,7 +2864,7 @@ bool CBatchEncoderDlg::InsertToList(NewItemData &nid)
         m_LstInputFiles.InsertItem(&lvi);
         m_LstInputFiles.SetItemData(nid.nItem, nid.nItem);
 
-        // [Type] : intput extension 
+        // [Type] : input extension 
         tmpBuf.Format(_T("%s"), m_FileList.GetItemInExt(nid.nItem));
         lvi.iSubItem = 1;
         lvi.pszText = (LPTSTR)(LPCTSTR)(tmpBuf);
@@ -2888,7 +2888,7 @@ bool CBatchEncoderDlg::InsertToList(NewItemData &nid)
         lvi.pszText = (LPTSTR)(LPCTSTR)(tmpBuf);
         m_LstInputFiles.SetItemText(lvi.iItem, 4, lvi.pszText);
 
-        // [Time] : enc/dec convertion time
+        // [Time] : enc/dec conversion time
         tmpBuf.Format(_T("%s"), (nid.szTime.Compare(_T("")) == 0) ? _T("--:--") : nid.szTime);
         lvi.iSubItem = 5;
         lvi.pszText = (LPTSTR)(LPCTSTR)(tmpBuf);
@@ -3029,12 +3029,12 @@ void CBatchEncoderDlg::HandleDropFiles(HDROP hDropInfo)
                 nReqChars * 2 + 8);
             if (::GetFileAttributes(szFile) & FILE_ATTRIBUTE_DIRECTORY)
             {
-                // insert droped files in directory and subdirs
+                // insert dropped files in directory and subdirs
                 this->SearchFolderForFiles(szFile, true);
             }
             else
             {
-                // insert droped files
+                // insert dropped files
                 nid.nAction = 2;
                 nid.szFileName = szFile;
                 nid.nItem = -1;
@@ -3149,7 +3149,7 @@ void CBatchEncoderDlg::OnLvnItemchangedListInputFiles(NMHDR *pNMHDR, LRESULT *pR
         {
             int nItem = this->m_LstInputFiles.GetNextSelectedItem(pos);
 
-            // check if we have such item in our filelist
+            // check if we have such item in our file-list
             if (nItem < this->m_FileList.GetSize())
             {
                 int nSelFormatIndex = this->m_FileList.GetItemOutFormat(nItem);
@@ -3232,7 +3232,7 @@ void CBatchEncoderDlg::ResetConvertionStatus()
 
 void CBatchEncoderDlg::EnableUserInterface(BOOL bEnable)
 {
-    // check if we are statting with extended progress windows
+    // check if we are starting with extended progress windows
     bool bShowAdvancedSatus = false;
     if (this->GetMenu()->GetMenuState(ID_VIEW_STARTWITHEXTENDEDPROGRESS, MF_BYCOMMAND) == MF_CHECKED)
         bShowAdvancedSatus = true;
@@ -3291,7 +3291,7 @@ void CBatchEncoderDlg::EnableUserInterface(BOOL bEnable)
 
     CMenu* pSysMenu = GetSystemMenu(FALSE);
 
-    // enable/disable close button while convertion process
+    // enable/disable close button while conversion process
     if (bEnable == FALSE)
         pSysMenu->EnableMenuItem(SC_CLOSE, MF_GRAYED);
     else
@@ -3329,7 +3329,7 @@ void CBatchEncoderDlg::EnableUserInterface(BOOL bEnable)
 
     this->m_ChkOutPath.EnableWindow(bEnable);
 
-    // enable or disable window toogle items
+    // enable or disable window toggle items
     this->GetMenu()->EnableMenuItem(ID_VIEW_TOOGLEEXTENDEDPROGRESS,
         (bEnable == FALSE) ? MF_ENABLED : MF_GRAYED);
 
@@ -3351,7 +3351,7 @@ void CBatchEncoderDlg::OnEnChangeEditOutPath()
 
 void CBatchEncoderDlg::OnEnSetFocusEditOutPath()
 {
-    // TODO: add option in Adv dialog to disable this type of behaviour
+    // TODO: add option in Adv dialog to disable this type of behavior
     if (bSameAsSourceEdit == true)
     {
         CString szPath;
@@ -4289,7 +4289,7 @@ void CBatchEncoderDlg::OnOptionsConfigurePresets()
             this->LoadPresets(this->szPresetsFile[i], &this->m_ListPresets[i]);
         }
 
-        // update combobox depending on selected format
+        // update combo-box depending on selected format
         this->UpdateOutputComboBoxes(nSelFormat, nSelPreset);
     }
     else

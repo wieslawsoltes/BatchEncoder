@@ -203,7 +203,7 @@ void CHistogram::DrawColumn(int nColumns,
         // set new font for memory DC
         m_MemDC->SelectObject(m_pFont);
 
-        // set text face and backgound color
+        // set text face and background color
         m_MemDC->SetBkColor(crBack);
         m_MemDC->SetTextColor(crBorder);
         m_MemDC->SetTextAlign(TA_CENTER);
@@ -289,7 +289,7 @@ void CHistogram::Erase(bool bPaint = true)
     this->GetClientRect(rc);
 
     // draw background rectangle
-    rc.right += 1; // becose we are using FillSolidRect
+    rc.right += 1; // because we are using FillSolidRect
     m_MemDC->FillSolidRect(rc, crBack);
 
     if (bPaint)
@@ -362,8 +362,8 @@ void CHistogram::OnLButtonDblClk(UINT nFlags, CPoint point)
 void CHistogram::OnMButtonDown(UINT nFlags, CPoint point)
 {
     // NOTE: 
-    // when user pressed mouse Middle Button show filelist/show histogram
-    // only if clicked over filelist/histogram area
+    // when user pressed mouse Middle Button show file list/show histogram
+    // only if clicked over file list/histogram area
     ((CBatchEncoderDlg *) this->GetParent())->OnShowHistogram();
 
     CStatic::OnMButtonDown(nFlags, point);

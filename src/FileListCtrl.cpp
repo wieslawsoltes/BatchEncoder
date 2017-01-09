@@ -77,8 +77,8 @@ void CFileListCtrl::OnLvnEndlabeledit(NMHDR *pNMHDR, LRESULT *pResult)
 void CFileListCtrl::OnMButtonDown(UINT nFlags, CPoint point)
 {
     // NOTE: 
-    // when user pressed mouse Middle Button show filelist/show histogram
-    // only if clicked over filelist/histogram area
+    // when user pressed mouse Middle Button show file list/show histogram
+    // only if clicked over file list/histogram area
     ((CBatchEncoderDlg *) this->GetParent())->OnShowHistogram();
 
     CListCtrl::OnMButtonDown(nFlags, point);
