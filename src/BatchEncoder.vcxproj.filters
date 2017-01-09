@@ -52,6 +52,12 @@
     <Filter Include="Source Files\Utf8">
       <UniqueIdentifier>{0bc9bc86-af8d-403c-9a4e-4555e64a9ad7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Worker">
+      <UniqueIdentifier>{bd9ed2fd-3058-4441-a528-fcb3e42969c6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Worker">
+      <UniqueIdentifier>{f8cc472c-0a7e-4e72-a429-fcc770c604c0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BatchEncoder.cpp">
@@ -64,9 +70,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Utilities.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="WorkThread.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="MyButton.cpp">
@@ -135,6 +138,9 @@
     <ClCompile Include="Utf8String.cpp">
       <Filter>Source Files\Utf8</Filter>
     </ClCompile>
+    <ClCompile Include="WorkThread.cpp">
+      <Filter>Source Files\Worker</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BatchEncoder.h">
@@ -149,16 +155,7 @@
     <ClInclude Include="StdAfx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="TimeCount.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="TransMove.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Utilities.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="WorkThread.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Hyperlink.h">
@@ -241,6 +238,12 @@
     </ClInclude>
     <ClInclude Include="Utf8String.h">
       <Filter>Header Files\Utf8</Filter>
+    </ClInclude>
+    <ClInclude Include="WorkThread.h">
+      <Filter>Header Files\Worker</Filter>
+    </ClInclude>
+    <ClInclude Include="TimeCount.h">
+      <Filter>Header Files\Worker</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

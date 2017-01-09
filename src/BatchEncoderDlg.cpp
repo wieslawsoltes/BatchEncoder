@@ -373,8 +373,6 @@ BEGIN_MESSAGE_MAP(CBatchEncoderDlg, CResizeDialog)
     ON_COMMAND(ID_ACCELERATOR_CTRL_D, OnOptionsDeleteSourceFileWhenDone)
     ON_COMMAND(ID_ACCELERATOR_CTRL_H, OnShowHistogram)
     ON_COMMAND(ID_ACCELERATOR_CTRL_P, OnShowCnvStatus)
-    ON_WM_NCLBUTTONDOWN()
-    //ON_WM_NCHITTEST()
 END_MESSAGE_MAP()
 
 BOOL CBatchEncoderDlg::OnInitDialog()
@@ -519,8 +517,6 @@ BOOL CBatchEncoderDlg::OnInitDialog()
     // ResetMinTrackSize();
     // ResetMaxTrackSize();
     // ResetMaximizedRect();
-
-    // m_TransMove.Init(this->GetSafeHwnd());
 
     return TRUE;
 }
@@ -4490,18 +4486,4 @@ void CBatchEncoderDlg::OnShowCnvStatus()
     {
         this->GetMenu()->CheckMenuItem(ID_VIEW_TOOGLEEXTENDEDPROGRESS, MF_UNCHECKED);
     }
-}
-
-void CBatchEncoderDlg::OnNcLButtonDown(UINT nHitTest, CPoint point)
-{
-    // this->m_TransMove.Down(nHitTest, point);
-
-    CResizeDialog::OnNcLButtonDown(nHitTest, point);
-}
-
-UINT CBatchEncoderDlg::OnNcHitTest(CPoint point)
-{
-    // this->m_TransMove.Up(point);
-
-    return CResizeDialog::OnNcHitTest(point);
 }

@@ -32,7 +32,6 @@
 #include "Histogram.h"
 #include "LameHistogram.h"
 #include "ConversionStatus.h"
-#include "TransMove.h"
 #include "NewItemData.h"
 
 #define WM_TRAY (WM_USER + 0x10)
@@ -57,7 +56,6 @@ protected:
     afx_msg void OnPaint();
 protected:
     virtual BOOL OnInitDialog();
-    CTransMove m_TransMove;
 protected:
     DECLARE_MESSAGE_MAP()
 protected:
@@ -281,7 +279,4 @@ public:
 public:
     afx_msg void OnHelpWebsite();
     afx_msg void OnHelpAbout();
-public:
-    afx_msg void OnNcLButtonDown(UINT nHitTest, CPoint point);
-    afx_msg UINT OnNcHitTest(CPoint point);
 };

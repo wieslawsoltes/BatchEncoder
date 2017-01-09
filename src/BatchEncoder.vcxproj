@@ -303,7 +303,6 @@ copy /-Y data\Formats\*.formats $(OutDir)</Command>
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TimeCount.h" />
     <ClInclude Include="XMLDocumentW.h" />
-    <ClInclude Include="TransMove.h" />
     <ClInclude Include="UnicodeUtf8.h" />
     <ClInclude Include="Utf8String.h" />
     <ClInclude Include="Utilities.h" />
