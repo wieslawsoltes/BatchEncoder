@@ -87,9 +87,9 @@ Task("Package-Binaries-Win32")
     CopyFileToDirectory(File("CHANGELOG.md"), outputDir);
     CopyFileToDirectory(File("COPYING.TXT"), outputDir);
     CopyFileToDirectory(exeFile, outputDir);
-    CopyFiles(path + "*.config", outputDir);
-    CopyFiles(path + "*.formats", outputDir);
-    CopyFiles(path + "*.presets", outputDir);
+    CopyFiles("./src/data/Config/*.config", outputDir);
+    CopyFiles("./src/data/Presets/*.formats", outputDir);
+    CopyFiles("./src/data/Formats/*.presets", outputDir);
     CopyFiles(path + "*.progress", outputDir);
 
     Zip(outputDir, outputZip);
@@ -112,9 +112,9 @@ Task("Package-Binaries-x64")
     CopyFileToDirectory(File("CHANGELOG.md"), outputDir);
     CopyFileToDirectory(File("COPYING.TXT"), outputDir);
     CopyFileToDirectory(exeFile, outputDir);
-    CopyFiles(path + "*.config", outputDir);
-    CopyFiles(path + "*.formats", outputDir);
-    CopyFiles(path + "*.presets", outputDir);
+    CopyFiles("./src/data/Config/*.config", outputDir);
+    CopyFiles("./src/data/Presets/*.formats", outputDir);
+    CopyFiles("./src/data/Formats/*.presets", outputDir);
     CopyFiles(path + "*.progress", outputDir);
 
     Zip(outputDir, outputZip);
