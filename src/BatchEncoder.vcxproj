@@ -126,8 +126,7 @@
     <PostBuildEvent>
       <Command>copy ..\data\Config\*.config $(OutDir)
 copy ..\data\Presets\*.presets $(OutDir)
-copy ..\data\Formats\*.formats $(OutDir)
-copy ..\UnicoWS\UnicoWS.dll $(OutDir)</Command>
+copy ..\data\Formats\*.formats $(OutDir)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -200,8 +199,7 @@ copy ..\data\Formats\*.formats $(OutDir)</Command>
     <PostBuildEvent>
       <Command>copy ..\data\Config\*.config $(OutDir)
 copy ..\data\Presets\*.presets $(OutDir)
-copy ..\data\Formats\*.formats $(OutDir)
-copy ..\UnicoWS\UnicoWS.dll $(OutDir)</Command>
+copy ..\data\Formats\*.formats $(OutDir)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
