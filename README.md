@@ -204,12 +204,6 @@ Check Microsoft(R) website http://www.microsoft.com/ for more informations about
 
 Required for compiling the program. Download latest stable release from http://www.sourceforge.net/projects/tinyxml/. Unpack source package to 'TinyXml\src' dir is the program source directory.
 
-### UnicoWS.lib
-
-Required for program compilation (unicode builds only). The Microsoft Platform SDK contains the UnicoWS.lib library (included in MSVC++ 9.0).
-To run program on non unicode systems you will need the Microsoft Layer for Unicode dynamic library (UnicoWS.dll).
-The Microsoft Layer for Unicode is available as a redistributable from http://www.microsoft.com/msdownload/platformsdk/sdkupdate/psdkredist.htm download it and install in your system.
-
 ## License
 
 BatchEncoder (Audio Conversion GUI)

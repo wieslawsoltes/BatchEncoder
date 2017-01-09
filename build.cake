@@ -91,7 +91,6 @@ Task("Package-Binaries-Win32")
     CopyFiles(path + "*.formats", outputDir);
     CopyFiles(path + "*.presets", outputDir);
     CopyFiles(path + "*.progress", outputDir);
-    CopyFileToDirectory(File(path + "unicows.dll"), outputDir);
 
     Zip(outputDir, outputZip);
 });
