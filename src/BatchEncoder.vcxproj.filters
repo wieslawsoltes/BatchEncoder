@@ -34,45 +34,39 @@
     <Filter Include="Source Files\Xml">
       <UniqueIdentifier>{f6b31c12-6182-4625-8cef-830303fb90cf}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Options">
+      <UniqueIdentifier>{89240a4f-8f08-4475-855f-bffe355437f3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Options">
+      <UniqueIdentifier>{4c09c96e-3ea7-41ee-b51d-74f21ba18019}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Lame">
+      <UniqueIdentifier>{763e9916-ca86-4cee-a8f5-6fe6af37b3c4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Lame">
+      <UniqueIdentifier>{ad4c14c1-8a23-4f3e-8ca5-62232d1de6d8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Utf8">
+      <UniqueIdentifier>{7a946019-96c3-4bfa-8d9f-75502092d1b6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utf8">
+      <UniqueIdentifier>{0bc9bc86-af8d-403c-9a4e-4555e64a9ad7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BatchEncoder.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CommandLine.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ConversionStatus.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Histogram.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="LameHistogram.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="NewItemData.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="OptionsParser.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="StdAfx.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="UnicodeUtf8.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Utf8String.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Utilities.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="WorkThread.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="XmlResource.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="MyButton.cpp">
@@ -117,27 +111,36 @@
     <ClCompile Include="XMLDocumentW.cpp">
       <Filter>Source Files\Xml</Filter>
     </ClCompile>
+    <ClCompile Include="XmlResource.cpp">
+      <Filter>Source Files\Xml</Filter>
+    </ClCompile>
+    <ClCompile Include="CommandLine.cpp">
+      <Filter>Source Files\Options</Filter>
+    </ClCompile>
+    <ClCompile Include="OptionsParser.cpp">
+      <Filter>Source Files\Options</Filter>
+    </ClCompile>
+    <ClCompile Include="Histogram.cpp">
+      <Filter>Source Files\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="LameHistogram.cpp">
+      <Filter>Source Files\Lame</Filter>
+    </ClCompile>
+    <ClCompile Include="ConversionStatus.cpp">
+      <Filter>Source Files\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="UnicodeUtf8.cpp">
+      <Filter>Source Files\Utf8</Filter>
+    </ClCompile>
+    <ClCompile Include="Utf8String.cpp">
+      <Filter>Source Files\Utf8</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BatchEncoder.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CommandLine.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ConversionStatus.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Histogram.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="LameHistogram.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="NewItemData.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="OptionsParser.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="res\resource.h">
@@ -152,19 +155,10 @@
     <ClInclude Include="TransMove.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="UnicodeUtf8.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Utf8String.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Utilities.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="WorkThread.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="XmlResource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Hyperlink.h">
@@ -223,6 +217,30 @@
     </ClInclude>
     <ClInclude Include="XMLDocumentW.h">
       <Filter>Header Files\Xml</Filter>
+    </ClInclude>
+    <ClInclude Include="XmlResource.h">
+      <Filter>Header Files\Xml</Filter>
+    </ClInclude>
+    <ClInclude Include="CommandLine.h">
+      <Filter>Header Files\Options</Filter>
+    </ClInclude>
+    <ClInclude Include="OptionsParser.h">
+      <Filter>Header Files\Options</Filter>
+    </ClInclude>
+    <ClInclude Include="LameHistogram.h">
+      <Filter>Header Files\Lame</Filter>
+    </ClInclude>
+    <ClInclude Include="Histogram.h">
+      <Filter>Header Files\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="ConversionStatus.h">
+      <Filter>Header Files\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="UnicodeUtf8.h">
+      <Filter>Header Files\Utf8</Filter>
+    </ClInclude>
+    <ClInclude Include="Utf8String.h">
+      <Filter>Header Files\Utf8</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
