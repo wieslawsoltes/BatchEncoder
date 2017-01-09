@@ -38,36 +38,36 @@ unsigned char *MakeUtf8String(const wchar_t *unicode)
     unsigned short c;
 
     c = unicode[index++];
-    while(c) 
+    while (c)
     {
-        if(c < 0x0080) 
+        if (c < 0x0080)
             size += 1;
-        else if(c < 0x0800) 
+        else if (c < 0x0800)
             size += 2;
-        else 
+        else
             size += 3;
 
         c = unicode[index++];
-    }	
+    }
 
-    out = (unsigned char*) malloc(size + 1);
+    out = (unsigned char*)malloc(size + 1);
     if (out == NULL)
         return NULL;
     index = 0;
 
     c = unicode[index++];
-    while(c)
+    while (c)
     {
-        if(c < 0x080) 
+        if (c < 0x080)
         {
             out[out_index++] = (unsigned char)c;
-        } 
-        else if(c < 0x800) 
+        }
+        else if (c < 0x800)
         {
             out[out_index++] = 0xc0 | (c >> 6);
             out[out_index++] = 0x80 | (c & 0x3f);
-        } 
-        else 
+        }
+        else
         {
             out[out_index++] = 0xe0 | (c >> 12);
             out[out_index++] = 0x80 | ((c >> 6) & 0x3f);
@@ -94,43 +94,43 @@ wchar_t *MakeUnicodeString(const unsigned char *utf8)
     unsigned char c;
 
     c = utf8[index++];
-    while(c) 
+    while (c)
     {
-        if((c & 0x80) == 0) 
-            index += 0; 
-        else if((c & 0xe0) == 0xe0) 
+        if ((c & 0x80) == 0)
+            index += 0;
+        else if ((c & 0xe0) == 0xe0)
             index += 2;
-        else 
+        else
             index += 1;
 
         size += 1;
         c = utf8[index++];
-    }	
+    }
 
-    out = (wchar_t *) malloc((size + 1) * sizeof(wchar_t));
-    if(out == NULL)
+    out = (wchar_t *)malloc((size + 1) * sizeof(wchar_t));
+    if (out == NULL)
         return NULL;
     index = 0;
 
     c = utf8[index++];
-    while(c)
+    while (c)
     {
-        if((c & 0x80) == 0) 
+        if ((c & 0x80) == 0)
         {
             out[out_index++] = c;
-        } 
-        else if((c & 0xe0) == 0xe0) 
+        }
+        else if ((c & 0xe0) == 0xe0)
         {
             out[out_index] = (c & 0x1F) << 12;
-	        c = utf8[index++];
+            c = utf8[index++];
             out[out_index] |= (c & 0x3F) << 6;
-	        c = utf8[index++];
+            c = utf8[index++];
             out[out_index++] |= (c & 0x3F);
-        } 
-        else 
+        }
+        else
         {
             out[out_index] = (c & 0x3F) << 6;
-	        c = utf8[index++];
+            c = utf8[index++];
             out[out_index++] |= (c & 0x3F);
         }
         c = utf8[index++];
@@ -147,27 +147,27 @@ wchar_t *MakeUnicodeString(const unsigned char *utf8)
 //
 int UnicodeEncode(const char *from, wchar_t **to)
 {
-	wchar_t *unicode;
-	int wchars, err;
+    wchar_t *unicode;
+    int wchars, err;
 
-	wchars = MultiByteToWideChar(CP_ACP, MB_PRECOMPOSED, from, (int) strlen(from), NULL, 0);
-	if(wchars == 0)
-		return -1;
+    wchars = MultiByteToWideChar(CP_ACP, MB_PRECOMPOSED, from, (int)strlen(from), NULL, 0);
+    if (wchars == 0)
+        return -1;
 
-	unicode = (wchar_t *) calloc(wchars + 1, sizeof(unsigned short));
-	if(unicode == NULL) 
-		return -1;
+    unicode = (wchar_t *)calloc(wchars + 1, sizeof(unsigned short));
+    if (unicode == NULL)
+        return -1;
 
-    err = ::MultiByteToWideChar(CP_ACP, MB_PRECOMPOSED, from, (int) strlen(from), unicode, wchars);
-	if(err != wchars)
-	{
+    err = ::MultiByteToWideChar(CP_ACP, MB_PRECOMPOSED, from, (int)strlen(from), unicode, wchars);
+    if (err != wchars)
+    {
         *to = NULL;
-		free(unicode);
-		return -1;
-	}
+        free(unicode);
+        return -1;
+    }
 
-	*to = unicode;
-	return 0;
+    *to = unicode;
+    return 0;
 }
 
 // UNICODE to ANSI (char)
@@ -180,15 +180,15 @@ int UnicodeDecode(const wchar_t *from, char **to)
     int chars, err;
 
     chars = ::WideCharToMultiByte(GetConsoleCP(), WC_COMPOSITECHECK, from, -1, NULL, 0, NULL, NULL);
-    if(chars == 0)
+    if (chars == 0)
         return -1;
 
-    *to = (char *) calloc(chars + 1, sizeof(unsigned char));
-    if(*to == NULL) 
+    *to = (char *)calloc(chars + 1, sizeof(unsigned char));
+    if (*to == NULL)
         return -1;
 
     err = ::WideCharToMultiByte(GetConsoleCP(), WC_COMPOSITECHECK, from, -1, *to, chars, NULL, NULL);
-    if(err != chars)
+    if (err != chars)
     {
         free(*to);
         *to = NULL;
@@ -203,27 +203,27 @@ int UnicodeDecode(const wchar_t *from, char **to)
 //
 int Utf8Encode(const char *from, char **to)
 {
-	wchar_t *unicode;
-	int wchars, err;
+    wchar_t *unicode;
+    int wchars, err;
 
-	wchars = MultiByteToWideChar(CP_ACP, MB_PRECOMPOSED, from, (int) strlen(from), NULL, 0);
-	if(wchars == 0)
-		return -1;
+    wchars = MultiByteToWideChar(CP_ACP, MB_PRECOMPOSED, from, (int)strlen(from), NULL, 0);
+    if (wchars == 0)
+        return -1;
 
-	unicode = (wchar_t *) calloc(wchars + 1, sizeof(unsigned short));
-	if(unicode == NULL) 
-		return -1;
+    unicode = (wchar_t *)calloc(wchars + 1, sizeof(unsigned short));
+    if (unicode == NULL)
+        return -1;
 
-    err = ::MultiByteToWideChar(CP_ACP, MB_PRECOMPOSED, from, (int) strlen(from), unicode, wchars);
-	if(err != wchars)
-	{
-		free(unicode);
-		return -1;
-	}
+    err = ::MultiByteToWideChar(CP_ACP, MB_PRECOMPOSED, from, (int)strlen(from), unicode, wchars);
+    if (err != wchars)
+    {
+        free(unicode);
+        return -1;
+    }
 
-	*to = (char *) MakeUtf8String(unicode);
-	free(unicode);
-	return 0;
+    *to = (char *)MakeUtf8String(unicode);
+    free(unicode);
+    return 0;
 }
 
 //
@@ -234,26 +234,26 @@ int Utf8Decode(const char *from, char **to)
     wchar_t *unicode;
     int chars, err;
 
-    unicode = MakeUnicodeString((unsigned char *) from);
-    if(unicode == NULL) 
+    unicode = MakeUnicodeString((unsigned char *)from);
+    if (unicode == NULL)
         return -1;
 
     chars = ::WideCharToMultiByte(GetConsoleCP(), WC_COMPOSITECHECK, unicode, -1, NULL, 0, NULL, NULL);
-    if(chars == 0)
+    if (chars == 0)
     {
         free(unicode);
         return -1;
     }
 
-    *to = (char *) calloc(chars + 1, sizeof(unsigned char));
-    if(*to == NULL) 
+    *to = (char *)calloc(chars + 1, sizeof(unsigned char));
+    if (*to == NULL)
     {
         free(unicode);
         return -1;
     }
 
     err = ::WideCharToMultiByte(GetConsoleCP(), WC_COMPOSITECHECK, unicode, -1, *to, chars, NULL, NULL);
-    if(err != chars)
+    if (err != chars)
     {
         free(unicode);
         free(*to);

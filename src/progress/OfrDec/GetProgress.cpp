@@ -40,11 +40,11 @@ int GetProgress(char *szLineBuff, int nLineLen)
     // check if we have done the job
     // 'Compressing   done.'
     // 'Decompression done.'
-    if(nLineLen >= 19)
+    if (nLineLen >= 19)
     {
-        if(szLineBuff[14] == 'd' 
-            && szLineBuff[15] == 'o' 
-            && szLineBuff[16] == 'n' 
+        if (szLineBuff[14] == 'd'
+            && szLineBuff[15] == 'o'
+            && szLineBuff[16] == 'n'
             && szLineBuff[17] == 'e')
         {
             nProgress = 100;
@@ -57,9 +57,9 @@ int GetProgress(char *szLineBuff, int nLineLen)
 
     // find '%' end char
     nEnd = -1;
-    for(j = 0; j < nLineLen; j++)
+    for (j = 0; j < nLineLen; j++)
     {
-        if(szLineBuff[j] == '%')
+        if (szLineBuff[j] == '%')
         {
             nEnd = j;
             break;
@@ -67,24 +67,24 @@ int GetProgress(char *szLineBuff, int nLineLen)
     }
 
     nStart = -1;
-    if(nEnd > 0)
+    if (nEnd > 0)
     {
         // find ' ' start char
-        for(j = nEnd; j >= 0; j--)
+        for (j = nEnd; j >= 0; j--)
         {
-            if(szLineBuff[j] == ' ')
+            if (szLineBuff[j] == ' ')
             {
                 nStart = j;
                 break;
             }
         }
 
-        if(nStart > 0)
+        if (nStart > 0)
         {
             // (nEnd - 3) skip the period char
             // (nStart + 1)  skip the space char
             int nDiff = (nEnd - 2) - (nStart + 1);
-            if(nDiff == 1)
+            if (nDiff == 1)
             {
                 szPercentage[0] = szLineBuff[(nStart + 1)];
                 szPercentage[1] = '\0';
@@ -92,7 +92,7 @@ int GetProgress(char *szLineBuff, int nLineLen)
 
                 return nProgress;
             }
-            else if(nDiff == 2)
+            else if (nDiff == 2)
             {
                 szPercentage[0] = szLineBuff[(nStart + 1)];
                 szPercentage[1] = szLineBuff[(nStart + 2)];
@@ -101,7 +101,7 @@ int GetProgress(char *szLineBuff, int nLineLen)
 
                 return nProgress;
             }
-            else if(nDiff == 3)
+            else if (nDiff == 3)
             {
                 szPercentage[0] = szLineBuff[(nStart + 1)];
                 szPercentage[1] = szLineBuff[(nStart + 2)];

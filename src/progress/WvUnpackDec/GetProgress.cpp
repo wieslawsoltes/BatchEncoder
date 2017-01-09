@@ -39,9 +39,9 @@ int GetProgress(char *szLineBuff, int nLineLen)
 
     // check if we have done the job
     // 'restored 2.wav in 2.86 secs (lossless, 26.56%)'
-    if(nLineLen >= 7)
+    if (nLineLen >= 7)
     {
-        if(strncmp(szLineBuff, "restored", 8) == 0)
+        if (strncmp(szLineBuff, "restored", 8) == 0)
         {
             nProgress = 100;
             return nProgress;
@@ -52,20 +52,20 @@ int GetProgress(char *szLineBuff, int nLineLen)
     // 'restoring 2.wav,  20% done...'
 
     // find % (percentage) char
-    for(j = 0; j < (int) nLineLen; j++)
+    for (j = 0; j < (int)nLineLen; j++)
     {
-        if(szLineBuff[j] == '%')
+        if (szLineBuff[j] == '%')
         {
             nPos = j;
             break;
         }
     }
 
-    if(nPos >= 3)
+    if (nPos >= 3)
     {
-        if(szLineBuff[nPos - 3] == ' ') // not a 100.0 %
+        if (szLineBuff[nPos - 3] == ' ') // not a 100.0 %
         {
-            if(szLineBuff[nPos - 2] == ' ') // 0 to 9 %
+            if (szLineBuff[nPos - 2] == ' ') // 0 to 9 %
             {
                 szPercentage[0] = szLineBuff[nPos - 1];
                 szPercentage[1] = '\0';
@@ -73,7 +73,7 @@ int GetProgress(char *szLineBuff, int nLineLen)
                 nProgress = atoi(szPercentage);
                 return nProgress;
             }
-            else if(szLineBuff[nPos - 2] >= '0' && szLineBuff[nPos - 2] <= '9') // 10 to 99 %
+            else if (szLineBuff[nPos - 2] >= '0' && szLineBuff[nPos - 2] <= '9') // 10 to 99 %
             {
                 szPercentage[0] = szLineBuff[nPos - 2];
                 szPercentage[1] = szLineBuff[nPos - 1];
@@ -83,7 +83,7 @@ int GetProgress(char *szLineBuff, int nLineLen)
                 return nProgress;
             }
         }
-        else if(szLineBuff[nPos - 3] == '1') // 100.0 %
+        else if (szLineBuff[nPos - 3] == '1') // 100.0 %
         {
             nProgress = 100;
             return nProgress;

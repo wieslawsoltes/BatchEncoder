@@ -137,10 +137,10 @@ public:
     CString GetEncoderOpt(int nOutputFormat, int nPreset);
     CString GetDecoderOpt(int nIntputFormat, int nPreset);
 public:
-    bool WorkerCallback(int nProgress, 
-        bool bFinished, 
-        bool bError = false, 
-        double fTime = 0.0, 
+    bool WorkerCallback(int nProgress,
+        bool bFinished,
+        bool bError = false,
+        double fTime = 0.0,
         int nIndex = -1);
 public:
     void HistogramCallback(PLAME_ENC_HISTOGRAM plehData);
@@ -158,7 +158,7 @@ public:
     void ResetConvertionTime();
     void ResetConvertionStatus();
 public:
-    void SearchFolderForFiles(CString szFile, 
+    void SearchFolderForFiles(CString szFile,
         const bool bRecurse,
         const TCHAR *szOutExt = NULL,
         const int nPreset = -1);
@@ -204,7 +204,7 @@ public:
 public:
     afx_msg LRESULT OnListItemChaged(WPARAM wParam, LPARAM lParam);
 protected:
-    afx_msg LRESULT OnNotifyFormat(WPARAM wParam,LPARAM lParam);
+    afx_msg LRESULT OnNotifyFormat(WPARAM wParam, LPARAM lParam);
 public:
     afx_msg BOOL OnHelpInfo(HELPINFO* pHelpInfo);
 public:

@@ -40,8 +40,8 @@ END_MESSAGE_MAP()
 void CMyStatusBarCtrl::OnNMRclick(NMHDR *pNMHDR, LRESULT *pResult)
 {
     // check if the converion process is on
-    CBatchEncoderDlg *pDlg = (CBatchEncoderDlg *) GetParent();
-    if(pDlg->bRunning == true)
+    CBatchEncoderDlg *pDlg = (CBatchEncoderDlg *)GetParent();
+    if (pDlg->bRunning == true)
         return;
 
     // show statusbar popup menu

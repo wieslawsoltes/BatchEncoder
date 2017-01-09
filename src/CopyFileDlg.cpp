@@ -28,7 +28,7 @@
 
 IMPLEMENT_DYNAMIC(CCopyFileDlg, CDialog)
 CCopyFileDlg::CCopyFileDlg(CWnd* pParent /*=NULL*/)
-: CDialog(CCopyFileDlg::IDD, pParent)
+    : CDialog(CCopyFileDlg::IDD, pParent)
 {
     bNoFiles = false;
     bStop = false;
@@ -63,7 +63,7 @@ CCopyFileDlg *pDlgCopy = NULL;
 
 bool ProgressCallback(int nProgress)
 {
-    if(pDlgCopy != NULL)
+    if (pDlgCopy != NULL)
     {
         pDlgCopy->nProgress = nProgress;
         pDlgCopy->m_PrgCopy.SetPos(nProgress);
@@ -74,25 +74,25 @@ bool ProgressCallback(int nProgress)
 
 DWORD WINAPI CopyWorkThread(LPVOID lpParam)
 {
-    CCopyFileDlg *pDlg = (CCopyFileDlg *) lpParam;
-    if(pDlg == NULL)
-        return (DWORD) (-1);
+    CCopyFileDlg *pDlg = (CCopyFileDlg *)lpParam;
+    if (pDlg == NULL)
+        return (DWORD)(-1);
 
     bool bRet = ::CopyOneFile(pDlg->szInFile, pDlg->szOutFile, ProgressCallback);
-    if(bRet == false)
+    if (bRet == false)
     {
-        if(pDlg->bStop == false)
+        if (pDlg->bStop == false)
             pDlg->MessageBox(_T("Failed To Copy File!"), _T("ERROR"), MB_OK | MB_ICONERROR);
 
         Sleep(100);
         pDlg->EndDialog(0);
-        return (DWORD) (0);
+        return (DWORD)(0);
     }
     else
     {
         Sleep(100);
         pDlg->EndDialog(0);
-        return (DWORD) (1);
+        return (DWORD)(1);
     }
 }
 
@@ -100,32 +100,32 @@ BOOL CCopyFileDlg::OnInitDialog()
 {
     CDialog::OnInitDialog();
 
-    if(bNoFiles == true)
+    if (bNoFiles == true)
     {
         bNoFiles = false;
 
         this->GetInFilePath();
-        if(szInFile.GetLength() <= 0)
+        if (szInFile.GetLength() <= 0)
         {
             this->EndDialog(0);
             return TRUE;
         }
 
         this->GetOutFilePath();
-        if(szOutFile.GetLength() <= 0)
+        if (szOutFile.GetLength() <= 0)
         {
             this->EndDialog(0);
             return TRUE;
         }
-    }   
+    }
 
-    if((szInFile.GetLength() <= 0) || (szOutFile.GetLength() <= 0))
+    if ((szInFile.GetLength() <= 0) || (szOutFile.GetLength() <= 0))
     {
         this->EndDialog(0);
         return TRUE;
     }
 
-    if(szInFile.CompareNoCase(szOutFile) == 0)
+    if (szInFile.CompareNoCase(szOutFile) == 0)
     {
         this->EndDialog(0);
         return TRUE;
@@ -140,7 +140,7 @@ BOOL CCopyFileDlg::OnInitDialog()
 
     dwThreadId = 0L;
     hThread = ::CreateThread(NULL, 0, CopyWorkThread, this, CREATE_SUSPENDED, &dwThreadId);
-    if(hThread == NULL)
+    if (hThread == NULL)
     {
         this->MessageBox(_T("Failed To Copy File!"), _T("ERROR"), MB_OK | MB_ICONERROR);
         this->EndDialog(0);
@@ -155,11 +155,11 @@ BOOL CCopyFileDlg::OnInitDialog()
 
 void CCopyFileDlg::GetInFilePath()
 {
-    CFileDialog fd(TRUE, _T(""), _T(""), 
-        OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER, 
+    CFileDialog fd(TRUE, _T(""), _T(""),
+        OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER,
         _T("All Files|*.*||"), this);
 
-    if(fd.DoModal() == IDOK)
+    if (fd.DoModal() == IDOK)
         szInFile = fd.GetPathName();
     else
         szInFile = _T("");
@@ -167,11 +167,11 @@ void CCopyFileDlg::GetInFilePath()
 
 void CCopyFileDlg::GetOutFilePath()
 {
-    CFileDialog fd(FALSE, _T(""), ::GetFileName(szInFile), 
-        OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER | OFN_OVERWRITEPROMPT, 
+    CFileDialog fd(FALSE, _T(""), ::GetFileName(szInFile),
+        OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER | OFN_OVERWRITEPROMPT,
         _T("All Files|*.*||"), this);
 
-    if(fd.DoModal() == IDOK)
+    if (fd.DoModal() == IDOK)
         szOutFile = fd.GetPathName();
     else
         szOutFile = _T("");

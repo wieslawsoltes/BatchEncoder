@@ -26,7 +26,7 @@
 #define new DEBUG_NEW
 #endif
 
-static const int g_nColorControlId[NUM_PROGRAM_COLORS] = 
+static const int g_nColorControlId[NUM_PROGRAM_COLORS] =
 {
     IDC_COLOR_0,
     IDC_COLOR_1,
@@ -41,7 +41,7 @@ static const int g_nColorControlId[NUM_PROGRAM_COLORS] =
 
 IMPLEMENT_DYNAMIC(CAdvancedDlg, CDialog)
 CAdvancedDlg::CAdvancedDlg(CWnd* pParent /*=NULL*/)
-: CDialog(CAdvancedDlg::IDD, pParent)
+    : CDialog(CAdvancedDlg::IDD, pParent)
 {
     nThreadPriorityIndex = 3;
     nProcessPriorityIndex = 1;
@@ -50,7 +50,7 @@ CAdvancedDlg::CAdvancedDlg(CWnd* pParent /*=NULL*/)
     szLogFileName = MAIN_APP_LOG;
     nLogEncoding = 2;
 
-    for(int i = 0; i < NUM_PROGRAM_COLORS; i++)
+    for (int i = 0; i < NUM_PROGRAM_COLORS; i++)
         m_Color[i] = RGB(0xFF, 0xFF, 0xFF);
 }
 
@@ -90,12 +90,12 @@ BOOL CAdvancedDlg::OnInitDialog()
 {
     CDialog::OnInitDialog();
 
-    for(int i = 0; i < NUM_THREAD_PRIORITY; i++)
+    for (int i = 0; i < NUM_THREAD_PRIORITY; i++)
         this->m_CmbThread.AddString(g_szThreadPriority[i]);
 
     SetComboBoxHeight(this->GetSafeHwnd(), IDC_COMBO_PRIORITY_THREAD);
 
-    for(int i = 0; i < NUM_PROCESS_PRIORITY; i++)
+    for (int i = 0; i < NUM_PROCESS_PRIORITY; i++)
         this->m_CmbProcess.AddString(g_szProcessPriority[i]);
 
     SetComboBoxHeight(this->GetSafeHwnd(), IDC_COMBO_PRIORITY_THREAD);
@@ -126,7 +126,7 @@ void CAdvancedDlg::PaintRect(int nID, COLORREF cr)
     HPEN hPen;
 
     hWnd = GetDlgItem(nID)->GetSafeHwnd();
-    if(hWnd)
+    if (hWnd)
     {
         hDC = ::GetDC(hWnd);
         ::GetClientRect(hWnd, rc);
@@ -146,7 +146,7 @@ void CAdvancedDlg::PaintRect(int nID, COLORREF cr)
 
 void CAdvancedDlg::OnPaintProc(void)
 {
-    for(int i = 0; i < NUM_PROGRAM_COLORS; i++)
+    for (int i = 0; i < NUM_PROGRAM_COLORS; i++)
         PaintRect(g_nColorControlId[i], m_Color[i]);
 }
 
@@ -155,7 +155,7 @@ COLORREF CAdvancedDlg::ChangeTheColor(COLORREF cr)
     CColorDialog cd(cr, CC_FULLOPEN, this);
 
     INT_PTR nRet = cd.DoModal();
-    if(nRet == IDOK)
+    if (nRet == IDOK)
         return cd.GetColor();
     else
         return cr;
@@ -173,13 +173,13 @@ void CAdvancedDlg::GetAdvSettings()
 
     int nCheckID = this->GetCheckedRadioButton(IDC_RADIO_ENCODING_ANSI, IDC_RADIO_ENCODING_UTF8);
 
-    if(nCheckID == IDC_RADIO_ENCODING_ANSI)
+    if (nCheckID == IDC_RADIO_ENCODING_ANSI)
         nLogEncoding = 0;
-    else if(nCheckID == IDC_RADIO_ENCODING_UNICODE)
+    else if (nCheckID == IDC_RADIO_ENCODING_UNICODE)
         nLogEncoding = 1;
-    else if(nCheckID == IDC_RADIO_ENCODING_UTF8)
+    else if (nCheckID == IDC_RADIO_ENCODING_UTF8)
         nLogEncoding = 2;
-    else 
+    else
         nLogEncoding = 2;
 }
 
@@ -188,33 +188,33 @@ void CAdvancedDlg::SetAdvSettings()
     this->m_CmbThread.SetCurSel(nThreadPriorityIndex);
     this->m_CmbProcess.SetCurSel(nProcessPriorityIndex);
 
-    this->CheckDlgButton(IDC_CHECK_OPTION_DELETE, 
+    this->CheckDlgButton(IDC_CHECK_OPTION_DELETE,
         (bDeleteOnError == true) ? BST_CHECKED : BST_UNCHECKED);
 
-    this->CheckDlgButton(IDC_CHECK_OPTION_ERROR, 
+    this->CheckDlgButton(IDC_CHECK_OPTION_ERROR,
         (bStopOnErrors == true) ? BST_CHECKED : BST_UNCHECKED);
 
     m_EdtLog.SetWindowText(szLogFileName);
 
-    switch(nLogEncoding)
+    switch (nLogEncoding)
     {
     case 0:
-        this->CheckRadioButton(IDC_RADIO_ENCODING_ANSI, 
+        this->CheckRadioButton(IDC_RADIO_ENCODING_ANSI,
             IDC_RADIO_ENCODING_UTF8,
             IDC_RADIO_ENCODING_ANSI);
         break;
     case 1:
-        this->CheckRadioButton(IDC_RADIO_ENCODING_ANSI, 
+        this->CheckRadioButton(IDC_RADIO_ENCODING_ANSI,
             IDC_RADIO_ENCODING_UTF8,
             IDC_RADIO_ENCODING_UNICODE);
         break;
     case 2:
-        this->CheckRadioButton(IDC_RADIO_ENCODING_ANSI, 
+        this->CheckRadioButton(IDC_RADIO_ENCODING_ANSI,
             IDC_RADIO_ENCODING_UTF8,
             IDC_RADIO_ENCODING_UTF8);
         break;
     default:
-        this->CheckRadioButton(IDC_RADIO_ENCODING_ANSI, 
+        this->CheckRadioButton(IDC_RADIO_ENCODING_ANSI,
             IDC_RADIO_ENCODING_UTF8,
             IDC_RADIO_ENCODING_UTF8);
         break;
@@ -261,13 +261,13 @@ void CAdvancedDlg::OnDestroy()
 
 void CAdvancedDlg::OnBnClickedButtonBrowseLog()
 {
-    CFileDialog fd(FALSE, _T("log"), szLogFileName, 
-        OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER, 
+    CFileDialog fd(FALSE, _T("log"), szLogFileName,
+        OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER,
         _T("Log Files (*.log)|*.log|Txt Files (*.txt)|*.txt|All Files|*.*||"), this);
 
     ::SetBrowsePath(fd, szBrowsePath[0]);
 
-    if(fd.DoModal() == IDOK)
+    if (fd.DoModal() == IDOK)
     {
         szBrowsePath[0] = ::GetBrowsePath(fd);
 
@@ -281,7 +281,7 @@ void CAdvancedDlg::ClickedOnColorRect(int nID)
 {
     COLORREF cr_new;
     cr_new = this->ChangeTheColor(m_Color[nID]);
-    if(cr_new != m_Color[nID])
+    if (cr_new != m_Color[nID])
         m_Color[nID] = cr_new;
 
     this->PaintRect(g_nColorControlId[nID], m_Color[nID]);

@@ -24,8 +24,8 @@ private:
     LARGE_INTEGER liCount[3];
     double fTime;
 public:
-    CTimeCount(void) 
-    { 
+    CTimeCount(void)
+    {
         this->InitCounter();
     };
     virtual ~CTimeCount(void) { };
@@ -46,8 +46,8 @@ public:
     }
     double GetTime(void)
     {
-        this->fTime = (double)((this->liCount[2].QuadPart-this->liCount[1].QuadPart)
-            /(double)this->liCount[0].QuadPart);
+        this->fTime = (double)((this->liCount[2].QuadPart - this->liCount[1].QuadPart)
+            / (double)this->liCount[0].QuadPart);
 
         return(this->fTime);
     }

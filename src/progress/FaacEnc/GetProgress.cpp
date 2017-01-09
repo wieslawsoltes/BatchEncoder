@@ -41,22 +41,22 @@ int GetProgress(char *szLineBuff, int nLineLen)
     nStart = 0;
     nEnd = 0;
 
-    for(j = 0; j < (int) nLineLen; j++)
+    for (j = 0; j < (int)nLineLen; j++)
     {
-        if(szLineBuff[j] == '(')
+        if (szLineBuff[j] == '(')
         {
             nStart = j;
         }
-        if(szLineBuff[j] == ')')
+        if (szLineBuff[j] == ')')
         {
             nEnd = j;
             break;
         }
     }
 
-    if(nEnd > 0)
+    if (nEnd > 0)
     {
-        if((nEnd - nStart) == 3)
+        if ((nEnd - nStart) == 3)
         {
             szPercentage[0] = szLineBuff[nStart + 1];
             szPercentage[1] = '\0';
@@ -64,7 +64,7 @@ int GetProgress(char *szLineBuff, int nLineLen)
 
             return nProgress;
         }
-        else if((nEnd - nStart) == 4)
+        else if ((nEnd - nStart) == 4)
         {
             szPercentage[0] = szLineBuff[nStart + 1];
             szPercentage[1] = szLineBuff[nStart + 2];
@@ -73,7 +73,7 @@ int GetProgress(char *szLineBuff, int nLineLen)
 
             return nProgress;
         }
-        else if((nEnd - nStart) == 5)
+        else if ((nEnd - nStart) == 5)
         {
             szPercentage[0] = szLineBuff[nStart + 1];
             szPercentage[1] = szLineBuff[nStart + 2];

@@ -36,13 +36,13 @@ int GetHistogram_LameEnc(char *szLineBuff, int nLineLen, PLAME_ENC_HISTOGRAM ple
     char szBuff[64];
 
     // position of closing ']' is hardcoded
-    if(nLineLen >= 10)
+    if (nLineLen >= 10)
     {
         // NOTE: if we get starting '[' then we don't need
         //       more checks, it's only in one case that '[' occurs
 
         // check for starting '[', position is hardcoded
-        if(szLineBuff[4] == '[')
+        if (szLineBuff[4] == '[')
         {
             szBuff[0] = szLineBuff[0];
             szBuff[1] = szLineBuff[1];
@@ -57,9 +57,9 @@ int GetHistogram_LameEnc(char *szLineBuff, int nLineLen, PLAME_ENC_HISTOGRAM ple
             //       if you get errors check LAME output
             //       and change this position in code below 
             int i;
-            for(i = 5; i < nLineLen; i++)
+            for (i = 5; i < nLineLen; i++)
             {
-                if(szLineBuff[i] == ']')
+                if (szLineBuff[i] == ']')
                     break;
             }
 
@@ -76,12 +76,12 @@ int GetHistogram_LameEnc(char *szLineBuff, int nLineLen, PLAME_ENC_HISTOGRAM ple
             //       i = position of ']'
             //       i + 1 = break char ' '
             //       i + 2 = start of Asterisk and Percent chars
-            for(int j = i + 2; j < nLineLen; j++)
+            for (int j = i + 2; j < nLineLen; j++)
             {
-                if(szLineBuff[j] == '*')
+                if (szLineBuff[j] == '*')
                     plehData->nCountAsterisk[plehData->nCount]++;
 
-                if(szLineBuff[j] == '%')
+                if (szLineBuff[j] == '%')
                     plehData->nCountPercent[plehData->nCount]++;
             }
 
@@ -96,7 +96,7 @@ int GetHistogram_LameEnc(char *szLineBuff, int nLineLen, PLAME_ENC_HISTOGRAM ple
             */
 
             plehData->nCount++;
-            if(plehData->nCount == HISTOGRAM_COLUMNS)
+            if (plehData->nCount == HISTOGRAM_COLUMNS)
                 plehData->nCount = 0;
 
             return 0;

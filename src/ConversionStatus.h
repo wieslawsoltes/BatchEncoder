@@ -46,7 +46,7 @@ private:
 private:
     void Paint(void);
 public:
-	BOOL Create(const RECT &rect, CWnd *pParentWnd, UINT uID, bool bVisible);
+    BOOL Create(const RECT &rect, CWnd *pParentWnd, UINT uID, bool bVisible);
 public:
     BOOL Init(void);
     void Clean(void);
@@ -61,7 +61,7 @@ private:
     CString szOutFile;
     CString szOutPath;
 public:
-    void SetCurrentInfo(int nFile, 
+    void SetCurrentInfo(int nFile,
         int nTotalFiles,
         int nStatusDone,
         CString szInFile,

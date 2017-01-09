@@ -36,32 +36,32 @@ int GetProgress(char *szLineBuff, int nLineLen)
     nStart = 0;
     nEnd = 0;
 
-    for(j = 0; j < (int) nLineLen; j++)
+    for (j = 0; j < (int)nLineLen; j++)
     {
-        if(szLineBuff[j] == '(')
+        if (szLineBuff[j] == '(')
         {
             nStart = j;
         }
-        if(szLineBuff[j] == ')')
+        if (szLineBuff[j] == ')')
         {
             nEnd = j;
             break;
         }
     }
 
-    if(nEnd > 0)
+    if (nEnd > 0)
     {
         // find: 3:45.06 (runtime: 0.98 s  speed: 228.48x)
-        if(szLineBuff[nEnd - 1] == 'x') // done
-        {   
+        if (szLineBuff[nEnd - 1] == 'x') // done
+        {
             nProgress = 100;
             return nProgress;
         }
 
         // find: 0:53.07/    3:45.07 decoded (23.6%)
-        if(szLineBuff[nEnd - 1] == '%') // progress
+        if (szLineBuff[nEnd - 1] == '%') // progress
         {
-            if(szLineBuff[nEnd - 5] == ' ') // 0 to 9 %
+            if (szLineBuff[nEnd - 5] == ' ') // 0 to 9 %
             {
                 szPercentage[0] = szLineBuff[nEnd - 4];
                 szPercentage[1] = '\0';
@@ -69,7 +69,7 @@ int GetProgress(char *szLineBuff, int nLineLen)
 
                 return nProgress;
             }
-            else if(szLineBuff[nEnd - 5] >= '0' && szLineBuff[nEnd - 5] >= '9') // 10 to 99%
+            else if (szLineBuff[nEnd - 5] >= '0' && szLineBuff[nEnd - 5] >= '9') // 10 to 99%
             {
                 szPercentage[0] = szLineBuff[nEnd - 5];
                 szPercentage[1] = szLineBuff[nEnd - 4];

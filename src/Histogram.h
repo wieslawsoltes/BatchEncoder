@@ -38,16 +38,16 @@ public:
 private:
     CFont *m_pFont;
 private:
-    void DrawColumn(int nColumns, 
-        int nPos, 
-        int nLR, 
-        int nMS, 
-        bool bText, 
+    void DrawColumn(int nColumns,
+        int nPos,
+        int nLR,
+        int nMS,
+        bool bText,
         CString szText);
 private:
     void Paint(void);
 public:
-	BOOL Create(const RECT &rect, CWnd *pParentWnd, UINT uID, bool bVisible);
+    BOOL Create(const RECT &rect, CWnd *pParentWnd, UINT uID, bool bVisible);
 public:
     BOOL Init(bool bBoldFont = false);
     void Clean(void);

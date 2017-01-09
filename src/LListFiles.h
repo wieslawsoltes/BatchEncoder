@@ -20,7 +20,7 @@
 
 #include <afxtempl.h>
 
-class CLListFiles 
+class CLListFiles
 {
 private:
     typedef struct _EDIT_DATA_FILES_
@@ -35,7 +35,7 @@ private:
         int nOutPreset;
     } LIST_DATA_FILES, *PLIST_DATA_FILES;
 private:
-    CList<LIST_DATA_FILES,LIST_DATA_FILES&> myList;
+    CList<LIST_DATA_FILES, LIST_DATA_FILES&> myList;
 private:
     void SetData(LIST_DATA_FILES listData, int idx)
     {
@@ -49,7 +49,7 @@ private:
     UINT MyGetFileName(LPCTSTR lpszPathName, LPTSTR lpszTitle, UINT nMax)
     {
         LPTSTR lpszTemp = ::PathFindFileName(lpszPathName);
-        if(lpszTitle == NULL)
+        if (lpszTitle == NULL)
             return lstrlen(lpszTemp) + 1;
 
         lstrcpyn(lpszTitle, lpszTemp, nMax);
@@ -61,7 +61,7 @@ public:
         LIST_DATA_FILES tmpList1 = this->GetData(idx1);
         LIST_DATA_FILES tmpList2 = this->GetData(idx2);
 
-        if((idx1 < 0) || (idx2 < 0) || 
+        if ((idx1 < 0) || (idx2 < 0) ||
             (idx1 >= GetSize()) || (idx2 >= GetSize()))
             return;
 
@@ -116,7 +116,7 @@ public:
     }
     virtual ~CLListFiles()
     {
-        if(myList.GetCount() != 0)
+        if (myList.GetCount() != 0)
             myList.RemoveAll();
     }
 public:
@@ -126,15 +126,15 @@ public:
     }
     int GetSize()
     {
-        return (int) myList.GetCount();	
+        return (int)myList.GetCount();
     }
 public:
     static int GetInFormatIndex(CString szInExt)
     {
         szInExt.MakeUpper();
-        for(int i = 0; i < NUM_INPUT_EXT; i++)
+        for (int i = 0; i < NUM_INPUT_EXT; i++)
         {
-            if(szInExt.Compare(g_szAllInExt[i]) == 0)
+            if (szInExt.Compare(g_szAllInExt[i]) == 0)
                 return i;
         }
         return -1;
@@ -142,9 +142,9 @@ public:
     static int GetOutFormatIndex(CString szOutExt)
     {
         szOutExt.MakeUpper();
-        for(int i = 0; i < NUM_OUTPUT_EXT; i++)
+        for (int i = 0; i < NUM_OUTPUT_EXT; i++)
         {
-            if(szOutExt.Compare(g_szAllOutExt[i]) == 0)
+            if (szOutExt.Compare(g_szAllOutExt[i]) == 0)
                 return i;
         }
         return -1;
@@ -152,31 +152,31 @@ public:
 public:
     static CString GetInFormatExt(int nInFormat)
     {
-        if((nInFormat >= 0) && (nInFormat < NUM_INPUT_EXT))
+        if ((nInFormat >= 0) && (nInFormat < NUM_INPUT_EXT))
             return g_szAllInExt[nInFormat];
         return NULL;
     }
     static CString GetOutFormatExt(int nOutFormat)
     {
-        if((nOutFormat >= 0) && (nOutFormat < NUM_OUTPUT_EXT))
+        if ((nOutFormat >= 0) && (nOutFormat < NUM_OUTPUT_EXT))
             return g_szAllOutExt[nOutFormat];
         return NULL;
     }
 public:
     static bool IsValidInExtension(CString szInExt)
     {
-        for(int i = 0; i < NUM_INPUT_EXT; i++)
+        for (int i = 0; i < NUM_INPUT_EXT; i++)
         {
-            if(szInExt.Compare(g_szAllInExt[i]) == 0)
+            if (szInExt.Compare(g_szAllInExt[i]) == 0)
                 return true;
         }
         return false;
     }
     static bool IsValidOutExtension(CString szOutExt)
     {
-        for(int i = 0; i < NUM_OUTPUT_EXT; i++)
+        for (int i = 0; i < NUM_OUTPUT_EXT; i++)
         {
-            if(szOutExt.Compare(g_szAllOutExt[i]) == 0)
+            if (szOutExt.Compare(g_szAllOutExt[i]) == 0)
                 return true;
         }
         return false;
@@ -197,10 +197,10 @@ public:
         return IsValidOutExtension(szOutExt);
     }
 public:
-    int InsertNode(CString szFilePath, 
-        const TCHAR *szFileName, 
-        const ULONGLONG nFileSize, 
-        const int nOutFormat, 
+    int InsertNode(CString szFilePath,
+        const TCHAR *szFileName,
+        const ULONGLONG nFileSize,
+        const int nOutFormat,
         const int nOutPreset)
     {
         LIST_DATA_FILES tmp;
@@ -208,7 +208,7 @@ public:
         tmp.szFilePath = szFilePath;
         tmp.nFileSize = nFileSize;
 
-        if((szFileName == NULL) || (_tcslen(szFileName) == 0))
+        if ((szFileName == NULL) || (_tcslen(szFileName) == 0))
             tmp.szFileName = this->GetOnlyFileName(szFilePath);
         else
             tmp.szFileName = szFileName;
@@ -222,7 +222,7 @@ public:
 
         myList.AddTail(tmp);
 
-        return (int) myList.GetCount() - 1;
+        return (int)myList.GetCount() - 1;
     }
     void RemoveNode(int pstn = -1)
     {
@@ -230,7 +230,7 @@ public:
     }
     void RemoveAllNodes(void)
     {
-        if(myList.GetCount() != 0)
+        if (myList.GetCount() != 0)
             myList.RemoveAll();
     }
 public:

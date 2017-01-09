@@ -30,14 +30,14 @@ int GetProgress(char *szLineBuff, int nLineLen)
 
     memset(szPercentage, 0x00, sizeof(szPercentage));
 
-    if(nLineLen >= 5)
+    if (nLineLen >= 5)
     {
         // we have progress line
-        if(szLineBuff[3] == '.')
+        if (szLineBuff[3] == '.')
         {
-            if(szLineBuff[0] == ' ') // not a 100.0 %
+            if (szLineBuff[0] == ' ') // not a 100.0 %
             {
-                if(szLineBuff[1] == ' ') // 0 to 9 %
+                if (szLineBuff[1] == ' ') // 0 to 9 %
                 {
                     szPercentage[0] = szLineBuff[2];
                     szPercentage[1] = '\0';
@@ -45,7 +45,7 @@ int GetProgress(char *szLineBuff, int nLineLen)
                     nProgress = atoi(szPercentage);
                     return nProgress;
                 }
-                else if(szLineBuff[1] >= '0' && szLineBuff[1] <= '9') // 10 to 99 %
+                else if (szLineBuff[1] >= '0' && szLineBuff[1] <= '9') // 10 to 99 %
                 {
                     szPercentage[0] = szLineBuff[1];
                     szPercentage[1] = szLineBuff[2];
@@ -55,7 +55,7 @@ int GetProgress(char *szLineBuff, int nLineLen)
                     return nProgress;
                 }
             }
-            else if(szLineBuff[0] == '1') // 100.0 %
+            else if (szLineBuff[0] == '1') // 100.0 %
             {
                 nProgress = 100;
                 return nProgress;

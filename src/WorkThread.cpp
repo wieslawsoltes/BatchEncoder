@@ -31,23 +31,23 @@
 
 ULONGLONG GetFileSize64(HANDLE hFile)
 {
-   ULARGE_INTEGER liSize;
+    ULARGE_INTEGER liSize;
 
-   liSize.LowPart = ::GetFileSize(hFile, &liSize.HighPart);
-   if(liSize.LowPart == (DWORD) -1)
-   {
-	  if(::GetLastError() != NO_ERROR)
-		 return(0);
-   }
+    liSize.LowPart = ::GetFileSize(hFile, &liSize.HighPart);
+    if (liSize.LowPart == (DWORD)-1)
+    {
+        if (::GetLastError() != NO_ERROR)
+            return(0);
+    }
 
-	return liSize.QuadPart;
+    return liSize.QuadPart;
 }
 
 DWORD WINAPI ReadThread(LPVOID lpParam)
 {
     // NOTE: 4096 bytes is default buffer for pipes (on XP SP2)
 
-    PREAD_DATA pReadData = (PREAD_DATA) lpParam;
+    PREAD_DATA pReadData = (PREAD_DATA)lpParam;
     HANDLE hFile = INVALID_HANDLE_VALUE;
     BYTE pReadBuff[4096];
     BOOL bRes = FALSE;
@@ -62,14 +62,14 @@ DWORD WINAPI ReadThread(LPVOID lpParam)
     pReadData->bFinished = false;
 
     // open existing source file with read-only flag
-    hFile = ::CreateFile(pReadData->szFileName, 
-        GENERIC_READ, 
-        0, 
-        NULL, 
-        OPEN_EXISTING, 
-        0, 
+    hFile = ::CreateFile(pReadData->szFileName,
+        GENERIC_READ,
+        0,
+        NULL,
+        OPEN_EXISTING,
+        0,
         NULL);
-    if(hFile == INVALID_HANDLE_VALUE)
+    if (hFile == INVALID_HANDLE_VALUE)
     {
         pReadData->bError = true;
         pReadData->bFinished = true;
@@ -80,7 +80,7 @@ DWORD WINAPI ReadThread(LPVOID lpParam)
     nFileSize = GetFileSize64(hFile);
 
     // nothing todo with 0 bytes file
-    if(nFileSize == 0)
+    if (nFileSize == 0)
     {
         pReadData->bError = true;
         pReadData->bFinished = true;
@@ -93,7 +93,7 @@ DWORD WINAPI ReadThread(LPVOID lpParam)
     {
         // read data from source file
         bRes = ::ReadFile(hFile, pReadBuff, 4096, &dwReadBytes, 0);
-        if((bRes == FALSE) || (dwReadBytes == 0))
+        if ((bRes == FALSE) || (dwReadBytes == 0))
             break;
 
         // NOTE: Sleep(0) solves problem writing to pipe error (MPPDEC)
@@ -103,7 +103,7 @@ DWORD WINAPI ReadThread(LPVOID lpParam)
 
         // write data to write pipe
         bRes = ::WriteFile(pReadData->hPipe, pReadBuff, dwReadBytes, &dwWriteBytes, 0);
-        if((bRes == FALSE) || (dwWriteBytes == 0) || (dwReadBytes != dwWriteBytes))
+        if ((bRes == FALSE) || (dwWriteBytes == 0) || (dwReadBytes != dwWriteBytes))
             break;
 
         // LastError(_T("ReadThread:WriteFile"));
@@ -114,19 +114,18 @@ DWORD WINAPI ReadThread(LPVOID lpParam)
         // count read/write bytes
         nTotalBytesRead += dwReadBytes;
 
-        nProgress = (int) ((nTotalBytesRead * 100) / nFileSize);
+        nProgress = (int)((nTotalBytesRead * 100) / nFileSize);
 
         bRunning = pReadData->pDlg->WorkerCallback(nProgress, false);
-        if(bRunning == false)
+        if (bRunning == false)
             break;
-    }
-    while(bRes != FALSE);
+    } while (bRes != FALSE);
 
     // clean up memory
     ::CloseHandle(hFile);
 
     // check if all data was processed
-    if(nTotalBytesRead != nFileSize)
+    if (nTotalBytesRead != nFileSize)
     {
         pReadData->bError = true;
         pReadData->bFinished = true;
@@ -142,7 +141,7 @@ DWORD WINAPI WriteThread(LPVOID lpParam)
 {
     // NOTE: 4096 bytes is default buffer for pipes (on XP SP2)
 
-    PREAD_DATA pReadData = (PREAD_DATA) lpParam;
+    PREAD_DATA pReadData = (PREAD_DATA)lpParam;
     HANDLE hFile = INVALID_HANDLE_VALUE;
     BYTE pReadBuff[4096];
     BOOL bRes = FALSE;
@@ -156,14 +155,14 @@ DWORD WINAPI WriteThread(LPVOID lpParam)
     pReadData->bFinished = false;
 
     // open existing source file with readpnly flag
-    hFile = ::CreateFile(pReadData->szFileName, 
-        GENERIC_READ | GENERIC_WRITE, 
-        0, 
-        NULL, 
-        CREATE_ALWAYS, 
-        0, 
+    hFile = ::CreateFile(pReadData->szFileName,
+        GENERIC_READ | GENERIC_WRITE,
+        0,
+        NULL,
+        CREATE_ALWAYS,
+        0,
         NULL);
-    if(hFile == INVALID_HANDLE_VALUE)
+    if (hFile == INVALID_HANDLE_VALUE)
     {
         pReadData->bError = true;
         pReadData->bFinished = true;
@@ -175,14 +174,14 @@ DWORD WINAPI WriteThread(LPVOID lpParam)
     {
         // read data from source pipe
         bRes = ::ReadFile(pReadData->hPipe, pReadBuff, 4096, &dwReadBytes, 0);
-        if((bRes == FALSE) || (dwReadBytes == 0))
+        if ((bRes == FALSE) || (dwReadBytes == 0))
             break;
 
         // LastError(_T("WriteThread:ReadFile"));
 
         // write data to file
         bRes = ::WriteFile(hFile, pReadBuff, dwReadBytes, &dwWriteBytes, 0);
-        if((bRes == FALSE) || (dwWriteBytes == 0) || (dwReadBytes != dwWriteBytes))
+        if ((bRes == FALSE) || (dwWriteBytes == 0) || (dwReadBytes != dwWriteBytes))
             break;
 
         // LastError(_T("WriteThread:WriteFile"));
@@ -194,10 +193,9 @@ DWORD WINAPI WriteThread(LPVOID lpParam)
         nTotalBytesWrite += dwReadBytes;
 
         // handle user Stop
-        if(pReadData->pDlg->bRunning == false)
+        if (pReadData->pDlg->bRunning == false)
             break;
-    }
-    while(bRes != FALSE);
+    } while (bRes != FALSE);
 
     // clean up memory
     ::CloseHandle(hFile);
@@ -207,15 +205,15 @@ DWORD WINAPI WriteThread(LPVOID lpParam)
     return(0);
 }
 
-bool ConvertFile(CBatchEncoderDlg *pDlg, 
-                 CString szInputFile, 
-                 CString szOutputFile,
-                 TCHAR *szCommandLine, 
-                 int nIndex, 
-                 bool bDecode, 
-                 int nTool,
-                 bool bUseReadPipes,
-                 bool bUseWritePipes)
+bool ConvertFile(CBatchEncoderDlg *pDlg,
+    CString szInputFile,
+    CString szOutputFile,
+    TCHAR *szCommandLine,
+    int nIndex,
+    bool bDecode,
+    int nTool,
+    bool bUseReadPipes,
+    bool bUseWritePipes)
 {
     // TODO:
     // if there is no input pipes and output pipes are enabled
@@ -234,11 +232,11 @@ bool ConvertFile(CBatchEncoderDlg *pDlg,
 
     CMenu *mainMenu = pDlg->GetMenu();
     UINT nState = mainMenu->GetMenuState(ID_OPTIONS_LOGCONSOLEOUTPUT, MF_BYCOMMAND);
-    if(nState & MF_CHECKED)
+    if (nState & MF_CHECKED)
         bLogConsoleOutput = true;
 
     // set the correct security attributes
-    SECURITY_ATTRIBUTES secattr; 
+    SECURITY_ATTRIBUTES secattr;
     ZeroMemory(&secattr, sizeof(secattr));
     secattr.nLength = sizeof(secattr);
     secattr.bInheritHandle = TRUE;
@@ -250,12 +248,12 @@ bool ConvertFile(CBatchEncoderDlg *pDlg,
     HANDLE rOutPipe = INVALID_HANDLE_VALUE;
     HANDLE wOutPipe = INVALID_HANDLE_VALUE;
 
-    if((bUseReadPipes == false) && (bUseWritePipes == false))
+    if ((bUseReadPipes == false) && (bUseWritePipes == false))
     {
         // create pipes for stdout and stderr
         BOOL bRet = FALSE;
         bRet = ::CreatePipe(&rOutErrPipe, &wOutErrPipe, &secattr, 0);
-        if(bRet == FALSE)
+        if (bRet == FALSE)
         {
             pDlg->WorkerCallback(-1, true, true, 0.0, nIndex);
             return false;
@@ -263,26 +261,26 @@ bool ConvertFile(CBatchEncoderDlg *pDlg,
     }
     else
     {
-        if(bUseReadPipes == true)
+        if (bUseReadPipes == true)
         {
             // create pipes for stdin
             BOOL bRet = FALSE;
             bRet = ::CreatePipe(&rInPipe, &wInPipe, &secattr, 0);
-            if(bRet == FALSE)
+            if (bRet == FALSE)
             {
                 pDlg->WorkerCallback(-1, true, true, 0.0, nIndex);
                 return false;
             }
         }
 
-        if(bUseWritePipes == true)
+        if (bUseWritePipes == true)
         {
             // create pipes for stdout
             BOOL bRet = FALSE;
             bRet = ::CreatePipe(&rOutPipe, &wOutPipe, &secattr, 0);
-            if(bRet == FALSE)
+            if (bRet == FALSE)
             {
-                if(bUseReadPipes == true)
+                if (bUseReadPipes == true)
                 {
                     ::CloseHandle(rInPipe);
                     ::CloseHandle(wInPipe);
@@ -296,13 +294,13 @@ bool ConvertFile(CBatchEncoderDlg *pDlg,
 
     // this pipes are not inherited by child process
     // SetHandleInformation used only in NT systems
-    if(::IsWindowsXPOrGreater())
+    if (::IsWindowsXPOrGreater())
     {
-        if(bUseReadPipes == true)
+        if (bUseReadPipes == true)
         {
             BOOL bRet = FALSE;
             bRet = ::SetHandleInformation(wInPipe, HANDLE_FLAG_INHERIT, 0);
-            if(bRet == FALSE)
+            if (bRet == FALSE)
             {
                 ::CloseHandle(rInPipe);
                 ::CloseHandle(wInPipe);
@@ -312,13 +310,13 @@ bool ConvertFile(CBatchEncoderDlg *pDlg,
             }
         }
 
-        if(bUseWritePipes == true)
+        if (bUseWritePipes == true)
         {
             BOOL bRet = FALSE;
             bRet = ::SetHandleInformation(rOutPipe, HANDLE_FLAG_INHERIT, 0);
-            if(bRet == FALSE)
+            if (bRet == FALSE)
             {
-                if(bUseWritePipes == true)
+                if (bUseWritePipes == true)
                 {
                     ::CloseHandle(rInPipe);
                     ::CloseHandle(wInPipe);
@@ -334,15 +332,15 @@ bool ConvertFile(CBatchEncoderDlg *pDlg,
     }
 
     // NOTE: DuplicateHandle prevents child process to close pipe
-    if((bUseReadPipes == false) && (bUseWritePipes == false))
+    if ((bUseReadPipes == false) && (bUseWritePipes == false))
     {
         // this could be useful when reading from stderr
-        if(::DuplicateHandle(::GetCurrentProcess(), 
-            rOutErrPipe, 
+        if (::DuplicateHandle(::GetCurrentProcess(),
+            rOutErrPipe,
             ::GetCurrentProcess(),
-            &rOutErrPipe, 
-            0, 
-            TRUE, 
+            &rOutErrPipe,
+            0,
+            TRUE,
             DUPLICATE_CLOSE_SOURCE | DUPLICATE_SAME_ACCESS) == FALSE)
         {
             ::CloseHandle(rOutErrPipe);
@@ -353,10 +351,10 @@ bool ConvertFile(CBatchEncoderDlg *pDlg,
         }
     }
 
-    STARTUPINFO sInfo; 
+    STARTUPINFO sInfo;
     ZeroMemory(&sInfo, sizeof(sInfo));
 
-    PROCESS_INFORMATION pInfo; 
+    PROCESS_INFORMATION pInfo;
     ZeroMemory(&pInfo, sizeof(pInfo));
 
     sInfo.cb = sizeof(sInfo);
@@ -367,27 +365,27 @@ bool ConvertFile(CBatchEncoderDlg *pDlg,
     // we maybe can get stderr progress from console
     // this was tested not tested with commandline tools
 
-    if((bUseReadPipes == false) && (bUseWritePipes == false))
+    if ((bUseReadPipes == false) && (bUseWritePipes == false))
     {
         sInfo.hStdInput = NULL;
-        sInfo.hStdOutput = wOutErrPipe; 
+        sInfo.hStdOutput = wOutErrPipe;
         sInfo.hStdError = wOutErrPipe;
     }
     else
     {
-        if((bUseReadPipes == true) && (bUseWritePipes == false))
+        if ((bUseReadPipes == true) && (bUseWritePipes == false))
         {
             sInfo.hStdInput = rInPipe;
             sInfo.hStdOutput = NULL;
             sInfo.hStdError = NULL;
         }
-        else if((bUseReadPipes == false) && (bUseWritePipes == true))
+        else if ((bUseReadPipes == false) && (bUseWritePipes == true))
         {
             sInfo.hStdInput = NULL;
             sInfo.hStdOutput = wOutPipe;
             sInfo.hStdError = NULL;
         }
-        else if((bUseReadPipes == true) && (bUseWritePipes == true))
+        else if ((bUseReadPipes == true) && (bUseWritePipes == true))
         {
             sInfo.hStdInput = rInPipe;
             sInfo.hStdOutput = wOutPipe;
@@ -404,7 +402,7 @@ bool ConvertFile(CBatchEncoderDlg *pDlg,
     // and start it right now
     countTime.StartCounter();
 
-    if(pDlg->bForceConsoleWindow == true)
+    if (pDlg->bForceConsoleWindow == true)
     {
         // in this mode all encoders/decoders are forced 
         // to run in native system console windows
@@ -413,7 +411,7 @@ bool ConvertFile(CBatchEncoderDlg *pDlg,
 
         _flushall();
         nRet = ::_tsystem(NULL);
-        if((nRet == 0) && (errno == ENOENT))
+        if ((nRet == 0) && (errno == ENOENT))
         {
             // the command interpreter is not found
             nProgress = -1;
@@ -447,7 +445,7 @@ bool ConvertFile(CBatchEncoderDlg *pDlg,
             // use system(...) stdlib.h/process.h function
             _flushall();
             nRet = ::_tsystem(szSysCommandLine); // szCommandLine
-            if(nRet == -1)
+            if (nRet == -1)
             {
                 nProgress = -1;
             }
@@ -461,7 +459,7 @@ bool ConvertFile(CBatchEncoderDlg *pDlg,
     {
         // NOTE: lpCurrentDirectory param may be useful when app is loading some dll's
         BOOL bRet = FALSE;
-        bRet = ::CreateProcess(0, 
+        bRet = ::CreateProcess(0,
             szCommandLine,
             0,
             0,
@@ -471,20 +469,20 @@ bool ConvertFile(CBatchEncoderDlg *pDlg,
             0,
             &sInfo,
             &pInfo);
-        if(bRet == FALSE)
+        if (bRet == FALSE)
         {
             countTime.StopCounter();
 
             ::CloseHandle(rOutErrPipe);
             ::CloseHandle(wOutErrPipe);
 
-            if(bUseReadPipes == true)
+            if (bUseReadPipes == true)
             {
                 ::CloseHandle(rInPipe);
                 ::CloseHandle(wInPipe);
             }
 
-            if(bUseWritePipes == true)
+            if (bUseWritePipes == true)
             {
                 ::CloseHandle(rOutPipe);
                 ::CloseHandle(wOutPipe);
@@ -507,16 +505,16 @@ bool ConvertFile(CBatchEncoderDlg *pDlg,
         ::SetThreadPriority(pInfo.hThread, g_nThreadPriority[pDlg->nThreadPriorityIndex]);
 
         // close unused pipes handles
-        if((bUseReadPipes == false) && (bUseWritePipes == false))
+        if ((bUseReadPipes == false) && (bUseWritePipes == false))
         {
             ::CloseHandle(wOutErrPipe);
         }
         else
         {
-            if(bUseReadPipes == true)
+            if (bUseReadPipes == true)
                 ::CloseHandle(rInPipe);
 
-            if(bUseWritePipes == true)
+            if (bUseWritePipes == true)
                 ::CloseHandle(wOutPipe);
         }
 
@@ -528,7 +526,7 @@ bool ConvertFile(CBatchEncoderDlg *pDlg,
         HANDLE hReadThread = NULL;
         HANDLE hWriteThread = NULL;
 
-        if(bUseReadPipes == true)
+        if (bUseReadPipes == true)
         {
             // NOTE: get pipe buffer size
             // DWORD dwOutBufferSize, dwInBufferSize, dwMaxInstances;
@@ -544,10 +542,10 @@ bool ConvertFile(CBatchEncoderDlg *pDlg,
             hReadThread = ::CreateThread(NULL,
                 0,
                 ReadThread,
-                (LPVOID) &rd,
+                (LPVOID)&rd,
                 /* CREATE_SUSPENDED */ 0,
                 &dwReadThreadID);
-            if(hReadThread == NULL)
+            if (hReadThread == NULL)
             {
                 countTime.StopCounter();
 
@@ -560,14 +558,14 @@ bool ConvertFile(CBatchEncoderDlg *pDlg,
             // ::ResumeThread(pInfo.hThread);
             // ::ResumeThread(hReadThread);
 
-            if(bUseWritePipes == false)
+            if (bUseWritePipes == false)
             {
                 ::WaitForSingleObject(hReadThread, INFINITE);
 
                 ::CloseHandle(wInPipe);
 
                 // check for result from read thread
-                if((rd.bError == false) && (rd.bFinished == true))
+                if ((rd.bError == false) && (rd.bFinished == true))
                     nProgress = 100;
                 else
                     nProgress = -1;
@@ -584,7 +582,7 @@ bool ConvertFile(CBatchEncoderDlg *pDlg,
 
         // NOTE: write pipes are designed for transcoding only
 
-        if(bUseWritePipes == true)
+        if (bUseWritePipes == true)
         {
             // NOTE: get pipe buffer size
             // DWORD dwOutBufferSize, dwInBufferSize, dwMaxInstances;
@@ -600,10 +598,10 @@ bool ConvertFile(CBatchEncoderDlg *pDlg,
             hWriteThread = ::CreateThread(NULL,
                 0,
                 WriteThread,
-                (LPVOID) &wd,
+                (LPVOID)&wd,
                 /* CREATE_SUSPENDED */ 0,
                 &dwWriteThreadID);
-            if(hWriteThread == NULL)
+            if (hWriteThread == NULL)
             {
                 countTime.StopCounter();
 
@@ -621,16 +619,16 @@ bool ConvertFile(CBatchEncoderDlg *pDlg,
             ::CloseHandle(rOutPipe);
 
             // check for result from read thread
-            if((wd.bError == false) && (wd.bFinished == true))
+            if ((wd.bError == false) && (wd.bFinished == true))
             {
                 bWriteSuccess = true;
-                if(bUseReadPipes == false)
+                if (bUseReadPipes == false)
                     nProgress = 100;
             }
             else
             {
                 bWriteSuccess = false;
-                if(bUseReadPipes == false)
+                if (bUseReadPipes == false)
                     nProgress = -1;
             }
 
@@ -638,14 +636,14 @@ bool ConvertFile(CBatchEncoderDlg *pDlg,
             ::CloseHandle(hWriteThread);
         }
 
-        if((bUseReadPipes == true) && (bUseWritePipes == true))
+        if ((bUseReadPipes == true) && (bUseWritePipes == true))
         {
             ::WaitForSingleObject(hReadThread, INFINITE);
 
             ::CloseHandle(wInPipe);
 
             // check for result from read thread
-            if((rd.bError == false) && (rd.bFinished == true) && (bWriteSuccess == true))
+            if ((rd.bError == false) && (rd.bFinished == true) && (bWriteSuccess == true))
                 nProgress = 100;
             else
                 nProgress = -1;
@@ -654,7 +652,7 @@ bool ConvertFile(CBatchEncoderDlg *pDlg,
             ::CloseHandle(hReadThread);
         }
 
-        if((bUseReadPipes == false) && (bUseWritePipes == false))
+        if ((bUseReadPipes == false) && (bUseWritePipes == false))
         {
             // ::ResumeThread(pInfo.hThread);
 
@@ -677,7 +675,7 @@ bool ConvertFile(CBatchEncoderDlg *pDlg,
 
             // NOTE: what we get first start of line or end of line?
             bLineStart = false;
-            bLineEnd = false; 
+            bLineEnd = false;
 
             // LAME histogram data
             LAME_ENC_HISTOGRAM lehData;
@@ -687,19 +685,19 @@ bool ConvertFile(CBatchEncoderDlg *pDlg,
             CFile fp;
             bool bHaveLogFile = false;
 
-            if(bLogConsoleOutput == true)
+            if (bLogConsoleOutput == true)
             {
                 ::UpdatePath();
-                if(fp.Open(pDlg->szLogFileName, CFile::modeWrite | CFile::modeNoTruncate | CFile::modeCreate) == TRUE)
+                if (fp.Open(pDlg->szLogFileName, CFile::modeWrite | CFile::modeNoTruncate | CFile::modeCreate) == TRUE)
                 {
                     bHaveLogFile = true;
 
-                    if(fp.GetLength() == (ULONGLONG) 0)
+                    if (fp.GetLength() == (ULONGLONG)0)
                     {
                         const unsigned char szHeaderUnicode[2] = { 0xFFU, 0xFEU };
                         const unsigned char szHeaderUtf8[3] = { 0xEFU, 0xBBU, 0xBFU };
 
-                        switch(pDlg->nLogEncoding)
+                        switch (pDlg->nLogEncoding)
                         {
                         case 1: // UNICODE
                             fp.Write(szHeaderUnicode, 2);
@@ -722,17 +720,17 @@ bool ConvertFile(CBatchEncoderDlg *pDlg,
             // NOTE: preload all progress dll's before conversion process
 
             // load progress function
-            typedef int (*lpfnGetProgress)(char *szLineBuff, int nLineLen);
+            typedef int(*lpfnGetProgress)(char *szLineBuff, int nLineLen);
 
             lpfnGetProgress pProgressProc;
             HMODULE hDll = ::LoadLibrary(pDlg->szFormatFunction[nTool]);
-            if(hDll != NULL)
+            if (hDll != NULL)
             {
                 // _T("GetProgress") == pDlg->szFormatFunction[nTool]
 
                 // NOTE: the GetProcAddress function has only ANSI version
                 pProgressProc = (lpfnGetProgress) ::GetProcAddress(hDll, "GetProgress");
-                if(pProgressProc == NULL)
+                if (pProgressProc == NULL)
                     return false; // ERROR
 
                 // TODO: when failed to load dll we need to do more clean-up
@@ -751,42 +749,42 @@ bool ConvertFile(CBatchEncoderDlg *pDlg,
                 // ::FlushFileBuffers(rOutErrPipe);
 
                 bRes = ::ReadFile(rOutErrPipe, szReadBuff, 100, &dwReadBytes, 0);
-                if(bRes == FALSE || dwReadBytes == 0)
+                if (bRes == FALSE || dwReadBytes == 0)
                     break;
 
                 // terminate readed data by '\0'
                 szReadBuff[dwReadBytes] = '\0';
 
-                for(int i = 0; i < (int) dwReadBytes; i++)
+                for (int i = 0; i < (int)dwReadBytes; i++)
                 {
                     // NOTE: processed escape chars ( \r \n \t \b )
-                    if(szReadBuff[i] == '\r') // '\r'
+                    if (szReadBuff[i] == '\r') // '\r'
                     {
-                        if((bLineStart == true) && (bLineEnd == false))
+                        if ((bLineStart == true) && (bLineEnd == false))
                         {
                             bLineEnd = true;
                             bLineStart = false;
                             szLineBuff[nLineLen] = '\0';
                         }
                     }
-                    else if(szReadBuff[i] == '\n') // '\n'
+                    else if (szReadBuff[i] == '\n') // '\n'
                     {
                         // do nothing
                     }
-                    else if(szReadBuff[i] == '\t') // '\t'
+                    else if (szReadBuff[i] == '\t') // '\t'
                     {
                         // do nothing
                     }
-                    else if(szReadBuff[i] == '\b') // '\b'
+                    else if (szReadBuff[i] == '\b') // '\b'
                     {
                         // do nothing in most situations
 
                         // NOTE: special case for wavpack and wvunpack
-                        if(((bDecode == false) && (nTool == TOOL_ID_ENC_WAVPACK)) ||
+                        if (((bDecode == false) && (nTool == TOOL_ID_ENC_WAVPACK)) ||
                             ((bDecode == true) && (nTool == TOOL_ID_DEC_WVUNPACK)))
                         {
                             // NOTE: same code as if(szReadBuff[i] == '\r')
-                            if((bLineStart == true) && (bLineEnd == false))
+                            if ((bLineStart == true) && (bLineEnd == false))
                             {
                                 bLineEnd = true;
                                 bLineStart = false;
@@ -794,7 +792,7 @@ bool ConvertFile(CBatchEncoderDlg *pDlg,
                             }
                         }
                     }
-                    else if(bLineEnd == false)
+                    else if (bLineEnd == false)
                     {
                         bLineStart = true; // for sure we have start
                         nLineLen++;
@@ -802,23 +800,23 @@ bool ConvertFile(CBatchEncoderDlg *pDlg,
                     }
 
                     // now we have correct full line of text
-                    if((bLineEnd == true) && (bLineStart == false))
+                    if ((bLineEnd == true) && (bLineStart == false))
                     {
                         // don't include empty lines
-                        if(strlen(szLineBuff) > 0)
+                        if (strlen(szLineBuff) > 0)
                         {
-                            if(bDecode == false)
+                            if (bDecode == false)
                             {
                                 // NOTE: histogram works only if pipes are disabled
 
                                 // get LameEnc histogram data and update Histogram control
-                                if(nTool == TOOL_ID_ENC_LAME)
+                                if (nTool == TOOL_ID_ENC_LAME)
                                 {
                                     // NOTE: create dll for histogram function and add option to main config file
                                     int nRet = GetHistogram_LameEnc(szLineBuff, nLineLen, &lehData);
-                                    if(nRet == 0)
+                                    if (nRet == 0)
                                     {
-                                        if(pDlg->bIsHistogramVisible == true)
+                                        if (pDlg->bIsHistogramVisible == true)
                                         {
                                             pDlg->HistogramCallback(&lehData);
                                             bEraseHistogram = true;
@@ -827,52 +825,52 @@ bool ConvertFile(CBatchEncoderDlg *pDlg,
                                 }
 
                                 int nRet = (pProgressProc)(szLineBuff, nLineLen);
-                                if(nRet != -1)
+                                if (nRet != -1)
                                     nProgress = nRet;
                             }
                             else
                             {
                                 int nRet = (pProgressProc)(szLineBuff, nLineLen);
-                                if(nRet != -1)
+                                if (nRet != -1)
                                     nProgress = nRet;
                             }
 
                             // log all console output for error checking
-                            if(bLogConsoleOutput == true)
+                            if (bLogConsoleOutput == true)
                             {
-                                if((bHaveLogFile == true) 
-                                    && (fp.m_hFile != NULL) 
-                                    && (strlen(szLineBuff) > (size_t) 0))
+                                if ((bHaveLogFile == true)
+                                    && (fp.m_hFile != NULL)
+                                    && (strlen(szLineBuff) > (size_t)0))
                                 {
-                                    switch(pDlg->nLogEncoding)
+                                    switch (pDlg->nLogEncoding)
                                     {
                                     case 0: // ANSI, default string is ANSI
-                                        {
-                                            fp.Write(szLineBuff, (UINT) strlen(szLineBuff));
-                                            fp.Write("\r\n", 2);
-                                            fp.Flush();
-                                        }
-                                        break;
+                                    {
+                                        fp.Write(szLineBuff, (UINT)strlen(szLineBuff));
+                                        fp.Write("\r\n", 2);
+                                        fp.Flush();
+                                    }
+                                    break;
                                     case 1: // UNICODE
-                                        {
-                                            wchar_t *pszBuffUnicode;
-                                            UnicodeEncode(szLineBuff, &pszBuffUnicode);
-                                            fp.Write(pszBuffUnicode, (UINT) wcslen(pszBuffUnicode) * 2);
-                                            fp.Write(L"\r\n", 4);
-                                            fp.Flush();
-                                            free(pszBuffUnicode);
-                                        }
-                                        break;
+                                    {
+                                        wchar_t *pszBuffUnicode;
+                                        UnicodeEncode(szLineBuff, &pszBuffUnicode);
+                                        fp.Write(pszBuffUnicode, (UINT)wcslen(pszBuffUnicode) * 2);
+                                        fp.Write(L"\r\n", 4);
+                                        fp.Flush();
+                                        free(pszBuffUnicode);
+                                    }
+                                    break;
                                     case 2: // UTF-8
-                                        {
-                                            char *pszBuffUtf8;
-                                            Utf8Encode(szLineBuff, &pszBuffUtf8);
-                                            fp.Write(pszBuffUtf8, (UINT) strlen(pszBuffUtf8));
-                                            fp.Write("\r\n", 2);
-                                            fp.Flush();
-                                            free(pszBuffUtf8);
-                                        }
-                                        break;
+                                    {
+                                        char *pszBuffUtf8;
+                                        Utf8Encode(szLineBuff, &pszBuffUtf8);
+                                        fp.Write(pszBuffUtf8, (UINT)strlen(pszBuffUtf8));
+                                        fp.Write("\r\n", 2);
+                                        fp.Flush();
+                                        free(pszBuffUtf8);
+                                    }
+                                    break;
                                     default:
                                         break;
                                     };
@@ -882,7 +880,7 @@ bool ConvertFile(CBatchEncoderDlg *pDlg,
                             ZeroMemory(szLineBuff, sizeof(szLineBuff));
 
                             bRunning = pDlg->WorkerCallback(nProgress, false);
-                            if(bRunning == false)
+                            if (bRunning == false)
                                 break;
                         }
 
@@ -891,25 +889,24 @@ bool ConvertFile(CBatchEncoderDlg *pDlg,
 
                         // now find next start
                         bLineStart = true;
-                        bLineEnd = false; 
+                        bLineEnd = false;
                     }
                 }
 
-                if(bRunning == false)
+                if (bRunning == false)
                     break;
-            }
-            while(bRes);
+            } while (bRes);
 
             // free memory by unloading unused dll
-            if(hDll != NULL)
+            if (hDll != NULL)
                 ::FreeLibrary(hDll);
 
             // erase histogram window
-            if(bEraseHistogram == true)
+            if (bEraseHistogram == true)
                 pDlg->m_Histogram.Erase(true);
 
             // close logfile
-            if((bLogConsoleOutput == true) && (bHaveLogFile = true))
+            if ((bLogConsoleOutput == true) && (bHaveLogFile = true))
             {
                 fp.Close();
                 bHaveLogFile = false;
@@ -922,32 +919,32 @@ bool ConvertFile(CBatchEncoderDlg *pDlg,
     // finished, stop convertion time counter
     countTime.StopCounter();
 
-    if(pDlg->bForceConsoleWindow == false)
+    if (pDlg->bForceConsoleWindow == false)
     {
         // terminate console process if there was error
         HANDLE hProc;
         hProc = ::OpenProcess(PROCESS_ALL_ACCESS, TRUE, pInfo.dwProcessId); // PROCESS_TERMINATE
-        if(hProc != NULL)
+        if (hProc != NULL)
         {
-            if(nProgress == 100)
+            if (nProgress == 100)
             {
                 // when properly finishing we need to wait
                 // for process to terminate = 5 seconds max
                 // here we are doing this right and clean
                 DWORD dwRet = ::WaitForSingleObject(hProc, 2000);
-                switch(dwRet)
+                switch (dwRet)
                 {
-                case WAIT_FAILED: 
+                case WAIT_FAILED:
                     // failed, propobly process has finished, but error could be to
                     ::TerminateProcess(hProc, 0);
                     break;
-                case WAIT_ABANDONED: 
+                case WAIT_ABANDONED:
                     // skip, only for mutex objects
                     break;
-                case WAIT_OBJECT_0: 
+                case WAIT_OBJECT_0:
                     // skip, object is signaled, process has terminated
                     break;
-                case WAIT_TIMEOUT: 
+                case WAIT_TIMEOUT:
                     // time-out interval elapsed
                     // object's state is nonsignaled
                     // used when user had pressed stop button
@@ -980,7 +977,7 @@ bool ConvertFile(CBatchEncoderDlg *pDlg,
     // ::SetThreadPriority(::GetCurrentThread(), nPriority);
 
     pDlg->WorkerCallback(nProgress, true, false, countTime.GetTime(), nIndex);
-    if(nProgress == 100)
+    if (nProgress == 100)
         return true;
     else
         return false;
@@ -996,16 +993,16 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
     ::UpdatePath();
 
     // get handle of main dialog
-    CBatchEncoderDlg *pDlg = (CBatchEncoderDlg *) lpParam;
-    if(pDlg == NULL)
-        return (DWORD) (-1);
+    CBatchEncoderDlg *pDlg = (CBatchEncoderDlg *)lpParam;
+    if (pDlg == NULL)
+        return (DWORD)(-1);
 
     TCHAR szCommandLine[(64 * 1024)];
     ZeroMemory(szCommandLine, sizeof(szCommandLine));
 
     // check for delete flag
     bool bDeleteAfterConverion = false;
-    if(pDlg->GetMenu()->GetMenuState(ID_OPTIONS_DELETESOURCEFILEWHENDONE, MF_BYCOMMAND) == MF_CHECKED)
+    if (pDlg->GetMenu()->GetMenuState(ID_OPTIONS_DELETESOURCEFILEWHENDONE, MF_BYCOMMAND) == MF_CHECKED)
         bDeleteAfterConverion = true;
     else
         bDeleteAfterConverion = false;
@@ -1014,7 +1011,7 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
     CString szOutPath;
     bool bOutPath;
     pDlg->m_EdtOutPath.GetWindowText(szOutPath);
-    if(pDlg->m_ChkOutPath.GetCheck() == BST_CHECKED)
+    if (pDlg->m_ChkOutPath.GetCheck() == BST_CHECKED)
         bOutPath = true;
     else
         bOutPath = false;
@@ -1027,9 +1024,9 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
     int nProcessedFiles = 0;
     int nDoneWithoutError = 0;
     int nErrors = 0;
-    for(int i = 0; i < nFiles; i++)
+    for (int i = 0; i < nFiles; i++)
     {
-        if(pDlg->m_LstInputFiles.GetCheck(i) == TRUE)
+        if (pDlg->m_LstInputFiles.GetCheck(i) == TRUE)
             nTotalFiles++;
     }
 
@@ -1038,18 +1035,18 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
     countTime.StartCounter();
 
     // process all checked files
-    for(int i = 0; i < nFiles; i++)
+    for (int i = 0; i < nFiles; i++)
     {
         // get next file name and check if we need to encode/decode/transcode
-        if(pDlg->m_LstInputFiles.GetCheck(i) == TRUE)
+        if (pDlg->m_LstInputFiles.GetCheck(i) == TRUE)
         {
             // update statusbar conversion status
             nProcessedFiles++;
 
             nErrors = (nProcessedFiles - 1) - nDoneWithoutError;
             CString szText;
-            szText.Format(_T("Processing file %d of %d (%d Done, %d %s)"), 
-                nProcessedFiles, 
+            szText.Format(_T("Processing file %d of %d (%d Done, %d %s)"),
+                nProcessedFiles,
                 nTotalFiles,
                 nDoneWithoutError,
                 nErrors,
@@ -1083,9 +1080,9 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
 
             // get full file path
             CString szInputFile = pDlg->m_FileList.GetItemFilePath(i);
-            
+
             // output path is same as input file path
-            if(bOutPath == false)
+            if (bOutPath == false)
             {
                 szOutPath = szInputFile;
                 CString szToRemove = pDlg->m_FileList.GetFileName(szInputFile);
@@ -1111,7 +1108,7 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
             // 3. set encoder options string
             CString szEncoderExePath;
             CString szEncoderOptions;
-           
+
             szEncoderExePath = pDlg->GetEncoderExe(nOutputFormat);
             szEncoderOptions = pDlg->GetEncoderOpt(nOutputFormat, nPreset);
             szName = szName + _T(".") + pDlg->m_FileList.GetItemOutExt(i).MakeLower();
@@ -1119,9 +1116,9 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
             // set full path for output file
             CString szOutputFile;
 
-            if(szOutPath.GetLength() >= 1)
+            if (szOutPath.GetLength() >= 1)
             {
-                if(szOutPath[szOutPath.GetLength() - 1] == '\\' || szOutPath[szOutPath.GetLength() - 1] == '/' )
+                if (szOutPath[szOutPath.GetLength() - 1] == '\\' || szOutPath[szOutPath.GetLength() - 1] == '/')
                     szOutputFile = szOutPath + szName;
                 else
                     szOutputFile = szOutPath + _T("\\") + szName;
@@ -1133,10 +1130,10 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
 
             // set proper processing mode
             nProcessingMode = 1;
-            if(nIntputFormat == 0)
+            if (nIntputFormat == 0)
                 nProcessingMode = 0;
 
-            if(nProcessingMode == 1)
+            if (nProcessingMode == 1)
                 nProcessingMode = 2;
 
             // TODO: use CopyOneFile(...) in case 1
@@ -1144,29 +1141,29 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
             // [2] Input is WAV, [Output is WAV], Resmapling             = Encode Input File (using SSRC)
             // [3] Input need decoding, [Output is WAV], No Resampling   = Decode Input File (using Decoder)
             // [4] Input need decoding, [Output is WAV], Resampling      = Decode and Encode (using Decoder and SSRC)
-            if(nOutputFormat == 0)
+            if (nOutputFormat == 0)
             {
                 bool bNeedResampling = (szEncoderOptions.GetLength() > 0) ? true : false;
 
                 // case 1
-                if((nIntputFormat == 0) && (bNeedResampling == false))
+                if ((nIntputFormat == 0) && (bNeedResampling == false))
                     nProcessingMode = 0;
 
                 // case 2
-                if((nIntputFormat == 0) && (bNeedResampling == true))
+                if ((nIntputFormat == 0) && (bNeedResampling == true))
                     nProcessingMode = 0;
 
                 // case 3
-                if((nIntputFormat > 0) && (bNeedResampling == false))
+                if ((nIntputFormat > 0) && (bNeedResampling == false))
                     nProcessingMode = 1;
 
                 // case 4
-                if((nIntputFormat > 0) && (bNeedResampling == true))
+                if ((nIntputFormat > 0) && (bNeedResampling == true))
                     nProcessingMode = 2;
             }
 
             // build proper commandline depending on processing mode:
-            CString csExecute;            
+            CString csExecute;
             bool bDecode = false;
             int nTool = -1;
             bool bUseInPipesEnc = false;
@@ -1178,9 +1175,9 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
             CString szOrgOutputFile = szOutputFile;
 
             // decode
-            if((nProcessingMode == 1) || (nProcessingMode == 2))
+            if ((nProcessingMode == 1) || (nProcessingMode == 2))
             {
-                if(pDlg->bForceConsoleWindow == false)
+                if (pDlg->bForceConsoleWindow == false)
                 {
                     // configure decoder input and output pipes
                     bUseInPipesDec = pDlg->bFormatInput[(NUM_OUTPUT_EXT + nIntputFormat - 1)];
@@ -1188,16 +1185,16 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
                 }
 
                 // input file is stdin
-                if(bUseInPipesDec == true)
+                if (bUseInPipesDec == true)
                     szInputFile = _T("-");
 
                 // output file is stdout
-                if(bUseOutPipesDec == true)
+                if (bUseOutPipesDec == true)
                     szOutputFile = _T("-");
 
                 // TODO:
                 // bUseOutPipes == true then handle szOutputFile same as input file
-                if(nProcessingMode == 2)
+                if (nProcessingMode == 2)
                     szOutputFile = szOutputFile + _T(".wav");
 
                 // TODO: validate the command-line template
@@ -1222,46 +1219,46 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
                 pDlg->m_LstInputFiles.SetItemText(i, 6, _T("Decoding..."));
 
                 // update (init) conversion status data
-                pDlg->m_CnvStatus.SetCurrentInfo(nProcessedFiles, 
-                    nTotalFiles, 
-                    nDoneWithoutError, 
-                    pDlg->m_FileList.GetFileName(szOrgInputFile), 
-                    pDlg->m_FileList.GetFileName(szOrgOutputFile), 
+                pDlg->m_CnvStatus.SetCurrentInfo(nProcessedFiles,
+                    nTotalFiles,
+                    nDoneWithoutError,
+                    pDlg->m_FileList.GetFileName(szOrgInputFile),
+                    pDlg->m_FileList.GetFileName(szOrgOutputFile),
                     szOutPath);
 
                 pDlg->m_CnvStatus.Draw(0);
 
                 // TODO: when decoding in nProcessingMode == 2 don't show time stats
-                if(::ConvertFile(pDlg, 
+                if (::ConvertFile(pDlg,
                     szOrgInputFile,
                     szOrgOutputFile,
-                    szCommandLine, 
-                    i, 
-                    bDecode,  
-                    nTool, 
+                    szCommandLine,
+                    i,
+                    bDecode,
+                    nTool,
                     bUseInPipesDec,
                     bUseOutPipesDec) == true)
                 {
-                    if(nProcessingMode == 1)
+                    if (nProcessingMode == 1)
                         nDoneWithoutError++;
 
-                    if(bDeleteAfterConverion == true)
+                    if (bDeleteAfterConverion == true)
                         ::DeleteFile(szOrgInputFile);
 
-                    if(nProcessingMode == 1)
+                    if (nProcessingMode == 1)
                         pDlg->m_LstInputFiles.SetCheck(i, FALSE);
                 }
                 else
                 {
                     // delete output file on error
-                    if(pDlg->bDeleteOnError == true)
+                    if (pDlg->bDeleteOnError == true)
                         ::DeleteFile(szOutputFile);
 
-                    if(pDlg->bRunning == false)
+                    if (pDlg->bRunning == false)
                         break;
 
                     // stop conversion process on error
-                    if(pDlg->bStopOnErrors == true)
+                    if (pDlg->bStopOnErrors == true)
                         break;
 
                     // in processing mode 2 we are skipping to next file
@@ -1270,28 +1267,28 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
                 }
             }
 
-            if(pDlg->bRunning == false)
+            if (pDlg->bRunning == false)
                 break;
 
-            if(pDlg->bForceConsoleWindow == false)
+            if (pDlg->bForceConsoleWindow == false)
             {
                 // configure encoder input and output pipes
                 bUseInPipesEnc = pDlg->bFormatInput[nOutputFormat];
                 bUseOutPipesEnc = pDlg->bFormatOutput[nOutputFormat];
             }
 
-            if(nProcessingMode == 0)
+            if (nProcessingMode == 0)
             {
                 // input file is stdin
-                if(bUseInPipesEnc == true)
+                if (bUseInPipesEnc == true)
                     szInputFile = _T("-");
 
                 // output file is stdout
-                if(bUseOutPipesEnc == true)
+                if (bUseOutPipesEnc == true)
                     szOutputFile = _T("-");
             }
 
-            if(nProcessingMode == 2)
+            if (nProcessingMode == 2)
             {
                 // input filename is decoded output filename
                 szInputFile = szOutputFile;
@@ -1301,16 +1298,16 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
                 szOutputFile = szOrgOutputFile;
 
                 // input file is stdin
-                if(bUseInPipesEnc == true)
+                if (bUseInPipesEnc == true)
                     szInputFile = _T("-");
 
                 // output file is stdout
-                if(bUseOutPipesEnc == true)
+                if (bUseOutPipesEnc == true)
                     szOutputFile = _T("-");
             }
 
             // encode
-            if((nProcessingMode == 0) || (nProcessingMode == 2))
+            if ((nProcessingMode == 0) || (nProcessingMode == 2))
             {
                 // TODO: validate the command-line template
 
@@ -1334,28 +1331,28 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
                 pDlg->m_LstInputFiles.SetItemText(i, 6, _T("Encoding..."));
 
                 // update (init) conversion status data
-                pDlg->m_CnvStatus.SetCurrentInfo(nProcessedFiles, 
-                    nTotalFiles, 
-                    nDoneWithoutError, 
-                    pDlg->m_FileList.GetFileName(szOrgInputFile), 
-                    pDlg->m_FileList.GetFileName(szOrgOutputFile), 
+                pDlg->m_CnvStatus.SetCurrentInfo(nProcessedFiles,
+                    nTotalFiles,
+                    nDoneWithoutError,
+                    pDlg->m_FileList.GetFileName(szOrgInputFile),
+                    pDlg->m_FileList.GetFileName(szOrgOutputFile),
                     szOutPath);
 
                 pDlg->m_CnvStatus.Draw(0);
 
-                if(::ConvertFile(pDlg, 
+                if (::ConvertFile(pDlg,
                     szOrgInputFile,
                     szOrgOutputFile,
-                    szCommandLine, 
-                    i, 
-                    bDecode,  
-                    nTool, 
+                    szCommandLine,
+                    i,
+                    bDecode,
+                    nTool,
                     bUseInPipesEnc,
                     bUseOutPipesEnc) == true)
                 {
                     nDoneWithoutError++;
 
-                    if(bDeleteAfterConverion == true)
+                    if (bDeleteAfterConverion == true)
                         ::DeleteFile(szOrgInputFile);
 
                     pDlg->m_LstInputFiles.SetCheck(i, FALSE);
@@ -1363,20 +1360,20 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
                 else
                 {
                     // delete output file on error
-                    if(pDlg->bDeleteOnError == true)
+                    if (pDlg->bDeleteOnError == true)
                         ::DeleteFile(szOutputFile);
 
                     // stop conversion process on error
-                    if(pDlg->bStopOnErrors == true)
+                    if (pDlg->bStopOnErrors == true)
                         break;
                 }
 
                 // delete temporary file
-                if(nProcessingMode == 2)
+                if (nProcessingMode == 2)
                     ::DeleteFile(szOrgInputFile);
             }
 
-            if(pDlg->bRunning == false)
+            if (pDlg->bRunning == false)
                 break;
         }
     }
@@ -1384,7 +1381,7 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
     countTime.StopCounter();
 
     // show total time
-    if(nProcessedFiles > 0)
+    if (nProcessedFiles > 0)
     {
         CString szText;
         szText.Format(_T("Done in %s"), ::FormatTime(countTime.GetTime(), 3));
@@ -1396,7 +1393,7 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
     }
 
     // restore user interface to default state
-    if(pDlg->bShowTrayIcon == true)
+    if (pDlg->bShowTrayIcon == true)
         pDlg->EnableTrayIcon(true, true);
 
     pDlg->m_BtnConvert.SetWindowText(_T("Conve&rt"));
@@ -1406,12 +1403,12 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
     pDlg->EnableUserInterface(TRUE);
 
     // now we shutdown the system
-    if(pDlg->GetMenu()->GetMenuState(ID_OPTIONS_SHUTDOWN_WHEN_FINISHED, MF_BYCOMMAND) == MF_CHECKED)
+    if (pDlg->GetMenu()->GetMenuState(ID_OPTIONS_SHUTDOWN_WHEN_FINISHED, MF_BYCOMMAND) == MF_CHECKED)
     {
         // NOTE: before shutdown we are doing OnClose() stuff
 
         // save current settings to file
-        if(pDlg->GetMenu()->GetMenuState(ID_OPTIONS_DO_NOT_SAVE, MF_BYCOMMAND) != MF_CHECKED)
+        if (pDlg->GetMenu()->GetMenuState(ID_OPTIONS_DO_NOT_SAVE, MF_BYCOMMAND) != MF_CHECKED)
             pDlg->SaveSettings();
 
         // disable tray icon

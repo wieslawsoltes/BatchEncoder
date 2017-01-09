@@ -25,7 +25,7 @@
 
 // the progress icons IDs
 // items: NUM_PROGRESS_ICONS
-const int g_nProgressIconResources[NUM_PROGRESS_ICONS] = 
+const int g_nProgressIconResources[NUM_PROGRESS_ICONS] =
 {
     IDI_ICON_PROGRESS_01,   // 0
     IDI_ICON_PROGRESS_02,   // 1
@@ -43,7 +43,7 @@ const int g_nProgressIconResources[NUM_PROGRESS_ICONS] =
 
 // supported thread priorities
 // items: NUM_THREAD_PRIORITY
-const int g_nThreadPriority[NUM_THREAD_PRIORITY] = 
+const int g_nThreadPriority[NUM_THREAD_PRIORITY] =
 {
     THREAD_PRIORITY_IDLE,           // 0
     THREAD_PRIORITY_LOWEST,         // 1
@@ -56,7 +56,7 @@ const int g_nThreadPriority[NUM_THREAD_PRIORITY] =
 
 // supported process priorities
 // items: NUM_PROCESS_PRIORITY
-const DWORD g_dwProcessPriority[NUM_PROCESS_PRIORITY] = 
+const DWORD g_dwProcessPriority[NUM_PROCESS_PRIORITY] =
 {
     IDLE_PRIORITY_CLASS,            // 0
     NORMAL_PRIORITY_CLASS,          // 1
@@ -66,7 +66,7 @@ const DWORD g_dwProcessPriority[NUM_PROCESS_PRIORITY] =
 
 // supported thread priority names
 // items: NUM_THREAD_PRIORITY
-const TCHAR *g_szThreadPriority[] = 
+const TCHAR *g_szThreadPriority[] =
 {
     _T("Idle"),                   // 0
     _T("Lowest"),                 // 1
@@ -79,7 +79,7 @@ const TCHAR *g_szThreadPriority[] =
 
 // supported process priority names
 // items: NUM_PROCESS_PRIORITY
-const TCHAR *g_szProcessPriority[] = 
+const TCHAR *g_szProcessPriority[] =
 {
     _T("Idle"),                   // 0
     _T("Normal"),                 // 1
@@ -89,7 +89,7 @@ const TCHAR *g_szProcessPriority[] =
 
 // file tag attributes
 // items: NUM_FILE_ATTRIBUTES
-const char *g_szFileAttributes[] = 
+const char *g_szFileAttributes[] =
 {
     "path",     // 0
     "checked",  // 1
@@ -104,7 +104,7 @@ const char *g_szFileAttributes[] =
 
 // tags used to store program settings
 // items: NUM_PROGRAM_SETTINGS
-const char *g_szSettingsTags[] = 
+const char *g_szSettingsTags[] =
 {
     "SelPresetIndex",       // 0
     "SelFormatIndex",       // 1
@@ -134,7 +134,7 @@ const char *g_szSettingsTags[] =
 
 // tags used to store conversion progress and histogram colors
 // items: NUM_PROGRAM_COLORS
-const char *g_szColorsTags[] = 
+const char *g_szColorsTags[] =
 {
     "CnvStatusText",        // 0
     "CnvStatusTextError",   // 1
@@ -149,7 +149,7 @@ const char *g_szColorsTags[] =
 
 // supported input file extensions
 // items: NUM_INPUT_EXT
-const TCHAR *g_szAllInExt[] = 
+const TCHAR *g_szAllInExt[] =
 {                 // nInFormat
     _T("WAV"),  // 0
     _T("MP1"),  // 1
@@ -174,7 +174,7 @@ const TCHAR *g_szAllInExt[] =
 
 // supported output file extensions
 // items: NUM_OUTPUT_EXT
-const TCHAR *g_szAllOutExt[] = 
+const TCHAR *g_szAllOutExt[] =
 {                 // nOutFormat
     _T("WAV"),  // 0
     _T("MP3"),  // 1
@@ -234,7 +234,7 @@ const TCHAR *g_szFormatNames[] =
 
 // default presets names for each file format
 // items: NUM_PRESET_FILES
-const TCHAR *g_szPresetNames[] = 
+const TCHAR *g_szPresetNames[] =
 {
     _T("WAV (Standard)"),                         // 0
     _T("MP3 (MPEG Layer-3)"),                     // 1
@@ -254,7 +254,7 @@ const TCHAR *g_szPresetNames[] =
 
 // tags used to store presets filenames
 // items: NUM_PRESET_FILES
-const char *g_szPresetTags[] = 
+const char *g_szPresetTags[] =
 {
     "PRESETS_WAV",      // 0
     "PRESETS_MP3",      // 1
@@ -274,7 +274,7 @@ const char *g_szPresetTags[] =
 
 // default presets config filenames
 // items: NUM_PRESET_FILES
-const TCHAR *g_szPresetFiles[] = 
+const TCHAR *g_szPresetFiles[] =
 {
     _T("Presets_WAV_Ssrc.presets"),       // 0
     _T("Presets_MP3_Lame.presets"),       // 1
@@ -294,7 +294,7 @@ const TCHAR *g_szPresetFiles[] =
 
 // default presets resources IDs
 // items: NUM_PRESET_FILES
-const int g_nPresetResources[NUM_PRESET_FILES] = 
+const int g_nPresetResources[NUM_PRESET_FILES] =
 {
     IDR_PRESET_WAV_SSRC,    // 0
     IDR_PRESET_MP3_LAME,    // 1
@@ -354,7 +354,7 @@ const TCHAR *g_szDefaultTemplate[] =
 
 // default names for commandline executables
 // items: NUM_FORMAT_NAMES
-const TCHAR *g_szDefaultPath[] = 
+const TCHAR *g_szDefaultPath[] =
 {
     // ENCODERS
     _T("ssrc.exe"),           // 0
@@ -394,7 +394,7 @@ const TCHAR *g_szDefaultPath[] =
 
 // default input pipes flags for commandline tools
 // items: NUM_FORMAT_NAMES
-const bool g_bDefaultInPipes[NUM_FORMAT_NAMES] = 
+const bool g_bDefaultInPipes[NUM_FORMAT_NAMES] =
 {
     // ENCODERS
     false,  // 0
@@ -433,7 +433,7 @@ const bool g_bDefaultInPipes[NUM_FORMAT_NAMES] =
 };
 
 // default output pipes flags for commandline tools
-const bool g_bDefaultOutPipes[NUM_FORMAT_NAMES] = 
+const bool g_bDefaultOutPipes[NUM_FORMAT_NAMES] =
 {
     // ENCODERS
     false,  // 0

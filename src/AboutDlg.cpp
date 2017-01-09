@@ -28,7 +28,7 @@
 
 IMPLEMENT_DYNAMIC(CAboutDlg, CDialog)
 CAboutDlg::CAboutDlg(CWnd* pParent /*=NULL*/)
-: CDialog(CAboutDlg::IDD, pParent)
+    : CDialog(CAboutDlg::IDD, pParent)
 {
 
 }

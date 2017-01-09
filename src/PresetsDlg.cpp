@@ -30,7 +30,7 @@
 
 IMPLEMENT_DYNAMIC(CPresetsDlg, CDialog)
 CPresetsDlg::CPresetsDlg(CWnd* pParent /*=NULL*/)
-: CResizeDialog(CPresetsDlg::IDD, pParent)
+    : CResizeDialog(CPresetsDlg::IDD, pParent)
 {
     m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
     nSelFormat = 1;
@@ -120,10 +120,10 @@ BOOL CPresetsDlg::OnInitDialog()
     m_LstPresets.InsertColumn(1, _T("Options"), LVCFMT_LEFT, 290);
 
     // in standalone editor only one-at-time file editing is allowed
-    if(bStandAlone == false)
+    if (bStandAlone == false)
     {
         // file format combobox
-        for(int i = 0; i < NUM_PRESET_FILES; i++)
+        for (int i = 0; i < NUM_PRESET_FILES; i++)
             m_CmbFormat.InsertString(i, g_szPresetNames[i]);
 
         ::SetComboBoxHeight(this->GetSafeHwnd(), IDC_COMBO_PD_FORMAT);
@@ -147,7 +147,7 @@ BOOL CPresetsDlg::OnInitDialog()
     }
 
     // behave like standalone editor
-    if(bStandAlone == true)
+    if (bStandAlone == true)
     {
         // method 1: hide only ComboBox and resize EditBox
 
@@ -230,7 +230,7 @@ BOOL CPresetsDlg::OnInitDialog()
 
     this->LoadWindowSettings();
 
-    if(this->bShowGridLines == true)
+    if (this->bShowGridLines == true)
         this->ShowGridlines(true);
 
     // ResetMinTrackSize();
@@ -242,7 +242,7 @@ BOOL CPresetsDlg::OnInitDialog()
 
 void CPresetsDlg::OnPaint()
 {
-    if(IsIconic())
+    if (IsIconic())
     {
         CPaintDC dc(this);
         SendMessage(WM_ICONERASEBKGND, reinterpret_cast<WPARAM>(dc.GetSafeHdc()), 0);
@@ -268,14 +268,14 @@ HCURSOR CPresetsDlg::OnQueryDragIcon()
 void CPresetsDlg::ShowGridlines(bool bShow)
 {
     DWORD dwExStyle = m_LstPresets.GetExtendedStyle();
-    if(bShow == true)
+    if (bShow == true)
     {
         dwExStyle |= LVS_EX_GRIDLINES;
         m_LstPresets.SetExtendedStyle(dwExStyle);
     }
     else
     {
-        if(dwExStyle & LVS_EX_GRIDLINES)
+        if (dwExStyle & LVS_EX_GRIDLINES)
         {
             dwExStyle = dwExStyle ^ LVS_EX_GRIDLINES;
             m_LstPresets.SetExtendedStyle(dwExStyle);
@@ -286,18 +286,18 @@ void CPresetsDlg::ShowGridlines(bool bShow)
 void CPresetsDlg::LoadWindowSettings()
 {
     // set window rectangle and position
-    if(szPresetsWndResize.Compare(_T("")) != 0)
+    if (szPresetsWndResize.Compare(_T("")) != 0)
         this->SetWindowRectStr(szPresetsWndResize);
 
     // load columns width for PresetsList
-    if(szPresetsListColumns.Compare(_T("")) != 0)
+    if (szPresetsListColumns.Compare(_T("")) != 0)
     {
         int nColWidth[2];
-        if(_stscanf(szPresetsListColumns, _T("%d %d"), 
-            &nColWidth[0], 
+        if (_stscanf(szPresetsListColumns, _T("%d %d"),
+            &nColWidth[0],
             &nColWidth[1]) == 2)
         {
-            for(int i = 0; i < 2; i++)
+            for (int i = 0; i < 2; i++)
                 m_LstPresets.SetColumnWidth(i, nColWidth[i]);
         }
     }
@@ -310,10 +310,10 @@ void CPresetsDlg::SaveWindowSettings()
 
     // save columns width from PresetsList
     int nColWidth[2];
-    for(int i = 0; i < 2; i++)
+    for (int i = 0; i < 2; i++)
         nColWidth[i] = m_LstPresets.GetColumnWidth(i);
-    szPresetsListColumns.Format(_T("%d %d"), 
-        nColWidth[0], 
+    szPresetsListColumns.Format(_T("%d %d"),
+        nColWidth[0],
         nColWidth[1]);
 }
 
@@ -340,22 +340,22 @@ void CPresetsDlg::AddToList(CString szName, CString szOptions)
     lvi.iItem = nItem; // position
     lvi.iSubItem = 0;
 
-    lvi.pszText = (LPTSTR) (LPCTSTR) (szName);
+    lvi.pszText = (LPTSTR)(LPCTSTR)(szName);
     m_LstPresets.InsertItem(&lvi);
 
     // options
     lvi.iSubItem = 1;
-    lvi.pszText = (LPTSTR) (LPCTSTR) (szOptions);
+    lvi.pszText = (LPTSTR)(LPCTSTR)(szOptions);
     m_LstPresets.SetItemText(lvi.iItem, 1, lvi.pszText);
 }
 
 void CPresetsDlg::ListSelectionChange(void)
 {
-    if(bUpdate == true)
+    if (bUpdate == true)
         return;
 
     POSITION pos = m_LstPresets.GetFirstSelectedItemPosition();
-    if(pos != NULL)
+    if (pos != NULL)
     {
         int nItem = m_LstPresets.GetNextSelectedItem(pos);
 
@@ -413,7 +413,7 @@ void CPresetsDlg::OnBnClickedButtonPdRemoveAllPresets()
 void CPresetsDlg::OnBnClickedButtonPdRemovePresets()
 {
     POSITION pos = m_LstPresets.GetFirstSelectedItemPosition();
-    if(pos != NULL)
+    if (pos != NULL)
     {
         int nItem = m_LstPresets.GetNextSelectedItem(pos);
         m_ListPresets.RemoveNode(nItem);
@@ -421,9 +421,9 @@ void CPresetsDlg::OnBnClickedButtonPdRemovePresets()
 
         // select other item in list
         int nItems = m_LstPresets.GetItemCount();
-        if(nItem < nItems && nItems >= 0)
+        if (nItem < nItems && nItems >= 0)
             m_LstPresets.SetItemState(nItem, LVIS_SELECTED, LVIS_SELECTED);
-        else if(nItem >= nItems && nItems >= 0)
+        else if (nItem >= nItems && nItems >= 0)
             m_LstPresets.SetItemState(nItem - 1, LVIS_SELECTED, LVIS_SELECTED);
     }
 }
@@ -433,11 +433,11 @@ void CPresetsDlg::LoadConfigFile(CString szFileXml)
     ::UpdatePath();
 
     CXMLDocumentW doc;
-    if(doc.LoadFileW(szFileXml) == true)
+    if (doc.LoadFileW(szFileXml) == true)
     {
         // Root = Presets
         tinyxml2::XMLElement* pRootElem = doc.FirstChildElement();
-        if(!pRootElem)
+        if (!pRootElem)
         {
             MessageBox(_T("Failed to load file!"), _T("ERROR"), MB_OK | MB_ICONERROR);
             return;
@@ -446,7 +446,7 @@ void CPresetsDlg::LoadConfigFile(CString szFileXml)
         // check for "Presets"
         const char *szRoot = pRootElem->Value();
         const char *szRootName = "Presets";
-        if(strcmp(szRootName, szRoot)  != 0)
+        if (strcmp(szRootName, szRoot) != 0)
         {
             MessageBox(_T("Failed to load file!"), _T("ERROR"), MB_OK | MB_ICONERROR);
             return;
@@ -457,18 +457,18 @@ void CPresetsDlg::LoadConfigFile(CString szFileXml)
 
         // clear list view
         m_LstPresets.DeleteAllItems();
-        
+
         // Preset
         tinyxml2::XMLElement* pPresetsNode = pRootElem->FirstChildElement("Preset");
-        for(pPresetsNode; pPresetsNode; pPresetsNode = pPresetsNode->NextSiblingElement())
+        for (pPresetsNode; pPresetsNode; pPresetsNode = pPresetsNode->NextSiblingElement())
         {
             const char *pszName = pPresetsNode->Attribute("name");
-            if(pszName != NULL) 
+            if (pszName != NULL)
             {
                 CString szNameData = GetConfigString(pszName);
 
                 const char *pszOptions = pPresetsNode->Attribute("options");
-                if(pszOptions != NULL)
+                if (pszOptions != NULL)
                 {
                     CString szOptionsData = GetConfigString(pszOptions);
                     this->AddToList(szNameData, szOptionsData);
@@ -491,7 +491,7 @@ void CPresetsDlg::LoadConfigFile(CString szFileXml)
 
 void CPresetsDlg::SaveConfigFile(CString szFileXml)
 {
-    if(szFileXml.Compare(_T("")) == 0)
+    if (szFileXml.Compare(_T("")) == 0)
     {
         this->OnBnClickedButtonPdSavePresets();
         return;
@@ -508,19 +508,19 @@ void CPresetsDlg::SaveConfigFile(CString szFileXml)
     CUtf8String m_Utf8;
 
     // root: Presets
-    tinyxml2::XMLElement *pPresetsNode = doc.NewElement("Presets");  
-    doc.LinkEndChild(pPresetsNode);  
+    tinyxml2::XMLElement *pPresetsNode = doc.NewElement("Presets");
+    doc.LinkEndChild(pPresetsNode);
     int nPresets = m_ListPresets.GetSize();
-    for(int i = 0; i < nPresets; i++)
+    for (int i = 0; i < nPresets; i++)
     {
         // Preset
-        tinyxml2::XMLElement *preset =  doc.NewElement("Preset");  
+        tinyxml2::XMLElement *preset = doc.NewElement("Preset");
         pPresetsNode->LinkEndChild(preset);
 
         CString szName = m_ListPresets.GetPresetName(i);
         CString szOptions = m_ListPresets.GetPresetOptions(i);
 
-        if(szName.GetLength() == 0)
+        if (szName.GetLength() == 0)
         {
             preset->SetAttribute("name", "");
         }
@@ -530,7 +530,7 @@ void CPresetsDlg::SaveConfigFile(CString szFileXml)
             m_Utf8.Clear();
         }
 
-        if(szOptions.GetLength() == 0)
+        if (szOptions.GetLength() == 0)
         {
             preset->SetAttribute("options", "");
         }
@@ -541,7 +541,7 @@ void CPresetsDlg::SaveConfigFile(CString szFileXml)
         }
     }
 
-    if(doc.SaveFileW(szFileXml) != true)
+    if (doc.SaveFileW(szFileXml) != true)
     {
         MessageBox(_T("Failed to save file!"), _T("ERROR"), MB_OK | MB_ICONERROR);
     }
@@ -554,14 +554,14 @@ void CPresetsDlg::SaveConfigFile(CString szFileXml)
 
 void CPresetsDlg::OnBnClickedButtonPdLoadPresets()
 {
-    CFileDialog fd(TRUE, _T("presets"), _T(""), 
-        OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER, 
+    CFileDialog fd(TRUE, _T("presets"), _T(""),
+        OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER,
         _T("Presets Files (*.presets)|*.presets|Xml Files (*.xml)|*.xml|All Files|*.*||"), this);
 
     int nPreset = this->m_CmbFormat.GetCurSel();
     ::SetBrowsePath(fd, szBrowsePath[(nPreset + nPreset)]);
 
-    if(fd.DoModal() == IDOK)
+    if (fd.DoModal() == IDOK)
     {
         szBrowsePath[(nPreset + nPreset)] = ::GetBrowsePath(fd);
 
@@ -572,14 +572,14 @@ void CPresetsDlg::OnBnClickedButtonPdLoadPresets()
 
 void CPresetsDlg::OnBnClickedButtonPdSavePresets()
 {
-    CFileDialog fd(FALSE, _T("presets"), _T(""), 
-        OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER | OFN_OVERWRITEPROMPT, 
+    CFileDialog fd(FALSE, _T("presets"), _T(""),
+        OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER | OFN_OVERWRITEPROMPT,
         _T("Presets Files (*.presets)|*.presets|Xml Files (*.xml)|*.xml|All Files|*.*||"), this);
 
     int nPreset = this->m_CmbFormat.GetCurSel();
     ::SetBrowsePath(fd, szBrowsePath[(nPreset + nPreset + 1)]);
 
-    if(fd.DoModal() == IDOK)
+    if (fd.DoModal() == IDOK)
     {
         szBrowsePath[(nPreset + nPreset + 1)] = ::GetBrowsePath(fd);
 
@@ -606,13 +606,13 @@ void CPresetsDlg::OnBnClickedButtonPdAddPreset()
 
 void CPresetsDlg::OnBnClickedButtonPdUpdatePreset()
 {
-    if(bUpdate == true)
+    if (bUpdate == true)
         return;
 
     bUpdate = true;
 
     POSITION pos = m_LstPresets.GetFirstSelectedItemPosition();
-    if(pos != NULL)
+    if (pos != NULL)
     {
         int nItem = m_LstPresets.GetNextSelectedItem(pos);
 
@@ -636,19 +636,19 @@ void CPresetsDlg::OnBnClickedButtonPdUpdatePreset()
 
 void CPresetsDlg::OnBnClickedButtonPdUp()
 {
-    if(bUpdate == true)
+    if (bUpdate == true)
         return;
 
     bUpdate = true;
 
     // move up item in ListView and list
     POSITION pos = m_LstPresets.GetFirstSelectedItemPosition();
-    if(pos != NULL)
+    if (pos != NULL)
     {
         int nItem = m_LstPresets.GetNextSelectedItem(pos);
 
         // don't process 1st item
-        if(nItem > 0)
+        if (nItem > 0)
         {
             CString szName1 = m_ListPresets.GetPresetName(nItem);
             CString szOptions1 = m_ListPresets.GetPresetOptions(nItem);
@@ -678,20 +678,20 @@ void CPresetsDlg::OnBnClickedButtonPdUp()
 
 void CPresetsDlg::OnBnClickedButtonPdDown()
 {
-    if(bUpdate == true)
+    if (bUpdate == true)
         return;
 
     bUpdate = true;
 
     // move down item in ListView and list
     POSITION pos = m_LstPresets.GetFirstSelectedItemPosition();
-    if(pos != NULL)
+    if (pos != NULL)
     {
         int nItem = m_LstPresets.GetNextSelectedItem(pos);
 
         int nItems = m_LstPresets.GetItemCount();
         // don't process last item
-        if(nItem != (nItems - 1) && nItem >= 0)
+        if (nItem != (nItems - 1) && nItem >= 0)
         {
             CString szName1 = m_ListPresets.GetPresetName(nItem);
             CString szOptions1 = m_ListPresets.GetPresetOptions(nItem);
@@ -738,7 +738,7 @@ void CPresetsDlg::OnBnClickedCancel()
 
 CString CPresetsDlg::GetCurConfigFile()
 {
-    if(this->bStandAlone == true)
+    if (this->bStandAlone == true)
     {
         return this->szStandAloneFile;
     }
@@ -746,7 +746,7 @@ CString CPresetsDlg::GetCurConfigFile()
     {
         int nSelFormat = this->m_CmbFormat.GetCurSel();
 
-        if((nSelFormat >= 0) && (nSelFormat < NUM_PRESET_FILES))
+        if ((nSelFormat >= 0) && (nSelFormat < NUM_PRESET_FILES))
             return this->szPresetsFile[nSelFormat];
         else
             return _T(""); // ERROR
@@ -755,7 +755,7 @@ CString CPresetsDlg::GetCurConfigFile()
 
 void CPresetsDlg::SetCurConfigFile(CString szFile)
 {
-    if(this->bStandAlone == true)
+    if (this->bStandAlone == true)
     {
         this->szStandAloneFile = szFile;
     }
@@ -763,8 +763,8 @@ void CPresetsDlg::SetCurConfigFile(CString szFile)
     {
         int nSelFormat = this->m_CmbFormat.GetCurSel();
 
-        if((nSelFormat >= 0) && (nSelFormat < NUM_PRESET_FILES))
-            this->szPresetsFile[nSelFormat] = szFile;  
+        if ((nSelFormat >= 0) && (nSelFormat < NUM_PRESET_FILES))
+            this->szPresetsFile[nSelFormat] = szFile;
     }
 }
 
@@ -787,7 +787,7 @@ void CPresetsDlg::OnClose()
 
 void CPresetsDlg::OnEnChangeEditPdName()
 {
-    if(bUpdate == true)
+    if (bUpdate == true)
         return;
 
     OnBnClickedButtonPdUpdatePreset();
@@ -795,7 +795,7 @@ void CPresetsDlg::OnEnChangeEditPdName()
 
 void CPresetsDlg::OnEnChangeEditPdOptions()
 {
-    if(bUpdate == true)
+    if (bUpdate == true)
         return;
 
     OnBnClickedButtonPdUpdatePreset();

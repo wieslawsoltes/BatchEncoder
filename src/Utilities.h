@@ -18,12 +18,12 @@
 
 #pragma once
 
-typedef bool (*fncCopyCallback) (int nProgress); // nProgress = 0..100
+typedef bool(*fncCopyCallback) (int nProgress); // nProgress = 0..100
 
 #ifdef _DEBUG
-    void LastError(LPTSTR lpszFunction);
+void LastError(LPTSTR lpszFunction);
 #else
-    #define LastError(x)
+#define LastError(x)
 #endif
 
 void DoTheShutdown();

@@ -65,11 +65,11 @@ END_MESSAGE_MAP()
 BOOL CConversionStatus::Create(const RECT &rc, CWnd *pParentWnd, UINT uID, bool bVisible = false)
 {
     DWORD dwStyle = WS_CHILD | SS_SIMPLE | SS_SUNKEN | SS_NOTIFY;
-    if(bVisible == true)
+    if (bVisible == true)
         dwStyle |= WS_VISIBLE;
 
     // NOTE: STATIC control should have SIMPLE style
-    BOOL bRet = CStatic::CreateEx(0 /* WS_EX_CLIENTEDGE */, 
+    BOOL bRet = CStatic::CreateEx(0 /* WS_EX_CLIENTEDGE */,
         _T("STATIC") /* AfxRegisterWndClass(CS_HREDRAW | CS_VREDRAW) */,
         NULL,
         dwStyle,
@@ -79,10 +79,10 @@ BOOL CConversionStatus::Create(const RECT &rc, CWnd *pParentWnd, UINT uID, bool 
         rc.bottom - rc.top,
         pParentWnd->GetSafeHwnd(),
         (HMENU)(UINT_PTR)uID);
-	if(!bRet)
-		return FALSE;
+    if (!bRet)
+        return FALSE;
 
-	return TRUE;
+    return TRUE;
 }
 
 BOOL CConversionStatus::Init(void)
@@ -94,41 +94,41 @@ BOOL CConversionStatus::Init(void)
 
     // create new CDC object
     m_MemDC = new CDC;
-    if(!m_MemDC)
+    if (!m_MemDC)
         return FALSE;
 
-    if(m_MemDC->GetSafeHdc())
+    if (m_MemDC->GetSafeHdc())
         return FALSE;
 
     // create compatible memory DC
-    if(!m_MemDC->CreateCompatibleDC(&dc))
+    if (!m_MemDC->CreateCompatibleDC(&dc))
         return FALSE;
 
     // create compatible bitmap object
     CBitmap bmp;
-    if(!bmp.CreateCompatibleBitmap(&dc, rc.Width(), rc.Height()))
+    if (!bmp.CreateCompatibleBitmap(&dc, rc.Width(), rc.Height()))
         return FALSE;
 
-    if(!m_MemDC->SelectObject(bmp))
+    if (!m_MemDC->SelectObject(bmp))
         return FALSE;
 
     // allocate memory for new fonts
     m_pFontNormal = new CFont;
-    if(m_pFontNormal == NULL)
+    if (m_pFontNormal == NULL)
         return FALSE;
 
     m_pFontBold = new CFont;
-    if(m_pFontBold == NULL)
+    if (m_pFontBold == NULL)
         return FALSE;
 
     // get font from parent dialog/window
     CFont* pFont = this->GetParent()->GetFont();
-    if(!pFont)
+    if (!pFont)
     {
-        HFONT hFont = (HFONT) GetStockObject(DEFAULT_GUI_FONT);
-        if(hFont == NULL)
-            hFont = (HFONT) GetStockObject(ANSI_VAR_FONT);
-        if(hFont)
+        HFONT hFont = (HFONT)GetStockObject(DEFAULT_GUI_FONT);
+        if (hFont == NULL)
+            hFont = (HFONT)GetStockObject(ANSI_VAR_FONT);
+        if (hFont)
             pFont = CFont::FromHandle(hFont);
     }
 
@@ -151,21 +151,21 @@ BOOL CConversionStatus::Init(void)
 
 void CConversionStatus::Clean(void)
 {
-    if(m_MemDC)
+    if (m_MemDC)
     {
         m_MemDC->DeleteDC();
         delete m_MemDC;
         m_MemDC = NULL;
     }
 
-    if(m_pFontNormal)
+    if (m_pFontNormal)
     {
         m_pFontNormal->DeleteObject();
         delete m_pFontNormal;
         m_pFontNormal = NULL;
     }
 
-    if(m_pFontBold)
+    if (m_pFontBold)
     {
         m_pFontBold->DeleteObject();
         delete m_pFontBold;
@@ -175,7 +175,7 @@ void CConversionStatus::Clean(void)
 
 void CConversionStatus::Paint()
 {
-    if(m_MemDC == NULL)
+    if (m_MemDC == NULL)
         return;
 
     CDC *pDC = this->GetDC();
@@ -203,11 +203,11 @@ void CConversionStatus::SetFontMemDC(bool bBold, COLORREF crBack, COLORREF crTex
 void CConversionStatus::DrawTextMemDC(CRect &rcText, CString &szText)
 {
     // draw text to memory DC
-    m_MemDC->ExtTextOut(rcText.left, 
+    m_MemDC->ExtTextOut(rcText.left,
         rcText.top,
-        ETO_OPAQUE, 
-        rcText, 
-        szText, 
+        ETO_OPAQUE,
+        rcText,
+        szText,
         NULL);
 }
 
@@ -222,17 +222,17 @@ void CConversionStatus::DrawPercentageMemDC(bool bBold, CRect &rcText, CString &
     m_MemDC->SetTextAlign(TA_CENTER | TA_NOUPDATECP);
 
     // draw text to memory DC
-    m_MemDC->ExtTextOut(rcText.left, 
+    m_MemDC->ExtTextOut(rcText.left,
         rcText.top,
-        0, 
-        rcText, 
-        szText, 
+        0,
+        rcText,
+        szText,
         NULL);
 }
 
 void CConversionStatus::DrawStatus(int nCurrentProgress)
 {
-    if(m_MemDC == NULL)
+    if (m_MemDC == NULL)
         return;
 
     // int nFile = 2; // 1..nTotalFiles
@@ -240,8 +240,8 @@ void CConversionStatus::DrawStatus(int nCurrentProgress)
     // int nCurrentProgress = 75; // 0..100
 
     // int nTotalProgress = (int)(double) (((double) (nFile - 1)* 100.0) / (double) nTotalFiles); // 0..100, nTotalFiles > 0
-    double fFactor = (100.0 / (double) nTotalFiles);
-    int nTotalProgress = (int)(double) ((double) (nFile - 1) * fFactor + (fFactor / 100.0 * (double) nCurrentProgress));
+    double fFactor = (100.0 / (double)nTotalFiles);
+    int nTotalProgress = (int)(double)((double)(nFile - 1) * fFactor + (fFactor / 100.0 * (double)nCurrentProgress));
 
     // int nStatusDone = 1; // 1..nTotalFiles
     int nStatusErrors = (nFile - 1) - nStatusDone; // nFile >= 1, 1..nTotalFiles
@@ -297,7 +297,7 @@ void CConversionStatus::DrawStatus(int nCurrentProgress)
     this->DrawTextMemDC(rcText, szText);
 
     szText.Format(_T("%d"), nTotalFiles);
-    this->SetFontMemDC(true,crBack, crText);
+    this->SetFontMemDC(true, crBack, crText);
     size = m_MemDC->GetTextExtent(szText);
 
     rcText.top = rcText.top;
@@ -414,7 +414,7 @@ void CConversionStatus::DrawStatus(int nCurrentProgress)
 
     // calculate progress position
     int nCurProgressPos = rcCurProgressOffset.Width();
-    nCurProgressPos = (int)(double) (((double) nCurProgressPos / 100.0) * (double) nCurrentProgress);
+    nCurProgressPos = (int)(double)(((double)nCurProgressPos / 100.0) * (double)nCurrentProgress);
 
     rcCurProgressOffset.right = rcCurProgressOffset.left + nCurProgressPos;
 
@@ -483,7 +483,7 @@ void CConversionStatus::DrawStatus(int nCurrentProgress)
 
     // calculate progress position
     int nTotProgressPos = rcTotProgressOffset.Width();
-    nTotProgressPos = (int)(double) (((double) nTotProgressPos / 100.0) * (double) nTotalProgress);
+    nTotProgressPos = (int)(double)(((double)nTotProgressPos / 100.0) * (double)nTotalProgress);
 
     rcTotProgressOffset.right = rcTotProgressOffset.left + nTotProgressPos;
 
@@ -564,7 +564,7 @@ void CConversionStatus::DrawStatus(int nCurrentProgress)
 
     szText.Format(_T("%d"), nStatusErrors);
 
-    if(nStatusErrors == 0)
+    if (nStatusErrors == 0)
         this->SetFontMemDC(true, crBack, crText);
     else
         this->SetFontMemDC(true, crBack, crTextError);
@@ -579,9 +579,9 @@ void CConversionStatus::DrawStatus(int nCurrentProgress)
 
     this->DrawTextMemDC(rcText, szText);
 
-    if((nStatusErrors == 0) || (nStatusErrors > 1))
+    if ((nStatusErrors == 0) || (nStatusErrors > 1))
         szText.Format(_T(" Errors"));
-    else if(nStatusErrors == 1)
+    else if (nStatusErrors == 1)
         szText.Format(_T(" Error"));
 
     this->SetFontMemDC(false, crBack, crText);
@@ -599,7 +599,7 @@ void CConversionStatus::DrawStatus(int nCurrentProgress)
 
 void CConversionStatus::Erase(bool bPaint = true)
 {
-    if(m_MemDC == NULL)
+    if (m_MemDC == NULL)
         return;
 
     // get control rectangle
@@ -610,13 +610,13 @@ void CConversionStatus::Erase(bool bPaint = true)
     rc.right += 1; // becose we are using FillSolidRect
     m_MemDC->FillSolidRect(rc, crBack);
 
-    if(bPaint)
+    if (bPaint)
         this->Paint();
 }
 
 void CConversionStatus::Draw(int nCurrentProgress)
 {
-    if(m_MemDC == NULL)
+    if (m_MemDC == NULL)
         return;
 
     this->Erase(false);
@@ -626,12 +626,12 @@ void CConversionStatus::Draw(int nCurrentProgress)
     this->Paint();
 }
 
-void CConversionStatus::SetCurrentInfo(int nFile, 
-                                       int nTotalFiles,
-                                       int nStatusDone,
-                                       CString szInFile,
-                                       CString szOutFile,
-                                       CString szOutPath)
+void CConversionStatus::SetCurrentInfo(int nFile,
+    int nTotalFiles,
+    int nStatusDone,
+    CString szInFile,
+    CString szOutFile,
+    CString szOutPath)
 {
     this->nFile = nFile;
     this->nTotalFiles = nTotalFiles;
@@ -651,8 +651,8 @@ void CConversionStatus::OnPaint()
 
 void CConversionStatus::OnLButtonDblClk(UINT nFlags, CPoint point)
 {
-    // NOTE: erase control area to backgound color when user double-clicked
-    if(((CBatchEncoderDlg *) this->GetParent())->bRunning == false)
+    // NOTE: erase control area to background color when user double-clicked
+    if (((CBatchEncoderDlg *) this->GetParent())->bRunning == false)
         this->Erase(true);
 
     CStatic::OnLButtonDblClk(nFlags, point);

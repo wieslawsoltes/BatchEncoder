@@ -33,9 +33,9 @@ int GetProgress(char *szLineBuff, int nLineLen)
     memset(szPercentage, 0x00, sizeof(szPercentage));
 
     // find % (percentage) char
-    for(j = 0; j < (int) nLineLen; j++)
+    for (j = 0; j < (int)nLineLen; j++)
     {
-        if(szLineBuff[j] == '%')
+        if (szLineBuff[j] == '%')
         {
             nPos = j;
             break;
@@ -43,16 +43,16 @@ int GetProgress(char *szLineBuff, int nLineLen)
     }
 
     // find: Decoding
-    if(nLineLen > 8)
+    if (nLineLen > 8)
     {
-        if(szLineBuff[0] == 'D' && szLineBuff[1] == 'e' && szLineBuff[2] == 'c')
+        if (szLineBuff[0] == 'D' && szLineBuff[1] == 'e' && szLineBuff[2] == 'c')
         {
             nProgress = 100;
             return nProgress;
         }
     }
 
-    if(nPos == 1) // 0 to 9 %
+    if (nPos == 1) // 0 to 9 %
     {
         szPercentage[0] = szLineBuff[0];
         szPercentage[1] = '\0';
@@ -60,7 +60,7 @@ int GetProgress(char *szLineBuff, int nLineLen)
         nProgress = atoi(szPercentage);
         return nProgress;
     }
-    else if(nPos == 2) // 10 to 99 %
+    else if (nPos == 2) // 10 to 99 %
     {
         szPercentage[0] = szLineBuff[0];
         szPercentage[1] = szLineBuff[1];
@@ -69,7 +69,7 @@ int GetProgress(char *szLineBuff, int nLineLen)
         nProgress = atoi(szPercentage);
         return nProgress;
     }
-    else if(nPos == 3) // 100 %
+    else if (nPos == 3) // 100 %
     {
         nProgress = 100;
         return nProgress;

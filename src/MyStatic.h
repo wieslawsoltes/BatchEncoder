@@ -27,7 +27,7 @@ protected:
     virtual void PreSubclassWindow();
 protected:
     CFont m_BoldFont;
-    CFont m_StdFont; 
+    CFont m_StdFont;
 protected:
     bool bIsBold;
 public:

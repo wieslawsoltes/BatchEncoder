@@ -20,7 +20,7 @@
 typedef struct TNewItemData
 {
     int nAction;
-    CString szFileName; 
+    CString szFileName;
     int nItem;
     CString szName;
     CString szOutExt;

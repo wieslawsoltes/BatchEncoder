@@ -38,27 +38,27 @@ LPVOID LoadXmlResource(LPCTSTR lpType, int nResID, PINT64 lpdwSize)
     *lpdwSize = 0UL;
 
     hResInfo = ::FindResource(hInstance, MAKEINTRESOURCE(nResID), lpType);
-    if(hResInfo == NULL)
+    if (hResInfo == NULL)
         return NULL;
 
-    hResHandle = ::LoadResource(hInstance, (HRSRC) hResInfo);
-    if(hResHandle == NULL)
+    hResHandle = ::LoadResource(hInstance, (HRSRC)hResInfo);
+    if (hResHandle == NULL)
         return NULL;
 
     LPVOID pTempBuf = NULL;
     pTempBuf = (LPVOID) ::LockResource(hResHandle);
-    if(pTempBuf == NULL)
+    if (pTempBuf == NULL)
         return NULL;
 
     size_t dwBuffSize = 0L;
-    if(SUCCEEDED(StringCbLength((LPCTSTR) pTempBuf, STRSAFE_MAX_CCH * sizeof(TCHAR), &dwBuffSize)))
+    if (SUCCEEDED(StringCbLength((LPCTSTR)pTempBuf, STRSAFE_MAX_CCH * sizeof(TCHAR), &dwBuffSize)))
     {
         // don't count terminating '\0' char
         dwBuffSize = dwBuffSize - 1UL;
 
         LPVOID lpvBuf;
         lpvBuf = malloc(dwBuffSize);
-        if(lpvBuf == NULL)
+        if (lpvBuf == NULL)
             return FALSE;
 
         memset(lpvBuf, 0x00, dwBuffSize);
@@ -72,6 +72,6 @@ LPVOID LoadXmlResource(LPCTSTR lpType, int nResID, PINT64 lpdwSize)
 
 VOID FreeXmlResource(LPVOID lpvBuf)
 {
-    if(lpvBuf != NULL)
+    if (lpvBuf != NULL)
         free(lpvBuf);
 }

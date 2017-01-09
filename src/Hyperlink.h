@@ -42,7 +42,7 @@ protected:
     COLORREF colorVisited;
 public:
     void SetTargetUrl(LPCTSTR szUrl) { m_szURL = szUrl; }
-    LPCTSTR GetTargetUrl() { return (LPCTSTR) m_szURL; }
+    LPCTSTR GetTargetUrl() { return (LPCTSTR)m_szURL; }
 public:
     afx_msg void OnStnClicked();
     afx_msg HBRUSH CtlColor(CDC* pDC, UINT nCtlColor);

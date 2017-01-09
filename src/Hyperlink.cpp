@@ -34,7 +34,7 @@ CHyperlink::~CHyperlink()
 
 }
 
-BEGIN_MESSAGE_MAP(CHyperlink, CMyStatic) 
+BEGIN_MESSAGE_MAP(CHyperlink, CMyStatic)
     ON_CONTROL_REFLECT(STN_CLICKED, OnStnClicked)
     ON_WM_CTLCOLOR_REFLECT()
     ON_WM_MOUSEMOVE()
@@ -58,11 +58,11 @@ HBRUSH CHyperlink::CtlColor(CDC* pDC, UINT nCtlColor)
 
 void CHyperlink::OnMouseMove(UINT nFlags, CPoint point)
 {
-    if(m_bCaptured)
+    if (m_bCaptured)
     {
         RECT rc;
         GetClientRect(&rc);
-        if(PtInRect(&rc, point) == FALSE)
+        if (PtInRect(&rc, point) == FALSE)
         {
             m_bCaptured = false;
             ReleaseCapture();
@@ -81,7 +81,7 @@ void CHyperlink::OnMouseMove(UINT nFlags, CPoint point)
 
 BOOL CHyperlink::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
 {
-    if(m_hCursor)
+    if (m_hCursor)
     {
         ::SetCursor(m_hCursor);
         return TRUE;
@@ -94,7 +94,7 @@ void CHyperlink::OnDestroy()
 {
     CMyStatic::OnDestroy();
 
-    if(m_hCursor != NULL)
+    if (m_hCursor != NULL)
         ::DestroyCursor(m_hCursor);
 }
 
@@ -107,16 +107,16 @@ void CHyperlink::PreSubclassWindow()
     SetWindowLong(this->GetSafeHwnd(), GWL_STYLE, GetStyle() | SS_NOTIFY);
     m_hCursor = ::LoadCursor(NULL, IDC_HAND);
 
-    if(m_hCursor == NULL)
+    if (m_hCursor == NULL)
     {
         TCHAR szPath[MAX_PATH + 1];
         ::GetWindowsDirectory(szPath, sizeof(szPath));
         lstrcat(szPath, _T("\\winhlp32.exe"));
         HMODULE hModule = ::LoadLibrary(szPath);
-        if(hModule)
+        if (hModule)
         {
             HCURSOR hm_hCursor = ::LoadCursor(hModule, MAKEINTRESOURCE(106));
-            if(hm_hCursor)
+            if (hm_hCursor)
                 m_hCursor = CopyCursor(hm_hCursor);
         }
         ::FreeLibrary(hModule);

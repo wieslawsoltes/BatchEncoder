@@ -35,15 +35,15 @@ CMyButton::~CMyButton()
     m_StdFont.DeleteObject();
 }
 
-void CMyButton::PreSubclassWindow() 
+void CMyButton::PreSubclassWindow()
 {
     CFont* pFont = GetFont();
-    if(!pFont)
+    if (!pFont)
     {
-        HFONT hFont = (HFONT) GetStockObject(DEFAULT_GUI_FONT);
-        if(hFont == NULL)
-            hFont = (HFONT) GetStockObject(ANSI_VAR_FONT);
-        if(hFont)
+        HFONT hFont = (HFONT)GetStockObject(DEFAULT_GUI_FONT);
+        if (hFont == NULL)
+            hFont = (HFONT)GetStockObject(ANSI_VAR_FONT);
+        if (hFont)
             pFont = CFont::FromHandle(hFont);
     }
 
@@ -67,9 +67,9 @@ END_MESSAGE_MAP()
 
 void CMyButton::SetBold(bool bBold)
 {
-    if(::IsWindow(GetSafeHwnd()))
+    if (::IsWindow(GetSafeHwnd()))
     {
-        if(bBold == true)
+        if (bBold == true)
         {
             SetFont(&m_BoldFont);
             bIsBold = true;
@@ -79,7 +79,7 @@ void CMyButton::SetBold(bool bBold)
             SetFont(&m_StdFont);
             bIsBold = false;
         }
-        Invalidate(); 
+        Invalidate();
     }
 }
 

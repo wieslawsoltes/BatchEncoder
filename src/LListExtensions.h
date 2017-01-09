@@ -20,7 +20,7 @@
 
 #include <afxtempl.h>
 
-class CLListExtensions 
+class CLListExtensions
 {
 private:
     typedef struct _EDIT_DATA_PRESET_EXT_
@@ -29,7 +29,7 @@ private:
         CString szPresetExtensions; // extesions seprated by '|'
     } LIST_DATA_PRESET_EXT, *PLIST_DATA_PRESET_EXT;
 private:
-    CList<LIST_DATA_PRESET_EXT,LIST_DATA_PRESET_EXT&> myList;
+    CList<LIST_DATA_PRESET_EXT, LIST_DATA_PRESET_EXT&> myList;
 private:
     void SetData(LIST_DATA_PRESET_EXT listData, int idx)
     {
@@ -47,7 +47,7 @@ public:
     }
     virtual ~CLListExtensions()
     {
-        if(myList.GetCount() != 0)
+        if (myList.GetCount() != 0)
             myList.RemoveAll();
     }
 public:
@@ -57,7 +57,7 @@ public:
     }
     int GetSize()
     {
-        return (int) myList.GetCount();	
+        return (int)myList.GetCount();
     }
 public:
     void InsertNode(CString szPresetName, CString szPresetExtensions = _T(""))
@@ -74,7 +74,7 @@ public:
 
     void RemoveAllNodes(void)
     {
-        if(myList.GetCount() != 0)
+        if (myList.GetCount() != 0)
             myList.RemoveAll();
     }
 public:
@@ -117,7 +117,7 @@ public:
     {
         LIST_DATA_PRESET_EXT tmpList;
         tmpList = this->GetData(idx);
-        
+
         CString szExt = _T("");
 
         int nStart = 0, nEnd = 0, nCount = 0;
@@ -125,9 +125,9 @@ public:
         {
             nStart = nEnd;
             nEnd = tmpList.szPresetExtensions.Find('|', nEnd);
-            if(nEnd != -1)
+            if (nEnd != -1)
             {
-                if(nCount == ext)
+                if (nCount == ext)
                 {
                     szExt = tmpList.szPresetExtensions.Mid(nStart, nEnd - nStart);
                     break;
@@ -138,8 +138,7 @@ public:
             }
             else
                 break;
-        }
-        while(nEnd != -1);
+        } while (nEnd != -1);
 
         return szExt;
     }
@@ -153,9 +152,9 @@ public:
         {
             nStart = nEnd;
             nEnd = tmpList.szPresetExtensions.Find('|', nEnd);
-            if(nEnd == -1)
+            if (nEnd == -1)
             {
-                if(nCount == ext)
+                if (nCount == ext)
                 {
                     tmpList.szPresetExtensions.Delete(nStart, nEnd - nStart);
                     this->SetData(tmpList, idx);
@@ -167,8 +166,7 @@ public:
             }
             else
                 break;
-        }
-        while(nEnd != -1);
+        } while (nEnd != -1);
     }
     int GetExtensionsSize(int idx)
     {
@@ -179,7 +177,7 @@ public:
         do
         {
             nEnd = tmpList.szPresetExtensions.Find('|', nEnd);
-            if(nEnd != -1)
+            if (nEnd != -1)
             {
                 nCount++;
                 nEnd++;
@@ -188,9 +186,8 @@ public:
             {
                 break;
             }
-        }
-        while(nEnd != -1);
+        } while (nEnd != -1);
 
-        return nCount;	
+        return nCount;
     }
 };

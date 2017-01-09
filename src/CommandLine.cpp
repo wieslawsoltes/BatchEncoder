@@ -27,38 +27,38 @@ PTCHAR* MyCommandLineToArgv(PTCHAR pszCmdLine, int *pnArgc)
     PTCHAR pszTmpArgv;
     TCHAR cNext;
 
-    nLength = (ULONG) _tcslen(pszCmdLine);
+    nLength = (ULONG)_tcslen(pszCmdLine);
     nI = ((nLength + 2) / 2) * sizeof(PVOID) + sizeof(PVOID);
-    pszArgv = (PTCHAR *) GlobalAlloc(GMEM_FIXED, nI + (nLength + 2) * sizeof(TCHAR));
-    pszTmpArgv = (PTCHAR) (((PUCHAR) pszArgv) + nI);
+    pszArgv = (PTCHAR *)GlobalAlloc(GMEM_FIXED, nI + (nLength + 2) * sizeof(TCHAR));
+    pszTmpArgv = (PTCHAR)(((PUCHAR)pszArgv) + nI);
     nArgc = nI = nJ = 0;
     pszArgv[nArgc] = pszTmpArgv;
     bHaveQuotationMark = FALSE;
     bHaveText = FALSE;
     bHaveSpace = TRUE;
 
-    while(cNext = pszCmdLine[nI]) 
+    while (cNext = pszCmdLine[nI])
     {
-        if(bHaveQuotationMark) 
+        if (bHaveQuotationMark)
         {
-            if(cNext == '\"') 
+            if (cNext == '\"')
             {
                 bHaveQuotationMark = FALSE;
-            } 
-            else 
+            }
+            else
             {
                 pszTmpArgv[nJ] = cNext;
                 nJ++;
             }
         }
-        else 
+        else
         {
-            if(cNext == '\"')
+            if (cNext == '\"')
             {
                 bHaveQuotationMark = TRUE;
                 bHaveText = TRUE;
 
-                if(bHaveSpace) 
+                if (bHaveSpace)
                 {
                     pszArgv[nArgc] = pszTmpArgv + nJ;
                     nArgc++;
@@ -66,9 +66,9 @@ PTCHAR* MyCommandLineToArgv(PTCHAR pszCmdLine, int *pnArgc)
 
                 bHaveSpace = FALSE;
             }
-            else if((cNext == ' ') || (cNext == '\t') || (cNext == '\n') || (cNext == '\r'))
+            else if ((cNext == ' ') || (cNext == '\t') || (cNext == '\n') || (cNext == '\r'))
             {
-                if(bHaveText) 
+                if (bHaveText)
                 {
                     pszTmpArgv[nJ] = '\0';
                     nJ++;
@@ -81,7 +81,7 @@ PTCHAR* MyCommandLineToArgv(PTCHAR pszCmdLine, int *pnArgc)
             {
                 bHaveText = TRUE;
 
-                if(bHaveSpace) 
+                if (bHaveSpace)
                 {
                     pszArgv[nArgc] = pszTmpArgv + nJ;
                     nArgc++;

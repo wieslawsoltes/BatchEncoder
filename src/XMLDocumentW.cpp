@@ -38,7 +38,7 @@ CXMLDocumentW::~CXMLDocumentW()
 bool CXMLDocumentW::LoadFileW(CString szFileName)
 {
     CStdioFile fp;
-    if(fp.Open(szFileName, CFile::modeRead | CFile::typeBinary) == TRUE)
+    if (fp.Open(szFileName, CFile::modeRead | CFile::typeBinary) == TRUE)
     {
         tinyxml2::XMLError result = this->LoadFile(fp.m_pStream);
         fp.Close();
@@ -54,19 +54,19 @@ bool CXMLDocumentW::SaveFileW(CString szFileName)
     CStdioFile fp;
     if (fp.Open(szFileName, CFile::modeCreate | CFile::modeWrite | CFile::typeText) == TRUE)
     {
-        const unsigned char TIXML_UTF_LEAD_0 = 0xefU;        
-        const unsigned char TIXML_UTF_LEAD_1 = 0xbbU;        
-        const unsigned char TIXML_UTF_LEAD_2 = 0xbfU; 
+        const unsigned char TIXML_UTF_LEAD_0 = 0xefU;
+        const unsigned char TIXML_UTF_LEAD_1 = 0xbbU;
+        const unsigned char TIXML_UTF_LEAD_2 = 0xbfU;
 
         fputc(TIXML_UTF_LEAD_0, fp.m_pStream);
         fputc(TIXML_UTF_LEAD_1, fp.m_pStream);
         fputc(TIXML_UTF_LEAD_2, fp.m_pStream);
 
-		tinyxml2::XMLPrinter printer(fp.m_pStream);
-		this->Print(&printer);
+        tinyxml2::XMLPrinter printer(fp.m_pStream);
+        this->Print(&printer);
 
         fp.Close();
         return true;
     }
-    return false; 
+    return false;
 }

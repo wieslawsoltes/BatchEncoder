@@ -30,13 +30,13 @@ typedef struct TREAD_DATA
 ULONGLONG GetFileSize64(HANDLE hFile);
 DWORD WINAPI ReadThread(LPVOID lpParam);
 DWORD WINAPI WriteThread(LPVOID lpParam);
-bool ConvertFile(CBatchEncoderDlg *pDlg, 
-                 CString szInputFile, 
-                 CString szOutputFile,
-                 TCHAR *szCommandLine, 
-                 int nIndex, 
-                 bool bDecode, 
-                 int nTool,
-                 bool bUseReadPipes,
-                 bool bUseWritePipes);
+bool ConvertFile(CBatchEncoderDlg *pDlg,
+    CString szInputFile,
+    CString szOutputFile,
+    TCHAR *szCommandLine,
+    int nIndex,
+    bool bDecode,
+    int nTool,
+    bool bUseReadPipes,
+    bool bUseWritePipes);
 DWORD WINAPI WorkThread(LPVOID lpParam);

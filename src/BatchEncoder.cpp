@@ -35,7 +35,7 @@
 #endif
 
 enum CL_OPTIONS_CONST
-{    
+{
     CLOP_SETTINGS,
     CLOP_CURRENT_FORMAT,
     CLOP_CURRENT_PRESET,
@@ -72,7 +72,7 @@ enum CL_OPTIONS_CONST
     CLOP_ABOUT
 };
 
-const COptionsParser::CL_OPTIONS clOptions[] = 
+const COptionsParser::CL_OPTIONS clOptions[] =
 {
     { _T("settings"),                     CLOP_SETTINGS,                  1,  true  },
     { _T("current-format;scf"),           CLOP_CURRENT_FORMAT,            1,  true  },
@@ -147,15 +147,15 @@ BOOL CBatchEncoderApp::InitInstance()
     lpCommandLine = ::GetCommandLine();
 
     // get command line in *argv[] format
-    if(lpCommandLine != NULL)
+    if (lpCommandLine != NULL)
         pArgv = MyCommandLineToArgv(lpCommandLine, &nNumArgs);
 
     // if there is only one arg then free memory
-    if((nNumArgs == 1) && (pArgv != NULL))
+    if ((nNumArgs == 1) && (pArgv != NULL))
         ::GlobalFree(pArgv);
 
     // parse the command-line specified by user
-    if(op.Init(nNumArgs, pArgv, clOptions) == true)
+    if (op.Init(nNumArgs, pArgv, clOptions) == true)
     {
         int nCurFormat = -1;
         int nCurPreset = -1;
@@ -163,421 +163,421 @@ BOOL CBatchEncoderApp::InitInstance()
 
         CString szParam;
         int nOptionId;
-        while((nOptionId = op.Next()) != COptionsParser::NEXT_LAST_OPTION)
+        while ((nOptionId = op.Next()) != COptionsParser::NEXT_LAST_OPTION)
         {
             bExit = false;
 
-            switch(nOptionId)
+            switch (nOptionId)
             {
             case COptionsParser::NEXT_INVALID_ARG:
-                {
-                    // show user the fatal error message
-                    MessageBox(NULL, 
-                        _T("Invalid command-line arguments!"), 
-                        _T("ERROR"), 
-                        MB_OK | MB_ICONERROR);
+            {
+                // show user the fatal error message
+                MessageBox(NULL,
+                    _T("Invalid command-line arguments!"),
+                    _T("ERROR"),
+                    MB_OK | MB_ICONERROR);
 
-                    bExit = true;
-                }
-                break;
+                bExit = true;
+            }
+            break;
             case CLOP_SETTINGS:
-                {
-                    op.GetParam(szParam, 0);
+            {
+                op.GetParam(szParam, 0);
 
-                    // TODO:
-                    // szMainConfigFile = szParam;
+                // TODO:
+                // szMainConfigFile = szParam;
 
-                    fo.bHaveMainConfig = true;
-                }
-                break;
+                fo.bHaveMainConfig = true;
+            }
+            break;
             case CLOP_CURRENT_FORMAT:
-                {
-                    op.GetParam(szParam, 0);
+            {
+                op.GetParam(szParam, 0);
 
-                    if(CLListFiles::IsValidOutExtension(szParam) == true)
-                        nCurFormat = CLListFiles::GetOutFormatIndex(szParam);
-                    else
-                        nCurFormat = stoi(szParam);
+                if (CLListFiles::IsValidOutExtension(szParam) == true)
+                    nCurFormat = CLListFiles::GetOutFormatIndex(szParam);
+                else
+                    nCurFormat = stoi(szParam);
 
-                    fo.bHaveCurrentFormat = true;
-                }
-                break;
+                fo.bHaveCurrentFormat = true;
+            }
+            break;
             case CLOP_CURRENT_PRESET:
-                {
-                    op.GetParam(szParam, 0);
-                    nCurPreset = stoi(szParam);
+            {
+                op.GetParam(szParam, 0);
+                nCurPreset = stoi(szParam);
 
-                    fo.bHaveCurrentPreset = true;
-                }
-                break;
+                fo.bHaveCurrentPreset = true;
+            }
+            break;
             case CLOP_LOAD_PRESETS:
-                {
-                    // TODO:
+            {
+                // TODO:
 
-                    fo.bHavePresets = true;
-                }
-                break;
+                fo.bHavePresets = true;
+            }
+            break;
             case CLOP_LOAD_FORMATS:
-                {
-                    // TODO:
+            {
+                // TODO:
 
-                    fo.bHaveFormats = true;
-                }
-                break;
+                fo.bHaveFormats = true;
+            }
+            break;
             case CLOP_START_CONVERSION:
-                {
-                    // TODO:
+            {
+                // TODO:
 
-                    fo.bHaveStartConversion = true;
-                }
-                break;
+                fo.bHaveStartConversion = true;
+            }
+            break;
             case CLOP_STOP_CONVERSION:
-                {
-                    // TODO:
+            {
+                // TODO:
 
-                    fo.bHaveStopConversion = true;
-                }
-                break;
+                fo.bHaveStopConversion = true;
+            }
+            break;
             case CLOP_SINGLE_INSTANCE:
-                {
-                    // TODO:
+            {
+                // TODO:
 
-                    fo.bHaveSingleInstance = true;
-                }
-                break;
+                fo.bHaveSingleInstance = true;
+            }
+            break;
             case CLOP_MINIMIZE:
-                {
-                    // TODO:
+            {
+                // TODO:
 
-                    fo.bHaveMinimize = true;
-                }
-                break;
+                fo.bHaveMinimize = true;
+            }
+            break;
             case CLOP_PROGRESS_TYPE:
-                {
-                    // TODO:
+            {
+                // TODO:
 
-                    fo.bHaveProgressType = true;
-                }
-                break;
+                fo.bHaveProgressType = true;
+            }
+            break;
             case CLOP_SHUTDOWN:
+            {
+                // TODO:
+
+                // NOTE: param is not required here
+                /*
+                if(op.GetParam(szParam, 0) == true)
                 {
-                    // TODO:
 
-                    // NOTE: param is not required here
-                    /*
-                    if(op.GetParam(szParam, 0) == true)
-                    {
+                {
+                else
+                {
 
-                    {
-                    else
-                    {
-
-                    }
-                    */
-
-                    fo.bHaveShutdown = true;
                 }
-                break;
+                */
+
+                fo.bHaveShutdown = true;
+            }
+            break;
             case CLOP_STOP_ON_ERROR:
-                {
-                    // TODO:
+            {
+                // TODO:
 
-                    fo.bHaveStopOnError = true;
-                }
-                break;
+                fo.bHaveStopOnError = true;
+            }
+            break;
             case CLOP_DELETE_ON_ERROR:
-                {
-                    // TODO:
+            {
+                // TODO:
 
-                    fo.bHaveDeleteOnError = true;
-                }
-                break;
+                fo.bHaveDeleteOnError = true;
+            }
+            break;
             case CLOP_TRAY_ICON:
-                {
-                    // TODO:
+            {
+                // TODO:
 
-                    fo.bHaveTrayIcon = true;
-                }
-                break;
+                fo.bHaveTrayIcon = true;
+            }
+            break;
             case CLOP_SAVE_SETTINGS:
-                {
-                    // TODO:
+            {
+                // TODO:
 
-                    fo.bHaveSaveSettings = true;
-                }
-                break;
+                fo.bHaveSaveSettings = true;
+            }
+            break;
             case CLOP_PRIORITY_THREAD:
-                {
-                    // TODO:
+            {
+                // TODO:
 
-                    fo.bHavePriorityThread = true;
-                }
-                break;
+                fo.bHavePriorityThread = true;
+            }
+            break;
             case CLOP_PRIORITY_PROCESS:
-                {
-                    // TODO:
+            {
+                // TODO:
 
-                    fo.bHavePriorityProcess = true;
-                }
-                break;
+                fo.bHavePriorityProcess = true;
+            }
+            break;
             case CLOP_PRIORITY_THREAD_TOOL:
-                {
-                    // TODO:
+            {
+                // TODO:
 
-                    fo.bHavePriorityThreadTool = true;
-                }
-                break;
+                fo.bHavePriorityThreadTool = true;
+            }
+            break;
             case CLOP_PRIORITY_PROCESS_TOOL:
-                {
-                    // TODO:
+            {
+                // TODO:
 
-                    fo.bHavePriorityProcessTool = true;
-                }
-                break;
+                fo.bHavePriorityProcessTool = true;
+            }
+            break;
             case CLOP_LOG_CONSOLE_OUTPUT:
-                {
-                    // TODO:
+            {
+                // TODO:
 
-                    fo.bHaveLogConsoleOutput = true;
-                }
-                break;
+                fo.bHaveLogConsoleOutput = true;
+            }
+            break;
             case CLOP_LOG_FILE:
-                {
-                    // TODO:
+            {
+                // TODO:
 
-                    fo.bHaveLogFile = true;
-                }
-                break;
+                fo.bHaveLogFile = true;
+            }
+            break;
             case CLOP_LOG_FILE_FORMAT:
-                {
-                    // TODO:
+            {
+                // TODO:
 
-                    fo.bHaveLogFileFormat = true;
-                }
-                break;
+                fo.bHaveLogFileFormat = true;
+            }
+            break;
             case CLOP_RECURSE_DIRS:
-                {
-                    op.GetParam(szParam, 0);
+            {
+                op.GetParam(szParam, 0);
 
-                    if(szParam.CompareNoCase(_T("on")) == 0)
-                        bRecurse = true;
-                    else if(szParam.CompareNoCase(_T("off")) == 0)
-                        bRecurse = false;
-                    else
-                        bRecurse = true; // default: on
+                if (szParam.CompareNoCase(_T("on")) == 0)
+                    bRecurse = true;
+                else if (szParam.CompareNoCase(_T("off")) == 0)
+                    bRecurse = false;
+                else
+                    bRecurse = true; // default: on
 
-                    fo.bHaveRecurseDirs = true;
-                }
-                break;
+                fo.bHaveRecurseDirs = true;
+            }
+            break;
             case CLOP_ADD_FILE:
+            {
+                int nFormat;
+                int nPreset;
+                CString szBuff;
+
+                op.GetParam(szParam, 0);
+                szBuff = szParam;
+
+                op.GetParam(szParam, 1);
+
+                if (CLListFiles::IsValidOutExtension(szParam) == true)
                 {
-                    int nFormat;
-                    int nPreset;
-                    CString szBuff;
-
-                    op.GetParam(szParam, 0);
-                    szBuff = szParam;
-
-                    op.GetParam(szParam, 1);
-
-                    if(CLListFiles::IsValidOutExtension(szParam) == true)
-                    {
-                        nFormat = CLListFiles::GetOutFormatIndex(szParam);
-                    }
-                    else
-                    {
-                        if(szParam.CompareNoCase(_T("X")) == 0)
-                            nFormat = -1;
-                        else
-                            nFormat = stoi(szParam);
-
-                        if((fo.bHaveCurrentFormat == true) && (nFormat == -1))
-                            nFormat = nCurFormat;
-                    }
-
-                    op.GetParam(szParam, 2);
-                    if(szParam.CompareNoCase(_T("X")) == 0)
-                        nPreset = -1;
-                    else
-                        nPreset = stoi(szParam);
-
-                    if((fo.bHaveCurrentPreset == true) && (nPreset == -1))
-                        nPreset = nCurPreset;
-
-                    NewItemData nid;
-                    ::InitNewItemData(nid);
-
-                    nid.nAction = 0;
-                    nid.szFileName = szBuff;
-                    nid.nItem = -1;
-                    nid.szName = _T("");
-                    nid.szOutExt = ::g_szAllOutExt[nFormat];
-                    nid.nPreset = nPreset;
-
-                    dlg.InsertToList(nid);
-
-                    fo.bHaveFileList = true;
+                    nFormat = CLListFiles::GetOutFormatIndex(szParam);
                 }
-                break;
+                else
+                {
+                    if (szParam.CompareNoCase(_T("X")) == 0)
+                        nFormat = -1;
+                    else
+                        nFormat = stoi(szParam);
+
+                    if ((fo.bHaveCurrentFormat == true) && (nFormat == -1))
+                        nFormat = nCurFormat;
+                }
+
+                op.GetParam(szParam, 2);
+                if (szParam.CompareNoCase(_T("X")) == 0)
+                    nPreset = -1;
+                else
+                    nPreset = stoi(szParam);
+
+                if ((fo.bHaveCurrentPreset == true) && (nPreset == -1))
+                    nPreset = nCurPreset;
+
+                NewItemData nid;
+                ::InitNewItemData(nid);
+
+                nid.nAction = 0;
+                nid.szFileName = szBuff;
+                nid.nItem = -1;
+                nid.szName = _T("");
+                nid.szOutExt = ::g_szAllOutExt[nFormat];
+                nid.nPreset = nPreset;
+
+                dlg.InsertToList(nid);
+
+                fo.bHaveFileList = true;
+            }
+            break;
             case CLOP_ADD_DIR:
+            {
+                int nFormat;
+                int nPreset;
+                CString szBuff;
+
+                op.GetParam(szParam, 0);
+                szBuff = szParam;
+
+                op.GetParam(szParam, 1);
+
+                if (CLListFiles::IsValidOutExtension(szParam) == true)
                 {
-                    int nFormat;
-                    int nPreset;
-                    CString szBuff;
-
-                    op.GetParam(szParam, 0);
-                    szBuff = szParam;
-
-                    op.GetParam(szParam, 1);
-
-                    if(CLListFiles::IsValidOutExtension(szParam) == true)
-                    {
-                        nFormat = CLListFiles::GetOutFormatIndex(szParam);
-                    }
-                    else
-                    {
-                        if(szParam.CompareNoCase(_T("X")) == 0)
-                            nFormat = -1;
-                        else
-                            nFormat = stoi(szParam);
-
-                        if((fo.bHaveCurrentFormat == true) && (nFormat == -1))
-                            nFormat = nCurFormat;
-                    }
-
-                    op.GetParam(szParam, 2);
-                    if(szParam.CompareNoCase(_T("X")) == 0)
-                        nPreset = -1;
-                    else
-                        nPreset = stoi(szParam);
-
-                    if((fo.bHaveCurrentPreset == true) && (nPreset == -1))
-                        nPreset = nCurPreset;
-
-                    dlg.SearchFolderForFiles(szBuff, 
-                        bRecurse, 
-                        ::g_szAllOutExt[nFormat], 
-                        nPreset);
-
-                    fo.bHaveFileList = true;
+                    nFormat = CLListFiles::GetOutFormatIndex(szParam);
                 }
-                break;
+                else
+                {
+                    if (szParam.CompareNoCase(_T("X")) == 0)
+                        nFormat = -1;
+                    else
+                        nFormat = stoi(szParam);
+
+                    if ((fo.bHaveCurrentFormat == true) && (nFormat == -1))
+                        nFormat = nCurFormat;
+                }
+
+                op.GetParam(szParam, 2);
+                if (szParam.CompareNoCase(_T("X")) == 0)
+                    nPreset = -1;
+                else
+                    nPreset = stoi(szParam);
+
+                if ((fo.bHaveCurrentPreset == true) && (nPreset == -1))
+                    nPreset = nCurPreset;
+
+                dlg.SearchFolderForFiles(szBuff,
+                    bRecurse,
+                    ::g_szAllOutExt[nFormat],
+                    nPreset);
+
+                fo.bHaveFileList = true;
+            }
+            break;
             case CLOP_LOAD_LIST:
-                {
-                    op.GetParam(szParam, 0);
+            {
+                op.GetParam(szParam, 0);
 
-                    dlg.LoadList(szParam, false);
+                dlg.LoadList(szParam, false);
 
-                    fo.bHaveFileList = true;
-                }
-                break;
+                fo.bHaveFileList = true;
+            }
+            break;
             case CLOP_SAVE_LIST:
+            {
+                if (fo.bHaveFileList == true)
                 {
-                    if(fo.bHaveFileList == true)
-                    {
-                        op.GetParam(szParam, 0);
-
-                        dlg.SaveList(szParam, false);
-
-                        fo.bHaveSaveFiles = true;
-                    }
-
-                    bExit = true;
-                }
-                break;
-            case CLOP_BATCH_FILE:
-                {
-                    if(fo.bHaveFileList == true)
-                    {
-                        op.GetParam(szParam, 0);
-
-                        dlg.CreateBatchFile(szParam, false);
-
-                        fo.bHaveBatchFile = true;
-                    }
-
-                    bExit = true;
-                }
-                break;
-            case CLOP_OUTPUT_PATH:
-                {
-                    // TODO:
-                }
-                break;
-            case CLOP_CONFIGURE_PRESETS:
-                {
-                    CPresetsDlg dlg;
-
-                    dlg.bStandAlone = true;
-                    m_pMainWnd = &dlg;
-
-                    if(op.GetParam(szParam, 0) == true)
-                        dlg.szStandAloneFile = szParam;
-
-                    dlg.DoModal();
-
-                    bExit = true;
-                }
-                break;
-            case CLOP_CONFIGURE_FORMATS:
-                {
-                    CFormatsDlg dlg;
-
-                    // TODO:
-                    // dlg.bStandAlone = true;
-                    m_pMainWnd = &dlg;
-
-                    // TODO:
-                    // if(op.GetParam(szParam, 0) == true)
-                    //     dlg.szStandAloneFile = szParam;
-
-                    dlg.DoModal();
-
-                    bExit = true;
-                }
-                break;
-            case CLOP_COPYFILE:
-                {
-                    CCopyFileDlg dlg;
-
                     op.GetParam(szParam, 0);
-                    dlg.szInFile = szParam;
 
-                    op.GetParam(szParam, 1);
-                    dlg.szOutFile = szParam;
+                    dlg.SaveList(szParam, false);
 
-                    dlg.bNoFiles = false;
-                    m_pMainWnd = &dlg;
-                    dlg.DoModal();
-
-                    bExit = true;
+                    fo.bHaveSaveFiles = true;
                 }
-                break;
+
+                bExit = true;
+            }
+            break;
+            case CLOP_BATCH_FILE:
+            {
+                if (fo.bHaveFileList == true)
+                {
+                    op.GetParam(szParam, 0);
+
+                    dlg.CreateBatchFile(szParam, false);
+
+                    fo.bHaveBatchFile = true;
+                }
+
+                bExit = true;
+            }
+            break;
+            case CLOP_OUTPUT_PATH:
+            {
+                // TODO:
+            }
+            break;
+            case CLOP_CONFIGURE_PRESETS:
+            {
+                CPresetsDlg dlg;
+
+                dlg.bStandAlone = true;
+                m_pMainWnd = &dlg;
+
+                if (op.GetParam(szParam, 0) == true)
+                    dlg.szStandAloneFile = szParam;
+
+                dlg.DoModal();
+
+                bExit = true;
+            }
+            break;
+            case CLOP_CONFIGURE_FORMATS:
+            {
+                CFormatsDlg dlg;
+
+                // TODO:
+                // dlg.bStandAlone = true;
+                m_pMainWnd = &dlg;
+
+                // TODO:
+                // if(op.GetParam(szParam, 0) == true)
+                //     dlg.szStandAloneFile = szParam;
+
+                dlg.DoModal();
+
+                bExit = true;
+            }
+            break;
+            case CLOP_COPYFILE:
+            {
+                CCopyFileDlg dlg;
+
+                op.GetParam(szParam, 0);
+                dlg.szInFile = szParam;
+
+                op.GetParam(szParam, 1);
+                dlg.szOutFile = szParam;
+
+                dlg.bNoFiles = false;
+                m_pMainWnd = &dlg;
+                dlg.DoModal();
+
+                bExit = true;
+            }
+            break;
             case CLOP_WEBSITE:
-                {
-                    ::LaunchAndWait(MAIN_APP_WEBSITE, _T(""), FALSE);
+            {
+                ::LaunchAndWait(MAIN_APP_WEBSITE, _T(""), FALSE);
 
-                    bExit = true;
-                }
-                break;
+                bExit = true;
+            }
+            break;
             case CLOP_ABOUT:
-                {
-                    CAboutDlg dlg;
-                    m_pMainWnd = &dlg;
-                    dlg.DoModal();
+            {
+                CAboutDlg dlg;
+                m_pMainWnd = &dlg;
+                dlg.DoModal();
 
-                    bExit = true;
-                }
-                break;
+                bExit = true;
+            }
+            break;
             default:
-                {
-                    // unknown option Id
-                    bExit = true;
-                }
-                break;
+            {
+                // unknown option Id
+                bExit = true;
+            }
+            break;
             };
 
-            if(bExit == true)
+            if (bExit == true)
             {
                 // free used command-line memory
                 ::GlobalFree(pArgv);

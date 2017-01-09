@@ -44,21 +44,21 @@ int GetProgress(char *szLineBuff, int nLineLen)
     nPos = 0;
 
     // find separator '/'
-    for(j = 0; j < (int) nLineLen; j++)
+    for (j = 0; j < (int)nLineLen; j++)
     {
-        if(szLineBuff[j] == '/')
+        if (szLineBuff[j] == '/')
         {
             nPos = j;
             break;
         }
     }
 
-    if(nPos != 0)
+    if (nPos != 0)
     {
         // find first space before separator
-        for(j = nPos; j > 0; j--)
+        for (j = nPos; j > 0; j--)
         {
-            if(szLineBuff[j] == ' ')
+            if (szLineBuff[j] == ' ')
             {
                 nStart = j;
                 break;
@@ -66,20 +66,20 @@ int GetProgress(char *szLineBuff, int nLineLen)
         }
 
         // find first space after separator
-        for(j = nPos; j < (int) nLineLen; j++)
+        for (j = nPos; j < (int)nLineLen; j++)
         {
-            if(szLineBuff[j] == ' ')
+            if (szLineBuff[j] == ' ')
             {
                 nEnd = j;
                 break;
             }
         }
 
-        strncpy_s(szBuff, (char *) (szLineBuff + nStart + 1), nPos - nStart - 1);
+        strncpy_s(szBuff, (char *)(szLineBuff + nStart + 1), nPos - nStart - 1);
         szBuff[(nPos - nStart) - 1] = '\0';
         nCurFrame = atoi(szBuff);
 
-        strncpy_s(szBuff, (char *) (szLineBuff + nPos + 1), nEnd - nPos - 1);
+        strncpy_s(szBuff, (char *)(szLineBuff + nPos + 1), nEnd - nPos - 1);
         szBuff[(nEnd - nPos) - 1] = '\0';
         nTotalFrames = atoi(szBuff);
 

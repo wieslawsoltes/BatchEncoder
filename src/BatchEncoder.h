@@ -19,7 +19,7 @@
 #pragma once
 
 #ifndef __AFXWIN_H__
-    #error "Include 'StdAfx.h' before including this file for PCH"
+#error "Include 'StdAfx.h' before including this file for PCH"
 #endif // __AFXWIN_H__
 
 #include "res\resource.h"
@@ -69,11 +69,11 @@ typedef struct TBATCHENCODER_OPTIONS
 
 #ifdef MEMORY_LEAK_CHECKS
 #ifdef _DEBUG
-    #define LEAK_INIT \
+#define LEAK_INIT \
         AfxEnableMemoryTracking(TRUE); \
         CMemoryState oldMemState, newMemState, diffMemState; \
         oldMemState.Checkpoint();
-    #define LEAK_CHECK(x) \
+#define LEAK_CHECK(x) \
         newMemState.Checkpoint(); \
         if(diffMemState.Difference(oldMemState, newMemState)) \
         { \
@@ -81,8 +81,8 @@ typedef struct TBATCHENCODER_OPTIONS
             diffMemState.DumpStatistics(); \
         }
 #else
-    #define LEAK_INIT
-    #define LEAK_CHECK(x)
+#define LEAK_INIT
+#define LEAK_CHECK(x)
 #endif // _DEBUG
 #endif // MEMORY_LEAK_CHECKS
 

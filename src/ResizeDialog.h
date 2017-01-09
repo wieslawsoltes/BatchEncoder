@@ -19,16 +19,16 @@
 #pragma once
 
 const CSize
-    NOANCHOR(-1, -1),
-    TOP_LEFT(0, 0), 
-    TOP_CENTER(50, 0), 
-    TOP_RIGHT(100, 0),
-    MIDDLE_LEFT(0, 50), 
-    MIDDLE_CENTER(50, 50), 
-    MIDDLE_RIGHT(100, 50),
-    BOTTOM_LEFT(0, 100), 
-    BOTTOM_CENTER(50, 100), 
-    BOTTOM_RIGHT(100, 100);
+NOANCHOR(-1, -1),
+TOP_LEFT(0, 0),
+TOP_CENTER(50, 0),
+TOP_RIGHT(100, 0),
+MIDDLE_LEFT(0, 50),
+MIDDLE_CENTER(50, 50),
+MIDDLE_RIGHT(100, 50),
+BOTTOM_LEFT(0, 100),
+BOTTOM_CENTER(50, 100),
+BOTTOM_RIGHT(100, 100);
 
 class CResizeDialog : public CDialog
 {
@@ -44,10 +44,10 @@ private:
         SIZE br_type;
         SIZE br_margin;
     public:
-        Layout(HWND hw, 
-            SIZE tl_t, SIZE tl_m, 
-            SIZE br_t, SIZE br_m, 
-            BOOL hscroll, 
+        Layout(HWND hw,
+            SIZE tl_t, SIZE tl_m,
+            SIZE br_t, SIZE br_m,
+            BOOL hscroll,
             BOOL refresh)
         {
             hwnd = hw;
@@ -100,7 +100,7 @@ public:
 public:
     void ShowSizeGrip(BOOL bShow);
 public:
-    void SetMaximizedRect(const CRect& rc); 
+    void SetMaximizedRect(const CRect& rc);
     void ResetMaximizedRect();
 public:
     void SetMinTrackSize(const CSize& size);

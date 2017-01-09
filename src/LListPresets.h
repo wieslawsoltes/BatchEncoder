@@ -20,7 +20,7 @@
 
 #include <afxtempl.h>
 
-class CLListPresets 
+class CLListPresets
 {
 private:
     typedef struct _EDIT_DATA_PRESET_
@@ -29,7 +29,7 @@ private:
         CString szPresetOptions;
     } LIST_DATA_PRESET, *PLIST_DATA_PRESET;
 private:
-    CList<LIST_DATA_PRESET,LIST_DATA_PRESET&> myList;
+    CList<LIST_DATA_PRESET, LIST_DATA_PRESET&> myList;
 private:
     void SetData(LIST_DATA_PRESET listData, int idx)
     {
@@ -47,7 +47,7 @@ public:
     }
     virtual ~CLListPresets()
     {
-        if(myList.GetCount() != 0)
+        if (myList.GetCount() != 0)
             myList.RemoveAll();
     }
 public:
@@ -57,7 +57,7 @@ public:
     }
     int GetSize()
     {
-        return (int) myList.GetCount();	
+        return (int)myList.GetCount();
     }
 public:
     void InsertNode(CString szPresetName)
@@ -73,7 +73,7 @@ public:
 
     void RemoveAllNodes(void)
     {
-        if(myList.GetCount() != 0)
+        if (myList.GetCount() != 0)
             myList.RemoveAll();
     }
 public:

@@ -30,11 +30,11 @@
 
 IMPLEMENT_DYNAMIC(CFormatsDlg, CDialog)
 CFormatsDlg::CFormatsDlg(CWnd* pParent /*=NULL*/)
-: CResizeDialog(CFormatsDlg::IDD, pParent)
+    : CResizeDialog(CFormatsDlg::IDD, pParent)
 {
     m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 
-    for(int i = 0; i < NUM_FORMAT_NAMES; i++)
+    for (int i = 0; i < NUM_FORMAT_NAMES; i++)
     {
         szFormatTemplate[i] = g_szDefaultTemplate[i];
         szFormatPath[i] = g_szDefaultPath[i];
@@ -120,7 +120,7 @@ BOOL CFormatsDlg::OnInitDialog()
     m_LstFormats.InsertColumn(5, _T("Function"), LVCFMT_LEFT, 90);
 
     // insert all ListCtl items and subitems
-    for(int i = 0; i < NUM_FORMAT_NAMES; i++)
+    for (int i = 0; i < NUM_FORMAT_NAMES; i++)
     {
         LVITEM lvi;
 
@@ -130,27 +130,27 @@ BOOL CFormatsDlg::OnInitDialog()
         lvi.iItem = i;
 
         lvi.iSubItem = 0;
-        lvi.pszText = (LPTSTR) (LPCTSTR) (g_szFormatNames[i]);
+        lvi.pszText = (LPTSTR)(LPCTSTR)(g_szFormatNames[i]);
         m_LstFormats.InsertItem(&lvi);
 
         lvi.iSubItem = 1;
-        lvi.pszText = (LPTSTR) (LPCTSTR) (szFormatTemplate[i]);
+        lvi.pszText = (LPTSTR)(LPCTSTR)(szFormatTemplate[i]);
         m_LstFormats.SetItemText(lvi.iItem, 1, lvi.pszText);
 
         lvi.iSubItem = 2;
-        lvi.pszText = (LPTSTR) (LPCTSTR) (szFormatPath[i]);
+        lvi.pszText = (LPTSTR)(LPCTSTR)(szFormatPath[i]);
         m_LstFormats.SetItemText(lvi.iItem, 2, lvi.pszText);
 
         lvi.iSubItem = 3;
-        lvi.pszText = (LPTSTR) (LPCTSTR) (bFormatInput[i]) ? _T("true") : _T("false");
+        lvi.pszText = (LPTSTR)(LPCTSTR)(bFormatInput[i]) ? _T("true") : _T("false");
         m_LstFormats.SetItemText(lvi.iItem, 3, lvi.pszText);
 
         lvi.iSubItem = 4;
-        lvi.pszText = (LPTSTR) (LPCTSTR) (bFormatOutput[i]) ? _T("true") : _T("false");
+        lvi.pszText = (LPTSTR)(LPCTSTR)(bFormatOutput[i]) ? _T("true") : _T("false");
         m_LstFormats.SetItemText(lvi.iItem, 4, lvi.pszText);
 
         lvi.iSubItem = 5;
-        lvi.pszText = (LPTSTR) (LPCTSTR) (szFormatFunction[i]);
+        lvi.pszText = (LPTSTR)(LPCTSTR)(szFormatFunction[i]);
         m_LstFormats.SetItemText(lvi.iItem, 5, lvi.pszText);
     }
 
@@ -175,7 +175,7 @@ BOOL CFormatsDlg::OnInitDialog()
 
     this->LoadWindowSettings();
 
-    if(this->bShowGridLines == true)
+    if (this->bShowGridLines == true)
         this->ShowGridlines(true);
 
     // ResetMinTrackSize();
@@ -187,7 +187,7 @@ BOOL CFormatsDlg::OnInitDialog()
 
 void CFormatsDlg::OnPaint()
 {
-    if(IsIconic())
+    if (IsIconic())
     {
         CPaintDC dc(this);
         SendMessage(WM_ICONERASEBKGND, reinterpret_cast<WPARAM>(dc.GetSafeHdc()), 0);
@@ -213,14 +213,14 @@ HCURSOR CFormatsDlg::OnQueryDragIcon()
 void CFormatsDlg::ShowGridlines(bool bShow)
 {
     DWORD dwExStyle = m_LstFormats.GetExtendedStyle();
-    if(bShow == true)
+    if (bShow == true)
     {
         dwExStyle |= LVS_EX_GRIDLINES;
         m_LstFormats.SetExtendedStyle(dwExStyle);
     }
     else
     {
-        if(dwExStyle & LVS_EX_GRIDLINES)
+        if (dwExStyle & LVS_EX_GRIDLINES)
         {
             dwExStyle = dwExStyle ^ LVS_EX_GRIDLINES;
             m_LstFormats.SetExtendedStyle(dwExStyle);
@@ -231,7 +231,7 @@ void CFormatsDlg::ShowGridlines(bool bShow)
 void CFormatsDlg::UpdateEditableFields(void)
 {
     POSITION pos = m_LstFormats.GetFirstSelectedItemPosition();
-    if(pos != NULL)
+    if (pos != NULL)
     {
         int nItem = m_LstFormats.GetNextSelectedItem(pos);
 
@@ -244,12 +244,12 @@ void CFormatsDlg::UpdateEditableFields(void)
         this->m_EdtTemplate.SetWindowText(szTemplate);
         this->m_EdtPath.SetWindowText(szPath);
 
-        if(szCheckIn.Compare(_T("true")) == 0)
+        if (szCheckIn.Compare(_T("true")) == 0)
             CheckDlgButton(IDC_CHECK_FD_PIPES_INPUT, BST_CHECKED);
         else
             CheckDlgButton(IDC_CHECK_FD_PIPES_INPUT, BST_UNCHECKED);
 
-        if(szCheckOut.Compare(_T("true")) == 0)
+        if (szCheckOut.Compare(_T("true")) == 0)
             CheckDlgButton(IDC_CHECK_FD_PIPES_OUTPUT, BST_CHECKED);
         else
             CheckDlgButton(IDC_CHECK_FD_PIPES_OUTPUT, BST_UNCHECKED);
@@ -269,22 +269,22 @@ void CFormatsDlg::UpdateEditableFields(void)
 void CFormatsDlg::LoadWindowSettings()
 {
     // set window rectangle and position
-    if(szFormatsWndResize.Compare(_T("")) != 0)
+    if (szFormatsWndResize.Compare(_T("")) != 0)
         this->SetWindowRectStr(szFormatsWndResize);
 
     // load columns width for FormatsList
-    if(szFormatsListColumns.Compare(_T("")) != 0)
+    if (szFormatsListColumns.Compare(_T("")) != 0)
     {
         int nColWidth[6];
-        if(_stscanf(szFormatsListColumns, _T("%d %d %d %d %d %d"), 
-            &nColWidth[0], 
+        if (_stscanf(szFormatsListColumns, _T("%d %d %d %d %d %d"),
+            &nColWidth[0],
             &nColWidth[1],
             &nColWidth[2],
             &nColWidth[3],
             &nColWidth[4],
             &nColWidth[5]) == 6)
         {
-            for(int i = 0; i < 6; i++)
+            for (int i = 0; i < 6; i++)
                 m_LstFormats.SetColumnWidth(i, nColWidth[i]);
         }
     }
@@ -297,10 +297,10 @@ void CFormatsDlg::SaveWindowSettings()
 
     // save columns width from FormatsList
     int nColWidth[6];
-    for(int i = 0; i < 6; i++)
+    for (int i = 0; i < 6; i++)
         nColWidth[i] = m_LstFormats.GetColumnWidth(i);
-    szFormatsListColumns.Format(_T("%d %d %d %d %d %d"), 
-        nColWidth[0], 
+    szFormatsListColumns.Format(_T("%d %d %d %d %d %d"),
+        nColWidth[0],
         nColWidth[1],
         nColWidth[2],
         nColWidth[3],
@@ -310,13 +310,13 @@ void CFormatsDlg::SaveWindowSettings()
 
 bool CFormatsDlg::BrowseForCliExe(CString szDefaultFName, CEdit *pEdit, int nID)
 {
-    CFileDialog fd(TRUE, _T("exe"), szDefaultFName, 
-        OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER, 
+    CFileDialog fd(TRUE, _T("exe"), szDefaultFName,
+        OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER,
         _T("Exe Files (*.exe)|*.exe|All Files|*.*||"), this);
 
     ::SetBrowsePath(fd, szBrowsePath[(2 + nID)]);
 
-    if(fd.DoModal() == IDOK)
+    if (fd.DoModal() == IDOK)
     {
         szBrowsePath[(2 + nID)] = ::GetBrowsePath(fd);
 
@@ -331,13 +331,13 @@ bool CFormatsDlg::BrowseForCliExe(CString szDefaultFName, CEdit *pEdit, int nID)
 
 bool CFormatsDlg::BrowseForProgress(CString szDefaultFName, CEdit *pEdit, int nID)
 {
-    CFileDialog fd(TRUE, _T("progress"), szDefaultFName, 
-        OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER, 
+    CFileDialog fd(TRUE, _T("progress"), szDefaultFName,
+        OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER,
         _T("Progress Files (*.progress)|*.progress|All Files|*.*||"), this);
 
     ::SetBrowsePath(fd, szBrowsePath[(NUM_BROWSE_PATH_FORMATS + nID)]);
 
-    if(fd.DoModal() == IDOK)
+    if (fd.DoModal() == IDOK)
     {
         szBrowsePath[(NUM_BROWSE_PATH_FORMATS + nID)] = ::GetBrowsePath(fd);
 
@@ -352,13 +352,13 @@ bool CFormatsDlg::BrowseForProgress(CString szDefaultFName, CEdit *pEdit, int nI
 
 void CFormatsDlg::OnBnClickedOk()
 {
-    for(int i = 0; i < NUM_FORMAT_NAMES; i++)
+    for (int i = 0; i < NUM_FORMAT_NAMES; i++)
     {
-        szFormatTemplate[i]  = m_LstFormats.GetItemText(i, 1);
-        szFormatPath[i]  = m_LstFormats.GetItemText(i, 2);
+        szFormatTemplate[i] = m_LstFormats.GetItemText(i, 1);
+        szFormatPath[i] = m_LstFormats.GetItemText(i, 2);
         bFormatInput[i] = (m_LstFormats.GetItemText(i, 3).Compare(_T("true")) == 0) ? true : false;
         bFormatOutput[i] = (m_LstFormats.GetItemText(i, 4).Compare(_T("true")) == 0) ? true : false;
-        szFormatFunction[i]  = m_LstFormats.GetItemText(i, 5);
+        szFormatFunction[i] = m_LstFormats.GetItemText(i, 5);
     }
 
     this->SaveWindowSettings();
@@ -381,24 +381,24 @@ void CFormatsDlg::OnBnClickedButtonLoadConfig()
     // for specific encoder/decoder created by other users
 
     // load config from .formats file
-    CFileDialog fd(TRUE, _T("formats"), _T(""), 
-        OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER, 
+    CFileDialog fd(TRUE, _T("formats"), _T(""),
+        OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER,
         _T("Formats Files (*.formats)|*.formats|Xml Files (*.xml)|*.xml|All Files|*.*||"), this);
 
     ::SetBrowsePath(fd, szBrowsePath[0]);
 
-    if(fd.DoModal() == IDOK)
+    if (fd.DoModal() == IDOK)
     {
         szBrowsePath[0] = ::GetBrowsePath(fd);
 
         CString szFileXml = fd.GetPathName();
 
         CXMLDocumentW doc;
-        if(doc.LoadFileW(szFileXml) == true)
+        if (doc.LoadFileW(szFileXml) == true)
         {
             // Root = Formats
             tinyxml2::XMLElement* pRootElem = doc.FirstChildElement();
-            if(!pRootElem)
+            if (!pRootElem)
             {
                 MessageBox(_T("Failed to load file!"), _T("ERROR"), MB_OK | MB_ICONERROR);
                 return;
@@ -407,7 +407,7 @@ void CFormatsDlg::OnBnClickedButtonLoadConfig()
             // check for "Formats"
             const char *szRoot = pRootElem->Value();
             const char *szRootName = "Formats";
-            if(strcmp(szRootName, szRoot) != 0)
+            if (strcmp(szRootName, szRoot) != 0)
             {
                 MessageBox(_T("Failed to load file!"), _T("ERROR"), MB_OK | MB_ICONERROR);
                 return;
@@ -415,19 +415,19 @@ void CFormatsDlg::OnBnClickedButtonLoadConfig()
 
             // load all elements
             tinyxml2::XMLElement* pFormatElem = pRootElem->FirstChildElement("Format");
-            for(pFormatElem; pFormatElem; pFormatElem = pFormatElem->NextSiblingElement())
+            for (pFormatElem; pFormatElem; pFormatElem = pFormatElem->NextSiblingElement())
             {
                 int nFormat = -1;
 
                 const char *pszName = pFormatElem->Attribute("name");
-                if(pszName != NULL)
+                if (pszName != NULL)
                 {
                     CString szBuff = GetConfigString(pszName);
 
                     nFormat = ::GetFormatId(szBuff);
 
                     // check if this is valid format name
-                    if((nFormat < 0) || (nFormat >= NUM_FORMAT_NAMES))
+                    if ((nFormat < 0) || (nFormat >= NUM_FORMAT_NAMES))
                     {
                         // invalid format Id
                         continue;
@@ -440,33 +440,33 @@ void CFormatsDlg::OnBnClickedButtonLoadConfig()
                 }
 
                 const char *pszTemplate = pFormatElem->Attribute("template");
-                if(pszTemplate != NULL)
+                if (pszTemplate != NULL)
                 {
                     szFormatTemplate[nFormat] = GetConfigString(pszTemplate);
                 }
 
                 const char *pszPipesInput = pFormatElem->Attribute("input");
-                if(pszPipesInput != NULL)
+                if (pszPipesInput != NULL)
                 {
                     CString szBuff = GetConfigString(pszPipesInput);
-                    if(szBuff.CompareNoCase(_T("true")) == 0)
+                    if (szBuff.CompareNoCase(_T("true")) == 0)
                         bFormatInput[nFormat] = true;
                     else
                         bFormatInput[nFormat] = false;
                 }
 
                 const char *pszPipesOutput = pFormatElem->Attribute("output");
-                if(pszPipesOutput != NULL)
+                if (pszPipesOutput != NULL)
                 {
                     CString szBuff = GetConfigString(pszPipesOutput);
-                    if(szBuff.CompareNoCase(_T("true")) == 0)
+                    if (szBuff.CompareNoCase(_T("true")) == 0)
                         bFormatOutput[nFormat] = true;
                     else
                         bFormatOutput[nFormat] = false;
                 }
 
                 const char *pszFunction = pFormatElem->Attribute("function");
-                if(pszFunction != NULL)
+                if (pszFunction != NULL)
                 {
                     szFormatFunction[nFormat] = GetConfigString(pszFunction);
                 }
@@ -493,29 +493,29 @@ void CFormatsDlg::OnBnClickedButtonLoadConfig()
 void CFormatsDlg::OnBnClickedButtonSaveConfig()
 {
     // save config to .formats file
-    CFileDialog fd(FALSE, _T("formats"), _T(""), 
-        OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER | OFN_OVERWRITEPROMPT, 
+    CFileDialog fd(FALSE, _T("formats"), _T(""),
+        OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER | OFN_OVERWRITEPROMPT,
         _T("Formats Files (*.formats)|*.formats|Xml Files (*.xml)|*.xml|All Files|*.*||"), this);
 
     ::SetBrowsePath(fd, szBrowsePath[1]);
 
-    if(fd.DoModal() == IDOK)
+    if (fd.DoModal() == IDOK)
     {
         szBrowsePath[1] = ::GetBrowsePath(fd);
 
         CString szFileXml = fd.GetPathName();
 
         CXMLDocumentW doc;
-        
+
         tinyxml2::XMLDeclaration* decl = doc.NewDeclaration("xml version=\"1.0\" encoding=\"UTF-8\"");
-        doc.LinkEndChild(decl);  
+        doc.LinkEndChild(decl);
 
         // root: Formats
         tinyxml2::XMLElement *formats = doc.NewElement("Formats");
 
-        doc.LinkEndChild(formats);  
+        doc.LinkEndChild(formats);
 
-        for(int i = 0; i < NUM_FORMAT_NAMES; i++)
+        for (int i = 0; i < NUM_FORMAT_NAMES; i++)
         {
             CUtf8String m_Utf8;
 
@@ -542,11 +542,11 @@ void CFormatsDlg::OnBnClickedButtonSaveConfig()
             format->SetAttribute("function", m_Utf8.Create(szFormatFunction[i]));
             m_Utf8.Clear();
 
-            formats->LinkEndChild(format); 
+            formats->LinkEndChild(format);
         }
 
         // save file
-        if(doc.SaveFileW(szFileXml) != true)
+        if (doc.SaveFileW(szFileXml) != true)
             MessageBox(_T("Failed to save file!"), _T("ERROR"), MB_OK | MB_ICONERROR);
     }
 }
@@ -554,7 +554,7 @@ void CFormatsDlg::OnBnClickedButtonSaveConfig()
 void CFormatsDlg::OnBnClickedButtonDefaultConfig()
 {
     // load defaults
-    for(int i = 0; i < NUM_FORMAT_NAMES; i++)
+    for (int i = 0; i < NUM_FORMAT_NAMES; i++)
     {
         szFormatTemplate[i] = g_szDefaultTemplate[i];
         szFormatPath[i] = g_szDefaultPath[i];
@@ -584,11 +584,11 @@ void CFormatsDlg::OnLvnItemchangedEditFdFormats(NMHDR *pNMHDR, LRESULT *pResult)
 void CFormatsDlg::OnBnClickedButtonFdBrowse()
 {
     POSITION pos = m_LstFormats.GetFirstSelectedItemPosition();
-    if(pos != NULL)
+    if (pos != NULL)
     {
         int nItem = m_LstFormats.GetNextSelectedItem(pos);
 
-        BrowseForCliExe(g_szDefaultPath[nItem], &m_EdtPath, nItem); 
+        BrowseForCliExe(g_szDefaultPath[nItem], &m_EdtPath, nItem);
     }
     else
     {
@@ -601,11 +601,11 @@ void CFormatsDlg::OnBnClickedButtonFdBrowse()
 void CFormatsDlg::OnBnClickedButtonFdBrowseProgress()
 {
     POSITION pos = m_LstFormats.GetFirstSelectedItemPosition();
-    if(pos != NULL)
+    if (pos != NULL)
     {
         int nItem = m_LstFormats.GetNextSelectedItem(pos);
 
-        BrowseForProgress(g_bDefaultFunction[nItem], &m_EdtProgress, nItem); 
+        BrowseForProgress(g_bDefaultFunction[nItem], &m_EdtProgress, nItem);
     }
     else
     {
@@ -628,21 +628,21 @@ void CFormatsDlg::OnBnClickedButtonFdUpdatePreset()
     CString szFunction = _T("");
 
     this->m_EdtTemplate.GetWindowText(szTemplate);
-    
-    if(IsDlgButtonChecked(IDC_CHECK_FD_PIPES_INPUT) == BST_CHECKED)
+
+    if (IsDlgButtonChecked(IDC_CHECK_FD_PIPES_INPUT) == BST_CHECKED)
         szCheckIn = _T("true");
 
-    if(IsDlgButtonChecked(IDC_CHECK_FD_PIPES_OUTPUT) == BST_CHECKED)
+    if (IsDlgButtonChecked(IDC_CHECK_FD_PIPES_OUTPUT) == BST_CHECKED)
         szCheckOut = _T("true");
 
     this->m_EdtPath.GetWindowText(szPath);
 
     this->m_EdtProgress.GetWindowText(szFunction);
 
-    if(szPath.GetLength() > 0)
+    if (szPath.GetLength() > 0)
     {
         POSITION pos = m_LstFormats.GetFirstSelectedItemPosition();
-        if(pos != NULL)
+        if (pos != NULL)
         {
             int nItem = m_LstFormats.GetNextSelectedItem(pos);
 
@@ -659,7 +659,7 @@ void CFormatsDlg::OnBnClickedButtonFdUpdatePreset()
 void CFormatsDlg::OnEnChangeEditFdCliPath()
 {
     POSITION pos = m_LstFormats.GetFirstSelectedItemPosition();
-    if(pos != NULL)
+    if (pos != NULL)
     {
         int nItem = m_LstFormats.GetNextSelectedItem(pos);
 
@@ -673,7 +673,7 @@ void CFormatsDlg::OnEnChangeEditFdCliPath()
 void CFormatsDlg::OnEnChangeEditFdCliTemplate()
 {
     POSITION pos = m_LstFormats.GetFirstSelectedItemPosition();
-    if(pos != NULL)
+    if (pos != NULL)
     {
         int nItem = m_LstFormats.GetNextSelectedItem(pos);
 
@@ -687,7 +687,7 @@ void CFormatsDlg::OnEnChangeEditFdCliTemplate()
 void CFormatsDlg::OnEnChangeEditFdCliProgress()
 {
     POSITION pos = m_LstFormats.GetFirstSelectedItemPosition();
-    if(pos != NULL)
+    if (pos != NULL)
     {
         int nItem = m_LstFormats.GetNextSelectedItem(pos);
 
@@ -701,12 +701,12 @@ void CFormatsDlg::OnEnChangeEditFdCliProgress()
 void CFormatsDlg::OnBnClickedCheckFdPipesInput()
 {
     POSITION pos = m_LstFormats.GetFirstSelectedItemPosition();
-    if(pos != NULL)
+    if (pos != NULL)
     {
         int nItem = m_LstFormats.GetNextSelectedItem(pos);
 
         CString szCheckIn = _T("false");
-        if(IsDlgButtonChecked(IDC_CHECK_FD_PIPES_INPUT) == BST_CHECKED)
+        if (IsDlgButtonChecked(IDC_CHECK_FD_PIPES_INPUT) == BST_CHECKED)
             szCheckIn = _T("true");
 
         m_LstFormats.SetItemText(nItem, 3, szCheckIn);
@@ -716,12 +716,12 @@ void CFormatsDlg::OnBnClickedCheckFdPipesInput()
 void CFormatsDlg::OnBnClickedCheckFdPipesOutput()
 {
     POSITION pos = m_LstFormats.GetFirstSelectedItemPosition();
-    if(pos != NULL)
+    if (pos != NULL)
     {
         int nItem = m_LstFormats.GetNextSelectedItem(pos);
 
         CString szCheckOut = _T("false");
-        if(IsDlgButtonChecked(IDC_CHECK_FD_PIPES_OUTPUT) == BST_CHECKED)
+        if (IsDlgButtonChecked(IDC_CHECK_FD_PIPES_OUTPUT) == BST_CHECKED)
             szCheckOut = _T("true");
 
         m_LstFormats.SetItemText(nItem, 4, szCheckOut);

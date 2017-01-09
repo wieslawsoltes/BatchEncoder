@@ -22,12 +22,12 @@
 void InitNewItemData(NewItemData &nid)
 {
     nid.nAction = -1;
-    nid.szFileName = _T(""); 
+    nid.szFileName = _T("");
     nid.nItem = -1;
-    nid.szName =  _T("");
-    nid.szOutExt =  _T("");
+    nid.szName = _T("");
+    nid.szOutExt = _T("");
     nid.nPreset = -1;
     nid.bCheck = TRUE;
-    nid.szTime =  _T("");
-    nid.szStatus =  _T("");
+    nid.szTime = _T("");
+    nid.szStatus = _T("");
 }

@@ -35,26 +35,26 @@ char *CUtf8String::Create(CString szData)
 {
 #ifdef _UNICODE
     // UNICODE to UTF-8
-    if(szData.GetLength() > 0)
+    if (szData.GetLength() > 0)
     {
-        szBuffUtf8 = (char *) MakeUtf8String(szData);
+        szBuffUtf8 = (char *)MakeUtf8String(szData);
     }
     else
     {
-        szBuffUtf8 = (char *) malloc(1);
+        szBuffUtf8 = (char *)malloc(1);
         szBuffUtf8[0] = '\0';
     }
 
     return szBuffUtf8;
 #else
     // ANSI to UTF-8
-    if(szData.GetLength() > 0)
+    if (szData.GetLength() > 0)
     {
         Utf8Encode(szData, &szBuffUtf8);
     }
     else
     {
-        szBuffUtf8 = (char *) malloc(1);
+        szBuffUtf8 = (char *)malloc(1);
         szBuffUtf8[0] = '\0';
     }
 
@@ -64,7 +64,7 @@ char *CUtf8String::Create(CString szData)
 
 void CUtf8String::Clear()
 {
-    if(szBuffUtf8 != NULL)
+    if (szBuffUtf8 != NULL)
     {
         free(szBuffUtf8);
         szBuffUtf8 = NULL;
