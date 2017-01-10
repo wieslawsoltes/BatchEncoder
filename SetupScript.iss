@@ -1,5 +1,5 @@
 #define ProgramName "BatchEncoder"
-#define ProgramBuild "x64"
+#define ProgramBuild BUILD
 #define ProgramVersion VERSION
 #define ProgramCopyright "Copyright (c) Wieslaw Soltes. All rights reserved."
 #define ProgramWebsite "https://github.com/wieslawsoltes/BatchEncoder"
@@ -30,7 +30,10 @@ BackColor2          =clBlack
 BackColorDirection  =toptobottom
 BackSolid           =no
 UserInfoPage        =no
+
+#if "x64" == ProgramBuild
 ArchitecturesInstallIn64BitMode=x64
+#endif
 
 [Components]
 
