@@ -84,7 +84,6 @@ Task("Package-Binaries-Win32")
     CleanDirectory(outputDir);
 
     CopyFileToDirectory(File("README.md"), outputDir);
-    CopyFileToDirectory(File("CHANGELOG.md"), outputDir);
     CopyFileToDirectory(File("LICENSE.TXT"), outputDir);
     CopyFileToDirectory(exeFile, outputDir);
     CopyFiles("./src/data/Config/*.config", outputDir);
@@ -109,7 +108,6 @@ Task("Package-Binaries-x64")
     CleanDirectory(outputDir);
 
     CopyFileToDirectory(File("README.md"), outputDir);
-    CopyFileToDirectory(File("CHANGELOG.md"), outputDir);
     CopyFileToDirectory(File("LICENSE.TXT"), outputDir);
     CopyFileToDirectory(exeFile, outputDir);
     CopyFiles("./src/data/Config/*.config", outputDir);
