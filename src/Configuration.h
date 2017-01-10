@@ -297,14 +297,20 @@ public:
     COLORREF m_Color[NUM_PROGRAM_COLORS];
 };
 
+class CFormat
+{
+public:
+    CString szTemplate;
+    CString szPath;
+    bool bInput;
+    bool bOutput;
+    CString szFunction;
+};
+
 class CFormats
 {
 public:
-    CString szFormatTemplate[NUM_FORMAT_NAMES];
-    CString szFormatPath[NUM_FORMAT_NAMES];
-    bool bFormatInput[NUM_FORMAT_NAMES];
-    bool bFormatOutput[NUM_FORMAT_NAMES];
-    CString szFormatFunction[NUM_FORMAT_NAMES];
+    CFormat m_Format[NUM_FORMAT_NAMES];
 };
 
 class CPresets

@@ -216,9 +216,9 @@ CBatchEncoderDlg::CBatchEncoderDlg(CWnd* pParent /*=NULL*/)
 
     for (int i = 0; i < NUM_COMMADLINE_TOOLS; i++)
     {
-        m_Config.m_Formats.szFormatPath[i] = g_szDefaultPath[i];
-        m_Config.m_Formats.bFormatInput[i] = g_bDefaultInPipes[i];
-        m_Config.m_Formats.bFormatOutput[i] = g_bDefaultOutPipes[i];
+        m_Config.m_Formats.m_Format[i].szPath = g_szDefaultPath[i];
+        m_Config.m_Formats.m_Format[i].bInput = g_bDefaultInPipes[i];
+        m_Config.m_Formats.m_Format[i].bOutput = g_bDefaultOutPipes[i];
     }
 
     m_Config.m_Settings.nThreadPriorityIndex = 3;
@@ -684,7 +684,7 @@ bool CBatchEncoderDlg::CreateBatchFile(CString szFileName, bool bUseListCtrl)
 
         if ((nProcessingMode == 1) || (nProcessingMode == 2))
         {
-            csExecute = m_Config.m_Formats.szFormatTemplate[(NUM_OUTPUT_EXT + nIntputFormat - 1)];
+            csExecute = m_Config.m_Formats.m_Format[(NUM_OUTPUT_EXT + nIntputFormat - 1)].szTemplate;
             csExecute.Replace(_T("$EXE"), _T("\"$EXE\""));
             csExecute.Replace(_T("$EXE"), szDecoderExePath);
             csExecute.Replace(_T("$OPTIONS"), szDecoderOptions);
@@ -724,8 +724,8 @@ bool CBatchEncoderDlg::CreateBatchFile(CString szFileName, bool bUseListCtrl)
         }
 
         if ((nProcessingMode == 0) || (nProcessingMode == 2))
-        {
-            csExecute = m_Config.m_Formats.szFormatTemplate[nOutputFormat];
+        {            
+            csExecute = m_Config.m_Formats.m_Format[nOutputFormat].szTemplate;
             csExecute.Replace(_T("$EXE"), _T("\"$EXE\""));
             csExecute.Replace(_T("$EXE"), szEncoderExePath);
             csExecute.Replace(_T("$OPTIONS"), szEncoderOptions);
@@ -1022,7 +1022,7 @@ HCURSOR CBatchEncoderDlg::OnQueryDragIcon()
 
 CString CBatchEncoderDlg::GetDecoderExe(int nIntputFormat)
 {
-    return m_Config.m_Formats.szFormatPath[(NUM_OUTPUT_EXT + nIntputFormat - 1)];
+    return m_Config.m_Formats.m_Format[(NUM_OUTPUT_EXT + nIntputFormat - 1)].szPath;
 }
 
 CString CBatchEncoderDlg::GetDecoderOpt(int nIntputFormat, int nPreset)
@@ -1036,7 +1036,7 @@ CString CBatchEncoderDlg::GetDecoderOpt(int nIntputFormat, int nPreset)
 
 CString CBatchEncoderDlg::GetEncoderExe(int nOutputFormat)
 {
-    return m_Config.m_Formats.szFormatPath[nOutputFormat];
+    return m_Config.m_Formats.m_Format[nOutputFormat].szPath;
 }
 
 CString CBatchEncoderDlg::GetEncoderOpt(int nOutputFormat, int nPreset)
@@ -1471,7 +1471,7 @@ bool CBatchEncoderDlg::LoadConfigFile()
             const char *pszTemplate = pFormatElem->Attribute("template");
             if (pszTemplate != NULL)
             {
-                m_Config.m_Formats.szFormatTemplate[nFormat] = GetConfigString(pszTemplate);
+                m_Config.m_Formats.m_Format[nFormat].szTemplate = GetConfigString(pszTemplate);
             }
 
             const char *pszPipesInput = pFormatElem->Attribute("input");
@@ -1479,9 +1479,9 @@ bool CBatchEncoderDlg::LoadConfigFile()
             {
                 CString szBuff = GetConfigString(pszPipesInput);
                 if (szBuff.CompareNoCase(_T("true")) == 0)
-                    m_Config.m_Formats.bFormatInput[nFormat] = true;
+                    m_Config.m_Formats.m_Format[nFormat].bInput = true;
                 else
-                    m_Config.m_Formats.bFormatInput[nFormat] = false;
+                    m_Config.m_Formats.m_Format[nFormat].bInput = false;
             }
 
             const char *pszPipesOutput = pFormatElem->Attribute("output");
@@ -1489,19 +1489,19 @@ bool CBatchEncoderDlg::LoadConfigFile()
             {
                 CString szBuff = GetConfigString(pszPipesOutput);
                 if (szBuff.CompareNoCase(_T("true")) == 0)
-                    m_Config.m_Formats.bFormatOutput[nFormat] = true;
+                    m_Config.m_Formats.m_Format[nFormat].bOutput = true;
                 else
-                    m_Config.m_Formats.bFormatOutput[nFormat] = false;
+                    m_Config.m_Formats.m_Format[nFormat].bOutput = false;
             }
 
             const char *pszFunction = pFormatElem->Attribute("function");
             if (pszFunction != NULL)
             {
-                m_Config.m_Formats.szFormatFunction[nFormat] = GetConfigString(pszFunction);
+                m_Config.m_Formats.m_Format[nFormat].szFunction = GetConfigString(pszFunction);
             }
 
             const char *tmpBuff = pFormatElem->GetText();
-            m_Config.m_Formats.szFormatPath[nFormat] = GetConfigString(tmpBuff);
+            m_Config.m_Formats.m_Format[nFormat].szPath = GetConfigString(tmpBuff);
         }
     }
 
@@ -2159,19 +2159,19 @@ bool CBatchEncoderDlg::SaveConfigFile()
 
         tinyxml2::XMLElement *format = doc.NewElement("Format");
 
-        format->LinkEndChild(doc.NewText(m_Utf8.Create(m_Config.m_Formats.szFormatPath[i])));
+        format->LinkEndChild(doc.NewText(m_Utf8.Create(m_Config.m_Formats.m_Format[i].szPath)));
         m_Utf8.Clear();
 
         format->SetAttribute("name", m_Utf8.Create(g_szFormatNames[i]));
         m_Utf8.Clear();
 
-        format->SetAttribute("template", m_Utf8.Create(m_Config.m_Formats.szFormatTemplate[i]));
+        format->SetAttribute("template", m_Utf8.Create(m_Config.m_Formats.m_Format[i].szTemplate));
         m_Utf8.Clear();
 
-        format->SetAttribute("input", (m_Config.m_Formats.bFormatInput[i]) ? "true" : "false");
-        format->SetAttribute("output", (m_Config.m_Formats.bFormatOutput[i]) ? "true" : "false");
+        format->SetAttribute("input", (m_Config.m_Formats.m_Format[i].bInput) ? "true" : "false");
+        format->SetAttribute("output", (m_Config.m_Formats.m_Format[i].bOutput) ? "true" : "false");
 
-        format->SetAttribute("function", m_Utf8.Create(m_Config.m_Formats.szFormatFunction[i]));
+        format->SetAttribute("function", m_Utf8.Create(m_Config.m_Formats.m_Format[i].szFunction));
         m_Utf8.Clear();
 
         formats->LinkEndChild(format);
@@ -4282,11 +4282,11 @@ void CBatchEncoderDlg::OnOptionsConfigureFormat()
 
     for (int i = 0; i < NUM_FORMAT_NAMES; i++)
     {
-        dlg.szFormatTemplate[i] = m_Config.m_Formats.szFormatTemplate[i];
-        dlg.szFormatPath[i] = m_Config.m_Formats.szFormatPath[i];
-        dlg.bFormatInput[i] = m_Config.m_Formats.bFormatInput[i];
-        dlg.bFormatOutput[i] = m_Config.m_Formats.bFormatOutput[i];
-        dlg.szFormatFunction[i] = m_Config.m_Formats.szFormatFunction[i];
+        dlg.m_Format[i].szTemplate = m_Config.m_Formats.m_Format[i].szTemplate;
+        dlg.m_Format[i].szPath = m_Config.m_Formats.m_Format[i].szPath;
+        dlg.m_Format[i].bInput = m_Config.m_Formats.m_Format[i].bInput;
+        dlg.m_Format[i].bOutput = m_Config.m_Formats.m_Format[i].bOutput;
+        dlg.m_Format[i].szFunction = m_Config.m_Formats.m_Format[i].szFunction;
     }
 
     for (int i = 0; i < (NUM_BROWSE_PATH_FORMATS + NUM_BROWSE_PATH_PROGRESS); i++)
@@ -4300,11 +4300,11 @@ void CBatchEncoderDlg::OnOptionsConfigureFormat()
     {
         for (int i = 0; i < NUM_FORMAT_NAMES; i++)
         {
-            m_Config.m_Formats.szFormatTemplate[i] = dlg.szFormatTemplate[i];
-            m_Config.m_Formats.szFormatPath[i] = dlg.szFormatPath[i];
-            m_Config.m_Formats.bFormatInput[i] = dlg.bFormatInput[i];
-            m_Config.m_Formats.bFormatOutput[i] = dlg.bFormatOutput[i];
-            m_Config.m_Formats.szFormatFunction[i] = dlg.szFormatFunction[i];
+            m_Config.m_Formats.m_Format[i].szTemplate = dlg.m_Format[i].szTemplate;
+            m_Config.m_Formats.m_Format[i].szPath = dlg.m_Format[i].szPath;
+            m_Config.m_Formats.m_Format[i].bInput = dlg.m_Format[i].bInput;
+            m_Config.m_Formats.m_Format[i].bOutput = dlg.m_Format[i].bOutput;
+            m_Config.m_Formats.m_Format[i].szFunction = dlg.m_Format[i].szFunction;
         }
     }
 

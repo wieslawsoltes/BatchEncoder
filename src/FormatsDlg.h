@@ -71,11 +71,7 @@ public:
 public:
     CString szBrowsePath[(NUM_BROWSE_PATH_FORMATS + NUM_BROWSE_PATH_PROGRESS)];
 public:
-    CString szFormatTemplate[NUM_FORMAT_NAMES];
-    CString szFormatPath[NUM_FORMAT_NAMES];
-    bool bFormatInput[NUM_FORMAT_NAMES];
-    bool bFormatOutput[NUM_FORMAT_NAMES];
-    CString szFormatFunction[NUM_FORMAT_NAMES];
+    CFormat m_Format[NUM_FORMAT_NAMES];
 public:
     bool BrowseForCliExe(CString szDefaultFName, CEdit *pEdit, int nID);
     bool BrowseForProgress(CString szDefaultFName, CEdit *pEdit, int nID);

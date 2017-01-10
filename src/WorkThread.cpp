@@ -708,11 +708,9 @@ bool ConvertFile(CBatchEncoderDlg *pDlg,
             typedef int(*lpfnGetProgress)(char *szLineBuff, int nLineLen);
 
             lpfnGetProgress pProgressProc;
-            HMODULE hDll = ::LoadLibrary(pDlg->m_Config.m_Formats.szFormatFunction[nTool]);
+            HMODULE hDll = ::LoadLibrary(pDlg->m_Config.m_Formats.m_Format[nTool].szFunction);
             if (hDll != NULL)
             {
-                // _T("GetProgress") == pDlg->szFormatFunction[nTool]
-
                 // NOTE: the GetProcAddress function has only ANSI version
                 pProgressProc = (lpfnGetProgress) ::GetProcAddress(hDll, "GetProgress");
                 if (pProgressProc == NULL)
@@ -1165,8 +1163,8 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
                 if (pDlg->bForceConsoleWindow == false)
                 {
                     // configure decoder input and output pipes
-                    bUseInPipesDec = pDlg->m_Config.m_Formats.bFormatInput[(NUM_OUTPUT_EXT + nIntputFormat - 1)];
-                    bUseOutPipesDec = pDlg->m_Config.m_Formats.bFormatOutput[(NUM_OUTPUT_EXT + nIntputFormat - 1)];
+                    bUseInPipesDec = pDlg->m_Config.m_Formats.m_Format[(NUM_OUTPUT_EXT + nIntputFormat - 1)].bInput;
+                    bUseOutPipesDec = pDlg->m_Config.m_Formats.m_Format[(NUM_OUTPUT_EXT + nIntputFormat - 1)].bOutput;
                 }
 
                 // input file is stdin
@@ -1186,7 +1184,7 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
 
                 // build full command line for decoder (DECODER-EXE + OPTIONS + INFILE + OUTFILE) 
                 // this is basic model, some of encoder may have different command-line structure
-                csExecute = pDlg->m_Config.m_Formats.szFormatTemplate[(NUM_OUTPUT_EXT + nIntputFormat - 1)];
+                csExecute = pDlg->m_Config.m_Formats.m_Format[(NUM_OUTPUT_EXT + nIntputFormat - 1)].szTemplate;
                 csExecute.Replace(_T("$EXE"), _T("\"$EXE\""));
                 csExecute.Replace(_T("$EXE"), szDecoderExePath);
                 csExecute.Replace(_T("$OPTIONS"), szDecoderOptions);
@@ -1258,8 +1256,8 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
             if (pDlg->bForceConsoleWindow == false)
             {
                 // configure encoder input and output pipes
-                bUseInPipesEnc = pDlg->m_Config.m_Formats.bFormatInput[nOutputFormat];
-                bUseOutPipesEnc = pDlg->m_Config.m_Formats.bFormatOutput[nOutputFormat];
+                bUseInPipesEnc = pDlg->m_Config.m_Formats.m_Format[nOutputFormat].bInput;
+                bUseOutPipesEnc = pDlg->m_Config.m_Formats.m_Format[nOutputFormat].bOutput;
             }
 
             if (nProcessingMode == 0)
@@ -1298,7 +1296,7 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
 
                 // build full command line for encoder (ENCODER-EXE + OPTIONS + INFILE + OUTFILE)
                 // this is basic model, some of encoder may have different command-line structure
-                csExecute = pDlg->m_Config.m_Formats.szFormatTemplate[nOutputFormat];
+                csExecute = pDlg->m_Config.m_Formats.m_Format[nOutputFormat].szTemplate;
                 csExecute.Replace(_T("$EXE"), _T("\"$EXE\""));
                 csExecute.Replace(_T("$EXE"), szEncoderExePath);
                 csExecute.Replace(_T("$OPTIONS"), szEncoderOptions);
