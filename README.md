@@ -43,48 +43,79 @@ adds input and output file paths. For specific options for each format use help 
 
 ## Supported formats and tools
 
-| Name            | Type        | File extension  | Version     | Executable                       | Progress function                         | Website                                                                                            |
-|-----------------|-------------|-----------------|-------------|----------------------------------|-------------------------------------------|----------------------------------------------------------------------------------------------------|
-| SSRC            | Encoder     | WAV             | -.-         | ssrc.exe                         | GetProgress_SsrcEnc.progress              | [---](http://---/)                                                                                 |
-| LAME            | Encoder     | MP3             | -.-         | lame.exe                         | GetProgress_LameEnc.progress              | [---](http://---/)                                                                                 |
-| LAME            | Decoder     | MP1             | -.-         | lame.exe                         | GetProgress_LameDec.progress              | [---](http://---/)                                                                                 |
-| LAME            | Decoder     | MP2             | -.-         | lame.exe                         | GetProgress_LameDec.progress              | [---](http://---/)                                                                                 |
-| LAME            | Decoder     | MP3             | -.-         | lame.exe                         | GetProgress_LameDec.progress              | [---](http://---/)                                                                                 |
-| MPPENC          | Encoder     | MPC             | -.-         | mppenc.exe                       | GetProgress_MppEnc.progress               | [---](http://---/)                                                                                 |
-| MPPDEC          | Decoder     | MPC             | -.-         | mppdec.exe                       | GetProgress_MppDec.progress               | [---](http://---/)                                                                                 |
-| MPPDEC          | Decoder     | MPP             | -.-         | mppdec.exe                       | GetProgress_MppDec.progress               | [---](http://---/)                                                                                 |
-| MPPDEC          | Decoder     | MP+             | -.-         | mppdec.exe                       | GetProgress_MppDec.progress               | [---](http://---/)                                                                                 |
-| FAAC            | Encoder     | AAC             | -.-         | faac.exe                         | GetProgress_FaacEnc.progress              | [---](http://---/)                                                                                 |
-| FAAD            | Decoder     | MP4             | -.-         | faad.exe                         | GetProgress_FaadDec.progress              | [---](http://---/)                                                                                 |
-| FAAD            | Decoder     | M4A             | -.-         | faad.exe                         | GetProgress_FaadDec.progress              | [---](http://---/)                                                                                 |
-| FAAD            | Decoder     | AAC             | -.-         | faad.exe                         | GetProgress_FaadDec.progress              | [---](http://---/)                                                                                 |
-| OGGENC          | Encoder     | OGG             | -.-         | oggenc2.exe                      | GetProgress_OggEnc.progress               | [---](http://---/)                                                                                 |
-| OGGDEC          | Decoder     | OGG             | -.-         | oggdec.exe                       | GetProgress_OggDec.progress               | [---](http://---/)                                                                                 |
-| AFTEN           | Encoder     | AC3             | -.-         | aften.exe                        | - none -                                  | [---](http://---/)                                                                                 |
-| AFTEN           | Decoder     | AC3             | -.-         | aften.exe                        | - none -                                  | [---](http://---/)                                                                                 |
-| FLAC            | Encoder     | FLAC            | -.-         | flac.exe                         | GetProgress_FlacEnc.progress              | [---](http://---/)                                                                                 |
-| FLAC            | Decoder     | FLAC            | -.-         | flac.exe                         | GetProgress_FlacDec.progress              | [---](http://---/)                                                                                 |
-| WAVPACK         | Encoder     | WV              | -.-         | wavpack.exe                      | GetProgress_WavPackEnc.progress           | [---](http://---/)                                                                                 |
-| WVUNPACK        | Decoder     | WV              | -.-         | wvunpack.exe                     | GetProgress_WvUnpackDec.progress          | [---](http://---/)                                                                                 |
-| MAC             | Encoder     | APE             | -.-         | mac.exe                          | GetProgress_MacEnc.progress               | [---](http://---/)                                                                                 |
-| MAC             | Decoder     | APE             | -.-         | mac.exe                          | GetProgress_MacDec.progress               | [---](http://---/)                                                                                 |
-| MAC             | Decoder     | MAC             | -.-         | mac.exe                          | GetProgress_MacDec.progress               | [---](http://---/)                                                                                 |
-| OFR             | Encoder     | OFR             | -.-         | ofr.exe                          | GetProgress_OfrEnc.progress               | [---](http://---/)                                                                                 |
-| OFR             | Decoder     | OFR             | -.-         | ofr.exe                          | GetProgress_OfrDec.progress               | [---](http://---/)                                                                                 |
-| TTAENC          | Encoder     | TTA             | -.-         | ttaenc.exe                       | GetProgress_TtaEnc.progress               | [---](http://---/)                                                                                 |
-| TTAENC          | Decoder     | TTA             | -.-         | ttaenc.exe                       | GetProgress_TtaDec.progress               | [---](http://---/)                                                                                 |
-| TAKC            | Encoder     | TAK             | -.-         | takc.exe                         | - none -                                  | [---](http://---/)                                                                                 |
-| TAKC            | Decoder     | TAK             | -.-         | takc.exe                         | - none -                                  | [---](http://---/)                                                                                 |
-| NEROAACENC      | Encoder     | M4A             | -.-         | neroAacEnc.exe                   | - none -                                  | [---](http://---/)                                                                                 |
-| NEROAACENC      | Encoder     | MP4             | -.-         | neroAacEnc.exe                   | - none -                                  | [---](http://---/)                                                                                 |
-| NEROAACENC      | Encoder     | M4A             | -.-         | neroAacEnc_sse2.exe              | - none -                                  | [---](http://---/)                                                                                 |
-| NEROAACENC      | Encoder     | MP4             | -.-         | neroAacEnc_sse2.exe              | - none -                                  | [---](http://---/)                                                                                 |
-| NEROAACDEC      | Decoder     | MP4             | -.-         | neroAacDec.exe                   | - none -                                  | [---](http://---/)                                                                                 |
-| NEROAACDEC      | Decoder     | M4A             | -.-         | neroAacDec.exe                   | - none -                                  | [---](http://---/)                                                                                 |
+| Name            | Type        | File extension  | Version     | Executable                       | Progress function                         |
+|-----------------|-------------|-----------------|-------------|----------------------------------|-------------------------------------------|
+| SSRC            | Encoder     | WAV             | -.-         | ssrc.exe                         | GetProgress_SsrcEnc.progress              |
+| LAME            | Encoder     | MP3             | -.-         | lame.exe                         | GetProgress_LameEnc.progress              |
+| LAME            | Decoder     | MP1             | -.-         | lame.exe                         | GetProgress_LameDec.progress              |
+| LAME            | Decoder     | MP2             | -.-         | lame.exe                         | GetProgress_LameDec.progress              |
+| LAME            | Decoder     | MP3             | -.-         | lame.exe                         | GetProgress_LameDec.progress              |
+| MPPENC          | Encoder     | MPC             | -.-         | mppenc.exe                       | GetProgress_MppEnc.progress               |
+| MPPDEC          | Decoder     | MPC             | -.-         | mppdec.exe                       | GetProgress_MppDec.progress               |
+| MPPDEC          | Decoder     | MPP             | -.-         | mppdec.exe                       | GetProgress_MppDec.progress               |
+| MPPDEC          | Decoder     | MP+             | -.-         | mppdec.exe                       | GetProgress_MppDec.progress               |
+| FAAC            | Encoder     | AAC             | -.-         | faac.exe                         | GetProgress_FaacEnc.progress              |
+| FAAD            | Decoder     | MP4             | -.-         | faad.exe                         | GetProgress_FaadDec.progress              |
+| FAAD            | Decoder     | M4A             | -.-         | faad.exe                         | GetProgress_FaadDec.progress              |
+| FAAD            | Decoder     | AAC             | -.-         | faad.exe                         | GetProgress_FaadDec.progress              |
+| OGGENC          | Encoder     | OGG             | -.-         | oggenc2.exe                      | GetProgress_OggEnc.progress               |
+| OGGDEC          | Decoder     | OGG             | -.-         | oggdec.exe                       | GetProgress_OggDec.progress               |
+| AFTEN           | Encoder     | AC3             | -.-         | aften.exe                        | - none -                                  |
+| AFTEN           | Decoder     | AC3             | -.-         | aften.exe                        | - none -                                  |
+| FLAC            | Encoder     | FLAC            | -.-         | flac.exe                         | GetProgress_FlacEnc.progress              |
+| FLAC            | Decoder     | FLAC            | -.-         | flac.exe                         | GetProgress_FlacDec.progress              |
+| WAVPACK         | Encoder     | WV              | -.-         | wavpack.exe                      | GetProgress_WavPackEnc.progress           |
+| WVUNPACK        | Decoder     | WV              | -.-         | wvunpack.exe                     | GetProgress_WvUnpackDec.progress          |
+| MAC             | Encoder     | APE             | -.-         | mac.exe                          | GetProgress_MacEnc.progress               |
+| MAC             | Decoder     | APE             | -.-         | mac.exe                          | GetProgress_MacDec.progress               |
+| MAC             | Decoder     | MAC             | -.-         | mac.exe                          | GetProgress_MacDec.progress               |
+| OFR             | Encoder     | OFR             | -.-         | ofr.exe                          | GetProgress_OfrEnc.progress               |
+| OFR             | Decoder     | OFR             | -.-         | ofr.exe                          | GetProgress_OfrDec.progress               |
+| TTAENC          | Encoder     | TTA             | -.-         | ttaenc.exe                       | GetProgress_TtaEnc.progress               |
+| TTAENC          | Decoder     | TTA             | -.-         | ttaenc.exe                       | GetProgress_TtaDec.progress               |
+| TAKC            | Encoder     | TAK             | -.-         | takc.exe                         | - none -                                  |
+| TAKC            | Decoder     | TAK             | -.-         | takc.exe                         | - none -                                  |
+| NEROAACENC      | Encoder     | M4A             | -.-         | neroAacEnc.exe                   | - none -                                  |
+| NEROAACENC      | Encoder     | MP4             | -.-         | neroAacEnc.exe                   | - none -                                  |
+| NEROAACENC      | Encoder     | M4A             | -.-         | neroAacEnc_sse2.exe              | - none -                                  |
+| NEROAACENC      | Encoder     | MP4             | -.-         | neroAacEnc_sse2.exe              | - none -                                  |
+| NEROAACDEC      | Decoder     | MP4             | -.-         | neroAacDec.exe                   | - none -                                  |
+| NEROAACDEC      | Decoder     | M4A             | -.-         | neroAacDec.exe                   | - none -                                  |
 
-Format definitions: https://github.com/wieslawsoltes/BatchEncoder/tree/master/src/data/Formats
-Preset definitions: https://github.com/wieslawsoltes/BatchEncoder/tree/master/src/data/Presets
-Progress functions: https://github.com/wieslawsoltes/BatchEncoder/tree/master/src/progress
+### Tool downloads
+
+| Name            | Website                                                                                            |
+|-----------------|----------------------------------------------------------------------------------------------------|
+| SSRC            | [---](http://---/)                                                                                 |
+| LAME            | [---](http://---/)                                                                                 |
+| MPPENC          | [---](http://---/)                                                                                 |
+| MPPDEC          | [---](http://---/)                                                                                 |
+| FAAC            | [---](http://---/)                                                                                 |
+| FAAD            | [---](http://---/)                                                                                 |
+| OGGENC          | [---](http://---/)                                                                                 |
+| OGGDEC          | [---](http://---/)                                                                                 |
+| AFTEN           | [---](http://---/)                                                                                 |
+| FLAC            | [---](http://---/)                                                                                 |
+| WAVPACK         | [---](http://---/)                                                                                 |
+| WVUNPACK        | [---](http://---/)                                                                                 |
+| MAC             | [---](http://---/)                                                                                 |
+| OFR             | [---](http://---/)                                                                                 |
+| TTAENC          | [---](http://---/)                                                                                 |
+| TAKC            | [---](http://---/)                                                                                 |
+| NEROAACENC      | [---](http://---/)                                                                                 |
+| NEROAACDEC      | [---](http://---/)                                                                                 |
+
+### Format definitions
+
+https://github.com/wieslawsoltes/BatchEncoder/tree/master/src/data/Formats
+
+### Preset definitions
+
+https://github.com/wieslawsoltes/BatchEncoder/tree/master/src/data/Presets
+
+### Progress functions
+
+https://github.com/wieslawsoltes/BatchEncoder/tree/master/src/progress
 
 ## Command-Line
 
