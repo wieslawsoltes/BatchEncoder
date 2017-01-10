@@ -481,7 +481,7 @@ BOOL CBatchEncoderDlg::OnInitDialog()
     AddAnchor(IDC_CNVSTATUS, MIDDLE_CENTER); // TOP_LEFT, BOTTOM_RIGHT
 
     // load program settings from file
-    if (this->LoadSettings() == false)
+    if (this->LoadConfigFile() == false)
     {
         // when settings file is missing we are exiting
         this->EndDialog(-1);
@@ -1225,7 +1225,7 @@ void CBatchEncoderDlg::ShowGridlines(bool bShow)
     }
 }
 
-bool CBatchEncoderDlg::LoadSettings()
+bool CBatchEncoderDlg::LoadConfigFile()
 {
     ::UpdatePath();
 
@@ -1976,7 +1976,7 @@ bool CBatchEncoderDlg::LoadSettings()
     return true;
 }
 
-bool CBatchEncoderDlg::SaveSettings()
+bool CBatchEncoderDlg::SaveConfigFile()
 {
     // save all settings to file
     CXMLDocumentW doc;
@@ -2089,7 +2089,6 @@ bool CBatchEncoderDlg::SaveSettings()
     for (int i = 0; i < NUM_PROGRAM_SETTINGS; i++)
     {
         CUtf8String szBuffUtf8;
-
         tinyxml2::XMLElement *stg = doc.NewElement(g_szSettingsTags[i]);
         stg->LinkEndChild(doc.NewText(szBuffUtf8.Create(szSetting[i])));
         settings->LinkEndChild(stg);
@@ -2265,7 +2264,7 @@ void CBatchEncoderDlg::LoadUserSettings()
 
         // load settings from user file
         szMainConfigFile = szPath;
-        if (this->LoadSettings() == false)
+        if (this->LoadConfigFile() == false)
         {
             MessageBox(_T("Failed to load settings!"),
                 _T("ERROR"),
@@ -2302,7 +2301,7 @@ void CBatchEncoderDlg::SaveUserSettings()
 
         // load settings from user file
         szMainConfigFile = szPath;
-        if (this->SaveSettings() == false)
+        if (this->SaveConfigFile() == false)
         {
             MessageBox(_T("Failed to save settings!"),
                 _T("ERROR"),
@@ -2335,7 +2334,7 @@ void CBatchEncoderDlg::LoadDefaultSettings()
         ::DeleteFile(g_szPresetFiles[i]);
 
     // load settings from resources
-    this->LoadSettings();
+    this->LoadConfigFile();
 }
 
 void CBatchEncoderDlg::OnBnClickedButtonConvert()
@@ -2564,7 +2563,7 @@ void CBatchEncoderDlg::OnClose()
     //   if true then do not save settings to disk
 
     if (this->GetMenu()->GetMenuState(ID_OPTIONS_DO_NOT_SAVE, MF_BYCOMMAND) != MF_CHECKED)
-        this->SaveSettings();
+        this->SaveConfigFile();
 
     this->EnableTrayIcon(false);
 

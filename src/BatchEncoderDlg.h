@@ -159,8 +159,8 @@ public:
     bool LoadList(CString szFileXml, bool bAddToListCtrl = true);
     bool SaveList(CString szFileXml, bool bUseListCtrl = true);
 public:
-    bool LoadSettings();
-    bool SaveSettings();
+    bool LoadConfigFile();
+    bool SaveConfigFile();
 public:
     afx_msg void LoadUserSettings();
     afx_msg void SaveUserSettings();

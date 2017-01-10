@@ -1394,7 +1394,7 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
 
         // save current settings to file
         if (pDlg->GetMenu()->GetMenuState(ID_OPTIONS_DO_NOT_SAVE, MF_BYCOMMAND) != MF_CHECKED)
-            pDlg->SaveSettings();
+            pDlg->SaveConfigFile();
 
         // disable tray icon
         pDlg->EnableTrayIcon(false);
