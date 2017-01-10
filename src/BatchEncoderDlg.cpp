@@ -216,17 +216,17 @@ CBatchEncoderDlg::CBatchEncoderDlg(CWnd* pParent /*=NULL*/)
 
     for (int i = 0; i < NUM_COMMADLINE_TOOLS; i++)
     {
-        szFormatPath[i] = g_szDefaultPath[i];
-        bFormatInput[i] = g_bDefaultInPipes[i];
-        bFormatOutput[i] = g_bDefaultOutPipes[i];
+        m_Config.m_Formats.szFormatPath[i] = g_szDefaultPath[i];
+        m_Config.m_Formats.bFormatInput[i] = g_bDefaultInPipes[i];
+        m_Config.m_Formats.bFormatOutput[i] = g_bDefaultOutPipes[i];
     }
 
-    nThreadPriorityIndex = 3;
-    nProcessPriorityIndex = 1;
-    bDeleteOnError = true;
-    bStopOnErrors = false;
-    szLogFileName = MAIN_APP_LOG;
-    nLogEncoding = 2;
+    m_Config.m_Settings.nThreadPriorityIndex = 3;
+    m_Config.m_Settings.nProcessPriorityIndex = 1;
+    m_Config.m_Settings.bDeleteOnError = true;
+    m_Config.m_Settings.bStopOnErrors = false;
+    m_Config.m_Settings.szLogFileName = MAIN_APP_LOG;
+    m_Config.m_Settings.nLogEncoding = 2;
 
     bForceConsoleWindow = false;
 
@@ -571,7 +571,7 @@ bool CBatchEncoderDlg::CreateBatchFile(CString szFileName, bool bUseListCtrl)
     if (bUseListCtrl == true)
         nFiles = this->m_LstInputFiles.GetItemCount();
     else
-        nFiles = this->m_FileList.GetSize();
+        nFiles = m_Config.m_Files.m_FileList.GetSize();
 
     for (int i = 0; i < nFiles; i++)
     {
@@ -586,16 +586,16 @@ bool CBatchEncoderDlg::CreateBatchFile(CString szFileName, bool bUseListCtrl)
         }
 
         int nProcessingMode = -1;
-        int nIntputFormat = this->m_FileList.GetItemInFormat(i);
-        int nOutputFormat = this->m_FileList.GetItemOutFormat(i);
-        int nPreset = this->m_FileList.GetItemOutPreset(i);
+        int nIntputFormat = m_Config.m_Files.m_FileList.GetItemInFormat(i);
+        int nOutputFormat = m_Config.m_Files.m_FileList.GetItemOutFormat(i);
+        int nPreset = m_Config.m_Files.m_FileList.GetItemOutPreset(i);
 
-        CString szInputFile = this->m_FileList.GetItemFilePath(i);
+        CString szInputFile = m_Config.m_Files.m_FileList.GetItemFilePath(i);
 
         if (bOutPath == false)
         {
             szOutPath = szInputFile;
-            CString szToRemove = this->m_FileList.GetFileName(szInputFile);
+            CString szToRemove = m_Config.m_Files.m_FileList.GetFileName(szInputFile);
             int nNewLenght = szOutPath.GetLength() - szToRemove.GetLength();
             szOutPath.Truncate(nNewLenght);
         }
@@ -615,7 +615,7 @@ bool CBatchEncoderDlg::CreateBatchFile(CString szFileName, bool bUseListCtrl)
             // TODO:
         }
 
-        CString szName = this->m_FileList.GetItemFileName(i);
+        CString szName = m_Config.m_Files.m_FileList.GetItemFileName(i);
 
         CString szEncoderExePath;
         CString szEncoderOptions;
@@ -632,7 +632,7 @@ bool CBatchEncoderDlg::CreateBatchFile(CString szFileName, bool bUseListCtrl)
             // TODO:
         }
 
-        szName = szName + _T(".") + this->m_FileList.GetItemOutExt(i).MakeLower();
+        szName = szName + _T(".") + m_Config.m_Files.m_FileList.GetItemOutExt(i).MakeLower();
 
         CString szOutputFile;
 
@@ -684,7 +684,7 @@ bool CBatchEncoderDlg::CreateBatchFile(CString szFileName, bool bUseListCtrl)
 
         if ((nProcessingMode == 1) || (nProcessingMode == 2))
         {
-            csExecute = this->szFormatTemplate[(NUM_OUTPUT_EXT + nIntputFormat - 1)];
+            csExecute = m_Config.m_Formats.szFormatTemplate[(NUM_OUTPUT_EXT + nIntputFormat - 1)];
             csExecute.Replace(_T("$EXE"), _T("\"$EXE\""));
             csExecute.Replace(_T("$EXE"), szDecoderExePath);
             csExecute.Replace(_T("$OPTIONS"), szDecoderOptions);
@@ -725,7 +725,7 @@ bool CBatchEncoderDlg::CreateBatchFile(CString szFileName, bool bUseListCtrl)
 
         if ((nProcessingMode == 0) || (nProcessingMode == 2))
         {
-            csExecute = this->szFormatTemplate[nOutputFormat];
+            csExecute = m_Config.m_Formats.szFormatTemplate[nOutputFormat];
             csExecute.Replace(_T("$EXE"), _T("\"$EXE\""));
             csExecute.Replace(_T("$EXE"), szEncoderExePath);
             csExecute.Replace(_T("$OPTIONS"), szEncoderOptions);
@@ -974,7 +974,7 @@ LRESULT CBatchEncoderDlg::OnListItemChaged(WPARAM wParam, LPARAM lParam)
 
     // update item data
     if ((nIndex >= 0) && szText != NULL)
-        this->m_FileList.SetItemFileName(szText, nIndex);
+        m_Config.m_Files.m_FileList.SetItemFileName(szText, nIndex);
 
     return(0);
 }
@@ -1022,7 +1022,7 @@ HCURSOR CBatchEncoderDlg::OnQueryDragIcon()
 
 CString CBatchEncoderDlg::GetDecoderExe(int nIntputFormat)
 {
-    return this->szFormatPath[(NUM_OUTPUT_EXT + nIntputFormat - 1)];
+    return m_Config.m_Formats.szFormatPath[(NUM_OUTPUT_EXT + nIntputFormat - 1)];
 }
 
 CString CBatchEncoderDlg::GetDecoderOpt(int nIntputFormat, int nPreset)
@@ -1036,12 +1036,12 @@ CString CBatchEncoderDlg::GetDecoderOpt(int nIntputFormat, int nPreset)
 
 CString CBatchEncoderDlg::GetEncoderExe(int nOutputFormat)
 {
-    return this->szFormatPath[nOutputFormat];
+    return m_Config.m_Formats.szFormatPath[nOutputFormat];
 }
 
 CString CBatchEncoderDlg::GetEncoderOpt(int nOutputFormat, int nPreset)
 {
-    return this->m_ListPresets[nOutputFormat].GetPresetOptions(nPreset);
+    return m_Config.m_Presets.m_ListPresets[nOutputFormat].GetPresetOptions(nPreset);
 }
 
 bool CBatchEncoderDlg::LoadPresets(CString szPresetsFName, CLListPresets *m_ListPresets)
@@ -1137,7 +1137,7 @@ CLListPresets *CBatchEncoderDlg::GetCurrentPresetsList(void)
     int nSelFormatIndex = this->m_CmbFormat.GetCurSel();
 
     if ((nSelFormatIndex >= 0) && (nSelFormatIndex < NUM_PRESET_FILES))
-        return &this->m_ListPresets[nSelFormatIndex];
+        return &m_Config.m_Presets.m_ListPresets[nSelFormatIndex];
     else
         return NULL; // ERROR
 }
@@ -1155,7 +1155,7 @@ void CBatchEncoderDlg::UpdateOutputComboBoxes(int nSelFormatIndex, int nSelPrese
 
     if ((nSelFormatIndex >= 0) && (nSelFormatIndex < NUM_PRESET_FILES))
     {
-        this->FillPresetComboBox(&this->m_ListPresets[nSelFormatIndex], nSelPresetIndex);
+        this->FillPresetComboBox(&m_Config.m_Presets.m_ListPresets[nSelFormatIndex], nSelPresetIndex);
     }
     else
     {
@@ -1426,11 +1426,11 @@ bool CBatchEncoderDlg::LoadConfigFile()
             if (pPresetElem)
             {
                 const char *tmpBuff = pPresetElem->GetText();
-                this->szPresetsFile[i] = GetConfigString(tmpBuff);
+                m_Config.m_Presets.szPresetsFile[i] = GetConfigString(tmpBuff);
             }
             else
             {
-                this->szPresetsFile[i] = g_szPresetFiles[i];
+                m_Config.m_Presets.szPresetsFile[i] = g_szPresetFiles[i];
             }
         }
     }
@@ -1471,7 +1471,7 @@ bool CBatchEncoderDlg::LoadConfigFile()
             const char *pszTemplate = pFormatElem->Attribute("template");
             if (pszTemplate != NULL)
             {
-                szFormatTemplate[nFormat] = GetConfigString(pszTemplate);
+                m_Config.m_Formats.szFormatTemplate[nFormat] = GetConfigString(pszTemplate);
             }
 
             const char *pszPipesInput = pFormatElem->Attribute("input");
@@ -1479,9 +1479,9 @@ bool CBatchEncoderDlg::LoadConfigFile()
             {
                 CString szBuff = GetConfigString(pszPipesInput);
                 if (szBuff.CompareNoCase(_T("true")) == 0)
-                    bFormatInput[nFormat] = true;
+                    m_Config.m_Formats.bFormatInput[nFormat] = true;
                 else
-                    bFormatInput[nFormat] = false;
+                    m_Config.m_Formats.bFormatInput[nFormat] = false;
             }
 
             const char *pszPipesOutput = pFormatElem->Attribute("output");
@@ -1489,19 +1489,19 @@ bool CBatchEncoderDlg::LoadConfigFile()
             {
                 CString szBuff = GetConfigString(pszPipesOutput);
                 if (szBuff.CompareNoCase(_T("true")) == 0)
-                    bFormatOutput[nFormat] = true;
+                    m_Config.m_Formats.bFormatOutput[nFormat] = true;
                 else
-                    bFormatOutput[nFormat] = false;
+                    m_Config.m_Formats.bFormatOutput[nFormat] = false;
             }
 
             const char *pszFunction = pFormatElem->Attribute("function");
             if (pszFunction != NULL)
             {
-                szFormatFunction[nFormat] = GetConfigString(pszFunction);
+                m_Config.m_Formats.szFormatFunction[nFormat] = GetConfigString(pszFunction);
             }
 
             const char *tmpBuff = pFormatElem->GetText();
-            szFormatPath[nFormat] = GetConfigString(tmpBuff);
+            m_Config.m_Formats.szFormatPath[nFormat] = GetConfigString(tmpBuff);
         }
     }
 
@@ -1516,25 +1516,25 @@ bool CBatchEncoderDlg::LoadConfigFile()
 
         tinyxml2::XMLElement* pPathTagElem = pBrowseElem->FirstChildElement("szPathTag");
         if (pPathTagElem)
-            this->szBrowsePath[i] = GetConfigString(pPathTagElem->GetText());
+            m_Config.m_Browse.szBrowsePath[i] = GetConfigString(pPathTagElem->GetText());
         else
-            this->szBrowsePath[i] = ::GetExeFilePath();
+            m_Config.m_Browse.szBrowsePath[i] = ::GetExeFilePath();
     }
 
     // NOTE:
-    // this is special case for this->szBrowsePath[4]
+    // this is special case for m_Config.m_Browse.szBrowsePath[4]
     // check for out-path if not presets set to default value
-    if (this->szBrowsePath[4].Compare(_T("")) != 0)
+    if (m_Config.m_Browse.szBrowsePath[4].Compare(_T("")) != 0)
     {
-        this->m_EdtOutPath.SetWindowText(this->szBrowsePath[4]);
-        szLastBrowse = this->szBrowsePath[4];
+        this->m_EdtOutPath.SetWindowText(m_Config.m_Browse.szBrowsePath[4]);
+        szLastBrowse = m_Config.m_Browse.szBrowsePath[4];
     }
     else
     {
         CString szBuff = ::GetExeFilePath();
         m_EdtOutPath.SetWindowText(szBuff);
         szLastBrowse = szBuff;
-        this->szBrowsePath[4] = szBuff;
+        m_Config.m_Browse.szBrowsePath[4] = szBuff;
     }
 
     // root: Files
@@ -1589,7 +1589,7 @@ bool CBatchEncoderDlg::LoadConfigFile()
         NewItemData nid;
         ::InitNewItemData(nid);
 
-        for (int i = 0; i < this->m_FileList.GetSize(); i++)
+        for (int i = 0; i < m_Config.m_Files.m_FileList.GetSize(); i++)
         {
             nid.nAction = 1;
             nid.szFileName = _T("");
@@ -1822,22 +1822,22 @@ bool CBatchEncoderDlg::LoadConfigFile()
     // Description: encoder/decoder thread priority index
     if (szSetting[16].Compare(_T("")) != 0)
     {
-        nThreadPriorityIndex = stoi(szSetting[16]);
+        m_Config.m_Settings.nThreadPriorityIndex = stoi(szSetting[16]);
     }
     else
     {
-        nThreadPriorityIndex = 3;
+        m_Config.m_Settings.nThreadPriorityIndex = 3;
     }
 
     // 17
     // Description: encoder/decoder process priority index
     if (szSetting[17].Compare(_T("")) != 0)
     {
-        nProcessPriorityIndex = stoi(szSetting[17]);
+        m_Config.m_Settings.nProcessPriorityIndex = stoi(szSetting[17]);
     }
     else
     {
-        nProcessPriorityIndex = 1;
+        m_Config.m_Settings.nProcessPriorityIndex = 1;
     }
 
     // 18
@@ -1845,13 +1845,13 @@ bool CBatchEncoderDlg::LoadConfigFile()
     if (szSetting[18].Compare(_T("")) != 0)
     {
         if (szSetting[18].Compare(_T("true")) == 0)
-            bDeleteOnError = true;
+            m_Config.m_Settings.bDeleteOnError = true;
         else
-            bDeleteOnError = false;
+            m_Config.m_Settings.bDeleteOnError = false;
     }
     else
     {
-        bDeleteOnError = true;
+        m_Config.m_Settings.bDeleteOnError = true;
     }
 
     // 19
@@ -1859,35 +1859,35 @@ bool CBatchEncoderDlg::LoadConfigFile()
     if (szSetting[19].Compare(_T("")) != 0)
     {
         if (szSetting[19].Compare(_T("true")) == 0)
-            bStopOnErrors = true;
+            m_Config.m_Settings.bStopOnErrors = true;
         else
-            bStopOnErrors = false;
+            m_Config.m_Settings.bStopOnErrors = false;
     }
     else
     {
-        bStopOnErrors = false;
+        m_Config.m_Settings.bStopOnErrors = false;
     }
 
     // 20
     // Description: log filename for console output
     if (szSetting[20].Compare(_T("")) != 0)
     {
-        szLogFileName = szSetting[20];
+        m_Config.m_Settings.szLogFileName = szSetting[20];
     }
     else
     {
-        szLogFileName = MAIN_APP_LOG;
+        m_Config.m_Settings.szLogFileName = MAIN_APP_LOG;
     }
 
     // 21
     // Description: encoding of data stored in logfile
     if (szSetting[21].Compare(_T("")) != 0)
     {
-        nLogEncoding = stoi(szSetting[21]);
+        m_Config.m_Settings.nLogEncoding = stoi(szSetting[21]);
     }
     else
     {
-        nLogEncoding = 2;
+        m_Config.m_Settings.nLogEncoding = 2;
     }
 
     // 22
@@ -1931,12 +1931,12 @@ bool CBatchEncoderDlg::LoadConfigFile()
 
     // clear presets lists
     for (int i = 0; i < NUM_PRESET_FILES; i++)
-        this->m_ListPresets[i].RemoveAllNodes();
+        m_Config.m_Presets.m_ListPresets[i].RemoveAllNodes();
 
     // load all presets configuration files
     for (int i = 0; i < NUM_PRESET_FILES; i++)
     {
-        if (this->LoadPresets(this->szPresetsFile[i], &this->m_ListPresets[i]) == false)
+        if (this->LoadPresets(m_Config.m_Presets.szPresetsFile[i], &m_Config.m_Presets.m_ListPresets[i]) == false)
         {
             // create presets file from resources
             BOOL bRet = FALSE;
@@ -1954,7 +1954,7 @@ bool CBatchEncoderDlg::LoadConfigFile()
                     FreeXmlResource(lpvBuf);
 
                     // try again to load presets
-                    if (this->LoadPresets(g_szPresetFiles[i], &this->m_ListPresets[i]) == false)
+                    if (this->LoadPresets(g_szPresetFiles[i], &m_Config.m_Presets.m_ListPresets[i]) == false)
                         return false;
                 }
                 else
@@ -2062,22 +2062,22 @@ bool CBatchEncoderDlg::SaveConfigFile()
     szSetting[15] = szFormatsListColumns;
 
     // 16
-    szSetting[16].Format(_T("%d"), this->nThreadPriorityIndex);
+    szSetting[16].Format(_T("%d"), m_Config.m_Settings.nThreadPriorityIndex);
 
     // 17
-    szSetting[17].Format(_T("%d"), this->nProcessPriorityIndex);
+    szSetting[17].Format(_T("%d"), m_Config.m_Settings.nProcessPriorityIndex);
 
     // 18
-    szSetting[18] = (this->bDeleteOnError == true) ? _T("true") : _T("false");
+    szSetting[18] = (m_Config.m_Settings.bDeleteOnError == true) ? _T("true") : _T("false");
 
     // 19
-    szSetting[19] = (this->bStopOnErrors == true) ? _T("true") : _T("false");
+    szSetting[19] = (m_Config.m_Settings.bStopOnErrors == true) ? _T("true") : _T("false");
 
     // 20
-    szSetting[20] = this->szLogFileName;
+    szSetting[20] = m_Config.m_Settings.szLogFileName;
 
     // 21
-    szSetting[21].Format(_T("%d"), nLogEncoding);
+    szSetting[21].Format(_T("%d"), m_Config.m_Settings.nLogEncoding);
 
     // 22
     szSetting[22] = this->GetMenuItemCheck(ID_VIEW_STARTWITHEXTENDEDPROGRESS);
@@ -2140,7 +2140,7 @@ bool CBatchEncoderDlg::SaveConfigFile()
         CUtf8String szBuffUtf8;
 
         tinyxml2::XMLElement* preset = doc.NewElement(g_szPresetTags[i]);
-        preset->LinkEndChild(doc.NewText(szBuffUtf8.Create(this->szPresetsFile[i])));
+        preset->LinkEndChild(doc.NewText(szBuffUtf8.Create(m_Config.m_Presets.szPresetsFile[i])));
         presets->LinkEndChild(preset);
         szBuffUtf8.Clear();
     }
@@ -2159,19 +2159,19 @@ bool CBatchEncoderDlg::SaveConfigFile()
 
         tinyxml2::XMLElement *format = doc.NewElement("Format");
 
-        format->LinkEndChild(doc.NewText(m_Utf8.Create(szFormatPath[i])));
+        format->LinkEndChild(doc.NewText(m_Utf8.Create(m_Config.m_Formats.szFormatPath[i])));
         m_Utf8.Clear();
 
         format->SetAttribute("name", m_Utf8.Create(g_szFormatNames[i]));
         m_Utf8.Clear();
 
-        format->SetAttribute("template", m_Utf8.Create(szFormatTemplate[i]));
+        format->SetAttribute("template", m_Utf8.Create(m_Config.m_Formats.szFormatTemplate[i]));
         m_Utf8.Clear();
 
-        format->SetAttribute("input", (bFormatInput[i]) ? "true" : "false");
-        format->SetAttribute("output", (bFormatOutput[i]) ? "true" : "false");
+        format->SetAttribute("input", (m_Config.m_Formats.bFormatInput[i]) ? "true" : "false");
+        format->SetAttribute("output", (m_Config.m_Formats.bFormatOutput[i]) ? "true" : "false");
 
-        format->SetAttribute("function", m_Utf8.Create(szFormatFunction[i]));
+        format->SetAttribute("function", m_Utf8.Create(m_Config.m_Formats.szFormatFunction[i]));
         m_Utf8.Clear();
 
         formats->LinkEndChild(format);
@@ -2184,8 +2184,8 @@ bool CBatchEncoderDlg::SaveConfigFile()
     // NOTE: 
     // get last browse for outpath this is special case 
     // because user can change this value 
-    // without changing this->szBrowsePath[4] variable
-    m_EdtOutPath.GetWindowText(this->szBrowsePath[4]);
+    // without changing m_Config.m_Browse.szBrowsePath[4] variable
+    m_EdtOutPath.GetWindowText(m_Config.m_Browse.szBrowsePath[4]);
 
     for (int i = 0; i < NUM_BROWSE_PATH; i++)
     {
@@ -2197,7 +2197,7 @@ bool CBatchEncoderDlg::SaveConfigFile()
         sprintf(szPathTag, "Path_%02d", i);
 
         tinyxml2::XMLElement* path = doc.NewElement(szPathTag);
-        path->LinkEndChild(doc.NewText(szBuffUtf8.Create(this->szBrowsePath[i])));
+        path->LinkEndChild(doc.NewText(szBuffUtf8.Create(m_Config.m_Browse.szBrowsePath[i])));
         browse->LinkEndChild(path);
         szBuffUtf8.Clear();
     }
@@ -2215,13 +2215,13 @@ bool CBatchEncoderDlg::SaveConfigFile()
 
         CString szData[NUM_FILE_ATTRIBUTES];
 
-        szData[0] = this->m_FileList.GetItemFilePath(i);
+        szData[0] = m_Config.m_Files.m_FileList.GetItemFilePath(i);
         szData[1] = (this->m_LstInputFiles.GetCheck(i) == TRUE) ? _T("true") : _T("false");
-        szData[2] = this->m_FileList.GetItemFileName(i);
-        szData[3] = this->m_FileList.GetItemInExt(i);
-        szData[4].Format(_T("%I64d"), m_FileList.GetItemFileSize(i));
-        szData[5] = this->m_FileList.GetItemOutExt(i);
-        szData[6].Format(_T("%d"), m_FileList.GetItemOutPreset(i));
+        szData[2] = m_Config.m_Files.m_FileList.GetItemFileName(i);
+        szData[3] = m_Config.m_Files.m_FileList.GetItemInExt(i);
+        szData[4].Format(_T("%I64d"), m_Config.m_Files.m_FileList.GetItemFileSize(i));
+        szData[5] = m_Config.m_Files.m_FileList.GetItemOutExt(i);
+        szData[6].Format(_T("%d"), m_Config.m_Files.m_FileList.GetItemOutPreset(i));
         szData[7] = this->m_LstInputFiles.GetItemText(i, 5);
         szData[8] = this->m_LstInputFiles.GetItemText(i, 6);
 
@@ -2577,7 +2577,7 @@ void CBatchEncoderDlg::OnDestroy()
     if (bRunning == true)
         return;
 
-    m_FileList.RemoveAllNodes();
+    m_Config.m_Files.m_FileList.RemoveAllNodes();
 }
 
 void CBatchEncoderDlg::UpdateFormatAndPreset()
@@ -2595,15 +2595,15 @@ void CBatchEncoderDlg::UpdateFormatAndPreset()
             if (m_LstInputFiles.GetItemState(i, LVIS_SELECTED) == LVIS_SELECTED)
             {
                 // output extension
-                CString szOutExt = m_FileList.GetOutFormatExt(nFormat);
-                this->m_FileList.SetItemOutExt(szOutExt, i);
-                this->m_FileList.SetItemOutFormat(nFormat, i);
+                CString szOutExt = m_Config.m_Files.m_FileList.GetOutFormatExt(nFormat);
+                m_Config.m_Files.m_FileList.SetItemOutExt(szOutExt, i);
+                m_Config.m_Files.m_FileList.SetItemOutFormat(nFormat, i);
                 this->m_LstInputFiles.SetItemText(i, 3, szOutExt);
 
                 // output preset
                 CString szPreset;
                 szPreset.Format(_T("%d"), nPreset);
-                this->m_FileList.SetItemOutPreset(nPreset, i);
+                m_Config.m_Files.m_FileList.SetItemOutPreset(nPreset, i);
                 this->m_LstInputFiles.SetItemText(i, 4, szPreset);
 
                 // update selected items counter
@@ -2618,15 +2618,15 @@ void CBatchEncoderDlg::UpdateFormatAndPreset()
             for (int i = 0; i < nCount; i++)
             {
                 // output extension
-                CString szOutExt = m_FileList.GetOutFormatExt(nFormat);
-                this->m_FileList.SetItemOutExt(szOutExt, i);
-                this->m_FileList.SetItemOutFormat(nFormat, i);
+                CString szOutExt = m_Config.m_Files.m_FileList.GetOutFormatExt(nFormat);
+                m_Config.m_Files.m_FileList.SetItemOutExt(szOutExt, i);
+                m_Config.m_Files.m_FileList.SetItemOutFormat(nFormat, i);
                 this->m_LstInputFiles.SetItemText(i, 3, szOutExt);
 
                 // output preset
                 CString szPreset;
                 szPreset.Format(_T("%d"), nPreset);
-                this->m_FileList.SetItemOutPreset(nPreset, i);
+                m_Config.m_Files.m_FileList.SetItemOutPreset(nPreset, i);
                 this->m_LstInputFiles.SetItemText(i, 4, szPreset);
             }
         }
@@ -2676,8 +2676,8 @@ void CBatchEncoderDlg::OnBnClickedButtonBrowsePath()
     CString szTmp;
     this->m_EdtOutPath.GetWindowText(szTmp);
 
-    if (szTmp == szBrowsePath[4])
-        szLastBrowse = szBrowsePath[4];
+    if (szTmp == m_Config.m_Browse.szBrowsePath[4])
+        szLastBrowse = m_Config.m_Browse.szBrowsePath[4];
     else
         szLastBrowse = szTmp;
 
@@ -2716,7 +2716,7 @@ void CBatchEncoderDlg::OnBnClickedButtonBrowsePath()
     {
         if (::SHGetPathFromIDList(pidlBrowse, lpBuffer))
         {
-            szBrowsePath[4] = szLastBrowse;
+            m_Config.m_Browse.szBrowsePath[4] = szLastBrowse;
 
             szLastBrowse.Format(_T("%s\0"), lpBuffer);
             m_EdtOutPath.SetWindowText(lpBuffer);
@@ -2783,7 +2783,7 @@ bool CBatchEncoderDlg::InsertToList(NewItemData &nid)
             if (CLListFiles::IsValidOutExtension(nid.szOutExt) == false)
                 return false;
 
-            nCurFormat = m_FileList.GetOutFormatIndex(nid.szOutExt);
+            nCurFormat = m_Config.m_Files.m_FileList.GetOutFormatIndex(nid.szOutExt);
         }
         else
         {
@@ -2808,7 +2808,7 @@ bool CBatchEncoderDlg::InsertToList(NewItemData &nid)
         nFileSize = ulSize.QuadPart;
 
         // add new node to file-list
-        nid.nItem = m_FileList.InsertNode(nid.szFileName,
+        nid.nItem = m_Config.m_Files.m_FileList.InsertNode(nid.szFileName,
             nid.szName,
             nFileSize,
             nCurFormat,
@@ -2824,30 +2824,30 @@ bool CBatchEncoderDlg::InsertToList(NewItemData &nid)
         lvi.iItem = nid.nItem;
 
         // [Name] : file name
-        lvi.pszText = (LPTSTR)(LPCTSTR)(m_FileList.GetItemFileName(nid.nItem));
+        lvi.pszText = (LPTSTR)(LPCTSTR)(m_Config.m_Files.m_FileList.GetItemFileName(nid.nItem));
         m_LstInputFiles.InsertItem(&lvi);
         m_LstInputFiles.SetItemData(nid.nItem, nid.nItem);
 
         // [Type] : input extension 
-        tmpBuf.Format(_T("%s"), m_FileList.GetItemInExt(nid.nItem));
+        tmpBuf.Format(_T("%s"), m_Config.m_Files.m_FileList.GetItemInExt(nid.nItem));
         lvi.iSubItem = 1;
         lvi.pszText = (LPTSTR)(LPCTSTR)(tmpBuf);
         m_LstInputFiles.SetItemText(lvi.iItem, 1, lvi.pszText);
 
         // [Size (bytes)] : file size
-        tmpBuf.Format(_T("%I64d"), m_FileList.GetItemFileSize(nid.nItem));
+        tmpBuf.Format(_T("%I64d"), m_Config.m_Files.m_FileList.GetItemFileSize(nid.nItem));
         lvi.iSubItem = 2;
         lvi.pszText = (LPTSTR)(LPCTSTR)(tmpBuf);
         m_LstInputFiles.SetItemText(lvi.iItem, 2, lvi.pszText);
 
         // [Output] : output extension
-        tmpBuf.Format(_T("%s"), m_FileList.GetItemOutExt(nid.nItem));
+        tmpBuf.Format(_T("%s"), m_Config.m_Files.m_FileList.GetItemOutExt(nid.nItem));
         lvi.iSubItem = 3;
         lvi.pszText = (LPTSTR)(LPCTSTR)(tmpBuf);
         m_LstInputFiles.SetItemText(lvi.iItem, 3, lvi.pszText);
 
         // [Preset] : selected preset index
-        tmpBuf.Format(_T("%d"), m_FileList.GetItemOutPreset(nid.nItem));
+        tmpBuf.Format(_T("%d"), m_Config.m_Files.m_FileList.GetItemOutPreset(nid.nItem));
         lvi.iSubItem = 4;
         lvi.pszText = (LPTSTR)(LPCTSTR)(tmpBuf);
         m_LstInputFiles.SetItemText(lvi.iItem, 4, lvi.pszText);
@@ -3091,7 +3091,7 @@ void CBatchEncoderDlg::OnNMDblclkListInputFiles(NMHDR *pNMHDR, LRESULT *pResult)
     {
         /*
         int nItem = m_LstInputFiles.GetNextSelectedItem(pos);
-        CString szPath = this->m_FileList.GetItemFilePath(nItem);
+        CString szPath = m_Config.m_Files.m_FileList.GetItemFilePath(nItem);
 
         ::LaunchAndWait(szPath, _T(""), FALSE);
         */
@@ -3114,10 +3114,10 @@ void CBatchEncoderDlg::OnLvnItemchangedListInputFiles(NMHDR *pNMHDR, LRESULT *pR
             int nItem = this->m_LstInputFiles.GetNextSelectedItem(pos);
 
             // check if we have such item in our file-list
-            if (nItem < this->m_FileList.GetSize())
+            if (nItem < m_Config.m_Files.m_FileList.GetSize())
             {
-                int nSelFormatIndex = this->m_FileList.GetItemOutFormat(nItem);
-                int nSelPresetIndex = this->m_FileList.GetItemOutPreset(nItem);
+                int nSelFormatIndex = m_Config.m_Files.m_FileList.GetItemOutFormat(nItem);
+                int nSelPresetIndex = m_Config.m_Files.m_FileList.GetItemOutPreset(nItem);
 
                 // load presets only if format is changing
                 if (this->m_CmbFormat.GetCurSel() == nSelFormatIndex)
@@ -3430,7 +3430,7 @@ bool CBatchEncoderDlg::SaveList(CString szFileXml, bool bUseListCtrl)
     if (bUseListCtrl == true)
         nFiles = this->m_LstInputFiles.GetItemCount();
     else
-        nFiles = this->m_FileList.GetSize();
+        nFiles = m_Config.m_Files.m_FileList.GetSize();
 
     for (int i = 0; i < nFiles; i++)
     {
@@ -3441,18 +3441,18 @@ bool CBatchEncoderDlg::SaveList(CString szFileXml, bool bUseListCtrl)
         CString szData[NUM_FILE_ATTRIBUTES];
 
         // get all file entry data
-        szData[0] = this->m_FileList.GetItemFilePath(i);
+        szData[0] = m_Config.m_Files.m_FileList.GetItemFilePath(i);
 
         if (bUseListCtrl == true)
             szData[1] = (this->m_LstInputFiles.GetCheck(i) == TRUE) ? _T("true") : _T("false");
         else
             szData[1] = _T("true");
 
-        szData[2] = this->m_FileList.GetItemFileName(i);
-        szData[3] = this->m_FileList.GetItemInExt(i);
-        szData[4].Format(_T("%I64d"), m_FileList.GetItemFileSize(i));
-        szData[5] = this->m_FileList.GetItemOutExt(i);
-        szData[6].Format(_T("%d"), m_FileList.GetItemOutPreset(i));
+        szData[2] = m_Config.m_Files.m_FileList.GetItemFileName(i);
+        szData[3] = m_Config.m_Files.m_FileList.GetItemInExt(i);
+        szData[4].Format(_T("%I64d"), m_Config.m_Files.m_FileList.GetItemFileSize(i));
+        szData[5] = m_Config.m_Files.m_FileList.GetItemOutExt(i);
+        szData[6].Format(_T("%d"), m_Config.m_Files.m_FileList.GetItemOutPreset(i));
 
         if (bUseListCtrl == true)
         {
@@ -3489,11 +3489,11 @@ void CBatchEncoderDlg::OnFileLoadList()
         OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER,
         _T("List Files (*.list)|*.list|Xml Files (*.xml)|*.xml|All Files|*.*||"), this);
 
-    ::SetBrowsePath(fd, szBrowsePath[0]);
+    ::SetBrowsePath(fd, m_Config.m_Browse.szBrowsePath[0]);
 
     if (fd.DoModal() == IDOK)
     {
-        szBrowsePath[0] = ::GetBrowsePath(fd);
+        m_Config.m_Browse.szBrowsePath[0] = ::GetBrowsePath(fd);
 
         CString szFileXml = fd.GetPathName();
 
@@ -3519,11 +3519,11 @@ void CBatchEncoderDlg::OnFileSaveList()
         OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER | OFN_OVERWRITEPROMPT,
         _T("List Files (*.list)|*.list|Xml Files (*.xml)|*.xml|All Files|*.*||"), this);
 
-    ::SetBrowsePath(fd, szBrowsePath[1]);
+    ::SetBrowsePath(fd, m_Config.m_Browse.szBrowsePath[1]);
 
     if (fd.DoModal() == IDOK)
     {
-        szBrowsePath[1] = ::GetBrowsePath(fd);
+        m_Config.m_Browse.szBrowsePath[1] = ::GetBrowsePath(fd);
 
         CString szFileXml = fd.GetPathName();
 
@@ -3624,12 +3624,12 @@ void CBatchEncoderDlg::OnEditAddFiles()
         fd.m_ofn.lpstrFile = pFiles;
         fd.m_ofn.nMaxFile = (dwMaxSize) / 2;
 
-        ::SetBrowsePath(fd, szBrowsePath[2]);
+        ::SetBrowsePath(fd, m_Config.m_Browse.szBrowsePath[2]);
 
         // show File Open dialog
         if (fd.DoModal() != IDCANCEL)
         {
-            szBrowsePath[2] = ::GetBrowsePath(fd);
+            m_Config.m_Browse.szBrowsePath[2] = ::GetBrowsePath(fd);
 
             CString sFilePath;
             POSITION pos = fd.GetStartPosition();
@@ -3683,7 +3683,7 @@ void CBatchEncoderDlg::OnEditAddDir()
     LPITEMIDLIST pidlBrowse;
     TCHAR *lpBuffer;
 
-    szLastBrowseAddDir = szBrowsePath[3];
+    szLastBrowseAddDir = m_Config.m_Browse.szBrowsePath[3];
 
     if (SHGetMalloc(&pMalloc) == E_FAIL)
         return;
@@ -3722,7 +3722,7 @@ void CBatchEncoderDlg::OnEditAddDir()
         {
             CString szPath = lpBuffer;
 
-            szBrowsePath[3] = szPath;
+            m_Config.m_Browse.szBrowsePath[3] = szPath;
 
             this->SearchFolderForFiles(szPath, bRecurseChecked);
 
@@ -3742,7 +3742,7 @@ void CBatchEncoderDlg::OnEditClear()
         return;
 
     // clear node list
-    m_FileList.RemoveAllNodes();
+    m_Config.m_Files.m_FileList.RemoveAllNodes();
 
     // clear list view
     m_LstInputFiles.DeleteAllItems();
@@ -3764,14 +3764,14 @@ void CBatchEncoderDlg::OnEditRemoveChecked()
     {
         if (m_LstInputFiles.GetCheck(i) == TRUE)
         {
-            m_FileList.RemoveNode(i);
+            m_Config.m_Files.m_FileList.RemoveNode(i);
             m_LstInputFiles.DeleteItem(i);
         }
     }
 
     if (m_LstInputFiles.GetItemCount() == 0)
     {
-        m_FileList.RemoveAllNodes();
+        m_Config.m_Files.m_FileList.RemoveAllNodes();
         m_LstInputFiles.DeleteAllItems();
     }
 
@@ -3802,14 +3802,14 @@ void CBatchEncoderDlg::OnEditRemoveUnchecked()
     {
         if (m_LstInputFiles.GetCheck(i) == FALSE)
         {
-            m_FileList.RemoveNode(i);
+            m_Config.m_Files.m_FileList.RemoveNode(i);
             m_LstInputFiles.DeleteItem(i);
         }
     }
 
     if (m_LstInputFiles.GetItemCount() == 0)
     {
-        m_FileList.RemoveAllNodes();
+        m_Config.m_Files.m_FileList.RemoveAllNodes();
         m_LstInputFiles.DeleteAllItems();
     }
 
@@ -3887,7 +3887,7 @@ void CBatchEncoderDlg::OnEditOpen()
     if (pos != NULL)
     {
         int nItem = m_LstInputFiles.GetNextSelectedItem(pos);
-        CString szPath = this->m_FileList.GetItemFilePath(nItem);
+        CString szPath = m_Config.m_Files.m_FileList.GetItemFilePath(nItem);
 
         ::LaunchAndWait(szPath, _T(""), FALSE);
     }
@@ -3902,9 +3902,9 @@ void CBatchEncoderDlg::OnEditExplore()
     if (pos != NULL)
     {
         int nItem = m_LstInputFiles.GetNextSelectedItem(pos);
-        CString szPath = this->m_FileList.GetItemFilePath(nItem);
+        CString szPath = m_Config.m_Files.m_FileList.GetItemFilePath(nItem);
 
-        CString szName = this->m_FileList.GetFileName(szPath);
+        CString szName = m_Config.m_Files.m_FileList.GetFileName(szPath);
         szPath.TrimRight(szName);
 
         ::LaunchAndWait(szPath, _T(""), FALSE);
@@ -3933,14 +3933,14 @@ void CBatchEncoderDlg::OnEditCrop()
         nItem = m_LstInputFiles.GetNextItem(-1, LVIS_SELECTED);
         if (nItem != -1)
         {
-            m_FileList.RemoveNode(nItem);
+            m_Config.m_Files.m_FileList.RemoveNode(nItem);
             m_LstInputFiles.DeleteItem(nItem);
         }
     } while (nItem != -1);
 
     if (m_LstInputFiles.GetItemCount() == 0)
     {
-        m_FileList.RemoveAllNodes();
+        m_Config.m_Files.m_FileList.RemoveAllNodes();
         m_LstInputFiles.DeleteAllItems();
     }
 
@@ -3985,7 +3985,7 @@ void CBatchEncoderDlg::OnEditRemove()
         nItem = m_LstInputFiles.GetNextItem(-1, LVIS_SELECTED);
         if (nItem != -1)
         {
-            m_FileList.RemoveNode(nItem);
+            m_Config.m_Files.m_FileList.RemoveNode(nItem);
             m_LstInputFiles.DeleteItem(nItem);
 
             nItemLastRemoved = nItem;
@@ -4004,7 +4004,7 @@ void CBatchEncoderDlg::OnEditRemove()
 
     if (m_LstInputFiles.GetItemCount() == 0)
     {
-        m_FileList.RemoveAllNodes();
+        m_Config.m_Files.m_FileList.RemoveAllNodes();
         m_LstInputFiles.DeleteAllItems();
     }
 
@@ -4089,19 +4089,19 @@ void CBatchEncoderDlg::OnOptionsShowLog()
         return;
 
     CFileStatus rStatus;
-    if (CFile::GetStatus(this->szLogFileName, rStatus) == TRUE)
+    if (CFile::GetStatus(m_Config.m_Settings.szLogFileName, rStatus) == TRUE)
     {
         // load logfile in default system editor
-        ::LaunchAndWait(this->szLogFileName, _T(""), FALSE);
+        ::LaunchAndWait(m_Config.m_Settings.szLogFileName, _T(""), FALSE);
     }
 }
 
 void CBatchEncoderDlg::OnOptionsDeleteLog()
 {
     CFileStatus rStatus;
-    if (CFile::GetStatus(this->szLogFileName, rStatus) == TRUE)
+    if (CFile::GetStatus(m_Config.m_Settings.szLogFileName, rStatus) == TRUE)
     {
-        if (::DeleteFile(this->szLogFileName) == FALSE)
+        if (::DeleteFile(m_Config.m_Settings.szLogFileName) == FALSE)
             this->MessageBox(_T("Failed to delete logfile!"), _T("ERROR"), MB_OK | MB_ICONERROR);
     }
 }
@@ -4136,14 +4136,14 @@ void CBatchEncoderDlg::OnOptionsAdvanced()
     CAdvancedDlg dlg;
 
     for (int i = 0; i < NUM_BROWSE_PATH_ADVANCED; i++)
-        dlg.szBrowsePath[i] = this->szBrowsePath[(START_BROWSE_PATH_ADVANCED + i)];
+        dlg.szBrowsePath[i] = m_Config.m_Browse.szBrowsePath[(START_BROWSE_PATH_ADVANCED + i)];
 
-    dlg.nThreadPriorityIndex = this->nThreadPriorityIndex;
-    dlg.nProcessPriorityIndex = this->nProcessPriorityIndex;
-    dlg.bDeleteOnError = this->bDeleteOnError;
-    dlg.bStopOnErrors = this->bStopOnErrors;
-    dlg.szLogFileName = this->szLogFileName;
-    dlg.nLogEncoding = this->nLogEncoding;
+    dlg.nThreadPriorityIndex = m_Config.m_Settings.nThreadPriorityIndex;
+    dlg.nProcessPriorityIndex = m_Config.m_Settings.nProcessPriorityIndex;
+    dlg.bDeleteOnError = m_Config.m_Settings.bDeleteOnError;
+    dlg.bStopOnErrors = m_Config.m_Settings.bStopOnErrors;
+    dlg.szLogFileName = m_Config.m_Settings.szLogFileName;
+    dlg.nLogEncoding = m_Config.m_Settings.nLogEncoding;
 
     dlg.m_Color[0] = this->m_CnvStatus.crText;
     dlg.m_Color[1] = this->m_CnvStatus.crTextError;
@@ -4157,12 +4157,12 @@ void CBatchEncoderDlg::OnOptionsAdvanced()
 
     if (dlg.DoModal() == IDOK)
     {
-        this->nThreadPriorityIndex = dlg.nThreadPriorityIndex;
-        this->nProcessPriorityIndex = dlg.nProcessPriorityIndex;
-        this->bDeleteOnError = dlg.bDeleteOnError;
-        this->bStopOnErrors = dlg.bStopOnErrors;
-        this->szLogFileName = dlg.szLogFileName;
-        this->nLogEncoding = dlg.nLogEncoding;
+        m_Config.m_Settings.nThreadPriorityIndex = dlg.nThreadPriorityIndex;
+        m_Config.m_Settings.nProcessPriorityIndex = dlg.nProcessPriorityIndex;
+        m_Config.m_Settings.bDeleteOnError = dlg.bDeleteOnError;
+        m_Config.m_Settings.bStopOnErrors = dlg.bStopOnErrors;
+        m_Config.m_Settings.szLogFileName = dlg.szLogFileName;
+        m_Config.m_Settings.nLogEncoding = dlg.nLogEncoding;
 
         this->m_CnvStatus.crText = dlg.m_Color[0];
         this->m_CnvStatus.crTextError = dlg.m_Color[1];
@@ -4185,7 +4185,7 @@ void CBatchEncoderDlg::OnOptionsAdvanced()
     }
 
     for (int i = 0; i < NUM_BROWSE_PATH_ADVANCED; i++)
-        this->szBrowsePath[(START_BROWSE_PATH_ADVANCED + i)] = dlg.szBrowsePath[i];
+        m_Config.m_Browse.szBrowsePath[(START_BROWSE_PATH_ADVANCED + i)] = dlg.szBrowsePath[i];
 }
 
 void CBatchEncoderDlg::OnOptionsForceConsoleWindow()
@@ -4224,7 +4224,7 @@ void CBatchEncoderDlg::OnOptionsConfigurePresets()
         dlg.bShowGridLines = false;
 
     for (int i = 0; i < NUM_BROWSE_PATH_PRESETS; i++)
-        dlg.szBrowsePath[i] = this->szBrowsePath[(START_BROWSE_PATH_PRESETS + i)];
+        dlg.szBrowsePath[i] = m_Config.m_Browse.szBrowsePath[(START_BROWSE_PATH_PRESETS + i)];
 
     int nSelFormat = this->m_CmbFormat.GetCurSel();
     int nSelPreset = this->m_CmbPresets.GetCurSel();
@@ -4234,7 +4234,7 @@ void CBatchEncoderDlg::OnOptionsConfigurePresets()
 
     // config files
     for (int i = 0; i < NUM_PRESET_FILES; i++)
-        dlg.szPresetsFile[i] = this->szPresetsFile[i];
+        dlg.szPresetsFile[i] = m_Config.m_Presets.szPresetsFile[i];
 
     dlg.szPresetsWndResize = szPresetsWndResize;
     dlg.szPresetsListColumns = this->szPresetsListColumns;
@@ -4245,10 +4245,10 @@ void CBatchEncoderDlg::OnOptionsConfigurePresets()
         for (int i = 0; i < NUM_PRESET_FILES; i++)
         {
             // update exe file path
-            this->szPresetsFile[i] = dlg.szPresetsFile[i];
+            m_Config.m_Presets.szPresetsFile[i] = dlg.szPresetsFile[i];
 
             // reload presets from files
-            this->LoadPresets(this->szPresetsFile[i], &this->m_ListPresets[i]);
+            this->LoadPresets(m_Config.m_Presets.szPresetsFile[i], &m_Config.m_Presets.m_ListPresets[i]);
         }
 
         // update combo-box depending on selected format
@@ -4265,7 +4265,7 @@ void CBatchEncoderDlg::OnOptionsConfigurePresets()
     this->szPresetsListColumns = dlg.szPresetsListColumns;
 
     for (int i = 0; i < NUM_BROWSE_PATH_PRESETS; i++)
-        this->szBrowsePath[(START_BROWSE_PATH_PRESETS + i)] = dlg.szBrowsePath[i];
+        m_Config.m_Browse.szBrowsePath[(START_BROWSE_PATH_PRESETS + i)] = dlg.szBrowsePath[i];
 }
 
 void CBatchEncoderDlg::OnOptionsConfigureFormat()
@@ -4282,15 +4282,15 @@ void CBatchEncoderDlg::OnOptionsConfigureFormat()
 
     for (int i = 0; i < NUM_FORMAT_NAMES; i++)
     {
-        dlg.szFormatTemplate[i] = this->szFormatTemplate[i];
-        dlg.szFormatPath[i] = this->szFormatPath[i];
-        dlg.bFormatInput[i] = this->bFormatInput[i];
-        dlg.bFormatOutput[i] = this->bFormatOutput[i];
-        dlg.szFormatFunction[i] = this->szFormatFunction[i];
+        dlg.szFormatTemplate[i] = m_Config.m_Formats.szFormatTemplate[i];
+        dlg.szFormatPath[i] = m_Config.m_Formats.szFormatPath[i];
+        dlg.bFormatInput[i] = m_Config.m_Formats.bFormatInput[i];
+        dlg.bFormatOutput[i] = m_Config.m_Formats.bFormatOutput[i];
+        dlg.szFormatFunction[i] = m_Config.m_Formats.szFormatFunction[i];
     }
 
     for (int i = 0; i < (NUM_BROWSE_PATH_FORMATS + NUM_BROWSE_PATH_PROGRESS); i++)
-        dlg.szBrowsePath[i] = this->szBrowsePath[(START_BROWSE_PATH_FORMATS + i)];
+        dlg.szBrowsePath[i] = m_Config.m_Browse.szBrowsePath[(START_BROWSE_PATH_FORMATS + i)];
 
     dlg.szFormatsWndResize = this->szFormatsWndResize;
     dlg.szFormatsListColumns = this->szFormatsListColumns;
@@ -4300,11 +4300,11 @@ void CBatchEncoderDlg::OnOptionsConfigureFormat()
     {
         for (int i = 0; i < NUM_FORMAT_NAMES; i++)
         {
-            this->szFormatTemplate[i] = dlg.szFormatTemplate[i];
-            this->szFormatPath[i] = dlg.szFormatPath[i];
-            this->bFormatInput[i] = dlg.bFormatInput[i];
-            this->bFormatOutput[i] = dlg.bFormatOutput[i];
-            this->szFormatFunction[i] = dlg.szFormatFunction[i];
+            m_Config.m_Formats.szFormatTemplate[i] = dlg.szFormatTemplate[i];
+            m_Config.m_Formats.szFormatPath[i] = dlg.szFormatPath[i];
+            m_Config.m_Formats.bFormatInput[i] = dlg.bFormatInput[i];
+            m_Config.m_Formats.bFormatOutput[i] = dlg.bFormatOutput[i];
+            m_Config.m_Formats.szFormatFunction[i] = dlg.szFormatFunction[i];
         }
     }
 
@@ -4312,7 +4312,7 @@ void CBatchEncoderDlg::OnOptionsConfigureFormat()
     this->szFormatsListColumns = dlg.szFormatsListColumns;
 
     for (int i = 0; i < (NUM_BROWSE_PATH_FORMATS + NUM_BROWSE_PATH_PROGRESS); i++)
-        this->szBrowsePath[(START_BROWSE_PATH_FORMATS + i)] = dlg.szBrowsePath[i];
+        m_Config.m_Browse.szBrowsePath[(START_BROWSE_PATH_FORMATS + i)] = dlg.szBrowsePath[i];
 }
 
 void CBatchEncoderDlg::OnOptionsShutdownWhenFinished()

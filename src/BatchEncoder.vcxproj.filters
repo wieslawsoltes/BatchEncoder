@@ -141,6 +141,9 @@
     <ClCompile Include="WorkThread.cpp">
       <Filter>Source Files\Worker</Filter>
     </ClCompile>
+    <ClCompile Include="Configuration.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BatchEncoder.h">
@@ -244,6 +247,9 @@
     </ClInclude>
     <ClInclude Include="TimeCount.h">
       <Filter>Header Files\Worker</Filter>
+    </ClInclude>
+    <ClInclude Include="Configuration.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

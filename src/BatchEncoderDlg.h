@@ -6,8 +6,6 @@
 #include "afxwin.h"
 #include "afxcmn.h"
 #include "ResizeDialog.h"
-#include "LListFiles.h"
-#include "LListPresets.h"
 #include "TimeCount.h"
 #include "FileListCtrl.h"
 #include "DropList.h"
@@ -63,17 +61,7 @@ public:
 public:
     CString szMainConfigFile;
 public:
-    CLListFiles m_FileList;
-public:
-    CString szFormatTemplate[NUM_FORMAT_NAMES];
-    CString szFormatPath[NUM_FORMAT_NAMES];
-    bool bFormatInput[NUM_FORMAT_NAMES];
-    bool bFormatOutput[NUM_FORMAT_NAMES];
-    CString szFormatFunction[NUM_FORMAT_NAMES];
-public:
-    CLListPresets m_ListPresets[NUM_PRESET_FILES];
-public:
-    CString szPresetsFile[NUM_PRESET_FILES];
+    CConfiguration m_Config;
 public:
     HANDLE hThread;
     DWORD dwThreadID;
@@ -81,16 +69,7 @@ public:
     volatile int nProgressCurrent;
     bool bSameAsSourceEdit;
 public:
-    int nThreadPriorityIndex;
-    int nProcessPriorityIndex;
-    bool bDeleteOnError;
-    bool bStopOnErrors;
-    CString szLogFileName;
-    int nLogEncoding;
-public:
     bool bForceConsoleWindow;
-public:
-    CString szBrowsePath[NUM_BROWSE_PATH];
 public:
     int nCurSel[NUM_OUTPUT_EXT];
 public:

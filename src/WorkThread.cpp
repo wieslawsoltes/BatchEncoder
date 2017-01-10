@@ -486,8 +486,8 @@ bool ConvertFile(CBatchEncoderDlg *pDlg,
         // ::SetThreadPriority(::GetCurrentThread(), THREAD_PRIORITY_NORMAL);
 
         // set priority for child process/thread
-        ::SetPriorityClass(pInfo.hProcess, g_dwProcessPriority[pDlg->nProcessPriorityIndex]);
-        ::SetThreadPriority(pInfo.hThread, g_nThreadPriority[pDlg->nThreadPriorityIndex]);
+        ::SetPriorityClass(pInfo.hProcess, g_dwProcessPriority[pDlg->m_Config.m_Settings.nProcessPriorityIndex]);
+        ::SetThreadPriority(pInfo.hThread, g_nThreadPriority[pDlg->m_Config.m_Settings.nThreadPriorityIndex]);
 
         // close unused pipes handles
         if ((bUseReadPipes == false) && (bUseWritePipes == false))
@@ -673,7 +673,7 @@ bool ConvertFile(CBatchEncoderDlg *pDlg,
             if (bLogConsoleOutput == true)
             {
                 ::UpdatePath();
-                if (fp.Open(pDlg->szLogFileName, CFile::modeWrite | CFile::modeNoTruncate | CFile::modeCreate) == TRUE)
+                if (fp.Open(pDlg->m_Config.m_Settings.szLogFileName, CFile::modeWrite | CFile::modeNoTruncate | CFile::modeCreate) == TRUE)
                 {
                     bHaveLogFile = true;
 
@@ -682,7 +682,7 @@ bool ConvertFile(CBatchEncoderDlg *pDlg,
                         const unsigned char szHeaderUnicode[2] = { 0xFFU, 0xFEU };
                         const unsigned char szHeaderUtf8[3] = { 0xEFU, 0xBBU, 0xBFU };
 
-                        switch (pDlg->nLogEncoding)
+                        switch (pDlg->m_Config.m_Settings.nLogEncoding)
                         {
                         case 1: // UNICODE
                             fp.Write(szHeaderUnicode, 2);
@@ -708,7 +708,7 @@ bool ConvertFile(CBatchEncoderDlg *pDlg,
             typedef int(*lpfnGetProgress)(char *szLineBuff, int nLineLen);
 
             lpfnGetProgress pProgressProc;
-            HMODULE hDll = ::LoadLibrary(pDlg->szFormatFunction[nTool]);
+            HMODULE hDll = ::LoadLibrary(pDlg->m_Config.m_Formats.szFormatFunction[nTool]);
             if (hDll != NULL)
             {
                 // _T("GetProgress") == pDlg->szFormatFunction[nTool]
@@ -827,7 +827,7 @@ bool ConvertFile(CBatchEncoderDlg *pDlg,
                                     && (fp.m_hFile != NULL)
                                     && (strlen(szLineBuff) > (size_t)0))
                                 {
-                                    switch (pDlg->nLogEncoding)
+                                    switch (pDlg->m_Config.m_Settings.nLogEncoding)
                                     {
                                     case 0: // ANSI, default string is ANSI
                                     {
@@ -1055,22 +1055,22 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
             int nProcessingMode = -1;
 
             // get input file format
-            int nIntputFormat = pDlg->m_FileList.GetItemInFormat(i);
+            int nIntputFormat = pDlg->m_Config.m_Files.m_FileList.GetItemInFormat(i);
 
             // get output file format
-            int nOutputFormat = pDlg->m_FileList.GetItemOutFormat(i);
+            int nOutputFormat = pDlg->m_Config.m_Files.m_FileList.GetItemOutFormat(i);
 
             // get output preset for selected format
-            int nPreset = pDlg->m_FileList.GetItemOutPreset(i);
+            int nPreset = pDlg->m_Config.m_Files.m_FileList.GetItemOutPreset(i);
 
             // get full file path
-            CString szInputFile = pDlg->m_FileList.GetItemFilePath(i);
+            CString szInputFile = pDlg->m_Config.m_Files.m_FileList.GetItemFilePath(i);
 
             // output path is same as input file path
             if (bOutPath == false)
             {
                 szOutPath = szInputFile;
-                CString szToRemove = pDlg->m_FileList.GetFileName(szInputFile);
+                CString szToRemove = pDlg->m_Config.m_Files.m_FileList.GetFileName(szInputFile);
                 int nNewLenght = szOutPath.GetLength() - szToRemove.GetLength();
                 szOutPath.Truncate(nNewLenght);
             }
@@ -1085,7 +1085,7 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
             szDecoderOptions = pDlg->GetDecoderOpt(nIntputFormat, -1);
 
             // get only output filename
-            CString szName = pDlg->m_FileList.GetItemFileName(i);
+            CString szName = pDlg->m_Config.m_Files.m_FileList.GetItemFileName(i);
 
             // setup encoder steps:
             // 1. add extension to output filename
@@ -1096,7 +1096,7 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
 
             szEncoderExePath = pDlg->GetEncoderExe(nOutputFormat);
             szEncoderOptions = pDlg->GetEncoderOpt(nOutputFormat, nPreset);
-            szName = szName + _T(".") + pDlg->m_FileList.GetItemOutExt(i).MakeLower();
+            szName = szName + _T(".") + pDlg->m_Config.m_Files.m_FileList.GetItemOutExt(i).MakeLower();
 
             // set full path for output file
             CString szOutputFile;
@@ -1122,10 +1122,10 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
                 nProcessingMode = 2;
 
             // TODO: use CopyOneFile(...) in case 1
-            // [1] Input is WAV, [Output is WAV], No Resmapling          = Copy Input File (using SSRC without options)
-            // [2] Input is WAV, [Output is WAV], Resmapling             = Encode Input File (using SSRC)
-            // [3] Input need decoding, [Output is WAV], No Resmapling   = Decode Input File (using Decoder)
-            // [4] Input need decoding, [Output is WAV], Resmapling      = Decode and Encode (using Decoder and SSRC)
+            // [1] Input is WAV, [Output is WAV], No Resampling          = Copy Input File (using SSRC without options)
+            // [2] Input is WAV, [Output is WAV], Resampling             = Encode Input File (using SSRC)
+            // [3] Input need decoding, [Output is WAV], No Resampling   = Decode Input File (using Decoder)
+            // [4] Input need decoding, [Output is WAV], Resampling      = Decode and Encode (using Decoder and SSRC)
             if (nOutputFormat == 0)
             {
                 bool bNeedResampling = (szEncoderOptions.GetLength() > 0) ? true : false;
@@ -1165,8 +1165,8 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
                 if (pDlg->bForceConsoleWindow == false)
                 {
                     // configure decoder input and output pipes
-                    bUseInPipesDec = pDlg->bFormatInput[(NUM_OUTPUT_EXT + nIntputFormat - 1)];
-                    bUseOutPipesDec = pDlg->bFormatOutput[(NUM_OUTPUT_EXT + nIntputFormat - 1)];
+                    bUseInPipesDec = pDlg->m_Config.m_Formats.bFormatInput[(NUM_OUTPUT_EXT + nIntputFormat - 1)];
+                    bUseOutPipesDec = pDlg->m_Config.m_Formats.bFormatOutput[(NUM_OUTPUT_EXT + nIntputFormat - 1)];
                 }
 
                 // input file is stdin
@@ -1186,7 +1186,7 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
 
                 // build full command line for decoder (DECODER-EXE + OPTIONS + INFILE + OUTFILE) 
                 // this is basic model, some of encoder may have different command-line structure
-                csExecute = pDlg->szFormatTemplate[(NUM_OUTPUT_EXT + nIntputFormat - 1)];
+                csExecute = pDlg->m_Config.m_Formats.szFormatTemplate[(NUM_OUTPUT_EXT + nIntputFormat - 1)];
                 csExecute.Replace(_T("$EXE"), _T("\"$EXE\""));
                 csExecute.Replace(_T("$EXE"), szDecoderExePath);
                 csExecute.Replace(_T("$OPTIONS"), szDecoderOptions);
@@ -1207,8 +1207,8 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
                 pDlg->m_CnvStatus.SetCurrentInfo(nProcessedFiles,
                     nTotalFiles,
                     nDoneWithoutError,
-                    pDlg->m_FileList.GetFileName(szOrgInputFile),
-                    pDlg->m_FileList.GetFileName(szOrgOutputFile),
+                    pDlg->m_Config.m_Files.m_FileList.GetFileName(szOrgInputFile),
+                    pDlg->m_Config.m_Files.m_FileList.GetFileName(szOrgOutputFile),
                     szOutPath);
 
                 pDlg->m_CnvStatus.Draw(0);
@@ -1236,14 +1236,14 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
                 else
                 {
                     // delete output file on error
-                    if (pDlg->bDeleteOnError == true)
+                    if (pDlg->m_Config.m_Settings.bDeleteOnError == true)
                         ::DeleteFile(szOutputFile);
 
                     if (pDlg->bRunning == false)
                         break;
 
                     // stop conversion process on error
-                    if (pDlg->bStopOnErrors == true)
+                    if (pDlg->m_Config.m_Settings.bStopOnErrors == true)
                         break;
 
                     // in processing mode 2 we are skipping to next file
@@ -1258,8 +1258,8 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
             if (pDlg->bForceConsoleWindow == false)
             {
                 // configure encoder input and output pipes
-                bUseInPipesEnc = pDlg->bFormatInput[nOutputFormat];
-                bUseOutPipesEnc = pDlg->bFormatOutput[nOutputFormat];
+                bUseInPipesEnc = pDlg->m_Config.m_Formats.bFormatInput[nOutputFormat];
+                bUseOutPipesEnc = pDlg->m_Config.m_Formats.bFormatOutput[nOutputFormat];
             }
 
             if (nProcessingMode == 0)
@@ -1298,7 +1298,7 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
 
                 // build full command line for encoder (ENCODER-EXE + OPTIONS + INFILE + OUTFILE)
                 // this is basic model, some of encoder may have different command-line structure
-                csExecute = pDlg->szFormatTemplate[nOutputFormat];
+                csExecute = pDlg->m_Config.m_Formats.szFormatTemplate[nOutputFormat];
                 csExecute.Replace(_T("$EXE"), _T("\"$EXE\""));
                 csExecute.Replace(_T("$EXE"), szEncoderExePath);
                 csExecute.Replace(_T("$OPTIONS"), szEncoderOptions);
@@ -1319,8 +1319,8 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
                 pDlg->m_CnvStatus.SetCurrentInfo(nProcessedFiles,
                     nTotalFiles,
                     nDoneWithoutError,
-                    pDlg->m_FileList.GetFileName(szOrgInputFile),
-                    pDlg->m_FileList.GetFileName(szOrgOutputFile),
+                    pDlg->m_Config.m_Files.m_FileList.GetFileName(szOrgInputFile),
+                    pDlg->m_Config.m_Files.m_FileList.GetFileName(szOrgOutputFile),
                     szOutPath);
 
                 pDlg->m_CnvStatus.Draw(0);
@@ -1345,11 +1345,11 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
                 else
                 {
                     // delete output file on error
-                    if (pDlg->bDeleteOnError == true)
+                    if (pDlg->m_Config.m_Settings.bDeleteOnError == true)
                         ::DeleteFile(szOutputFile);
 
                     // stop conversion process on error
-                    if (pDlg->bStopOnErrors == true)
+                    if (pDlg->m_Config.m_Settings.bStopOnErrors == true)
                         break;
                 }
 
