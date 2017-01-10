@@ -1,4 +1,5 @@
 #define ProgramName "BatchEncoder"
+#define ProgramConfiguration CONFIGURATION
 #define ProgramBuild BUILD
 #define ProgramVersion VERSION
 #define ProgramCopyright "Copyright (c) Wieslaw Soltes. All rights reserved."
@@ -8,18 +9,17 @@
 [Setup]
 
 AppId               ={#ProgramName}-{#ProgramBuild}
-UsePreviousAppDir   =yes
 AppName             ={#ProgramName}
 AppVerName          ={#ProgramName} {#ProgramVersion}
 AppCopyright        ={#ProgramCopyright}
 DefaultDirName      ={pf}\{#ProgramName} ({#ProgramBuild})
 OutputDir           =.\artifacts
-OutputBaseFilename  ={#ProgramName}-{#ProgramVersion}-{#ProgramBuild}
 VersionInfoVersion  ={#ProgramVersion}
 DefaultGroupName    ={#ProgramName} ({#ProgramBuild})
 AppPublisher        ={#ProgramWebsite}
 AppPublisherURL     ={#ProgramWebsite}
 AppVersion          ={#ProgramVersion}
+UsePreviousAppDir   =yes
 AllowNoIcons        =yes
 Compression         =lzma/max
 SolidCompression    =yes
@@ -31,8 +31,14 @@ BackColorDirection  =toptobottom
 BackSolid           =no
 UserInfoPage        =no
 
+#if "Release" == ProgramConfiguration
+    OutputBaseFilename ={#ProgramName}-{#ProgramVersion}-{#ProgramBuild}
+#else
+    OutputBaseFilename ={#ProgramName}-{#ProgramVersion}-{#ProgramBuild}-({#ProgramConfiguration})
+#endif
+
 #if "x64" == ProgramBuild
-ArchitecturesInstallIn64BitMode=x64
+    ArchitecturesInstallIn64BitMode=x64
 #endif
 
 [Components]
@@ -51,13 +57,13 @@ Name: quicklaunchicon; Description: {cm:CreateQuickLaunchIcon}; GroupDescription
 
 [Files]
 
-Source: {#BasePath}\src\bin\Release\{#ProgramBuild}\BatchEncoder.exe; DestDir: {app}; Flags: ignoreversion; Components: main
+Source: {#BasePath}\src\bin\{#ProgramConfiguration}\{#ProgramBuild}\BatchEncoder.exe; DestDir: {app}; Flags: ignoreversion; Components: main
 Source: {#BasePath}\src\data\Config\BatchEncoder.config; DestDir: {app}; Flags: ignoreversion; Components: config
 Source: {#BasePath}\src\data\Presets\*.presets; DestDir: {app}; Flags: ignoreversion; Components: presets
 Source: {#BasePath}\src\data\Formats\*.formats; DestDir: {app}; Flags: ignoreversion; Components: formats
 Source: {#BasePath}\*.txt; DestDir: {app}; Flags: ignoreversion; Components: docs
 Source: {#BasePath}\*.md; DestDir: {app}; Flags: ignoreversion; Components: docs
-Source: {#BasePath}\src\bin\Release\{#ProgramBuild}\*.progress; DestDir: {app}; Flags: ignoreversion; Components: progress
+Source: {#BasePath}\src\bin\{#ProgramConfiguration}\{#ProgramBuild}\*.progress; DestDir: {app}; Flags: ignoreversion; Components: progress
 
 [INI]
 
