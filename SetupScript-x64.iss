@@ -30,7 +30,6 @@ BackColor2          =clBlack
 BackColorDirection  =toptobottom
 BackSolid           =no
 UserInfoPage        =no
-LicenseFile         =.\COPYING.TXT
 ArchitecturesInstallIn64BitMode=x64
 
 [Components]
@@ -64,7 +63,7 @@ Filename: {app}\{#ProgramName}.url; Section: InternetShortcut; Key: URL; String:
 [Icons]
 
 Name: {group}\{#ProgramName}; Filename: {app}\BatchEncoder.exe; WorkingDir: {app}; Components: main
-Name: {group}\{#ProgramName} License; Filename: {app}\COPYING.TXT; WorkingDir: {app}; Components: docs
+Name: {group}\{#ProgramName} License; Filename: {app}\LICENSE.TXT; WorkingDir: {app}; Components: docs
 Name: {group}\{#ProgramName} Web Site; Filename: {app}\{#ProgramName}.url; WorkingDir: {app}
 Name: {group}\Uninstall {#ProgramName}; Filename: {uninstallexe}; WorkingDir: {app}
 Name: {userdesktop}\{#ProgramName}; Filename: {app}\BatchEncoder.exe; WorkingDir: {app}; Tasks: desktopicon; Components: main
