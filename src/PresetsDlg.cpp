@@ -413,7 +413,7 @@ void CPresetsDlg::OnBnClickedButtonPdRemovePresets()
     }
 }
 
-void CPresetsDlg::LoadConfigFile(CString szFileXml)
+void CPresetsDlg::LoadPresetsFile(CString szFileXml)
 {
     ::UpdatePath();
 
@@ -474,7 +474,7 @@ void CPresetsDlg::LoadConfigFile(CString szFileXml)
     }
 }
 
-void CPresetsDlg::SaveConfigFile(CString szFileXml)
+void CPresetsDlg::SavePresetsFile(CString szFileXml)
 {
     if (szFileXml.Compare(_T("")) == 0)
     {
@@ -551,7 +551,7 @@ void CPresetsDlg::OnBnClickedButtonPdLoadPresets()
         szBrowsePath[(nPreset + nPreset)] = ::GetBrowsePath(fd);
 
         CString szFileXml = fd.GetPathName();
-        this->LoadConfigFile(szFileXml);
+        this->LoadPresetsFile(szFileXml);
     }
 }
 
@@ -569,7 +569,7 @@ void CPresetsDlg::OnBnClickedButtonPdSavePresets()
         szBrowsePath[(nPreset + nPreset + 1)] = ::GetBrowsePath(fd);
 
         CString szFileXml = fd.GetPathName();
-        this->SaveConfigFile(szFileXml);
+        this->SavePresetsFile(szFileXml);
     }
 }
 
@@ -707,7 +707,7 @@ void CPresetsDlg::OnBnClickedButtonPdDown()
 void CPresetsDlg::OnBnClickedOk()
 {
     // NOTE: when pressing OK button changes are saved to file
-    this->SaveConfigFile(GetCurConfigFile());
+    this->SavePresetsFile(GetCurConfigFile());
 
     this->SaveWindowSettings();
 
@@ -755,12 +755,12 @@ void CPresetsDlg::SetCurConfigFile(CString szFile)
 
 void CPresetsDlg::OnBnClickedButtonPdUpdate()
 {
-    this->SaveConfigFile(GetCurConfigFile());
+    this->SavePresetsFile(GetCurConfigFile());
 }
 
 void CPresetsDlg::OnCbnSelchangeComboPdFormat()
 {
-    this->LoadConfigFile(GetCurConfigFile());
+    this->LoadPresetsFile(GetCurConfigFile());
 }
 
 void CPresetsDlg::OnClose()
