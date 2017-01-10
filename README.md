@@ -188,7 +188,7 @@ Build `BatchEncoder.sln` solution with [Visual Studio 2015](https://www.visualst
 
 ### TinyXml-2 Library
 
-Required [TinyXml-2](https://github.com/leethomason/tinyxml2) sources from are included in `src\xml` directory.
+Required [TinyXml-2](https://github.com/leethomason/tinyxml2) sources are included in `src\xml` directory.
 
 ## License
 
