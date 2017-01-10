@@ -1,7 +1,7 @@
 #define ProgramName "BatchEncoder"
 #define ProgramBuild "Win32"
 #define ProgramVersion VERSION
-#define ProgramCopyright "Copyright (C) 2005-2017 Wieslaw Soltes"
+#define ProgramCopyright "Copyright (C) 2017 Wieslaw Soltes"
 #define ProgramWebsite "https://github.com/wieslawsoltes/BatchEncoder"
 #define BasePath "."
 
