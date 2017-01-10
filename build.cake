@@ -20,8 +20,7 @@ var platforms = new [] { "Win32", "x64" }.ToList();
 var configurations = new [] { "Debug", "Release" }.ToList();
 var solution = "./BatchEncoder.sln";
 var versionHeaderPath = (FilePath)File("./src/version.h");
-var installerScriptWin32 = MakeAbsolute((FilePath)File("SetupScript-Win32.iss"));
-var installerScriptx64 = MakeAbsolute((FilePath)File("SetupScript-x64.iss"));
+var installerScript = MakeAbsolute((FilePath)File("setup.iss"));
 var iscc = @"C:/Program Files (x86)/Inno Setup 5/ISCC.exe";
 var artifactsDir = (DirectoryPath)Directory("./artifacts");
 var binDir = (DirectoryPath)Directory("./src/bin");
@@ -58,8 +57,10 @@ Task("Build")
     .IsDependentOn("Clean")
     .Does(() =>
 {
-    configurations.ForEach(configuration => {
-        platforms.ForEach(platform => {
+    configurations.ForEach(configuration => 
+    {
+        platforms.ForEach(platform => 
+        {
             Information("Building: {0}, {1} / {2}", solution, configuration, platform);
             MSBuild(solution, settings => {
                 settings.SetConfiguration(configuration);
@@ -70,70 +71,49 @@ Task("Build")
     });
 });
 
-Task("Package-Binaries-Win32")
+Task("Package-Binaries")
     .IsDependentOn("Build")
     .Does(() =>
 {
-    var path = "./src/bin/Release/Win32/";
-
-    var output = "BatchEncoder-" + version + "-Win32";
-    var outputDir = artifactsDir.Combine(output);
-    var outputZip = artifactsDir.CombineWithFilePath(output + ".zip");
-    var exeFile = File(path + "BatchEncoder.exe");
-
-    CleanDirectory(outputDir);
-
-    CopyFileToDirectory(File("README.md"), outputDir);
-    CopyFileToDirectory(File("LICENSE.TXT"), outputDir);
-    CopyFileToDirectory(exeFile, outputDir);
-    CopyFiles("./src/data/Config/*.config", outputDir);
-    CopyFiles("./src/data/Presets/*.presets", outputDir);
-    CopyFiles("./src/data/Formats/*.formats", outputDir);
-    CopyFiles(path + "*.progress", outputDir);
-
-    Zip(outputDir, outputZip);
+    configurations.ForEach(configuration => 
+    {
+        platforms.ForEach(platform => 
+        {
+            var path = "./src/bin/" + configuration + "/" + platform + "/";
+            var output = "BatchEncoder-" + version + "-" + platform + ? (configuration == "Release" ? "" : ("-(" + configuration + ")"));
+            var outputDir = artifactsDir.Combine(output);
+            var outputZip = artifactsDir.CombineWithFilePath(output + ".zip");
+            var exeFile = File(path + "BatchEncoder.exe");
+            CleanDirectory(outputDir);
+            CopyFileToDirectory(File("README.md"), outputDir);
+            CopyFileToDirectory(File("LICENSE.TXT"), outputDir);
+            CopyFileToDirectory(exeFile, outputDir);
+            CopyFiles(path + "*.progress", outputDir);
+            CopyFiles("./src/data/Config/*.config", outputDir);
+            CopyFiles("./src/data/Presets/*.presets", outputDir);
+            CopyFiles("./src/data/Formats/*.formats", outputDir);
+            Zip(outputDir, outputZip);
+        });
+    });
 });
 
-Task("Package-Binaries-x64")
+Task("Package-Installers")
     .IsDependentOn("Build")
     .Does(() =>
 {
-    var path = "./src/bin/Release/x64/";
-
-    var output = "BatchEncoder-" + version + "-x64";
-    var outputDir = artifactsDir.Combine(output);
-    var outputZip = artifactsDir.CombineWithFilePath(output + ".zip");
-    var exeFile = File(path + "BatchEncoder.exe");
-
-    CleanDirectory(outputDir);
-
-    CopyFileToDirectory(File("README.md"), outputDir);
-    CopyFileToDirectory(File("LICENSE.TXT"), outputDir);
-    CopyFileToDirectory(exeFile, outputDir);
-    CopyFiles("./src/data/Config/*.config", outputDir);
-    CopyFiles("./src/data/Presets/*.presets", outputDir);
-    CopyFiles("./src/data/Formats/*.formats", outputDir);
-    CopyFiles(path + "*.progress", outputDir);
-
-    Zip(outputDir, outputZip);
-});
-
-Task("Package-Installer-Win32")
-    .IsDependentOn("Build")
-    .Does(() =>
-{
-    StartProcess(iscc, new ProcessSettings { 
-        Arguments = "\"" + installerScriptWin32.FullPath + "\"" + " " + "/DVERSION=" + version, 
-        WorkingDirectory = MakeAbsolute(artifactsDir) });
-});
-
-Task("Package-Installer-x64")
-    .IsDependentOn("Build")
-    .Does(() =>
-{
-    StartProcess(iscc, new ProcessSettings { 
-        Arguments = "\"" + installerScriptx64.FullPath + "\"" + " " + "/DVERSION=" + version, 
-        WorkingDirectory = MakeAbsolute(artifactsDir) });
+    configurations.ForEach(configuration => 
+    {
+        platforms.ForEach(platform => 
+        {
+            StartProcess(iscc, new ProcessSettings { 
+                Arguments = 
+                    "\"" + installerScript.FullPath + "\""
+                    + " /DCONFIGURATION=" + configuration
+                    + " /DBUILD=" + platform
+                    + " /DVERSION=" + version, 
+                WorkingDirectory = MakeAbsolute(artifactsDir) });
+        });
+    });
 });
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -141,13 +121,11 @@ Task("Package-Installer-x64")
 ///////////////////////////////////////////////////////////////////////////////
 
 Task("Package")
-  .IsDependentOn("Package-Binaries-Win32")
-  .IsDependentOn("Package-Binaries-x64")
-  .IsDependentOn("Package-Installer-Win32")
-  .IsDependentOn("Package-Installer-x64");
+  .IsDependentOn("Package-Binaries")
+  .IsDependentOn("Package-Installers");
 
 Task("Default")
-  .IsDependentOn("Package");
+  .IsDependentOn("Build");
 
 ///////////////////////////////////////////////////////////////////////////////
 // EXECUTE
