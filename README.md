@@ -84,26 +84,26 @@ adds input and output file paths. For specific options for each format use help 
 
 ### Tool downloads
 
-| Name            | Website                                                                                            |
+| Name            | Downloads                                                                                          |
 |-----------------|----------------------------------------------------------------------------------------------------|
-| SSRC            | [---](http://---/)                                                                                 |
-| LAME            | [---](http://---/)                                                                                 |
-| MPPENC          | [---](http://---/)                                                                                 |
-| MPPDEC          | [---](http://---/)                                                                                 |
-| FAAC            | [---](http://---/)                                                                                 |
-| FAAD            | [---](http://---/)                                                                                 |
-| OGGENC          | [---](http://---/)                                                                                 |
-| OGGDEC          | [---](http://---/)                                                                                 |
-| AFTEN           | [---](http://---/)                                                                                 |
-| FLAC            | [---](http://---/)                                                                                 |
-| WAVPACK         | [---](http://---/)                                                                                 |
-| WVUNPACK        | [---](http://---/)                                                                                 |
-| MAC             | [---](http://---/)                                                                                 |
-| OFR             | [---](http://---/)                                                                                 |
-| TTAENC          | [---](http://---/)                                                                                 |
-| TAKC            | [---](http://---/)                                                                                 |
-| NEROAACENC      | [---](http://---/)                                                                                 |
-| NEROAACDEC      | [---](http://---/)                                                                                 |
+| SSRC            | http://shibatch.sourceforge.net/                                                                   |
+| LAME            | http://rarewares.org/mp3-lame-bundle.php                                                           |
+| MPPENC          | https://musepack.net/index.php?pg=win                                                              |
+| MPPDEC          | https://musepack.net/index.php?pg=win                                                              |
+| FAAC            | http://rarewares.org/aac-encoders.php                                                              |
+| FAAD            | http://rarewares.org/aac-decoders.php                                                              |
+| OGGENC          | http://rarewares.org/ogg-oggenc.php                                                                |
+| OGGDEC          | http://rarewares.org/ogg-oggdec.php                                                                |
+| AFTEN           | https://github.com/wieslawsoltes/wavtoac3encoder/releases                                          |
+| FLAC            | https://xiph.org/flac/download.html                                                                |
+| WAVPACK         | http://www.wavpack.com/downloads.html                                                              |
+| WVUNPACK        | http://www.wavpack.com/downloads.html                                                              |
+| MAC             | http://www.monkeysaudio.com/download.html                                                          |
+| OFR             | http://losslessaudio.org/Downloads.php                                                             |
+| TTAENC          | https://sourceforge.net/projects/tta/files/tta/ttaenc-win/                                         |
+| TAKC            | http://www.thbeck.de/Tak/Tak.html                                                                  |
+| NEROAACENC      | http://www.videohelp.com/software/Nero-AAC-Codec                                                   |
+| NEROAACDEC      | http://www.videohelp.com/software/Nero-AAC-Codec                                                   |
 
 ## Command-Line
 
