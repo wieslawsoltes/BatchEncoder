@@ -80,7 +80,7 @@ Task("Package-Binaries")
         platforms.ForEach(platform => 
         {
             var path = "./src/bin/" + configuration + "/" + platform + "/";
-            var output = "BatchEncoder-" + version + "-" + platform + ? (configuration == "Release" ? "" : ("-(" + configuration + ")"));
+            var output = "BatchEncoder-" + version + "-" + platform + (configuration == "Release" ? "" : ("-(" + configuration + ")"));
             var outputDir = artifactsDir.Combine(output);
             var outputZip = artifactsDir.CombineWithFilePath(output + ".zip");
             var exeFile = File(path + "BatchEncoder.exe");
