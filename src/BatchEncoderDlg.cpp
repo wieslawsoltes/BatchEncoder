@@ -881,23 +881,7 @@ void CBatchEncoderDlg::ShowProgressTrayIcon(int nProgress)
     if (this->bShowTrayIcon == false)
         return;
 
-    int nIndex = 0;
-
-    // (nIndex >= 0) && (nIndex < NUM_PROGRESS_ICONS)
-    if ((nProgress >= 0) && (nProgress < 5)) nIndex = 0;
-    else if ((nProgress > 5) && (nProgress <= 14)) nIndex = 1;
-    else if ((nProgress > 14) && (nProgress <= 23)) nIndex = 2;
-    else if ((nProgress > 23) && (nProgress <= 32)) nIndex = 3;
-    else if ((nProgress > 32) && (nProgress <= 41)) nIndex = 4;
-    else if ((nProgress > 41) && (nProgress <= 50)) nIndex = 5;
-    else if ((nProgress > 50) && (nProgress <= 59)) nIndex = 6;
-    else if ((nProgress > 59) && (nProgress <= 67)) nIndex = 7;
-    else if ((nProgress > 67) && (nProgress <= 76)) nIndex = 8;
-    else if ((nProgress > 76) && (nProgress <= 85)) nIndex = 9;
-    else if ((nProgress > 85) && (nProgress <= 95)) nIndex = 10;
-    else if ((nProgress > 95) && (nProgress <= 100)) nIndex = 11;
-    else nIndex = 0;
-
+    int nIndex = (NUM_PROGRESS_ICONS * nProgress) / 100;
     HICON hIconProgress = LoadIcon(GetModuleHandle(NULL),
         MAKEINTRESOURCE(g_nProgressIconResources[nIndex]));
 
