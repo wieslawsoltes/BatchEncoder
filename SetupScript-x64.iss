@@ -1,7 +1,7 @@
 #define ProgramName "BatchEncoder"
 #define ProgramBuild "x64"
 #define ProgramVersion VERSION
-#define ProgramCopyright "Copyright (C) 2017 Wieslaw Soltes"
+#define ProgramCopyright "Copyright (c) Wieslaw Soltes. All rights reserved."
 #define ProgramWebsite "https://github.com/wieslawsoltes/BatchEncoder"
 #define BasePath "."
 
