@@ -55,6 +55,9 @@ public:
     bool bShowGridLines;
     void ShowGridlines(bool bShow);
 public:
+    void LoadFormatsFile(CString szFileXml);
+    void SaveFormatsFile(CString szFileXml);
+public:
     void UpdateEditableFields(void);
 public:
     afx_msg void OnBnClickedOk();

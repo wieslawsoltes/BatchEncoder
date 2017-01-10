@@ -358,6 +358,150 @@ void CFormatsDlg::OnBnClickedCancel()
     OnCancel();
 }
 
+void CFormatsDlg::LoadFormatsFile(CString szFileXml)
+{
+    CXMLDocumentW doc;
+    if (doc.LoadFileW(szFileXml) == true)
+    {
+        // Root = Formats
+        tinyxml2::XMLElement* pRootElem = doc.FirstChildElement();
+        if (!pRootElem)
+        {
+            MessageBox(_T("Failed to load file!"), _T("ERROR"), MB_OK | MB_ICONERROR);
+            return;
+        }
+
+        // check for "Formats"
+        const char *szRoot = pRootElem->Value();
+        const char *szRootName = "Formats";
+        if (strcmp(szRootName, szRoot) != 0)
+        {
+            MessageBox(_T("Failed to load file!"), _T("ERROR"), MB_OK | MB_ICONERROR);
+            return;
+        }
+
+        // load all elements
+        tinyxml2::XMLElement* pFormatElem = pRootElem->FirstChildElement("Format");
+        for (pFormatElem; pFormatElem; pFormatElem = pFormatElem->NextSiblingElement())
+        {
+            int nFormat = -1;
+
+            const char *pszName = pFormatElem->Attribute("name");
+            if (pszName != NULL)
+            {
+                CString szBuff = GetConfigString(pszName);
+
+                nFormat = ::GetFormatId(szBuff);
+
+                // check if this is valid format name
+                if ((nFormat < 0) || (nFormat >= NUM_FORMAT_NAMES))
+                {
+                    // invalid format Id
+                    continue;
+                }
+            }
+            else
+            {
+                // unknown or invalid format
+                continue;
+            }
+
+            const char *pszTemplate = pFormatElem->Attribute("template");
+            if (pszTemplate != NULL)
+            {
+                szFormatTemplate[nFormat] = GetConfigString(pszTemplate);
+            }
+
+            const char *pszPipesInput = pFormatElem->Attribute("input");
+            if (pszPipesInput != NULL)
+            {
+                CString szBuff = GetConfigString(pszPipesInput);
+                if (szBuff.CompareNoCase(_T("true")) == 0)
+                    bFormatInput[nFormat] = true;
+                else
+                    bFormatInput[nFormat] = false;
+            }
+
+            const char *pszPipesOutput = pFormatElem->Attribute("output");
+            if (pszPipesOutput != NULL)
+            {
+                CString szBuff = GetConfigString(pszPipesOutput);
+                if (szBuff.CompareNoCase(_T("true")) == 0)
+                    bFormatOutput[nFormat] = true;
+                else
+                    bFormatOutput[nFormat] = false;
+            }
+
+            const char *pszFunction = pFormatElem->Attribute("function");
+            if (pszFunction != NULL)
+            {
+                szFormatFunction[nFormat] = GetConfigString(pszFunction);
+            }
+
+            const char *tmpBuff = pFormatElem->GetText();
+            szFormatPath[nFormat] = GetConfigString(tmpBuff);
+
+            m_LstFormats.SetItemText(nFormat, 1, szFormatTemplate[nFormat]);
+            m_LstFormats.SetItemText(nFormat, 2, szFormatPath[nFormat]);
+            m_LstFormats.SetItemText(nFormat, 3, (bFormatInput[nFormat]) ? _T("true") : _T("false"));
+            m_LstFormats.SetItemText(nFormat, 4, (bFormatOutput[nFormat]) ? _T("true") : _T("false"));
+            m_LstFormats.SetItemText(nFormat, 5, szFormatFunction[nFormat]);
+        }
+
+        this->UpdateEditableFields();
+    }
+    else
+    {
+        MessageBox(_T("Failed to load file!"), _T("ERROR"), MB_OK | MB_ICONERROR);
+    }
+}
+
+void CFormatsDlg::SaveFormatsFile(CString szFileXml)
+{
+    CXMLDocumentW doc;
+
+    tinyxml2::XMLDeclaration* decl = doc.NewDeclaration("xml version=\"1.0\" encoding=\"UTF-8\"");
+    doc.LinkEndChild(decl);
+
+    // root: Formats
+    tinyxml2::XMLElement *formats = doc.NewElement("Formats");
+    doc.LinkEndChild(formats);
+
+    for (int i = 0; i < NUM_FORMAT_NAMES; i++)
+    {
+        CUtf8String m_Utf8;
+
+        szFormatTemplate[i] = m_LstFormats.GetItemText(i, 1);
+        szFormatPath[i] = m_LstFormats.GetItemText(i, 2);
+        bFormatInput[i] = (m_LstFormats.GetItemText(i, 3).Compare(_T("true")) == 0) ? true : false;
+        bFormatOutput[i] = (m_LstFormats.GetItemText(i, 4).Compare(_T("true")) == 0) ? true : false;
+        szFormatFunction[i] = m_LstFormats.GetItemText(i, 5);
+
+        tinyxml2::XMLElement *format = doc.NewElement("Format");
+
+        format->LinkEndChild(doc.NewText(m_Utf8.Create(szFormatPath[i])));
+        m_Utf8.Clear();
+
+        format->SetAttribute("name", m_Utf8.Create(g_szFormatNames[i]));
+        m_Utf8.Clear();
+
+        format->SetAttribute("template", m_Utf8.Create(szFormatTemplate[i]));
+        m_Utf8.Clear();
+
+        format->SetAttribute("input", (bFormatInput[i]) ? "true" : "false");
+        format->SetAttribute("output", (bFormatOutput[i]) ? "true" : "false");
+
+        format->SetAttribute("function", m_Utf8.Create(szFormatFunction[i]));
+        m_Utf8.Clear();
+
+        formats->LinkEndChild(format);
+    }
+
+    // save file
+    if (doc.SaveFileW(szFileXml) != true)
+        MessageBox(_T("Failed to save file!"), _T("ERROR"), MB_OK | MB_ICONERROR);
+}
+
 void CFormatsDlg::OnBnClickedButtonLoadConfig()
 {
     // NOTE:
@@ -377,101 +521,7 @@ void CFormatsDlg::OnBnClickedButtonLoadConfig()
         szBrowsePath[0] = ::GetBrowsePath(fd);
 
         CString szFileXml = fd.GetPathName();
-
-        CXMLDocumentW doc;
-        if (doc.LoadFileW(szFileXml) == true)
-        {
-            // Root = Formats
-            tinyxml2::XMLElement* pRootElem = doc.FirstChildElement();
-            if (!pRootElem)
-            {
-                MessageBox(_T("Failed to load file!"), _T("ERROR"), MB_OK | MB_ICONERROR);
-                return;
-            }
-
-            // check for "Formats"
-            const char *szRoot = pRootElem->Value();
-            const char *szRootName = "Formats";
-            if (strcmp(szRootName, szRoot) != 0)
-            {
-                MessageBox(_T("Failed to load file!"), _T("ERROR"), MB_OK | MB_ICONERROR);
-                return;
-            }
-
-            // load all elements
-            tinyxml2::XMLElement* pFormatElem = pRootElem->FirstChildElement("Format");
-            for (pFormatElem; pFormatElem; pFormatElem = pFormatElem->NextSiblingElement())
-            {
-                int nFormat = -1;
-
-                const char *pszName = pFormatElem->Attribute("name");
-                if (pszName != NULL)
-                {
-                    CString szBuff = GetConfigString(pszName);
-
-                    nFormat = ::GetFormatId(szBuff);
-
-                    // check if this is valid format name
-                    if ((nFormat < 0) || (nFormat >= NUM_FORMAT_NAMES))
-                    {
-                        // invalid format Id
-                        continue;
-                    }
-                }
-                else
-                {
-                    // unknown or invalid format
-                    continue;
-                }
-
-                const char *pszTemplate = pFormatElem->Attribute("template");
-                if (pszTemplate != NULL)
-                {
-                    szFormatTemplate[nFormat] = GetConfigString(pszTemplate);
-                }
-
-                const char *pszPipesInput = pFormatElem->Attribute("input");
-                if (pszPipesInput != NULL)
-                {
-                    CString szBuff = GetConfigString(pszPipesInput);
-                    if (szBuff.CompareNoCase(_T("true")) == 0)
-                        bFormatInput[nFormat] = true;
-                    else
-                        bFormatInput[nFormat] = false;
-                }
-
-                const char *pszPipesOutput = pFormatElem->Attribute("output");
-                if (pszPipesOutput != NULL)
-                {
-                    CString szBuff = GetConfigString(pszPipesOutput);
-                    if (szBuff.CompareNoCase(_T("true")) == 0)
-                        bFormatOutput[nFormat] = true;
-                    else
-                        bFormatOutput[nFormat] = false;
-                }
-
-                const char *pszFunction = pFormatElem->Attribute("function");
-                if (pszFunction != NULL)
-                {
-                    szFormatFunction[nFormat] = GetConfigString(pszFunction);
-                }
-
-                const char *tmpBuff = pFormatElem->GetText();
-                szFormatPath[nFormat] = GetConfigString(tmpBuff);
-
-                m_LstFormats.SetItemText(nFormat, 1, szFormatTemplate[nFormat]);
-                m_LstFormats.SetItemText(nFormat, 2, szFormatPath[nFormat]);
-                m_LstFormats.SetItemText(nFormat, 3, (bFormatInput[nFormat]) ? _T("true") : _T("false"));
-                m_LstFormats.SetItemText(nFormat, 4, (bFormatOutput[nFormat]) ? _T("true") : _T("false"));
-                m_LstFormats.SetItemText(nFormat, 5, szFormatFunction[nFormat]);
-            }
-
-            this->UpdateEditableFields();
-        }
-        else
-        {
-            MessageBox(_T("Failed to load file!"), _T("ERROR"), MB_OK | MB_ICONERROR);
-        }
+        this->LoadFormatsFile(szFileXml);
     }
 }
 
@@ -489,50 +539,7 @@ void CFormatsDlg::OnBnClickedButtonSaveConfig()
         szBrowsePath[1] = ::GetBrowsePath(fd);
 
         CString szFileXml = fd.GetPathName();
-
-        CXMLDocumentW doc;
-
-        tinyxml2::XMLDeclaration* decl = doc.NewDeclaration("xml version=\"1.0\" encoding=\"UTF-8\"");
-        doc.LinkEndChild(decl);
-
-        // root: Formats
-        tinyxml2::XMLElement *formats = doc.NewElement("Formats");
-
-        doc.LinkEndChild(formats);
-
-        for (int i = 0; i < NUM_FORMAT_NAMES; i++)
-        {
-            CUtf8String m_Utf8;
-
-            szFormatTemplate[i] = m_LstFormats.GetItemText(i, 1);
-            szFormatPath[i] = m_LstFormats.GetItemText(i, 2);
-            bFormatInput[i] = (m_LstFormats.GetItemText(i, 3).Compare(_T("true")) == 0) ? true : false;
-            bFormatOutput[i] = (m_LstFormats.GetItemText(i, 4).Compare(_T("true")) == 0) ? true : false;
-            szFormatFunction[i] = m_LstFormats.GetItemText(i, 5);
-
-            tinyxml2::XMLElement *format = doc.NewElement("Format");
-
-            format->LinkEndChild(doc.NewText(m_Utf8.Create(szFormatPath[i])));
-            m_Utf8.Clear();
-
-            format->SetAttribute("name", m_Utf8.Create(g_szFormatNames[i]));
-            m_Utf8.Clear();
-
-            format->SetAttribute("template", m_Utf8.Create(szFormatTemplate[i]));
-            m_Utf8.Clear();
-
-            format->SetAttribute("input", (bFormatInput[i]) ? "true" : "false");
-            format->SetAttribute("output", (bFormatOutput[i]) ? "true" : "false");
-
-            format->SetAttribute("function", m_Utf8.Create(szFormatFunction[i]));
-            m_Utf8.Clear();
-
-            formats->LinkEndChild(format);
-        }
-
-        // save file
-        if (doc.SaveFileW(szFileXml) != true)
-            MessageBox(_T("Failed to save file!"), _T("ERROR"), MB_OK | MB_ICONERROR);
+        this->SaveFormatsFile(szFileXml);
     }
 }
 
