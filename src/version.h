@@ -1,6 +1,3 @@
-// Copyright (c) Wiesław Šoltés. All rights reserved.
-// Licensed under the MIT license. See LICENSE file in the project root for full license information.
-
 #define VERSION_MAJOR               1
 #define VERSION_MINOR               0
 #define VERSION_REVISION            0
@@ -30,7 +27,7 @@
 #endif
 #define VER_INTERNAL_NAME_STR       VER_ORIGINAL_FILENAME_STR
 
-#define VER_COPYRIGHT_STR           "Copyright (C) 2005-2017 Wieslaw Soltes. All rights reserved."
+#define VER_COPYRIGHT_STR           "Copyright (c) 2017 Wieslaw Soltes. All rights reserved."
 
 #ifdef _DEBUG
 #define VER_VER_DEBUG             VS_FF_DEBUG
