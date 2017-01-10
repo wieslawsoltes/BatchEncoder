@@ -400,8 +400,7 @@ BOOL CBatchEncoderDlg::OnInitDialog()
     if (bShowTrayIcon == true)
         this->EnableTrayIcon(true);
 
-    // required when using UnicoWS.dll under Win9x with UNICODE
-    // also handle the OnNotifyFormat message (WM_NOTIFYFORMAT)
+    // handle the OnNotifyFormat message (WM_NOTIFYFORMAT)
 #ifdef _UNICODE
     m_LstInputFiles.SendMessage(CCM_SETUNICODEFORMAT, (WPARAM)(BOOL)TRUE, 0);
 #endif
@@ -1019,9 +1018,7 @@ void CBatchEncoderDlg::OnTrayMenuExit()
 
 LRESULT CBatchEncoderDlg::OnNotifyFormat(WPARAM wParam, LPARAM lParam)
 {
-    // NOTE:
     // required for ClistView control to receive notifications messages
-    // in UNICODE format when using UnicoWS.dll under Win9x systems
 #ifdef _UNICODE
     return NFR_UNICODE;
 #else
@@ -1084,12 +1081,12 @@ bool CBatchEncoderDlg::LoadPresets(CString szPresetsFName, CLListPresets *m_List
     if (doc.LoadFileW(szPresetsFName) == true)
     {
         // root: Presets
-        tinyxml2::XMLElement* pElem = doc.FirstChildElement();
-        if (!pElem)
+        tinyxml2::XMLElement* pRootElem = doc.FirstChildElement();
+        if (!pRootElem)
             return false;
 
         // check for "Presets"
-        const char *szRoot = pElem->Value();
+        const char *szRoot = pRootElem->Value();
         const char *szRootName = "Presets";
         if (strcmp(szRootName, szRoot) != 0)
             return false;
@@ -1099,7 +1096,7 @@ bool CBatchEncoderDlg::LoadPresets(CString szPresetsFName, CLListPresets *m_List
 
         // fill list with new presets
         int nIndex = 0;
-        tinyxml2::XMLElement* pFilesNode = pElem->FirstChildElement("Preset");
+        tinyxml2::XMLElement* pFilesNode = pRootElem->FirstChildElement("Preset");
         for (pFilesNode; pFilesNode; pFilesNode = pFilesNode->NextSiblingElement())
         {
             const char *pszName = pFilesNode->Attribute("name");
@@ -2131,7 +2128,6 @@ bool CBatchEncoderDlg::SaveSettings()
     }
 
     // root: Colors
-    tinyxml2::XMLElement *clr;
     tinyxml2::XMLElement *colors = doc.NewElement("Colors");
     root->LinkEndChild(colors);
 
@@ -2161,7 +2157,7 @@ bool CBatchEncoderDlg::SaveSettings()
     {
         CUtf8String szBuffUtf8;
 
-        clr = doc.NewElement(g_szColorsTags[i]);
+        tinyxml2::XMLElement *clr = doc.NewElement(g_szColorsTags[i]);
         clr->LinkEndChild(doc.NewText(szBuffUtf8.Create(szColor[i])));
         colors->LinkEndChild(clr);
         szBuffUtf8.Clear();
@@ -2184,7 +2180,6 @@ bool CBatchEncoderDlg::SaveSettings()
     // root: Formats
     tinyxml2::XMLElement *formats = doc.NewElement("Formats");
     root->LinkEndChild(formats);
-    tinyxml2::XMLElement *format;
 
     // NOTE:
     // same code as in CFormatsDlg::OnBnClickedButtonSaveConfig()
@@ -2194,7 +2189,7 @@ bool CBatchEncoderDlg::SaveSettings()
     {
         CUtf8String m_Utf8;
 
-        format = doc.NewElement("Format");
+        tinyxml2::XMLElement *format = doc.NewElement("Format");
 
         format->LinkEndChild(doc.NewText(m_Utf8.Create(szFormatPath[i])));
         m_Utf8.Clear();
@@ -2243,6 +2238,7 @@ bool CBatchEncoderDlg::SaveSettings()
     tinyxml2::XMLElement *filesNode = doc.NewElement("Files");
     root->LinkEndChild(filesNode);
     int nFiles = this->m_LstInputFiles.GetItemCount();
+
     for (int i = 0; i < nFiles; i++)
     {
         // File
@@ -2489,8 +2485,8 @@ void CBatchEncoderDlg::OnBnClickedButtonConvert()
         bSafeCheck = true;
 
         // note that TerminateThread is not used
-        // if you want do this i nasty way uncomment
-        // the line below but I do'nt recommend this
+        // if you want do this please uncomment
+        // the line below but its not recommended
         // ::TerminateThread(hThread, 0);
 
         m_BtnConvert.SetWindowText(_T("Conve&rt"));
@@ -3069,7 +3065,7 @@ void CBatchEncoderDlg::OnDropFiles(HDROP hDropInfo)
             bHandleDrop = true;
     }
 
-    // NOTE: under Win9x this does not work, we use separate thread to handle drop
+    // NOTE: under Win9x this did not work, we use separate thread to handle drop
     // this->HandleDropFiles(hDropInfo);
 
     CResizeDialog::OnDropFiles(hDropInfo);
@@ -3377,10 +3373,8 @@ bool CBatchEncoderDlg::LoadList(CString szFileXml, bool bAddToListCtrl)
     CXMLDocumentW doc;
     if (doc.LoadFileW(szFileXml) == true)
     {
-        tinyxml2::XMLElement* pRootElem;
-
         // root: Files
-        pRootElem = doc.FirstChildElement();
+        tinyxml2::XMLElement* pRootElem = doc.FirstChildElement();
         if (!pRootElem)
         {
             // MessageBox(_T("Failed to load file!"), _T("ERROR"), MB_OK | MB_ICONERROR);
