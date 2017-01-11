@@ -93,7 +93,6 @@ BOOL CAdvancedDlg::OnInitDialog()
 void CAdvancedDlg::OnPaint()
 {
     CPaintDC dc(this);
-
     OnPaintProc();
 }
 
@@ -138,7 +137,6 @@ void CAdvancedDlg::OnPaintProc(void)
 COLORREF CAdvancedDlg::ChangeTheColor(COLORREF cr)
 {
     CColorDialog cd(cr, CC_FULLOPEN, this);
-
     INT_PTR nRet = cd.DoModal();
     if (nRet == IDOK)
         return cd.GetColor();
@@ -219,29 +217,22 @@ DWORD CAdvancedDlg::GetTheProcessPriority(void)
 void CAdvancedDlg::OnOK()
 {
     GetAdvSettings();
-
     CDialog::OnOK();
 }
 
 void CAdvancedDlg::OnCancel()
 {
-    // ...
-
     CDialog::OnCancel();
 }
 
 void CAdvancedDlg::OnClose()
 {
-    // ...
-
     CDialog::OnClose();
 }
 
 void CAdvancedDlg::OnDestroy()
 {
     CDialog::OnDestroy();
-
-    // ...
 }
 
 void CAdvancedDlg::OnBnClickedButtonBrowseLog()
@@ -250,14 +241,9 @@ void CAdvancedDlg::OnBnClickedButtonBrowseLog()
         OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER,
         _T("Log Files (*.log)|*.log|Txt Files (*.txt)|*.txt|All Files|*.*||"), this);
 
-    ::SetBrowsePath(fd, szBrowsePath[0]);
-
     if (fd.DoModal() == IDOK)
     {
-        szBrowsePath[0] = ::GetBrowsePath(fd);
-
         szLogFileName = fd.GetPathName();
-
         m_EdtLog.SetWindowText(szLogFileName);
     }
 }
