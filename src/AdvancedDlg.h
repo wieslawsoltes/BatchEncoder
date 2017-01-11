@@ -34,22 +34,14 @@ public:
     CEdit m_EdtLog;
     CButton m_BtnBrowse;
 public:
-    CString szBrowsePath[NUM_BROWSE_PATH_ADVANCED];
-public:
-    int nThreadPriorityIndex;
-    int nProcessPriorityIndex;
-    bool bDeleteOnError;
-    bool bStopOnErrors;
-    CString szLogFileName;
-    int nLogEncoding;
+    CSettings m_Settings;
+    CColors m_Color;
 public:
     int GetTheThreadPriority(void);
     DWORD GetTheProcessPriority(void);
 public:
     void GetAdvSettings();
     void SetAdvSettings();
-public:
-    COLORREF m_Color[NUM_PROGRAM_COLORS];
 public:
     HWND GetHWND(int nID);
     void PaintRect(int nID, COLORREF cr);
