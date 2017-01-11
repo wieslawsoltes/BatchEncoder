@@ -220,7 +220,7 @@ const TCHAR *g_szFormatNames[] =
 
 // default presets names for each file format
 // items: NUM_PRESET_FILES
-const TCHAR *g_szPresetNames[] =
+const TCHAR *g_szNames[] =
 {
     _T("WAV (Standard)"),                         // 0
     _T("MP3 (MPEG Layer-3)"),                     // 1

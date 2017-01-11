@@ -10,18 +10,18 @@ class CLListExtensions
 private:
     typedef struct _EDIT_DATA_PRESET_EXT_
     {
-        CString szPresetName;
+        CString szName;
         CString szPresetExtensions; // extesions seprated by '|'
-    } LIST_DATA_PRESET_EXT, *PLIST_DATA_PRESET_EXT;
+    } CPreset_EXT, *PCPreset_EXT;
 private:
-    CList<LIST_DATA_PRESET_EXT, LIST_DATA_PRESET_EXT&> myList;
+    CList<CPreset_EXT, CPreset_EXT&> myList;
 private:
-    void SetData(LIST_DATA_PRESET_EXT listData, int idx)
+    void SetData(CPreset_EXT listData, int idx)
     {
         myList.SetAt(myList.FindIndex(idx), listData);
     }
 
-    LIST_DATA_PRESET_EXT GetData(int idx)
+    CPreset_EXT GetData(int idx)
     {
         return myList.GetAt(myList.FindIndex(idx));
     }
@@ -45,10 +45,10 @@ public:
         return (int)myList.GetCount();
     }
 public:
-    void InsertNode(CString szPresetName, CString szPresetExtensions = _T(""))
+    void InsertNode(CString szName, CString szPresetExtensions = _T(""))
     {
-        LIST_DATA_PRESET_EXT tmp;
-        tmp.szPresetName = szPresetName;
+        CPreset_EXT tmp;
+        tmp.szName = szName;
         tmp.szPresetExtensions = szPresetExtensions;
         myList.AddTail(tmp);
     }
@@ -63,44 +63,44 @@ public:
             myList.RemoveAll();
     }
 public:
-    void SetPresetName(CString szPresetName, int idx)
+    void SetPresetName(CString szName, int idx)
     {
-        LIST_DATA_PRESET_EXT tmpList;
+        CPreset_EXT tmpList;
         tmpList = this->GetData(idx);
-        tmpList.szPresetName = szPresetName;
+        tmpList.szName = szName;
         this->SetData(tmpList, idx);
     }
     CString GetPresetName(int idx)
     {
-        LIST_DATA_PRESET_EXT tmpList;
+        CPreset_EXT tmpList;
         tmpList = this->GetData(idx);
-        return tmpList.szPresetName;
+        return tmpList.szName;
     }
 public:
     void SetPresetExtensions(CString szPresetExtensions, int idx)
     {
-        LIST_DATA_PRESET_EXT tmpList;
+        CPreset_EXT tmpList;
         tmpList = this->GetData(idx);
         tmpList.szPresetExtensions = szPresetExtensions;
         this->SetData(tmpList, idx);
     }
     CString GetPresetExtensions(int idx)
     {
-        LIST_DATA_PRESET_EXT tmpList;
+        CPreset_EXT tmpList;
         tmpList = this->GetData(idx);
         return tmpList.szPresetExtensions;
     }
 public:
     void AddPresetExtension(CString szExtension, int idx)
     {
-        LIST_DATA_PRESET_EXT tmpList;
+        CPreset_EXT tmpList;
         tmpList = this->GetData(idx);
         tmpList.szPresetExtensions += szExtension + '|';
         this->SetData(tmpList, idx);
     }
     CString GetPresetExtension(int idx, int ext)
     {
-        LIST_DATA_PRESET_EXT tmpList;
+        CPreset_EXT tmpList;
         tmpList = this->GetData(idx);
 
         CString szExt = _T("");
@@ -129,7 +129,7 @@ public:
     }
     void DelPresetExtension(int idx, int ext)
     {
-        LIST_DATA_PRESET_EXT tmpList;
+        CPreset_EXT tmpList;
         tmpList = this->GetData(idx);
 
         int nStart = 0, nEnd = 0, nCount = 0;
@@ -155,7 +155,7 @@ public:
     }
     int GetExtensionsSize(int idx)
     {
-        LIST_DATA_PRESET_EXT tmpList;
+        CPreset_EXT tmpList;
         tmpList = this->GetData(idx);
 
         int nEnd = 0, nCount = 0;

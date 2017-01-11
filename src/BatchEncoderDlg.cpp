@@ -398,7 +398,7 @@ BOOL CBatchEncoderDlg::OnInitDialog()
 
     // output file format combo-box 
     for (int i = 0; i < NUM_PRESET_FILES; i++)
-        m_CmbFormat.InsertString(i, g_szPresetNames[i]);
+        m_CmbFormat.InsertString(i, g_szNames[i]);
 
     ::SetComboBoxHeight(this->GetSafeHwnd(), IDC_COMBO_FORMAT);
 
@@ -1112,8 +1112,8 @@ void CBatchEncoderDlg::FillPresetComboBox(CLListPresets *m_ListPresets, int nSel
         // insert all preset names to combo-box
         for (int i = 0; i < nSize; i++)
         {
-            CString szPresetName = m_ListPresets->GetPresetName(i);
-            this->m_CmbPresets.InsertString(i, szPresetName);
+            CString szName = m_ListPresets->GetPresetName(i);
+            this->m_CmbPresets.InsertString(i, szName);
         }
 
         // resize ComboBox only once

@@ -140,7 +140,7 @@ extern const TCHAR *g_szProcessPriority[];
 extern const TCHAR *g_szAllInExt[];
 extern const TCHAR *g_szAllOutExt[];
 extern const TCHAR *g_szFormatNames[];
-extern const TCHAR *g_szPresetNames[];
+extern const TCHAR *g_szNames[];
 extern const char *g_szPresetTags[];
 extern const TCHAR *g_szPresetFiles[];
 extern const int g_nPresetResources[NUM_PRESET_FILES];
@@ -153,9 +153,6 @@ extern const TCHAR *g_szDefaultPath[];
 extern const bool g_bDefaultInPipes[NUM_FORMAT_NAMES];
 extern const bool g_bDefaultOutPipes[NUM_FORMAT_NAMES];
 extern const TCHAR *g_bDefaultFunction[];
-
-#include "LListFiles.h"
-#include "LListPresets.h"
 
 class CSettings
 {
@@ -184,6 +181,19 @@ public:
     COLORREF m_Color[NUM_PROGRAM_COLORS];
 };
 
+class CPreset
+{
+public:
+    CString szName;
+    CString szOptions;
+public:
+    void Copy(CPreset &other)
+    {
+        other.szName = this->szName;
+        other.szOptions = this->szOptions;
+    }
+};
+
 class CFormat
 {
 public:
@@ -202,6 +212,34 @@ public:
         other.szFunction = this->szFunction;
     }
 };
+
+class CItem
+{
+public:
+    CString szFilePath;
+    ULONGLONG nFileSize;
+    CString szFileName;
+    CString szInExt;
+    int nInFormat;
+    CString szOutExt;
+    int nOutFormat;
+    int nOutPreset;
+public:
+    void Copy(CItem &other)
+    {
+        other.szFilePath = this->szFilePath;
+        other.nFileSize = this->nFileSize;
+        other.szFileName = this->szFileName;
+        other.szInExt = this->szInExt;
+        other.nInFormat = this->nInFormat;
+        other.szOutExt = this->szOutExt;
+        other.nOutFormat = this->nOutFormat;
+        other.nOutPreset = this->nOutPreset;
+    }
+};
+
+#include "LListFiles.h"
+#include "LListPresets.h"
 
 class CFormats
 {

@@ -7,26 +7,13 @@
 
 class CLListFiles
 {
+    CList<CItem, CItem&> myList;
 private:
-    typedef struct _EDIT_DATA_FILES_
-    {
-        CString szFilePath;
-        ULONGLONG nFileSize;
-        CString szFileName;
-        CString szInExt;
-        int nInFormat;
-        CString szOutExt;
-        int nOutFormat;
-        int nOutPreset;
-    } LIST_DATA_FILES, *PLIST_DATA_FILES;
-private:
-    CList<LIST_DATA_FILES, LIST_DATA_FILES&> myList;
-private:
-    void SetData(LIST_DATA_FILES listData, int idx)
+    void SetData(CItem listData, int idx)
     {
         myList.SetAt(myList.FindIndex(idx), listData);
     }
-    LIST_DATA_FILES GetData(int idx)
+    CItem GetData(int idx)
     {
         return myList.GetAt(myList.FindIndex(idx));
     }
@@ -43,8 +30,8 @@ private:
 public:
     void SwapItems(int idx1, int idx2)
     {
-        LIST_DATA_FILES tmpList1 = this->GetData(idx1);
-        LIST_DATA_FILES tmpList2 = this->GetData(idx2);
+        CItem tmpList1 = this->GetData(idx1);
+        CItem tmpList2 = this->GetData(idx2);
 
         if ((idx1 < 0) || (idx2 < 0) ||
             (idx1 >= GetSize()) || (idx2 >= GetSize()))
@@ -188,7 +175,7 @@ public:
         const int nOutFormat,
         const int nOutPreset)
     {
-        LIST_DATA_FILES tmp;
+        CItem tmp;
 
         tmp.szFilePath = szFilePath;
         tmp.nFileSize = nFileSize;
@@ -221,7 +208,7 @@ public:
 public:
     void SetItemFilePath(CString szFilePath, int idx)
     {
-        LIST_DATA_FILES tmpList = this->GetData(idx);
+        CItem tmpList = this->GetData(idx);
         tmpList.szFilePath = szFilePath;
         this->SetData(tmpList, idx);
     }
@@ -232,7 +219,7 @@ public:
 public:
     void SetItemFileSize(ULONGLONG nFileSize, int idx)
     {
-        LIST_DATA_FILES tmpList = this->GetData(idx);
+        CItem tmpList = this->GetData(idx);
         tmpList.nFileSize = nFileSize;
         this->SetData(tmpList, idx);
     }
@@ -243,7 +230,7 @@ public:
 public:
     void SetItemFileName(CString szFileName, int idx)
     {
-        LIST_DATA_FILES tmpList = this->GetData(idx);
+        CItem tmpList = this->GetData(idx);
         tmpList.szFileName = szFileName;
         this->SetData(tmpList, idx);
     }
@@ -254,7 +241,7 @@ public:
 public:
     void SetItemInExt(CString szInExt, int idx)
     {
-        LIST_DATA_FILES tmpList = this->GetData(idx);
+        CItem tmpList = this->GetData(idx);
         tmpList.szInExt = szInExt;
         this->SetData(tmpList, idx);
     }
@@ -265,7 +252,7 @@ public:
 public:
     void SetItemInFormat(int nInFormat, int idx)
     {
-        LIST_DATA_FILES tmpList = this->GetData(idx);
+        CItem tmpList = this->GetData(idx);
         tmpList.nInFormat = nInFormat;
         this->SetData(tmpList, idx);
     }
@@ -276,7 +263,7 @@ public:
 public:
     void SetItemOutExt(CString szOutExt, int idx)
     {
-        LIST_DATA_FILES tmpList = this->GetData(idx);
+        CItem tmpList = this->GetData(idx);
         tmpList.szOutExt = szOutExt;
         this->SetData(tmpList, idx);
     }
@@ -287,7 +274,7 @@ public:
 public:
     void SetItemOutFormat(int nOutFormat, int idx)
     {
-        LIST_DATA_FILES tmpList = this->GetData(idx);
+        CItem tmpList = this->GetData(idx);
         tmpList.nOutFormat = nOutFormat;
         this->SetData(tmpList, idx);
     }
@@ -298,7 +285,7 @@ public:
 public:
     void SetItemOutPreset(int nOutPreset, int idx)
     {
-        LIST_DATA_FILES tmpList = this->GetData(idx);
+        CItem tmpList = this->GetData(idx);
         tmpList.nOutPreset = nOutPreset;
         this->SetData(tmpList, idx);
     }

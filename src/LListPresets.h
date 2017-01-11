@@ -8,20 +8,13 @@
 class CLListPresets
 {
 private:
-    typedef struct _EDIT_DATA_PRESET_
-    {
-        CString szPresetName;
-        CString szPresetOptions;
-    } LIST_DATA_PRESET, *PLIST_DATA_PRESET;
+    CList<CPreset, CPreset&> myList;
 private:
-    CList<LIST_DATA_PRESET, LIST_DATA_PRESET&> myList;
-private:
-    void SetData(LIST_DATA_PRESET listData, int idx)
+    void SetData(CPreset listData, int idx)
     {
         myList.SetAt(myList.FindIndex(idx), listData);
     }
-
-    LIST_DATA_PRESET GetData(int idx)
+    CPreset GetData(int idx)
     {
         return myList.GetAt(myList.FindIndex(idx));
     }
@@ -45,10 +38,10 @@ public:
         return (int)myList.GetCount();
     }
 public:
-    void InsertNode(CString szPresetName)
+    void InsertNode(CString szName)
     {
-        LIST_DATA_PRESET tmp;
-        tmp.szPresetName = szPresetName;
+        CPreset tmp;
+        tmp.szName = szName;
         myList.AddTail(tmp);
     }
     void RemoveNode(int pstn = -1)
@@ -62,31 +55,31 @@ public:
             myList.RemoveAll();
     }
 public:
-    void SetPresetName(CString szPresetName, int idx)
+    void SetPresetName(CString szName, int idx)
     {
-        LIST_DATA_PRESET tmpList;
+        CPreset tmpList;
         tmpList = this->GetData(idx);
-        tmpList.szPresetName = szPresetName;
+        tmpList.szName = szName;
         this->SetData(tmpList, idx);
     }
     CString GetPresetName(int idx)
     {
-        LIST_DATA_PRESET tmpList;
+        CPreset tmpList;
         tmpList = this->GetData(idx);
-        return tmpList.szPresetName;
+        return tmpList.szName;
     }
 public:
-    void SetPresetOptions(CString szPresetOptions, int idx)
+    void SetPresetOptions(CString szOptions, int idx)
     {
-        LIST_DATA_PRESET tmpList;
+        CPreset tmpList;
         tmpList = this->GetData(idx);
-        tmpList.szPresetOptions = szPresetOptions;
+        tmpList.szOptions = szOptions;
         this->SetData(tmpList, idx);
     }
     CString GetPresetOptions(int idx)
     {
-        LIST_DATA_PRESET tmpList;
+        CPreset tmpList;
         tmpList = this->GetData(idx);
-        return tmpList.szPresetOptions;
+        return tmpList.szOptions;
     }
 };
