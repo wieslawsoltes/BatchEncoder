@@ -28,15 +28,15 @@ IMPLEMENT_DYNAMIC(CAdvancedDlg, CDialog)
 CAdvancedDlg::CAdvancedDlg(CWnd* pParent /*=NULL*/)
     : CDialog(CAdvancedDlg::IDD, pParent)
 {
-    nThreadPriorityIndex = 3;
-    nProcessPriorityIndex = 1;
-    bDeleteOnError = true;
-    bStopOnErrors = false;
-    szLogFileName = MAIN_APP_LOG;
-    nLogEncoding = 2;
+    m_Settings.nThreadPriorityIndex = 3;
+    m_Settings.nProcessPriorityIndex = 1;
+    m_Settings.bDeleteOnError = true;
+    m_Settings.bStopOnErrors = false;
+    m_Settings.szLogFileName = MAIN_APP_LOG;
+    m_Settings.nLogEncoding = 2;
 
     for (int i = 0; i < NUM_PROGRAM_COLORS; i++)
-        m_Color[i] = RGB(0xFF, 0xFF, 0xFF);
+        m_Colors.m_Color[i] = RGB(0xFF, 0xFF, 0xFF);
 }
 
 CAdvancedDlg::~CAdvancedDlg()
@@ -131,7 +131,7 @@ void CAdvancedDlg::PaintRect(int nID, COLORREF cr)
 void CAdvancedDlg::OnPaintProc(void)
 {
     for (int i = 0; i < NUM_PROGRAM_COLORS; i++)
-        PaintRect(g_nColorControlId[i], m_Color[i]);
+        PaintRect(g_nColorControlId[i], m_Colors.m_Color[i]);
 }
 
 COLORREF CAdvancedDlg::ChangeTheColor(COLORREF cr)
@@ -146,40 +146,40 @@ COLORREF CAdvancedDlg::ChangeTheColor(COLORREF cr)
 
 void CAdvancedDlg::GetAdvSettings()
 {
-    nThreadPriorityIndex = this->m_CmbThread.GetCurSel();
-    nProcessPriorityIndex = this->m_CmbProcess.GetCurSel();
+    m_Settings.nThreadPriorityIndex = this->m_CmbThread.GetCurSel();
+    m_Settings.nProcessPriorityIndex = this->m_CmbProcess.GetCurSel();
 
-    bDeleteOnError = (this->IsDlgButtonChecked(IDC_CHECK_OPTION_DELETE) == BST_CHECKED) ? true : false;
-    bStopOnErrors = (this->IsDlgButtonChecked(IDC_CHECK_OPTION_ERROR) == BST_CHECKED) ? true : false;
+    m_Settings.bDeleteOnError = (this->IsDlgButtonChecked(IDC_CHECK_OPTION_DELETE) == BST_CHECKED) ? true : false;
+    m_Settings.bStopOnErrors = (this->IsDlgButtonChecked(IDC_CHECK_OPTION_ERROR) == BST_CHECKED) ? true : false;
 
-    m_EdtLog.GetWindowText(szLogFileName);
+    m_EdtLog.GetWindowText(m_Settings.szLogFileName);
 
     int nCheckID = this->GetCheckedRadioButton(IDC_RADIO_ENCODING_ANSI, IDC_RADIO_ENCODING_UTF8);
 
     if (nCheckID == IDC_RADIO_ENCODING_ANSI)
-        nLogEncoding = 0;
+        m_Settings.nLogEncoding = 0;
     else if (nCheckID == IDC_RADIO_ENCODING_UNICODE)
-        nLogEncoding = 1;
+        m_Settings.nLogEncoding = 1;
     else if (nCheckID == IDC_RADIO_ENCODING_UTF8)
-        nLogEncoding = 2;
+        m_Settings.nLogEncoding = 2;
     else
-        nLogEncoding = 2;
+        m_Settings.nLogEncoding = 2;
 }
 
 void CAdvancedDlg::SetAdvSettings()
 {
-    this->m_CmbThread.SetCurSel(nThreadPriorityIndex);
-    this->m_CmbProcess.SetCurSel(nProcessPriorityIndex);
+    this->m_CmbThread.SetCurSel(m_Settings.nThreadPriorityIndex);
+    this->m_CmbProcess.SetCurSel(m_Settings.nProcessPriorityIndex);
 
     this->CheckDlgButton(IDC_CHECK_OPTION_DELETE,
-        (bDeleteOnError == true) ? BST_CHECKED : BST_UNCHECKED);
+        (m_Settings.bDeleteOnError == true) ? BST_CHECKED : BST_UNCHECKED);
 
     this->CheckDlgButton(IDC_CHECK_OPTION_ERROR,
-        (bStopOnErrors == true) ? BST_CHECKED : BST_UNCHECKED);
+        (m_Settings.bStopOnErrors == true) ? BST_CHECKED : BST_UNCHECKED);
 
-    m_EdtLog.SetWindowText(szLogFileName);
+    m_EdtLog.SetWindowText(m_Settings.szLogFileName);
 
-    switch (nLogEncoding)
+    switch (m_Settings.nLogEncoding)
     {
     case 0:
         this->CheckRadioButton(IDC_RADIO_ENCODING_ANSI,
@@ -237,25 +237,25 @@ void CAdvancedDlg::OnDestroy()
 
 void CAdvancedDlg::OnBnClickedButtonBrowseLog()
 {
-    CFileDialog fd(FALSE, _T("log"), szLogFileName,
+    CFileDialog fd(FALSE, _T("log"), m_Settings.szLogFileName,
         OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER,
         _T("Log Files (*.log)|*.log|Txt Files (*.txt)|*.txt|All Files|*.*||"), this);
 
     if (fd.DoModal() == IDOK)
     {
-        szLogFileName = fd.GetPathName();
-        m_EdtLog.SetWindowText(szLogFileName);
+        m_Settings.szLogFileName = fd.GetPathName();
+        m_EdtLog.SetWindowText(m_Settings.szLogFileName);
     }
 }
 
 void CAdvancedDlg::ClickedOnColorRect(int nID)
 {
     COLORREF cr_new;
-    cr_new = this->ChangeTheColor(m_Color[nID]);
-    if (cr_new != m_Color[nID])
-        m_Color[nID] = cr_new;
+    cr_new = this->ChangeTheColor(m_Colors.m_Color[nID]);
+    if (cr_new != m_Colors.m_Color[nID])
+        m_Colors.m_Color[nID] = cr_new;
 
-    this->PaintRect(g_nColorControlId[nID], m_Color[nID]);
+    this->PaintRect(g_nColorControlId[nID], m_Colors.m_Color[nID]);
 }
 
 void CAdvancedDlg::OnStnClickedColor0()
