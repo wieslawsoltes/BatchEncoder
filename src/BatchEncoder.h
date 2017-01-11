@@ -41,36 +41,6 @@ typedef struct TBATCHENCODER_OPTIONS
     bool bHaveOutputPath;
 } BATCHENCODER_OPTIONS, *PBATCHENCODER_OPTIONS;
 
-// NOTE: undefine to enable memory leaks checking in debug builds
-// #define MEMORY_LEAK_CHECKS
-
-/*
-    // NOTE: use macros placed below for memory leaks detection:
-    LEAK_INIT
-    // NOTE: add code here
-    LEAK_CHECK(_T("FunctionName"))
-    // NOTE: usage is allowed only once per function
-*/
-
-#ifdef MEMORY_LEAK_CHECKS
-#ifdef _DEBUG
-#define LEAK_INIT \
-        AfxEnableMemoryTracking(TRUE); \
-        CMemoryState oldMemState, newMemState, diffMemState; \
-        oldMemState.Checkpoint();
-#define LEAK_CHECK(x) \
-        newMemState.Checkpoint(); \
-        if(diffMemState.Difference(oldMemState, newMemState)) \
-        { \
-            TRACE(_T("Memory leaked: %s\n"), x); \
-            diffMemState.DumpStatistics(); \
-        }
-#else
-#define LEAK_INIT
-#define LEAK_CHECK(x)
-#endif // _DEBUG
-#endif // MEMORY_LEAK_CHECKS
-
 class CBatchEncoderApp : public CWinApp
 {
 public:
