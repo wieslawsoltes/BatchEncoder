@@ -27,13 +27,15 @@ protected:
 public:
     virtual BOOL OnInitDialog();
 public:
-    CListCtrl m_Formats;
+    CFormat m_Formats[NUM_FORMAT_NAMES];
 public:
     CString szFormatsWndResize;
     CString szFormatsListColumns;
 public:
     void LoadWindowSettings();
     void SaveWindowSettings();
+public:
+    CListCtrl m_LstFormats;
 public:
     CEdit m_EdtPath;
     CEdit m_EdtTemplate;
@@ -68,8 +70,6 @@ public:
     afx_msg void OnBnClickedButtonFdBrowseProgress();
     afx_msg void OnBnClickedButtonFdUpdatePreset();
     afx_msg void OnBnClickedButtonDefaultConfig();
-public:
-    CFormat m_Format[NUM_FORMAT_NAMES];
 public:
     bool BrowseForCliExe(CString szDefaultFName, CEdit *pEdit, int nID);
     bool BrowseForProgress(CString szDefaultFName, CEdit *pEdit, int nID);
