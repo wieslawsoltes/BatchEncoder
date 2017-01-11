@@ -290,7 +290,7 @@ public:
     CString szLogFileName;
     int nLogEncoding;
 public:
-    void Copy(const CSettings &other)
+    void Copy(CSettings &other)
     {
         other.nThreadPriorityIndex = this->nThreadPriorityIndex;
         other.nProcessPriorityIndex = this->nProcessPriorityIndex;
@@ -316,7 +316,7 @@ public:
     bool bOutput;
     CString szFunction;
 public:
-    void Copy(const CFormat &other)
+    void Copy(CFormat &other)
     {
         other.szTemplate = this->szTemplate;
         other.szPath = this->szPath;
