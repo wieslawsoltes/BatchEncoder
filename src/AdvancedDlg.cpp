@@ -37,7 +37,7 @@ CAdvancedDlg::CAdvancedDlg(CWnd* pParent /*=NULL*/)
 
     for (int i = 0; i < NUM_PROGRAM_COLORS; i++)
     {
-        FROM_COLORREF_TO_CCOLOR(m_Colors.m_Color[i], RGB(0xFF, 0xFF, 0xFF))
+        FROM_COLORREF_TO_CCOLOR(m_Colors.m_Colors[i], RGB(0xFF, 0xFF, 0xFF))
     }
 }
 
@@ -134,7 +134,7 @@ void CAdvancedDlg::OnPaintProc(void)
 {
     for (int i = 0; i < NUM_PROGRAM_COLORS; i++)
     {
-        COLORREF color = FROM_CCOLOR_TO_COLORREF(m_Colors.m_Color[i]);
+        COLORREF color = FROM_CCOLOR_TO_COLORREF(m_Colors.m_Colors[i]);
         PaintRect(g_nColorControlId[i], color);
     }
 }
@@ -255,11 +255,11 @@ void CAdvancedDlg::OnBnClickedButtonBrowseLog()
 
 void CAdvancedDlg::ClickedOnColorRect(int nID)
 {
-    COLORREF color = FROM_CCOLOR_TO_COLORREF(m_Colors.m_Color[nID]);
+    COLORREF color = FROM_CCOLOR_TO_COLORREF(m_Colors.m_Colors[nID]);
     COLORREF cr_new = this->ChangeTheColor(color);
     if (cr_new != color)
     {
-        FROM_COLORREF_TO_CCOLOR(m_Colors.m_Color[nID], cr_new)
+        FROM_COLORREF_TO_CCOLOR(m_Colors.m_Colors[nID], cr_new)
     }
     this->PaintRect(g_nColorControlId[nID], cr_new);
 }

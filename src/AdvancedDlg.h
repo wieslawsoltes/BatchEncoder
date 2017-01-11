@@ -35,7 +35,7 @@ public:
     CEdit m_EdtLog;
     CButton m_BtnBrowse;
 public:
-    CSettings m_Settings;
+    COptions m_Settings;
     CColors m_Colors;
 public:
     int GetTheThreadPriority(void);

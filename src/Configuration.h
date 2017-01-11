@@ -154,7 +154,7 @@ extern const bool g_bDefaultInPipes[NUM_FORMAT_NAMES];
 extern const bool g_bDefaultOutPipes[NUM_FORMAT_NAMES];
 extern const TCHAR *g_bDefaultFunction[];
 
-class CSettings
+class COptions
 {
 public:
     int nThreadPriorityIndex;
@@ -164,7 +164,7 @@ public:
     CString szLogFileName;
     int nLogEncoding; // 0 - ANSI, 1 - UNICODE, 2 - UTF-8
 public:
-    void Copy(CSettings &other)
+    void Copy(COptions &other)
     {
         other.nThreadPriorityIndex = this->nThreadPriorityIndex;
         other.nProcessPriorityIndex = this->nProcessPriorityIndex;
@@ -253,32 +253,32 @@ public:
 class CColors
 {
 public:
-    CColor m_Color[NUM_PROGRAM_COLORS];
+    CColor m_Colors[NUM_PROGRAM_COLORS];
 };
 
 class CFormats
 {
 public:
-    CFormat m_Format[NUM_FORMAT_NAMES];
+    CFormat m_Formats[NUM_FORMAT_NAMES];
 };
 
 class CPresets
 {
 public:
-    CPresetsList m_ListPresets[NUM_PRESET_FILES];
+    CPresetsList m_Presets[NUM_PRESET_FILES];
     CString szPresetsFile[NUM_PRESET_FILES];
 };
 
 class CItems
 {
 public:
-    CItemsList m_ItemsList;
+    CItemsList m_Items;
 };
 
 class CConfiguration
 {
 public:
-    CSettings m_Settings;
+    COptions m_Options;
     CColors m_Colors;
     CFormats m_Formats;
     CPresets m_Presets;
