@@ -29,7 +29,7 @@ CHistogram::CHistogram()
     crBorder = RGB(0x00, 0x00, 0x00);
 
     // Histogram Background Color
-    crBack = ::GetSysColor(COLOR_BTNFACE);
+    crBack = RGB(0xFF, 0xFF, 0xFF);
 }
 
 CHistogram::~CHistogram()
