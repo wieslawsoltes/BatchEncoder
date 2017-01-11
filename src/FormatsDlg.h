@@ -69,8 +69,6 @@ public:
     afx_msg void OnBnClickedButtonFdUpdatePreset();
     afx_msg void OnBnClickedButtonDefaultConfig();
 public:
-    CString szBrowsePath[(NUM_BROWSE_PATH_FORMATS + NUM_BROWSE_PATH_PROGRESS)];
-public:
     CFormat m_Format[NUM_FORMAT_NAMES];
 public:
     bool BrowseForCliExe(CString szDefaultFName, CEdit *pEdit, int nID);
