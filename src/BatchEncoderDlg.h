@@ -7,7 +7,7 @@
 #include "afxcmn.h"
 #include "ResizeDialog.h"
 #include "TimeCount.h"
-#include "FileListCtrl.h"
+#include "ItemListCtrl.h"
 #include "DropList.h"
 #include "MyStatic.h"
 #include "MyButton.h"
@@ -80,7 +80,7 @@ public:
     CDropList m_CmbPresets;
     CDropList m_CmbFormat;
 public:
-    CFileListCtrl m_LstInputFiles;
+    CItemListCtrl m_LstInputItems;
 public:
     CMyStatic m_StcPreset;
     CMyStatic m_StcFormat;
@@ -145,10 +145,10 @@ public:
     afx_msg void SaveUserSettings();
     afx_msg void LoadDefaultSettings();
 public:
-    bool LoadPresets(CString szPresetsFName, CLListPresets *m_ListPresets);
-    CLListPresets *GetCurrentPresetsList(void);
+    bool LoadPresets(CString szPresetsFName, CPresetsList *m_ListPresets);
+    CPresetsList *GetCurrentPresetsList(void);
 public:
-    void FillPresetComboBox(CLListPresets *m_ListPresets = NULL, int nSelIndex = -1);
+    void FillPresetComboBox(CPresetsList *m_ListPresets = NULL, int nSelIndex = -1);
     void UpdateOutputComboBoxes(int nSelFormatIndex = -1, int nSelPresetIndex = -1);
 public:
     void EnableUserInterface(BOOL bEnable = TRUE);

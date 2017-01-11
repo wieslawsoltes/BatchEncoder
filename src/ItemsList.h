@@ -5,17 +5,17 @@
 
 #include <afxtempl.h>
 
-class CLListFiles
+class CItemsList
 {
-    CList<CItem, CItem&> myList;
+    CList<CItem, CItem&> m_Items;
 private:
     void SetData(CItem listData, int idx)
     {
-        myList.SetAt(myList.FindIndex(idx), listData);
+        m_Items.SetAt(m_Items.FindIndex(idx), listData);
     }
     CItem GetData(int idx)
     {
-        return myList.GetAt(myList.FindIndex(idx));
+        return m_Items.GetAt(m_Items.FindIndex(idx));
     }
 private:
     UINT MyGetFileName(LPCTSTR lpszPathName, LPTSTR lpszTitle, UINT nMax)
@@ -82,23 +82,23 @@ public:
         return szExt;
     }
 public:
-    CLListFiles()
+    CItemsList()
     {
 
     }
-    virtual ~CLListFiles()
+    virtual ~CItemsList()
     {
-        if (myList.GetCount() != 0)
-            myList.RemoveAll();
+        if (m_Items.GetCount() != 0)
+            m_Items.RemoveAll();
     }
 public:
     bool IsEmpty()
     {
-        return (myList.GetCount() == 0) ? true : false;
+        return (m_Items.GetCount() == 0) ? true : false;
     }
     int GetSize()
     {
-        return (int)myList.GetCount();
+        return (int)m_Items.GetCount();
     }
 public:
     static int GetInFormatIndex(CString szInExt)
@@ -192,18 +192,18 @@ public:
         tmp.nOutFormat = nOutFormat;
         tmp.nOutPreset = nOutPreset;
 
-        myList.AddTail(tmp);
+        m_Items.AddTail(tmp);
 
-        return (int)myList.GetCount() - 1;
+        return (int)m_Items.GetCount() - 1;
     }
     void RemoveNode(int pstn = -1)
     {
-        myList.RemoveAt(myList.FindIndex(pstn));
+        m_Items.RemoveAt(m_Items.FindIndex(pstn));
     }
     void RemoveAllNodes(void)
     {
-        if (myList.GetCount() != 0)
-            myList.RemoveAll();
+        if (m_Items.GetCount() != 0)
+            m_Items.RemoveAll();
     }
 public:
     void SetItemFilePath(CString szFilePath, int idx)

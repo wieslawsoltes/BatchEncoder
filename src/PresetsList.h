@@ -5,54 +5,54 @@
 
 #include <afxtempl.h>
 
-class CLListPresets
+class CPresetsList
 {
 private:
-    CList<CPreset, CPreset&> myList;
+    CList<CPreset, CPreset&> m_Presets;
 private:
     void SetData(CPreset listData, int idx)
     {
-        myList.SetAt(myList.FindIndex(idx), listData);
+        m_Presets.SetAt(m_Presets.FindIndex(idx), listData);
     }
     CPreset GetData(int idx)
     {
-        return myList.GetAt(myList.FindIndex(idx));
+        return m_Presets.GetAt(m_Presets.FindIndex(idx));
     }
 public:
-    CLListPresets()
+    CPresetsList()
     {
 
     }
-    virtual ~CLListPresets()
+    virtual ~CPresetsList()
     {
-        if (myList.GetCount() != 0)
-            myList.RemoveAll();
+        if (m_Presets.GetCount() != 0)
+            m_Presets.RemoveAll();
     }
 public:
     bool IsEmpty()
     {
-        return (myList.GetCount() == 0) ? true : false;
+        return (m_Presets.GetCount() == 0) ? true : false;
     }
     int GetSize()
     {
-        return (int)myList.GetCount();
+        return (int)m_Presets.GetCount();
     }
 public:
     void InsertNode(CString szName)
     {
         CPreset tmp;
         tmp.szName = szName;
-        myList.AddTail(tmp);
+        m_Presets.AddTail(tmp);
     }
     void RemoveNode(int pstn = -1)
     {
-        myList.RemoveAt(myList.FindIndex(pstn));
+        m_Presets.RemoveAt(m_Presets.FindIndex(pstn));
     }
 
     void RemoveAllNodes(void)
     {
-        if (myList.GetCount() != 0)
-            myList.RemoveAll();
+        if (m_Presets.GetCount() != 0)
+            m_Presets.RemoveAll();
     }
 public:
     void SetPresetName(CString szName, int idx)

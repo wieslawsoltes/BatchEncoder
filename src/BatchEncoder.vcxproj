@@ -250,7 +250,7 @@ copy /-Y data\Formats\*.formats $(OutDir)</Command>
     <ClCompile Include="ConversionStatus.cpp" />
     <ClCompile Include="CopyFileDlg.cpp" />
     <ClCompile Include="DropList.cpp" />
-    <ClCompile Include="FileListCtrl.cpp" />
+    <ClCompile Include="ItemListCtrl.cpp" />
     <ClCompile Include="FormatsDlg.cpp" />
     <ClCompile Include="Histogram.cpp" />
     <ClCompile Include="Hyperlink.cpp" />
@@ -286,14 +286,13 @@ copy /-Y data\Formats\*.formats $(OutDir)</Command>
     <ClInclude Include="ConversionStatus.h" />
     <ClInclude Include="CopyFileDlg.h" />
     <ClInclude Include="DropList.h" />
-    <ClInclude Include="FileListCtrl.h" />
+    <ClInclude Include="ItemListCtrl.h" />
     <ClInclude Include="FormatsDlg.h" />
     <ClInclude Include="Histogram.h" />
     <ClInclude Include="Hyperlink.h" />
     <ClInclude Include="LameHistogram.h" />
-    <ClInclude Include="LListExtensions.h" />
-    <ClInclude Include="LListFiles.h" />
-    <ClInclude Include="LListPresets.h" />
+    <ClInclude Include="ItemsList.h" />
+    <ClInclude Include="PresetsList.h" />
     <ClInclude Include="MyButton.h" />
     <ClInclude Include="MyStatic.h" />
     <ClInclude Include="MyStatusBarCtrl.h" />

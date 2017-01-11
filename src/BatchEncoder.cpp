@@ -5,7 +5,7 @@
 #include "BatchEncoder.h"
 #include "Utilities.h"
 #include "ResizeDialog.h"
-#include "LListFiles.h"
+#include "ItemsList.h"
 #include "BatchEncoderDlg.h"
 #include "PresetsDlg.h"
 #include "FormatsDlg.h"
@@ -179,8 +179,8 @@ BOOL CBatchEncoderApp::InitInstance()
             {
                 op.GetParam(szParam, 0);
 
-                if (CLListFiles::IsValidOutExtension(szParam) == true)
-                    nCurFormat = CLListFiles::GetOutFormatIndex(szParam);
+                if (CItemsList::IsValidOutExtension(szParam) == true)
+                    nCurFormat = CItemsList::GetOutFormatIndex(szParam);
                 else
                     nCurFormat = stoi(szParam);
 
@@ -365,9 +365,9 @@ BOOL CBatchEncoderApp::InitInstance()
 
                 op.GetParam(szParam, 1);
 
-                if (CLListFiles::IsValidOutExtension(szParam) == true)
+                if (CItemsList::IsValidOutExtension(szParam) == true)
                 {
-                    nFormat = CLListFiles::GetOutFormatIndex(szParam);
+                    nFormat = CItemsList::GetOutFormatIndex(szParam);
                 }
                 else
                 {
@@ -401,7 +401,7 @@ BOOL CBatchEncoderApp::InitInstance()
 
                 dlg.InsertToList(nid);
 
-                fo.bHaveFileList = true;
+                fo.bHaveItemList = true;
             }
             break;
             case CLOP_ADD_DIR:
@@ -415,9 +415,9 @@ BOOL CBatchEncoderApp::InitInstance()
 
                 op.GetParam(szParam, 1);
 
-                if (CLListFiles::IsValidOutExtension(szParam) == true)
+                if (CItemsList::IsValidOutExtension(szParam) == true)
                 {
-                    nFormat = CLListFiles::GetOutFormatIndex(szParam);
+                    nFormat = CItemsList::GetOutFormatIndex(szParam);
                 }
                 else
                 {
@@ -444,7 +444,7 @@ BOOL CBatchEncoderApp::InitInstance()
                     ::g_szAllOutExt[nFormat],
                     nPreset);
 
-                fo.bHaveFileList = true;
+                fo.bHaveItemList = true;
             }
             break;
             case CLOP_LOAD_LIST:
@@ -453,12 +453,12 @@ BOOL CBatchEncoderApp::InitInstance()
 
                 dlg.LoadList(szParam, false);
 
-                fo.bHaveFileList = true;
+                fo.bHaveItemList = true;
             }
             break;
             case CLOP_SAVE_LIST:
             {
-                if (fo.bHaveFileList == true)
+                if (fo.bHaveItemList == true)
                 {
                     op.GetParam(szParam, 0);
 
@@ -472,7 +472,7 @@ BOOL CBatchEncoderApp::InitInstance()
             break;
             case CLOP_BATCH_FILE:
             {
-                if (fo.bHaveFileList == true)
+                if (fo.bHaveItemList == true)
                 {
                     op.GetParam(szParam, 0);
 

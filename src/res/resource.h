@@ -53,7 +53,7 @@
 #define IDC_EDIT_OUT_PATH               1005
 #define IDC_BUTTON_BROWSE_PATH          1006
 #define IDC_CHECK_OUT_PATH              1007
-#define IDC_EDIT_INPUT_FILES            1008
+#define IDC_EDIT_INPUT_ITEMS            1008
 #define IDC_EDIT_PD_PRESETS             1009
 #define IDC_BUTTON_PD_SAVE_PRESETS      1010
 #define IDC_BUTTON_PD_LOAD_PRESETS      1011

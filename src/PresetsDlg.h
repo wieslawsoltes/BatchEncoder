@@ -6,7 +6,7 @@
 #include "afxcmn.h"
 #include "afxwin.h"
 #include "ResizeDialog.h"
-#include "LListPresets.h"
+#include "PresetsList.h"
 #include "MyStatic.h"
 #include "MyButton.h"
 
@@ -36,7 +36,7 @@ public:
     int nSelFormat;
     int nSelPreset;
 public:
-    CLListPresets m_ListPresets;
+    CPresetsList m_ListPresets;
 public:
     CString szPresetsWndResize;
     CString szPresetsListColumns;

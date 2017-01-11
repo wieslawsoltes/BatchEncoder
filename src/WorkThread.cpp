@@ -1000,7 +1000,7 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
         bOutPath = false;
 
     // get number of files in ListView
-    int nFiles = pDlg->m_LstInputFiles.GetItemCount();
+    int nFiles = pDlg->m_LstInputItems.GetItemCount();
 
     // get number of checked files in ListView
     int nTotalFiles = 0;
@@ -1009,7 +1009,7 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
     int nErrors = 0;
     for (int i = 0; i < nFiles; i++)
     {
-        if (pDlg->m_LstInputFiles.GetCheck(i) == TRUE)
+        if (pDlg->m_LstInputItems.GetCheck(i) == TRUE)
             nTotalFiles++;
     }
 
@@ -1021,7 +1021,7 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
     for (int i = 0; i < nFiles; i++)
     {
         // get next file name and check if we need to encode/decode/trans-code
-        if (pDlg->m_LstInputFiles.GetCheck(i) == TRUE)
+        if (pDlg->m_LstInputItems.GetCheck(i) == TRUE)
         {
             // update status-bar conversion status
             nProcessedFiles++;
@@ -1041,7 +1041,7 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
             pDlg->m_FileProgress.SetPos(0);
 
             // scroll list to ensure the item is visible
-            pDlg->m_LstInputFiles.EnsureVisible(i, FALSE);
+            pDlg->m_LstInputItems.EnsureVisible(i, FALSE);
 
             // TODO: when trans-coding on decode pass sum the decode+encode passes as one
             //       in the total progress-bar calculations
@@ -1053,22 +1053,22 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
             int nProcessingMode = -1;
 
             // get input file format
-            int nIntputFormat = pDlg->m_Config.m_Files.m_FileList.GetItemInFormat(i);
+            int nIntputFormat = pDlg->m_Config.m_Items.m_ItemsList.GetItemInFormat(i);
 
             // get output file format
-            int nOutputFormat = pDlg->m_Config.m_Files.m_FileList.GetItemOutFormat(i);
+            int nOutputFormat = pDlg->m_Config.m_Items.m_ItemsList.GetItemOutFormat(i);
 
             // get output preset for selected format
-            int nPreset = pDlg->m_Config.m_Files.m_FileList.GetItemOutPreset(i);
+            int nPreset = pDlg->m_Config.m_Items.m_ItemsList.GetItemOutPreset(i);
 
             // get full file path
-            CString szInputFile = pDlg->m_Config.m_Files.m_FileList.GetItemFilePath(i);
+            CString szInputFile = pDlg->m_Config.m_Items.m_ItemsList.GetItemFilePath(i);
 
             // output path is same as input file path
             if (bOutPath == false)
             {
                 szOutPath = szInputFile;
-                CString szToRemove = pDlg->m_Config.m_Files.m_FileList.GetFileName(szInputFile);
+                CString szToRemove = pDlg->m_Config.m_Items.m_ItemsList.GetFileName(szInputFile);
                 int nNewLenght = szOutPath.GetLength() - szToRemove.GetLength();
                 szOutPath.Truncate(nNewLenght);
             }
@@ -1083,7 +1083,7 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
             szDecoderOptions = pDlg->GetDecoderOpt(nIntputFormat, -1);
 
             // get only output filename
-            CString szName = pDlg->m_Config.m_Files.m_FileList.GetItemFileName(i);
+            CString szName = pDlg->m_Config.m_Items.m_ItemsList.GetItemFileName(i);
 
             // setup encoder steps:
             // 1. add extension to output filename
@@ -1094,7 +1094,7 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
 
             szEncoderExePath = pDlg->GetEncoderExe(nOutputFormat);
             szEncoderOptions = pDlg->GetEncoderOpt(nOutputFormat, nPreset);
-            szName = szName + _T(".") + pDlg->m_Config.m_Files.m_FileList.GetItemOutExt(i).MakeLower();
+            szName = szName + _T(".") + pDlg->m_Config.m_Items.m_ItemsList.GetItemOutExt(i).MakeLower();
 
             // set full path for output file
             CString szOutputFile;
@@ -1198,15 +1198,15 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
 
                 lstrcpy(szCommandLine, csExecute.GetBuffer(csExecute.GetLength()));
 
-                pDlg->m_LstInputFiles.SetItemText(i, 5, _T("--:--"));
-                pDlg->m_LstInputFiles.SetItemText(i, 6, _T("Decoding..."));
+                pDlg->m_LstInputItems.SetItemText(i, 5, _T("--:--"));
+                pDlg->m_LstInputItems.SetItemText(i, 6, _T("Decoding..."));
 
                 // update (init) conversion status data
                 pDlg->m_CnvStatus.SetCurrentInfo(nProcessedFiles,
                     nTotalFiles,
                     nDoneWithoutError,
-                    pDlg->m_Config.m_Files.m_FileList.GetFileName(szOrgInputFile),
-                    pDlg->m_Config.m_Files.m_FileList.GetFileName(szOrgOutputFile),
+                    pDlg->m_Config.m_Items.m_ItemsList.GetFileName(szOrgInputFile),
+                    pDlg->m_Config.m_Items.m_ItemsList.GetFileName(szOrgOutputFile),
                     szOutPath);
 
                 pDlg->m_CnvStatus.Draw(0);
@@ -1229,7 +1229,7 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
                         ::DeleteFile(szOrgInputFile);
 
                     if (nProcessingMode == 1)
-                        pDlg->m_LstInputFiles.SetCheck(i, FALSE);
+                        pDlg->m_LstInputItems.SetCheck(i, FALSE);
                 }
                 else
                 {
@@ -1310,15 +1310,15 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
 
                 lstrcpy(szCommandLine, csExecute.GetBuffer(csExecute.GetLength()));
 
-                pDlg->m_LstInputFiles.SetItemText(i, 5, _T("--:--"));
-                pDlg->m_LstInputFiles.SetItemText(i, 6, _T("Encoding..."));
+                pDlg->m_LstInputItems.SetItemText(i, 5, _T("--:--"));
+                pDlg->m_LstInputItems.SetItemText(i, 6, _T("Encoding..."));
 
                 // update (init) conversion status data
                 pDlg->m_CnvStatus.SetCurrentInfo(nProcessedFiles,
                     nTotalFiles,
                     nDoneWithoutError,
-                    pDlg->m_Config.m_Files.m_FileList.GetFileName(szOrgInputFile),
-                    pDlg->m_Config.m_Files.m_FileList.GetFileName(szOrgOutputFile),
+                    pDlg->m_Config.m_Items.m_ItemsList.GetFileName(szOrgInputFile),
+                    pDlg->m_Config.m_Items.m_ItemsList.GetFileName(szOrgOutputFile),
                     szOutPath);
 
                 pDlg->m_CnvStatus.Draw(0);
@@ -1338,7 +1338,7 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
                     if (bDeleteAfterconversion == true)
                         ::DeleteFile(szOrgInputFile);
 
-                    pDlg->m_LstInputFiles.SetCheck(i, FALSE);
+                    pDlg->m_LstInputItems.SetCheck(i, FALSE);
                 }
                 else
                 {

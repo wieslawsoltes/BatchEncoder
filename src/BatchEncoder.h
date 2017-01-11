@@ -15,7 +15,7 @@ typedef struct TBATCHENCODER_OPTIONS
     bool bHaveMainConfig;
     bool bHaveCurrentPreset;
     bool bHaveCurrentFormat;
-    bool bHaveFileList;
+    bool bHaveItemList;
     bool bHavePresets;
     bool bHaveFormats;
     bool bHaveStartConversion;

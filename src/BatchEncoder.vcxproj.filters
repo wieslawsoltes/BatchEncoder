@@ -108,9 +108,6 @@
     <ClCompile Include="DropList.cpp">
       <Filter>Source Files\Controls</Filter>
     </ClCompile>
-    <ClCompile Include="FileListCtrl.cpp">
-      <Filter>Source Files\Controls</Filter>
-    </ClCompile>
     <ClCompile Include="XMLDocumentW.cpp">
       <Filter>Source Files\Xml</Filter>
     </ClCompile>
@@ -143,6 +140,9 @@
     </ClCompile>
     <ClCompile Include="Configuration.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ItemListCtrl.cpp">
+      <Filter>Source Files\Controls</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -197,23 +197,11 @@
     <ClInclude Include="DropList.h">
       <Filter>Header Files\Controls</Filter>
     </ClInclude>
-    <ClInclude Include="FileListCtrl.h">
-      <Filter>Header Files\Controls</Filter>
-    </ClInclude>
     <ClInclude Include="version.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="targetver.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="LListFiles.h">
-      <Filter>Header Files\Lists</Filter>
-    </ClInclude>
-    <ClInclude Include="LListExtensions.h">
-      <Filter>Header Files\Lists</Filter>
-    </ClInclude>
-    <ClInclude Include="LListPresets.h">
-      <Filter>Header Files\Lists</Filter>
     </ClInclude>
     <ClInclude Include="XMLDocumentW.h">
       <Filter>Header Files\Xml</Filter>
@@ -250,6 +238,15 @@
     </ClInclude>
     <ClInclude Include="Configuration.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PresetsList.h">
+      <Filter>Header Files\Lists</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemsList.h">
+      <Filter>Header Files\Lists</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemListCtrl.h">
+      <Filter>Header Files\Controls</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

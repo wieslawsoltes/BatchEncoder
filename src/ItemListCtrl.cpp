@@ -3,31 +3,31 @@
 
 #include "StdAfx.h"
 #include "BatchEncoder.h"
-#include "FileListCtrl.h"
+#include "ItemListCtrl.h"
 #include "BatchEncoderDlg.h"
-#include ".\filelistctrl.h"
+#include ".\itemlistctrl.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
 
-IMPLEMENT_DYNAMIC(CFileListCtrl, CListCtrl)
-CFileListCtrl::CFileListCtrl()
+IMPLEMENT_DYNAMIC(CItemListCtrl, CListCtrl)
+CItemListCtrl::CItemListCtrl()
 {
 
 }
 
-CFileListCtrl::~CFileListCtrl()
+CItemListCtrl::~CItemListCtrl()
 {
 
 }
 
-BEGIN_MESSAGE_MAP(CFileListCtrl, CListCtrl)
+BEGIN_MESSAGE_MAP(CItemListCtrl, CListCtrl)
     ON_NOTIFY_REFLECT(LVN_ENDLABELEDIT, OnLvnEndlabeledit)
     ON_WM_MBUTTONDOWN()
 END_MESSAGE_MAP()
 
-void CFileListCtrl::OnLvnEndlabeledit(NMHDR *pNMHDR, LRESULT *pResult)
+void CItemListCtrl::OnLvnEndlabeledit(NMHDR *pNMHDR, LRESULT *pResult)
 {
     NMLVDISPINFO *pDispInfo = reinterpret_cast<NMLVDISPINFO*>(pNMHDR);
 
@@ -59,7 +59,7 @@ void CFileListCtrl::OnLvnEndlabeledit(NMHDR *pNMHDR, LRESULT *pResult)
     *pResult = 0;
 }
 
-void CFileListCtrl::OnMButtonDown(UINT nFlags, CPoint point)
+void CItemListCtrl::OnMButtonDown(UINT nFlags, CPoint point)
 {
     // NOTE: 
     // when user pressed mouse Middle Button show file list/show histogram

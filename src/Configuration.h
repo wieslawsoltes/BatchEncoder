@@ -91,7 +91,7 @@ enum TOOL_ID
 #define NUM_PRESET_FILES 14
 
 // number of file tag attributes
-#define NUM_FILE_ATTRIBUTES 9
+#define NUM_ITEM_ATTRIBUTES 9
 
 // number of tags used to store program settings
 #define NUM_PROGRAM_SETTINGS 24
@@ -238,8 +238,8 @@ public:
     }
 };
 
-#include "LListFiles.h"
-#include "LListPresets.h"
+#include "ItemsList.h"
+#include "PresetsList.h"
 
 class CFormats
 {
@@ -250,14 +250,14 @@ public:
 class CPresets
 {
 public:
-    CLListPresets m_ListPresets[NUM_PRESET_FILES];
+    CPresetsList m_ListPresets[NUM_PRESET_FILES];
     CString szPresetsFile[NUM_PRESET_FILES];
 };
 
-class CFiles
+class CItems
 {
 public:
-    CLListFiles m_FileList;
+    CItemsList m_ItemsList;
 };
 
 class CConfiguration
@@ -267,5 +267,5 @@ public:
     CColors m_Colors;
     CFormats m_Formats;
     CPresets m_Presets;
-    CFiles m_Files;
+    CItems m_Items;
 };
