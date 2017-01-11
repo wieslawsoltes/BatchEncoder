@@ -27,13 +27,13 @@ CConversionStatus::CConversionStatus()
     crTextError = RGB(0xFF, 0x00, 0x00);
 
     // Progress Color
-    crProgress = RGB(0x33, 0x66, 0xFF);
+    crProgress = RGB(0x00, 0xFF, 0x00);
 
     // Progress Border Color
-    crBorder = RGB(0x00, 0x00, 0x00);
+    crBorder = RGB(0x80, 0x80, 0x80);
 
     // Background Color
-    crBack = ::GetSysColor(COLOR_BTNFACE);
+    crBack = RGB(0xFF, 0xFF, 0xFF);
 }
 
 CConversionStatus::~CConversionStatus()

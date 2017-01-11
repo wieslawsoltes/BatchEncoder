@@ -162,7 +162,7 @@ public:
     bool bDeleteOnError;
     bool bStopOnErrors;
     CString szLogFileName;
-    int nLogEncoding;
+    int nLogEncoding; // 0 - ANSI, 1 - UNICODE, 2 - UTF-8
 public:
     void Copy(CSettings &other)
     {
@@ -175,10 +175,19 @@ public:
     }
 };
 
-class CColors
+class CColor
 {
 public:
-    COLORREF m_Color[NUM_PROGRAM_COLORS];
+    unsigned char nRed;
+    unsigned char nGreen;
+    unsigned char nBlue;
+public:
+    void Copy(CColor &other)
+    {
+        other.nRed = this->nRed;
+        other.nGreen = this->nGreen;
+        other.nBlue = this->nBlue;
+    }
 };
 
 class CPreset
@@ -240,6 +249,12 @@ public:
 
 #include "ItemsList.h"
 #include "PresetsList.h"
+
+class CColors
+{
+public:
+    CColor m_Color[NUM_PROGRAM_COLORS];
+};
 
 class CFormats
 {

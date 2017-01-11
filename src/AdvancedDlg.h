@@ -7,10 +7,11 @@
 #include "DropList.h"
 #include "MyButton.h"
 
-// nLogEncoding setting values:
-// 0 - ANSI
-// 1 - UNICODE
-// 2 - UTF-8
+#define FROM_CCOLOR_TO_COLORREF(c) RGB(c.nRed,c.nGreen,c.nBlue)
+
+#define FROM_COLORREF_TO_CCOLOR(c,cr) c.nRed   = GetRValue(cr); \
+                           c.nGreen = GetGValue(cr); \
+                           c.nBlue  = GetBValue(cr);
 
 class CAdvancedDlg : public CDialog
 {

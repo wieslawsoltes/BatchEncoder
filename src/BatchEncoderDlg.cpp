@@ -4082,31 +4082,31 @@ void CBatchEncoderDlg::OnOptionsAdvanced()
 
     m_Config.m_Settings.Copy(dlg.m_Settings);
 
-    dlg.m_Colors.m_Color[0] = this->m_CnvStatus.crText;
-    dlg.m_Colors.m_Color[1] = this->m_CnvStatus.crTextError;
-    dlg.m_Colors.m_Color[2] = this->m_CnvStatus.crProgress;
-    dlg.m_Colors.m_Color[3] = this->m_CnvStatus.crBorder;
-    dlg.m_Colors.m_Color[4] = this->m_CnvStatus.crBack;
-    dlg.m_Colors.m_Color[5] = this->m_Histogram.crLR;
-    dlg.m_Colors.m_Color[6] = this->m_Histogram.crMS;
-    dlg.m_Colors.m_Color[7] = this->m_Histogram.crBorder;
-    dlg.m_Colors.m_Color[8] = this->m_Histogram.crBack;
+    FROM_COLORREF_TO_CCOLOR(dlg.m_Colors.m_Color[0], this->m_CnvStatus.crText)
+    FROM_COLORREF_TO_CCOLOR(dlg.m_Colors.m_Color[1], this->m_CnvStatus.crTextError)
+    FROM_COLORREF_TO_CCOLOR(dlg.m_Colors.m_Color[2], this->m_CnvStatus.crProgress)
+    FROM_COLORREF_TO_CCOLOR(dlg.m_Colors.m_Color[3], this->m_CnvStatus.crBorder)
+    FROM_COLORREF_TO_CCOLOR(dlg.m_Colors.m_Color[4], this->m_CnvStatus.crBack)
+    FROM_COLORREF_TO_CCOLOR(dlg.m_Colors.m_Color[5], this->m_Histogram.crLR)
+    FROM_COLORREF_TO_CCOLOR(dlg.m_Colors.m_Color[6], this->m_Histogram.crMS)
+    FROM_COLORREF_TO_CCOLOR(dlg.m_Colors.m_Color[7], this->m_Histogram.crBorder)
+    FROM_COLORREF_TO_CCOLOR(dlg.m_Colors.m_Color[8], this->m_Histogram.crBack)
 
     if (dlg.DoModal() == IDOK)
     {
         dlg.m_Settings.Copy(m_Config.m_Settings);
 
-        this->m_CnvStatus.crText = dlg.m_Colors.m_Color[0];
-        this->m_CnvStatus.crTextError = dlg.m_Colors.m_Color[1];
-        this->m_CnvStatus.crProgress = dlg.m_Colors.m_Color[2];
-        this->m_CnvStatus.crBorder = dlg.m_Colors.m_Color[3];
-        this->m_CnvStatus.crBack = dlg.m_Colors.m_Color[4];
-        this->m_Histogram.crLR = dlg.m_Colors.m_Color[5];
-        this->m_Histogram.crMS = dlg.m_Colors.m_Color[6];
-        this->m_Histogram.crBorder = dlg.m_Colors.m_Color[7];
-        this->m_Histogram.crBack = dlg.m_Colors.m_Color[8];
+        this->m_CnvStatus.crText = FROM_CCOLOR_TO_COLORREF(dlg.m_Colors.m_Color[0]);
+        this->m_CnvStatus.crTextError = FROM_CCOLOR_TO_COLORREF(dlg.m_Colors.m_Color[1]);
+        this->m_CnvStatus.crProgress = FROM_CCOLOR_TO_COLORREF(dlg.m_Colors.m_Color[2]);
+        this->m_CnvStatus.crBorder = FROM_CCOLOR_TO_COLORREF(dlg.m_Colors.m_Color[3]);
+        this->m_CnvStatus.crBack = FROM_CCOLOR_TO_COLORREF(dlg.m_Colors.m_Color[4]);
+        this->m_Histogram.crLR = FROM_CCOLOR_TO_COLORREF(dlg.m_Colors.m_Color[5]);
+        this->m_Histogram.crMS = FROM_CCOLOR_TO_COLORREF(dlg.m_Colors.m_Color[6]);
+        this->m_Histogram.crBorder = FROM_CCOLOR_TO_COLORREF(dlg.m_Colors.m_Color[7]);
+        this->m_Histogram.crBack = FROM_CCOLOR_TO_COLORREF(dlg.m_Colors.m_Color[8]);
 
-        // re-init Conversion Status and Histogram controls
+        // re-initialize Conversion Status and Histogram controls
         this->m_CnvStatus.Clean();
         this->m_CnvStatus.Init();
         this->m_CnvStatus.Erase(true);
@@ -4158,7 +4158,7 @@ void CBatchEncoderDlg::OnOptionsConfigurePresets()
     dlg.nSelFormat = nSelFormat;
     dlg.nSelPreset = nSelPreset;
 
-    // config files
+    // configuration files
     for (int i = 0; i < NUM_PRESET_FILES; i++)
         dlg.szPresetsFile[i] = m_Config.m_Presets.szPresetsFile[i];
 
@@ -4170,7 +4170,7 @@ void CBatchEncoderDlg::OnOptionsConfigurePresets()
     {
         for (int i = 0; i < NUM_PRESET_FILES; i++)
         {
-            // update exe file path
+            // update executable file path
             m_Config.m_Presets.szPresetsFile[i] = dlg.szPresetsFile[i];
 
             // reload presets from files
@@ -4183,7 +4183,7 @@ void CBatchEncoderDlg::OnOptionsConfigurePresets()
     else
     {
         // NOTE:
-        // canceled all changes but some config files could changed
+        // canceled all changes but some configuration files could changed
         // they will be loaded next time when app will start
     }
 
