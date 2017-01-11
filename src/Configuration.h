@@ -290,14 +290,14 @@ public:
     CString szLogFileName;
     int nLogEncoding;
 public:
-    void Copy(const CSettings &other)
+    void Copy(CSettings& other)
     {
-        other->nThreadPriorityIndex = this.nThreadPriorityIndex;
-        other->nProcessPriorityIndex = this.nProcessPriorityIndex;
-        other->bDeleteOnError = this.bDeleteOnError;
-        other->bStopOnErrors = this.bStopOnErrors;
-        other->szLogFileName = this.szLogFileName;
-        other->nLogEncoding = this.nLogEncoding;
+        other.nThreadPriorityIndex = this.nThreadPriorityIndex;
+        other.nProcessPriorityIndex = this.nProcessPriorityIndex;
+        other.bDeleteOnError = this.bDeleteOnError;
+        other.bStopOnErrors = this.bStopOnErrors;
+        other.szLogFileName = this.szLogFileName;
+        other.nLogEncoding = this.nLogEncoding;
     }
 };
 
@@ -316,13 +316,13 @@ public:
     bool bOutput;
     CString szFunction;
 public:
-    void Copy(const CFormat &other)
+    void Copy(CFormat& other)
     {
-        other->szTemplate = this.szTemplate;
-        other->szPath = this..szPath;
-        other->bInput = this..bInput;
-        other->bOutput = this..bOutput;
-        other->szFunction = this..szFunction;
+        other.szTemplate = this.szTemplate;
+        other.szPath = this..szPath;
+        other.bInput = this..bInput;
+        other.bOutput = this..bOutput;
+        other.szFunction = this..szFunction;
     }
 };
 
