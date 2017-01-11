@@ -46,8 +46,6 @@ public:
 public:
     CString szPresetsFile[NUM_PRESET_FILES];
 public:
-    CString szBrowsePath[NUM_BROWSE_PATH_PRESETS];
-public:
     CMyStatic m_StcName;
     CMyStatic m_StcOptions;
 public:
