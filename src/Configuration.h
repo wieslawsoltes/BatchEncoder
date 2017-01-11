@@ -289,6 +289,16 @@ public:
     bool bStopOnErrors;
     CString szLogFileName;
     int nLogEncoding;
+public:
+    public void Copy(const CSettings &other)
+    {
+        other.nThreadPriorityIndex = this.nThreadPriorityIndex;
+        other.nProcessPriorityIndex = this.nProcessPriorityIndex;
+        other.bDeleteOnError = this.bDeleteOnError;
+        other.bStopOnErrors = this.bStopOnErrors;
+        other.szLogFileName = this.szLogFileName;
+        other.nLogEncoding = this.nLogEncoding;
+    }
 };
 
 class CColors
@@ -305,6 +315,15 @@ public:
     bool bInput;
     bool bOutput;
     CString szFunction;
+public:
+    public void Copy(const CFormat &other)
+    {
+        other.szTemplate = this.szTemplate;
+        other.szPath = this..szPath;
+        other.bInput = this..bInput;
+        other.bOutput = this..bOutput;
+        other.szFunction = this..szFunction;
+    }
 };
 
 class CFormats
