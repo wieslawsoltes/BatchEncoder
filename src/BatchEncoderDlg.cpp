@@ -1508,12 +1508,12 @@ bool CBatchEncoderDlg::LoadConfigFile()
         ::InitNewItemData(nid);
 
         tinyxml2::XMLElement* pItemsElem = pRootElem->FirstChildElement("Items");
-        tinyxml2::XMLElement* pItemsNode = pItemsElem->FirstChildElement();
-        for (pItemsNode; pItemsNode; pItemsNode = pItemsNode->NextSiblingElement())
+        tinyxml2::XMLElement* pItemElem = pItemsElem->FirstChildElement();
+        for (pItemElem; pItemElem; pItemElem = pItemElem->NextSiblingElement())
         {
             char *pszAttrib[NUM_ITEM_ATTRIBUTES];
             for (int i = 0; i < NUM_ITEM_ATTRIBUTES; i++)
-                pszAttrib[i] = (char *)pItemsNode->Attribute(g_szFileAttributes[i]);
+                pszAttrib[i] = (char *)pItemElem->Attribute(g_szFileAttributes[i]);
 
             bool bValidItem = true;
             for (int i = 0; i < NUM_ITEM_ATTRIBUTES; i++)
@@ -1947,12 +1947,12 @@ bool CBatchEncoderDlg::SaveConfigFile()
     doc.LinkEndChild(decl);
 
     // root: BatchEncoder
-    tinyxml2::XMLElement *root = doc.NewElement("BatchEncoder");
-    doc.LinkEndChild(root);
+    tinyxml2::XMLElement *pRootElem = doc.NewElement("BatchEncoder");
+    doc.LinkEndChild(pRootElem);
 
     // root: Settings
-    tinyxml2::XMLElement *settings = doc.NewElement("Settings");
-    root->LinkEndChild(settings);
+    tinyxml2::XMLElement *pSettingsElem = doc.NewElement("Settings");
+    pRootElem->LinkEndChild(pSettingsElem);
 
     CString szSetting[NUM_PROGRAM_SETTINGS];
 
@@ -2053,13 +2053,13 @@ bool CBatchEncoderDlg::SaveConfigFile()
         CUtf8String szBuffUtf8;
         tinyxml2::XMLElement *stg = doc.NewElement(g_szSettingsTags[i]);
         stg->LinkEndChild(doc.NewText(szBuffUtf8.Create(szSetting[i])));
-        settings->LinkEndChild(stg);
+        pSettingsElem->LinkEndChild(stg);
         szBuffUtf8.Clear();
     }
 
     // root: Colors
-    tinyxml2::XMLElement *colors = doc.NewElement("Colors");
-    root->LinkEndChild(colors);
+    tinyxml2::XMLElement *pColorsElem = doc.NewElement("Colors");
+    pRootElem->LinkEndChild(pColorsElem);
 
     CString szColor[NUM_PROGRAM_COLORS];
     COLORREF crColor[NUM_PROGRAM_COLORS];
@@ -2087,29 +2087,29 @@ bool CBatchEncoderDlg::SaveConfigFile()
     {
         CUtf8String szBuffUtf8;
 
-        tinyxml2::XMLElement *clr = doc.NewElement(g_szColorsTags[i]);
-        clr->LinkEndChild(doc.NewText(szBuffUtf8.Create(szColor[i])));
-        colors->LinkEndChild(clr);
+        tinyxml2::XMLElement *pColorElem = doc.NewElement(g_szColorsTags[i]);
+        pColorElem->LinkEndChild(doc.NewText(szBuffUtf8.Create(szColor[i])));
+        pColorsElem->LinkEndChild(pColorElem);
         szBuffUtf8.Clear();
     }
 
     // root: Presets
-    tinyxml2::XMLElement *presets = doc.NewElement("Presets");
-    root->LinkEndChild(presets);
+    tinyxml2::XMLElement *pPresetsElem = doc.NewElement("Presets");
+    pRootElem->LinkEndChild(pPresetsElem);
 
     for (int i = 0; i < NUM_PRESET_FILES; i++)
     {
         CUtf8String szBuffUtf8;
 
-        tinyxml2::XMLElement* preset = doc.NewElement(g_szPresetTags[i]);
-        preset->LinkEndChild(doc.NewText(szBuffUtf8.Create(m_Config.szPresetsFile[i])));
-        presets->LinkEndChild(preset);
+        tinyxml2::XMLElement* pPresetElem = doc.NewElement(g_szPresetTags[i]);
+        pPresetElem->LinkEndChild(doc.NewText(szBuffUtf8.Create(m_Config.szPresetsFile[i])));
+        pPresetsElem->LinkEndChild(pPresetElem);
         szBuffUtf8.Clear();
     }
 
     // root: Formats
-    tinyxml2::XMLElement *formats = doc.NewElement("Formats");
-    root->LinkEndChild(formats);
+    tinyxml2::XMLElement *pFormatsElem = doc.NewElement("Formats");
+    pRootElem->LinkEndChild(pFormatsElem);
 
     // NOTE:
     // same code as in CFormatsDlg::OnBnClickedButtonSaveConfig()
@@ -2119,24 +2119,24 @@ bool CBatchEncoderDlg::SaveConfigFile()
     {
         CUtf8String m_Utf8;
 
-        tinyxml2::XMLElement *format = doc.NewElement("Format");
+        tinyxml2::XMLElement *pFormatElem = doc.NewElement("Format");
 
-        format->LinkEndChild(doc.NewText(m_Utf8.Create(m_Config.m_Formats[i].szPath)));
+        pFormatElem->LinkEndChild(doc.NewText(m_Utf8.Create(m_Config.m_Formats[i].szPath)));
         m_Utf8.Clear();
 
-        format->SetAttribute("name", m_Utf8.Create(g_szFormatNames[i]));
+        pFormatElem->SetAttribute("name", m_Utf8.Create(g_szFormatNames[i]));
         m_Utf8.Clear();
 
-        format->SetAttribute("template", m_Utf8.Create(m_Config.m_Formats[i].szTemplate));
+        pFormatElem->SetAttribute("template", m_Utf8.Create(m_Config.m_Formats[i].szTemplate));
         m_Utf8.Clear();
 
-        format->SetAttribute("input", (m_Config.m_Formats[i].bInput) ? "true" : "false");
-        format->SetAttribute("output", (m_Config.m_Formats[i].bOutput) ? "true" : "false");
+        pFormatElem->SetAttribute("input", (m_Config.m_Formats[i].bInput) ? "true" : "false");
+        pFormatElem->SetAttribute("output", (m_Config.m_Formats[i].bOutput) ? "true" : "false");
 
-        format->SetAttribute("function", m_Utf8.Create(m_Config.m_Formats[i].szFunction));
+        pFormatElem->SetAttribute("function", m_Utf8.Create(m_Config.m_Formats[i].szFunction));
         m_Utf8.Clear();
 
-        formats->LinkEndChild(format);
+        pFormatsElem->LinkEndChild(pFormatElem);
     }
 
     /*
@@ -2148,15 +2148,15 @@ bool CBatchEncoderDlg::SaveConfigFile()
     */
 
     // root: Items
-    tinyxml2::XMLElement *itemsNode = doc.NewElement("Items");
-    root->LinkEndChild(itemsNode);
+    tinyxml2::XMLElement *pItemsElem = doc.NewElement("Items");
+    pRootElem->LinkEndChild(pItemsElem);
     int nItems = this->m_LstInputItems.GetItemCount();
 
     for (int i = 0; i < nItems; i++)
     {
         // File
-        tinyxml2::XMLElement *item = doc.NewElement("Item");
-        itemsNode->LinkEndChild(item);
+        tinyxml2::XMLElement *pItemElem = doc.NewElement("Item");
+        pItemsElem->LinkEndChild(pItemElem);
 
         CString szData[NUM_ITEM_ATTRIBUTES];
 
@@ -2173,7 +2173,7 @@ bool CBatchEncoderDlg::SaveConfigFile()
         for (int j = 0; j < NUM_ITEM_ATTRIBUTES; j++)
         {
             CUtf8String szBuffUtf8;
-            item->SetAttribute(g_szFileAttributes[j], szBuffUtf8.Create(szData[j]));
+            pItemElem->SetAttribute(g_szFileAttributes[j], szBuffUtf8.Create(szData[j]));
             szBuffUtf8.Clear();
         }
     }
@@ -4182,7 +4182,7 @@ void CBatchEncoderDlg::OnOptionsConfigureFormat()
 
     for (int i = 0; i < NUM_FORMAT_NAMES; i++)
     {
-        m_Config.m_Formats[i].Copy(dlg.m_Format[i]);
+        m_Config.m_Formats[i].Copy(dlg.m_Formats[i]);
     }
 
     dlg.szFormatsWndResize = this->szFormatsWndResize;
@@ -4193,7 +4193,7 @@ void CBatchEncoderDlg::OnOptionsConfigureFormat()
     {
         for (int i = 0; i < NUM_FORMAT_NAMES; i++)
         {
-            dlg.m_Format[i].Copy(m_Config.m_Formats[i]);
+            dlg.m_Formats[i].Copy(m_Config.m_Formats[i]);
         }
     }
 

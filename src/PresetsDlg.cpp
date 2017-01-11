@@ -421,15 +421,15 @@ void CPresetsDlg::LoadPresetsFile(CString szFileXml)
     if (doc.LoadFileW(szFileXml) == true)
     {
         // Root = Presets
-        tinyxml2::XMLElement* pRootElem = doc.FirstChildElement();
-        if (!pRootElem)
+        tinyxml2::XMLElement* pPresetsElem = doc.FirstChildElement();
+        if (!pPresetsElem)
         {
             MessageBox(_T("Failed to load file!"), _T("ERROR"), MB_OK | MB_ICONERROR);
             return;
         }
 
         // check for "Presets"
-        const char *szRoot = pRootElem->Value();
+        const char *szRoot = pPresetsElem->Value();
         const char *szRootName = "Presets";
         if (strcmp(szRootName, szRoot) != 0)
         {
@@ -444,15 +444,14 @@ void CPresetsDlg::LoadPresetsFile(CString szFileXml)
         m_LstPresets.DeleteAllItems();
 
         // Preset
-        tinyxml2::XMLElement* pPresetsNode = pRootElem->FirstChildElement("Preset");
-        for (pPresetsNode; pPresetsNode; pPresetsNode = pPresetsNode->NextSiblingElement())
+        tinyxml2::XMLElement* pPresetElem = pPresetsElem->FirstChildElement("Preset");
+        for (pPresetElem; pPresetElem; pPresetElem = pPresetElem->NextSiblingElement())
         {
-            const char *pszName = pPresetsNode->Attribute("name");
+            const char *pszName = pPresetElem->Attribute("name");
             if (pszName != NULL)
             {
                 CString szNameData = GetConfigString(pszName);
-
-                const char *pszOptions = pPresetsNode->Attribute("options");
+                const char *pszOptions = pPresetElem->Attribute("options");
                 if (pszOptions != NULL)
                 {
                     CString szOptionsData = GetConfigString(pszOptions);
@@ -493,35 +492,35 @@ void CPresetsDlg::SavePresetsFile(CString szFileXml)
     CUtf8String m_Utf8;
 
     // root: Presets
-    tinyxml2::XMLElement *pPresetsNode = doc.NewElement("Presets");
-    doc.LinkEndChild(pPresetsNode);
+    tinyxml2::XMLElement *pPresetsElem = doc.NewElement("Presets");
+    doc.LinkEndChild(pPresetsElem);
     int nPresets = m_Presets.GetSize();
     for (int i = 0; i < nPresets; i++)
     {
         // Preset
-        tinyxml2::XMLElement *preset = doc.NewElement("Preset");
-        pPresetsNode->LinkEndChild(preset);
+        tinyxml2::XMLElement *pPresetElem = doc.NewElement("Preset");
+        pPresetsElem->LinkEndChild(pPresetElem);
 
         CString szName = m_Presets.GetPresetName(i);
         CString szOptions = m_Presets.GetPresetOptions(i);
 
         if (szName.GetLength() == 0)
         {
-            preset->SetAttribute("name", "");
+            pPresetElem->SetAttribute("name", "");
         }
         else
         {
-            preset->SetAttribute("name", m_Utf8.Create(szName));
+            pPresetElem->SetAttribute("name", m_Utf8.Create(szName));
             m_Utf8.Clear();
         }
 
         if (szOptions.GetLength() == 0)
         {
-            preset->SetAttribute("options", "");
+            pPresetElem->SetAttribute("options", "");
         }
         else
         {
-            preset->SetAttribute("options", m_Utf8.Create(szOptions));
+            pPresetElem->SetAttribute("options", m_Utf8.Create(szOptions));
             m_Utf8.Clear();
         }
     }
