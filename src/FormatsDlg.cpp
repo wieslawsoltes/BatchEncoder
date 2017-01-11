@@ -299,16 +299,10 @@ bool CFormatsDlg::BrowseForCliExe(CString szDefaultFName, CEdit *pEdit, int nID)
         OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER,
         _T("Exe Files (*.exe)|*.exe|All Files|*.*||"), this);
 
-    ::SetBrowsePath(fd, szBrowsePath[(2 + nID)]);
-
     if (fd.DoModal() == IDOK)
     {
-        szBrowsePath[(2 + nID)] = ::GetBrowsePath(fd);
-
-        CString szPath;
-        szPath = fd.GetPathName();
+        CString szPath = fd.GetPathName();
         pEdit->SetWindowText(szPath);
-
         return true;
     }
     return false;
@@ -320,16 +314,11 @@ bool CFormatsDlg::BrowseForProgress(CString szDefaultFName, CEdit *pEdit, int nI
         OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER,
         _T("Progress Files (*.progress)|*.progress|All Files|*.*||"), this);
 
-    ::SetBrowsePath(fd, szBrowsePath[(NUM_BROWSE_PATH_FORMATS + nID)]);
-
     if (fd.DoModal() == IDOK)
     {
-        szBrowsePath[(NUM_BROWSE_PATH_FORMATS + nID)] = ::GetBrowsePath(fd);
-
         CString szPath;
         szPath = fd.GetPathName();
         pEdit->SetWindowText(szPath);
-
         return true;
     }
     return false;
@@ -514,12 +503,8 @@ void CFormatsDlg::OnBnClickedButtonLoadConfig()
         OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER,
         _T("Formats Files (*.formats)|*.formats|Xml Files (*.xml)|*.xml|All Files|*.*||"), this);
 
-    ::SetBrowsePath(fd, szBrowsePath[0]);
-
     if (fd.DoModal() == IDOK)
     {
-        szBrowsePath[0] = ::GetBrowsePath(fd);
-
         CString szFileXml = fd.GetPathName();
         this->LoadFormatsFile(szFileXml);
     }
@@ -532,12 +517,8 @@ void CFormatsDlg::OnBnClickedButtonSaveConfig()
         OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER | OFN_OVERWRITEPROMPT,
         _T("Formats Files (*.formats)|*.formats|Xml Files (*.xml)|*.xml|All Files|*.*||"), this);
 
-    ::SetBrowsePath(fd, szBrowsePath[1]);
-
     if (fd.DoModal() == IDOK)
     {
-        szBrowsePath[1] = ::GetBrowsePath(fd);
-
         CString szFileXml = fd.GetPathName();
         this->SaveFormatsFile(szFileXml);
     }
@@ -579,7 +560,6 @@ void CFormatsDlg::OnBnClickedButtonFdBrowse()
     if (pos != NULL)
     {
         int nItem = m_LstFormats.GetNextSelectedItem(pos);
-
         BrowseForCliExe(g_szDefaultPath[nItem], &m_EdtPath, nItem);
     }
     else
@@ -596,7 +576,6 @@ void CFormatsDlg::OnBnClickedButtonFdBrowseProgress()
     if (pos != NULL)
     {
         int nItem = m_LstFormats.GetNextSelectedItem(pos);
-
         BrowseForProgress(g_bDefaultFunction[nItem], &m_EdtProgress, nItem);
     }
     else
@@ -612,7 +591,6 @@ void CFormatsDlg::OnBnClickedButtonFdUpdatePreset()
     // NOTE: 
     // button is disabled instead live update is working
     // with EditBox change event and CheckBoxes click event
-
     CString szTemplate = _T("");
     CString szPath = _T("");
     CString szCheckIn = _T("false");
@@ -654,10 +632,8 @@ void CFormatsDlg::OnEnChangeEditFdCliPath()
     if (pos != NULL)
     {
         int nItem = m_LstFormats.GetNextSelectedItem(pos);
-
         CString szPath;
         this->m_EdtPath.GetWindowText(szPath);
-
         m_LstFormats.SetItemText(nItem, 2, szPath);
     }
 }
@@ -668,10 +644,8 @@ void CFormatsDlg::OnEnChangeEditFdCliTemplate()
     if (pos != NULL)
     {
         int nItem = m_LstFormats.GetNextSelectedItem(pos);
-
         CString szTemplate;
         this->m_EdtTemplate.GetWindowText(szTemplate);
-
         m_LstFormats.SetItemText(nItem, 1, szTemplate);
     }
 }
@@ -682,10 +656,8 @@ void CFormatsDlg::OnEnChangeEditFdCliProgress()
     if (pos != NULL)
     {
         int nItem = m_LstFormats.GetNextSelectedItem(pos);
-
         CString szFunction;
         this->m_EdtProgress.GetWindowText(szFunction);
-
         m_LstFormats.SetItemText(nItem, 5, szFunction);
     }
 }
@@ -696,7 +668,6 @@ void CFormatsDlg::OnBnClickedCheckFdPipesInput()
     if (pos != NULL)
     {
         int nItem = m_LstFormats.GetNextSelectedItem(pos);
-
         CString szCheckIn = _T("false");
         if (IsDlgButtonChecked(IDC_CHECK_FD_PIPES_INPUT) == BST_CHECKED)
             szCheckIn = _T("true");
@@ -711,7 +682,6 @@ void CFormatsDlg::OnBnClickedCheckFdPipesOutput()
     if (pos != NULL)
     {
         int nItem = m_LstFormats.GetNextSelectedItem(pos);
-
         CString szCheckOut = _T("false");
         if (IsDlgButtonChecked(IDC_CHECK_FD_PIPES_OUTPUT) == BST_CHECKED)
             szCheckOut = _T("true");
