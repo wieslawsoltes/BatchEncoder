@@ -35,7 +35,7 @@ public:
     CButton m_BtnBrowse;
 public:
     CSettings m_Settings;
-    CColors m_Color;
+    CColors m_Colors;
 public:
     int GetTheThreadPriority(void);
     DWORD GetTheProcessPriority(void);
