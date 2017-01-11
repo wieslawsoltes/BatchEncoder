@@ -115,7 +115,7 @@ BOOL CFormatsDlg::OnInitDialog()
         lvi.iItem = i;
 
         lvi.iSubItem = 0;
-        lvi.pszText = (LPTSTR)(LPCTSTR)(g_szFormatNames[i]);
+        lvi.pszText = (LPTSTR)(LPCTSTR)(m_Formats[i].szName);
         m_LstFormats.InsertItem(&lvi);
 
         lvi.iSubItem = 1;
@@ -388,6 +388,8 @@ void CFormatsDlg::LoadFormatsFile(CString szFileXml)
                     // invalid format Id
                     continue;
                 }
+
+                m_Formats[nFormat].szName = szBuff;
             }
             else
             {
@@ -471,7 +473,7 @@ void CFormatsDlg::SaveFormatsFile(CString szFileXml)
         pFormatElem->LinkEndChild(doc.NewText(m_Utf8.Create(m_Formats[i].szPath)));
         m_Utf8.Clear();
 
-        pFormatElem->SetAttribute("name", m_Utf8.Create(g_szFormatNames[i]));
+        pFormatElem->SetAttribute("name", m_Utf8.Create(m_Formats[i].szName));
         m_Utf8.Clear();
 
         pFormatElem->SetAttribute("template", m_Utf8.Create(m_Formats[i].szTemplate));

@@ -1437,6 +1437,8 @@ bool CBatchEncoderDlg::LoadConfigFile()
                     // invalid format Id
                     continue;
                 }
+
+                m_Config.m_Formats[nFormat].szName = szBuff;
             }
             else
             {
@@ -2124,7 +2126,7 @@ bool CBatchEncoderDlg::SaveConfigFile()
         pFormatElem->LinkEndChild(doc.NewText(m_Utf8.Create(m_Config.m_Formats[i].szPath)));
         m_Utf8.Clear();
 
-        pFormatElem->SetAttribute("name", m_Utf8.Create(g_szFormatNames[i]));
+        pFormatElem->SetAttribute("name", m_Utf8.Create(m_Config.m_Formats[i].szName));
         m_Utf8.Clear();
 
         pFormatElem->SetAttribute("template", m_Utf8.Create(m_Config.m_Formats[i].szTemplate));
