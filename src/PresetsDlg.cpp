@@ -544,12 +544,9 @@ void CPresetsDlg::OnBnClickedButtonPdLoadPresets()
         _T("Presets Files (*.presets)|*.presets|Xml Files (*.xml)|*.xml|All Files|*.*||"), this);
 
     int nPreset = this->m_CmbFormat.GetCurSel();
-    ::SetBrowsePath(fd, szBrowsePath[(nPreset + nPreset)]);
 
     if (fd.DoModal() == IDOK)
     {
-        szBrowsePath[(nPreset + nPreset)] = ::GetBrowsePath(fd);
-
         CString szFileXml = fd.GetPathName();
         this->LoadPresetsFile(szFileXml);
     }
@@ -562,12 +559,9 @@ void CPresetsDlg::OnBnClickedButtonPdSavePresets()
         _T("Presets Files (*.presets)|*.presets|Xml Files (*.xml)|*.xml|All Files|*.*||"), this);
 
     int nPreset = this->m_CmbFormat.GetCurSel();
-    ::SetBrowsePath(fd, szBrowsePath[(nPreset + nPreset + 1)]);
 
     if (fd.DoModal() == IDOK)
     {
-        szBrowsePath[(nPreset + nPreset + 1)] = ::GetBrowsePath(fd);
-
         CString szFileXml = fd.GetPathName();
         this->SavePresetsFile(szFileXml);
     }
