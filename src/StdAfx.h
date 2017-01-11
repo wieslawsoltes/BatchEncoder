@@ -5,20 +5,12 @@
 
 #include "version.h"
 
-//
-// DEFAULTS
-//
-
 #define MAIN_APP_NAME           _T(VER_PRODUCTNAME_STR)
 #define MAIN_APP_NAME_VER       _T(VER_PRODUCTNAME_STR " v" VER_FILE_VERSION_LONG_STR " " VER_COPYRIGHT_STR)
 #define MAIN_APP_WEBSITE        _T("https://github.com/wieslawsoltes/BatchEncoder")
 #define MAIN_APP_EMAIL          _T("wieslaw.soltes@gmail.com")
 #define MAIN_APP_CONFIG         _T("BatchEncoder.config")
 #define MAIN_APP_LOG            _T("BatchEncoder.log")
-
-//
-// MFC
-//
 
 #ifndef _SECURE_ATL
 #define _SECURE_ATL 1
@@ -32,7 +24,6 @@
 
 #define _ATL_CSTRING_EXPLICIT_CONSTRUCTORS
 #define _AFX_ALL_WARNINGS
-
 #define _AFX_PORTABLE
 #define _FORCENAMELESSUNION
 #define _AFX_NO_DAO_SUPPORT
@@ -42,7 +33,6 @@
 
 #include <afxwin.h>
 #include <afxext.h>
-
 #include <afxdtctl.h>
 #ifndef _AFX_NO_AFXCMN_SUPPORT
 #include <afxcmn.h>
@@ -65,14 +55,5 @@
 
 #include <VersionHelpers.h>
 
-//
-// XML
-//
-
 #include "XMLDocumentW.h"
-
-//
-// CONFIGURATION
-//
-
 #include "Configuration.h"
