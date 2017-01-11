@@ -1505,23 +1505,8 @@ bool CBatchEncoderDlg::LoadConfigFile()
         }
     }
 
-    // root: Browse
-    tinyxml2::XMLElement* pBrowseElem = pRootElem->FirstChildElement("Browse");
-    for (int i = 0; i < NUM_BROWSE_PATH; i++)
-    {
-        char szPathTag[32];
-
-        ZeroMemory(szPathTag, sizeof(szPathTag));
-        sprintf(szPathTag, "Path_%02d", i);
-
-        tinyxml2::XMLElement* pPathTagElem = pBrowseElem->FirstChildElement("szPathTag");
-        if (pPathTagElem)
-            m_Config.m_Browse.szBrowsePath[i] = GetConfigString(pPathTagElem->GetText());
-        else
-            m_Config.m_Browse.szBrowsePath[i] = ::GetExeFilePath();
-    }
-
-    // NOTE:
+    /*
+    // TODO: Add to CSettings
     // this is special case for m_Config.m_Browse.szBrowsePath[4]
     // check for out-path if not presets set to default value
     if (m_Config.m_Browse.szBrowsePath[4].Compare(_T("")) != 0)
@@ -1536,7 +1521,8 @@ bool CBatchEncoderDlg::LoadConfigFile()
         szLastBrowse = szBuff;
         m_Config.m_Browse.szBrowsePath[4] = szBuff;
     }
-
+    */
+    
     // root: Files
     if (this->m_pFo->bHaveFileList == false)
     {
@@ -2177,30 +2163,13 @@ bool CBatchEncoderDlg::SaveConfigFile()
         formats->LinkEndChild(format);
     }
 
-    // root: Browse
-    tinyxml2::XMLElement *browse = doc.NewElement("Browse");
-    root->LinkEndChild(browse);
-
-    // NOTE: 
+    /*
+    // TODO: Save m_EdtOutPath as part of CSettings
     // get last browse for outpath this is special case 
     // because user can change this value 
     // without changing m_Config.m_Browse.szBrowsePath[4] variable
     m_EdtOutPath.GetWindowText(m_Config.m_Browse.szBrowsePath[4]);
-
-    for (int i = 0; i < NUM_BROWSE_PATH; i++)
-    {
-        CUtf8String szBuffUtf8;
-
-        char szPathTag[32];
-
-        ZeroMemory(szPathTag, sizeof(szPathTag));
-        sprintf(szPathTag, "Path_%02d", i);
-
-        tinyxml2::XMLElement* path = doc.NewElement(szPathTag);
-        path->LinkEndChild(doc.NewText(szBuffUtf8.Create(m_Config.m_Browse.szBrowsePath[i])));
-        browse->LinkEndChild(path);
-        szBuffUtf8.Clear();
-    }
+    */
 
     // root: Files
     tinyxml2::XMLElement *filesNode = doc.NewElement("Files");
@@ -2676,10 +2645,12 @@ void CBatchEncoderDlg::OnBnClickedButtonBrowsePath()
     CString szTmp;
     this->m_EdtOutPath.GetWindowText(szTmp);
 
+    /* TODO: 
     if (szTmp == m_Config.m_Browse.szBrowsePath[4])
         szLastBrowse = m_Config.m_Browse.szBrowsePath[4];
     else
-        szLastBrowse = szTmp;
+    */
+    szLastBrowse = szTmp;
 
     if (SHGetMalloc(&pMalloc) == E_FAIL)
         return;
@@ -2716,7 +2687,7 @@ void CBatchEncoderDlg::OnBnClickedButtonBrowsePath()
     {
         if (::SHGetPathFromIDList(pidlBrowse, lpBuffer))
         {
-            m_Config.m_Browse.szBrowsePath[4] = szLastBrowse;
+            // TODO: m_Config.m_Browse.szBrowsePath[4] = szLastBrowse;
 
             szLastBrowse.Format(_T("%s\0"), lpBuffer);
             m_EdtOutPath.SetWindowText(lpBuffer);
@@ -3489,12 +3460,8 @@ void CBatchEncoderDlg::OnFileLoadList()
         OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER,
         _T("List Files (*.list)|*.list|Xml Files (*.xml)|*.xml|All Files|*.*||"), this);
 
-    ::SetBrowsePath(fd, m_Config.m_Browse.szBrowsePath[0]);
-
     if (fd.DoModal() == IDOK)
     {
-        m_Config.m_Browse.szBrowsePath[0] = ::GetBrowsePath(fd);
-
         CString szFileXml = fd.GetPathName();
 
         if (this->LoadList(szFileXml, true) == false)
@@ -3519,12 +3486,8 @@ void CBatchEncoderDlg::OnFileSaveList()
         OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER | OFN_OVERWRITEPROMPT,
         _T("List Files (*.list)|*.list|Xml Files (*.xml)|*.xml|All Files|*.*||"), this);
 
-    ::SetBrowsePath(fd, m_Config.m_Browse.szBrowsePath[1]);
-
     if (fd.DoModal() == IDOK)
     {
-        m_Config.m_Browse.szBrowsePath[1] = ::GetBrowsePath(fd);
-
         CString szFileXml = fd.GetPathName();
 
         if (this->SaveList(szFileXml, true) == false)
@@ -3561,14 +3524,8 @@ void CBatchEncoderDlg::OnFileCreateBatchFile()
         OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER | OFN_OVERWRITEPROMPT,
         _T("Batch Files (*.bat)|*.bat|Script Files (*.cmd)|*.cmd|All Files|*.*||"), this);
 
-    // TODO: add szBrowsePath[?] entry
-
-    // ::SetBrowsePath(fd, szBrowsePath[?]);
-
     if (fd.DoModal() == IDOK)
     {
-        // szBrowsePath[?] = ::GetBrowsePath(fd);
-
         CString szFileBatch = fd.GetPathName();
 
         if (this->CreateBatchFile(szFileBatch, true) == false)
@@ -3624,13 +3581,9 @@ void CBatchEncoderDlg::OnEditAddFiles()
         fd.m_ofn.lpstrFile = pFiles;
         fd.m_ofn.nMaxFile = (dwMaxSize) / 2;
 
-        ::SetBrowsePath(fd, m_Config.m_Browse.szBrowsePath[2]);
-
         // show File Open dialog
         if (fd.DoModal() != IDCANCEL)
         {
-            m_Config.m_Browse.szBrowsePath[2] = ::GetBrowsePath(fd);
-
             CString sFilePath;
             POSITION pos = fd.GetStartPosition();
 
@@ -3683,8 +3636,6 @@ void CBatchEncoderDlg::OnEditAddDir()
     LPITEMIDLIST pidlBrowse;
     TCHAR *lpBuffer;
 
-    szLastBrowseAddDir = m_Config.m_Browse.szBrowsePath[3];
-
     if (SHGetMalloc(&pMalloc) == E_FAIL)
         return;
 
@@ -3721,11 +3672,7 @@ void CBatchEncoderDlg::OnEditAddDir()
         if (::SHGetPathFromIDList(pidlBrowse, lpBuffer))
         {
             CString szPath = lpBuffer;
-
-            m_Config.m_Browse.szBrowsePath[3] = szPath;
-
             this->SearchFolderForFiles(szPath, bRecurseChecked);
-
             this->UpdateStatusBar();
         }
         pMalloc->Free(pidlBrowse);
@@ -4135,44 +4082,31 @@ void CBatchEncoderDlg::OnOptionsAdvanced()
 
     CAdvancedDlg dlg;
 
-    for (int i = 0; i < NUM_BROWSE_PATH_ADVANCED; i++)
-        dlg.szBrowsePath[i] = m_Config.m_Browse.szBrowsePath[(START_BROWSE_PATH_ADVANCED + i)];
+    m_Config.m_Settings.Copy(dlg.m_Settings);
 
-    dlg.nThreadPriorityIndex = m_Config.m_Settings.nThreadPriorityIndex;
-    dlg.nProcessPriorityIndex = m_Config.m_Settings.nProcessPriorityIndex;
-    dlg.bDeleteOnError = m_Config.m_Settings.bDeleteOnError;
-    dlg.bStopOnErrors = m_Config.m_Settings.bStopOnErrors;
-    dlg.szLogFileName = m_Config.m_Settings.szLogFileName;
-    dlg.nLogEncoding = m_Config.m_Settings.nLogEncoding;
-
-    dlg.m_Color[0] = this->m_CnvStatus.crText;
-    dlg.m_Color[1] = this->m_CnvStatus.crTextError;
-    dlg.m_Color[2] = this->m_CnvStatus.crProgress;
-    dlg.m_Color[3] = this->m_CnvStatus.crBorder;
-    dlg.m_Color[4] = this->m_CnvStatus.crBack;
-    dlg.m_Color[5] = this->m_Histogram.crLR;
-    dlg.m_Color[6] = this->m_Histogram.crMS;
-    dlg.m_Color[7] = this->m_Histogram.crBorder;
-    dlg.m_Color[8] = this->m_Histogram.crBack;
+    dlg.m_Colors.m_Color[0] = this->m_CnvStatus.crText;
+    dlg.m_Colors.m_Color[1] = this->m_CnvStatus.crTextError;
+    dlg.m_Colors.m_Color[2] = this->m_CnvStatus.crProgress;
+    dlg.m_Colors.m_Color[3] = this->m_CnvStatus.crBorder;
+    dlg.m_Colors.m_Color[4] = this->m_CnvStatus.crBack;
+    dlg.m_Colors.m_Color[5] = this->m_Histogram.crLR;
+    dlg.m_Colors.m_Color[6] = this->m_Histogram.crMS;
+    dlg.m_Colors.m_Color[7] = this->m_Histogram.crBorder;
+    dlg.m_Colors.m_Color[8] = this->m_Histogram.crBack;
 
     if (dlg.DoModal() == IDOK)
     {
-        m_Config.m_Settings.nThreadPriorityIndex = dlg.nThreadPriorityIndex;
-        m_Config.m_Settings.nProcessPriorityIndex = dlg.nProcessPriorityIndex;
-        m_Config.m_Settings.bDeleteOnError = dlg.bDeleteOnError;
-        m_Config.m_Settings.bStopOnErrors = dlg.bStopOnErrors;
-        m_Config.m_Settings.szLogFileName = dlg.szLogFileName;
-        m_Config.m_Settings.nLogEncoding = dlg.nLogEncoding;
+        dlg.m_Settings.Copy(m_Config.m_Settings);
 
-        this->m_CnvStatus.crText = dlg.m_Color[0];
-        this->m_CnvStatus.crTextError = dlg.m_Color[1];
-        this->m_CnvStatus.crProgress = dlg.m_Color[2];
-        this->m_CnvStatus.crBorder = dlg.m_Color[3];
-        this->m_CnvStatus.crBack = dlg.m_Color[4];
-        this->m_Histogram.crLR = dlg.m_Color[5];
-        this->m_Histogram.crMS = dlg.m_Color[6];
-        this->m_Histogram.crBorder = dlg.m_Color[7];
-        this->m_Histogram.crBack = dlg.m_Color[8];
+        this->m_CnvStatus.crText = dlg.m_Colors.m_Color[0];
+        this->m_CnvStatus.crTextError = dlg.m_Colors.m_Color[1];
+        this->m_CnvStatus.crProgress = dlg.m_Colors.m_Color[2];
+        this->m_CnvStatus.crBorder = dlg.m_Colors.m_Color[3];
+        this->m_CnvStatus.crBack = dlg.m_Colors.m_Color[4];
+        this->m_Histogram.crLR = dlg.m_Colors.m_Color[5];
+        this->m_Histogram.crMS = dlg.m_Colors.m_Color[6];
+        this->m_Histogram.crBorder = dlg.m_Colors.m_Color[7];
+        this->m_Histogram.crBack = dlg.m_Colors.m_Color[8];
 
         // re-init Conversion Status and Histogram controls
         this->m_CnvStatus.Clean();
@@ -4183,9 +4117,6 @@ void CBatchEncoderDlg::OnOptionsAdvanced()
         this->m_Histogram.Init(false);
         this->m_Histogram.Erase(true);
     }
-
-    for (int i = 0; i < NUM_BROWSE_PATH_ADVANCED; i++)
-        m_Config.m_Browse.szBrowsePath[(START_BROWSE_PATH_ADVANCED + i)] = dlg.szBrowsePath[i];
 }
 
 void CBatchEncoderDlg::OnOptionsForceConsoleWindow()
@@ -4222,9 +4153,6 @@ void CBatchEncoderDlg::OnOptionsConfigurePresets()
         dlg.bShowGridLines = true;
     else
         dlg.bShowGridLines = false;
-
-    for (int i = 0; i < NUM_BROWSE_PATH_PRESETS; i++)
-        dlg.szBrowsePath[i] = m_Config.m_Browse.szBrowsePath[(START_BROWSE_PATH_PRESETS + i)];
 
     int nSelFormat = this->m_CmbFormat.GetCurSel();
     int nSelPreset = this->m_CmbPresets.GetCurSel();
@@ -4263,9 +4191,6 @@ void CBatchEncoderDlg::OnOptionsConfigurePresets()
 
     this->szPresetsWndResize = dlg.szPresetsWndResize;
     this->szPresetsListColumns = dlg.szPresetsListColumns;
-
-    for (int i = 0; i < NUM_BROWSE_PATH_PRESETS; i++)
-        m_Config.m_Browse.szBrowsePath[(START_BROWSE_PATH_PRESETS + i)] = dlg.szBrowsePath[i];
 }
 
 void CBatchEncoderDlg::OnOptionsConfigureFormat()
@@ -4285,9 +4210,6 @@ void CBatchEncoderDlg::OnOptionsConfigureFormat()
         m_Config.m_Formats.m_Format[i].Copy(dlg.m_Format[i]);
     }
 
-    for (int i = 0; i < (NUM_BROWSE_PATH_FORMATS + NUM_BROWSE_PATH_PROGRESS); i++)
-        dlg.szBrowsePath[i] = m_Config.m_Browse.szBrowsePath[(START_BROWSE_PATH_FORMATS + i)];
-
     dlg.szFormatsWndResize = this->szFormatsWndResize;
     dlg.szFormatsListColumns = this->szFormatsListColumns;
 
@@ -4302,9 +4224,6 @@ void CBatchEncoderDlg::OnOptionsConfigureFormat()
 
     this->szFormatsWndResize = dlg.szFormatsWndResize;
     this->szFormatsListColumns = dlg.szFormatsListColumns;
-
-    for (int i = 0; i < (NUM_BROWSE_PATH_FORMATS + NUM_BROWSE_PATH_PROGRESS); i++)
-        m_Config.m_Browse.szBrowsePath[(START_BROWSE_PATH_FORMATS + i)] = dlg.szBrowsePath[i];
 }
 
 void CBatchEncoderDlg::OnOptionsShutdownWhenFinished()
@@ -4352,7 +4271,6 @@ void CBatchEncoderDlg::OnShowHistogram()
         this->m_ChkOutPath.ShowWindow(SW_HIDE);
         this->m_EdtOutPath.ShowWindow(SW_HIDE);
         this->m_BtnBrowse.ShowWindow(SW_HIDE);
-
         this->m_FileProgress.ShowWindow(SW_SHOW);
     }
 
