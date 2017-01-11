@@ -17,9 +17,7 @@ CCopyFileDlg::CCopyFileDlg(CWnd* pParent /*=NULL*/)
 {
     bNoFiles = false;
     bStop = false;
-
     nProgress = 0;
-
     szInFile = _T("");
     szOutFile = _T("");
 }
@@ -164,18 +162,15 @@ void CCopyFileDlg::GetOutFilePath()
 
 void CCopyFileDlg::OnCancel()
 {
-    // CDialog::OnCancel();
 }
 
 void CCopyFileDlg::OnOK()
 {
-    // CDialog::OnOK();
 }
 
 void CCopyFileDlg::OnClose()
 {
     CDialog::OnClose();
-
     CDialog::OnOK();
 }
 
@@ -188,6 +183,5 @@ void CCopyFileDlg::OnBnClickedButtonCopyStop()
 {
     // ::TerminateThread(hThread, 0);
     bStop = true;
-
     // this->OnClose();
 }
