@@ -19,7 +19,6 @@ CXMLDocumentW::~CXMLDocumentW()
 
 }
 
-// load file - using char buffer
 bool CXMLDocumentW::LoadFileW(CString szFileName)
 {
     CStdioFile fp;
@@ -32,8 +31,6 @@ bool CXMLDocumentW::LoadFileW(CString szFileName)
     return false;
 }
 
-// save file - using char buffer
-// part of code is from 'tinyxml.cpp'
 bool CXMLDocumentW::SaveFileW(CString szFileName)
 {
     CStdioFile fp;
