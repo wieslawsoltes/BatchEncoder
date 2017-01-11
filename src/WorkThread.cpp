@@ -708,7 +708,7 @@ bool ConvertFile(CBatchEncoderDlg *pDlg,
             typedef int(*lpfnGetProgress)(char *szLineBuff, int nLineLen);
 
             lpfnGetProgress pProgressProc;
-            HMODULE hDll = ::LoadLibrary(pDlg->m_Config.m_Formats.m_Formats[nTool].szFunction);
+            HMODULE hDll = ::LoadLibrary(pDlg->m_Config.m_Formats[nTool].szFunction);
             if (hDll != NULL)
             {
                 // NOTE: the GetProcAddress function has only ANSI version
@@ -1053,22 +1053,22 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
             int nProcessingMode = -1;
 
             // get input file format
-            int nIntputFormat = pDlg->m_Config.m_Items.m_Items.GetItemInFormat(i);
+            int nIntputFormat = pDlg->m_Config.m_Items.GetItemInFormat(i);
 
             // get output file format
-            int nOutputFormat = pDlg->m_Config.m_Items.m_Items.GetItemOutFormat(i);
+            int nOutputFormat = pDlg->m_Config.m_Items.GetItemOutFormat(i);
 
             // get output preset for selected format
-            int nPreset = pDlg->m_Config.m_Items.m_Items.GetItemOutPreset(i);
+            int nPreset = pDlg->m_Config.m_Items.GetItemOutPreset(i);
 
             // get full file path
-            CString szInputFile = pDlg->m_Config.m_Items.m_Items.GetItemFilePath(i);
+            CString szInputFile = pDlg->m_Config.m_Items.GetItemFilePath(i);
 
             // output path is same as input file path
             if (bOutPath == false)
             {
                 szOutPath = szInputFile;
-                CString szToRemove = pDlg->m_Config.m_Items.m_Items.GetFileName(szInputFile);
+                CString szToRemove = pDlg->m_Config.m_Items.GetFileName(szInputFile);
                 int nNewLenght = szOutPath.GetLength() - szToRemove.GetLength();
                 szOutPath.Truncate(nNewLenght);
             }
@@ -1083,7 +1083,7 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
             szDecoderOptions = pDlg->GetDecoderOpt(nIntputFormat, -1);
 
             // get only output filename
-            CString szName = pDlg->m_Config.m_Items.m_Items.GetItemFileName(i);
+            CString szName = pDlg->m_Config.m_Items.GetItemFileName(i);
 
             // setup encoder steps:
             // 1. add extension to output filename
@@ -1094,7 +1094,7 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
 
             szEncoderExePath = pDlg->GetEncoderExe(nOutputFormat);
             szEncoderOptions = pDlg->GetEncoderOpt(nOutputFormat, nPreset);
-            szName = szName + _T(".") + pDlg->m_Config.m_Items.m_Items.GetItemOutExt(i).MakeLower();
+            szName = szName + _T(".") + pDlg->m_Config.m_Items.GetItemOutExt(i).MakeLower();
 
             // set full path for output file
             CString szOutputFile;
@@ -1163,8 +1163,8 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
                 if (pDlg->bForceConsoleWindow == false)
                 {
                     // configure decoder input and output pipes
-                    bUseInPipesDec = pDlg->m_Config.m_Formats.m_Formats[(NUM_OUTPUT_EXT + nIntputFormat - 1)].bInput;
-                    bUseOutPipesDec = pDlg->m_Config.m_Formats.m_Formats[(NUM_OUTPUT_EXT + nIntputFormat - 1)].bOutput;
+                    bUseInPipesDec = pDlg->m_Config.m_Formats[(NUM_OUTPUT_EXT + nIntputFormat - 1)].bInput;
+                    bUseOutPipesDec = pDlg->m_Config.m_Formats[(NUM_OUTPUT_EXT + nIntputFormat - 1)].bOutput;
                 }
 
                 // input file is stdin
@@ -1184,7 +1184,7 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
 
                 // build full command line for decoder (DECODER-EXE + OPTIONS + INFILE + OUTFILE) 
                 // this is basic model, some of encoder may have different command-line structure
-                csExecute = pDlg->m_Config.m_Formats.m_Formats[(NUM_OUTPUT_EXT + nIntputFormat - 1)].szTemplate;
+                csExecute = pDlg->m_Config.m_Formats[(NUM_OUTPUT_EXT + nIntputFormat - 1)].szTemplate;
                 csExecute.Replace(_T("$EXE"), _T("\"$EXE\""));
                 csExecute.Replace(_T("$EXE"), szDecoderExePath);
                 csExecute.Replace(_T("$OPTIONS"), szDecoderOptions);
@@ -1205,8 +1205,8 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
                 pDlg->m_CnvStatus.SetCurrentInfo(nProcessedFiles,
                     nTotalFiles,
                     nDoneWithoutError,
-                    pDlg->m_Config.m_Items.m_Items.GetFileName(szOrgInputFile),
-                    pDlg->m_Config.m_Items.m_Items.GetFileName(szOrgOutputFile),
+                    pDlg->m_Config.m_Items.GetFileName(szOrgInputFile),
+                    pDlg->m_Config.m_Items.GetFileName(szOrgOutputFile),
                     szOutPath);
 
                 pDlg->m_CnvStatus.Draw(0);
@@ -1256,8 +1256,8 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
             if (pDlg->bForceConsoleWindow == false)
             {
                 // configure encoder input and output pipes
-                bUseInPipesEnc = pDlg->m_Config.m_Formats.m_Formats[nOutputFormat].bInput;
-                bUseOutPipesEnc = pDlg->m_Config.m_Formats.m_Formats[nOutputFormat].bOutput;
+                bUseInPipesEnc = pDlg->m_Config.m_Formats[nOutputFormat].bInput;
+                bUseOutPipesEnc = pDlg->m_Config.m_Formats[nOutputFormat].bOutput;
             }
 
             if (nProcessingMode == 0)
@@ -1296,7 +1296,7 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
 
                 // build full command line for encoder (ENCODER-EXE + OPTIONS + INFILE + OUTFILE)
                 // this is basic model, some of encoder may have different command-line structure
-                csExecute = pDlg->m_Config.m_Formats.m_Formats[nOutputFormat].szTemplate;
+                csExecute = pDlg->m_Config.m_Formats[nOutputFormat].szTemplate;
                 csExecute.Replace(_T("$EXE"), _T("\"$EXE\""));
                 csExecute.Replace(_T("$EXE"), szEncoderExePath);
                 csExecute.Replace(_T("$OPTIONS"), szEncoderOptions);
@@ -1317,8 +1317,8 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
                 pDlg->m_CnvStatus.SetCurrentInfo(nProcessedFiles,
                     nTotalFiles,
                     nDoneWithoutError,
-                    pDlg->m_Config.m_Items.m_Items.GetFileName(szOrgInputFile),
-                    pDlg->m_Config.m_Items.m_Items.GetFileName(szOrgOutputFile),
+                    pDlg->m_Config.m_Items.GetFileName(szOrgInputFile),
+                    pDlg->m_Config.m_Items.GetFileName(szOrgOutputFile),
                     szOutPath);
 
                 pDlg->m_CnvStatus.Draw(0);

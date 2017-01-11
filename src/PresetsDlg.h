@@ -36,7 +36,7 @@ public:
     int nSelFormat;
     int nSelPreset;
 public:
-    CPresetsList m_ListPresets;
+    CPresetsList m_Presets;
 public:
     CString szPresetsWndResize;
     CString szPresetsListColumns;

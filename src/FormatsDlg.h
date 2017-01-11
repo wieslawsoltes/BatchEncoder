@@ -27,7 +27,7 @@ protected:
 public:
     virtual BOOL OnInitDialog();
 public:
-    CListCtrl m_LstFormats;
+    CListCtrl m_Formats;
 public:
     CString szFormatsWndResize;
     CString szFormatsListColumns;

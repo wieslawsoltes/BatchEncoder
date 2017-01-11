@@ -314,12 +314,12 @@ void CPresetsDlg::AddToList(CString szName, CString szOptions)
     lvi.state = 0;
     lvi.stateMask = 0;
 
-    m_ListPresets.InsertNode(szName);
+    m_Presets.InsertNode(szName);
 
     // get next item position
-    int nItem = m_ListPresets.GetSize() - 1;
+    int nItem = m_Presets.GetSize() - 1;
 
-    m_ListPresets.SetPresetOptions(szOptions, nItem);
+    m_Presets.SetPresetOptions(szOptions, nItem);
 
     // name
     lvi.iItem = nItem; // position
@@ -344,8 +344,8 @@ void CPresetsDlg::ListSelectionChange(void)
     {
         int nItem = m_LstPresets.GetNextSelectedItem(pos);
 
-        CString szName = m_ListPresets.GetPresetName(nItem);
-        CString szOptions = m_ListPresets.GetPresetOptions(nItem);
+        CString szName = m_Presets.GetPresetName(nItem);
+        CString szOptions = m_Presets.GetPresetOptions(nItem);
 
         this->m_EdtName.SetWindowText(szName);
         this->m_EdtOptions.SetWindowText(szOptions);
@@ -389,7 +389,7 @@ void CPresetsDlg::OnLvnItemchangedListPdPresets(NMHDR *pNMHDR, LRESULT *pResult)
 void CPresetsDlg::OnBnClickedButtonPdRemoveAllPresets()
 {
     // clear node list
-    m_ListPresets.RemoveAllNodes();
+    m_Presets.RemoveAllNodes();
 
     // clear list view
     m_LstPresets.DeleteAllItems();
@@ -401,7 +401,7 @@ void CPresetsDlg::OnBnClickedButtonPdRemovePresets()
     if (pos != NULL)
     {
         int nItem = m_LstPresets.GetNextSelectedItem(pos);
-        m_ListPresets.RemoveNode(nItem);
+        m_Presets.RemoveNode(nItem);
         m_LstPresets.DeleteItem(nItem);
 
         // select other item in list
@@ -438,7 +438,7 @@ void CPresetsDlg::LoadPresetsFile(CString szFileXml)
         }
 
         // clear node list
-        m_ListPresets.RemoveAllNodes();
+        m_Presets.RemoveAllNodes();
 
         // clear list view
         m_LstPresets.DeleteAllItems();
@@ -495,15 +495,15 @@ void CPresetsDlg::SavePresetsFile(CString szFileXml)
     // root: Presets
     tinyxml2::XMLElement *pPresetsNode = doc.NewElement("Presets");
     doc.LinkEndChild(pPresetsNode);
-    int nPresets = m_ListPresets.GetSize();
+    int nPresets = m_Presets.GetSize();
     for (int i = 0; i < nPresets; i++)
     {
         // Preset
         tinyxml2::XMLElement *preset = doc.NewElement("Preset");
         pPresetsNode->LinkEndChild(preset);
 
-        CString szName = m_ListPresets.GetPresetName(i);
-        CString szOptions = m_ListPresets.GetPresetOptions(i);
+        CString szName = m_Presets.GetPresetName(i);
+        CString szOptions = m_Presets.GetPresetOptions(i);
 
         if (szName.GetLength() == 0)
         {
@@ -601,8 +601,8 @@ void CPresetsDlg::OnBnClickedButtonPdUpdatePreset()
         this->m_EdtName.GetWindowText(szName);
         this->m_EdtOptions.GetWindowText(szOptions);
 
-        m_ListPresets.SetPresetName(szName, nItem);
-        m_ListPresets.SetPresetOptions(szOptions, nItem);
+        m_Presets.SetPresetName(szName, nItem);
+        m_Presets.SetPresetOptions(szOptions, nItem);
 
         m_LstPresets.SetItemText(nItem, 0, szName);
         m_LstPresets.SetItemText(nItem, 1, szOptions);
@@ -629,10 +629,10 @@ void CPresetsDlg::OnBnClickedButtonPdUp()
         // don't process 1st item
         if (nItem > 0)
         {
-            CString szName1 = m_ListPresets.GetPresetName(nItem);
-            CString szOptions1 = m_ListPresets.GetPresetOptions(nItem);
-            CString szName2 = m_ListPresets.GetPresetName(nItem - 1);
-            CString szOptions2 = m_ListPresets.GetPresetOptions(nItem - 1);
+            CString szName1 = m_Presets.GetPresetName(nItem);
+            CString szOptions1 = m_Presets.GetPresetOptions(nItem);
+            CString szName2 = m_Presets.GetPresetName(nItem - 1);
+            CString szOptions2 = m_Presets.GetPresetOptions(nItem - 1);
 
             m_LstPresets.SetItemText(nItem, 0, szName2);
             m_LstPresets.SetItemText(nItem, 1, szOptions2);
@@ -640,11 +640,11 @@ void CPresetsDlg::OnBnClickedButtonPdUp()
             m_LstPresets.SetItemText(nItem - 1, 0, szName1);
             m_LstPresets.SetItemText(nItem - 1, 1, szOptions1);
 
-            m_ListPresets.SetPresetName(szName2, nItem);
-            m_ListPresets.SetPresetOptions(szOptions2, nItem);
+            m_Presets.SetPresetName(szName2, nItem);
+            m_Presets.SetPresetOptions(szOptions2, nItem);
 
-            m_ListPresets.SetPresetName(szName1, nItem - 1);
-            m_ListPresets.SetPresetOptions(szOptions1, nItem - 1);
+            m_Presets.SetPresetName(szName1, nItem - 1);
+            m_Presets.SetPresetOptions(szOptions1, nItem - 1);
 
             m_LstPresets.SetItemState(nItem - 1, LVIS_SELECTED, LVIS_SELECTED);
 
@@ -672,10 +672,10 @@ void CPresetsDlg::OnBnClickedButtonPdDown()
         // don't process last item
         if (nItem != (nItems - 1) && nItem >= 0)
         {
-            CString szName1 = m_ListPresets.GetPresetName(nItem);
-            CString szOptions1 = m_ListPresets.GetPresetOptions(nItem);
-            CString szName2 = m_ListPresets.GetPresetName(nItem + 1);
-            CString szOptions2 = m_ListPresets.GetPresetOptions(nItem + 1);
+            CString szName1 = m_Presets.GetPresetName(nItem);
+            CString szOptions1 = m_Presets.GetPresetOptions(nItem);
+            CString szName2 = m_Presets.GetPresetName(nItem + 1);
+            CString szOptions2 = m_Presets.GetPresetOptions(nItem + 1);
 
             m_LstPresets.SetItemText(nItem, 0, szName2);
             m_LstPresets.SetItemText(nItem, 1, szOptions2);
@@ -683,11 +683,11 @@ void CPresetsDlg::OnBnClickedButtonPdDown()
             m_LstPresets.SetItemText(nItem + 1, 0, szName1);
             m_LstPresets.SetItemText(nItem + 1, 1, szOptions1);
 
-            m_ListPresets.SetPresetName(szName2, nItem);
-            m_ListPresets.SetPresetOptions(szOptions2, nItem);
+            m_Presets.SetPresetName(szName2, nItem);
+            m_Presets.SetPresetOptions(szOptions2, nItem);
 
-            m_ListPresets.SetPresetName(szName1, nItem + 1);
-            m_ListPresets.SetPresetOptions(szOptions1, nItem + 1);
+            m_Presets.SetPresetName(szName1, nItem + 1);
+            m_Presets.SetPresetOptions(szOptions1, nItem + 1);
 
             m_LstPresets.SetItemState(nItem + 1, LVIS_SELECTED, LVIS_SELECTED);
 

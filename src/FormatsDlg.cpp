@@ -49,7 +49,7 @@ void CFormatsDlg::DoDataExchange(CDataExchange* pDX)
     DDX_Control(pDX, IDC_BUTTON_DEFAULT_CONFIG, m_BtnDefaults);
     DDX_Control(pDX, IDC_BUTTON_FD_BROWSE, m_BtnBrowse);
     DDX_Control(pDX, IDC_BUTTON_FD_UPDATE_PRESET, m_BtnChange);
-    DDX_Control(pDX, IDC_EDIT_FD_FORMATS, m_LstFormats);
+    DDX_Control(pDX, IDC_EDIT_FD_FORMATS, m_Formats);
     DDX_Control(pDX, IDC_EDIT_FD_CLI_PATH, m_EdtPath);
     DDX_Control(pDX, IDC_EDIT_FD_CLI_TEMPLATE, m_EdtTemplate);
     DDX_Control(pDX, IDC_EDIT_FD_CLI_PROGRESS, m_EdtProgress);
@@ -92,17 +92,17 @@ BOOL CFormatsDlg::OnInitDialog()
     m_GrpPipes.SetBold(false);
 
     // update list style
-    DWORD dwExStyle = m_LstFormats.GetExtendedStyle();
+    DWORD dwExStyle = m_Formats.GetExtendedStyle();
     dwExStyle |= LVS_EX_FULLROWSELECT;
-    m_LstFormats.SetExtendedStyle(dwExStyle);
+    m_Formats.SetExtendedStyle(dwExStyle);
 
     // insert all ListCtl columns
-    m_LstFormats.InsertColumn(0, _T("Name"), LVCFMT_LEFT, 80);
-    m_LstFormats.InsertColumn(1, _T("Template"), LVCFMT_LEFT, 120);
-    m_LstFormats.InsertColumn(2, _T("Path"), LVCFMT_LEFT, 140);
-    m_LstFormats.InsertColumn(3, _T("In Pipes"), LVCFMT_LEFT, 70);
-    m_LstFormats.InsertColumn(4, _T("Out Pipes"), LVCFMT_LEFT, 70);
-    m_LstFormats.InsertColumn(5, _T("Function"), LVCFMT_LEFT, 90);
+    m_Formats.InsertColumn(0, _T("Name"), LVCFMT_LEFT, 80);
+    m_Formats.InsertColumn(1, _T("Template"), LVCFMT_LEFT, 120);
+    m_Formats.InsertColumn(2, _T("Path"), LVCFMT_LEFT, 140);
+    m_Formats.InsertColumn(3, _T("In Pipes"), LVCFMT_LEFT, 70);
+    m_Formats.InsertColumn(4, _T("Out Pipes"), LVCFMT_LEFT, 70);
+    m_Formats.InsertColumn(5, _T("Function"), LVCFMT_LEFT, 90);
 
     // insert all ListCtl items and subitems
     for (int i = 0; i < NUM_FORMAT_NAMES; i++)
@@ -116,27 +116,27 @@ BOOL CFormatsDlg::OnInitDialog()
 
         lvi.iSubItem = 0;
         lvi.pszText = (LPTSTR)(LPCTSTR)(g_szFormatNames[i]);
-        m_LstFormats.InsertItem(&lvi);
+        m_Formats.InsertItem(&lvi);
 
         lvi.iSubItem = 1;
         lvi.pszText = (LPTSTR)(LPCTSTR)(m_Format[i].szTemplate);
-        m_LstFormats.SetItemText(lvi.iItem, 1, lvi.pszText);
+        m_Formats.SetItemText(lvi.iItem, 1, lvi.pszText);
 
         lvi.iSubItem = 2;
         lvi.pszText = (LPTSTR)(LPCTSTR)(m_Format[i].szPath);
-        m_LstFormats.SetItemText(lvi.iItem, 2, lvi.pszText);
+        m_Formats.SetItemText(lvi.iItem, 2, lvi.pszText);
 
         lvi.iSubItem = 3;
         lvi.pszText = (LPTSTR)(LPCTSTR)(m_Format[i].bInput) ? _T("true") : _T("false");
-        m_LstFormats.SetItemText(lvi.iItem, 3, lvi.pszText);
+        m_Formats.SetItemText(lvi.iItem, 3, lvi.pszText);
 
         lvi.iSubItem = 4;
         lvi.pszText = (LPTSTR)(LPCTSTR)(m_Format[i].bOutput) ? _T("true") : _T("false");
-        m_LstFormats.SetItemText(lvi.iItem, 4, lvi.pszText);
+        m_Formats.SetItemText(lvi.iItem, 4, lvi.pszText);
 
         lvi.iSubItem = 5;
         lvi.pszText = (LPTSTR)(LPCTSTR)(m_Format[i].szFunction);
-        m_LstFormats.SetItemText(lvi.iItem, 5, lvi.pszText);
+        m_Formats.SetItemText(lvi.iItem, 5, lvi.pszText);
     }
 
     // setup resize anchors
@@ -197,34 +197,34 @@ HCURSOR CFormatsDlg::OnQueryDragIcon()
 
 void CFormatsDlg::ShowGridlines(bool bShow)
 {
-    DWORD dwExStyle = m_LstFormats.GetExtendedStyle();
+    DWORD dwExStyle = m_Formats.GetExtendedStyle();
     if (bShow == true)
     {
         dwExStyle |= LVS_EX_GRIDLINES;
-        m_LstFormats.SetExtendedStyle(dwExStyle);
+        m_Formats.SetExtendedStyle(dwExStyle);
     }
     else
     {
         if (dwExStyle & LVS_EX_GRIDLINES)
         {
             dwExStyle = dwExStyle ^ LVS_EX_GRIDLINES;
-            m_LstFormats.SetExtendedStyle(dwExStyle);
+            m_Formats.SetExtendedStyle(dwExStyle);
         }
     }
 }
 
 void CFormatsDlg::UpdateEditableFields(void)
 {
-    POSITION pos = m_LstFormats.GetFirstSelectedItemPosition();
+    POSITION pos = m_Formats.GetFirstSelectedItemPosition();
     if (pos != NULL)
     {
-        int nItem = m_LstFormats.GetNextSelectedItem(pos);
+        int nItem = m_Formats.GetNextSelectedItem(pos);
 
-        CString szTemplate = this->m_LstFormats.GetItemText(nItem, 1);
-        CString szPath = this->m_LstFormats.GetItemText(nItem, 2);
-        CString szCheckIn = this->m_LstFormats.GetItemText(nItem, 3);
-        CString szCheckOut = this->m_LstFormats.GetItemText(nItem, 4);
-        CString szFunctions = this->m_LstFormats.GetItemText(nItem, 5);
+        CString szTemplate = this->m_Formats.GetItemText(nItem, 1);
+        CString szPath = this->m_Formats.GetItemText(nItem, 2);
+        CString szCheckIn = this->m_Formats.GetItemText(nItem, 3);
+        CString szCheckOut = this->m_Formats.GetItemText(nItem, 4);
+        CString szFunctions = this->m_Formats.GetItemText(nItem, 5);
 
         this->m_EdtTemplate.SetWindowText(szTemplate);
         this->m_EdtPath.SetWindowText(szPath);
@@ -270,7 +270,7 @@ void CFormatsDlg::LoadWindowSettings()
             &nColWidth[5]) == 6)
         {
             for (int i = 0; i < 6; i++)
-                m_LstFormats.SetColumnWidth(i, nColWidth[i]);
+                m_Formats.SetColumnWidth(i, nColWidth[i]);
         }
     }
 }
@@ -283,7 +283,7 @@ void CFormatsDlg::SaveWindowSettings()
     // save columns width from FormatsList
     int nColWidth[6];
     for (int i = 0; i < 6; i++)
-        nColWidth[i] = m_LstFormats.GetColumnWidth(i);
+        nColWidth[i] = m_Formats.GetColumnWidth(i);
     szFormatsListColumns.Format(_T("%d %d %d %d %d %d"),
         nColWidth[0],
         nColWidth[1],
@@ -328,11 +328,11 @@ void CFormatsDlg::OnBnClickedOk()
 {
     for (int i = 0; i < NUM_FORMAT_NAMES; i++)
     {
-        m_Format[i].szTemplate = m_LstFormats.GetItemText(i, 1);
-        m_Format[i].szPath = m_LstFormats.GetItemText(i, 2);
-        m_Format[i].bInput = (m_LstFormats.GetItemText(i, 3).Compare(_T("true")) == 0) ? true : false;
-        m_Format[i].bOutput = (m_LstFormats.GetItemText(i, 4).Compare(_T("true")) == 0) ? true : false;
-        m_Format[i].szFunction = m_LstFormats.GetItemText(i, 5);
+        m_Format[i].szTemplate = m_Formats.GetItemText(i, 1);
+        m_Format[i].szPath = m_Formats.GetItemText(i, 2);
+        m_Format[i].bInput = (m_Formats.GetItemText(i, 3).Compare(_T("true")) == 0) ? true : false;
+        m_Format[i].bOutput = (m_Formats.GetItemText(i, 4).Compare(_T("true")) == 0) ? true : false;
+        m_Format[i].szFunction = m_Formats.GetItemText(i, 5);
     }
 
     this->SaveWindowSettings();
@@ -430,11 +430,11 @@ void CFormatsDlg::LoadFormatsFile(CString szFileXml)
             const char *tmpBuff = pFormatElem->GetText();
             m_Format[nFormat].szPath = GetConfigString(tmpBuff);
 
-            m_LstFormats.SetItemText(nFormat, 1, m_Format[nFormat].szTemplate);
-            m_LstFormats.SetItemText(nFormat, 2, m_Format[nFormat].szPath);
-            m_LstFormats.SetItemText(nFormat, 3, (m_Format[nFormat].bInput) ? _T("true") : _T("false"));
-            m_LstFormats.SetItemText(nFormat, 4, (m_Format[nFormat].bOutput) ? _T("true") : _T("false"));
-            m_LstFormats.SetItemText(nFormat, 5, m_Format[nFormat].szFunction);
+            m_Formats.SetItemText(nFormat, 1, m_Format[nFormat].szTemplate);
+            m_Formats.SetItemText(nFormat, 2, m_Format[nFormat].szPath);
+            m_Formats.SetItemText(nFormat, 3, (m_Format[nFormat].bInput) ? _T("true") : _T("false"));
+            m_Formats.SetItemText(nFormat, 4, (m_Format[nFormat].bOutput) ? _T("true") : _T("false"));
+            m_Formats.SetItemText(nFormat, 5, m_Format[nFormat].szFunction);
         }
 
         this->UpdateEditableFields();
@@ -460,11 +460,11 @@ void CFormatsDlg::SaveFormatsFile(CString szFileXml)
     {
         CUtf8String m_Utf8;
 
-        m_Format[i].szTemplate = m_LstFormats.GetItemText(i, 1);
-        m_Format[i].szPath = m_LstFormats.GetItemText(i, 2);
-        m_Format[i].bInput = (m_LstFormats.GetItemText(i, 3).Compare(_T("true")) == 0) ? true : false;
-        m_Format[i].bOutput = (m_LstFormats.GetItemText(i, 4).Compare(_T("true")) == 0) ? true : false;
-        m_Format[i].szFunction = m_LstFormats.GetItemText(i, 5);
+        m_Format[i].szTemplate = m_Formats.GetItemText(i, 1);
+        m_Format[i].szPath = m_Formats.GetItemText(i, 2);
+        m_Format[i].bInput = (m_Formats.GetItemText(i, 3).Compare(_T("true")) == 0) ? true : false;
+        m_Format[i].bOutput = (m_Formats.GetItemText(i, 4).Compare(_T("true")) == 0) ? true : false;
+        m_Format[i].szFunction = m_Formats.GetItemText(i, 5);
 
         tinyxml2::XMLElement *format = doc.NewElement("Format");
 
@@ -535,11 +535,11 @@ void CFormatsDlg::OnBnClickedButtonDefaultConfig()
         m_Format[i].bOutput = g_bDefaultOutPipes[i];
         m_Format[i].szFunction = g_bDefaultFunction[i];
 
-        m_LstFormats.SetItemText(i, 1, g_szDefaultTemplate[i]);
-        m_LstFormats.SetItemText(i, 2, g_szDefaultPath[i]);
-        m_LstFormats.SetItemText(i, 3, (g_bDefaultInPipes[i]) ? _T("true") : _T("false"));
-        m_LstFormats.SetItemText(i, 4, (g_bDefaultOutPipes[i]) ? _T("true") : _T("false"));
-        m_LstFormats.SetItemText(i, 5, g_bDefaultFunction[i]);
+        m_Formats.SetItemText(i, 1, g_szDefaultTemplate[i]);
+        m_Formats.SetItemText(i, 2, g_szDefaultPath[i]);
+        m_Formats.SetItemText(i, 3, (g_bDefaultInPipes[i]) ? _T("true") : _T("false"));
+        m_Formats.SetItemText(i, 4, (g_bDefaultOutPipes[i]) ? _T("true") : _T("false"));
+        m_Formats.SetItemText(i, 5, g_bDefaultFunction[i]);
     }
 
     this->UpdateEditableFields();
@@ -556,10 +556,10 @@ void CFormatsDlg::OnLvnItemchangedEditFdFormats(NMHDR *pNMHDR, LRESULT *pResult)
 
 void CFormatsDlg::OnBnClickedButtonFdBrowse()
 {
-    POSITION pos = m_LstFormats.GetFirstSelectedItemPosition();
+    POSITION pos = m_Formats.GetFirstSelectedItemPosition();
     if (pos != NULL)
     {
-        int nItem = m_LstFormats.GetNextSelectedItem(pos);
+        int nItem = m_Formats.GetNextSelectedItem(pos);
         BrowseForCliExe(g_szDefaultPath[nItem], &m_EdtPath, nItem);
     }
     else
@@ -572,10 +572,10 @@ void CFormatsDlg::OnBnClickedButtonFdBrowse()
 
 void CFormatsDlg::OnBnClickedButtonFdBrowseProgress()
 {
-    POSITION pos = m_LstFormats.GetFirstSelectedItemPosition();
+    POSITION pos = m_Formats.GetFirstSelectedItemPosition();
     if (pos != NULL)
     {
-        int nItem = m_LstFormats.GetNextSelectedItem(pos);
+        int nItem = m_Formats.GetNextSelectedItem(pos);
         BrowseForProgress(g_bDefaultFunction[nItem], &m_EdtProgress, nItem);
     }
     else
@@ -611,82 +611,82 @@ void CFormatsDlg::OnBnClickedButtonFdUpdatePreset()
 
     if (szPath.GetLength() > 0)
     {
-        POSITION pos = m_LstFormats.GetFirstSelectedItemPosition();
+        POSITION pos = m_Formats.GetFirstSelectedItemPosition();
         if (pos != NULL)
         {
-            int nItem = m_LstFormats.GetNextSelectedItem(pos);
+            int nItem = m_Formats.GetNextSelectedItem(pos);
 
-            m_LstFormats.SetItemText(nItem, 1, szTemplate);
-            m_LstFormats.SetItemText(nItem, 2, szPath);
-            m_LstFormats.SetItemText(nItem, 3, szCheckIn);
-            m_LstFormats.SetItemText(nItem, 4, szCheckOut);
-            m_LstFormats.SetItemText(nItem, 5, szFunction);
-            m_LstFormats.SetItemState(nItem, LVIS_SELECTED, LVIS_SELECTED);
+            m_Formats.SetItemText(nItem, 1, szTemplate);
+            m_Formats.SetItemText(nItem, 2, szPath);
+            m_Formats.SetItemText(nItem, 3, szCheckIn);
+            m_Formats.SetItemText(nItem, 4, szCheckOut);
+            m_Formats.SetItemText(nItem, 5, szFunction);
+            m_Formats.SetItemState(nItem, LVIS_SELECTED, LVIS_SELECTED);
         }
     }
 }
 
 void CFormatsDlg::OnEnChangeEditFdCliPath()
 {
-    POSITION pos = m_LstFormats.GetFirstSelectedItemPosition();
+    POSITION pos = m_Formats.GetFirstSelectedItemPosition();
     if (pos != NULL)
     {
-        int nItem = m_LstFormats.GetNextSelectedItem(pos);
+        int nItem = m_Formats.GetNextSelectedItem(pos);
         CString szPath;
         this->m_EdtPath.GetWindowText(szPath);
-        m_LstFormats.SetItemText(nItem, 2, szPath);
+        m_Formats.SetItemText(nItem, 2, szPath);
     }
 }
 
 void CFormatsDlg::OnEnChangeEditFdCliTemplate()
 {
-    POSITION pos = m_LstFormats.GetFirstSelectedItemPosition();
+    POSITION pos = m_Formats.GetFirstSelectedItemPosition();
     if (pos != NULL)
     {
-        int nItem = m_LstFormats.GetNextSelectedItem(pos);
+        int nItem = m_Formats.GetNextSelectedItem(pos);
         CString szTemplate;
         this->m_EdtTemplate.GetWindowText(szTemplate);
-        m_LstFormats.SetItemText(nItem, 1, szTemplate);
+        m_Formats.SetItemText(nItem, 1, szTemplate);
     }
 }
 
 void CFormatsDlg::OnEnChangeEditFdCliProgress()
 {
-    POSITION pos = m_LstFormats.GetFirstSelectedItemPosition();
+    POSITION pos = m_Formats.GetFirstSelectedItemPosition();
     if (pos != NULL)
     {
-        int nItem = m_LstFormats.GetNextSelectedItem(pos);
+        int nItem = m_Formats.GetNextSelectedItem(pos);
         CString szFunction;
         this->m_EdtProgress.GetWindowText(szFunction);
-        m_LstFormats.SetItemText(nItem, 5, szFunction);
+        m_Formats.SetItemText(nItem, 5, szFunction);
     }
 }
 
 void CFormatsDlg::OnBnClickedCheckFdPipesInput()
 {
-    POSITION pos = m_LstFormats.GetFirstSelectedItemPosition();
+    POSITION pos = m_Formats.GetFirstSelectedItemPosition();
     if (pos != NULL)
     {
-        int nItem = m_LstFormats.GetNextSelectedItem(pos);
+        int nItem = m_Formats.GetNextSelectedItem(pos);
         CString szCheckIn = _T("false");
         if (IsDlgButtonChecked(IDC_CHECK_FD_PIPES_INPUT) == BST_CHECKED)
             szCheckIn = _T("true");
 
-        m_LstFormats.SetItemText(nItem, 3, szCheckIn);
+        m_Formats.SetItemText(nItem, 3, szCheckIn);
     }
 }
 
 void CFormatsDlg::OnBnClickedCheckFdPipesOutput()
 {
-    POSITION pos = m_LstFormats.GetFirstSelectedItemPosition();
+    POSITION pos = m_Formats.GetFirstSelectedItemPosition();
     if (pos != NULL)
     {
-        int nItem = m_LstFormats.GetNextSelectedItem(pos);
+        int nItem = m_Formats.GetNextSelectedItem(pos);
         CString szCheckOut = _T("false");
         if (IsDlgButtonChecked(IDC_CHECK_FD_PIPES_OUTPUT) == BST_CHECKED)
             szCheckOut = _T("true");
 
-        m_LstFormats.SetItemText(nItem, 4, szCheckOut);
+        m_Formats.SetItemText(nItem, 4, szCheckOut);
     }
 }
 

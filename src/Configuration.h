@@ -250,37 +250,13 @@ public:
 #include "ItemsList.h"
 #include "PresetsList.h"
 
-class CColors
-{
-public:
-    CColor m_Colors[NUM_PROGRAM_COLORS];
-};
-
-class CFormats
-{
-public:
-    CFormat m_Formats[NUM_FORMAT_NAMES];
-};
-
-class CPresets
-{
-public:
-    CPresetsList m_Presets[NUM_PRESET_FILES];
-    CString szPresetsFile[NUM_PRESET_FILES];
-};
-
-class CItems
-{
-public:
-    CItemsList m_Items;
-};
-
 class CConfiguration
 {
 public:
     COptions m_Options;
-    CColors m_Colors;
-    CFormats m_Formats;
-    CPresets m_Presets;
-    CItems m_Items;
+    CColor m_Colors[NUM_PROGRAM_COLORS];
+    CFormat m_Formats[NUM_FORMAT_NAMES];
+    CPresetsList m_Presets[NUM_PRESET_FILES];
+    CString szPresetsFile[NUM_PRESET_FILES];
+    CItemsList m_Items;
 };
