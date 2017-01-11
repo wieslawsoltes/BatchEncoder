@@ -1308,29 +1308,6 @@ bool CBatchEncoderDlg::LoadConfigFile()
 
     // root: Colors
 
-    /*
-    NOTE: Default colors:
-
-    <Colors>
-        <CnvStatusText>0x00 0x00 0x00</CnvStatusText>
-        <CnvStatusTextError>0xFF 0x00 0x00</CnvStatusTextError>
-        <CnvStatusProgress>0x33 0x66 0xFF</CnvStatusProgress>
-        <CnvStatusBorder>0x00 0x00 0x00</CnvStatusBorder>
-        <CnvStatusBack></CnvStatusBack>
-        <HistogramLR>0xEF 0xC7 0x7B</HistogramLR>
-        <HistogramMS>0xFE 0xF6 0xE4</HistogramMS>
-        <HistogramBorder>0x00 0x00 0x00</HistogramBorder>
-        <HistogramBack></HistogramBack>
-    </Colors>
-
-    NOTE: This colors are set after first startup because they depend on system settings.
-
-    <Colors>
-        <CnvStatusBack>0xD4 0xD0 0xC8</CnvStatusBack>
-        <HistogramBack>0xD4 0xD0 0xC8</HistogramBack>
-    </Colors>
-    */
-
     // NOTE: colors can be in decimal, hexadecimal, or octal integer format
     tinyxml2::XMLElement* pColorsElem = pRootElem->FirstChildElement("Colors");
     CString szColor[NUM_PROGRAM_COLORS];
