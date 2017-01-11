@@ -461,21 +461,6 @@ CString FormatTime(double fTime, int nFormat)
     return szTime;
 }
 
-void SetBrowsePath(CFileDialog &fileDlg, CString szPath)
-{
-    fileDlg.m_ofn.lpstrInitialDir = szPath;
-}
-
-CString GetBrowsePath(CFileDialog &fileDlg)
-{
-    CString szBuff = fileDlg.GetFileName();
-    CString szPath = fileDlg.GetPathName();
-
-    szPath.TrimRight(szBuff);
-
-    return szPath;
-}
-
 void GradientFill(CDC *m_pMemDC, CRect &rc, COLORREF cr01, COLORREF cr02, bool bVertical)
 {
     TRIVERTEX vert[2];
@@ -520,10 +505,8 @@ int GetFormatId(CString szBuff)
 
 void GetFullPathName(CString &szFilePath)
 {
-    // get full file path
     TCHAR szFullPath[MAX_PATH + 2] = _T("");
     LPTSTR pszFilePos = NULL;
-
     ::GetFullPathName(szFilePath, MAX_PATH + 1, szFullPath, &pszFilePos);
     szFilePath = szFullPath;
 }
