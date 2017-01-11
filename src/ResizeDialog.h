@@ -3,17 +3,16 @@
 
 #pragma once
 
-const CSize
-NOANCHOR(-1, -1),
-TOP_LEFT(0, 0),
-TOP_CENTER(50, 0),
-TOP_RIGHT(100, 0),
-MIDDLE_LEFT(0, 50),
-MIDDLE_CENTER(50, 50),
-MIDDLE_RIGHT(100, 50),
-BOTTOM_LEFT(0, 100),
-BOTTOM_CENTER(50, 100),
-BOTTOM_RIGHT(100, 100);
+const CSize NOANCHOR(-1, -1);
+const CSize TOP_LEFT(0, 0);
+const CSize TOP_CENTER(50, 0);
+const CSize TOP_RIGHT(100, 0);
+const CSize MIDDLE_LEFT(0, 50);
+const CSize MIDDLE_CENTER(50, 50);
+const CSize MIDDLE_RIGHT(100, 50);
+const CSize BOTTOM_LEFT(0, 100);
+const CSize BOTTOM_CENTER(50, 100);
+const CSize BOTTOM_RIGHT(100, 100);
 
 class CResizeDialog : public CDialog
 {
