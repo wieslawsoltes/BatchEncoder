@@ -206,6 +206,7 @@ public:
 class CFormat
 {
 public:
+    CString szName;
     CString szTemplate;
     CString szPath;
     bool bInput;
@@ -214,6 +215,7 @@ public:
 public:
     void Copy(CFormat &other)
     {
+        other.szName = this->szName;
         other.szTemplate = this->szTemplate;
         other.szPath = this->szPath;
         other.bInput = this->bInput;
