@@ -6,9 +6,9 @@
 typedef bool(*fncCopyCallback) (int nProgress); // nProgress = 0..100
 
 #ifdef _DEBUG
-void LastError(LPTSTR lpszFunction);
+    void LastError(LPTSTR lpszFunction);
 #else
-#define LastError(x)
+    #define LastError(x)
 #endif
 
 void DoTheShutdown();
@@ -26,8 +26,6 @@ int stoi(CString szData);
 void MakeSafeString(CString &szData);
 BOOL MakeFullPath(CString szPath);
 CString FormatTime(double fTime, int nFormat);
-void SetBrowsePath(CFileDialog &fileDlg, CString szPath);
-CString GetBrowsePath(CFileDialog &fileDlg);
 void GradientFill(CDC *m_pMemDC, CRect &rc, COLORREF cr01, COLORREF cr02, bool bVertical);
 int GetFormatId(CString szBuff);
 void GetFullPathName(CString &szFilePath);
