@@ -491,16 +491,14 @@ void GradientFill(CDC *m_pMemDC, CRect &rc, COLORREF cr01, COLORREF cr02, bool b
 
 int GetFormatId(CString szBuff)
 {
-    int nId = -1;
     for (int i = 0; i < NUM_FORMAT_NAMES; i++)
     {
         if (szBuff.Compare(g_szFormatNames[i]) == 0)
         {
-            nId = i;
-            break;
+            return i;
         }
     }
-    return nId;
+    return -1;
 }
 
 void GetFullPathName(CString &szFilePath)
