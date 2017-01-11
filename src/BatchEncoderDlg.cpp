@@ -4282,11 +4282,7 @@ void CBatchEncoderDlg::OnOptionsConfigureFormat()
 
     for (int i = 0; i < NUM_FORMAT_NAMES; i++)
     {
-        dlg.m_Format[i].szTemplate = m_Config.m_Formats.m_Format[i].szTemplate;
-        dlg.m_Format[i].szPath = m_Config.m_Formats.m_Format[i].szPath;
-        dlg.m_Format[i].bInput = m_Config.m_Formats.m_Format[i].bInput;
-        dlg.m_Format[i].bOutput = m_Config.m_Formats.m_Format[i].bOutput;
-        dlg.m_Format[i].szFunction = m_Config.m_Formats.m_Format[i].szFunction;
+        m_Config.m_Formats.m_Format[i].Copy(dlg.m_Format[i]);
     }
 
     for (int i = 0; i < (NUM_BROWSE_PATH_FORMATS + NUM_BROWSE_PATH_PROGRESS); i++)
@@ -4300,11 +4296,7 @@ void CBatchEncoderDlg::OnOptionsConfigureFormat()
     {
         for (int i = 0; i < NUM_FORMAT_NAMES; i++)
         {
-            m_Config.m_Formats.m_Format[i].szTemplate = dlg.m_Format[i].szTemplate;
-            m_Config.m_Formats.m_Format[i].szPath = dlg.m_Format[i].szPath;
-            m_Config.m_Formats.m_Format[i].bInput = dlg.m_Format[i].bInput;
-            m_Config.m_Formats.m_Format[i].bOutput = dlg.m_Format[i].bOutput;
-            m_Config.m_Formats.m_Format[i].szFunction = dlg.m_Format[i].szFunction;
+            dlg.m_Format[i].Copy(m_Config.m_Formats.m_Format[i]);
         }
     }
 
