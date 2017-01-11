@@ -307,8 +307,8 @@ const TCHAR *g_szDefaultTemplate[] =
     _T("$EXE $OPTIONS $INFILE $OUTFILE"),                                 // 1
     _T("$EXE $OPTIONS --overwrite $INFILE $OUTFILE"),                     // 2
     _T("$EXE $OPTIONS -o $OUTFILE $INFILE"),                              // 3
-    _T("$EXE $OPTIONS -o $OUTFILE $INFILE"),                              // 4
-    _T("$EXE $OPTIONS -o $OUTFILE $INFILE"),                              // 5
+    _T("$EXE $OPTIONS -ignorelength -if $INFILE -of $OUTFILE"),           // 4
+    _T("$EXE $OPTIONS -ignorelength -if $INFILE -of $OUTFILE"),           // 5
     _T("$EXE $OPTIONS $INFILE -o $OUTFILE"),                              // 6
     _T("$EXE $OPTIONS $INFILE $OUTFILE"),                                 // 7
     _T("$EXE $OPTIONS -f -o $OUTFILE $INFILE"),                           // 8
@@ -347,8 +347,8 @@ const TCHAR *g_szDefaultPath[] =
     _T("lame.exe"),           // 1
     _T("mppenc.exe"),         // 2
     _T("faac.exe"),           // 3
-    _T("faac.exe"),           // 4
-    _T("faac.exe"),           // 5
+    _T("neroAacEnc.exe"),     // 4
+    _T("neroAacEnc.exe"),     // 5
     _T("oggenc2.exe"),        // 6
     _T("aften.exe"),          // 7
     _T("flac.exe"),           // 8
@@ -462,37 +462,37 @@ const bool g_bDefaultOutPipes[NUM_FORMAT_NAMES] =
 const TCHAR *g_bDefaultFunction[] =
 {
     // ENCODERS
-    _T("SsrcEnc.progress"),        // 0
-    _T("LameEnc.progress"),        // 1
-    _T("MppEnc.progress"),         // 2
-    _T("FaacEnc.progress"),        // 3
+    _T("GetProgress_SsrcEnc.progress"),        // 0
+    _T("GetProgress_LameEnc.progress"),        // 1
+    _T("GetProgress_MppEnc.progress"),         // 2
+    _T("GetProgress_FaacEnc.progress"),        // 3
     _T("- none -"),                // 4
     _T("- none -"),                // 5
-    _T("OggEnc.progress"),         // 6
+    _T("GetProgress_OggEnc.progress"),         // 6
     _T("- none -"),                // 7
-    _T("FlacEnc.progress"),        // 8
-    _T("WavPackEnc.progress"),     // 9
-    _T("MacEnc.progress"),         // 10
-    _T("OfrEnc.progress"),         // 11
-    _T("TtaEnc.progress"),         // 12
+    _T("GetProgress_FlacEnc.progress"),        // 8
+    _T("GetProgress_WavPackEnc.progress"),     // 9
+    _T("GetProgress_MacEnc.progress"),         // 10
+    _T("GetProgress_OfrEnc.progress"),         // 11
+    _T("GetProgress_TtaEnc.progress"),         // 12
     _T("- none -"),                // 13
     // DECODERS
-    _T("LameDec.progress"),        // 14
-    _T("LameDec.progress"),        // 15
-    _T("LameDec.progress"),        // 16
-    _T("MppDec.progress"),         // 17
-    _T("MppDec.progress"),         // 18
-    _T("MppDec.progress"),         // 19
-    _T("FaadDec.progress"),        // 20
-    _T("FaadDec.progress"),        // 21
-    _T("FaadDec.progress"),        // 22
-    _T("OggDec.progress"),         // 23
+    _T("GetProgress_LameDec.progress"),        // 14
+    _T("GetProgress_LameDec.progress"),        // 15
+    _T("GetProgress_LameDec.progress"),        // 16
+    _T("GetProgress_MppDec.progress"),         // 17
+    _T("GetProgress_MppDec.progress"),         // 18
+    _T("GetProgress_MppDec.progress"),         // 19
+    _T("GetProgress_FaadDec.progress"),        // 20
+    _T("GetProgress_FaadDec.progress"),        // 21
+    _T("GetProgress_FaadDec.progress"),        // 22
+    _T("GetProgress_OggDec.progress"),         // 23
     _T("- none -"),                // 24
-    _T("FlacDec.progress"),        // 25
-    _T("WvUnpackDec.progress"),    // 26
-    _T("MacDec.progress"),         // 27
-    _T("MacDec.progress"),         // 28
-    _T("OfrDec.progress"),         // 29
-    _T("TtaDec.progress"),         // 30
+    _T("GetProgress_FlacDec.progress"),        // 25
+    _T("GetProgress_WvUnpackDec.progress"),    // 26
+    _T("GetProgress_MacDec.progress"),         // 27
+    _T("GetProgress_MacDec.progress"),         // 28
+    _T("GetProgress_OfrDec.progress"),         // 29
+    _T("GetProgress_TtaDec.progress"),         // 30
     _T("- none -")                 // 31
 };
