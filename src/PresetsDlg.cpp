@@ -420,7 +420,6 @@ void CPresetsDlg::LoadPresetsFile(CString szFileXml)
     CXMLDocumentW doc;
     if (doc.LoadFileW(szFileXml) == true)
     {
-        // Root = Presets
         tinyxml2::XMLElement *pPresetsElem = doc.FirstChildElement();
         if (!pPresetsElem)
         {
@@ -428,7 +427,6 @@ void CPresetsDlg::LoadPresetsFile(CString szFileXml)
             return;
         }
 
-        // check for "Presets"
         const char *szRoot = pPresetsElem->Value();
         const char *szRootName = "Presets";
         if (strcmp(szRootName, szRoot) != 0)
@@ -437,13 +435,9 @@ void CPresetsDlg::LoadPresetsFile(CString szFileXml)
             return;
         }
 
-        // clear node list
         m_Presets.RemoveAllNodes();
-
-        // clear list view
         m_LstPresets.DeleteAllItems();
 
-        // Preset
         tinyxml2::XMLElement *pPresetElem = pPresetsElem->FirstChildElement("Preset");
         for (pPresetElem; pPresetElem; pPresetElem = pPresetElem->NextSiblingElement())
         {
@@ -488,42 +482,25 @@ void CPresetsDlg::SavePresetsFile(CString szFileXml)
     tinyxml2::XMLDeclaration* decl = doc.NewDeclaration("xml version=\"1.0\" encoding=\"UTF-8\"");
     doc.LinkEndChild(decl);
 
-    CString szBuff;
-    CUtf8String szBuffUtf8;
-
-    // root: Presets
     tinyxml2::XMLElement *pPresetsElem = doc.NewElement("Presets");
     doc.LinkEndChild(pPresetsElem);
 
     int nPresets = m_Presets.GetSize();
     for (int i = 0; i < nPresets; i++)
     {
-        // Preset
+        CUtf8String szBuffUtf8;
+
         tinyxml2::XMLElement *pPresetElem = doc.NewElement("Preset");
         pPresetsElem->LinkEndChild(pPresetElem);
 
         CString szName = m_Presets.GetPresetName(i);
         CString szOptions = m_Presets.GetPresetOptions(i);
 
-        if (szName.GetLength() == 0)
-        {
-            pPresetElem->SetAttribute("name", "");
-        }
-        else
-        {
-            pPresetElem->SetAttribute("name", szBuffUtf8.Create(szName));
-            szBuffUtf8.Clear();
-        }
+        pPresetElem->SetAttribute("name", szBuffUtf8.Create(szName));
+        szBuffUtf8.Clear();
 
-        if (szOptions.GetLength() == 0)
-        {
-            pPresetElem->SetAttribute("options", "");
-        }
-        else
-        {
-            pPresetElem->SetAttribute("options", szBuffUtf8.Create(szOptions));
-            szBuffUtf8.Clear();
-        }
+        pPresetElem->SetAttribute("options", szBuffUtf8.Create(szOptions));
+        szBuffUtf8.Clear();
     }
 
     if (doc.SaveFileW(szFileXml) != true)
