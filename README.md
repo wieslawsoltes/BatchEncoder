@@ -39,11 +39,9 @@ adds input and output file paths. For specific options for each format use help 
 
 [![File List](screenshots/FileList.png)](https://github.com/wieslawsoltes/BatchEncoder/blob/master/screenshots/FileList.png)
 
-### File list conversion progress
+### Conversion progress
 
 [![File List Converting](screenshots/FileListConverting.png)](https://github.com/wieslawsoltes/BatchEncoder/blob/master/screenshots/FileListConvertingFileList.png)
-
-### Graphical conversion progress
 
 [![Progress Window](screenshots/ProgressWindow.png)](https://github.com/wieslawsoltes/BatchEncoder/blob/master/screenshots/ProgressWindow.png)
 
