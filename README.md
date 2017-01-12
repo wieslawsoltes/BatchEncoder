@@ -138,7 +138,7 @@ https://github.com/wieslawsoltes/BatchEncoder/tree/master/src/data/Config
 
 https://github.com/wieslawsoltes/BatchEncoder/tree/master/src/data/Formats
 
-### Default [reset definitions
+### Default preset definitions
 
 https://github.com/wieslawsoltes/BatchEncoder/tree/master/src/data/Presets
 
