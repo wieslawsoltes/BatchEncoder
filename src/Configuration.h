@@ -144,7 +144,6 @@ extern const TCHAR *g_szNames[];
 extern const char *g_szPresetTags[];
 extern const TCHAR *g_szPresetFiles[];
 extern const int g_nPresetResources[NUM_PRESET_FILES];
-extern const char *g_szFileAttributes[];
 extern const char *g_szSettingsTags[];
 extern const char *g_szColorsTags[];
 
@@ -227,25 +226,35 @@ public:
 class CItem
 {
 public:
-    CString szFilePath;
-    ULONGLONG nFileSize;
-    CString szFileName;
+    // File
+    CString szPath;
+    ULONGLONG nSize;
+    // Input
+    CString szName;
     CString szInExt;
     int nInFormat;
+    // Output
     CString szOutExt;
     int nOutFormat;
     int nOutPreset;
+    // Status
+    bool bChecked;
+    CString szTime;
+    CString szStatus;
 public:
     void Copy(CItem &other)
     {
-        other.szFilePath = this->szFilePath;
-        other.nFileSize = this->nFileSize;
-        other.szFileName = this->szFileName;
+        other.szPath = this->szPath;
+        other.nSize = this->nSize;
+        other.szName = this->szName;
         other.szInExt = this->szInExt;
         other.nInFormat = this->nInFormat;
         other.szOutExt = this->szOutExt;
         other.nOutFormat = this->nOutFormat;
         other.nOutPreset = this->nOutPreset;
+        other.bChecked = this->bChecked;
+        other.szTime = this->szTime;
+        other.szStatus = this->szStatus;
     }
 };
 
@@ -272,14 +281,15 @@ public:
 typedef struct TNewItemData
 {
     int nAction;
-    CString szFileName;
     int nItem;
+    CString szPath;
     CString szName;
     CString szOutExt;
-    int nPreset;
-    BOOL bCheck;
+    int nOutPreset;
+    bool bChecked;
     CString szTime;
     CString szStatus;
+
 } NewItemData, *PNewItemData;
 
 void InitNewItemData(NewItemData &nid);

@@ -421,7 +421,7 @@ void CPresetsDlg::LoadPresetsFile(CString szFileXml)
     if (doc.LoadFileW(szFileXml) == true)
     {
         // Root = Presets
-        tinyxml2::XMLElement* pPresetsElem = doc.FirstChildElement();
+        tinyxml2::XMLElement *pPresetsElem = doc.FirstChildElement();
         if (!pPresetsElem)
         {
             MessageBox(_T("Failed to load file!"), _T("ERROR"), MB_OK | MB_ICONERROR);
@@ -444,7 +444,7 @@ void CPresetsDlg::LoadPresetsFile(CString szFileXml)
         m_LstPresets.DeleteAllItems();
 
         // Preset
-        tinyxml2::XMLElement* pPresetElem = pPresetsElem->FirstChildElement("Preset");
+        tinyxml2::XMLElement *pPresetElem = pPresetsElem->FirstChildElement("Preset");
         for (pPresetElem; pPresetElem; pPresetElem = pPresetElem->NextSiblingElement())
         {
             const char *pszName = pPresetElem->Attribute("name");
@@ -489,11 +489,12 @@ void CPresetsDlg::SavePresetsFile(CString szFileXml)
     doc.LinkEndChild(decl);
 
     CString szBuff;
-    CUtf8String m_Utf8;
+    CUtf8String szBuffUtf8;
 
     // root: Presets
     tinyxml2::XMLElement *pPresetsElem = doc.NewElement("Presets");
     doc.LinkEndChild(pPresetsElem);
+
     int nPresets = m_Presets.GetSize();
     for (int i = 0; i < nPresets; i++)
     {
@@ -510,8 +511,8 @@ void CPresetsDlg::SavePresetsFile(CString szFileXml)
         }
         else
         {
-            pPresetElem->SetAttribute("name", m_Utf8.Create(szName));
-            m_Utf8.Clear();
+            pPresetElem->SetAttribute("name", szBuffUtf8.Create(szName));
+            szBuffUtf8.Clear();
         }
 
         if (szOptions.GetLength() == 0)
@@ -520,8 +521,8 @@ void CPresetsDlg::SavePresetsFile(CString szFileXml)
         }
         else
         {
-            pPresetElem->SetAttribute("options", m_Utf8.Create(szOptions));
-            m_Utf8.Clear();
+            pPresetElem->SetAttribute("options", szBuffUtf8.Create(szOptions));
+            szBuffUtf8.Clear();
         }
     }
 

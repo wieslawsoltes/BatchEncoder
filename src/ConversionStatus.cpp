@@ -242,9 +242,9 @@ void CConversionStatus::DrawStatus(int nCurrentProgress)
     CSize size;
     LONG nLastPos = 0L;
 
-    // TEXT: Processing file: [b]%d[/b] of [b]%d[/b]
+    // TEXT: Processing item: [b]%d[/b] of [b]%d[/b]
 
-    szText.Format(_T("Processing file: "));
+    szText.Format(_T("Processing item: "));
 
     this->SetFontMemDC(false, crBack, crText);
     size = m_MemDC->GetTextExtent(szText);

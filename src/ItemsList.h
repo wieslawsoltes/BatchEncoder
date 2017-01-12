@@ -169,26 +169,26 @@ public:
         return IsValidOutExtension(szOutExt);
     }
 public:
-    int InsertNode(CString szFilePath,
-        const TCHAR *szFileName,
-        const ULONGLONG nFileSize,
+    int InsertNode(CString szPath,
+        const TCHAR *szName,
+        const ULONGLONG nSize,
         const int nOutFormat,
         const int nOutPreset)
     {
         CItem tmp;
 
-        tmp.szFilePath = szFilePath;
-        tmp.nFileSize = nFileSize;
+        tmp.szPath = szPath;
+        tmp.nSize = nSize;
 
-        if ((szFileName == NULL) || (_tcslen(szFileName) == 0))
-            tmp.szFileName = this->GetOnlyFileName(szFilePath);
+        if ((szName == NULL) || (_tcslen(szName) == 0))
+            tmp.szName = this->GetOnlyFileName(szPath);
         else
-            tmp.szFileName = szFileName;
+            tmp.szName = szName;
 
-        tmp.szInExt = this->GetFileExtUpperCase(szFilePath);
+        tmp.szInExt = this->GetFileExtUpperCase(szPath);
         tmp.nInFormat = this->GetInFormatIndex(tmp.szInExt);
+        
         tmp.szOutExt = this->GetOutFormatExt(nOutFormat);
-
         tmp.nOutFormat = nOutFormat;
         tmp.nOutPreset = nOutPreset;
 
@@ -209,34 +209,34 @@ public:
     void SetItemFilePath(CString szFilePath, int idx)
     {
         CItem tmpList = this->GetData(idx);
-        tmpList.szFilePath = szFilePath;
+        tmpList.szPath = szFilePath;
         this->SetData(tmpList, idx);
     }
     CString GetItemFilePath(int idx)
     {
-        return this->GetData(idx).szFilePath;
+        return this->GetData(idx).szPath;
     }
 public:
     void SetItemFileSize(ULONGLONG nFileSize, int idx)
     {
         CItem tmpList = this->GetData(idx);
-        tmpList.nFileSize = nFileSize;
+        tmpList.nSize = nFileSize;
         this->SetData(tmpList, idx);
     }
     ULONGLONG GetItemFileSize(int idx)
     {
-        return this->GetData(idx).nFileSize;
+        return this->GetData(idx).nSize;
     }
 public:
     void SetItemFileName(CString szFileName, int idx)
     {
         CItem tmpList = this->GetData(idx);
-        tmpList.szFileName = szFileName;
+        tmpList.szName = szFileName;
         this->SetData(tmpList, idx);
     }
     CString GetItemFileName(int idx)
     {
-        return this->GetData(idx).szFileName;
+        return this->GetData(idx).szName;
     }
 public:
     void SetItemInExt(CString szInExt, int idx)

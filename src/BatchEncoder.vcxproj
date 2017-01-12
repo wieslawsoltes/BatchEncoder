@@ -245,7 +245,6 @@ copy /-Y data\Formats\*.formats $(OutDir)</Command>
     <ClCompile Include="AdvancedDlg.cpp" />
     <ClCompile Include="BatchEncoder.cpp" />
     <ClCompile Include="BatchEncoderDlg.cpp" />
-    <ClCompile Include="CommandLine.cpp" />
     <ClCompile Include="Configuration.cpp" />
     <ClCompile Include="ConversionStatus.cpp" />
     <ClCompile Include="CopyFileDlg.cpp" />
@@ -258,7 +257,6 @@ copy /-Y data\Formats\*.formats $(OutDir)</Command>
     <ClCompile Include="MyButton.cpp" />
     <ClCompile Include="MyStatic.cpp" />
     <ClCompile Include="MyStatusBarCtrl.cpp" />
-    <ClCompile Include="OptionsParser.cpp" />
     <ClCompile Include="PresetsDlg.cpp" />
     <ClCompile Include="ResizeDialog.cpp" />
     <ClCompile Include="StdAfx.cpp">
@@ -281,7 +279,6 @@ copy /-Y data\Formats\*.formats $(OutDir)</Command>
     <ClInclude Include="AdvancedDlg.h" />
     <ClInclude Include="BatchEncoder.h" />
     <ClInclude Include="BatchEncoderDlg.h" />
-    <ClInclude Include="CommandLine.h" />
     <ClInclude Include="ConversionStatus.h" />
     <ClInclude Include="CopyFileDlg.h" />
     <ClInclude Include="DropList.h" />
@@ -295,7 +292,6 @@ copy /-Y data\Formats\*.formats $(OutDir)</Command>
     <ClInclude Include="MyButton.h" />
     <ClInclude Include="MyStatic.h" />
     <ClInclude Include="MyStatusBarCtrl.h" />
-    <ClInclude Include="OptionsParser.h" />
     <ClInclude Include="PresetsDlg.h" />
     <ClInclude Include="ResizeDialog.h" />
     <ClInclude Include="StdAfx.h" />

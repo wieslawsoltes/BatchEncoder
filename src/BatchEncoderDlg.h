@@ -45,7 +45,7 @@ protected:
     virtual void OnOK();
     virtual void OnCancel();
 public:
-    bool CreateBatchFile(CString szFileName, bool bUseListCtrl = true);
+    bool CreateBatchFile(CString szFileName);
 public:
     CMyStatusBarCtrl m_StatusBar;
 public:
@@ -56,8 +56,6 @@ public:
     HACCEL m_hAccel;
 public:
     BOOL PreTranslateMessage(MSG* pMsg);
-public:
-    PBATCHENCODER_OPTIONS m_pFo;
 public:
     CString szMainConfigFile;
 public:
@@ -112,7 +110,9 @@ public:
 public:
     CConversionStatus m_CnvStatus;
 public:
-    bool InsertToList(NewItemData &Iid);
+    bool InsertToMemoryList(NewItemData &nid);
+    bool InsertToControlList(NewItemData &nid);
+    bool InsertToList(NewItemData &nid);
 public:
     void HandleDropFiles(HDROP hDropInfo);
 public:
@@ -135,8 +135,11 @@ public:
     bool GridlinesVisible();
     void ShowGridlines(bool bShow);
 public:
-    bool LoadList(CString szFileXml, bool bAddToListCtrl = true);
-    bool SaveList(CString szFileXml, bool bUseListCtrl = true);
+    void LoadItems(tinyxml2::XMLElement *pItemsElem);
+    void SaveItems(CXMLDocumentW &doc, tinyxml2::XMLElement *pItemsElem);
+public:
+    bool LoadList(CString szFileXml);
+    bool SaveList(CString szFileXml);
 public:
     bool LoadConfigFile();
     bool SaveConfigFile();

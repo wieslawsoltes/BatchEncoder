@@ -73,21 +73,6 @@ const TCHAR *g_szProcessPriority[] =
     _T("RealTime")                // 3
 };
 
-// file tag attributes
-// items: NUM_FILE_ATTRIBUTES
-const char *g_szFileAttributes[] =
-{
-    "path",     // 0
-    "checked",  // 1
-    "name",     // 2
-    "type",     // 3
-    "size",     // 4
-    "output",   // 5
-    "preset",   // 6
-    "time",     // 7
-    "status"    // 8
-};
-
 // tags used to store program settings
 // items: NUM_PROGRAM_SETTINGS
 const char *g_szSettingsTags[] =
@@ -500,12 +485,12 @@ const TCHAR *g_bDefaultFunction[] =
 void InitNewItemData(NewItemData &nid)
 {
     nid.nAction = ADD_ITEM_NONE;
-    nid.szFileName = _T("");
     nid.nItem = -1;
+    nid.szPath = _T("");
     nid.szName = _T("");
     nid.szOutExt = _T("");
-    nid.nPreset = -1;
-    nid.bCheck = TRUE;
+    nid.nOutPreset = -1;
+    nid.bChecked = TRUE;
     nid.szTime = _T("");
     nid.szStatus = _T("");
 }

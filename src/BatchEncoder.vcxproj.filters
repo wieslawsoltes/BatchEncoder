@@ -34,12 +34,6 @@
     <Filter Include="Source Files\Xml">
       <UniqueIdentifier>{f6b31c12-6182-4625-8cef-830303fb90cf}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Options">
-      <UniqueIdentifier>{89240a4f-8f08-4475-855f-bffe355437f3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Options">
-      <UniqueIdentifier>{4c09c96e-3ea7-41ee-b51d-74f21ba18019}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Lame">
       <UniqueIdentifier>{763e9916-ca86-4cee-a8f5-6fe6af37b3c4}</UniqueIdentifier>
     </Filter>
@@ -110,12 +104,6 @@
     </ClCompile>
     <ClCompile Include="XmlResource.cpp">
       <Filter>Source Files\Xml</Filter>
-    </ClCompile>
-    <ClCompile Include="CommandLine.cpp">
-      <Filter>Source Files\Options</Filter>
-    </ClCompile>
-    <ClCompile Include="OptionsParser.cpp">
-      <Filter>Source Files\Options</Filter>
     </ClCompile>
     <ClCompile Include="Histogram.cpp">
       <Filter>Source Files\Controls</Filter>
@@ -202,12 +190,6 @@
     </ClInclude>
     <ClInclude Include="XmlResource.h">
       <Filter>Header Files\Xml</Filter>
-    </ClInclude>
-    <ClInclude Include="CommandLine.h">
-      <Filter>Header Files\Options</Filter>
-    </ClInclude>
-    <ClInclude Include="OptionsParser.h">
-      <Filter>Header Files\Options</Filter>
     </ClInclude>
     <ClInclude Include="LameHistogram.h">
       <Filter>Header Files\Lame</Filter>

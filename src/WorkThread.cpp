@@ -1028,7 +1028,7 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
 
             nErrors = (nProcessedFiles - 1) - nDoneWithoutError;
             CString szText;
-            szText.Format(_T("Processing file %d of %d (%d Done, %d %s)"),
+            szText.Format(_T("Processing item %d of %d (%d Done, %d %s)"),
                 nProcessedFiles,
                 nTotalFiles,
                 nDoneWithoutError,

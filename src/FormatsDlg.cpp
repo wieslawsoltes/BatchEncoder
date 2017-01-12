@@ -353,7 +353,7 @@ void CFormatsDlg::LoadFormatsFile(CString szFileXml)
     if (doc.LoadFileW(szFileXml) == true)
     {
         // Root = Formats
-        tinyxml2::XMLElement* pFormatsElem = doc.FirstChildElement();
+        tinyxml2::XMLElement *pFormatsElem = doc.FirstChildElement();
         if (!pFormatsElem)
         {
             MessageBox(_T("Failed to load file!"), _T("ERROR"), MB_OK | MB_ICONERROR);
@@ -370,7 +370,7 @@ void CFormatsDlg::LoadFormatsFile(CString szFileXml)
         }
 
         // load all elements
-        tinyxml2::XMLElement* pFormatElem = pFormatsElem->FirstChildElement("Format");
+        tinyxml2::XMLElement *pFormatElem = pFormatsElem->FirstChildElement("Format");
         for (pFormatElem; pFormatElem; pFormatElem = pFormatElem->NextSiblingElement())
         {
             int nFormat = -1;
@@ -460,7 +460,7 @@ void CFormatsDlg::SaveFormatsFile(CString szFileXml)
 
     for (int i = 0; i < NUM_FORMAT_NAMES; i++)
     {
-        CUtf8String m_Utf8;
+        CUtf8String szBuffUtf8;
 
         m_Formats[i].szTemplate = m_LstFormats.GetItemText(i, 1);
         m_Formats[i].szPath = m_LstFormats.GetItemText(i, 2);
@@ -470,20 +470,20 @@ void CFormatsDlg::SaveFormatsFile(CString szFileXml)
 
         tinyxml2::XMLElement *pFormatElem = doc.NewElement("Format");
 
-        pFormatElem->LinkEndChild(doc.NewText(m_Utf8.Create(m_Formats[i].szPath)));
-        m_Utf8.Clear();
+        pFormatElem->LinkEndChild(doc.NewText(szBuffUtf8.Create(m_Formats[i].szPath)));
+        szBuffUtf8.Clear();
 
-        pFormatElem->SetAttribute("name", m_Utf8.Create(m_Formats[i].szName));
-        m_Utf8.Clear();
+        pFormatElem->SetAttribute("name", szBuffUtf8.Create(m_Formats[i].szName));
+        szBuffUtf8.Clear();
 
-        pFormatElem->SetAttribute("template", m_Utf8.Create(m_Formats[i].szTemplate));
-        m_Utf8.Clear();
+        pFormatElem->SetAttribute("template", szBuffUtf8.Create(m_Formats[i].szTemplate));
+        szBuffUtf8.Clear();
 
         pFormatElem->SetAttribute("input", (m_Formats[i].bInput) ? "true" : "false");
         pFormatElem->SetAttribute("output", (m_Formats[i].bOutput) ? "true" : "false");
 
-        pFormatElem->SetAttribute("function", m_Utf8.Create(m_Formats[i].szFunction));
-        m_Utf8.Clear();
+        pFormatElem->SetAttribute("function", szBuffUtf8.Create(m_Formats[i].szFunction));
+        szBuffUtf8.Clear();
 
         pFormatsElem->LinkEndChild(pFormatElem);
     }
