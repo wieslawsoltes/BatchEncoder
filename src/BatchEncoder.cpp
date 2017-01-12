@@ -13,7 +13,6 @@
 #include "CopyFileDlg.h"
 #include "CommandLine.h"
 #include "OptionsParser.h"
-#include "NewItemData.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
