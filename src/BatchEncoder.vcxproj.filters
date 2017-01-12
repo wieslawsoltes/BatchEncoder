@@ -25,9 +25,6 @@
     <Filter Include="Source Files\Dialogs">
       <UniqueIdentifier>{e5c94674-0e76-46a1-bfb2-d2ab733b8272}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Lists">
-      <UniqueIdentifier>{6fffc217-d498-4966-aa95-d33a4c50bbde}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Xml">
       <UniqueIdentifier>{cce341be-f5d9-4331-8431-c6b4f6d33179}</UniqueIdentifier>
     </Filter>
@@ -214,12 +211,6 @@
     </ClInclude>
     <ClInclude Include="Configuration.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="PresetsList.h">
-      <Filter>Header Files\Lists</Filter>
-    </ClInclude>
-    <ClInclude Include="ItemsList.h">
-      <Filter>Header Files\Lists</Filter>
     </ClInclude>
     <ClInclude Include="ItemListCtrl.h">
       <Filter>Header Files\Controls</Filter>

@@ -287,8 +287,6 @@ copy /-Y data\Formats\*.formats $(OutDir)</Command>
     <ClInclude Include="Histogram.h" />
     <ClInclude Include="Hyperlink.h" />
     <ClInclude Include="LameHistogram.h" />
-    <ClInclude Include="ItemsList.h" />
-    <ClInclude Include="PresetsList.h" />
     <ClInclude Include="MyButton.h" />
     <ClInclude Include="MyStatic.h" />
     <ClInclude Include="MyStatusBarCtrl.h" />
