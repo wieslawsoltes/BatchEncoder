@@ -180,7 +180,6 @@ CAPTION "About BatchEncoder"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     PUSHBUTTON      "OK",IDOK,325,153,50,12
-    CONTROL         113,IDC_STATIC,"Static",SS_BITMAP,7,7,368,50,WS_EX_STATICEDGE
     CTEXT           "app name",IDC_STATIC_TEXT_APP_NAME,7,63,368,12,SS_CENTERIMAGE
     CTEXT           "website",IDC_STATIC_TEXT_WEBSITE,7,77,368,12,SS_CENTERIMAGE
     CTEXT           "e-mail",IDC_STATIC_TEXT_EMAIL,7,91,368,12,SS_CENTERIMAGE
@@ -213,194 +212,6 @@ BEGIN
     GROUPBOX        "Console log file path:",IDC_STATIC,7,106,165,45
     PUSHBUTTON      "&OK",IDOK,239,158,50,12
 END
-
-
-/////////////////////////////////////////////////////////////////////////////
-//
-// Version
-//
-
-VS_VERSION_INFO VERSIONINFO
-FILEVERSION VER_FILE_VERSION
-PRODUCTVERSION VER_PRODUCT_VERSION
- FILEFLAGSMASK 0x3fL
- FILEFLAGSMASK 0x3fL
- FILEFLAGS VER_FILEFLAGS
- FILEOS VOS_NT_WINDOWS32
- FILETYPE VER_FILETYPE
- FILESUBTYPE 0x0L
-BEGIN
-    BLOCK "StringFileInfo"
-    BEGIN
-        BLOCK "040904e4"
-        BEGIN
-            VALUE "CompanyName", VER_FILE_COMPANY_NAME_STR "\0"
-            VALUE "FileDescription", VER_FILE_DESCRIPTION_STR "\0"
-            VALUE "FileVersion", VER_FILE_VERSION_LONG_STR "\0"
-            VALUE "InternalName", VER_INTERNAL_NAME_STR "\0"
-            VALUE "LegalCopyright", VER_COPYRIGHT_STR "\0"
-            VALUE "OriginalFilename", VER_ORIGINAL_FILENAME_STR "\0"
-            VALUE "ProductName", VER_PRODUCTNAME_STR "\0"
-            VALUE "ProductVersion", VER_PRODUCT_VERSION_STR "\0"
-        END
-    END
-    BLOCK "VarFileInfo"
-    BEGIN
-        VALUE "Translation", 0x409, 1252
-    END
-END
-
-
-/////////////////////////////////////////////////////////////////////////////
-//
-// DESIGNINFO
-//
-
-#ifdef APSTUDIO_INVOKED
-GUIDELINES DESIGNINFO 
-BEGIN
-    IDD_BATCHENCODER_DIALOG, DIALOG
-    BEGIN
-        VERTGUIDE, 5
-        VERTGUIDE, 12
-        VERTGUIDE, 42
-        VERTGUIDE, 45
-        VERTGUIDE, 60
-        VERTGUIDE, 64
-        VERTGUIDE, 220
-        VERTGUIDE, 223
-        VERTGUIDE, 253
-        VERTGUIDE, 256
-        VERTGUIDE, 303
-        VERTGUIDE, 307
-        VERTGUIDE, 357
-        VERTGUIDE, 361
-        VERTGUIDE, 404
-        VERTGUIDE, 411
-        HORZGUIDE, 3
-        HORZGUIDE, 14
-        HORZGUIDE, 26
-        HORZGUIDE, 34
-        HORZGUIDE, 40
-        HORZGUIDE, 212
-        HORZGUIDE, 218
-        HORZGUIDE, 230
-    END
-
-    IDD_DIALOG_PRESETS, DIALOG
-    BEGIN
-        VERTGUIDE, 7
-        VERTGUIDE, 57
-        VERTGUIDE, 61
-        VERTGUIDE, 111
-        VERTGUIDE, 115
-        VERTGUIDE, 137
-        VERTGUIDE, 141
-        VERTGUIDE, 165
-        VERTGUIDE, 169
-        VERTGUIDE, 269
-        VERTGUIDE, 305
-        VERTGUIDE, 355
-        VERTGUIDE, 359
-        VERTGUIDE, 409
-        BOTTOMMARGIN, 201
-        HORZGUIDE, 7
-        HORZGUIDE, 19
-        HORZGUIDE, 25
-        HORZGUIDE, 37
-        HORZGUIDE, 41
-        HORZGUIDE, 53
-        HORZGUIDE, 108
-        HORZGUIDE, 120
-        HORZGUIDE, 124
-        HORZGUIDE, 136
-        HORZGUIDE, 140
-        HORZGUIDE, 152
-        HORZGUIDE, 156
-        HORZGUIDE, 164
-        HORZGUIDE, 167
-        HORZGUIDE, 179
-        HORZGUIDE, 183
-        HORZGUIDE, 195
-    END
-
-    IDD_DIALOG_FORMATS, DIALOG
-    BEGIN
-        VERTGUIDE, 7
-        VERTGUIDE, 14
-        VERTGUIDE, 50
-        VERTGUIDE, 57
-        VERTGUIDE, 61
-        VERTGUIDE, 165
-        VERTGUIDE, 213
-        VERTGUIDE, 217
-        VERTGUIDE, 301
-        VERTGUIDE, 305
-        VERTGUIDE, 355
-        VERTGUIDE, 359
-        VERTGUIDE, 402
-        VERTGUIDE, 409
-        HORZGUIDE, 7
-        HORZGUIDE, 147
-        HORZGUIDE, 155
-        HORZGUIDE, 158
-        HORZGUIDE, 170
-        HORZGUIDE, 174
-        HORZGUIDE, 182
-        HORZGUIDE, 185
-        HORZGUIDE, 197
-        HORZGUIDE, 201
-        HORZGUIDE, 213
-    END
-
-    IDD_DIALOG_ABOUT, DIALOG
-    BEGIN
-        RIGHTMARGIN, 199
-        VERTGUIDE, 7
-        VERTGUIDE, 325
-        VERTGUIDE, 375
-        HORZGUIDE, 7
-        HORZGUIDE, 57
-        HORZGUIDE, 63
-        HORZGUIDE, 75
-        HORZGUIDE, 77
-        HORZGUIDE, 89
-        HORZGUIDE, 91
-        HORZGUIDE, 103
-        HORZGUIDE, 105
-        HORZGUIDE, 114
-        HORZGUIDE, 137
-        HORZGUIDE, 146
-        HORZGUIDE, 165
-    END
-
-    IDD_DIALOG_ADVANCED, DIALOG
-    BEGIN
-        VERTGUIDE, 7
-        VERTGUIDE, 13
-        VERTGUIDE, 49
-        VERTGUIDE, 53
-        VERTGUIDE, 68
-        VERTGUIDE, 118
-        VERTGUIDE, 122
-        VERTGUIDE, 166
-        VERTGUIDE, 172
-        VERTGUIDE, 178
-        VERTGUIDE, 184
-        VERTGUIDE, 239
-        VERTGUIDE, 289
-        VERTGUIDE, 293
-        VERTGUIDE, 337
-        VERTGUIDE, 343
-        HORZGUIDE, 7
-        HORZGUIDE, 18
-        HORZGUIDE, 145
-        HORZGUIDE, 151
-        HORZGUIDE, 158
-        HORZGUIDE, 170
-    END
-END
-#endif    // APSTUDIO_INVOKED
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -505,13 +316,6 @@ END
 
 /////////////////////////////////////////////////////////////////////////////
 //
-// Bitmap
-//
-
-IDB_BITMAP_LOGO_SMALL   BITMAP                  "..\\data\\Logo\\BatchEncoder.bmp"
-
-/////////////////////////////////////////////////////////////////////////////
-//
 // Accelerator
 //
 
@@ -556,37 +360,8 @@ BEGIN
 END
 
 
-/////////////////////////////////////////////////////////////////////////////
-//
-// PRESET
-//
-
-IDR_PRESET_AAC_FAAC     PRESET                  "..\\data\\Presets\\Presets_AAC_Faac.presets"
-IDR_PRESET_APE_MAC      PRESET                  "..\\data\\Presets\\Presets_APE_Mac.presets"
-IDR_PRESET_FLAC_FLAC    PRESET                  "..\\data\\Presets\\Presets_FLAC_Flac.presets"
-IDR_PRESET_M4A_FAAC     PRESET                  "..\\data\\Presets\\Presets_M4A_Faac.presets"
-IDR_PRESET_MP3_LAME     PRESET                  "..\\data\\Presets\\Presets_MP3_Lame.presets"
-IDR_PRESET_MP4_FAAC     PRESET                  "..\\data\\Presets\\Presets_MP4_Faac.presets"
-IDR_PRESET_MPC_MPCENC   PRESET                  "..\\data\\Presets\\Presets_MPC_MpcEnc.presets"
-IDR_PRESET_OGG_OGGENC   PRESET                  "..\\data\\Presets\\Presets_OGG_OggEnc.presets"
-IDR_PRESET_AC3_AFTEN    PRESET                  "..\\data\\Presets\\Presets_AC3_Aften.presets"
-IDR_PRESET_WV_WAVPACK   PRESET                  "..\\data\\Presets\\Presets_WV_WavPack.presets"
-IDR_PRESET_TTA_TTAENC   PRESET                  "..\\data\\Presets\\Presets_TTA_TtaEnc.presets"
-IDR_PRESET_OFR_OFR      PRESET                  "..\\data\\Presets\\Presets_OFR_Ofr.presets"
-IDR_PRESET_WAV_SSRC     PRESET                  "..\\data\\Presets\\Presets_WAV_Ssrc.presets"
-IDR_PRESET_MP4_NERO     PRESET                  "..\\data\\Presets\\Presets_MP4_neroAacEnc.presets"
-IDR_PRESET_M4A_NERO     PRESET                  "..\\data\\Presets\\Presets_M4A_neroAacEnc.presets"
-IDR_PRESET_TAK_TAKC     PRESET                  "..\\data\\Presets\\Presets_TAK_Takc.presets"
-
-/////////////////////////////////////////////////////////////////////////////
-//
-// CONFIG
-//
-
-IDR_CONFIG_BATCHENCODER CONFIG                  "..\\data\\Config\\BatchEncoder.config"
 #endif    // English (U.S.) resources
 /////////////////////////////////////////////////////////////////////////////
-
 
 
 #ifndef APSTUDIO_INVOKED

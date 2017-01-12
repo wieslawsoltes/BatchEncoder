@@ -12,7 +12,6 @@
 #define IDD_DIALOG_FORMATS              109
 #define IDD_DIALOG_ABOUT                110
 #define IDD_DIALOG_ADVANCED             112
-#define IDB_BITMAP_LOGO_SMALL           113
 #define IDR_ACCELERATOR_BATCHENCODER    114
 #define IDR_MENU_TRAY                   115
 #define IDR_PRESET_AAC_FAAC             116

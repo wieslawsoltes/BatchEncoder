@@ -296,9 +296,7 @@ copy /-Y data\Formats\*.formats $(OutDir)</Command>
     <ClInclude Include="XmlResource.h" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="Logo\BatchEncoder.bmp" />
     <Image Include="res\BatchEncoder.ico" />
-    <Image Include="res\logo-small.bmp" />
     <Image Include="res\ProgressIcon01.ico" />
     <Image Include="res\ProgressIcon02.ico" />
     <Image Include="res\ProgressIcon03.ico" />
@@ -313,6 +311,23 @@ copy /-Y data\Formats\*.formats $(OutDir)</Command>
     <Image Include="res\ProgressIcon12.ico" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="data\Config\BatchEncoder.config" />
+    <None Include="data\Presets\Presets_AAC_Faac.presets" />
+    <None Include="data\Presets\Presets_AC3_Aften.presets" />
+    <None Include="data\Presets\Presets_APE_Mac.presets" />
+    <None Include="data\Presets\Presets_FLAC_Flac.presets" />
+    <None Include="data\Presets\Presets_M4A_Faac.presets" />
+    <None Include="data\Presets\Presets_M4A_neroAacEnc.presets" />
+    <None Include="data\Presets\Presets_MP3_Lame.presets" />
+    <None Include="data\Presets\Presets_MP4_Faac.presets" />
+    <None Include="data\Presets\Presets_MP4_neroAacEnc.presets" />
+    <None Include="data\Presets\Presets_MPC_MpcEnc.presets" />
+    <None Include="data\Presets\Presets_OFR_Ofr.presets" />
+    <None Include="data\Presets\Presets_OGG_OggEnc.presets" />
+    <None Include="data\Presets\Presets_TAK_Takc.presets" />
+    <None Include="data\Presets\Presets_TTA_TtaEnc.presets" />
+    <None Include="data\Presets\Presets_WAV_Ssrc.presets" />
+    <None Include="data\Presets\Presets_WV_WavPack.presets" />
     <None Include="res\BatchEncoder.rc2" />
   </ItemGroup>
   <ItemGroup>
