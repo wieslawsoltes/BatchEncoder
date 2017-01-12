@@ -271,25 +271,3 @@ public:
     CString szPresetsFile[NUM_PRESET_FILES];
     CItemsList m_Items;
 };
-
-// nAction
-#define ADD_ITEM_NONE              -1
-#define ADD_ITEM_MEMORY             0
-#define ADD_ITEM_CONTROL            1
-#define ADD_ITEM_MEMORY_AND_CONTROL 2
-
-typedef struct TNewItemData
-{
-    int nAction;
-    int nItem;
-    CString szPath;
-    CString szName;
-    CString szOutExt;
-    int nOutPreset;
-    bool bChecked;
-    CString szTime;
-    CString szStatus;
-
-} NewItemData, *PNewItemData;
-
-void InitNewItemData(NewItemData &nid);

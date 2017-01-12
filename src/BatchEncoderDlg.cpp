@@ -1106,6 +1106,19 @@ void CBatchEncoderDlg::ShowGridlines(bool bShow)
     }
 }
 
+void CBatchEncoderDlg::InitNewItemData(NewItemData &nid)
+{
+    nid.nAction = ADD_ITEM_NONE;
+    nid.nItem = -1;
+    nid.szPath = _T("");
+    nid.szName = _T("");
+    nid.szOutExt = _T("");
+    nid.nOutPreset = -1;
+    nid.bChecked = TRUE;
+    nid.szTime = _T("");
+    nid.szStatus = _T("");
+}
+
 void CBatchEncoderDlg::LoadItems(tinyxml2::XMLElement *pItemsElem)
 {
     tinyxml2::XMLElement *pItemElem = pItemsElem->FirstChildElement("Item");
@@ -1135,7 +1148,7 @@ void CBatchEncoderDlg::LoadItems(tinyxml2::XMLElement *pItemsElem)
         }
 
         NewItemData nid;
-        ::InitNewItemData(nid);
+        this->InitNewItemData(nid);
 
         nid.nAction = ADD_ITEM_MEMORY_AND_CONTROL;
         nid.szPath = GetConfigString(pszAttribPath);
@@ -2773,7 +2786,7 @@ void CBatchEncoderDlg::SearchFolderForFiles(CString szFile,
                 szTempBuf.Format(_T("%s\\%s\0"), szFile, w32FileData.cFileName);
 
                 NewItemData nid;
-                ::InitNewItemData(nid);
+                this->InitNewItemData(nid);
 
                 if ((szOutExt != NULL) && (nPreset != -1))
                 {
@@ -2830,7 +2843,7 @@ void CBatchEncoderDlg::HandleDropFiles(HDROP hDropInfo)
     if (nCount > 0)
     {
         NewItemData nid;
-        ::InitNewItemData(nid);
+        this->InitNewItemData(nid);
 
         for (int i = 0; i < nCount; i++)
         {
@@ -3377,7 +3390,7 @@ void CBatchEncoderDlg::OnEditAddFiles()
             POSITION pos = fd.GetStartPosition();
 
             NewItemData nid;
-            ::InitNewItemData(nid);
+            this->InitNewItemData(nid);
 
             // insert all files to list
             do

@@ -481,16 +481,3 @@ const TCHAR *g_bDefaultFunction[] =
     _T("GetProgress_TtaDec.progress"),         // 30
     _T("- none -")                 // 31
 };
-
-void InitNewItemData(NewItemData &nid)
-{
-    nid.nAction = ADD_ITEM_NONE;
-    nid.nItem = -1;
-    nid.szPath = _T("");
-    nid.szName = _T("");
-    nid.szOutExt = _T("");
-    nid.nOutPreset = -1;
-    nid.bChecked = TRUE;
-    nid.szTime = _T("");
-    nid.szStatus = _T("");
-}

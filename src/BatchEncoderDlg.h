@@ -23,6 +23,26 @@
 #define IDC_HISTOGRAM 1600
 #define IDC_CNVSTATUS 1700
 
+// nAction
+#define ADD_ITEM_NONE              -1
+#define ADD_ITEM_MEMORY             0
+#define ADD_ITEM_CONTROL            1
+#define ADD_ITEM_MEMORY_AND_CONTROL 2
+
+typedef struct TNewItemData
+{
+    int nAction;
+    int nItem;
+    CString szPath;
+    CString szName;
+    CString szOutExt;
+    int nOutPreset;
+    bool bChecked;
+    CString szTime;
+    CString szStatus;
+
+} NewItemData, *PNewItemData;
+
 class CBatchEncoderDlg : public CResizeDialog
 {
     DECLARE_DYNAMIC(CBatchEncoderDlg)
@@ -134,6 +154,8 @@ public:
 public:
     bool GridlinesVisible();
     void ShowGridlines(bool bShow);
+private:
+    void InitNewItemData(NewItemData &nid);
 public:
     void LoadItems(tinyxml2::XMLElement *pItemsElem);
     void SaveItems(CXMLDocumentW &doc, tinyxml2::XMLElement *pItemsElem);
