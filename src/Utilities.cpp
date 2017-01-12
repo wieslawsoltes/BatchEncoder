@@ -292,18 +292,6 @@ CString FormatTime(double fTime, int nFormat)
     return szTime;
 }
 
-int GetFormatId(CString szBuff)
-{
-    for (int i = 0; i < NUM_FORMAT_NAMES; i++)
-    {
-        if (szBuff.Compare(g_szFormatNames[i]) == 0)
-        {
-            return i;
-        }
-    }
-    return -1;
-}
-
 void GetFullPathName(CString &szFilePath)
 {
     TCHAR szFullPath[MAX_PATH + 2] = _T("");

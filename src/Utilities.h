@@ -13,5 +13,4 @@ CString GetConfigString(const char *pszUtf8);
 int stoi(CString szData);
 BOOL MakeFullPath(CString szPath);
 CString FormatTime(double fTime, int nFormat);
-int GetFormatId(CString szBuff);
 void GetFullPathName(CString &szFilePath);

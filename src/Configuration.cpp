@@ -480,3 +480,15 @@ const TCHAR *g_bDefaultFunction[] =
     _T("GetProgress_TtaDec.progress"),         // 30
     _T("- none -")                 // 31
 };
+
+int GetFormatId(CString szBuff)
+{
+    for (int i = 0; i < NUM_FORMAT_NAMES; i++)
+    {
+        if (szBuff.Compare(g_szFormatNames[i]) == 0)
+        {
+            return i;
+        }
+    }
+    return -1;
+}

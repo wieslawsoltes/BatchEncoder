@@ -151,6 +151,8 @@ extern const bool g_bDefaultInPipes[NUM_FORMAT_NAMES];
 extern const bool g_bDefaultOutPipes[NUM_FORMAT_NAMES];
 extern const TCHAR *g_bDefaultFunction[];
 
+int GetFormatId(CString szBuff);
+
 class COptions
 {
 public:
