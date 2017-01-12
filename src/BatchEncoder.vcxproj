@@ -258,7 +258,6 @@ copy /-Y data\Formats\*.formats $(OutDir)</Command>
     <ClCompile Include="MyButton.cpp" />
     <ClCompile Include="MyStatic.cpp" />
     <ClCompile Include="MyStatusBarCtrl.cpp" />
-    <ClCompile Include="NewItemData.cpp" />
     <ClCompile Include="OptionsParser.cpp" />
     <ClCompile Include="PresetsDlg.cpp" />
     <ClCompile Include="ResizeDialog.cpp" />
@@ -296,7 +295,6 @@ copy /-Y data\Formats\*.formats $(OutDir)</Command>
     <ClInclude Include="MyButton.h" />
     <ClInclude Include="MyStatic.h" />
     <ClInclude Include="MyStatusBarCtrl.h" />
-    <ClInclude Include="NewItemData.h" />
     <ClInclude Include="OptionsParser.h" />
     <ClInclude Include="PresetsDlg.h" />
     <ClInclude Include="ResizeDialog.h" />
