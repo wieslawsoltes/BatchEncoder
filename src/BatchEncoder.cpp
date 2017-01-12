@@ -10,7 +10,6 @@
 #include "PresetsDlg.h"
 #include "FormatsDlg.h"
 #include "AboutDlg.h"
-#include "CopyFileDlg.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

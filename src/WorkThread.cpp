@@ -84,14 +84,10 @@ DWORD WINAPI ReadThread(LPVOID lpParam)
         // NOTE: Sleep(0) solves problem writing to pipe error (MPPDEC)
         ::Sleep(0);
 
-        // LastError(_T("ReadThread:ReadFile"));
-
         // write data to write pipe
         bRes = ::WriteFile(pReadData->hPipe, pReadBuff, dwReadBytes, &dwWriteBytes, 0);
         if ((bRes == FALSE) || (dwWriteBytes == 0) || (dwReadBytes != dwWriteBytes))
             break;
-
-        // LastError(_T("ReadThread:WriteFile"));
 
         // NOTE: this is not used
         // ::FlushFileBuffers(pReadData->wPipe);
@@ -162,14 +158,10 @@ DWORD WINAPI WriteThread(LPVOID lpParam)
         if ((bRes == FALSE) || (dwReadBytes == 0))
             break;
 
-        // LastError(_T("WriteThread:ReadFile"));
-
         // write data to file
         bRes = ::WriteFile(hFile, pReadBuff, dwReadBytes, &dwWriteBytes, 0);
         if ((bRes == FALSE) || (dwWriteBytes == 0) || (dwReadBytes != dwWriteBytes))
             break;
-
-        // LastError(_T("WriteThread:WriteFile"));
 
         // NOTE: this is not used
         // ::FlushFileBuffers(pReadData->wPipe);
@@ -1119,7 +1111,6 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
             if (nProcessingMode == 1)
                 nProcessingMode = 2;
 
-            // TODO: use CopyOneFile(...) in case 1
             // [1] Input is WAV, [Output is WAV], No Resampling          = Copy Input File (using SSRC without options)
             // [2] Input is WAV, [Output is WAV], Resampling             = Encode Input File (using SSRC)
             // [3] Input need decoding, [Output is WAV], No Resampling   = Decode Input File (using Decoder)

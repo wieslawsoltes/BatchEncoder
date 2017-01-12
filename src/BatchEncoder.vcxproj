@@ -247,7 +247,6 @@ copy /-Y data\Formats\*.formats $(OutDir)</Command>
     <ClCompile Include="BatchEncoderDlg.cpp" />
     <ClCompile Include="Configuration.cpp" />
     <ClCompile Include="ConversionStatus.cpp" />
-    <ClCompile Include="CopyFileDlg.cpp" />
     <ClCompile Include="DropList.cpp" />
     <ClCompile Include="ItemListCtrl.cpp" />
     <ClCompile Include="FormatsDlg.cpp" />
@@ -280,7 +279,6 @@ copy /-Y data\Formats\*.formats $(OutDir)</Command>
     <ClInclude Include="BatchEncoder.h" />
     <ClInclude Include="BatchEncoderDlg.h" />
     <ClInclude Include="ConversionStatus.h" />
-    <ClInclude Include="CopyFileDlg.h" />
     <ClInclude Include="DropList.h" />
     <ClInclude Include="ItemListCtrl.h" />
     <ClInclude Include="FormatsDlg.h" />

@@ -11,33 +11,6 @@
 #define new DEBUG_NEW
 #endif
 
-#ifdef _DEBUG
-void LastError(LPTSTR lpszFunction)
-{
-    LPVOID lpMsgBuf;
-    TCHAR szBuf[1024];
-    DWORD dwError = ::GetLastError();
-    if (dwError != ERROR_SUCCESS)
-    {
-        ::FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM,
-            NULL,
-            dwError,
-            MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
-            (LPTSTR)&lpMsgBuf,
-            0,
-            NULL);
-
-        _stprintf(szBuf, _T("Function: %s\nError code: %u\nError message: %s"),
-            lpszFunction,
-            dwError,
-            (PWCHAR)lpMsgBuf);
-
-        ::MessageBox(NULL, szBuf, _T("ERROR"), MB_OK | MB_ICONERROR);
-        ::LocalFree(lpMsgBuf);
-    }
-}
-#endif
-
 void DoTheShutdown()
 {
     if (::IsWindowsXPOrGreater())
@@ -87,55 +60,6 @@ void LaunchAndWait(LPCTSTR file, LPCTSTR params, BOOL bWait)
         ::WaitForSingleObject(sei.hProcess, INFINITE);
 
     ::CloseHandle(sei.hProcess);
-}
-
-unsigned int StringLenght(register TCHAR *str)
-{
-    register TCHAR *ptr = str;
-
-    while (*ptr != '\0')
-        ptr++;
-
-    return((unsigned int)(ptr - str));
-}
-
-int StringSearch(TCHAR *str, int str_len, TCHAR *key, int key_len)
-{
-    register int i = 0;
-    register int j = 0;
-    register int find = 0;
-    register int count = 0;
-    register int size = (str_len - key_len + 1);
-
-    if (size < 1)
-        return 0;
-
-    count = 0;
-    for (i = 0; i < size; i++)
-    {
-        find = 0;
-        for (j = 0; j < key_len; j++)
-        {
-            if (*(str + i + j) == *(key + j))
-                find++;
-            else
-                break;
-        }
-        if (find == key_len)
-            count++;
-    }
-    return count;
-}
-
-bool CheckCmdLineOpt(TCHAR *str, register TCHAR *key)
-{
-    register int key_size = (int)StringLenght(key);
-    register int ret = 0;
-    ret = StringSearch(str, (int)StringLenght(str), key, key_size);
-    if (ret > 0)
-        return true;
-    else
-        return false;
 }
 
 void SetComboBoxHeight(HWND hDlg, int nComboBoxID)
@@ -219,85 +143,7 @@ CString GetExeFilePath()
 
 void UpdatePath()
 {
-    // change current path to program base dir
     ::SetCurrentDirectory(::GetExeFilePath());
-}
-
-bool CopyOneFile(CString szInFile, CString szOutFile, fncCopyCallback lpCallback)
-{
-    try
-    {
-        LPBYTE lpBuffer = NULL;
-        DWORD dwBufferSize = 4 * 1024;
-        ULONGLONG nFileSize = 0;
-        ULONGLONG nTotalBytes = 0;
-        UINT nReadBytes = 0;
-        int nProgress = 0;
-
-        CFile fpIn, fpOut;
-
-        if (fpIn.Open(szInFile, CFile::modeRead) == FALSE)
-        {
-            return false;
-        }
-
-        if (fpOut.Open(szOutFile, CFile::modeCreate | CFile::modeReadWrite) == FALSE)
-        {
-            fpIn.Close();
-            return false;
-        }
-
-        nFileSize = fpIn.GetLength();
-        if (nFileSize == 0)
-        {
-            fpIn.Close();
-            fpOut.Close();
-            return true;
-        }
-
-        lpBuffer = (LPBYTE)malloc(dwBufferSize);
-        if (lpBuffer == NULL)
-        {
-            fpIn.Close();
-            fpOut.Close();
-            return false;
-        }
-
-        do
-        {
-            nReadBytes = fpIn.Read(lpBuffer, dwBufferSize);
-            if (nReadBytes == 0)
-                break;
-
-            fpOut.Write(lpBuffer, nReadBytes);
-            nTotalBytes += (ULONGLONG)nReadBytes;
-
-            if (lpCallback != NULL)
-            {
-                nProgress = (int)((nTotalBytes * 100) / nFileSize);
-                if (lpCallback(nProgress) == true)
-                    break;
-            }
-        } while (nReadBytes > 0);
-
-        fpIn.Close();
-        fpOut.Close();
-        free(lpBuffer);
-
-        if (nTotalBytes == nFileSize)
-        {
-            return true;
-        }
-        else
-        {
-            ::DeleteFile(szOutFile);
-            return false;
-        }
-    }
-    catch (...)
-    {
-        return false;
-    }
 }
 
 CString GetConfigString(const char *pszUtf8)
@@ -336,21 +182,6 @@ CString GetConfigString(const char *pszUtf8)
 int stoi(CString szData)
 {
     return _tstoi(szData);
-}
-
-void MakeSafeString(CString &szData)
-{
-    // remove unsafe chars from string
-    szData.Remove('*');
-    szData.Remove('?');
-    szData.Remove(':');
-
-    // replace unsafe chars from string
-    szData.Replace('/', '-');
-    szData.Replace('|', '-');
-    szData.Replace('\"', '\'');
-    szData.Replace('<', '(');
-    szData.Replace('>', ')');
 }
 
 BOOL MakeFullPath(CString szPath)
@@ -459,34 +290,6 @@ CString FormatTime(double fTime, int nFormat)
     }
 
     return szTime;
-}
-
-void GradientFill(CDC *m_pMemDC, CRect &rc, COLORREF cr01, COLORREF cr02, bool bVertical)
-{
-    TRIVERTEX vert[2];
-    GRADIENT_RECT gRect;
-
-    vert[0].x = rc.TopLeft().x;
-    vert[0].y = rc.TopLeft().y;
-    vert[0].Red = GetRValue(cr01) << 8;
-    vert[0].Green = GetGValue(cr01) << 8;
-    vert[0].Blue = GetBValue(cr01) << 8;
-    vert[0].Alpha = 0x0000;
-
-    vert[1].x = rc.BottomRight().x;
-    vert[1].y = rc.BottomRight().y;
-    vert[1].Red = GetRValue(cr02) << 8;
-    vert[1].Green = GetGValue(cr02) << 8;
-    vert[1].Blue = GetBValue(cr02) << 8;
-    vert[1].Alpha = 0x0000;
-
-    gRect.UpperLeft = 0;
-    gRect.LowerRight = 1;
-
-    if (bVertical == false)
-        m_pMemDC->GradientFill(vert, 2, &gRect, 1, GRADIENT_FILL_RECT_H);
-    else
-        m_pMemDC->GradientFill(vert, 2, &gRect, 1, GRADIENT_FILL_RECT_V);
 }
 
 int GetFormatId(CString szBuff)

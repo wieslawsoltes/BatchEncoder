@@ -11,7 +11,6 @@
 #include "PresetsDlg.h"
 #include "AboutDlg.h"
 #include "FormatsDlg.h"
-#include "CopyFileDlg.h"
 #include "AdvancedDlg.h"
 #include "WorkThread.h"
 

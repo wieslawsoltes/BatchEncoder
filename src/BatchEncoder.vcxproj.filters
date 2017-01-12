@@ -84,9 +84,6 @@
     <ClCompile Include="BatchEncoderDlg.cpp">
       <Filter>Source Files\Dialogs</Filter>
     </ClCompile>
-    <ClCompile Include="CopyFileDlg.cpp">
-      <Filter>Source Files\Dialogs</Filter>
-    </ClCompile>
     <ClCompile Include="FormatsDlg.cpp">
       <Filter>Source Files\Dialogs</Filter>
     </ClCompile>
@@ -162,9 +159,6 @@
       <Filter>Header Files\Dialogs</Filter>
     </ClInclude>
     <ClInclude Include="BatchEncoderDlg.h">
-      <Filter>Header Files\Dialogs</Filter>
-    </ClInclude>
-    <ClInclude Include="CopyFileDlg.h">
       <Filter>Header Files\Dialogs</Filter>
     </ClInclude>
     <ClInclude Include="FormatsDlg.h">

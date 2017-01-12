@@ -11,7 +11,6 @@
 #define IDD_DIALOG_PRESETS              108
 #define IDD_DIALOG_FORMATS              109
 #define IDD_DIALOG_ABOUT                110
-#define IDD_DIALOG_COPYFILE             111
 #define IDD_DIALOG_ADVANCED             112
 #define IDB_BITMAP_LOGO_SMALL           113
 #define IDR_ACCELERATOR_BATCHENCODER    114
@@ -74,12 +73,8 @@
 #define IDC_STATIC_TEXT_APP_NAME        1026
 #define IDC_COMBO_PD_FORMAT             1027
 #define IDC_EDIT_PD_PATH_TO_CONFIG      1028
-#define IDC_BUTTON_COPY_STOP            1029
 #define IDC_STATIC_TEXT_WEBSITE         1030
-#define IDC_PROGRESS_COPY_FILE          1031
 #define IDC_STATIC_TEXT_EMAIL           1032
-#define IDC_STATIC_TEXT_FROM            1033
-#define IDC_STATIC_TEXT_TO              1034
 #define IDC_STATIC_GROUP_OUTPUT         1035
 #define IDC_STATIC_TEXT_PRESET          1036
 #define IDC_STATIC_TEXT_FORMAT          1037
