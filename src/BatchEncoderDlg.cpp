@@ -1239,9 +1239,9 @@ bool CBatchEncoderDlg::LoadConfigFile()
     if (!pRootElem)
         return false;
 
-    // root: "BatchEncoder"
+    // root: "Configuration"
     const char *szRoot = pRootElem->Value();
-    const char *szRootName = "BatchEncoder";
+    const char *szRootName = "Configuration";
     if (strcmp(szRootName, szRoot) != 0)
         return false;
 
@@ -1742,8 +1742,8 @@ bool CBatchEncoderDlg::SaveConfigFile()
     tinyxml2::XMLDeclaration* decl = doc.NewDeclaration("xml version=\"1.0\" encoding=\"UTF-8\"");
     doc.LinkEndChild(decl);
 
-    // root: BatchEncoder
-    tinyxml2::XMLElement *pRootElem = doc.NewElement("BatchEncoder");
+    // root: Configuration
+    tinyxml2::XMLElement *pRootElem = doc.NewElement("Configuration");
     doc.LinkEndChild(pRootElem);
 
     // root: Settings
