@@ -6,7 +6,7 @@
 
 void InitNewItemData(NewItemData &nid)
 {
-    nid.nAction = -1;
+    nid.nAction = ADD_ITEM_NONE;
     nid.szFileName = _T("");
     nid.nItem = -1;
     nid.szName = _T("");
