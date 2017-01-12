@@ -15,7 +15,7 @@
 #include "Histogram.h"
 #include "LameHistogram.h"
 #include "ConversionStatus.h"
-#include "NewItemData.h"
+#include "Configuration.h"
 
 #define WM_TRAY (WM_USER + 0x10)
 
