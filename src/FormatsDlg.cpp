@@ -352,7 +352,6 @@ void CFormatsDlg::LoadFormatsFile(CString szFileXml)
     CXMLDocumentW doc;
     if (doc.LoadFileW(szFileXml) == true)
     {
-        // Root = Formats
         tinyxml2::XMLElement *pFormatsElem = doc.FirstChildElement();
         if (!pFormatsElem)
         {
@@ -360,7 +359,6 @@ void CFormatsDlg::LoadFormatsFile(CString szFileXml)
             return;
         }
 
-        // check for "Formats"
         const char *szRoot = pFormatsElem->Value();
         const char *szRootName = "Formats";
         if (strcmp(szRootName, szRoot) != 0)
@@ -369,7 +367,6 @@ void CFormatsDlg::LoadFormatsFile(CString szFileXml)
             return;
         }
 
-        // load all elements
         tinyxml2::XMLElement *pFormatElem = pFormatsElem->FirstChildElement("Format");
         for (pFormatElem; pFormatElem; pFormatElem = pFormatElem->NextSiblingElement())
         {
@@ -382,10 +379,8 @@ void CFormatsDlg::LoadFormatsFile(CString szFileXml)
 
                 nFormat = ::GetFormatId(szBuff);
 
-                // check if this is valid format name
                 if ((nFormat < 0) || (nFormat >= NUM_FORMAT_NAMES))
                 {
-                    // invalid format Id
                     continue;
                 }
 
@@ -393,7 +388,6 @@ void CFormatsDlg::LoadFormatsFile(CString szFileXml)
             }
             else
             {
-                // unknown or invalid format
                 continue;
             }
 
@@ -454,7 +448,6 @@ void CFormatsDlg::SaveFormatsFile(CString szFileXml)
     tinyxml2::XMLDeclaration* decl = doc.NewDeclaration("xml version=\"1.0\" encoding=\"UTF-8\"");
     doc.LinkEndChild(decl);
 
-    // root: Formats
     tinyxml2::XMLElement *pFormatsElem = doc.NewElement("Formats");
     doc.LinkEndChild(pFormatsElem);
 
@@ -462,13 +455,13 @@ void CFormatsDlg::SaveFormatsFile(CString szFileXml)
     {
         CUtf8String szBuffUtf8;
 
+        tinyxml2::XMLElement *pFormatElem = doc.NewElement("Format");
+
         m_Formats[i].szTemplate = m_LstFormats.GetItemText(i, 1);
         m_Formats[i].szPath = m_LstFormats.GetItemText(i, 2);
         m_Formats[i].bInput = (m_LstFormats.GetItemText(i, 3).Compare(_T("true")) == 0) ? true : false;
         m_Formats[i].bOutput = (m_LstFormats.GetItemText(i, 4).Compare(_T("true")) == 0) ? true : false;
         m_Formats[i].szFunction = m_LstFormats.GetItemText(i, 5);
-
-        tinyxml2::XMLElement *pFormatElem = doc.NewElement("Format");
 
         pFormatElem->LinkEndChild(doc.NewText(szBuffUtf8.Create(m_Formats[i].szPath)));
         szBuffUtf8.Clear();
