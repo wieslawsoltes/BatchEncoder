@@ -392,7 +392,7 @@ BOOL CBatchEncoderApp::InitInstance()
                 NewItemData nid;
                 ::InitNewItemData(nid);
 
-                nid.nAction = 0;
+                nid.nAction = ADD_ITEM_MEMORY;
                 nid.szFileName = szBuff;
                 nid.nItem = -1;
                 nid.szName = _T("");
