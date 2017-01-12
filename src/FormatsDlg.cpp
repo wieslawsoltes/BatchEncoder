@@ -18,19 +18,8 @@ CFormatsDlg::CFormatsDlg(CWnd* pParent /*=NULL*/)
     : CResizeDialog(CFormatsDlg::IDD, pParent)
 {
     m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
-
-    for (int i = 0; i < NUM_FORMAT_NAMES; i++)
-    {
-        m_Formats[i].szTemplate = g_szDefaultTemplate[i];
-        m_Formats[i].szPath = g_szDefaultPath[i];
-        m_Formats[i].bInput = g_bDefaultInPipes[i];
-        m_Formats[i].bOutput = g_bDefaultOutPipes[i];
-        m_Formats[i].szFunction = g_bDefaultFunction[i];
-    }
-
     szFormatsWndResize = _T("");
     szFormatsListColumns = _T("");
-
     this->bShowGridLines = true;
 }
 
@@ -453,15 +442,18 @@ void CFormatsDlg::SaveFormatsFile(CString szFileXml)
 
     for (int i = 0; i < NUM_FORMAT_NAMES; i++)
     {
-        CUtf8String szBuffUtf8;
-
-        tinyxml2::XMLElement *pFormatElem = doc.NewElement("Format");
-
         m_Formats[i].szTemplate = m_LstFormats.GetItemText(i, 1);
         m_Formats[i].szPath = m_LstFormats.GetItemText(i, 2);
         m_Formats[i].bInput = (m_LstFormats.GetItemText(i, 3).Compare(_T("true")) == 0) ? true : false;
         m_Formats[i].bOutput = (m_LstFormats.GetItemText(i, 4).Compare(_T("true")) == 0) ? true : false;
         m_Formats[i].szFunction = m_LstFormats.GetItemText(i, 5);
+    }
+
+    for (int i = 0; i < NUM_FORMAT_NAMES; i++)
+    {
+        CUtf8String szBuffUtf8;
+
+        tinyxml2::XMLElement *pFormatElem = doc.NewElement("Format");
 
         pFormatElem->LinkEndChild(doc.NewText(szBuffUtf8.Create(m_Formats[i].szPath)));
         szBuffUtf8.Clear();

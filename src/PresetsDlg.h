@@ -30,9 +30,6 @@ public:
 private:
     volatile bool bUpdate;
 public:
-    bool bStandAlone;
-    CString szStandAloneFile;
-public:
     int nSelFormat;
     int nSelPreset;
 public:

@@ -233,16 +233,16 @@ public:
 public:
     afx_msg void OnOptionsStayOnTop();
     afx_msg void OnOptionsShowTrayIcon();
-    afx_msg void OnOptionsDeleteSourceFileWhenDone();
+    afx_msg void OnOptionsLogConsoleOutput();
     afx_msg void OnOptionsShowLog();
     afx_msg void OnOptionsDeleteLog();
-    afx_msg void OnOptionsLogConsoleOutput();
-    afx_msg void OnOptionsDoNotSave();
-    afx_msg void OnOptionsConfigurePresets();
-    afx_msg void OnOptionsConfigureFormat();
+    afx_msg void OnOptionsDeleteSourceFileWhenDone();
     afx_msg void OnOptionsShutdownWhenFinished();
+    afx_msg void OnOptionsDoNotSave();
     afx_msg void OnOptionsForceConsoleWindow();
     afx_msg void OnOptionsAdvanced();
+    afx_msg void OnOptionsConfigurePresets();
+    afx_msg void OnOptionsConfigureFormat();
 public:
     afx_msg void OnHelpWebsite();
     afx_msg void OnHelpAbout();

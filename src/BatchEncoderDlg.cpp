@@ -302,18 +302,18 @@ BEGIN_MESSAGE_MAP(CBatchEncoderDlg, CResizeDialog)
     ON_COMMAND(ID_VIEW_TOOGLEHISTOGRAMWINDOW, OnViewToogleHistogramWindow)
     ON_COMMAND(ID_VIEW_SHOWGRIDLINES, OnViewShowGridLines)
     ON_COMMAND(ID_ACTION_CONVERT, OnActionConvert)
-    ON_COMMAND(ID_OPTIONS_CONFIGUREPRESETS, OnOptionsConfigurePresets)
-    ON_COMMAND(ID_OPTIONS_CONFIGUREFORMAT, OnOptionsConfigureFormat)
-    ON_COMMAND(ID_OPTIONS_SHUTDOWN_WHEN_FINISHED, OnOptionsShutdownWhenFinished)
     ON_COMMAND(ID_OPTIONS_STAYONTOP, OnOptionsStayOnTop)
     ON_COMMAND(ID_OPTIONS_SHOWTRAYICON, OnOptionsShowTrayIcon)
-    ON_COMMAND(ID_OPTIONS_DELETESOURCEFILEWHENDONE, OnOptionsDeleteSourceFileWhenDone)
+    ON_COMMAND(ID_OPTIONS_LOGCONSOLEOUTPUT, OnOptionsLogConsoleOutput)
     ON_COMMAND(ID_OPTIONS_SHOWLOGLIST, OnOptionsShowLog)
     ON_COMMAND(ID_OPTIONS_DELETELOG, OnOptionsDeleteLog)
-    ON_COMMAND(ID_OPTIONS_LOGCONSOLEOUTPUT, OnOptionsLogConsoleOutput)
+    ON_COMMAND(ID_OPTIONS_DELETESOURCEFILEWHENDONE, OnOptionsDeleteSourceFileWhenDone)
+    ON_COMMAND(ID_OPTIONS_SHUTDOWN_WHEN_FINISHED, OnOptionsShutdownWhenFinished)
     ON_COMMAND(ID_OPTIONS_DO_NOT_SAVE, OnOptionsDoNotSave)
     ON_COMMAND(ID_OPTIONS_FORCECONSOLEWINDOW, OnOptionsForceConsoleWindow)
     ON_COMMAND(ID_OPTIONS_ADVANCED, OnOptionsAdvanced)
+    ON_COMMAND(ID_OPTIONS_CONFIGUREPRESETS, OnOptionsConfigurePresets)
+    ON_COMMAND(ID_OPTIONS_CONFIGUREFORMAT, OnOptionsConfigureFormat)
     ON_COMMAND(ID_HELP_WEBSITE, OnHelpWebsite)
     ON_COMMAND(ID_HELP_ABOUT, OnHelpAbout)
     ON_COMMAND(ID_ACCELERATOR_CTRL_L, OnFileLoadList)
@@ -3808,15 +3808,15 @@ void CBatchEncoderDlg::OnOptionsShowTrayIcon()
         this->EnableTrayIcon(true);
 }
 
-void CBatchEncoderDlg::OnOptionsDeleteSourceFileWhenDone()
+void CBatchEncoderDlg::OnOptionsLogConsoleOutput()
 {
     if (bRunning == true)
         return;
 
-    if (this->GetMenu()->GetMenuState(ID_OPTIONS_DELETESOURCEFILEWHENDONE, MF_BYCOMMAND) == MF_CHECKED)
-        this->GetMenu()->CheckMenuItem(ID_OPTIONS_DELETESOURCEFILEWHENDONE, MF_UNCHECKED);
+    if (this->GetMenu()->GetMenuState(ID_OPTIONS_LOGCONSOLEOUTPUT, MF_BYCOMMAND) == MF_CHECKED)
+        this->GetMenu()->CheckMenuItem(ID_OPTIONS_LOGCONSOLEOUTPUT, MF_UNCHECKED);
     else
-        this->GetMenu()->CheckMenuItem(ID_OPTIONS_DELETESOURCEFILEWHENDONE, MF_CHECKED);
+        this->GetMenu()->CheckMenuItem(ID_OPTIONS_LOGCONSOLEOUTPUT, MF_CHECKED);
 }
 
 void CBatchEncoderDlg::OnOptionsShowLog()
@@ -3842,15 +3842,26 @@ void CBatchEncoderDlg::OnOptionsDeleteLog()
     }
 }
 
-void CBatchEncoderDlg::OnOptionsLogConsoleOutput()
+void CBatchEncoderDlg::OnOptionsDeleteSourceFileWhenDone()
 {
     if (bRunning == true)
         return;
 
-    if (this->GetMenu()->GetMenuState(ID_OPTIONS_LOGCONSOLEOUTPUT, MF_BYCOMMAND) == MF_CHECKED)
-        this->GetMenu()->CheckMenuItem(ID_OPTIONS_LOGCONSOLEOUTPUT, MF_UNCHECKED);
+    if (this->GetMenu()->GetMenuState(ID_OPTIONS_DELETESOURCEFILEWHENDONE, MF_BYCOMMAND) == MF_CHECKED)
+        this->GetMenu()->CheckMenuItem(ID_OPTIONS_DELETESOURCEFILEWHENDONE, MF_UNCHECKED);
     else
-        this->GetMenu()->CheckMenuItem(ID_OPTIONS_LOGCONSOLEOUTPUT, MF_CHECKED);
+        this->GetMenu()->CheckMenuItem(ID_OPTIONS_DELETESOURCEFILEWHENDONE, MF_CHECKED);
+}
+
+void CBatchEncoderDlg::OnOptionsShutdownWhenFinished()
+{
+    if (bRunning == true)
+        return;
+
+    if (this->GetMenu()->GetMenuState(ID_OPTIONS_SHUTDOWN_WHEN_FINISHED, MF_BYCOMMAND) == MF_CHECKED)
+        this->GetMenu()->CheckMenuItem(ID_OPTIONS_SHUTDOWN_WHEN_FINISHED, MF_UNCHECKED);
+    else
+        this->GetMenu()->CheckMenuItem(ID_OPTIONS_SHUTDOWN_WHEN_FINISHED, MF_CHECKED);
 }
 
 void CBatchEncoderDlg::OnOptionsDoNotSave()
@@ -3862,50 +3873,6 @@ void CBatchEncoderDlg::OnOptionsDoNotSave()
         this->GetMenu()->CheckMenuItem(ID_OPTIONS_DO_NOT_SAVE, MF_UNCHECKED);
     else
         this->GetMenu()->CheckMenuItem(ID_OPTIONS_DO_NOT_SAVE, MF_CHECKED);
-}
-
-void CBatchEncoderDlg::OnOptionsAdvanced()
-{
-    if (bRunning == true)
-        return;
-
-    CAdvancedDlg dlg;
-
-    m_Config.m_Options.Copy(dlg.m_Options);
-
-    FROM_COLORREF_TO_CCOLOR(dlg.m_Colors[0], this->m_CnvStatus.crText)
-    FROM_COLORREF_TO_CCOLOR(dlg.m_Colors[1], this->m_CnvStatus.crTextError)
-    FROM_COLORREF_TO_CCOLOR(dlg.m_Colors[2], this->m_CnvStatus.crProgress)
-    FROM_COLORREF_TO_CCOLOR(dlg.m_Colors[3], this->m_CnvStatus.crBorder)
-    FROM_COLORREF_TO_CCOLOR(dlg.m_Colors[4], this->m_CnvStatus.crBack)
-    FROM_COLORREF_TO_CCOLOR(dlg.m_Colors[5], this->m_Histogram.crLR)
-    FROM_COLORREF_TO_CCOLOR(dlg.m_Colors[6], this->m_Histogram.crMS)
-    FROM_COLORREF_TO_CCOLOR(dlg.m_Colors[7], this->m_Histogram.crBorder)
-    FROM_COLORREF_TO_CCOLOR(dlg.m_Colors[8], this->m_Histogram.crBack)
-
-    if (dlg.DoModal() == IDOK)
-    {
-        dlg.m_Options.Copy(m_Config.m_Options);
-
-        this->m_CnvStatus.crText = FROM_CCOLOR_TO_COLORREF(dlg.m_Colors[0]);
-        this->m_CnvStatus.crTextError = FROM_CCOLOR_TO_COLORREF(dlg.m_Colors[1]);
-        this->m_CnvStatus.crProgress = FROM_CCOLOR_TO_COLORREF(dlg.m_Colors[2]);
-        this->m_CnvStatus.crBorder = FROM_CCOLOR_TO_COLORREF(dlg.m_Colors[3]);
-        this->m_CnvStatus.crBack = FROM_CCOLOR_TO_COLORREF(dlg.m_Colors[4]);
-        this->m_Histogram.crLR = FROM_CCOLOR_TO_COLORREF(dlg.m_Colors[5]);
-        this->m_Histogram.crMS = FROM_CCOLOR_TO_COLORREF(dlg.m_Colors[6]);
-        this->m_Histogram.crBorder = FROM_CCOLOR_TO_COLORREF(dlg.m_Colors[7]);
-        this->m_Histogram.crBack = FROM_CCOLOR_TO_COLORREF(dlg.m_Colors[8]);
-
-        // re-initialize Conversion Status and Histogram controls
-        this->m_CnvStatus.Clean();
-        this->m_CnvStatus.Init();
-        this->m_CnvStatus.Erase(true);
-
-        this->m_Histogram.Clean();
-        this->m_Histogram.Init(false);
-        this->m_Histogram.Erase(true);
-    }
 }
 
 void CBatchEncoderDlg::OnOptionsForceConsoleWindow()
@@ -3929,6 +3896,50 @@ void CBatchEncoderDlg::OnOptionsForceConsoleWindow()
         this->GetMenu()->CheckMenuItem(ID_OPTIONS_FORCECONSOLEWINDOW, MF_CHECKED);
         this->bForceConsoleWindow = true;
     }
+}
+
+void CBatchEncoderDlg::OnOptionsAdvanced()
+{
+    if (bRunning == true)
+        return;
+
+    CAdvancedDlg dlg;
+
+    m_Config.m_Options.Copy(dlg.m_Options);
+
+    FROM_COLORREF_TO_CCOLOR(dlg.m_Colors[0], this->m_CnvStatus.crText)
+        FROM_COLORREF_TO_CCOLOR(dlg.m_Colors[1], this->m_CnvStatus.crTextError)
+        FROM_COLORREF_TO_CCOLOR(dlg.m_Colors[2], this->m_CnvStatus.crProgress)
+        FROM_COLORREF_TO_CCOLOR(dlg.m_Colors[3], this->m_CnvStatus.crBorder)
+        FROM_COLORREF_TO_CCOLOR(dlg.m_Colors[4], this->m_CnvStatus.crBack)
+        FROM_COLORREF_TO_CCOLOR(dlg.m_Colors[5], this->m_Histogram.crLR)
+        FROM_COLORREF_TO_CCOLOR(dlg.m_Colors[6], this->m_Histogram.crMS)
+        FROM_COLORREF_TO_CCOLOR(dlg.m_Colors[7], this->m_Histogram.crBorder)
+        FROM_COLORREF_TO_CCOLOR(dlg.m_Colors[8], this->m_Histogram.crBack)
+
+        if (dlg.DoModal() == IDOK)
+        {
+            dlg.m_Options.Copy(m_Config.m_Options);
+
+            this->m_CnvStatus.crText = FROM_CCOLOR_TO_COLORREF(dlg.m_Colors[0]);
+            this->m_CnvStatus.crTextError = FROM_CCOLOR_TO_COLORREF(dlg.m_Colors[1]);
+            this->m_CnvStatus.crProgress = FROM_CCOLOR_TO_COLORREF(dlg.m_Colors[2]);
+            this->m_CnvStatus.crBorder = FROM_CCOLOR_TO_COLORREF(dlg.m_Colors[3]);
+            this->m_CnvStatus.crBack = FROM_CCOLOR_TO_COLORREF(dlg.m_Colors[4]);
+            this->m_Histogram.crLR = FROM_CCOLOR_TO_COLORREF(dlg.m_Colors[5]);
+            this->m_Histogram.crMS = FROM_CCOLOR_TO_COLORREF(dlg.m_Colors[6]);
+            this->m_Histogram.crBorder = FROM_CCOLOR_TO_COLORREF(dlg.m_Colors[7]);
+            this->m_Histogram.crBack = FROM_CCOLOR_TO_COLORREF(dlg.m_Colors[8]);
+
+            // re-initialize Conversion Status and Histogram controls
+            this->m_CnvStatus.Clean();
+            this->m_CnvStatus.Init();
+            this->m_CnvStatus.Erase(true);
+
+            this->m_Histogram.Clean();
+            this->m_Histogram.Init(false);
+            this->m_Histogram.Erase(true);
+        }
 }
 
 void CBatchEncoderDlg::OnOptionsConfigurePresets()
@@ -4013,17 +4024,6 @@ void CBatchEncoderDlg::OnOptionsConfigureFormat()
 
     this->szFormatsWndResize = dlg.szFormatsWndResize;
     this->szFormatsListColumns = dlg.szFormatsListColumns;
-}
-
-void CBatchEncoderDlg::OnOptionsShutdownWhenFinished()
-{
-    if (bRunning == true)
-        return;
-
-    if (this->GetMenu()->GetMenuState(ID_OPTIONS_SHUTDOWN_WHEN_FINISHED, MF_BYCOMMAND) == MF_CHECKED)
-        this->GetMenu()->CheckMenuItem(ID_OPTIONS_SHUTDOWN_WHEN_FINISHED, MF_UNCHECKED);
-    else
-        this->GetMenu()->CheckMenuItem(ID_OPTIONS_SHUTDOWN_WHEN_FINISHED, MF_CHECKED);
 }
 
 void CBatchEncoderDlg::OnHelpWebsite()

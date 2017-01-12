@@ -528,12 +528,12 @@ BEGIN
         MENUITEM SEPARATOR
         MENUITEM "Don't save settings on e&xit\tCtrl+X", ID_OPTIONS_DO_NOT_SAVE
         MENUITEM SEPARATOR
-        MENUITEM "Configure &presets...\tF7",   ID_OPTIONS_CONFIGUREPRESETS
-        MENUITEM "Configure &formats...\tF8",   ID_OPTIONS_CONFIGUREFORMAT
-        MENUITEM SEPARATOR
         MENUITEM "For&ce console window\tCtrl+Shift+F", ID_OPTIONS_FORCECONSOLEWINDOW
         MENUITEM SEPARATOR
-        MENUITEM "&Advanced...\tCtrl+Shift+A",  ID_OPTIONS_ADVANCED
+        MENUITEM "&Advanced...\tCtrl+Shift+A", ID_OPTIONS_ADVANCED
+        MENUITEM SEPARATOR
+        MENUITEM "Configure &presets...\tF7", ID_OPTIONS_CONFIGUREPRESETS
+        MENUITEM "Configure &formats...\tF8", ID_OPTIONS_CONFIGUREFORMAT
     END
     POPUP "&Help"
     BEGIN

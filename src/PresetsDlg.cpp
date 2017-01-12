@@ -19,18 +19,9 @@ CPresetsDlg::CPresetsDlg(CWnd* pParent /*=NULL*/)
 {
     m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
     nSelFormat = 1;
-
-    // TODO: 
-    // apply this flag to dialog differ between versions
-    // one for Combo and 1 for only 1 file mode
-    bStandAlone = false;
-    szStandAloneFile = _T("");
-
     szPresetsWndResize = _T("");
     szPresetsListColumns = _T("");
-
     bUpdate = false;
-
     this->bShowGridLines = true;
 }
 
@@ -104,94 +95,28 @@ BOOL CPresetsDlg::OnInitDialog()
     m_LstPresets.InsertColumn(0, _T("Name"), LVCFMT_LEFT, 200);
     m_LstPresets.InsertColumn(1, _T("Options"), LVCFMT_LEFT, 290);
 
-    // in standalone editor only one-at-time file editing is allowed
-    if (bStandAlone == false)
-    {
-        // file format combo-box
-        for (int i = 0; i < NUM_PRESET_FILES; i++)
-            m_CmbFormat.InsertString(i, g_szNames[i]);
+    // file format combo-box
+    for (int i = 0; i < NUM_PRESET_FILES; i++)
+        m_CmbFormat.InsertString(i, g_szNames[i]);
 
-        ::SetComboBoxHeight(this->GetSafeHwnd(), IDC_COMBO_PD_FORMAT);
+    ::SetComboBoxHeight(this->GetSafeHwnd(), IDC_COMBO_PD_FORMAT);
 
-        m_CmbFormat.SetCurSel(nSelFormat);
+    m_CmbFormat.SetCurSel(nSelFormat);
 
-        // load config file for current format
-        this->OnCbnSelchangeComboPdFormat();
+    // load config file for current format
+    this->OnCbnSelchangeComboPdFormat();
 
-        // select current preset
-        int nItem = this->nSelPreset;
+    // select current preset
+    int nItem = this->nSelPreset;
 
-        CString szName = this->m_LstPresets.GetItemText(nItem, 0);
-        CString szOptions = this->m_LstPresets.GetItemText(nItem, 1);
+    CString szName = this->m_LstPresets.GetItemText(nItem, 0);
+    CString szOptions = this->m_LstPresets.GetItemText(nItem, 1);
 
-        this->m_EdtName.SetWindowText(szName);
-        this->m_EdtOptions.SetWindowText(szOptions);
+    this->m_EdtName.SetWindowText(szName);
+    this->m_EdtOptions.SetWindowText(szOptions);
 
-        m_LstPresets.SetItemState(nItem, LVIS_SELECTED, LVIS_SELECTED);
-        m_LstPresets.EnsureVisible(nItem, FALSE);
-    }
-
-    // behave like standalone editor
-    if (bStandAlone == true)
-    {
-        // method 1: hide only ComboBox and resize EditBox
-
-        // items to hide
-        GetDlgItem(IDC_COMBO_PD_FORMAT)->ShowWindow(SW_HIDE);
-
-        // items to move
-        CRect rcFormatCombo;
-        GetDlgItem(IDC_COMBO_PD_FORMAT)->GetWindowRect(rcFormatCombo);
-        ScreenToClient(&rcFormatCombo);
-
-        CRect rcPathEdit;
-        GetDlgItem(IDC_EDIT_PD_PATH_TO_CONFIG)->GetWindowRect(rcPathEdit);
-        ScreenToClient(&rcPathEdit);
-
-        int nDiff = rcPathEdit.left - rcFormatCombo.left;
-
-        rcPathEdit.left -= nDiff;
-        GetDlgItem(IDC_EDIT_PD_PATH_TO_CONFIG)->MoveWindow(rcPathEdit);
-
-        // method 2: hide ComboBox and EditBox
-
-        /*
-        // items to hide
-        GetDlgItem(IDC_COMBO_PD_FORMAT)->ShowWindow(SW_HIDE);
-        GetDlgItem(IDC_EDIT_PD_PATH_TO_CONFIG)->ShowWindow(SW_HIDE);
-
-        // items to move
-        CRect rcFormatCombo;
-        GetDlgItem(IDC_COMBO_PD_FORMAT)->GetWindowRect(rcFormatCombo);
-        ScreenToClient(&rcFormatCombo);
-
-        CRect rcPresetsList;
-        GetDlgItem(IDC_EDIT_PD_PRESETS)->GetWindowRect(rcPresetsList);
-        ScreenToClient(&rcPresetsList);
-
-        CRect rcButtonUp;
-        GetDlgItem(IDC_BUTTON_PD_UP)->GetWindowRect(rcButtonUp);
-        ScreenToClient(&rcButtonUp);
-
-        CRect rcButtonDown;
-        GetDlgItem(IDC_BUTTON_PD_DOWN)->GetWindowRect(rcButtonDown);
-        ScreenToClient(&rcButtonDown);
-
-        int nDiff = rcPresetsList.top - rcFormatCombo.top;
-
-        rcPresetsList.top -= nDiff;
-        rcPresetsList.bottom -= 0;
-        GetDlgItem(IDC_EDIT_PD_PRESETS)->MoveWindow(rcPresetsList);
-
-        rcButtonUp.top -= nDiff;
-        rcButtonUp.bottom -= nDiff;
-        GetDlgItem(IDC_BUTTON_PD_UP)->MoveWindow(rcButtonUp);
-
-        rcButtonDown.top -= nDiff;
-        rcButtonDown.bottom -= nDiff;
-        GetDlgItem(IDC_BUTTON_PD_DOWN)->MoveWindow(rcButtonDown);
-        */
-    }
+    m_LstPresets.SetItemState(nItem, LVIS_SELECTED, LVIS_SELECTED);
+    m_LstPresets.EnsureVisible(nItem, FALSE);
 
     // setup resize anchors
     AddAnchor(IDC_COMBO_PD_FORMAT, TOP_LEFT);
@@ -694,34 +619,19 @@ void CPresetsDlg::OnBnClickedCancel()
 
 CString CPresetsDlg::GetCurConfigFile()
 {
-    if (this->bStandAlone == true)
-    {
-        return this->szStandAloneFile;
-    }
+    int nSelFormat = this->m_CmbFormat.GetCurSel();
+    if ((nSelFormat >= 0) && (nSelFormat < NUM_PRESET_FILES))
+        return this->szPresetsFile[nSelFormat];
     else
-    {
-        int nSelFormat = this->m_CmbFormat.GetCurSel();
-
-        if ((nSelFormat >= 0) && (nSelFormat < NUM_PRESET_FILES))
-            return this->szPresetsFile[nSelFormat];
-        else
-            return _T(""); // ERROR
-    }
+        return _T(""); // ERROR
 }
 
 void CPresetsDlg::SetCurConfigFile(CString szFile)
 {
-    if (this->bStandAlone == true)
-    {
-        this->szStandAloneFile = szFile;
-    }
-    else
-    {
-        int nSelFormat = this->m_CmbFormat.GetCurSel();
+    int nSelFormat = this->m_CmbFormat.GetCurSel();
 
-        if ((nSelFormat >= 0) && (nSelFormat < NUM_PRESET_FILES))
-            this->szPresetsFile[nSelFormat] = szFile;
-    }
+    if ((nSelFormat >= 0) && (nSelFormat < NUM_PRESET_FILES))
+        this->szPresetsFile[nSelFormat] = szFile;
 }
 
 void CPresetsDlg::OnBnClickedButtonPdUpdate()
