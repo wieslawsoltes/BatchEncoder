@@ -5,6 +5,8 @@
 
 #include "xml\tinyxml2.h" // https://github.com/leethomason/tinyxml2
 
+#define UTF8_DOCUMENT_DECLARATION "xml version=\"1.0\" encoding=\"UTF-8\""
+
 class CXMLDocumentW : public tinyxml2::XMLDocument
 {
 public:

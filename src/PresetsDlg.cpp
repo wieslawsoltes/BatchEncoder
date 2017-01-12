@@ -404,7 +404,7 @@ void CPresetsDlg::SavePresetsFile(CString szFileXml)
 
     CXMLDocumentW doc;
 
-    tinyxml2::XMLDeclaration* decl = doc.NewDeclaration("xml version=\"1.0\" encoding=\"UTF-8\"");
+    tinyxml2::XMLDeclaration* decl = doc.NewDeclaration(UTF8_DOCUMENT_DECLARATION);
     doc.LinkEndChild(decl);
 
     tinyxml2::XMLElement *pPresetsElem = doc.NewElement("Presets");

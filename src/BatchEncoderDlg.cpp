@@ -1739,7 +1739,7 @@ bool CBatchEncoderDlg::SaveConfigFile()
     // save all settings to file
     CXMLDocumentW doc;
 
-    tinyxml2::XMLDeclaration* decl = doc.NewDeclaration("xml version=\"1.0\" encoding=\"UTF-8\"");
+    tinyxml2::XMLDeclaration* decl = doc.NewDeclaration(UTF8_DOCUMENT_DECLARATION);
     doc.LinkEndChild(decl);
 
     // root: Configuration
@@ -2982,7 +2982,7 @@ bool CBatchEncoderDlg::SaveList(CString szFileXml)
 {
     CXMLDocumentW doc;
 
-    tinyxml2::XMLDeclaration* decl = doc.NewDeclaration("xml version=\"1.0\" encoding=\"UTF-8\"");
+    tinyxml2::XMLDeclaration* decl = doc.NewDeclaration(UTF8_DOCUMENT_DECLARATION);
     doc.LinkEndChild(decl);
 
     CString szBuff;
