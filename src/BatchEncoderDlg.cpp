@@ -1533,7 +1533,7 @@ bool CBatchEncoderDlg::LoadConfigFile()
                 for (int i = 0; i < NUM_ITEM_ATTRIBUTES; i++)
                     szData[i] = GetConfigString(pszAttrib[i]);
 
-                nid.nAction = 2;
+                nid.nAction = ADD_ITEM_MEMORY_AND_CONTROL;
                 nid.szFileName = szData[0];
                 nid.nItem = -1;
                 nid.szName = szData[2];
@@ -1555,7 +1555,7 @@ bool CBatchEncoderDlg::LoadConfigFile()
 
         for (int i = 0; i < m_Config.m_Items.GetSize(); i++)
         {
-            nid.nAction = 1;
+            nid.nAction = ADD_ITEM_CONTROL;
             nid.szFileName = _T("");
             nid.nItem = i;
 
@@ -2707,12 +2707,7 @@ void CBatchEncoderDlg::OnBnClickedCheckOutPath()
 
 bool CBatchEncoderDlg::InsertToList(NewItemData &nid)
 {
-    // nAction:
-    // 0 - Adding new item to memory ItemsList.
-    // 1 - Adding new item to control ItemsList.
-    // 2 - Adding new item to memory and control ItemsList.
-
-    if (((nid.nAction == 0) || (nid.nAction == 2)) && (nid.nItem == -1))
+    if (((nid.nAction == ADD_ITEM_MEMORY) || (nid.nAction == ADD_ITEM_MEMORY_AND_CONTROL)) && (nid.nItem == -1))
     {
         WIN32_FIND_DATA FindFileData;
         HANDLE hFind;
@@ -2763,7 +2758,7 @@ bool CBatchEncoderDlg::InsertToList(NewItemData &nid)
             nCurPreset);
     }
 
-    if (((nid.nAction == 1) || (nid.nAction == 2)) && (nid.nItem >= 0))
+    if (((nid.nAction == ADD_ITEM_CONTROL) || (nid.nAction == ADD_ITEM_MEMORY_AND_CONTROL)) && (nid.nItem >= 0))
     {
         CString tmpBuf;
         LVITEM lvi;
@@ -2875,7 +2870,7 @@ void CBatchEncoderDlg::SearchFolderForFiles(CString szFile,
 
                 if ((szOutExt != NULL) && (nPreset != -1))
                 {
-                    nid.nAction = 0;
+                    nid.nAction = ADD_ITEM_MEMORY;
                     nid.szFileName = szTempBuf;
                     nid.nItem = -1;
                     nid.szName = _T("");
@@ -2886,11 +2881,12 @@ void CBatchEncoderDlg::SearchFolderForFiles(CString szFile,
                 }
                 else
                 {
-                    nid.nAction = 2;
+                    nid.nAction = ADD_ITEM_MEMORY_AND_CONTROL;
                     nid.szFileName = szTempBuf;
                     nid.nItem = -1;
 
-                    this->InsertToList(nid);
+                    this->
+                        (nid);
                 }
             }
 
@@ -2947,7 +2943,7 @@ void CBatchEncoderDlg::HandleDropFiles(HDROP hDropInfo)
             else
             {
                 // insert dropped files
-                nid.nAction = 2;
+                nid.nAction = ADD_ITEM_MEMORY_AND_CONTROL;
                 nid.szFileName = szFile;
                 nid.nItem = -1;
 
@@ -3337,11 +3333,11 @@ bool CBatchEncoderDlg::LoadList(CString szFileXml, bool bAddToListCtrl)
                 for (int i = 0; i < NUM_ITEM_ATTRIBUTES; i++)
                     szData[i] = GetConfigString(pszAttrib[i]);
 
-                int nAction = 2;
                 if (bAddToListCtrl == false)
-                    nAction = 0;
+                    nid.nAction = ADD_ITEM_MEMORY;
+                else
+                    nid.nAction = ADD_ITEM_MEMORY_AND_CONTROL;
 
-                nid.nAction = nAction;
                 nid.szFileName = szData[0];
                 nid.nItem = -1;
                 nid.szName = szData[2];
@@ -3573,7 +3569,7 @@ void CBatchEncoderDlg::OnEditAddFiles()
                 sFilePath = fd.GetNextPathName(pos);
                 if (!sFilePath.IsEmpty())
                 {
-                    nid.nAction = 2;
+                    nid.nAction = ADD_ITEM_MEMORY_AND_CONTROL;
                     nid.szFileName = sFilePath;
                     nid.nItem = -1;
 
