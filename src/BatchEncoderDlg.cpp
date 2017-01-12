@@ -2885,8 +2885,7 @@ void CBatchEncoderDlg::SearchFolderForFiles(CString szFile,
                     nid.szFileName = szTempBuf;
                     nid.nItem = -1;
 
-                    this->
-                        (nid);
+                    this->InsertToList(nid);
                 }
             }
 
