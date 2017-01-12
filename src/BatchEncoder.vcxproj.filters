@@ -43,6 +43,15 @@
     <Filter Include="Source Files\Worker">
       <UniqueIdentifier>{f8cc472c-0a7e-4e72-a429-fcc770c604c0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\Presets">
+      <UniqueIdentifier>{59ce1f30-297f-45aa-b144-878db24af41e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Config">
+      <UniqueIdentifier>{ec875038-f214-445e-ba15-12ddbc500196}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Icons">
+      <UniqueIdentifier>{5493e3ca-4450-4a22-a7e2-95859e1f5e2e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BatchEncoder.cpp">
@@ -188,43 +197,43 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\BatchEncoder.ico">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Icons</Filter>
     </Image>
     <Image Include="res\ProgressIcon01.ico">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Icons</Filter>
     </Image>
     <Image Include="res\ProgressIcon02.ico">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Icons</Filter>
     </Image>
     <Image Include="res\ProgressIcon03.ico">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Icons</Filter>
     </Image>
     <Image Include="res\ProgressIcon04.ico">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Icons</Filter>
     </Image>
     <Image Include="res\ProgressIcon05.ico">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Icons</Filter>
     </Image>
     <Image Include="res\ProgressIcon06.ico">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Icons</Filter>
     </Image>
     <Image Include="res\ProgressIcon07.ico">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Icons</Filter>
     </Image>
     <Image Include="res\ProgressIcon08.ico">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Icons</Filter>
     </Image>
     <Image Include="res\ProgressIcon09.ico">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Icons</Filter>
     </Image>
     <Image Include="res\ProgressIcon10.ico">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Icons</Filter>
     </Image>
     <Image Include="res\ProgressIcon11.ico">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Icons</Filter>
     </Image>
     <Image Include="res\ProgressIcon12.ico">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Icons</Filter>
     </Image>
   </ItemGroup>
   <ItemGroup>
@@ -232,55 +241,55 @@
       <Filter>Resource Files</Filter>
     </None>
     <None Include="data\Presets\Presets_AAC_Faac.presets">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Presets</Filter>
     </None>
     <None Include="data\Presets\Presets_AC3_Aften.presets">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Presets</Filter>
     </None>
     <None Include="data\Presets\Presets_APE_Mac.presets">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Presets</Filter>
     </None>
     <None Include="data\Presets\Presets_FLAC_Flac.presets">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Presets</Filter>
     </None>
     <None Include="data\Presets\Presets_M4A_Faac.presets">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Presets</Filter>
     </None>
     <None Include="data\Presets\Presets_M4A_neroAacEnc.presets">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Presets</Filter>
     </None>
     <None Include="data\Presets\Presets_MP3_Lame.presets">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Presets</Filter>
     </None>
     <None Include="data\Presets\Presets_MP4_Faac.presets">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Presets</Filter>
     </None>
     <None Include="data\Presets\Presets_MP4_neroAacEnc.presets">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Presets</Filter>
     </None>
     <None Include="data\Presets\Presets_MPC_MpcEnc.presets">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Presets</Filter>
     </None>
     <None Include="data\Presets\Presets_OFR_Ofr.presets">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Presets</Filter>
     </None>
     <None Include="data\Presets\Presets_OGG_OggEnc.presets">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Presets</Filter>
     </None>
     <None Include="data\Presets\Presets_TAK_Takc.presets">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Presets</Filter>
     </None>
     <None Include="data\Presets\Presets_TTA_TtaEnc.presets">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Presets</Filter>
     </None>
     <None Include="data\Presets\Presets_WAV_Ssrc.presets">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Presets</Filter>
     </None>
     <None Include="data\Presets\Presets_WV_WavPack.presets">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Presets</Filter>
     </None>
     <None Include="data\Config\BatchEncoder.config">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Config</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
