@@ -77,8 +77,6 @@ Name: {group}\{#ProgramName} Web Site; Filename: {app}\{#ProgramName}.url; Worki
 Name: {group}\Uninstall {#ProgramName}; Filename: {uninstallexe}; WorkingDir: {app}
 Name: {userdesktop}\{#ProgramName}; Filename: {app}\BatchEncoder.exe; WorkingDir: {app}; Tasks: desktopicon; Components: main
 Name: {userappdata}\Microsoft\Internet Explorer\Quick Launch\{#ProgramName}; Filename: {app}\BatchEncoder.exe; WorkingDir: {app}; Tasks: quicklaunchicon; Components: main
-Name: {group}\{#ProgramName} Tools\Presets Editor; Parameters: --configure-presets; Filename: {app}\BatchEncoder.exe; WorkingDir: {app}; Components: main
-Name: {group}\{#ProgramName} Tools\Formats Editor; Parameters: --configure-formats; Filename: {app}\BatchEncoder.exe; WorkingDir: {app}; Components: main
 
 [Run]
 
