@@ -31,12 +31,6 @@
     <Filter Include="Source Files\Xml">
       <UniqueIdentifier>{f6b31c12-6182-4625-8cef-830303fb90cf}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Utf8">
-      <UniqueIdentifier>{7a946019-96c3-4bfa-8d9f-75502092d1b6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Utf8">
-      <UniqueIdentifier>{0bc9bc86-af8d-403c-9a4e-4555e64a9ad7}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Worker">
       <UniqueIdentifier>{bd9ed2fd-3058-4441-a528-fcb3e42969c6}</UniqueIdentifier>
     </Filter>
@@ -52,15 +46,18 @@
     <Filter Include="Resource Files\Icons">
       <UniqueIdentifier>{5493e3ca-4450-4a22-a7e2-95859e1f5e2e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Utilities">
+      <UniqueIdentifier>{0bc9bc86-af8d-403c-9a4e-4555e64a9ad7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Utilities">
+      <UniqueIdentifier>{7a946019-96c3-4bfa-8d9f-75502092d1b6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BatchEncoder.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="StdAfx.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Utilities.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="MyButton.cpp">
@@ -103,10 +100,10 @@
       <Filter>Source Files\Xml</Filter>
     </ClCompile>
     <ClCompile Include="UnicodeUtf8.cpp">
-      <Filter>Source Files\Utf8</Filter>
+      <Filter>Source Files\Utilities</Filter>
     </ClCompile>
     <ClCompile Include="Utf8String.cpp">
-      <Filter>Source Files\Utf8</Filter>
+      <Filter>Source Files\Utilities</Filter>
     </ClCompile>
     <ClCompile Include="WorkThread.cpp">
       <Filter>Source Files\Worker</Filter>
@@ -117,6 +114,9 @@
     <ClCompile Include="ItemListCtrl.cpp">
       <Filter>Source Files\Controls</Filter>
     </ClCompile>
+    <ClCompile Include="Utilities.cpp">
+      <Filter>Source Files\Utilities</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BatchEncoder.h">
@@ -126,9 +126,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="StdAfx.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Utilities.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Hyperlink.h">
@@ -177,10 +174,10 @@
       <Filter>Header Files\Xml</Filter>
     </ClInclude>
     <ClInclude Include="UnicodeUtf8.h">
-      <Filter>Header Files\Utf8</Filter>
+      <Filter>Header Files\Utilities</Filter>
     </ClInclude>
     <ClInclude Include="Utf8String.h">
-      <Filter>Header Files\Utf8</Filter>
+      <Filter>Header Files\Utilities</Filter>
     </ClInclude>
     <ClInclude Include="WorkThread.h">
       <Filter>Header Files\Worker</Filter>
@@ -193,6 +190,9 @@
     </ClInclude>
     <ClInclude Include="ItemListCtrl.h">
       <Filter>Header Files\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="Utilities.h">
+      <Filter>Header Files\Utilities</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
