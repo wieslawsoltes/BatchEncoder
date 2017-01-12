@@ -95,10 +95,7 @@ enum TOOL_ID
 #define NUM_ITEM_ATTRIBUTES 9
 
 // number of tags used to store program settings
-#define NUM_PROGRAM_SETTINGS 24
-
-// number of tags used to store program colors
-#define NUM_PROGRAM_COLORS 9
+#define NUM_PROGRAM_SETTINGS 23
 
 // filter for input audio files
 #define AUDIO_FILES_FILTER \
@@ -172,21 +169,6 @@ public:
         other.bStopOnErrors = this->bStopOnErrors;
         other.szLogFileName = this->szLogFileName;
         other.nLogEncoding = this->nLogEncoding;
-    }
-};
-
-class CColor
-{
-public:
-    unsigned char nRed;
-    unsigned char nGreen;
-    unsigned char nBlue;
-public:
-    void Copy(CColor &other)
-    {
-        other.nRed = this->nRed;
-        other.nGreen = this->nGreen;
-        other.nBlue = this->nBlue;
     }
 };
 
@@ -632,7 +614,6 @@ class CConfiguration
 {
 public:
     COptions m_Options;
-    CColor m_Colors[NUM_PROGRAM_COLORS];
     CFormat m_Formats[NUM_FORMAT_NAMES];
     CPresetsList m_Presets[NUM_PRESET_FILES];
     CString szPresetsFile[NUM_PRESET_FILES];

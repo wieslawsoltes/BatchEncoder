@@ -11,19 +11,6 @@
 #define new DEBUG_NEW
 #endif
 
-static const int g_nColorControlId[NUM_PROGRAM_COLORS] =
-{
-    IDC_COLOR_0,
-    IDC_COLOR_1,
-    IDC_COLOR_2,
-    IDC_COLOR_3,
-    IDC_COLOR_4,
-    IDC_COLOR_5,
-    IDC_COLOR_6,
-    IDC_COLOR_7,
-    IDC_COLOR_8
-};
-
 IMPLEMENT_DYNAMIC(CAdvancedDlg, CDialog)
 CAdvancedDlg::CAdvancedDlg(CWnd* pParent /*=NULL*/)
     : CDialog(CAdvancedDlg::IDD, pParent)
@@ -34,11 +21,6 @@ CAdvancedDlg::CAdvancedDlg(CWnd* pParent /*=NULL*/)
     m_Options.bStopOnErrors = false;
     m_Options.szLogFileName = MAIN_APP_LOG;
     m_Options.nLogEncoding = 2;
-
-    for (int i = 0; i < NUM_PROGRAM_COLORS; i++)
-    {
-        FROM_COLORREF_TO_CCOLOR(m_Colors[i], RGB(0xFF, 0xFF, 0xFF))
-    }
 }
 
 CAdvancedDlg::~CAdvancedDlg()
@@ -62,15 +44,6 @@ BEGIN_MESSAGE_MAP(CAdvancedDlg, CDialog)
     ON_WM_DESTROY()
     ON_WM_PAINT()
     ON_BN_CLICKED(IDC_BUTTON_BROWSE_LOG, OnBnClickedButtonBrowseLog)
-    ON_STN_CLICKED(IDC_COLOR_0, OnStnClickedColor0)
-    ON_STN_CLICKED(IDC_COLOR_1, OnStnClickedColor1)
-    ON_STN_CLICKED(IDC_COLOR_2, OnStnClickedColor2)
-    ON_STN_CLICKED(IDC_COLOR_3, OnStnClickedColor3)
-    ON_STN_CLICKED(IDC_COLOR_4, OnStnClickedColor4)
-    ON_STN_CLICKED(IDC_COLOR_5, OnStnClickedColor5)
-    ON_STN_CLICKED(IDC_COLOR_6, OnStnClickedColor6)
-    ON_STN_CLICKED(IDC_COLOR_7, OnStnClickedColor7)
-    ON_STN_CLICKED(IDC_COLOR_8, OnStnClickedColor8)
 END_MESSAGE_MAP()
 
 BOOL CAdvancedDlg::OnInitDialog()
@@ -90,63 +63,6 @@ BOOL CAdvancedDlg::OnInitDialog()
     this->SetAdvSettings();
 
     return TRUE;
-}
-
-void CAdvancedDlg::OnPaint()
-{
-    CPaintDC dc(this);
-    OnPaintProc();
-}
-
-HWND CAdvancedDlg::GetHWND(int nID)
-{
-    return this->GetDlgItem(nID)->GetSafeHwnd();
-}
-
-void CAdvancedDlg::PaintRect(int nID, COLORREF cr)
-{
-    HWND hWnd;
-    HDC hDC;
-    CRect rc;
-    HBRUSH hBrush;
-    HPEN hPen;
-
-    hWnd = GetDlgItem(nID)->GetSafeHwnd();
-    if (hWnd)
-    {
-        hDC = ::GetDC(hWnd);
-        ::GetClientRect(hWnd, rc);
-        hBrush = ::CreateSolidBrush(cr);
-        hPen = ::CreatePen(PS_SOLID, 1, cr);
-
-        ::SelectObject(hDC, hBrush);
-        ::SelectObject(hDC, hPen);
-
-        ::Rectangle(hDC, 0, 0, rc.Width(), rc.Height());
-
-        ::ReleaseDC(hWnd, hDC);
-        ::DeleteObject(hBrush);
-        ::DeleteObject(hPen);
-    }
-}
-
-void CAdvancedDlg::OnPaintProc(void)
-{
-    for (int i = 0; i < NUM_PROGRAM_COLORS; i++)
-    {
-        COLORREF color = FROM_CCOLOR_TO_COLORREF(m_Colors[i]);
-        PaintRect(g_nColorControlId[i], color);
-    }
-}
-
-COLORREF CAdvancedDlg::ChangeTheColor(COLORREF cr)
-{
-    CColorDialog cd(cr, CC_FULLOPEN, this);
-    INT_PTR nRet = cd.DoModal();
-    if (nRet == IDOK)
-        return cd.GetColor();
-    else
-        return cr;
 }
 
 void CAdvancedDlg::GetAdvSettings()
@@ -251,60 +167,4 @@ void CAdvancedDlg::OnBnClickedButtonBrowseLog()
         m_Options.szLogFileName = fd.GetPathName();
         m_EdtLog.SetWindowText(m_Options.szLogFileName);
     }
-}
-
-void CAdvancedDlg::ClickedOnColorRect(int nID)
-{
-    COLORREF color = FROM_CCOLOR_TO_COLORREF(m_Colors[nID]);
-    COLORREF cr_new = this->ChangeTheColor(color);
-    if (cr_new != color)
-    {
-        FROM_COLORREF_TO_CCOLOR(m_Colors[nID], cr_new)
-    }
-    this->PaintRect(g_nColorControlId[nID], cr_new);
-}
-
-void CAdvancedDlg::OnStnClickedColor0()
-{
-    this->ClickedOnColorRect(0);
-}
-
-void CAdvancedDlg::OnStnClickedColor1()
-{
-    this->ClickedOnColorRect(1);
-}
-
-void CAdvancedDlg::OnStnClickedColor2()
-{
-    this->ClickedOnColorRect(2);
-}
-
-void CAdvancedDlg::OnStnClickedColor3()
-{
-    this->ClickedOnColorRect(3);
-}
-
-void CAdvancedDlg::OnStnClickedColor4()
-{
-    this->ClickedOnColorRect(4);
-}
-
-void CAdvancedDlg::OnStnClickedColor5()
-{
-    this->ClickedOnColorRect(5);
-}
-
-void CAdvancedDlg::OnStnClickedColor6()
-{
-    this->ClickedOnColorRect(6);
-}
-
-void CAdvancedDlg::OnStnClickedColor7()
-{
-    this->ClickedOnColorRect(7);
-}
-
-void CAdvancedDlg::OnStnClickedColor8()
-{
-    this->ClickedOnColorRect(8);
 }

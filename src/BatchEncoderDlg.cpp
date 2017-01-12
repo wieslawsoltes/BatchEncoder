@@ -225,9 +225,6 @@ CBatchEncoderDlg::CBatchEncoderDlg(CWnd* pParent /*=NULL*/)
     m_Config.m_Options.nLogEncoding = 2;
 
     bForceConsoleWindow = false;
-
-    bIsHistogramVisible = false;
-    bIsCnvStatusVisible = false;
 }
 
 CBatchEncoderDlg::~CBatchEncoderDlg()
@@ -296,9 +293,6 @@ BEGIN_MESSAGE_MAP(CBatchEncoderDlg, CResizeDialog)
     ON_COMMAND(ID_EDIT_RESETOUTPUT, OnEditResetOutput)
     ON_COMMAND(ID_EDIT_RESETTIME, OnEditResetTime)
     ON_COMMAND(ID_EDIT_ADDDIR, OnEditAddDir)
-    ON_COMMAND(ID_VIEW_STARTWITHEXTENDEDPROGRESS, OnViewStartWithExtendedProgress)
-    ON_COMMAND(ID_VIEW_TOOGLEEXTENDEDPROGRESS, OnViewToogleExtendedProgress)
-    ON_COMMAND(ID_VIEW_TOOGLEHISTOGRAMWINDOW, OnViewToogleHistogramWindow)
     ON_COMMAND(ID_VIEW_SHOWGRIDLINES, OnViewShowGridLines)
     ON_COMMAND(ID_ACTION_CONVERT, OnActionConvert)
     ON_COMMAND(ID_OPTIONS_STAYONTOP, OnOptionsStayOnTop)
@@ -338,7 +332,6 @@ BEGIN_MESSAGE_MAP(CBatchEncoderDlg, CResizeDialog)
     ON_COMMAND(ID_ACCELERATOR_CTRL_PLUS, OnEditRemoveChecked)
     ON_COMMAND(ID_ACCELERATOR_CTRL_MINUS, OnEditRemoveUnchecked)
     ON_COMMAND(ID_ACCELERATOR_CTRL_G, OnViewShowGridLines)
-    ON_COMMAND(ID_ACCELERATOR_CTRL_SHIFT_P, OnViewStartWithExtendedProgress)
     ON_COMMAND(ID_ACCELERATOR_F9, OnBnClickedButtonConvert)
     ON_COMMAND(ID_ACCELERATOR_F10, OnOptionsStayOnTop)
     ON_COMMAND(ID_ACCELERATOR_CTRL_X, OnOptionsDoNotSave)
@@ -352,8 +345,6 @@ BEGIN_MESSAGE_MAP(CBatchEncoderDlg, CResizeDialog)
     ON_COMMAND(ID_ACCELERATOR_CTRL_SHIFT_F, OnOptionsForceConsoleWindow)
     ON_COMMAND(ID_ACCELERATOR_CTRL_SHIFT_A, OnOptionsAdvanced)
     ON_COMMAND(ID_ACCELERATOR_CTRL_D, OnOptionsDeleteSourceFileWhenDone)
-    ON_COMMAND(ID_ACCELERATOR_CTRL_H, OnShowHistogram)
-    ON_COMMAND(ID_ACCELERATOR_CTRL_P, OnShowCnvStatus)
 END_MESSAGE_MAP()
 
 BOOL CBatchEncoderDlg::OnInitDialog()
@@ -433,32 +424,8 @@ BOOL CBatchEncoderDlg::OnInitDialog()
     // hide ProgressBar when not running conversion process
     this->m_FileProgress.ShowWindow(SW_HIDE);
 
-    // disable window toggle items
-    this->GetMenu()->EnableMenuItem(ID_VIEW_TOOGLEEXTENDEDPROGRESS, MF_GRAYED);
-    this->GetMenu()->EnableMenuItem(ID_VIEW_TOOGLEHISTOGRAMWINDOW, MF_GRAYED);
-
     // enable files/dirs drag & drop for dialog
     this->DragAcceptFiles(TRUE);
-
-    // create histogram control
-    CRect rcHistogram;
-
-    GetDlgItem(IDC_EDIT_INPUT_ITEMS)->GetWindowRect(rcHistogram);
-    ScreenToClient(rcHistogram);
-    VERIFY(m_Histogram.Create(rcHistogram, this, IDC_HISTOGRAM, false));
-
-    this->m_Histogram.Init(false);
-    this->m_Histogram.Erase(true);
-
-    // create conversion status control
-    CRect rcCnvStatus;
-
-    GetDlgItem(IDC_EDIT_INPUT_ITEMS)->GetWindowRect(rcCnvStatus);
-    ScreenToClient(rcCnvStatus);
-    VERIFY(m_CnvStatus.Create(rcCnvStatus, this, IDC_CNVSTATUS, false));
-
-    this->m_CnvStatus.Init();
-    this->m_CnvStatus.Erase(true);
 
     // setup resize anchors
     AddAnchor(IDC_STATIC_GROUP_OUTPUT, TOP_LEFT, TOP_RIGHT);
@@ -473,8 +440,6 @@ BOOL CBatchEncoderDlg::OnInitDialog()
     AddAnchor(IDC_PROGRESS_WORK, BOTTOM_LEFT, BOTTOM_RIGHT);
     AddAnchor(IDC_BUTTON_RUN, BOTTOM_RIGHT);
     AddAnchor(IDC_STATUSBAR, BOTTOM_LEFT, BOTTOM_RIGHT);
-    AddAnchor(IDC_HISTOGRAM, MIDDLE_CENTER); // TOP_LEFT, BOTTOM_RIGHT
-    AddAnchor(IDC_CNVSTATUS, MIDDLE_CENTER); // TOP_LEFT, BOTTOM_RIGHT
 
     this->LoadConfigFile();
     this->UpdateStatusBar();
@@ -1297,92 +1262,6 @@ bool CBatchEncoderDlg::LoadConfigFile()
         }
     }
 
-    // root: Colors
-
-    // NOTE: colors can be in decimal, hexadecimal, or octal integer format
-    tinyxml2::XMLElement *pColorsElem = pRootElem->FirstChildElement("Colors");
-    CString szColor[NUM_PROGRAM_COLORS];
-    for (int i = 0; i < NUM_PROGRAM_COLORS; i++)
-    {
-        tinyxml2::XMLElement *pColorElem = pColorsElem->FirstChildElement(g_szColorsTags[i]);
-        if (pColorElem)
-            szColor[i] = GetConfigString(pColorElem->GetText());
-        else
-            szColor[i] = _T("");
-    }
-
-    // 0
-    if (szColor[0].Compare(_T("")) != 0)
-    {
-        int nRGB[3];
-        if (_stscanf(szColor[0], _T("%i %i %i"), &nRGB[0], &nRGB[1], &nRGB[2]) == 3)
-            this->m_CnvStatus.crText = RGB(nRGB[0], nRGB[1], nRGB[2]);
-    }
-
-    // 1
-    if (szColor[1].Compare(_T("")) != 0)
-    {
-        int nRGB[3];
-        if (_stscanf(szColor[1], _T("%i %i %i"), &nRGB[0], &nRGB[1], &nRGB[2]) == 3)
-            this->m_CnvStatus.crTextError = RGB(nRGB[0], nRGB[1], nRGB[2]);
-    }
-
-    // 2
-    if (szColor[2].Compare(_T("")) != 0)
-    {
-        int nRGB[3];
-        if (_stscanf(szColor[2], _T("%i %i %i"), &nRGB[0], &nRGB[1], &nRGB[2]) == 3)
-            this->m_CnvStatus.crProgress = RGB(nRGB[0], nRGB[1], nRGB[2]);
-    }
-
-    // 3
-    if (szColor[3].Compare(_T("")) != 0)
-    {
-        int nRGB[3];
-        if (_stscanf(szColor[3], _T("%i %i %i"), &nRGB[0], &nRGB[1], &nRGB[2]) == 3)
-            this->m_CnvStatus.crBorder = RGB(nRGB[0], nRGB[1], nRGB[2]);
-    }
-
-    // 4
-    if (szColor[4].Compare(_T("")) != 0)
-    {
-        int nRGB[3];
-        if (_stscanf(szColor[4], _T("%i %i %i"), &nRGB[0], &nRGB[1], &nRGB[2]) == 3)
-            this->m_CnvStatus.crBack = RGB(nRGB[0], nRGB[1], nRGB[2]);
-    }
-
-    // 5
-    if (szColor[5].Compare(_T("")) != 0)
-    {
-        int nRGB[3];
-        if (_stscanf(szColor[5], _T("%i %i %i"), &nRGB[0], &nRGB[1], &nRGB[2]) == 3)
-            this->m_Histogram.crLR = RGB(nRGB[0], nRGB[1], nRGB[2]);
-    }
-
-    // 6
-    if (szColor[6].Compare(_T("")) != 0)
-    {
-        int nRGB[3];
-        if (_stscanf(szColor[6], _T("%i %i %i"), &nRGB[0], &nRGB[1], &nRGB[2]) == 3)
-            this->m_Histogram.crMS = RGB(nRGB[0], nRGB[1], nRGB[2]);
-    }
-
-    // 7
-    if (szColor[7].Compare(_T("")) != 0)
-    {
-        int nRGB[3];
-        if (_stscanf(szColor[7], _T("%i %i %i"), &nRGB[0], &nRGB[1], &nRGB[2]) == 3)
-            this->m_Histogram.crBorder = RGB(nRGB[0], nRGB[1], nRGB[2]);
-    }
-
-    // 8
-    if (szColor[8].Compare(_T("")) != 0)
-    {
-        int nRGB[3];
-        if (_stscanf(szColor[8], _T("%i %i %i"), &nRGB[0], &nRGB[1], &nRGB[2]) == 3)
-            this->m_Histogram.crBack = RGB(nRGB[0], nRGB[1], nRGB[2]);
-    }
-
     // root: Presets
     tinyxml2::XMLElement *pPresetsElem = pRootElem->FirstChildElement("Presets");
     for (int i = 0; i < NUM_PRESET_FILES; i++)
@@ -1784,24 +1663,10 @@ bool CBatchEncoderDlg::LoadConfigFile()
     }
 
     // 22
-    // Description: start conversion with extended progress window
+    // Description: force console window instead of conversion progress
     if (szSetting[22].Compare(_T("")) != 0)
     {
         if (szSetting[22].Compare(_T("true")) == 0)
-            this->GetMenu()->CheckMenuItem(ID_VIEW_STARTWITHEXTENDEDPROGRESS, MF_CHECKED);
-        else
-            this->GetMenu()->CheckMenuItem(ID_VIEW_STARTWITHEXTENDEDPROGRESS, MF_UNCHECKED);
-    }
-    else
-    {
-        this->GetMenu()->CheckMenuItem(ID_VIEW_STARTWITHEXTENDEDPROGRESS, MF_UNCHECKED);
-    }
-
-    // 23
-    // Description: force console window instead of conversion progress
-    if (szSetting[23].Compare(_T("")) != 0)
-    {
-        if (szSetting[23].Compare(_T("true")) == 0)
         {
             this->GetMenu()->CheckMenuItem(ID_OPTIONS_FORCECONSOLEWINDOW, MF_CHECKED);
             this->bForceConsoleWindow = true;
@@ -1973,10 +1838,7 @@ bool CBatchEncoderDlg::SaveConfigFile()
     szSetting[21].Format(_T("%d"), m_Config.m_Options.nLogEncoding);
 
     // 22
-    szSetting[22] = this->GetMenuItemCheck(ID_VIEW_STARTWITHEXTENDEDPROGRESS);
-
-    // 23
-    szSetting[23] = this->GetMenuItemCheck(ID_OPTIONS_FORCECONSOLEWINDOW);
+    szSetting[22] = this->GetMenuItemCheck(ID_OPTIONS_FORCECONSOLEWINDOW);
 
     // store all settings from szSetting buffer
     for (int i = 0; i < NUM_PROGRAM_SETTINGS; i++)
@@ -1985,42 +1847,6 @@ bool CBatchEncoderDlg::SaveConfigFile()
         tinyxml2::XMLElement *stg = doc.NewElement(g_szSettingsTags[i]);
         stg->LinkEndChild(doc.NewText(szBuffUtf8.Create(szSetting[i])));
         pSettingsElem->LinkEndChild(stg);
-        szBuffUtf8.Clear();
-    }
-
-    // root: Colors
-    tinyxml2::XMLElement *pColorsElem = doc.NewElement("Colors");
-    pRootElem->LinkEndChild(pColorsElem);
-
-    CString szColor[NUM_PROGRAM_COLORS];
-    COLORREF crColor[NUM_PROGRAM_COLORS];
-
-    crColor[0] = this->m_CnvStatus.crText;
-    crColor[1] = this->m_CnvStatus.crTextError;
-    crColor[2] = this->m_CnvStatus.crProgress;
-    crColor[3] = this->m_CnvStatus.crBorder;
-    crColor[4] = this->m_CnvStatus.crBack;
-    crColor[5] = this->m_Histogram.crLR;
-    crColor[6] = this->m_Histogram.crMS;
-    crColor[7] = this->m_Histogram.crBorder;
-    crColor[8] = this->m_Histogram.crBack;
-
-    for (int i = 0; i < NUM_PROGRAM_COLORS; i++)
-    {
-        szColor[i].Format(_T("0x%02X 0x%02X 0x%02X"),
-            GetRValue(crColor[i]),
-            GetGValue(crColor[i]),
-            GetBValue(crColor[i]));
-    }
-
-    // store all colors from szColor buffer
-    for (int i = 0; i < NUM_PROGRAM_COLORS; i++)
-    {
-        CUtf8String szBuffUtf8;
-
-        tinyxml2::XMLElement *pColorElem = doc.NewElement(g_szColorsTags[i]);
-        pColorElem->LinkEndChild(doc.NewText(szBuffUtf8.Create(szColor[i])));
-        pColorsElem->LinkEndChild(pColorElem);
         szBuffUtf8.Clear();
     }
 
@@ -2334,12 +2160,7 @@ bool CBatchEncoderDlg::WorkerCallback(int nProgress, bool bFinished, bool bError
         if (nProgress != nProgressCurrent)
         {
             nProgressCurrent = nProgress;
-
-            if (bIsCnvStatusVisible == true)
-                this->m_CnvStatus.Draw(nProgress);
-
             m_FileProgress.SetPos(nProgress);
-
             this->ShowProgressTrayIcon(nProgress);
         }
     }
@@ -2364,11 +2185,6 @@ bool CBatchEncoderDlg::WorkerCallback(int nProgress, bool bFinished, bool bError
 
     // on false the worker thread will stop
     return bRunning;
-}
-
-void CBatchEncoderDlg::HistogramCallback(PLAME_ENC_HISTOGRAM plehData)
-{
-    this->m_Histogram.Draw(plehData);
 }
 
 BOOL CBatchEncoderDlg::OnHelpInfo(HELPINFO* pHelpInfo)
@@ -2914,27 +2730,6 @@ void CBatchEncoderDlg::OnNMRclickListInputFiles(NMHDR *pNMHDR, LRESULT *pResult)
     *pResult = 0;
 }
 
-void CBatchEncoderDlg::OnViewStartWithExtendedProgress()
-{
-    if (bRunning == true)
-        return;
-
-    if (this->GetMenu()->GetMenuState(ID_VIEW_STARTWITHEXTENDEDPROGRESS, MF_BYCOMMAND) == MF_CHECKED)
-        this->GetMenu()->CheckMenuItem(ID_VIEW_STARTWITHEXTENDEDPROGRESS, MF_UNCHECKED);
-    else
-        this->GetMenu()->CheckMenuItem(ID_VIEW_STARTWITHEXTENDEDPROGRESS, MF_CHECKED);
-}
-
-void CBatchEncoderDlg::OnViewToogleExtendedProgress()
-{
-    this->OnShowCnvStatus();
-}
-
-void CBatchEncoderDlg::OnViewToogleHistogramWindow()
-{
-    this->OnShowHistogram();
-}
-
 void CBatchEncoderDlg::OnViewShowGridLines()
 {
     if (bRunning == true)
@@ -3058,40 +2853,14 @@ void CBatchEncoderDlg::ResetConvertionStatus()
 
 void CBatchEncoderDlg::EnableUserInterface(BOOL bEnable)
 {
-    // check if we are starting with extended progress windows
-    bool bShowAdvancedSatus = false;
-    if (this->GetMenu()->GetMenuState(ID_VIEW_STARTWITHEXTENDEDPROGRESS, MF_BYCOMMAND) == MF_CHECKED)
-        bShowAdvancedSatus = true;
-
     if (bEnable == FALSE)
     {
         if (this->bForceConsoleWindow == false)
         {
-            this->m_Histogram.ShowWindow(SW_HIDE);
-            this->bIsHistogramVisible = false;
-
-            this->m_CnvStatus.Erase(true);
-
-            if (bShowAdvancedSatus == true)
-            {
-                this->m_LstInputItems.ShowWindow(SW_HIDE);
-
-                this->m_CnvStatus.ShowWindow(SW_SHOW);
-                this->bIsCnvStatusVisible = true;
-
-                this->GetMenu()->CheckMenuItem(ID_VIEW_TOOGLEEXTENDEDPROGRESS, MF_CHECKED);
-            }
-            else
-            {
-                this->m_CnvStatus.ShowWindow(SW_HIDE);
-                this->bIsCnvStatusVisible = false;
-
-                this->m_ChkOutPath.ShowWindow(SW_HIDE);
-                this->m_EdtOutPath.ShowWindow(SW_HIDE);
-                this->m_BtnBrowse.ShowWindow(SW_HIDE);
-
-                this->m_FileProgress.ShowWindow(SW_SHOW);
-            }
+            this->m_ChkOutPath.ShowWindow(SW_HIDE);
+            this->m_EdtOutPath.ShowWindow(SW_HIDE);
+            this->m_BtnBrowse.ShowWindow(SW_HIDE);
+            this->m_FileProgress.ShowWindow(SW_SHOW);
         }
     }
     else
@@ -3102,15 +2871,6 @@ void CBatchEncoderDlg::EnableUserInterface(BOOL bEnable)
             this->m_ChkOutPath.ShowWindow(SW_SHOW);
             this->m_EdtOutPath.ShowWindow(SW_SHOW);
             this->m_BtnBrowse.ShowWindow(SW_SHOW);
-
-            this->m_CnvStatus.Erase(true);
-
-            this->m_CnvStatus.ShowWindow(SW_HIDE);
-            this->bIsCnvStatusVisible = false;
-
-            this->m_Histogram.ShowWindow(SW_HIDE);
-            this->bIsHistogramVisible = false;
-
             this->m_LstInputItems.ShowWindow(SW_SHOW);
         }
     }
@@ -3154,19 +2914,6 @@ void CBatchEncoderDlg::EnableUserInterface(BOOL bEnable)
         this->m_BtnBrowse.EnableWindow(bEnable);
 
     this->m_ChkOutPath.EnableWindow(bEnable);
-
-    // enable or disable window toggle items
-    this->GetMenu()->EnableMenuItem(ID_VIEW_TOOGLEEXTENDEDPROGRESS,
-        (bEnable == FALSE) ? MF_ENABLED : MF_GRAYED);
-
-    this->GetMenu()->EnableMenuItem(ID_VIEW_TOOGLEHISTOGRAMWINDOW,
-        (bEnable == FALSE) ? MF_ENABLED : MF_GRAYED);
-
-    if (bEnable == TRUE)
-    {
-        this->GetMenu()->CheckMenuItem(ID_VIEW_TOOGLEHISTOGRAMWINDOW, MF_UNCHECKED);
-        this->GetMenu()->CheckMenuItem(ID_VIEW_TOOGLEEXTENDEDPROGRESS, MF_UNCHECKED);
-    }
 }
 
 void CBatchEncoderDlg::OnEnChangeEditOutPath()
@@ -3919,39 +3666,10 @@ void CBatchEncoderDlg::OnOptionsAdvanced()
 
     m_Config.m_Options.Copy(dlg.m_Options);
 
-    FROM_COLORREF_TO_CCOLOR(dlg.m_Colors[0], this->m_CnvStatus.crText)
-        FROM_COLORREF_TO_CCOLOR(dlg.m_Colors[1], this->m_CnvStatus.crTextError)
-        FROM_COLORREF_TO_CCOLOR(dlg.m_Colors[2], this->m_CnvStatus.crProgress)
-        FROM_COLORREF_TO_CCOLOR(dlg.m_Colors[3], this->m_CnvStatus.crBorder)
-        FROM_COLORREF_TO_CCOLOR(dlg.m_Colors[4], this->m_CnvStatus.crBack)
-        FROM_COLORREF_TO_CCOLOR(dlg.m_Colors[5], this->m_Histogram.crLR)
-        FROM_COLORREF_TO_CCOLOR(dlg.m_Colors[6], this->m_Histogram.crMS)
-        FROM_COLORREF_TO_CCOLOR(dlg.m_Colors[7], this->m_Histogram.crBorder)
-        FROM_COLORREF_TO_CCOLOR(dlg.m_Colors[8], this->m_Histogram.crBack)
-
-        if (dlg.DoModal() == IDOK)
-        {
-            dlg.m_Options.Copy(m_Config.m_Options);
-
-            this->m_CnvStatus.crText = FROM_CCOLOR_TO_COLORREF(dlg.m_Colors[0]);
-            this->m_CnvStatus.crTextError = FROM_CCOLOR_TO_COLORREF(dlg.m_Colors[1]);
-            this->m_CnvStatus.crProgress = FROM_CCOLOR_TO_COLORREF(dlg.m_Colors[2]);
-            this->m_CnvStatus.crBorder = FROM_CCOLOR_TO_COLORREF(dlg.m_Colors[3]);
-            this->m_CnvStatus.crBack = FROM_CCOLOR_TO_COLORREF(dlg.m_Colors[4]);
-            this->m_Histogram.crLR = FROM_CCOLOR_TO_COLORREF(dlg.m_Colors[5]);
-            this->m_Histogram.crMS = FROM_CCOLOR_TO_COLORREF(dlg.m_Colors[6]);
-            this->m_Histogram.crBorder = FROM_CCOLOR_TO_COLORREF(dlg.m_Colors[7]);
-            this->m_Histogram.crBack = FROM_CCOLOR_TO_COLORREF(dlg.m_Colors[8]);
-
-            // re-initialize Conversion Status and Histogram controls
-            this->m_CnvStatus.Clean();
-            this->m_CnvStatus.Init();
-            this->m_CnvStatus.Erase(true);
-
-            this->m_Histogram.Clean();
-            this->m_Histogram.Init(false);
-            this->m_Histogram.Erase(true);
-        }
+    if (dlg.DoModal() == IDOK)
+    {
+        dlg.m_Options.Copy(m_Config.m_Options);
+    }
 }
 
 void CBatchEncoderDlg::OnOptionsConfigurePresets()
@@ -4054,106 +3772,4 @@ void CBatchEncoderDlg::OnHelpAbout()
     CAboutDlg dlg;
 
     dlg.DoModal();
-}
-
-void CBatchEncoderDlg::OnShowHistogram()
-{
-    if (bRunning == false)
-        return;
-
-    if (bIsCnvStatusVisible == true)
-    {
-        this->m_CnvStatus.ShowWindow(SW_HIDE);
-        bIsCnvStatusVisible = false;
-    }
-
-    if (bRunning = true)
-    {
-        this->m_ChkOutPath.ShowWindow(SW_HIDE);
-        this->m_EdtOutPath.ShowWindow(SW_HIDE);
-        this->m_BtnBrowse.ShowWindow(SW_HIDE);
-        this->m_FileProgress.ShowWindow(SW_SHOW);
-    }
-
-    if (bIsHistogramVisible == false)
-    {
-        this->m_LstInputItems.ShowWindow(SW_HIDE);
-        this->m_Histogram.ShowWindow(SW_SHOW);
-        bIsHistogramVisible = true;
-    }
-    else
-    {
-        this->m_Histogram.ShowWindow(SW_HIDE);
-        this->m_LstInputItems.ShowWindow(SW_SHOW);
-        bIsHistogramVisible = false;
-    }
-
-    if (bIsHistogramVisible == true)
-    {
-        this->GetMenu()->CheckMenuItem(ID_VIEW_TOOGLEHISTOGRAMWINDOW, MF_CHECKED);
-        this->GetMenu()->CheckMenuItem(ID_VIEW_TOOGLEEXTENDEDPROGRESS, MF_UNCHECKED);
-    }
-    else
-    {
-        this->GetMenu()->CheckMenuItem(ID_VIEW_TOOGLEHISTOGRAMWINDOW, MF_UNCHECKED);
-    }
-}
-
-void CBatchEncoderDlg::OnShowCnvStatus()
-{
-    if (bRunning == false)
-        return;
-
-    if (bIsHistogramVisible == true)
-    {
-        this->m_Histogram.ShowWindow(SW_HIDE);
-        bIsHistogramVisible = false;
-    }
-
-    if (bIsCnvStatusVisible == false)
-    {
-        if (bRunning = true)
-        {
-            this->m_FileProgress.ShowWindow(SW_HIDE);
-
-            this->m_ChkOutPath.ShowWindow(SW_SHOW);
-            this->m_EdtOutPath.ShowWindow(SW_SHOW);
-            this->m_BtnBrowse.ShowWindow(SW_SHOW);
-
-            // update progress
-            this->m_CnvStatus.Draw(this->nProgressCurrent);
-        }
-
-        this->m_LstInputItems.ShowWindow(SW_HIDE);
-        this->m_CnvStatus.ShowWindow(SW_SHOW);
-        bIsCnvStatusVisible = true;
-    }
-    else
-    {
-        if (bRunning = true)
-        {
-            this->m_ChkOutPath.ShowWindow(SW_HIDE);
-            this->m_EdtOutPath.ShowWindow(SW_HIDE);
-            this->m_BtnBrowse.ShowWindow(SW_HIDE);
-
-            this->m_FileProgress.ShowWindow(SW_SHOW);
-
-            // update progress
-            this->m_FileProgress.SetPos(this->nProgressCurrent);
-        }
-
-        this->m_CnvStatus.ShowWindow(SW_HIDE);
-        this->m_LstInputItems.ShowWindow(SW_SHOW);
-        bIsCnvStatusVisible = false;
-    }
-
-    if (bIsCnvStatusVisible == true)
-    {
-        this->GetMenu()->CheckMenuItem(ID_VIEW_TOOGLEEXTENDEDPROGRESS, MF_CHECKED);
-        this->GetMenu()->CheckMenuItem(ID_VIEW_TOOGLEHISTOGRAMWINDOW, MF_UNCHECKED);
-    }
-    else
-    {
-        this->GetMenu()->CheckMenuItem(ID_VIEW_TOOGLEEXTENDEDPROGRESS, MF_UNCHECKED);
-    }
 }

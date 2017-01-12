@@ -7,7 +7,6 @@
 #include "UnicodeUtf8.h"
 #include "Utf8String.h"
 #include "BatchEncoderDlg.h"
-#include "LameHistogram.h"
 #include "WorkThread.h"
 
 #ifdef _DEBUG
@@ -654,10 +653,6 @@ bool ConvertFile(CBatchEncoderDlg *pDlg,
             bLineStart = false;
             bLineEnd = false;
 
-            // LAME histogram data
-            LAME_ENC_HISTOGRAM lehData;
-            memset(&lehData, 0x00, sizeof(LAME_ENC_HISTOGRAM));
-
             // create logfile
             CFile fp;
             bool bHaveLogFile = false;
@@ -690,9 +685,6 @@ bool ConvertFile(CBatchEncoderDlg *pDlg,
                     fp.SeekToEnd();
                 }
             }
-
-            // NOTE: in case we used histogram set flag to erase it after finished
-            bool bEraseHistogram = false;
 
             // NOTE: preload all progress dll's before conversion process
 
@@ -782,23 +774,6 @@ bool ConvertFile(CBatchEncoderDlg *pDlg,
                         {
                             if (bDecode == false)
                             {
-                                // NOTE: histogram works only if pipes are disabled
-
-                                // get LameEnc histogram data and update Histogram control
-                                if (nTool == TOOL_ID_ENC_LAME)
-                                {
-                                    // NOTE: create dll for histogram function and add option to main config file
-                                    int nRet = GetHistogram_LameEnc(szLineBuff, nLineLen, &lehData);
-                                    if (nRet == 0)
-                                    {
-                                        if (pDlg->bIsHistogramVisible == true)
-                                        {
-                                            pDlg->HistogramCallback(&lehData);
-                                            bEraseHistogram = true;
-                                        }
-                                    }
-                                }
-
                                 int nRet = (pProgressProc)(szLineBuff, nLineLen);
                                 if (nRet != -1)
                                     nProgress = nRet;
@@ -875,10 +850,6 @@ bool ConvertFile(CBatchEncoderDlg *pDlg,
             // free memory by unloading unused dll
             if (hDll != NULL)
                 ::FreeLibrary(hDll);
-
-            // erase histogram window
-            if (bEraseHistogram == true)
-                pDlg->m_Histogram.Erase(true);
 
             // close logfile
             if ((bLogConsoleOutput == true) && (bHaveLogFile = true))
@@ -1192,16 +1163,6 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
                 pDlg->m_LstInputItems.SetItemText(i, 5, _T("--:--"));
                 pDlg->m_LstInputItems.SetItemText(i, 6, _T("Decoding..."));
 
-                // update (init) conversion status data
-                pDlg->m_CnvStatus.SetCurrentInfo(nProcessedFiles,
-                    nTotalFiles,
-                    nDoneWithoutError,
-                    pDlg->m_Config.m_Items.GetFileName(szOrgInputFile),
-                    pDlg->m_Config.m_Items.GetFileName(szOrgOutputFile),
-                    szOutPath);
-
-                pDlg->m_CnvStatus.Draw(0);
-
                 // TODO: when decoding in nProcessingMode == 2 don't show time stats
                 if (::ConvertFile(pDlg,
                     szOrgInputFile,
@@ -1303,16 +1264,6 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
 
                 pDlg->m_LstInputItems.SetItemText(i, 5, _T("--:--"));
                 pDlg->m_LstInputItems.SetItemText(i, 6, _T("Encoding..."));
-
-                // update (init) conversion status data
-                pDlg->m_CnvStatus.SetCurrentInfo(nProcessedFiles,
-                    nTotalFiles,
-                    nDoneWithoutError,
-                    pDlg->m_Config.m_Items.GetFileName(szOrgInputFile),
-                    pDlg->m_Config.m_Items.GetFileName(szOrgOutputFile),
-                    szOutPath);
-
-                pDlg->m_CnvStatus.Draw(0);
 
                 if (::ConvertFile(pDlg,
                     szOrgInputFile,

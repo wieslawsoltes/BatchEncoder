@@ -15,5 +15,4 @@ protected:
     DECLARE_MESSAGE_MAP()
 public:
     afx_msg void OnLvnEndlabeledit(NMHDR *pNMHDR, LRESULT *pResult);
-    afx_msg void OnMButtonDown(UINT nFlags, CPoint point);
 };

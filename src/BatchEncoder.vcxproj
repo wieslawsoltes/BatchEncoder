@@ -246,13 +246,10 @@ copy /-Y data\Formats\*.formats $(OutDir)</Command>
     <ClCompile Include="BatchEncoder.cpp" />
     <ClCompile Include="BatchEncoderDlg.cpp" />
     <ClCompile Include="Configuration.cpp" />
-    <ClCompile Include="ConversionStatus.cpp" />
     <ClCompile Include="DropList.cpp" />
     <ClCompile Include="ItemListCtrl.cpp" />
     <ClCompile Include="FormatsDlg.cpp" />
-    <ClCompile Include="Histogram.cpp" />
     <ClCompile Include="Hyperlink.cpp" />
-    <ClCompile Include="LameHistogram.cpp" />
     <ClCompile Include="MyButton.cpp" />
     <ClCompile Include="MyStatic.cpp" />
     <ClCompile Include="MyStatusBarCtrl.cpp" />
@@ -278,13 +275,10 @@ copy /-Y data\Formats\*.formats $(OutDir)</Command>
     <ClInclude Include="AdvancedDlg.h" />
     <ClInclude Include="BatchEncoder.h" />
     <ClInclude Include="BatchEncoderDlg.h" />
-    <ClInclude Include="ConversionStatus.h" />
     <ClInclude Include="DropList.h" />
     <ClInclude Include="ItemListCtrl.h" />
     <ClInclude Include="FormatsDlg.h" />
-    <ClInclude Include="Histogram.h" />
     <ClInclude Include="Hyperlink.h" />
-    <ClInclude Include="LameHistogram.h" />
     <ClInclude Include="MyButton.h" />
     <ClInclude Include="MyStatic.h" />
     <ClInclude Include="MyStatusBarCtrl.h" />

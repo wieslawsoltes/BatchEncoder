@@ -43,12 +43,6 @@ adds input and output file paths. For specific options for each format use help 
 
 [![File List Converting](screenshots/FileListConverting.png)](https://github.com/wieslawsoltes/BatchEncoder/blob/master/screenshots/FileListConvertingFileList.png)
 
-[![Progress Window](screenshots/ProgressWindow.png)](https://github.com/wieslawsoltes/BatchEncoder/blob/master/screenshots/ProgressWindow.png)
-
-### Live LAME histogram
-
-[![Histogram Window](screenshots/HistogramWindow.png)](https://github.com/wieslawsoltes/BatchEncoder/blob/master/screenshots/HistogramWindow.png)
-
 ## Supported formats and tools
 
 | Name            | Type        | File extension  | Version     | Executable                       | Progress function                         |

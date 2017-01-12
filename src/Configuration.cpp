@@ -99,8 +99,7 @@ const char *g_szSettingsTags[] =
     "StopOnErrors",         // 19
     "LogFileName",          // 20
     "LogFileEncoding",      // 21
-    "ProgressWndStart",     // 22
-    "ForceConsoleWnd"       // 23
+    "ForceConsoleWnd"       // 22
 };
 
 // tags used to store conversion progress and histogram colors

@@ -24,7 +24,6 @@ CItemListCtrl::~CItemListCtrl()
 
 BEGIN_MESSAGE_MAP(CItemListCtrl, CListCtrl)
     ON_NOTIFY_REFLECT(LVN_ENDLABELEDIT, OnLvnEndlabeledit)
-    ON_WM_MBUTTONDOWN()
 END_MESSAGE_MAP()
 
 void CItemListCtrl::OnLvnEndlabeledit(NMHDR *pNMHDR, LRESULT *pResult)
@@ -57,14 +56,4 @@ void CItemListCtrl::OnLvnEndlabeledit(NMHDR *pNMHDR, LRESULT *pResult)
     }
 
     *pResult = 0;
-}
-
-void CItemListCtrl::OnMButtonDown(UINT nFlags, CPoint point)
-{
-    // NOTE: 
-    // when user pressed mouse Middle Button show file list/show histogram
-    // only if clicked over file list/histogram area
-    ((CBatchEncoderDlg *) this->GetParent())->OnShowHistogram();
-
-    CListCtrl::OnMButtonDown(nFlags, point);
 }

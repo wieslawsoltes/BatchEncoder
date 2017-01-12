@@ -12,16 +12,11 @@
 #include "MyStatic.h"
 #include "MyButton.h"
 #include "MyStatusBarCtrl.h"
-#include "Histogram.h"
-#include "LameHistogram.h"
-#include "ConversionStatus.h"
 #include "Configuration.h"
 
 #define WM_TRAY (WM_USER + 0x10)
 
 #define IDC_STATUSBAR 1500
-#define IDC_HISTOGRAM 1600
-#define IDC_CNVSTATUS 1700
 
 // nAction
 #define ADD_ITEM_NONE              -1
@@ -125,11 +120,6 @@ public:
         double fTime = 0.0,
         int nIndex = -1);
 public:
-    void HistogramCallback(PLAME_ENC_HISTOGRAM plehData);
-    CHistogram m_Histogram;
-public:
-    CConversionStatus m_CnvStatus;
-public:
     bool InsertToMemoryList(NewItemData &nid);
     bool InsertToControlList(NewItemData &nid);
     bool InsertToList(NewItemData &nid);
@@ -182,9 +172,6 @@ public:
 public:
     void EnableTrayIcon(bool bEnable = true, bool bModify = false);
     void ShowProgressTrayIcon(int nProgress);
-public:
-    bool bIsHistogramVisible;
-    bool bIsCnvStatusVisible;
 public:
     afx_msg void OnSize(UINT nType, int cx, int cy);
 public:
@@ -243,12 +230,6 @@ public:
     afx_msg void OnEditResetOutput();
     afx_msg void OnEditResetTime();
 public:
-    afx_msg void OnShowHistogram();
-    afx_msg void OnShowCnvStatus();
-public:
-    afx_msg void OnViewStartWithExtendedProgress();
-    afx_msg void OnViewToogleExtendedProgress();
-    afx_msg void OnViewToogleHistogramWindow();
     afx_msg void OnViewShowGridLines();
 public:
     afx_msg void OnActionConvert();
