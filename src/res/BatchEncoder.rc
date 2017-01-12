@@ -1,7 +1,6 @@
 // Microsoft Visual C++ generated resource script.
 //
 #include "resource.h"
-#include "..\version.h"
 
 #define APSTUDIO_READONLY_SYMBOLS
 /////////////////////////////////////////////////////////////////////////////
@@ -18,13 +17,11 @@
 #undef APSTUDIO_READONLY_SYMBOLS
 
 /////////////////////////////////////////////////////////////////////////////
-// Polish resources
+// Polish (Poland) resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_PLK)
-#ifdef _WIN32
 LANGUAGE LANG_POLISH, SUBLANG_DEFAULT
 #pragma code_page(1250)
-#endif //_WIN32
 
 #ifdef APSTUDIO_INVOKED
 /////////////////////////////////////////////////////////////////////////////
@@ -65,18 +62,16 @@ END
 
 #endif    // APSTUDIO_INVOKED
 
-#endif    // Polish resources
+#endif    // Polish (Poland) resources
 /////////////////////////////////////////////////////////////////////////////
 
 
 /////////////////////////////////////////////////////////////////////////////
-// English (U.S.) resources
+// English (United States) resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
-#ifdef _WIN32
 LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 #pragma code_page(1252)
-#endif //_WIN32
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -86,18 +81,31 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 // Icon with lowest ID value placed first to ensure application icon
 // remains consistent on all systems.
 IDR_MAINFRAME           ICON                    "BatchEncoder.ico"
+
 IDI_ICON_PROGRESS_01    ICON                    "ProgressIcon01.ico"
+
 IDI_ICON_PROGRESS_02    ICON                    "ProgressIcon02.ico"
+
 IDI_ICON_PROGRESS_03    ICON                    "ProgressIcon03.ico"
+
 IDI_ICON_PROGRESS_04    ICON                    "ProgressIcon04.ico"
+
 IDI_ICON_PROGRESS_05    ICON                    "ProgressIcon05.ico"
+
 IDI_ICON_PROGRESS_06    ICON                    "ProgressIcon06.ico"
+
 IDI_ICON_PROGRESS_07    ICON                    "ProgressIcon07.ico"
+
 IDI_ICON_PROGRESS_08    ICON                    "ProgressIcon08.ico"
+
 IDI_ICON_PROGRESS_09    ICON                    "ProgressIcon09.ico"
+
 IDI_ICON_PROGRESS_10    ICON                    "ProgressIcon10.ico"
+
 IDI_ICON_PROGRESS_11    ICON                    "ProgressIcon11.ico"
+
 IDI_ICON_PROGRESS_12    ICON                    "ProgressIcon12.ico"
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -174,25 +182,25 @@ BEGIN
     PUSHBUTTON      "&...",IDC_BUTTON_FD_BROWSE_PROGRESS,359,158,50,12
 END
 
-IDD_DIALOG_ABOUT DIALOGEX 0, 0, 382, 172
+IDD_DIALOG_ABOUT DIALOGEX 0, 0, 383, 116
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
 CAPTION "About BatchEncoder"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    PUSHBUTTON      "OK",IDOK,325,153,50,12
-    CTEXT           "app name",IDC_STATIC_TEXT_APP_NAME,7,63,368,12,SS_CENTERIMAGE
-    CTEXT           "website",IDC_STATIC_TEXT_WEBSITE,7,77,368,12,SS_CENTERIMAGE
-    CTEXT           "e-mail",IDC_STATIC_TEXT_EMAIL,7,91,368,12,SS_CENTERIMAGE
-    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ | SS_SUNKEN,7,146,368,1,WS_EX_STATICEDGE
-    CTEXT           "Licensed under the MIT license. See LICENSE file in the application root for full license information.",IDC_STATIC_LICENSE,7,114,368,23
+    PUSHBUTTON      "OK",IDOK,325,97,50,12
+    CTEXT           "app name",IDC_STATIC_TEXT_APP_NAME,7,7,368,12,SS_CENTERIMAGE
+    CTEXT           "website",IDC_STATIC_TEXT_WEBSITE,7,21,368,12,SS_CENTERIMAGE
+    CTEXT           "e-mail",IDC_STATIC_TEXT_EMAIL,7,35,368,12,SS_CENTERIMAGE
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ | SS_SUNKEN,7,90,368,1,WS_EX_STATICEDGE
+    CTEXT           "Licensed under the MIT license. See LICENSE file in the application root for full license information.",IDC_STATIC_LICENSE,7,58,368,23
 END
 
-IDD_DIALOG_ADVANCED DIALOGEX 0, 0, 350, 178
+IDD_DIALOG_ADVANCED DIALOGEX 0, 0, 180, 178
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Advanced Options"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    PUSHBUTTON      "&Cancel",IDCANCEL,293,158,50,12
+    PUSHBUTTON      "&Cancel",IDCANCEL,123,158,50,12
     GROUPBOX        "Encoder/Decoder Priority",IDC_STATIC,7,7,165,47
     RTEXT           "thread:",IDC_STATIC,13,18,36,12,SS_CENTERIMAGE
     COMBOBOX        IDC_COMBO_PRIORITY_THREAD,53,18,113,96,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
@@ -210,7 +218,7 @@ BEGIN
     CONTROL         "U&TF-8",IDC_RADIO_ENCODING_UTF8,"Button",BS_AUTORADIOBUTTON,134,133,32,12
     LTEXT           "Encoding:",IDC_STATIC,13,133,36,12,SS_CENTERIMAGE
     GROUPBOX        "Console log file path:",IDC_STATIC,7,106,165,45
-    PUSHBUTTON      "&OK",IDOK,239,158,50,12
+    PUSHBUTTON      "&OK",IDOK,69,158,50,12
 END
 
 
@@ -219,7 +227,7 @@ END
 // Menu
 //
 
-IDR_MENU_MAIN MENU 
+IDR_MENU_MAIN MENU
 BEGIN
     POPUP "&File"
     BEGIN
@@ -284,10 +292,10 @@ BEGIN
         MENUITEM SEPARATOR
         MENUITEM "For&ce console window\tCtrl+Shift+F", ID_OPTIONS_FORCECONSOLEWINDOW
         MENUITEM SEPARATOR
-        MENUITEM "&Advanced...\tCtrl+Shift+A", ID_OPTIONS_ADVANCED
+        MENUITEM "&Advanced...\tCtrl+Shift+A",  ID_OPTIONS_ADVANCED
         MENUITEM SEPARATOR
-        MENUITEM "Configure &presets...\tF7", ID_OPTIONS_CONFIGUREPRESETS
-        MENUITEM "Configure &formats...\tF8", ID_OPTIONS_CONFIGUREFORMAT
+        MENUITEM "Configure &presets...\tF7",   ID_OPTIONS_CONFIGUREPRESETS
+        MENUITEM "Configure &formats...\tF8",   ID_OPTIONS_CONFIGUREFORMAT
     END
     POPUP "&Help"
     BEGIN
@@ -297,7 +305,7 @@ BEGIN
     END
 END
 
-IDR_MENU_TRAY MENU 
+IDR_MENU_TRAY MENU
 BEGIN
     POPUP "&Tray Menu"
     BEGIN
@@ -305,7 +313,7 @@ BEGIN
     END
 END
 
-IDR_MENU_STAT MENU 
+IDR_MENU_STAT MENU
 BEGIN
     POPUP "&Status Menu"
     BEGIN
@@ -319,7 +327,7 @@ END
 // Accelerator
 //
 
-IDR_ACCELERATOR_BATCHENCODER ACCELERATORS 
+IDR_ACCELERATOR_BATCHENCODER ACCELERATORS
 BEGIN
     VK_F4,          ID_ACCELERATOR_ALT_F4,  VIRTKEY, ALT, NOINVERT
     "A",            ID_ACCELERATOR_CTRL_A,  VIRTKEY, CONTROL, NOINVERT
@@ -360,8 +368,9 @@ BEGIN
 END
 
 
-#endif    // English (U.S.) resources
+#endif    // English (United States) resources
 /////////////////////////////////////////////////////////////////////////////
+
 
 
 #ifndef APSTUDIO_INVOKED

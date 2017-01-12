@@ -1,6 +1,8 @@
 //
 // BatchEncoder.RC2 - resources Microsoft Visual C++ does not edit directly
 //
+#include "resource.h"
+#include "version.h"
 
 #ifdef APSTUDIO_INVOKED
 #error this file is not editable by Microsoft Visual C++
