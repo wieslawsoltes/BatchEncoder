@@ -54,109 +54,76 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="BatchEncoder.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="StdAfx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MyButton.cpp">
-      <Filter>Source Files\Controls</Filter>
-    </ClCompile>
-    <ClCompile Include="MyComboBox.cpp">
-      <Filter>Source Files\Controls</Filter>
-    </ClCompile>
-    <ClCompile Include="MyStatic.cpp">
-      <Filter>Source Files\Controls</Filter>
-    </ClCompile>
-    <ClCompile Include="MyStatusBarCtrl.cpp">
-      <Filter>Source Files\Controls</Filter>
-    </ClCompile>
-    <ClCompile Include="ResizeDialog.cpp">
-      <Filter>Source Files\Controls</Filter>
-    </ClCompile>
-    <ClCompile Include="Hyperlink.cpp">
-      <Filter>Source Files\Controls</Filter>
-    </ClCompile>
-    <ClCompile Include="AboutDlg.cpp">
-      <Filter>Source Files\Dialogs</Filter>
-    </ClCompile>
-    <ClCompile Include="AdvancedDlg.cpp">
-      <Filter>Source Files\Dialogs</Filter>
-    </ClCompile>
-    <ClCompile Include="BatchEncoderDlg.cpp">
-      <Filter>Source Files\Dialogs</Filter>
-    </ClCompile>
-    <ClCompile Include="FormatsDlg.cpp">
-      <Filter>Source Files\Dialogs</Filter>
-    </ClCompile>
-    <ClCompile Include="PresetsDlg.cpp">
-      <Filter>Source Files\Dialogs</Filter>
-    </ClCompile>
-    <ClCompile Include="XMLDocumentW.cpp">
-      <Filter>Source Files\Xml</Filter>
-    </ClCompile>
-    <ClCompile Include="UnicodeUtf8.cpp">
-      <Filter>Source Files\Utilities</Filter>
-    </ClCompile>
-    <ClCompile Include="Utf8String.cpp">
-      <Filter>Source Files\Utilities</Filter>
-    </ClCompile>
-    <ClCompile Include="WorkThread.cpp">
-      <Filter>Source Files\Worker</Filter>
+    <ClCompile Include="BatchEncoder.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Configuration.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ItemListCtrl.cpp">
+    <ClCompile Include="XMLDocumentW.cpp">
+      <Filter>Source Files\Xml</Filter>
+    </ClCompile>
+    <ClCompile Include="controls\MyButton.cpp">
       <Filter>Source Files\Controls</Filter>
     </ClCompile>
-    <ClCompile Include="Utilities.cpp">
+    <ClCompile Include="controls\MyComboBox.cpp">
+      <Filter>Source Files\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="controls\MyStatic.cpp">
+      <Filter>Source Files\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="controls\MyStatusBarCtrl.cpp">
+      <Filter>Source Files\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="controls\ResizeDialog.cpp">
+      <Filter>Source Files\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="controls\Hyperlink.cpp">
+      <Filter>Source Files\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="controls\ItemListCtrl.cpp">
+      <Filter>Source Files\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="dialogs\AboutDlg.cpp">
+      <Filter>Source Files\Dialogs</Filter>
+    </ClCompile>
+    <ClCompile Include="dialogs\AdvancedDlg.cpp">
+      <Filter>Source Files\Dialogs</Filter>
+    </ClCompile>
+    <ClCompile Include="dialogs\BatchEncoderDlg.cpp">
+      <Filter>Source Files\Dialogs</Filter>
+    </ClCompile>
+    <ClCompile Include="dialogs\FormatsDlg.cpp">
+      <Filter>Source Files\Dialogs</Filter>
+    </ClCompile>
+    <ClCompile Include="dialogs\PresetsDlg.cpp">
+      <Filter>Source Files\Dialogs</Filter>
+    </ClCompile>
+    <ClCompile Include="utilities\UnicodeUtf8.cpp">
       <Filter>Source Files\Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="utilities\Utf8String.cpp">
+      <Filter>Source Files\Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="utilities\Utilities.cpp">
+      <Filter>Source Files\Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="worker\WorkThread.cpp">
+      <Filter>Source Files\Worker</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="BatchEncoder.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="res\resource.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="StdAfx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Hyperlink.h">
-      <Filter>Header Files\Controls</Filter>
+    <ClInclude Include="BatchEncoder.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MyButton.h">
-      <Filter>Header Files\Controls</Filter>
-    </ClInclude>
-    <ClInclude Include="MyComboBox.h">
-      <Filter>Header Files\Controls</Filter>
-    </ClInclude>
-    <ClInclude Include="MyStatic.h">
-      <Filter>Header Files\Controls</Filter>
-    </ClInclude>
-    <ClInclude Include="MyStatusBarCtrl.h">
-      <Filter>Header Files\Controls</Filter>
-    </ClInclude>
-    <ClInclude Include="ResizeDialog.h">
-      <Filter>Header Files\Controls</Filter>
-    </ClInclude>
-    <ClInclude Include="AboutDlg.h">
-      <Filter>Header Files\Dialogs</Filter>
-    </ClInclude>
-    <ClInclude Include="AdvancedDlg.h">
-      <Filter>Header Files\Dialogs</Filter>
-    </ClInclude>
-    <ClInclude Include="BatchEncoderDlg.h">
-      <Filter>Header Files\Dialogs</Filter>
-    </ClInclude>
-    <ClInclude Include="FormatsDlg.h">
-      <Filter>Header Files\Dialogs</Filter>
-    </ClInclude>
-    <ClInclude Include="PresetsDlg.h">
-      <Filter>Header Files\Dialogs</Filter>
+    <ClInclude Include="Configuration.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="version.h">
       <Filter>Header Files</Filter>
@@ -167,26 +134,59 @@
     <ClInclude Include="XMLDocumentW.h">
       <Filter>Header Files\Xml</Filter>
     </ClInclude>
-    <ClInclude Include="UnicodeUtf8.h">
-      <Filter>Header Files\Utilities</Filter>
-    </ClInclude>
-    <ClInclude Include="Utf8String.h">
-      <Filter>Header Files\Utilities</Filter>
-    </ClInclude>
-    <ClInclude Include="WorkThread.h">
-      <Filter>Header Files\Worker</Filter>
-    </ClInclude>
-    <ClInclude Include="TimeCount.h">
-      <Filter>Header Files\Worker</Filter>
-    </ClInclude>
-    <ClInclude Include="Configuration.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ItemListCtrl.h">
+    <ClInclude Include="controls\Hyperlink.h">
       <Filter>Header Files\Controls</Filter>
     </ClInclude>
-    <ClInclude Include="Utilities.h">
+    <ClInclude Include="controls\MyButton.h">
+      <Filter>Header Files\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="controls\MyComboBox.h">
+      <Filter>Header Files\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="controls\MyStatic.h">
+      <Filter>Header Files\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="controls\MyStatusBarCtrl.h">
+      <Filter>Header Files\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="controls\ResizeDialog.h">
+      <Filter>Header Files\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="controls\ItemListCtrl.h">
+      <Filter>Header Files\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="dialogs\AboutDlg.h">
+      <Filter>Header Files\Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="dialogs\AdvancedDlg.h">
+      <Filter>Header Files\Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="dialogs\BatchEncoderDlg.h">
+      <Filter>Header Files\Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="dialogs\FormatsDlg.h">
+      <Filter>Header Files\Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="dialogs\PresetsDlg.h">
+      <Filter>Header Files\Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="utilities\UnicodeUtf8.h">
       <Filter>Header Files\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="utilities\Utf8String.h">
+      <Filter>Header Files\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="utilities\Utilities.h">
+      <Filter>Header Files\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="worker\WorkThread.h">
+      <Filter>Header Files\Worker</Filter>
+    </ClInclude>
+    <ClInclude Include="worker\TimeCount.h">
+      <Filter>Header Files\Worker</Filter>
+    </ClInclude>
+    <ClInclude Include="res\resource.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
