@@ -127,10 +127,6 @@ enum TOOL_ID
 // number of supported process priorities
 #define NUM_PROCESS_PRIORITY 4
 
-// number of progress icons
-#define NUM_PROGRESS_ICONS 12
-
-extern const int g_nProgressIconResources[NUM_PROGRESS_ICONS];
 extern const int g_nThreadPriority[];
 extern const DWORD g_dwProcessPriority[];
 extern const TCHAR *g_szThreadPriority[];
