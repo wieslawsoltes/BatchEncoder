@@ -138,11 +138,6 @@ extern const TCHAR *g_szNames[];
 extern const char *g_szPresetTags[];
 extern const TCHAR *g_szPresetFiles[];
 extern const char *g_szSettingsTags[];
-extern const TCHAR *g_szDefaultTemplate[];
-extern const TCHAR *g_szDefaultPath[];
-extern const bool g_bDefaultInPipes[NUM_FORMAT_NAMES];
-extern const bool g_bDefaultOutPipes[NUM_FORMAT_NAMES];
-extern const TCHAR *g_bDefaultFunction[];
 
 int GetFormatId(CString szBuff);
 
