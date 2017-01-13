@@ -266,7 +266,6 @@ copy /-Y data\Formats\*.formats $(OutDir)</Command>
     <ClCompile Include="Utf8String.cpp" />
     <ClCompile Include="Utilities.cpp" />
     <ClCompile Include="WorkThread.cpp" />
-    <ClCompile Include="XmlResource.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Configuration.h" />
@@ -293,7 +292,6 @@ copy /-Y data\Formats\*.formats $(OutDir)</Command>
     <ClInclude Include="Utilities.h" />
     <ClInclude Include="version.h" />
     <ClInclude Include="WorkThread.h" />
-    <ClInclude Include="XmlResource.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\BatchEncoder.ico" />
