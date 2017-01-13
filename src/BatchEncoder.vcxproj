@@ -274,6 +274,7 @@ copy /-Y data\Formats\*.formats $(OutDir)</Command>
     <ClInclude Include="BatchEncoder.h" />
     <ClInclude Include="Configuration.h" />
     <ClInclude Include="XMLDocumentW.h" />
+    <ClInclude Include="controls\Controls.h" />
     <ClInclude Include="controls\ItemListCtrl.h" />
     <ClInclude Include="controls\Hyperlink.h" />
     <ClInclude Include="controls\MyButton.h" />
