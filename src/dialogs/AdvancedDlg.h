@@ -4,8 +4,8 @@
 #pragma once
 
 #include "afxwin.h"
-#include "MyComboBox.h"
-#include "MyButton.h"
+#include "afxcmn.h"
+#include "../controls/Controls.h"
 
 class CAdvancedDlg : public CDialog
 {
