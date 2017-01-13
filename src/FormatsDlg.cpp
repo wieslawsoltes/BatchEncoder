@@ -141,7 +141,6 @@ BOOL CFormatsDlg::OnInitDialog()
     AddAnchor(IDC_BUTTON_FD_BROWSE_PROGRESS, BOTTOM_RIGHT);
     AddAnchor(IDC_BUTTON_LOAD_CONFIG, BOTTOM_LEFT);
     AddAnchor(IDC_BUTTON_SAVE_CONFIG, BOTTOM_LEFT);
-    AddAnchor(IDC_BUTTON_DEFAULT_CONFIG, BOTTOM_LEFT);
     AddAnchor(IDOK, BOTTOM_RIGHT);
     AddAnchor(IDCANCEL, BOTTOM_RIGHT);
 
@@ -524,7 +523,9 @@ void CFormatsDlg::OnBnClickedButtonFdBrowse()
     if (pos != NULL)
     {
         int nItem = m_LstFormats.GetNextSelectedItem(pos);
-        BrowseForCliExe(g_szDefaultPath[nItem], &m_EdtPath, nItem);
+        CString szPath;
+        this->m_EdtPath.GetWindowText(szPath);
+        BrowseForCliExe(szPath, &m_EdtPath, nItem);
     }
     else
     {
@@ -540,7 +541,9 @@ void CFormatsDlg::OnBnClickedButtonFdBrowseProgress()
     if (pos != NULL)
     {
         int nItem = m_LstFormats.GetNextSelectedItem(pos);
-        BrowseForProgress(g_bDefaultFunction[nItem], &m_EdtProgress, nItem);
+        CString szFunction;
+        this->m_EdtProgress.GetWindowText(szFunction);
+        BrowseForProgress(szFunction, &m_EdtProgress, nItem);
     }
     else
     {
