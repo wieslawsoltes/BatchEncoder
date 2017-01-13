@@ -9,24 +9,6 @@
 #define new DEBUG_NEW
 #endif
 
-// the progress icons IDs
-// items: NUM_PROGRESS_ICONS
-const int g_nProgressIconResources[NUM_PROGRESS_ICONS] =
-{
-    IDI_ICON_PROGRESS_01,   // 0
-    IDI_ICON_PROGRESS_02,   // 1
-    IDI_ICON_PROGRESS_03,   // 2
-    IDI_ICON_PROGRESS_04,   // 3
-    IDI_ICON_PROGRESS_05,   // 4
-    IDI_ICON_PROGRESS_06,   // 5
-    IDI_ICON_PROGRESS_07,   // 6
-    IDI_ICON_PROGRESS_08,   // 7
-    IDI_ICON_PROGRESS_09,   // 8
-    IDI_ICON_PROGRESS_10,   // 9
-    IDI_ICON_PROGRESS_11,   // 10
-    IDI_ICON_PROGRESS_12    // 11
-};
-
 // supported thread priorities
 // items: NUM_THREAD_PRIORITY
 const int g_nThreadPriority[NUM_THREAD_PRIORITY] =
