@@ -35,7 +35,6 @@ void CFormatsDlg::DoDataExchange(CDataExchange* pDX)
     DDX_Control(pDX, IDCANCEL, m_BtnCancel);
     DDX_Control(pDX, IDC_BUTTON_LOAD_CONFIG, m_BtnLoad);
     DDX_Control(pDX, IDC_BUTTON_SAVE_CONFIG, m_BtnSave);
-    DDX_Control(pDX, IDC_BUTTON_DEFAULT_CONFIG, m_BtnDefaults);
     DDX_Control(pDX, IDC_BUTTON_FD_BROWSE, m_BtnBrowse);
     DDX_Control(pDX, IDC_BUTTON_FD_UPDATE_PRESET, m_BtnChange);
     DDX_Control(pDX, IDC_EDIT_FD_FORMATS, m_LstFormats);
@@ -55,7 +54,6 @@ BEGIN_MESSAGE_MAP(CFormatsDlg, CResizeDialog)
     ON_BN_CLICKED(IDCANCEL, OnBnClickedCancel)
     ON_BN_CLICKED(IDC_BUTTON_LOAD_CONFIG, OnBnClickedButtonLoadConfig)
     ON_BN_CLICKED(IDC_BUTTON_SAVE_CONFIG, OnBnClickedButtonSaveConfig)
-    ON_BN_CLICKED(IDC_BUTTON_DEFAULT_CONFIG, OnBnClickedButtonDefaultConfig)
     ON_NOTIFY(LVN_ITEMCHANGED, IDC_EDIT_FD_FORMATS, OnLvnItemchangedEditFdFormats)
     ON_BN_CLICKED(IDC_BUTTON_FD_BROWSE, OnBnClickedButtonFdBrowse)
     ON_BN_CLICKED(IDC_BUTTON_FD_BROWSE_PROGRESS, OnBnClickedButtonFdBrowseProgress)
@@ -509,27 +507,6 @@ void CFormatsDlg::OnBnClickedButtonSaveConfig()
         CString szFileXml = fd.GetPathName();
         this->SaveFormatsFile(szFileXml);
     }
-}
-
-void CFormatsDlg::OnBnClickedButtonDefaultConfig()
-{
-    // load defaults
-    for (int i = 0; i < NUM_FORMAT_NAMES; i++)
-    {
-        m_Formats[i].szTemplate = g_szDefaultTemplate[i];
-        m_Formats[i].szPath = g_szDefaultPath[i];
-        m_Formats[i].bInput = g_bDefaultInPipes[i];
-        m_Formats[i].bOutput = g_bDefaultOutPipes[i];
-        m_Formats[i].szFunction = g_bDefaultFunction[i];
-
-        m_LstFormats.SetItemText(i, 1, g_szDefaultTemplate[i]);
-        m_LstFormats.SetItemText(i, 2, g_szDefaultPath[i]);
-        m_LstFormats.SetItemText(i, 3, (g_bDefaultInPipes[i]) ? _T("true") : _T("false"));
-        m_LstFormats.SetItemText(i, 4, (g_bDefaultOutPipes[i]) ? _T("true") : _T("false"));
-        m_LstFormats.SetItemText(i, 5, g_bDefaultFunction[i]);
-    }
-
-    this->UpdateEditableFields();
 }
 
 void CFormatsDlg::OnLvnItemchangedEditFdFormats(NMHDR *pNMHDR, LRESULT *pResult)
