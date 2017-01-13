@@ -4,7 +4,7 @@
 #define ProgramVersion VERSION
 #define ProgramCopyright "Copyright (c) Wieslaw Soltes. All rights reserved."
 #define ProgramWebsite "https://github.com/wieslawsoltes/BatchEncoder"
-#define BasePath "."
+#define BasePath ".."
 
 [Setup]
 
@@ -13,7 +13,7 @@ AppName             ={#ProgramName}
 AppVerName          ={#ProgramName} {#ProgramVersion}
 AppCopyright        ={#ProgramCopyright}
 DefaultDirName      ={pf}\{#ProgramName} ({#ProgramBuild})
-OutputDir           =.\artifacts
+OutputDir           ={#BasePath}\artifacts
 VersionInfoVersion  ={#ProgramVersion}
 DefaultGroupName    ={#ProgramName} ({#ProgramBuild})
 AppPublisher        ={#ProgramWebsite}
