@@ -134,6 +134,9 @@
     <ClInclude Include="XMLDocumentW.h">
       <Filter>Header Files\Xml</Filter>
     </ClInclude>
+    <ClInclude Include="controls\Controls.h">
+      <Filter>Header Files\Controls</Filter>
+    </ClInclude>
     <ClInclude Include="controls\Hyperlink.h">
       <Filter>Header Files\Controls</Filter>
     </ClInclude>
