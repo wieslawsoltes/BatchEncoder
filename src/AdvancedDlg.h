@@ -4,7 +4,7 @@
 #pragma once
 
 #include "afxwin.h"
-#include "DropList.h"
+#include "MyComboBox.h"
 #include "MyButton.h"
 
 class CAdvancedDlg : public CDialog
@@ -23,8 +23,8 @@ public:
     CMyButton m_BtnCancel;
     CMyButton m_BtnOK;
 public:
-    CDropList m_CmbThread;
-    CDropList m_CmbProcess;
+    CMyComboBox m_CmbThread;
+    CMyComboBox m_CmbProcess;
 public:
     CEdit m_EdtLog;
     CButton m_BtnBrowse;
