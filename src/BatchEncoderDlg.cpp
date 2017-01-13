@@ -209,13 +209,6 @@ CBatchEncoderDlg::CBatchEncoderDlg(CWnd* pParent /*=NULL*/)
     szFormatsWndResize = _T("");
     szFormatsListColumns = _T("");
 
-    for (int i = 0; i < NUM_COMMADLINE_TOOLS; i++)
-    {
-        m_Config.m_Formats[i].szPath = g_szDefaultPath[i];
-        m_Config.m_Formats[i].bInput = g_bDefaultInPipes[i];
-        m_Config.m_Formats[i].bOutput = g_bDefaultOutPipes[i];
-    }
-
     m_Config.m_Options.nThreadPriorityIndex = 3;
     m_Config.m_Options.nProcessPriorityIndex = 1;
     m_Config.m_Options.bDeleteOnError = true;
