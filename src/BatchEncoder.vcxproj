@@ -246,11 +246,11 @@ copy /-Y data\Formats\*.formats $(OutDir)</Command>
     <ClCompile Include="BatchEncoder.cpp" />
     <ClCompile Include="BatchEncoderDlg.cpp" />
     <ClCompile Include="Configuration.cpp" />
-    <ClCompile Include="DropList.cpp" />
     <ClCompile Include="ItemListCtrl.cpp" />
     <ClCompile Include="FormatsDlg.cpp" />
     <ClCompile Include="Hyperlink.cpp" />
     <ClCompile Include="MyButton.cpp" />
+    <ClCompile Include="MyComboBox.cpp" />
     <ClCompile Include="MyStatic.cpp" />
     <ClCompile Include="MyStatusBarCtrl.cpp" />
     <ClCompile Include="PresetsDlg.cpp" />
@@ -274,11 +274,11 @@ copy /-Y data\Formats\*.formats $(OutDir)</Command>
     <ClInclude Include="AdvancedDlg.h" />
     <ClInclude Include="BatchEncoder.h" />
     <ClInclude Include="BatchEncoderDlg.h" />
-    <ClInclude Include="DropList.h" />
     <ClInclude Include="ItemListCtrl.h" />
     <ClInclude Include="FormatsDlg.h" />
     <ClInclude Include="Hyperlink.h" />
     <ClInclude Include="MyButton.h" />
+    <ClInclude Include="MyComboBox.h" />
     <ClInclude Include="MyStatic.h" />
     <ClInclude Include="MyStatusBarCtrl.h" />
     <ClInclude Include="PresetsDlg.h" />
