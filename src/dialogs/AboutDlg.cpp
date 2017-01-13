@@ -5,7 +5,6 @@
 #include "..\BatchEncoder.h"
 #include "..\utilities\Utilities.h"
 #include "AboutDlg.h"
-#include ".\aboutdlg.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
