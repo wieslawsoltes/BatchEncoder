@@ -63,6 +63,9 @@
     <ClCompile Include="MyButton.cpp">
       <Filter>Source Files\Controls</Filter>
     </ClCompile>
+    <ClCompile Include="MyComboBox.cpp">
+      <Filter>Source Files\Controls</Filter>
+    </ClCompile>
     <ClCompile Include="MyStatic.cpp">
       <Filter>Source Files\Controls</Filter>
     </ClCompile>
@@ -89,9 +92,6 @@
     </ClCompile>
     <ClCompile Include="PresetsDlg.cpp">
       <Filter>Source Files\Dialogs</Filter>
-    </ClCompile>
-    <ClCompile Include="DropList.cpp">
-      <Filter>Source Files\Controls</Filter>
     </ClCompile>
     <ClCompile Include="XMLDocumentW.cpp">
       <Filter>Source Files\Xml</Filter>
@@ -131,6 +131,9 @@
     <ClInclude Include="MyButton.h">
       <Filter>Header Files\Controls</Filter>
     </ClInclude>
+    <ClInclude Include="MyComboBox.h">
+      <Filter>Header Files\Controls</Filter>
+    </ClInclude>
     <ClInclude Include="MyStatic.h">
       <Filter>Header Files\Controls</Filter>
     </ClInclude>
@@ -154,9 +157,6 @@
     </ClInclude>
     <ClInclude Include="PresetsDlg.h">
       <Filter>Header Files\Dialogs</Filter>
-    </ClInclude>
-    <ClInclude Include="DropList.h">
-      <Filter>Header Files\Controls</Filter>
     </ClInclude>
     <ClInclude Include="version.h">
       <Filter>Header Files</Filter>
