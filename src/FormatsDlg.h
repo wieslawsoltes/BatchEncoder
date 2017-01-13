@@ -50,7 +50,6 @@ public:
     CMyButton m_BtnCancel;
     CMyButton m_BtnLoad;
     CMyButton m_BtnSave;
-    CMyButton m_BtnDefaults;
     CMyButton m_BtnBrowse;
     CMyButton m_BtnChange;
 public:
@@ -69,7 +68,6 @@ public:
     afx_msg void OnBnClickedButtonFdBrowse();
     afx_msg void OnBnClickedButtonFdBrowseProgress();
     afx_msg void OnBnClickedButtonFdUpdatePreset();
-    afx_msg void OnBnClickedButtonDefaultConfig();
 public:
     bool BrowseForCliExe(CString szDefaultFName, CEdit *pEdit, int nID);
     bool BrowseForProgress(CString szDefaultFName, CEdit *pEdit, int nID);
