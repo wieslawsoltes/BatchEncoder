@@ -3,8 +3,8 @@
 
 #include "StdAfx.h"
 #include "BatchEncoder.h"
-#include "ResizeDialog.h"
-#include "BatchEncoderDlg.h"
+#include "controls\ResizeDialog.h"
+#include "dialogs\BatchEncoderDlg.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
