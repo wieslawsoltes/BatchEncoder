@@ -137,8 +137,6 @@ public:
         const TCHAR *szOutExt = NULL,
         const int nPreset = -1);
 public:
-    CString BrowseForSettings();
-public:
     LPTSTR GetMenuItemCheck(int nID);
     void SetMenuItemCheck(int nID, LPTSTR bChecked);
 public:
