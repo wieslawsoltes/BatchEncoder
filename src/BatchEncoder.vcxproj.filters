@@ -96,9 +96,6 @@
     <ClCompile Include="XMLDocumentW.cpp">
       <Filter>Source Files\Xml</Filter>
     </ClCompile>
-    <ClCompile Include="XmlResource.cpp">
-      <Filter>Source Files\Xml</Filter>
-    </ClCompile>
     <ClCompile Include="UnicodeUtf8.cpp">
       <Filter>Source Files\Utilities</Filter>
     </ClCompile>
@@ -168,9 +165,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="XMLDocumentW.h">
-      <Filter>Header Files\Xml</Filter>
-    </ClInclude>
-    <ClInclude Include="XmlResource.h">
       <Filter>Header Files\Xml</Filter>
     </ClInclude>
     <ClInclude Include="UnicodeUtf8.h">
