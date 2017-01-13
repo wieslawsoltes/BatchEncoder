@@ -747,8 +747,8 @@ bool ConvertFile(CBatchEncoderDlg *pDlg,
                         // do nothing in most situations
 
                         // NOTE: special case for wavpack and wvunpack
-                        if (((bDecode == false) && (nTool == TOOL_ID_ENC_WAVPACK)) ||
-                            ((bDecode == true) && (nTool == TOOL_ID_DEC_WVUNPACK)))
+                        if (((bDecode == false) && (nTool == 9)) || // WAVPACK
+                            ((bDecode == true) && (nTool == 26)))   // WVUNPACK
                         {
                             // NOTE: same code as if(szReadBuff[i] == '\r')
                             if ((bLineStart == true) && (bLineEnd == false))
