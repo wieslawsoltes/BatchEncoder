@@ -5,9 +5,7 @@
 
 #include "afxcmn.h"
 #include "afxwin.h"
-#include "ResizeDialog.h"
-#include "MyButton.h"
-#include "MyStatic.h"
+#include "../controls/Controls.h"
 
 class CFormatsDlg : public CResizeDialog
 {
