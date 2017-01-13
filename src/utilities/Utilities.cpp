@@ -13,7 +13,8 @@
 
 void DoTheShutdown()
 {
-    if (::IsWindowsXPOrGreater())
+    // Windows XP or later
+    if (true)
     {
         HANDLE m_hToken;
 
@@ -69,10 +70,9 @@ void SetComboBoxHeight(HWND hDlg, int nComboBoxID)
 
     HWND hComboxBox = ::GetDlgItem(hDlg, nComboBoxID);
 
-    // NOTE: on WinXP standard method does not work 
-    //       but we are using CB_SETMINVISIBLE message
-    // version >= 5.1 (Windows XP or later windows)
-    if (::IsWindowsXPOrGreater())
+    // NOTE: on WinXP standard method does not work but we are using CB_SETMINVISIBLE message
+    // Windows XP or later
+    if (true)
     {
         // well we using right now 5.0 NT define, but we need this for XP
 #if !defined(CBM_FIRST) | !defined(CB_SETMINVISIBLE)

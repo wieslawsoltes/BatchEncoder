@@ -3,11 +3,12 @@
 
 #pragma once
 
-#include "afxwin.h"
-#include "afxcmn.h"
+#include <afxwin.h>
+#include <afxcmn.h>
 #include "..\controls\Controls.h"
 #include "..\worker\TimeCount.h"
 #include "..\Configuration.h"
+#include "..\XMLDocumentW.h"
 
 #define WM_TRAY (WM_USER + 0x10)
 

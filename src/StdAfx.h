@@ -52,8 +52,3 @@
 #include <direct.h>
 #endif
 #include <afxdhtml.h>
-
-#include <VersionHelpers.h>
-
-#include "XMLDocumentW.h"
-#include "Configuration.h"

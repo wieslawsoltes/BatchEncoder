@@ -3,8 +3,8 @@
 
 #pragma once
 
-#include "afxcmn.h"
-#include "afxwin.h"
+#include <afxcmn.h>
+#include <afxwin.h>
 #include "..\controls\Controls.h"
 
 class CAboutDlg : public CDialog

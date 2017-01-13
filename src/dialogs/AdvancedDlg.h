@@ -3,9 +3,11 @@
 
 #pragma once
 
-#include "afxwin.h"
-#include "afxcmn.h"
+#include <afxwin.h>
+#include <afxcmn.h>
 #include "..\controls\Controls.h"
+#include "..\Configuration.h"
+#include "..\XMLDocumentW.h"
 
 class CAdvancedDlg : public CDialog
 {

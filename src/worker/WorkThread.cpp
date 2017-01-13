@@ -269,8 +269,8 @@ bool ConvertFile(CBatchEncoderDlg *pDlg,
     }
 
     // this pipes are not inherited by child process
-    // SetHandleInformation used only in NT systems
-    if (::IsWindowsXPOrGreater())
+    // Windows XP or later
+    if (true)
     {
         if (bUseReadPipes == true)
         {
