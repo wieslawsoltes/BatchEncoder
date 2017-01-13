@@ -1,10 +1,9 @@
 ﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-#include "StdAfx.h"
-#include "BatchEncoder.h"
+#include "..\StdAfx.h"
+#include "..\BatchEncoder.h"
 #include "Hyperlink.h"
-#include ".\hyperlink.h"
 
 IMPLEMENT_DYNAMIC(CHyperlink, CStatic)
 CHyperlink::CHyperlink()
