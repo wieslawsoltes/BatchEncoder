@@ -7,7 +7,6 @@
 #include "..\utilities\UnicodeUtf8.h"
 #include "..\utilities\Utf8String.h"
 #include "PresetsDlg.h"
-#include ".\presetsdlg.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
