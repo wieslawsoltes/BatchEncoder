@@ -5,9 +5,9 @@
 
 #include "afxwin.h"
 #include "afxcmn.h"
-#include "../controls/Controls.h"
-#include "../workder/TimeCount.h"
-#include "../Configuration.h"
+#include "..\controls\Controls.h"
+#include "..\workder\TimeCount.h"
+#include "..\Configuration.h"
 
 #define WM_TRAY (WM_USER + 0x10)
 
