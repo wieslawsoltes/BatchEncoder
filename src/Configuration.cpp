@@ -102,21 +102,6 @@ const char *g_szSettingsTags[] =
     "ForceConsoleWnd"       // 22
 };
 
-// tags used to store conversion progress and histogram colors
-// items: NUM_PROGRAM_COLORS
-const char *g_szColorsTags[] =
-{
-    "CnvStatusText",        // 0
-    "CnvStatusTextError",   // 1
-    "CnvStatusProgress",    // 2
-    "CnvStatusBorder",      // 3
-    "CnvStatusBack",        // 4
-    "HistogramLR",          // 5
-    "HistogramMS",          // 6
-    "HistogramBorder",      // 7
-    "HistogramBack"         // 8
-};
-
 // supported input file extensions
 // items: NUM_INPUT_EXT
 const TCHAR *g_szAllInExt[] =
