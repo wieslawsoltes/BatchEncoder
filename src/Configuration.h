@@ -137,7 +137,6 @@ extern const TCHAR *g_szFormatNames[];
 extern const TCHAR *g_szNames[];
 extern const char *g_szPresetTags[];
 extern const TCHAR *g_szPresetFiles[];
-extern const int g_nPresetResources[NUM_PRESET_FILES];
 extern const char *g_szSettingsTags[];
 extern const TCHAR *g_szDefaultTemplate[];
 extern const TCHAR *g_szDefaultPath[];
