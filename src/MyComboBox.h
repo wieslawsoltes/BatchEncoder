@@ -3,12 +3,12 @@
 
 #pragma once
 
-class CDropList : public CComboBox
+class CMyComboBox : public CComboBox
 {
-    DECLARE_DYNAMIC(CDropList)
+    DECLARE_DYNAMIC(CMyComboBox)
 public:
-    CDropList();
-    virtual ~CDropList();
+    CMyComboBox();
+    virtual ~CMyComboBox();
 protected:
     DECLARE_MESSAGE_MAP()
 };
