@@ -5,7 +5,7 @@
 
 #include "afxcmn.h"
 #include "afxwin.h"
-#include "../controls/Controls.h"
+#include "..\controls\Controls.h"
 
 class CPresetsDlg : public CResizeDialog
 {
