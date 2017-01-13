@@ -6,7 +6,7 @@
 #include "..\utilities\Utilities.h"
 #include "..\utilities\UnicodeUtf8.h"
 #include "..\utilities\Utf8String.h"
-#include "..\workder\WorkThread.h"
+#include "..\worker\WorkThread.h"
 #include "BatchEncoderDlg.h"
 #include "PresetsDlg.h"
 #include "AboutDlg.h"
