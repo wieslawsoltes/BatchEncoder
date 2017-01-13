@@ -6,7 +6,6 @@
 #include "Utilities.h"
 #include "UnicodeUtf8.h"
 #include "Utf8String.h"
-#include "XmlResource.h"
 #include "BatchEncoderDlg.h"
 #include "PresetsDlg.h"
 #include "AboutDlg.h"
