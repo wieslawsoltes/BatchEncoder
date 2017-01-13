@@ -78,21 +78,25 @@
     <OutDir>bin\$(Configuration)\$(Platform)\</OutDir>
     <IntDir>obj\$(Configuration)\$(Platform)\</IntDir>
     <LinkIncremental>true</LinkIncremental>
+    <IncludePath>$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>bin\$(Configuration)\$(Platform)\</OutDir>
     <IntDir>obj\$(Configuration)\$(Platform)\</IntDir>
     <LinkIncremental>true</LinkIncremental>
+    <IncludePath>$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>bin\$(Configuration)\$(Platform)\</OutDir>
     <IntDir>obj\$(Configuration)\$(Platform)\</IntDir>
     <LinkIncremental>false</LinkIncremental>
+    <IncludePath>$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>bin\$(Configuration)\$(Platform)\</OutDir>
     <IntDir>obj\$(Configuration)\$(Platform)\</IntDir>
     <LinkIncremental>false</LinkIncremental>
+    <IncludePath>$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Midl>

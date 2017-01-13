@@ -25,12 +25,6 @@
     <Filter Include="Source Files\Dialogs">
       <UniqueIdentifier>{e5c94674-0e76-46a1-bfb2-d2ab733b8272}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Xml">
-      <UniqueIdentifier>{cce341be-f5d9-4331-8431-c6b4f6d33179}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Xml">
-      <UniqueIdentifier>{f6b31c12-6182-4625-8cef-830303fb90cf}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Worker">
       <UniqueIdentifier>{bd9ed2fd-3058-4441-a528-fcb3e42969c6}</UniqueIdentifier>
     </Filter>
@@ -62,9 +56,6 @@
     </ClCompile>
     <ClCompile Include="Configuration.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="XMLDocumentW.cpp">
-      <Filter>Source Files\Xml</Filter>
     </ClCompile>
     <ClCompile Include="controls\MyButton.cpp">
       <Filter>Source Files\Controls</Filter>
@@ -114,6 +105,9 @@
     <ClCompile Include="worker\WorkThread.cpp">
       <Filter>Source Files\Worker</Filter>
     </ClCompile>
+    <ClCompile Include="XMLDocumentW.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="StdAfx.h">
@@ -130,9 +124,6 @@
     </ClInclude>
     <ClInclude Include="targetver.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="XMLDocumentW.h">
-      <Filter>Header Files\Xml</Filter>
     </ClInclude>
     <ClInclude Include="controls\Controls.h">
       <Filter>Header Files\Controls</Filter>
@@ -189,6 +180,9 @@
       <Filter>Header Files\Worker</Filter>
     </ClInclude>
     <ClInclude Include="res\resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="XMLDocumentW.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
