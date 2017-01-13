@@ -27,7 +27,6 @@
 #define IDI_ICON_PROGRESS_12            122
 #define IDC_BUTTON_LOAD_CONFIG          1001
 #define IDC_BUTTON_SAVE_CONFIG          1002
-#define IDC_BUTTON_DEFAULT_CONFIG       1003
 #define IDC_BUTTON_RUN                  1004
 #define IDC_PROGRESS_WORK               1005
 #define IDC_COMBO_PRESETS               1006
