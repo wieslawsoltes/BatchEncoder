@@ -720,15 +720,30 @@ void CBatchEncoderDlg::EnableTrayIcon(bool bEnable, bool bModify)
         }
     }
 }
-
 void CBatchEncoderDlg::ShowProgressTrayIcon(int nProgress)
 {
     if (this->bShowTrayIcon == false)
         return;
 
-    int nIndex = (NUM_PROGRESS_ICONS * nProgress) / 100;
-    HICON hIconProgress = LoadIcon(GetModuleHandle(NULL),
-        MAKEINTRESOURCE(g_nProgressIconResources[nIndex]));
+    static const int nIconsIdCount = 12;
+    static const int nIconId[nIconsIdCount] =
+    {
+        IDI_ICON_PROGRESS_01,
+        IDI_ICON_PROGRESS_02,
+        IDI_ICON_PROGRESS_03,
+        IDI_ICON_PROGRESS_04,
+        IDI_ICON_PROGRESS_05,
+        IDI_ICON_PROGRESS_06,
+        IDI_ICON_PROGRESS_07,
+        IDI_ICON_PROGRESS_08,
+        IDI_ICON_PROGRESS_09,
+        IDI_ICON_PROGRESS_10,
+        IDI_ICON_PROGRESS_11,
+        IDI_ICON_PROGRESS_12 
+    };
+
+    int nIndex = (nIconsIdCount * nProgress) / 100;
+    HICON hIconProgress = LoadIcon(GetModuleHandle(NULL), MAKEINTRESOURCE(nIconId[nIndex]));
 
     NOTIFYICONDATA tnd;
     tnd.cbSize = sizeof(NOTIFYICONDATA);
