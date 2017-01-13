@@ -1,11 +1,11 @@
 ﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-#include "StdAfx.h"
-#include "BatchEncoder.h"
-#include "Utilities.h"
-#include "UnicodeUtf8.h"
-#include "Utf8String.h"
+#include "..\StdAfx.h"
+#include "..\BatchEncoder.h"
+#include "..\utilities\Utilities.h"
+#include "..\utilities\UnicodeUtf8.h"
+#include "..\utilities\Utf8String.h"
 #include "PresetsDlg.h"
 #include ".\presetsdlg.h"
 
