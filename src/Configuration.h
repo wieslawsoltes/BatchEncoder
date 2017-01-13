@@ -143,8 +143,6 @@ extern const char *g_szPresetTags[];
 extern const TCHAR *g_szPresetFiles[];
 extern const int g_nPresetResources[NUM_PRESET_FILES];
 extern const char *g_szSettingsTags[];
-extern const char *g_szColorsTags[];
-
 extern const TCHAR *g_szDefaultTemplate[];
 extern const TCHAR *g_szDefaultPath[];
 extern const bool g_bDefaultInPipes[NUM_FORMAT_NAMES];
