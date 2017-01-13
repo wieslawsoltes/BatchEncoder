@@ -3,23 +3,23 @@
 
 #include "StdAfx.h"
 #include "BatchEncoder.h"
-#include "DropList.h"
-#include ".\droplist.h"
+#include "MyComboBox.h"
+#include ".\mycombobox.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
 
-IMPLEMENT_DYNAMIC(CDropList, CComboBox)
-CDropList::CDropList()
+IMPLEMENT_DYNAMIC(CMyComboBox, CComboBox)
+CMyComboBox::CMyComboBox()
 {
 
 }
 
-CDropList::~CDropList()
+CMyComboBox::~CMyComboBox()
 {
 
 }
 
-BEGIN_MESSAGE_MAP(CDropList, CComboBox)
+BEGIN_MESSAGE_MAP(CMyComboBox, CComboBox)
 END_MESSAGE_MAP()
