@@ -291,10 +291,10 @@ copy /-Y data\Formats\*.formats $(OutDir)</Command>
     <ClInclude Include="dialogs\BatchEncoderDlg.h" />
     <ClInclude Include="dialogs\FormatsDlg.h" />
     <ClInclude Include="dialogs\PresetsDlg.h" />
+    <ClInclude Include="utilities\TimeCount.h" />
     <ClInclude Include="utilities\UnicodeUtf8.h" />
     <ClInclude Include="utilities\Utf8String.h" />
     <ClInclude Include="utilities\Utilities.h" />
-    <ClInclude Include="worker\TimeCount.h" />
     <ClInclude Include="worker\WorkThread.h" />
     <ClInclude Include="res\resource.h" />
   </ItemGroup>

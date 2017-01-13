@@ -6,7 +6,7 @@
 #include <afxwin.h>
 #include <afxcmn.h>
 #include "..\controls\Controls.h"
-#include "..\worker\TimeCount.h"
+#include "..\utilities\TimeCount.h"
 #include "..\Configuration.h"
 #include "..\XMLDocumentW.h"
 

@@ -155,6 +155,9 @@
     <ClInclude Include="dialogs\PresetsDlg.h">
       <Filter>Header Files\Dialogs</Filter>
     </ClInclude>
+    <ClInclude Include="utilities\TimeCount.h">
+      <Filter>Header Files\Utilities</Filter>
+    </ClInclude>
     <ClInclude Include="utilities\UnicodeUtf8.h">
       <Filter>Header Files\Utilities</Filter>
     </ClInclude>
@@ -165,9 +168,6 @@
       <Filter>Header Files\Utilities</Filter>
     </ClInclude>
     <ClInclude Include="worker\WorkThread.h">
-      <Filter>Header Files\Worker</Filter>
-    </ClInclude>
-    <ClInclude Include="worker\TimeCount.h">
       <Filter>Header Files\Worker</Filter>
     </ClInclude>
     <ClInclude Include="res\resource.h">
