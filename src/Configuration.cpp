@@ -229,26 +229,6 @@ const TCHAR *g_szPresetFiles[] =
     _T("Presets_TAK_Takc.presets")        // 13
 };
 
-// default presets resources IDs
-// items: NUM_PRESET_FILES
-const int g_nPresetResources[NUM_PRESET_FILES] =
-{
-    IDR_PRESET_WAV_SSRC,    // 0
-    IDR_PRESET_MP3_LAME,    // 1
-    IDR_PRESET_MPC_MPCENC,  // 2
-    IDR_PRESET_AAC_FAAC,    // 3
-    IDR_PRESET_M4A_NERO,    // 4
-    IDR_PRESET_MP4_NERO,    // 5
-    IDR_PRESET_OGG_OGGENC,  // 6
-    IDR_PRESET_AC3_AFTEN,   // 7
-    IDR_PRESET_FLAC_FLAC,   // 8
-    IDR_PRESET_WV_WAVPACK,  // 9
-    IDR_PRESET_APE_MAC,     // 10
-    IDR_PRESET_OFR_OFR,     // 11
-    IDR_PRESET_TTA_TTAENC,  // 12
-    IDR_PRESET_TAK_TAKC     // 13
-};
-
 // default command-line templates
 // items: NUM_FORMAT_NAMES
 const TCHAR *g_szDefaultTemplate[] =
