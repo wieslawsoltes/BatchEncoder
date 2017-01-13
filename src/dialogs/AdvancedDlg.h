@@ -5,7 +5,7 @@
 
 #include "afxwin.h"
 #include "afxcmn.h"
-#include "../controls/Controls.h"
+#include "..\controls\Controls.h"
 
 class CAdvancedDlg : public CDialog
 {
