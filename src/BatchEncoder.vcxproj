@@ -241,57 +241,57 @@ copy /-Y data\Formats\*.formats $(OutDir)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="AboutDlg.cpp" />
-    <ClCompile Include="AdvancedDlg.cpp" />
-    <ClCompile Include="BatchEncoder.cpp" />
-    <ClCompile Include="BatchEncoderDlg.cpp" />
-    <ClCompile Include="Configuration.cpp" />
-    <ClCompile Include="ItemListCtrl.cpp" />
-    <ClCompile Include="FormatsDlg.cpp" />
-    <ClCompile Include="Hyperlink.cpp" />
-    <ClCompile Include="MyButton.cpp" />
-    <ClCompile Include="MyComboBox.cpp" />
-    <ClCompile Include="MyStatic.cpp" />
-    <ClCompile Include="MyStatusBarCtrl.cpp" />
-    <ClCompile Include="PresetsDlg.cpp" />
-    <ClCompile Include="ResizeDialog.cpp" />
     <ClCompile Include="StdAfx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="BatchEncoder.cpp" />
+    <ClCompile Include="Configuration.cpp" />
     <ClCompile Include="XMLDocumentW.cpp" />
-    <ClCompile Include="UnicodeUtf8.cpp" />
-    <ClCompile Include="Utf8String.cpp" />
-    <ClCompile Include="Utilities.cpp" />
-    <ClCompile Include="WorkThread.cpp" />
+    <ClCompile Include="dialogs\AboutDlg.cpp" />
+    <ClCompile Include="dialogs\AdvancedDlg.cpp" />
+    <ClCompile Include="dialogs\BatchEncoderDlg.cpp" />
+    <ClCompile Include="dialogs\FormatsDlg.cpp" />
+    <ClCompile Include="dialogs\PresetsDlg.cpp" />
+    <ClCompile Include="controls\ItemListCtrl.cpp" />
+    <ClCompile Include="controls\Hyperlink.cpp" />
+    <ClCompile Include="controls\MyButton.cpp" />
+    <ClCompile Include="controls\MyComboBox.cpp" />
+    <ClCompile Include="controls\MyStatic.cpp" />
+    <ClCompile Include="controls\MyStatusBarCtrl.cpp" />
+    <ClCompile Include="controls\ResizeDialog.cpp" />
+    <ClCompile Include="utilities\UnicodeUtf8.cpp" />
+    <ClCompile Include="utilities\Utf8String.cpp" />
+    <ClCompile Include="utilities\Utilities.cpp" />
+    <ClCompile Include="worker\WorkThread.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Configuration.h" />
-    <ClInclude Include="res\resource.h" />
-    <ClInclude Include="AboutDlg.h" />
-    <ClInclude Include="AdvancedDlg.h" />
-    <ClInclude Include="BatchEncoder.h" />
-    <ClInclude Include="BatchEncoderDlg.h" />
-    <ClInclude Include="ItemListCtrl.h" />
-    <ClInclude Include="FormatsDlg.h" />
-    <ClInclude Include="Hyperlink.h" />
-    <ClInclude Include="MyButton.h" />
-    <ClInclude Include="MyComboBox.h" />
-    <ClInclude Include="MyStatic.h" />
-    <ClInclude Include="MyStatusBarCtrl.h" />
-    <ClInclude Include="PresetsDlg.h" />
-    <ClInclude Include="ResizeDialog.h" />
     <ClInclude Include="StdAfx.h" />
     <ClInclude Include="targetver.h" />
-    <ClInclude Include="TimeCount.h" />
-    <ClInclude Include="XMLDocumentW.h" />
-    <ClInclude Include="UnicodeUtf8.h" />
-    <ClInclude Include="Utf8String.h" />
-    <ClInclude Include="Utilities.h" />
     <ClInclude Include="version.h" />
-    <ClInclude Include="WorkThread.h" />
+    <ClInclude Include="BatchEncoder.h" />
+    <ClInclude Include="Configuration.h" />
+    <ClInclude Include="XMLDocumentW.h" />
+    <ClInclude Include="controls\ItemListCtrl.h" />
+    <ClInclude Include="controls\Hyperlink.h" />
+    <ClInclude Include="controls\MyButton.h" />
+    <ClInclude Include="controls\MyComboBox.h" />
+    <ClInclude Include="controls\MyStatic.h" />
+    <ClInclude Include="controls\MyStatusBarCtrl.h" />
+    <ClInclude Include="controls\ResizeDialog.h" />
+    <ClInclude Include="dialogs\AboutDlg.h" />
+    <ClInclude Include="dialogs\AdvancedDlg.h" />
+    <ClInclude Include="dialogs\BatchEncoderDlg.h" />
+    <ClInclude Include="dialogs\FormatsDlg.h" />
+    <ClInclude Include="dialogs\PresetsDlg.h" />
+    <ClInclude Include="utilities\UnicodeUtf8.h" />
+    <ClInclude Include="utilities\Utf8String.h" />
+    <ClInclude Include="utilities\Utilities.h" />
+    <ClInclude Include="worker\TimeCount.h" />
+    <ClInclude Include="worker\WorkThread.h" />
+    <ClInclude Include="res\resource.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\BatchEncoder.ico" />
