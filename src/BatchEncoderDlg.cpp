@@ -1028,22 +1028,6 @@ void CBatchEncoderDlg::UpdateOutputComboBoxes(int nSelFormatIndex, int nSelPrese
     this->m_CmbFormat.SetCurSel(nSelFormatIndex);
 }
 
-CString CBatchEncoderDlg::BrowseForSettings()
-{
-    CFileDialog fd(TRUE, _T("config"), MAIN_APP_CONFIG,
-        OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER,
-        _T("Config Files (*.config)|*.config|Xml Files (*.xml)|*.xml|All Files|*.*||"), this);
-
-    fd.m_ofn.lpstrInitialDir = ::GetExeFilePath();
-    if (fd.DoModal() == IDOK)
-    {
-        CString szPath;
-        szPath = fd.GetPathName();
-        return szPath;
-    }
-    return NULL;
-}
-
 LPTSTR CBatchEncoderDlg::GetMenuItemCheck(int nID)
 {
     return (this->GetMenu()->GetMenuState(nID, MF_BYCOMMAND) == MF_CHECKED) ? _T("true") : _T("false");
@@ -1200,55 +1184,8 @@ bool CBatchEncoderDlg::LoadConfigFile()
     ::UpdatePath();
 
     CXMLDocumentW doc;
-
-    // try to load default config file
     if (doc.LoadFileW(szMainConfigFile) == false)
-    {
-        // create configuration file from resources
-        BOOL bRet = FALSE;
-        LPVOID lpvBuf = NULL;
-        INT64 dwSize = 0UL;
-
-        lpvBuf = LoadXmlResource(_T("CONFIG"), IDR_CONFIG_BATCHENCODER, &dwSize);
-        if ((lpvBuf != NULL) && (dwSize > 0UL))
-        {
-            szMainConfigFile = MAIN_APP_CONFIG;
-
-            CFile fp;
-            if (fp.Open(szMainConfigFile, CFile::modeReadWrite | CFile::modeCreate) == TRUE)
-            {
-                fp.Write(lpvBuf, (UINT)dwSize);
-                fp.Close();
-                FreeXmlResource(lpvBuf);
-
-                // try again to load configuration
-                if (doc.LoadFileW(szMainConfigFile) == false)
-                {
-                    // ::DeleteFile(szMainConfigFile);
-                    return false;
-                }
-            }
-            else
-            {
-                FreeXmlResource(lpvBuf);
-                return false;
-            }
-        }
-        else
-        {
-            // when failed to load configuration ask user for filename
-            CString szPath = this->BrowseForSettings();
-            if (szPath.GetLength() > 0)
-            {
-                if (doc.LoadFileW(szPath) == false)
-                    return false;
-            }
-            else
-            {
-                return false;
-            }
-        }
-    }
+        return false;
 
     tinyxml2::XMLElement *pRootElem = doc.FirstChildElement();
     if (!pRootElem)
@@ -1710,37 +1647,7 @@ bool CBatchEncoderDlg::LoadConfigFile()
     for (int i = 0; i < NUM_PRESET_FILES; i++)
     {
         if (this->LoadPresets(m_Config.szPresetsFile[i], &m_Config.m_Presets[i]) == false)
-        {
-            // create presets file from resources
-            BOOL bRet = FALSE;
-            LPVOID lpvBuf = NULL;
-            INT64 dwSize = 0UL;
-
-            lpvBuf = LoadXmlResource(_T("PRESET"), g_nPresetResources[i], &dwSize);
-            if ((lpvBuf != NULL) && (dwSize > 0UL))
-            {
-                CFile fp;
-                if (fp.Open(g_szPresetFiles[i], CFile::modeReadWrite | CFile::modeCreate) == TRUE)
-                {
-                    fp.Write(lpvBuf, (UINT)dwSize);
-                    fp.Close();
-                    FreeXmlResource(lpvBuf);
-
-                    // try again to load presets
-                    if (this->LoadPresets(g_szPresetFiles[i], &m_Config.m_Presets[i]) == false)
-                        return false;
-                }
-                else
-                {
-                    FreeXmlResource(lpvBuf);
-                    return false;
-                }
-            }
-            else
-            {
-                return false;
-            }
-        }
+            return false;
     }
 
     // update output ComboBox'es depending on selected format
