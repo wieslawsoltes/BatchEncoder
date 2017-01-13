@@ -42,32 +42,3 @@ BEGIN
         VALUE "Translation", 0x409, 1252
     END
 END
-
-/////////////////////////////////////////////////////////////////////////////
-//
-// PRESET
-//
-
-IDR_PRESET_AAC_FAAC     PRESET                  "..\\data\\Presets\\Presets_AAC_Faac.presets"
-IDR_PRESET_APE_MAC      PRESET                  "..\\data\\Presets\\Presets_APE_Mac.presets"
-IDR_PRESET_FLAC_FLAC    PRESET                  "..\\data\\Presets\\Presets_FLAC_Flac.presets"
-IDR_PRESET_M4A_FAAC     PRESET                  "..\\data\\Presets\\Presets_M4A_Faac.presets"
-IDR_PRESET_MP3_LAME     PRESET                  "..\\data\\Presets\\Presets_MP3_Lame.presets"
-IDR_PRESET_MP4_FAAC     PRESET                  "..\\data\\Presets\\Presets_MP4_Faac.presets"
-IDR_PRESET_MPC_MPCENC   PRESET                  "..\\data\\Presets\\Presets_MPC_MpcEnc.presets"
-IDR_PRESET_OGG_OGGENC   PRESET                  "..\\data\\Presets\\Presets_OGG_OggEnc.presets"
-IDR_PRESET_AC3_AFTEN    PRESET                  "..\\data\\Presets\\Presets_AC3_Aften.presets"
-IDR_PRESET_WV_WAVPACK   PRESET                  "..\\data\\Presets\\Presets_WV_WavPack.presets"
-IDR_PRESET_TTA_TTAENC   PRESET                  "..\\data\\Presets\\Presets_TTA_TtaEnc.presets"
-IDR_PRESET_OFR_OFR      PRESET                  "..\\data\\Presets\\Presets_OFR_Ofr.presets"
-IDR_PRESET_WAV_SSRC     PRESET                  "..\\data\\Presets\\Presets_WAV_Ssrc.presets"
-IDR_PRESET_MP4_NERO     PRESET                  "..\\data\\Presets\\Presets_MP4_neroAacEnc.presets"
-IDR_PRESET_M4A_NERO     PRESET                  "..\\data\\Presets\\Presets_M4A_neroAacEnc.presets"
-IDR_PRESET_TAK_TAKC     PRESET                  "..\\data\\Presets\\Presets_TAK_Takc.presets"
-
-/////////////////////////////////////////////////////////////////////////////
-//
-// CONFIG
-//
-
-IDR_CONFIG_BATCHENCODER CONFIG                  "..\\data\\Config\\BatchEncoder.config"
