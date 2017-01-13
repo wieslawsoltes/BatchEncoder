@@ -2,11 +2,11 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 #include "StdAfx.h"
-#include "BatchEncoder.h"
-#include "utilities\Utilities.h"
-#include "utilities\UnicodeUtf8.h"
-#include "utilities\Utf8String.h"
-#include "dialogs\BatchEncoderDlg.h"
+#include "..\BatchEncoder.h"
+#include "..\utilities\Utilities.h"
+#include "..\utilities\UnicodeUtf8.h"
+#include "..\utilities\Utf8String.h"
+#include "..\dialogs\BatchEncoderDlg.h"
 #include "WorkThread.h"
 
 #ifdef _DEBUG
