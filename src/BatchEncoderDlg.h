@@ -8,7 +8,7 @@
 #include "ResizeDialog.h"
 #include "TimeCount.h"
 #include "ItemListCtrl.h"
-#include "DropList.h"
+#include "MyComboBox.h"
 #include "MyStatic.h"
 #include "MyButton.h"
 #include "MyStatusBarCtrl.h"
@@ -90,8 +90,8 @@ public:
 public:
     CProgressCtrl m_FileProgress;
 public:
-    CDropList m_CmbPresets;
-    CDropList m_CmbFormat;
+    CMyComboBox m_CmbPresets;
+    CMyComboBox m_CmbFormat;
 public:
     CItemListCtrl m_LstInputItems;
 public:
