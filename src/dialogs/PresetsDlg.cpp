@@ -142,10 +142,6 @@ BOOL CPresetsDlg::OnInitDialog()
     if (this->bShowGridLines == true)
         this->ShowGridlines(true);
 
-    // ResetMinTrackSize();
-    // ResetMaxTrackSize();
-    // ResetMaximizedRect();
-
     return TRUE;
 }
 

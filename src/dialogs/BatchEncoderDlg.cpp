@@ -433,10 +433,6 @@ BOOL CBatchEncoderDlg::OnInitDialog()
     this->LoadConfigFile();
     this->UpdateStatusBar();
 
-    // ResetMinTrackSize();
-    // ResetMaxTrackSize();
-    // ResetMaximizedRect();
-
     return TRUE;
 }
 

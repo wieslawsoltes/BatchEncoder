@@ -149,10 +149,6 @@ BOOL CFormatsDlg::OnInitDialog()
     if (this->bShowGridLines == true)
         this->ShowGridlines(true);
 
-    // ResetMinTrackSize();
-    // ResetMaxTrackSize();
-    // ResetMaximizedRect();
-
     return TRUE;
 }
 

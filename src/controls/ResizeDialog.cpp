@@ -29,7 +29,6 @@ CResizeDialog::CResizeDialog(LPCTSTR lpszTemplateName, CWnd* pParentWnd)
 CResizeDialog::~CResizeDialog()
 {
     Layout *pl;
-
     POSITION pos = m_plLayoutList.GetHeadPosition();
     while (pos != NULL)
     {
@@ -39,7 +38,6 @@ CResizeDialog::~CResizeDialog()
 }
 
 BEGIN_MESSAGE_MAP(CResizeDialog, CDialog)
-    //ON_WM_NCHITTEST()
     ON_WM_GETMINMAXINFO()
     ON_WM_SIZE()
     ON_WM_DESTROY()
@@ -53,10 +51,7 @@ void CResizeDialog::InitVars()
     m_bUseMinTrack = TRUE;
     m_bUseMaxTrack = FALSE;
     m_bUseMaxRect = FALSE;
-
-    // TODO: find how-to create XP style size-grip
-    m_bShowGrip = FALSE;
-
+    m_bShowGrip = FALSE; // TODO: find how-to create XP style size-grip
     m_szGripSize.cx = GetSystemMetrics(SM_CXVSCROLL);
     m_szGripSize.cy = GetSystemMetrics(SM_CYHSCROLL);
 }
@@ -312,7 +307,6 @@ CString CResizeDialog::GetWindowRectStr()
     GetWindowPlacement(&wp);
 
     RECT& rc = wp.rcNormalPosition;
-
     data.Format(_T("%d %d %d %d %d %d"),
         rc.left, rc.top, rc.right, rc.bottom, wp.showCmd, wp.flags);
 
@@ -331,7 +325,6 @@ void CResizeDialog::SetWindowRectStr(CString data)
     GetWindowPlacement(&wp);
 
     RECT& rc = wp.rcNormalPosition;
-
     if (_stscanf(data, _T("%d %d %d %d %d %d"),
         &rc.left, &rc.top,
         &rc.right, &rc.bottom,
