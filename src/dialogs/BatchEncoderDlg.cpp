@@ -1224,25 +1224,16 @@ bool CBatchEncoderDlg::LoadConfigFile()
     // NOTE: 
     // same code as in CFormatsDlg::OnBnClickedButtonLoadConfig()
 
+    int nFormat = -1;
     tinyxml2::XMLElement *pFormatsElem = pRootElem->FirstChildElement("Formats");
     tinyxml2::XMLElement *pFormatElem = pFormatsElem->FirstChildElement("Format");
     for (pFormatElem; pFormatElem; pFormatElem = pFormatElem->NextSiblingElement())
     {
-        int nFormat = -1;
-
         const char *pszName = pFormatElem->Attribute("name");
         if (pszName != NULL)
         {
-            CString szBuff = GetConfigString(pszName);
-
-            nFormat = ::GetFormatId(szBuff);
-
-            if ((nFormat < 0) || (nFormat >= NUM_FORMAT_NAMES))
-            {
-                continue;
-            }
-
-            m_Config.m_Formats[nFormat].szName = szBuff;
+            nFormat++;
+            m_Config.m_Formats[nFormat].szName = GetConfigString(pszName);
         }
         else
         {

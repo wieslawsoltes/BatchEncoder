@@ -35,7 +35,7 @@ const char *g_szOptionsTags[NUM_PROGRAM_OPTIONS] =
 };
 
 const TCHAR *g_szAllInExt[NUM_INPUT_EXT] =
-{                 // nInFormat
+{
     _T("WAV"),  // 0
     _T("MP1"),  // 1
     _T("MP2"),  // 2
@@ -58,7 +58,7 @@ const TCHAR *g_szAllInExt[NUM_INPUT_EXT] =
 };
 
 const TCHAR *g_szAllOutExt[NUM_OUTPUT_EXT] =
-{                 // nOutFormat
+{
     _T("WAV"),  // 0
     _T("MP3"),  // 1
     _T("MPC"),  // 2
@@ -73,44 +73,6 @@ const TCHAR *g_szAllOutExt[NUM_OUTPUT_EXT] =
     _T("OFR"),  // 11
     _T("TTA"),  // 12
     _T("TAK")   // 13
-};
-
-const TCHAR *g_szFormatNames[NUM_FORMAT_NAMES] =
-{
-    // ENCODERS
-    _T("ENC_WAV"),    // 0
-    _T("ENC_MP3"),    // 1
-    _T("ENC_MPC"),    // 2
-    _T("ENC_AAC"),    // 3
-    _T("ENC_M4A"),    // 4
-    _T("ENC_MP4"),    // 5
-    _T("ENC_OGG"),    // 6
-    _T("ENC_AC3"),    // 7
-    _T("ENC_FLAC"),   // 8
-    _T("ENC_WV"),     // 9
-    _T("ENC_APE"),    // 10
-    _T("ENC_OFR"),    // 11
-    _T("ENC_TTA"),    // 12
-    _T("ENC_TAK"),    // 13
-    // DECODERS (NUM_OUTPUT_EXT + IntputFormat - 1)
-    _T("DEC_MP1"),    // 14
-    _T("DEC_MP2"),    // 15
-    _T("DEC_MP3"),    // 16
-    _T("DEC_MPC"),    // 17
-    _T("DEC_MPP"),    // 18
-    _T("DEC_MP+"),    // 19
-    _T("DEC_MP4"),    // 20
-    _T("DEC_M4A"),    // 21
-    _T("DEC_AAC"),    // 22
-    _T("DEC_OGG"),    // 23
-    _T("DEC_AC3"),    // 24 (NOTE: not working, no AC3 decoder included in Aften)
-    _T("DEC_FLAC"),   // 25
-    _T("DEC_WV"),     // 26
-    _T("DEC_APE"),    // 27
-    _T("DEC_MAC"),    // 28
-    _T("DEC_OFR"),    // 29
-    _T("DEC_TTA"),    // 30
-    _T("DEC_TAK")     // 31 (NOTE: not working, TAK decoding using pipes & console output does not work)
 };
 
 const TCHAR *g_szPresetNames[NUM_PRESET_FILES] =
@@ -166,15 +128,3 @@ const TCHAR *g_szPresetFiles[NUM_PRESET_FILES] =
     _T("Presets_TTA_TtaEnc.presets"),     // 12
     _T("Presets_TAK_Takc.presets")        // 13
 };
-
-int GetFormatId(CString szBuff)
-{
-    for (int i = 0; i < NUM_FORMAT_NAMES; i++)
-    {
-        if (szBuff.Compare(g_szFormatNames[i]) == 0)
-        {
-            return i;
-        }
-    }
-    return -1;
-}

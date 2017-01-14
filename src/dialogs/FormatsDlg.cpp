@@ -353,24 +353,15 @@ void CFormatsDlg::LoadFormatsFile(CString szFileXml)
             return;
         }
 
+        int nFormat = -1;
         tinyxml2::XMLElement *pFormatElem = pFormatsElem->FirstChildElement("Format");
         for (pFormatElem; pFormatElem; pFormatElem = pFormatElem->NextSiblingElement())
         {
-            int nFormat = -1;
-
             const char *pszName = pFormatElem->Attribute("name");
             if (pszName != NULL)
             {
-                CString szBuff = GetConfigString(pszName);
-
-                nFormat = ::GetFormatId(szBuff);
-
-                if ((nFormat < 0) || (nFormat >= NUM_FORMAT_NAMES))
-                {
-                    continue;
-                }
-
-                m_Formats[nFormat].szName = szBuff;
+                nFormat++;
+                m_Formats[nFormat].szName = GetConfigString(pszName);
             }
             else
             {

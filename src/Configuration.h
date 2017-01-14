@@ -16,12 +16,9 @@
 extern const char *g_szOptionsTags[];
 extern const TCHAR *g_szAllInExt[];
 extern const TCHAR *g_szAllOutExt[];
-extern const TCHAR *g_szFormatNames[];
 extern const TCHAR *g_szPresetNames[];
 extern const char *g_szPresetTags[];
 extern const TCHAR *g_szPresetFiles[];
-
-int GetFormatId(CString szBuff);
 
 class COptions
 {
