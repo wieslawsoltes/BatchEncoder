@@ -9,38 +9,6 @@
 
 #include "res\resource.h"
 
-// main program command-line configuration flags
-typedef struct TBATCHENCODER_OPTIONS
-{
-    bool bHaveMainConfig;
-    bool bHaveCurrentPreset;
-    bool bHaveCurrentFormat;
-    bool bHaveItemList;
-    bool bHavePresets;
-    bool bHaveFormats;
-    bool bHaveStartConversion;
-    bool bHaveStopConversion;
-    bool bHaveSingleInstance;
-    bool bHaveMinimize;
-    bool bHaveProgressType;
-    bool bHaveShutdown;
-    bool bHaveStopOnError;
-    bool bHaveDeleteOnError;
-    bool bHaveTrayIcon;
-    bool bHaveSaveSettings;
-    bool bHavePriorityThread;
-    bool bHavePriorityProcess;
-    bool bHavePriorityThreadTool;
-    bool bHavePriorityProcessTool;
-    bool bHaveLogConsoleOutput;
-    bool bHaveLogFile;
-    bool bHaveLogFileFormat;
-    bool bHaveRecurseDirs;
-    bool bHaveSaveFiles;
-    bool bHaveBatchFile;
-    bool bHaveOutputPath;
-} BATCHENCODER_OPTIONS, *PBATCHENCODER_OPTIONS;
-
 class CBatchEncoderApp : public CWinApp
 {
 public:
