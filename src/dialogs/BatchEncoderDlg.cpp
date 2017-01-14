@@ -202,19 +202,19 @@ CBatchEncoderDlg::CBatchEncoderDlg(CWnd* pParent /*=NULL*/)
     m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 
     szMainConfigFile = ::GetExeFilePath() + MAIN_APP_CONFIG;
-    bShowTrayIcon = false;
 
-    szPresetsWndResize = _T("");
-    szPresetsListColumns = _T("");
-    szFormatsWndResize = _T("");
-    szFormatsListColumns = _T("");
-
+    m_Config.m_Options.bShowGridLines = true;
+    m_Config.m_Options.bShowTrayIcon = false;
+    m_Config.m_Options.bDoNotSaveConfiguration = false;
+    m_Config.m_Options.szPresetsDialogResize = _T("");
+    m_Config.m_Options.szPresetsListColumns = _T("");
+    m_Config.m_Options.szFormatsDialogResize = _T("");
+    m_Config.m_Options.szFormatsListColumns = _T("");
     m_Config.m_Options.bDeleteOnError = true;
     m_Config.m_Options.bStopOnErrors = false;
     m_Config.m_Options.szLogFileName = MAIN_APP_LOG;
     m_Config.m_Options.nLogEncoding = 2;
-
-    bForceConsoleWindow = false;
+    m_Config.m_Options.bForceConsoleWindow = false;
 }
 
 CBatchEncoderDlg::~CBatchEncoderDlg()
@@ -358,7 +358,7 @@ BOOL CBatchEncoderDlg::OnInitDialog()
     m_hAccel = ::LoadAccelerators(::GetModuleHandle(NULL),
         MAKEINTRESOURCE(IDR_ACCELERATOR_BATCHENCODER));
 
-    if (bShowTrayIcon == true)
+    if (m_Config.m_Options.bShowTrayIcon == true)
         this->EnableTrayIcon(true);
 
     // handle the OnNotifyFormat message (WM_NOTIFYFORMAT)
@@ -687,7 +687,7 @@ void CBatchEncoderDlg::EnableTrayIcon(bool bEnable, bool bModify)
     if ((bEnable == true) && (bModify == false))
     {
         Shell_NotifyIcon(NIM_ADD, &tnd);
-        this->bShowTrayIcon = true;
+        m_Config.m_Options.bShowTrayIcon = true;
         this->GetMenu()->CheckMenuItem(ID_OPTIONS_SHOWTRAYICON, MF_CHECKED);
     }
     else if ((bEnable == true) && (bModify == true))
@@ -697,10 +697,10 @@ void CBatchEncoderDlg::EnableTrayIcon(bool bEnable, bool bModify)
     else
     {
         // delete tray icon only if exist
-        if (this->bShowTrayIcon == true)
+        if (m_Config.m_Options.bShowTrayIcon == true)
         {
             Shell_NotifyIcon(NIM_DELETE, &tnd);
-            this->bShowTrayIcon = false;
+            m_Config.m_Options.bShowTrayIcon = false;
             this->GetMenu()->CheckMenuItem(ID_OPTIONS_SHOWTRAYICON, MF_UNCHECKED);
         }
     }
@@ -708,7 +708,7 @@ void CBatchEncoderDlg::EnableTrayIcon(bool bEnable, bool bModify)
 
 void CBatchEncoderDlg::ShowProgressTrayIcon(int nProgress)
 {
-    if (this->bShowTrayIcon == false)
+    if (m_Config.m_Options.bShowTrayIcon == false)
         return;
 
     static const int nIconsIdCount = 12;
@@ -751,7 +751,7 @@ void CBatchEncoderDlg::OnSize(UINT nType, int cx, int cy)
 {
     CResizeDialog::OnSize(nType, cx, cy);
 
-    if ((bShowTrayIcon == true) && (nType == SIZE_MINIMIZED))
+    if ((m_Config.m_Options.bShowTrayIcon == true) && (nType == SIZE_MINIMIZED))
     {
         ShowWindow(SW_HIDE);
         InvalidateRect(NULL, FALSE);
@@ -763,7 +763,7 @@ LRESULT CBatchEncoderDlg::OnTrayIconMsg(WPARAM wParam, LPARAM lParam)
     UINT uID = (UINT)wParam;
     UINT uMouseMsg = (UINT)lParam;
 
-    if (bShowTrayIcon == false)
+    if (m_Config.m_Options.bShowTrayIcon == false)
         return(0);
 
     if (uMouseMsg == WM_RBUTTONDOWN)
@@ -827,7 +827,7 @@ LRESULT CBatchEncoderDlg::OnListItemChaged(WPARAM wParam, LPARAM lParam)
 
 void CBatchEncoderDlg::OnTrayMenuExit()
 {
-    if (bShowTrayIcon == true)
+    if (m_Config.m_Options.bShowTrayIcon == true)
         this->OnClose();
 }
 
@@ -1188,10 +1188,10 @@ bool CBatchEncoderDlg::LoadConfigFile()
     CString szOptions[NUM_PROGRAM_OPTIONS];
     for (int i = 0; i < NUM_PROGRAM_OPTIONS; i++)
     {
-        tinyxml2::XMLElement *pSettingElem = pOptionsElem->FirstChildElement(g_szOptionsTags[i]);
-        if (pSettingElem)
+        tinyxml2::XMLElement *pOptionElem = pOptionsElem->FirstChildElement(g_szOptionsTags[i]);
+        if (pOptionElem)
         {
-            const char *tmpBuff = pSettingElem->GetText();
+            const char *tmpBuff = pOptionElem->GetText();
             szOptions[i] = GetConfigString(tmpBuff);
         }
         else
@@ -1212,14 +1212,11 @@ bool CBatchEncoderDlg::LoadConfigFile()
         }
         else
         {
-            m_Config.szPresetsFile[i] = g_szPresetFiles[i];
+            m_Config.szPresetsFile[i] = _T("");
         }
     }
 
     // root: Formats
-    // NOTE: 
-    // same code as in CFormatsDlg::OnBnClickedButtonLoadConfig()
-
     int nFormat = -1;
     tinyxml2::XMLElement *pFormatsElem = pRootElem->FirstChildElement("Formats");
     tinyxml2::XMLElement *pFormatElem = pFormatsElem->FirstChildElement("Format");
@@ -1459,18 +1456,18 @@ bool CBatchEncoderDlg::LoadConfigFile()
         if (szOptions[10].Compare(_T("true")) == 0)
         {
             this->EnableTrayIcon(true);
-            bShowTrayIcon = true;
+            m_Config.m_Options.bShowTrayIcon = true;
         }
         else
         {
             this->EnableTrayIcon(false);
-            bShowTrayIcon = false;
+            m_Config.m_Options.bShowTrayIcon = false;
         }
     }
     else
     {
         this->EnableTrayIcon(false);
-        bShowTrayIcon = false;
+        m_Config.m_Options.bShowTrayIcon = false;
     }
 
     // 11
@@ -1491,28 +1488,28 @@ bool CBatchEncoderDlg::LoadConfigFile()
     // Description: presets window rectangle and position
     if (szOptions[12].Compare(_T("")) != 0)
     {
-        this->szPresetsWndResize = szOptions[12];
+        m_Config.m_Options.szPresetsDialogResize = szOptions[12];
     }
 
     // 13
     // Description: width of each column in PresetsList
     if (szOptions[13].Compare(_T("")) != 0)
     {
-        this->szPresetsListColumns = szOptions[13];
+        m_Config.m_Options.szPresetsListColumns = szOptions[13];
     }
 
     // 14
     // Description: formats window rectangle and position
     if (szOptions[14].Compare(_T("")) != 0)
     {
-        this->szFormatsWndResize = szOptions[14];
+        m_Config.m_Options.szFormatsDialogResize = szOptions[14];
     }
 
     // 15
     // Description: width of each column in FormatsList
     if (szOptions[15].Compare(_T("")) != 0)
     {
-        this->szFormatsListColumns = szOptions[15];
+        m_Config.m_Options.szFormatsListColumns = szOptions[15];
     }
 
     // 16
@@ -1572,18 +1569,18 @@ bool CBatchEncoderDlg::LoadConfigFile()
         if (szOptions[20].Compare(_T("true")) == 0)
         {
             this->GetMenu()->CheckMenuItem(ID_OPTIONS_FORCECONSOLEWINDOW, MF_CHECKED);
-            this->bForceConsoleWindow = true;
+            m_Config.m_Options.bForceConsoleWindow = true;
         }
         else
         {
             this->GetMenu()->CheckMenuItem(ID_OPTIONS_FORCECONSOLEWINDOW, MF_UNCHECKED);
-            this->bForceConsoleWindow = false;
+            m_Config.m_Options.bForceConsoleWindow = false;
         }
     }
     else
     {
         this->GetMenu()->CheckMenuItem(ID_OPTIONS_FORCECONSOLEWINDOW, MF_UNCHECKED);
-        this->bForceConsoleWindow = false;
+        m_Config.m_Options.bForceConsoleWindow = false;
 
     }
 
@@ -1681,16 +1678,16 @@ bool CBatchEncoderDlg::SaveConfigFile()
     szOptions[11] = this->GetMenuItemCheck(ID_OPTIONS_DO_NOT_SAVE);
 
     // 12
-    szOptions[12] = szPresetsWndResize;
+    szOptions[12] = m_Config.m_Options.szPresetsDialogResize;
 
     // 13
-    szOptions[13] = szPresetsListColumns;
+    szOptions[13] = m_Config.m_Options.szPresetsListColumns;
 
     // 14
-    szOptions[14] = szFormatsWndResize;
+    szOptions[14] = m_Config.m_Options.szFormatsDialogResize;
 
     // 15
-    szOptions[15] = szFormatsListColumns;
+    szOptions[15] = m_Config.m_Options.szFormatsListColumns;
 
     // 16
     szOptions[16] = (m_Config.m_Options.bDeleteOnError == true) ? _T("true") : _T("false");
@@ -1711,9 +1708,9 @@ bool CBatchEncoderDlg::SaveConfigFile()
     for (int i = 0; i < NUM_PROGRAM_OPTIONS; i++)
     {
         CUtf8String szBuffUtf8;
-        tinyxml2::XMLElement *stg = doc.NewElement(g_szOptionsTags[i]);
-        stg->LinkEndChild(doc.NewText(szBuffUtf8.Create(szOptions[i])));
-        pOptionsElem->LinkEndChild(stg);
+        tinyxml2::XMLElement *pOptionElem = doc.NewElement(g_szOptionsTags[i]);
+        pOptionElem->LinkEndChild(doc.NewText(szBuffUtf8.Create(szOptions[i])));
+        pOptionsElem->LinkEndChild(pOptionElem);
         szBuffUtf8.Clear();
     }
 
@@ -1875,9 +1872,9 @@ void CBatchEncoderDlg::OnBnClickedButtonConvert()
 
         // check if forced console mode is enabled
         if (this->GetMenu()->GetMenuState(ID_OPTIONS_FORCECONSOLEWINDOW, MF_BYCOMMAND) == MF_CHECKED)
-            this->bForceConsoleWindow = true;
+            m_Config.m_Options.bForceConsoleWindow = true;
         else
-            this->bForceConsoleWindow = false;
+            m_Config.m_Options.bForceConsoleWindow = false;
 
         // create worker thread in background for processing
         // the argument for thread function is pointer to dialog
@@ -2624,7 +2621,7 @@ void CBatchEncoderDlg::EnableUserInterface(BOOL bEnable)
 {
     if (bEnable == FALSE)
     {
-        if (this->bForceConsoleWindow == false)
+        if (m_Config.m_Options.bForceConsoleWindow == false)
         {
             this->m_ChkOutPath.ShowWindow(SW_HIDE);
             this->m_EdtOutPath.ShowWindow(SW_HIDE);
@@ -2634,7 +2631,7 @@ void CBatchEncoderDlg::EnableUserInterface(BOOL bEnable)
     }
     else
     {
-        if (this->bForceConsoleWindow == false)
+        if (m_Config.m_Options.bForceConsoleWindow == false)
         {
             this->m_FileProgress.ShowWindow(SW_HIDE);
             this->m_ChkOutPath.ShowWindow(SW_SHOW);
@@ -2719,24 +2716,19 @@ bool CBatchEncoderDlg::LoadList(CString szFileXml)
     CXMLDocumentW doc;
     if (doc.LoadFileW(szFileXml) == true)
     {
-        // root: Items
         tinyxml2::XMLElement *pItemsElem = doc.FirstChildElement();
         if (!pItemsElem)
         {
-            // MessageBox(_T("Failed to load file!"), _T("ERROR"), MB_OK | MB_ICONERROR);
             return false;
         }
 
-        // check for "Items"
         const char *pszRoot = pItemsElem->Value();
         const char *pszRootName = "Items";
         if (strcmp(pszRootName, pszRoot) != 0)
         {
-            // MessageBox(_T("Failed to load file!"), _T("ERROR"), MB_OK | MB_ICONERROR);
             return false;
         }
 
-        // clear the list
         this->OnEditClear();
 
         this->LoadItems(pItemsElem);
@@ -2754,18 +2746,12 @@ bool CBatchEncoderDlg::SaveList(CString szFileXml)
     tinyxml2::XMLDeclaration* decl = doc.NewDeclaration(UTF8_DOCUMENT_DECLARATION);
     doc.LinkEndChild(decl);
 
-    CString szBuff;
-    CUtf8String szBuffUtf8;
-
-    // root: Items
     tinyxml2::XMLElement *pItemsElem = doc.NewElement("Items");
     doc.LinkEndChild(pItemsElem);
+
     this->SaveItems(doc, pItemsElem);
 
-    if (doc.SaveFileW(szFileXml) != true)
-        return false;
-    else
-        return true;
+    return doc.SaveFileW(szFileXml);
 }
 
 void CBatchEncoderDlg::OnFileLoadList()
@@ -3025,10 +3011,7 @@ void CBatchEncoderDlg::OnEditClear()
     if (bRunning == true)
         return;
 
-    // clear node list
     m_Config.m_Items.RemoveAllNodes();
-
-    // clear list view
     m_LstInputItems.DeleteAllItems();
 
     this->UpdateStatusBar();
@@ -3059,16 +3042,6 @@ void CBatchEncoderDlg::OnEditRemoveChecked()
         m_LstInputItems.DeleteAllItems();
     }
 
-    // NOTE: check all items
-    /*
-    int nCount = m_LstInputFiles.GetItemCount();
-    if(nCount > 0)
-    {
-        for(int i = 0; i < nCount; i++)
-            m_LstInputFiles.SetCheck(i, TRUE);
-    }
-    */
-
     this->UpdateStatusBar();
 }
 
@@ -3096,16 +3069,6 @@ void CBatchEncoderDlg::OnEditRemoveUnchecked()
         m_Config.m_Items.RemoveAllNodes();
         m_LstInputItems.DeleteAllItems();
     }
-
-    // NOTE: un-check all items
-    /*
-    int nCount = m_LstInputFiles.GetItemCount();
-    if(nCount > 0)
-    {
-        for(int i = 0; i < nCount; i++)
-            m_LstInputFiles.SetCheck(i, FALSE);
-    }
-    */
 
     this->UpdateStatusBar();
 }
@@ -3149,7 +3112,6 @@ void CBatchEncoderDlg::OnEditRename()
     if (bRunning == true)
         return;
 
-    // check if control has keyboard focus
     if (m_LstInputItems.GetFocus()->GetSafeHwnd() != m_LstInputItems.GetSafeHwnd())
         return;
 
@@ -3210,7 +3172,7 @@ void CBatchEncoderDlg::OnEditCrop()
             m_LstInputItems.SetItemState(i, LVIS_SELECTED, LVIS_SELECTED);
     }
 
-    // now delete selected
+    // delete selected
     int nItem = -1;
     do
     {
@@ -3316,7 +3278,6 @@ void CBatchEncoderDlg::OnEditResetTime()
     if (bRunning == true)
         return;
 
-    // NOTE: when user pressed F3 reset StatusBar
     this->m_StatusBar.SetText(_T(""), 1, 0);
 
     this->ResetConvertionTime();
@@ -3375,7 +3336,7 @@ void CBatchEncoderDlg::OnOptionsShowLog()
     CFileStatus rStatus;
     if (CFile::GetStatus(m_Config.m_Options.szLogFileName, rStatus) == TRUE)
     {
-        // load logfile in default system editor
+        // load log file in default system editor
         ::LaunchAndWait(m_Config.m_Options.szLogFileName, _T(""), FALSE);
     }
 }
@@ -3437,12 +3398,12 @@ void CBatchEncoderDlg::OnOptionsForceConsoleWindow()
     if (this->GetMenu()->GetMenuState(ID_OPTIONS_FORCECONSOLEWINDOW, MF_BYCOMMAND) == MF_CHECKED)
     {
         this->GetMenu()->CheckMenuItem(ID_OPTIONS_FORCECONSOLEWINDOW, MF_UNCHECKED);
-        this->bForceConsoleWindow = false;
+        m_Config.m_Options.bForceConsoleWindow = false;
     }
     else
     {
         this->GetMenu()->CheckMenuItem(ID_OPTIONS_FORCECONSOLEWINDOW, MF_CHECKED);
-        this->bForceConsoleWindow = true;
+        m_Config.m_Options.bForceConsoleWindow = true;
     }
 }
 
@@ -3483,8 +3444,8 @@ void CBatchEncoderDlg::OnOptionsConfigurePresets()
     for (int i = 0; i < NUM_PRESET_FILES; i++)
         dlg.szPresetsFile[i] = m_Config.szPresetsFile[i];
 
-    dlg.szPresetsWndResize = szPresetsWndResize;
-    dlg.szPresetsListColumns = this->szPresetsListColumns;
+    dlg.szPresetsDialogResize = m_Config.m_Options.szPresetsDialogResize;
+    dlg.szPresetsListColumns = m_Config.m_Options.szPresetsListColumns;
 
     INT_PTR nRet = dlg.DoModal();
     if (nRet == IDOK)
@@ -3508,8 +3469,8 @@ void CBatchEncoderDlg::OnOptionsConfigurePresets()
         // they will be loaded next time when app will start
     }
 
-    this->szPresetsWndResize = dlg.szPresetsWndResize;
-    this->szPresetsListColumns = dlg.szPresetsListColumns;
+    m_Config.m_Options.szPresetsDialogResize = dlg.szPresetsDialogResize;
+    m_Config.m_Options.szPresetsListColumns = dlg.szPresetsListColumns;
 }
 
 void CBatchEncoderDlg::OnOptionsConfigureFormat()
@@ -3529,8 +3490,8 @@ void CBatchEncoderDlg::OnOptionsConfigureFormat()
         m_Config.m_Formats[i].Copy(dlg.m_Formats[i]);
     }
 
-    dlg.szFormatsWndResize = this->szFormatsWndResize;
-    dlg.szFormatsListColumns = this->szFormatsListColumns;
+    dlg.szFormatsDialogResize = m_Config.m_Options.szFormatsDialogResize;
+    dlg.szFormatsListColumns = m_Config.m_Options.szFormatsListColumns;
 
     INT_PTR nRet = dlg.DoModal();
     if (nRet == IDOK)
@@ -3541,8 +3502,8 @@ void CBatchEncoderDlg::OnOptionsConfigureFormat()
         }
     }
 
-    this->szFormatsWndResize = dlg.szFormatsWndResize;
-    this->szFormatsListColumns = dlg.szFormatsListColumns;
+    m_Config.m_Options.szFormatsDialogResize = dlg.szFormatsDialogResize;
+    m_Config.m_Options.szFormatsListColumns = dlg.szFormatsListColumns;
 }
 
 void CBatchEncoderDlg::OnHelpWebsite()

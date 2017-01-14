@@ -369,7 +369,7 @@ bool ConvertFile(CBatchEncoderDlg *pDlg,
     // and start it right now
     countTime.StartCounter();
 
-    if (pDlg->bForceConsoleWindow == true)
+    if (pDlg->m_Config.m_Options.bForceConsoleWindow == true)
     {
         // in this mode all encoders/decoders are forced 
         // to run in native system console windows
@@ -841,7 +841,7 @@ bool ConvertFile(CBatchEncoderDlg *pDlg,
     // finished, stop conversion time counter
     countTime.StopCounter();
 
-    if (pDlg->bForceConsoleWindow == false)
+    if (pDlg->m_Config.m_Options.bForceConsoleWindow == false)
     {
         // terminate console process if there was error
         HANDLE hProc;
@@ -1094,7 +1094,7 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
             // decode
             if ((nProcessingMode == 1) || (nProcessingMode == 2))
             {
-                if (pDlg->bForceConsoleWindow == false)
+                if (pDlg->m_Config.m_Options.bForceConsoleWindow == false)
                 {
                     // configure decoder input and output pipes
                     bUseInPipesDec = pDlg->m_Config.m_Formats[(NUM_OUTPUT_EXT + nIntputFormat - 1)].bInput;
@@ -1177,7 +1177,7 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
             if (pDlg->bRunning == false)
                 break;
 
-            if (pDlg->bForceConsoleWindow == false)
+            if (pDlg->m_Config.m_Options.bForceConsoleWindow == false)
             {
                 // configure encoder input and output pipes
                 bUseInPipesEnc = pDlg->m_Config.m_Formats[nOutputFormat].bInput;
@@ -1290,7 +1290,7 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
     }
 
     // restore user interface to default state
-    if (pDlg->bShowTrayIcon == true)
+    if (pDlg->m_Config.m_Options.bShowTrayIcon == true)
         pDlg->EnableTrayIcon(true, true);
 
     pDlg->m_BtnConvert.SetWindowText(_T("Conve&rt"));

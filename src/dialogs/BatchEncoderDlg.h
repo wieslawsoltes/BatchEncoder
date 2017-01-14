@@ -78,8 +78,6 @@ public:
     volatile int nProgressCurrent;
     bool bSameAsSourceEdit;
 public:
-    bool bForceConsoleWindow;
-public:
     int nCurSel[NUM_OUTPUT_EXT];
 public:
     CEdit m_EdtOutPath;
@@ -98,11 +96,6 @@ public:
 public:
     CMyButton m_BtnConvert;
     CMyButton m_BtnBrowse;
-public:
-    CString szPresetsWndResize;
-    CString szPresetsListColumns;
-    CString szFormatsWndResize;
-    CString szFormatsListColumns;
 public:
     CString GetEncoderExe(int nOutputFormat);
     CString GetDecoderExe(int nIntputFormat);
@@ -160,8 +153,6 @@ public:
     void UpdateOutputComboBoxes(int nSelFormatIndex = -1, int nSelPresetIndex = -1);
 public:
     void EnableUserInterface(BOOL bEnable = TRUE);
-public:
-    bool bShowTrayIcon;
 public:
     void EnableTrayIcon(bool bEnable = true, bool bModify = false);
     void ShowProgressTrayIcon(int nProgress);

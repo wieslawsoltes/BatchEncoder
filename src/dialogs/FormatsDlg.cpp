@@ -18,7 +18,7 @@ CFormatsDlg::CFormatsDlg(CWnd* pParent /*=NULL*/)
     : CResizeDialog(CFormatsDlg::IDD, pParent)
 {
     m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
-    szFormatsWndResize = _T("");
+    szFormatsDialogResize = _T("");
     szFormatsListColumns = _T("");
     this->bShowGridLines = true;
 }
@@ -91,7 +91,7 @@ BOOL CFormatsDlg::OnInitDialog()
     m_LstFormats.InsertColumn(4, _T("Out Pipes"), LVCFMT_LEFT, 70);
     m_LstFormats.InsertColumn(5, _T("Function"), LVCFMT_LEFT, 90);
 
-    // insert all ListCtl items and subitems
+    // insert all ListCtl items and sub items
     for (int i = 0; i < NUM_FORMAT_NAMES; i++)
     {
         LVITEM lvi;
@@ -236,8 +236,8 @@ void CFormatsDlg::UpdateEditableFields(void)
 void CFormatsDlg::LoadWindowSettings()
 {
     // set window rectangle and position
-    if (szFormatsWndResize.Compare(_T("")) != 0)
-        this->SetWindowRectStr(szFormatsWndResize);
+    if (szFormatsDialogResize.Compare(_T("")) != 0)
+        this->SetWindowRectStr(szFormatsDialogResize);
 
     // load columns width for FormatsList
     if (szFormatsListColumns.Compare(_T("")) != 0)
@@ -260,7 +260,7 @@ void CFormatsDlg::LoadWindowSettings()
 void CFormatsDlg::SaveWindowSettings()
 {
     // save window rectangle and position
-    this->szFormatsWndResize = this->GetWindowRectStr();
+    this->szFormatsDialogResize = this->GetWindowRectStr();
 
     // save columns width from FormatsList
     int nColWidth[6];
@@ -457,19 +457,12 @@ void CFormatsDlg::SaveFormatsFile(CString szFileXml)
         pFormatsElem->LinkEndChild(pFormatElem);
     }
 
-    // save file
     if (doc.SaveFileW(szFileXml) != true)
         MessageBox(_T("Failed to save file!"), _T("ERROR"), MB_OK | MB_ICONERROR);
 }
 
 void CFormatsDlg::OnBnClickedButtonLoadConfig()
 {
-    // NOTE:
-    // the presets file do not need to contain all formats
-    // this enables loading partial patches and configurations
-    // for specific encoder/decoder created by other users
-
-    // load config from .formats file
     CFileDialog fd(TRUE, _T("formats"), _T(""),
         OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER,
         _T("Formats Files (*.formats)|*.formats|Xml Files (*.xml)|*.xml|All Files|*.*||"), this);
@@ -483,7 +476,6 @@ void CFormatsDlg::OnBnClickedButtonLoadConfig()
 
 void CFormatsDlg::OnBnClickedButtonSaveConfig()
 {
-    // save config to .formats file
     CFileDialog fd(FALSE, _T("formats"), _T(""),
         OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER | OFN_OVERWRITEPROMPT,
         _T("Formats Files (*.formats)|*.formats|Xml Files (*.xml)|*.xml|All Files|*.*||"), this);
@@ -542,9 +534,6 @@ void CFormatsDlg::OnBnClickedButtonFdBrowseProgress()
 
 void CFormatsDlg::OnBnClickedButtonFdUpdatePreset()
 {
-    // NOTE: 
-    // button is disabled instead live update is working
-    // with EditBox change event and CheckBoxes click event
     CString szTemplate = _T("");
     CString szPath = _T("");
     CString szCheckIn = _T("false");

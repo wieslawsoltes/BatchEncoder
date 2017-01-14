@@ -11,27 +11,27 @@
 
 const char *g_szOptionsTags[NUM_PROGRAM_OPTIONS] =
 {
-    "SelPresetIndex",           // 0
-    "SelFormatIndex",           // 1
-    "BrowsePath",               // 2
-    "DebugOutput",              // 3
+    "SelectedPresets",          // 0
+    "SelectedFormat",           // 1
+    "OutputPathChecked",        // 2
+    "LogConsoleOutput",         // 3
     "DeleteSourceFiles",        // 4
     "StayOnTop",                // 5
     "RecurseChecked",           // 6
-    "MainWndResize",            // 7
+    "MainWindowResize",         // 7
     "FileListColumns",          // 8
     "ShowGridLines",            // 9
     "ShowTrayIcon",             // 10
     "DoNotSaveConfiguration",   // 11
-    "PresetsWndResize",         // 12
+    "PresetsDialogResize",      // 12
     "PresetsListColumns",       // 13
-    "FormatsWndResize",         // 14
+    "FormatsDialogResize",      // 14
     "FormatsListColumns",       // 15
     "DeleteOnError",            // 16
     "StopOnErrors",             // 17
     "LogFileName",              // 18
     "LogFileEncoding",          // 19
-    "ForceConsoleWnd"           // 20
+    "ForceConsoleWindow"        // 20
 };
 
 const TCHAR *g_szAllInExt[NUM_INPUT_EXT] =
@@ -109,22 +109,4 @@ const char *g_szPresetTags[NUM_PRESET_FILES] =
     "PRESETS_OFR",      // 11
     "PRESETS_TTA",      // 12
     "PRESETS_TAK"       // 13
-};
-
-const TCHAR *g_szPresetFiles[NUM_PRESET_FILES] =
-{
-    _T("Presets_WAV_Ssrc.presets"),       // 0
-    _T("Presets_MP3_Lame.presets"),       // 1
-    _T("Presets_MPC_MpcEnc.presets"),     // 2
-    _T("Presets_AAC_Faac.presets"),       // 3
-    _T("Presets_M4A_neroAacEnc.presets"), // 4
-    _T("Presets_MP4_neroAacEnc.presets"), // 5
-    _T("Presets_OGG_OggEnc.presets"),     // 6
-    _T("Presets_AC3_Aften.presets"),      // 7
-    _T("Presets_FLAC_Flac.presets"),      // 8
-    _T("Presets_WV_WavPack.presets"),     // 9
-    _T("Presets_APE_Mac.presets"),        // 10
-    _T("Presets_OFR_Ofr.presets"),        // 11
-    _T("Presets_TTA_TtaEnc.presets"),     // 12
-    _T("Presets_TAK_Takc.presets")        // 13
 };

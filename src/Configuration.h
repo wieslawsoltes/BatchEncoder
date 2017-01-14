@@ -18,22 +18,57 @@ extern const TCHAR *g_szAllInExt[];
 extern const TCHAR *g_szAllOutExt[];
 extern const TCHAR *g_szPresetNames[];
 extern const char *g_szPresetTags[];
-extern const TCHAR *g_szPresetFiles[];
 
 class COptions
 {
 public:
+    CString szSelectedPresets;
+    int nSelectedFormat;
+    CString szOutputPath;
+    bool bOutputPathChecked;
+    bool bLogConsoleOutput;
+    bool bDeleteSourceFiles;
+    bool bStayOnTop;
+    bool bRecurseChecked;
+    CString szMainWindowResize;
+    CString szFileListColumns;
+    bool bShowGridLines;
+    bool bShowTrayIcon;
+    bool bDoNotSaveConfiguration;
+    CString szPresetsDialogResize;
+    CString szPresetsListColumns;
+    CString szFormatsDialogResize;
+    CString szFormatsListColumns;
     bool bDeleteOnError;
     bool bStopOnErrors;
     CString szLogFileName;
     int nLogEncoding; // 0 - ANSI, 1 - UNICODE, 2 - UTF-8
+    bool bForceConsoleWindow;
 public:
     void Copy(COptions &other)
     {
+        other.szSelectedPresets = this->szSelectedPresets;
+        other.nSelectedFormat = this->nSelectedFormat;
+        other.szOutputPath = this->szOutputPath;
+        other.bOutputPathChecked = this->bOutputPathChecked;
+        other.bLogConsoleOutput = this->bLogConsoleOutput;
+        other.bDeleteSourceFiles = this->bDeleteSourceFiles;
+        other.bStayOnTop = this->bStayOnTop;
+        other.bRecurseChecked = this->bRecurseChecked;
+        other.szMainWindowResize = this->szMainWindowResize;
+        other.szFileListColumns = this->szFileListColumns;
+        other.bShowGridLines = this->bShowGridLines;
+        other.bShowTrayIcon = this->bShowTrayIcon;
+        other.bDoNotSaveConfiguration = this->bDoNotSaveConfiguration;
+        other.szPresetsDialogResize = this->szPresetsDialogResize;
+        other.szPresetsListColumns = this->szPresetsListColumns;
+        other.szFormatsDialogResize = this->szFormatsDialogResize;
+        other.szFormatsListColumns = this->szFormatsListColumns;
         other.bDeleteOnError = this->bDeleteOnError;
         other.bStopOnErrors = this->bStopOnErrors;
         other.szLogFileName = this->szLogFileName;
         other.nLogEncoding = this->nLogEncoding;
+        other.bForceConsoleWindow = this->bForceConsoleWindow;
     }
 };
 

@@ -29,7 +29,7 @@ public:
 public:
     CFormat m_Formats[NUM_FORMAT_NAMES];
 public:
-    CString szFormatsWndResize;
+    CString szFormatsDialogResize;
     CString szFormatsListColumns;
 public:
     void LoadWindowSettings();

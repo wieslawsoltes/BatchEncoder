@@ -18,7 +18,7 @@ CPresetsDlg::CPresetsDlg(CWnd* pParent /*=NULL*/)
 {
     m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
     nSelFormat = 1;
-    szPresetsWndResize = _T("");
+    szPresetsDialogResize = _T("");
     szPresetsListColumns = _T("");
     bUpdate = false;
     this->bShowGridLines = true;
@@ -55,9 +55,6 @@ void CPresetsDlg::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CPresetsDlg, CResizeDialog)
     ON_WM_PAINT()
     ON_WM_QUERYDRAGICON()
-    ON_NOTIFY(LVN_KEYDOWN, IDC_EDIT_PD_PRESETS, OnLvnKeydownListPdPresets)
-    ON_NOTIFY(NM_CLICK, IDC_EDIT_PD_PRESETS, OnNMClickListPdPresets)
-    ON_NOTIFY(LVN_ITEMCHANGING, IDC_EDIT_PD_PRESETS, OnLvnItemchangingListPdPresets)
     ON_NOTIFY(LVN_ITEMCHANGED, IDC_EDIT_PD_PRESETS, OnLvnItemchangedListPdPresets)
     ON_BN_CLICKED(IDC_BUTTON_PD_REMOVE_ALL_PRESETS, OnBnClickedButtonPdRemoveAllPresets)
     ON_BN_CLICKED(IDC_BUTTON_PD_REMOVE_PRESETS, OnBnClickedButtonPdRemovePresets)
@@ -191,8 +188,8 @@ void CPresetsDlg::ShowGridlines(bool bShow)
 void CPresetsDlg::LoadWindowSettings()
 {
     // set window rectangle and position
-    if (szPresetsWndResize.Compare(_T("")) != 0)
-        this->SetWindowRectStr(szPresetsWndResize);
+    if (szPresetsDialogResize.Compare(_T("")) != 0)
+        this->SetWindowRectStr(szPresetsDialogResize);
 
     // load columns width for PresetsList
     if (szPresetsListColumns.Compare(_T("")) != 0)
@@ -211,7 +208,7 @@ void CPresetsDlg::LoadWindowSettings()
 void CPresetsDlg::SaveWindowSettings()
 {
     // save window rectangle and position
-    this->szPresetsWndResize = this->GetWindowRectStr();
+    this->szPresetsDialogResize = this->GetWindowRectStr();
 
     // save columns width from PresetsList
     int nColWidth[2];
@@ -272,31 +269,6 @@ void CPresetsDlg::ListSelectionChange(void)
     }
 }
 
-void CPresetsDlg::OnLvnKeydownListPdPresets(NMHDR *pNMHDR, LRESULT *pResult)
-{
-    LPNMLVKEYDOWN pLVKeyDow = reinterpret_cast<LPNMLVKEYDOWN>(pNMHDR);
-
-    // this->ListSelectionChange();
-
-    *pResult = 0;
-}
-
-void CPresetsDlg::OnNMClickListPdPresets(NMHDR *pNMHDR, LRESULT *pResult)
-{
-    // this->ListSelectionChange();
-
-    *pResult = 0;
-}
-
-void CPresetsDlg::OnLvnItemchangingListPdPresets(NMHDR *pNMHDR, LRESULT *pResult)
-{
-    LPNMLISTVIEW pNMLV = reinterpret_cast<LPNMLISTVIEW>(pNMHDR);
-
-    // this->ListSelectionChange();
-
-    *pResult = 0;
-}
-
 void CPresetsDlg::OnLvnItemchangedListPdPresets(NMHDR *pNMHDR, LRESULT *pResult)
 {
     LPNMLISTVIEW pNMLV = reinterpret_cast<LPNMLISTVIEW>(pNMHDR);
@@ -308,10 +280,7 @@ void CPresetsDlg::OnLvnItemchangedListPdPresets(NMHDR *pNMHDR, LRESULT *pResult)
 
 void CPresetsDlg::OnBnClickedButtonPdRemoveAllPresets()
 {
-    // clear node list
     m_Presets.RemoveAllNodes();
-
-    // clear list view
     m_LstPresets.DeleteAllItems();
 }
 
@@ -324,7 +293,6 @@ void CPresetsDlg::OnBnClickedButtonPdRemovePresets()
         m_Presets.RemoveNode(nItem);
         m_LstPresets.DeleteItem(nItem);
 
-        // select other item in list
         int nItems = m_LstPresets.GetItemCount();
         if (nItem < nItems && nItems >= 0)
             m_LstPresets.SetItemState(nItem, LVIS_SELECTED, LVIS_SELECTED);
@@ -517,13 +485,10 @@ void CPresetsDlg::OnBnClickedButtonPdUp()
 
     bUpdate = true;
 
-    // move up item in ListView and list
     POSITION pos = m_LstPresets.GetFirstSelectedItemPosition();
     if (pos != NULL)
     {
         int nItem = m_LstPresets.GetNextSelectedItem(pos);
-
-        // don't process 1st item
         if (nItem > 0)
         {
             CString szName1 = m_Presets.GetPresetName(nItem);
@@ -559,14 +524,11 @@ void CPresetsDlg::OnBnClickedButtonPdDown()
 
     bUpdate = true;
 
-    // move down item in ListView and list
     POSITION pos = m_LstPresets.GetFirstSelectedItemPosition();
     if (pos != NULL)
     {
         int nItem = m_LstPresets.GetNextSelectedItem(pos);
-
         int nItems = m_LstPresets.GetItemCount();
-        // don't process last item
         if (nItem != (nItems - 1) && nItem >= 0)
         {
             CString szName1 = m_Presets.GetPresetName(nItem);
@@ -597,7 +559,6 @@ void CPresetsDlg::OnBnClickedButtonPdDown()
 
 void CPresetsDlg::OnBnClickedOk()
 {
-    // NOTE: when pressing OK button changes are saved to file
     this->SavePresetsFile(GetCurConfigFile());
 
     this->SaveWindowSettings();

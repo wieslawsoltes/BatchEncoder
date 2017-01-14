@@ -34,7 +34,7 @@ public:
 public:
     CPresetsList m_Presets;
 public:
-    CString szPresetsWndResize;
+    CString szPresetsDialogResize;
     CString szPresetsListColumns;
 public:
     void LoadWindowSettings();
@@ -78,9 +78,6 @@ public:
     CString GetCurConfigFile();
     void SetCurConfigFile(CString szFile);
 public:
-    afx_msg void OnLvnKeydownListPdPresets(NMHDR *pNMHDR, LRESULT *pResult);
-    afx_msg void OnNMClickListPdPresets(NMHDR *pNMHDR, LRESULT *pResult);
-    afx_msg void OnLvnItemchangingListPdPresets(NMHDR *pNMHDR, LRESULT *pResult);
     afx_msg void OnLvnItemchangedListPdPresets(NMHDR *pNMHDR, LRESULT *pResult);
 public:
     afx_msg void OnCbnSelchangeComboPdFormat();
