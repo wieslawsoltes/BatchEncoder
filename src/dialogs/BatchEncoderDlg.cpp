@@ -477,7 +477,7 @@ bool CBatchEncoderDlg::CreateBatchFile(CString szFileName)
     fp.Write(szPrefix, (UINT)strlen(szPrefix));
 
     bool bDeleteAfterconversion = this->GetMenu()->GetMenuState(ID_OPTIONS_DELETESOURCEFILEWHENDONE, MF_BYCOMMAND) == MF_CHECKED;
-    
+
     bool bOutPath = this->m_ChkOutPath.GetCheck() == BST_CHECKED;
     CString szOutPath;
 
@@ -614,7 +614,7 @@ bool CBatchEncoderDlg::CreateBatchFile(CString szFileName)
         }
 
         if ((nProcessingMode == 0) || (nProcessingMode == 2))
-        {            
+        {
             csExecute = m_Config.m_Formats[nOutputFormat].szTemplate;
             csExecute.Replace(_T("$EXE"), _T("\"$EXE\""));
             csExecute.Replace(_T("$EXE"), szEncoderExePath);
@@ -731,7 +731,7 @@ void CBatchEncoderDlg::ShowProgressTrayIcon(int nProgress)
         IDI_ICON_PROGRESS_09,
         IDI_ICON_PROGRESS_10,
         IDI_ICON_PROGRESS_11,
-        IDI_ICON_PROGRESS_12 
+        IDI_ICON_PROGRESS_12
     };
 
     int nIndex = (nIconsIdCount * nProgress) / 100;
@@ -1304,7 +1304,7 @@ bool CBatchEncoderDlg::LoadConfigFile()
         m_Config.m_Browse.szBrowsePath[4] = szBuff;
     }
     */
-    
+
     // root: Items
     this->OnFileClearList();
 
@@ -1808,8 +1808,8 @@ bool CBatchEncoderDlg::SaveConfigFile()
 
     /*
     // TODO: Save m_EdtOutPath as part of CSettings
-    // get last browse for outpath this is special case 
-    // because user can change this value 
+    // get last browse for outpath this is special case
+    // because user can change this value
     // without changing m_Config.m_Browse.szBrowsePath[4] variable
     m_EdtOutPath.GetWindowText(m_Config.m_Browse.szBrowsePath[4]);
     */
@@ -2251,7 +2251,7 @@ void CBatchEncoderDlg::OnBnClickedButtonBrowsePath()
     CString szTmp;
     this->m_EdtOutPath.GetWindowText(szTmp);
 
-    /* TODO: 
+    /* TODO:
     if (szTmp == m_Config.m_Browse.szBrowsePath[4])
         szLastBrowse = m_Config.m_Browse.szBrowsePath[4];
     else
