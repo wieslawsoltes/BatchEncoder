@@ -305,9 +305,8 @@ BEGIN_MESSAGE_MAP(CBatchEncoderDlg, CResizeDialog)
     ON_COMMAND(ID_ACCELERATOR_CTRL_S, OnFileSaveList)
     ON_COMMAND(ID_ACCELERATOR_CTRL_E, OnFileClearList)
     ON_COMMAND(ID_ACCELERATOR_CTRL_B, OnFileCreateBatchFile)
-    ON_COMMAND(ID_ACCELERATOR_CTRL_SHIFT_L, LoadUserSettings)
-    ON_COMMAND(ID_ACCELERATOR_CTRL_SHIFT_S, SaveUserSettings)
-    ON_COMMAND(ID_ACCELERATOR_CTRL_SHIFT_D, LoadDefaultSettings)
+    ON_COMMAND(ID_ACCELERATOR_CTRL_SHIFT_L, LoadUserConfig)
+    ON_COMMAND(ID_ACCELERATOR_CTRL_SHIFT_S, SaveUserConfig)
     ON_COMMAND(ID_ACCELERATOR_F3, OnEditResetTime)
     ON_COMMAND(ID_ACCELERATOR_F4, OnEditResetOutput)
     ON_COMMAND(ID_ACCELERATOR_ALT_F4, OnFileExit)
@@ -712,6 +711,7 @@ void CBatchEncoderDlg::EnableTrayIcon(bool bEnable, bool bModify)
         }
     }
 }
+
 void CBatchEncoderDlg::ShowProgressTrayIcon(int nProgress)
 {
     if (this->bShowTrayIcon == false)
@@ -1189,20 +1189,20 @@ bool CBatchEncoderDlg::LoadConfigFile()
     if (strcmp(szRootName, szRoot) != 0)
         return false;
 
-    // root: Settings
-    tinyxml2::XMLElement *pSettingsElem = pRootElem->FirstChildElement("Settings");
-    CString szSetting[NUM_PROGRAM_SETTINGS];
-    for (int i = 0; i < NUM_PROGRAM_SETTINGS; i++)
+    // root: Options
+    tinyxml2::XMLElement *pOptionsElem = pRootElem->FirstChildElement("Options");
+    CString szOptions[NUM_PROGRAM_OPTIONS];
+    for (int i = 0; i < NUM_PROGRAM_OPTIONS; i++)
     {
-        tinyxml2::XMLElement *pSettingElem = pSettingsElem->FirstChildElement(g_szSettingsTags[i]);
+        tinyxml2::XMLElement *pSettingElem = pOptionsElem->FirstChildElement(g_szOptionsTags[i]);
         if (pSettingElem)
         {
             const char *tmpBuff = pSettingElem->GetText();
-            szSetting[i] = GetConfigString(tmpBuff);
+            szOptions[i] = GetConfigString(tmpBuff);
         }
         else
         {
-            szSetting[i] = _T("");
+            szOptions[i] = _T("");
         }
     }
 
@@ -1288,7 +1288,7 @@ bool CBatchEncoderDlg::LoadConfigFile()
     }
 
     /*
-    // TODO: Add to CSettings
+    // TODO: Add to COptions
     // this is special case for m_Config.m_Browse.szBrowsePath[4]
     // check for out-path if not presets set to default value
     if (m_Config.m_Browse.szBrowsePath[4].Compare(_T("")) != 0)
@@ -1311,22 +1311,22 @@ bool CBatchEncoderDlg::LoadConfigFile()
     tinyxml2::XMLElement *pItemsElem = pRootElem->FirstChildElement("Items");
     this->LoadItems(pItemsElem);
 
-    // handle loaded settings
+    // handle loaded options
     int nSelFormatIndex = 0;
 
     // 0
     // Description: get for each output format selected preset index
-    if (szSetting[0].Compare(_T("")) != 0)
+    if (szOptions[0].Compare(_T("")) != 0)
     {
         CString resToken;
         int curPos = 0;
         int nIndex = 0;
 
-        resToken = szSetting[0].Tokenize(_T(" "), curPos);
+        resToken = szOptions[0].Tokenize(_T(" "), curPos);
         while (resToken != _T("") && nIndex <= (NUM_OUTPUT_EXT - 1))
         {
             nCurSel[nIndex] = stoi(resToken);
-            resToken = szSetting[0].Tokenize(_T(" "), curPos);
+            resToken = szOptions[0].Tokenize(_T(" "), curPos);
             nIndex++;
         }
     }
@@ -1337,9 +1337,9 @@ bool CBatchEncoderDlg::LoadConfigFile()
 
     // 1
     // Description: get selected format in formats combo-box
-    if (szSetting[1].Compare(_T("")) != 0)
+    if (szOptions[1].Compare(_T("")) != 0)
     {
-        nSelFormatIndex = stoi(szSetting[1]);
+        nSelFormatIndex = stoi(szOptions[1]);
         if (nSelFormatIndex < 0)
             nSelFormatIndex = 0;
     }
@@ -1351,9 +1351,9 @@ bool CBatchEncoderDlg::LoadConfigFile()
 
     // 2
     // Description: output path check-box state
-    if (szSetting[2].Compare(_T("")) != 0)
+    if (szOptions[2].Compare(_T("")) != 0)
     {
-        if (szSetting[2].Compare(_T("true")) == 0)
+        if (szOptions[2].Compare(_T("true")) == 0)
         {
             m_ChkOutPath.SetCheck(BST_CHECKED);
         }
@@ -1371,9 +1371,9 @@ bool CBatchEncoderDlg::LoadConfigFile()
 
     // 3
     // Description: debug check-box state
-    if (szSetting[3].Compare(_T("")) != 0)
+    if (szOptions[3].Compare(_T("")) != 0)
     {
-        if (szSetting[3].Compare(_T("true")) == 0)
+        if (szOptions[3].Compare(_T("true")) == 0)
             this->GetMenu()->CheckMenuItem(ID_OPTIONS_LOGCONSOLEOUTPUT, MF_CHECKED);
         else
             this->GetMenu()->CheckMenuItem(ID_OPTIONS_LOGCONSOLEOUTPUT, MF_UNCHECKED);
@@ -1385,9 +1385,9 @@ bool CBatchEncoderDlg::LoadConfigFile()
 
     // 4
     // Description: delete source file after successful conversion
-    if (szSetting[4].Compare(_T("")) != 0)
+    if (szOptions[4].Compare(_T("")) != 0)
     {
-        if (szSetting[4].Compare(_T("true")) == 0)
+        if (szOptions[4].Compare(_T("true")) == 0)
             this->GetMenu()->CheckMenuItem(ID_OPTIONS_DELETESOURCEFILEWHENDONE, MF_CHECKED);
         else
             this->GetMenu()->CheckMenuItem(ID_OPTIONS_DELETESOURCEFILEWHENDONE, MF_UNCHECKED);
@@ -1399,9 +1399,9 @@ bool CBatchEncoderDlg::LoadConfigFile()
 
     // 5
     // Description: make main dialog window on top of all other desktop windows
-    if (szSetting[5].Compare(_T("")) != 0)
+    if (szOptions[5].Compare(_T("")) != 0)
     {
-        if (szSetting[5].Compare(_T("true")) == 0)
+        if (szOptions[5].Compare(_T("true")) == 0)
         {
             this->SetWindowPos(CWnd::FromHandle(HWND_TOPMOST), 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
             this->GetMenu()->CheckMenuItem(ID_OPTIONS_STAYONTOP, MF_CHECKED);
@@ -1415,9 +1415,9 @@ bool CBatchEncoderDlg::LoadConfigFile()
 
     // 6
     // Description: enables recursed flag in browse dialog
-    if (szSetting[6].Compare(_T("")) != 0)
+    if (szOptions[6].Compare(_T("")) != 0)
     {
-        if (szSetting[6].Compare(_T("true")) == 0)
+        if (szOptions[6].Compare(_T("true")) == 0)
             ::bRecurseChecked = true;
         else
             ::bRecurseChecked = false;
@@ -1429,17 +1429,17 @@ bool CBatchEncoderDlg::LoadConfigFile()
 
     // 7
     // Description: set main window rectangle and position
-    if (szSetting[7].Compare(_T("")) != 0)
+    if (szOptions[7].Compare(_T("")) != 0)
     {
-        this->SetWindowRectStr(szSetting[7]);
+        this->SetWindowRectStr(szOptions[7]);
     }
 
     // 8
     // Description: width of each column in ItemList
-    if (szSetting[8].Compare(_T("")) != 0)
+    if (szOptions[8].Compare(_T("")) != 0)
     {
         int nColWidth[7];
-        if (_stscanf(szSetting[8], _T("%d %d %d %d %d %d %d"),
+        if (_stscanf(szOptions[8], _T("%d %d %d %d %d %d %d"),
             &nColWidth[0],
             &nColWidth[1],
             &nColWidth[2],
@@ -1455,9 +1455,9 @@ bool CBatchEncoderDlg::LoadConfigFile()
 
     // 9
     // Description: show grid-lines in ListCtrl
-    if (szSetting[9].Compare(_T("")) != 0)
+    if (szOptions[9].Compare(_T("")) != 0)
     {
-        if (szSetting[9].Compare(_T("true")) == 0)
+        if (szOptions[9].Compare(_T("true")) == 0)
             ShowGridlines(true);
         else
             ShowGridlines(false);
@@ -1469,9 +1469,9 @@ bool CBatchEncoderDlg::LoadConfigFile()
 
     // 10
     // Description: show program icon in system tray
-    if (szSetting[10].Compare(_T("")) != 0)
+    if (szOptions[10].Compare(_T("")) != 0)
     {
-        if (szSetting[10].Compare(_T("true")) == 0)
+        if (szOptions[10].Compare(_T("true")) == 0)
         {
             this->EnableTrayIcon(true);
             bShowTrayIcon = true;
@@ -1490,9 +1490,9 @@ bool CBatchEncoderDlg::LoadConfigFile()
 
     // 11
     // Description: do not save setting on exit
-    if (szSetting[11].Compare(_T("")) != 0)
+    if (szOptions[11].Compare(_T("")) != 0)
     {
-        if (szSetting[11].Compare(_T("true")) == 0)
+        if (szOptions[11].Compare(_T("true")) == 0)
             this->GetMenu()->CheckMenuItem(ID_OPTIONS_DO_NOT_SAVE, MF_CHECKED);
         else
             this->GetMenu()->CheckMenuItem(ID_OPTIONS_DO_NOT_SAVE, MF_UNCHECKED);
@@ -1504,37 +1504,37 @@ bool CBatchEncoderDlg::LoadConfigFile()
 
     // 12
     // Description: presets window rectangle and position
-    if (szSetting[12].Compare(_T("")) != 0)
+    if (szOptions[12].Compare(_T("")) != 0)
     {
-        this->szPresetsWndResize = szSetting[12];
+        this->szPresetsWndResize = szOptions[12];
     }
 
     // 13
     // Description: width of each column in PresetsList
-    if (szSetting[13].Compare(_T("")) != 0)
+    if (szOptions[13].Compare(_T("")) != 0)
     {
-        this->szPresetsListColumns = szSetting[13];
+        this->szPresetsListColumns = szOptions[13];
     }
 
     // 14
     // Description: formats window rectangle and position
-    if (szSetting[14].Compare(_T("")) != 0)
+    if (szOptions[14].Compare(_T("")) != 0)
     {
-        this->szFormatsWndResize = szSetting[14];
+        this->szFormatsWndResize = szOptions[14];
     }
 
     // 15
     // Description: width of each column in FormatsList
-    if (szSetting[15].Compare(_T("")) != 0)
+    if (szOptions[15].Compare(_T("")) != 0)
     {
-        this->szFormatsListColumns = szSetting[15];
+        this->szFormatsListColumns = szOptions[15];
     }
 
     // 16
     // Description: encoder/decoder thread priority index
-    if (szSetting[16].Compare(_T("")) != 0)
+    if (szOptions[16].Compare(_T("")) != 0)
     {
-        m_Config.m_Options.nThreadPriorityIndex = stoi(szSetting[16]);
+        m_Config.m_Options.nThreadPriorityIndex = stoi(szOptions[16]);
     }
     else
     {
@@ -1543,9 +1543,9 @@ bool CBatchEncoderDlg::LoadConfigFile()
 
     // 17
     // Description: encoder/decoder process priority index
-    if (szSetting[17].Compare(_T("")) != 0)
+    if (szOptions[17].Compare(_T("")) != 0)
     {
-        m_Config.m_Options.nProcessPriorityIndex = stoi(szSetting[17]);
+        m_Config.m_Options.nProcessPriorityIndex = stoi(szOptions[17]);
     }
     else
     {
@@ -1554,9 +1554,9 @@ bool CBatchEncoderDlg::LoadConfigFile()
 
     // 18
     // Description: delete output file on error
-    if (szSetting[18].Compare(_T("")) != 0)
+    if (szOptions[18].Compare(_T("")) != 0)
     {
-        if (szSetting[18].Compare(_T("true")) == 0)
+        if (szOptions[18].Compare(_T("true")) == 0)
             m_Config.m_Options.bDeleteOnError = true;
         else
             m_Config.m_Options.bDeleteOnError = false;
@@ -1568,9 +1568,9 @@ bool CBatchEncoderDlg::LoadConfigFile()
 
     // 19
     // Description: stop conversion process on error
-    if (szSetting[19].Compare(_T("")) != 0)
+    if (szOptions[19].Compare(_T("")) != 0)
     {
-        if (szSetting[19].Compare(_T("true")) == 0)
+        if (szOptions[19].Compare(_T("true")) == 0)
             m_Config.m_Options.bStopOnErrors = true;
         else
             m_Config.m_Options.bStopOnErrors = false;
@@ -1582,9 +1582,9 @@ bool CBatchEncoderDlg::LoadConfigFile()
 
     // 20
     // Description: log filename for console output
-    if (szSetting[20].Compare(_T("")) != 0)
+    if (szOptions[20].Compare(_T("")) != 0)
     {
-        m_Config.m_Options.szLogFileName = szSetting[20];
+        m_Config.m_Options.szLogFileName = szOptions[20];
     }
     else
     {
@@ -1593,9 +1593,9 @@ bool CBatchEncoderDlg::LoadConfigFile()
 
     // 21
     // Description: encoding of data stored in logfile
-    if (szSetting[21].Compare(_T("")) != 0)
+    if (szOptions[21].Compare(_T("")) != 0)
     {
-        m_Config.m_Options.nLogEncoding = stoi(szSetting[21]);
+        m_Config.m_Options.nLogEncoding = stoi(szOptions[21]);
     }
     else
     {
@@ -1604,9 +1604,9 @@ bool CBatchEncoderDlg::LoadConfigFile()
 
     // 22
     // Description: force console window instead of conversion progress
-    if (szSetting[22].Compare(_T("")) != 0)
+    if (szOptions[22].Compare(_T("")) != 0)
     {
-        if (szSetting[22].Compare(_T("true")) == 0)
+        if (szOptions[22].Compare(_T("true")) == 0)
         {
             this->GetMenu()->CheckMenuItem(ID_OPTIONS_FORCECONSOLEWINDOW, MF_CHECKED);
             this->bForceConsoleWindow = true;
@@ -1646,7 +1646,7 @@ bool CBatchEncoderDlg::LoadConfigFile()
 
 bool CBatchEncoderDlg::SaveConfigFile()
 {
-    // save all settings to file
+    // save all options to file
     CXMLDocumentW doc;
 
     tinyxml2::XMLDeclaration* decl = doc.NewDeclaration(UTF8_DOCUMENT_DECLARATION);
@@ -1656,50 +1656,50 @@ bool CBatchEncoderDlg::SaveConfigFile()
     tinyxml2::XMLElement *pRootElem = doc.NewElement("Configuration");
     doc.LinkEndChild(pRootElem);
 
-    // root: Settings
-    tinyxml2::XMLElement *pSettingsElem = doc.NewElement("Settings");
-    pRootElem->LinkEndChild(pSettingsElem);
+    // root: Options
+    tinyxml2::XMLElement *pOptionsElem = doc.NewElement("Options");
+    pRootElem->LinkEndChild(pOptionsElem);
 
-    CString szSetting[NUM_PROGRAM_SETTINGS];
+    CString szOptions[NUM_PROGRAM_OPTIONS];
 
     // 0
-    szSetting[0] = _T("");
+    szOptions[0] = _T("");
     for (int i = 0; i < NUM_OUTPUT_EXT; i++)
     {
         CString szTemp;
         szTemp.Format(_T("%d"), nCurSel[i]);
-        szSetting[0] += szTemp;
+        szOptions[0] += szTemp;
 
         if (i < (NUM_OUTPUT_EXT - 1))
-            szSetting[0] += _T(" ");
+            szOptions[0] += _T(" ");
     }
 
     // 1
-    szSetting[1].Format(_T("%d\0"), this->m_CmbFormat.GetCurSel());
+    szOptions[1].Format(_T("%d\0"), this->m_CmbFormat.GetCurSel());
 
     // 2
-    szSetting[2] = (this->m_ChkOutPath.GetCheck() == BST_CHECKED) ? _T("true") : _T("false");
+    szOptions[2] = (this->m_ChkOutPath.GetCheck() == BST_CHECKED) ? _T("true") : _T("false");
 
     // 3
-    szSetting[3] = this->GetMenuItemCheck(ID_OPTIONS_LOGCONSOLEOUTPUT);
+    szOptions[3] = this->GetMenuItemCheck(ID_OPTIONS_LOGCONSOLEOUTPUT);
 
     // 4
-    szSetting[4] = this->GetMenuItemCheck(ID_OPTIONS_DELETESOURCEFILEWHENDONE);
+    szOptions[4] = this->GetMenuItemCheck(ID_OPTIONS_DELETESOURCEFILEWHENDONE);
 
     // 5
-    szSetting[5] = this->GetMenuItemCheck(ID_OPTIONS_STAYONTOP);
+    szOptions[5] = this->GetMenuItemCheck(ID_OPTIONS_STAYONTOP);
 
     // 6
-    szSetting[6] = (::bRecurseChecked == true) ? _T("true") : _T("false");
+    szOptions[6] = (::bRecurseChecked == true) ? _T("true") : _T("false");
 
     // 7
-    szSetting[7] = this->GetWindowRectStr();
+    szOptions[7] = this->GetWindowRectStr();
 
     // 8
     int nColWidth[7];
     for (int i = 0; i < 7; i++)
         nColWidth[i] = m_LstInputItems.GetColumnWidth(i);
-    szSetting[8].Format(_T("%d %d %d %d %d %d %d"),
+    szOptions[8].Format(_T("%d %d %d %d %d %d %d"),
         nColWidth[0],
         nColWidth[1],
         nColWidth[2],
@@ -1709,54 +1709,54 @@ bool CBatchEncoderDlg::SaveConfigFile()
         nColWidth[6]);
 
     // 9
-    szSetting[9] = this->GetMenuItemCheck(ID_VIEW_SHOWGRIDLINES);
+    szOptions[9] = this->GetMenuItemCheck(ID_VIEW_SHOWGRIDLINES);
 
     // 10
-    szSetting[10] = this->GetMenuItemCheck(ID_OPTIONS_SHOWTRAYICON);
+    szOptions[10] = this->GetMenuItemCheck(ID_OPTIONS_SHOWTRAYICON);
 
     // 11
-    szSetting[11] = this->GetMenuItemCheck(ID_OPTIONS_DO_NOT_SAVE);
+    szOptions[11] = this->GetMenuItemCheck(ID_OPTIONS_DO_NOT_SAVE);
 
     // 12
-    szSetting[12] = szPresetsWndResize;
+    szOptions[12] = szPresetsWndResize;
 
     // 13
-    szSetting[13] = szPresetsListColumns;
+    szOptions[13] = szPresetsListColumns;
 
     // 14
-    szSetting[14] = szFormatsWndResize;
+    szOptions[14] = szFormatsWndResize;
 
     // 15
-    szSetting[15] = szFormatsListColumns;
+    szOptions[15] = szFormatsListColumns;
 
     // 16
-    szSetting[16].Format(_T("%d"), m_Config.m_Options.nThreadPriorityIndex);
+    szOptions[16].Format(_T("%d"), m_Config.m_Options.nThreadPriorityIndex);
 
     // 17
-    szSetting[17].Format(_T("%d"), m_Config.m_Options.nProcessPriorityIndex);
+    szOptions[17].Format(_T("%d"), m_Config.m_Options.nProcessPriorityIndex);
 
     // 18
-    szSetting[18] = (m_Config.m_Options.bDeleteOnError == true) ? _T("true") : _T("false");
+    szOptions[18] = (m_Config.m_Options.bDeleteOnError == true) ? _T("true") : _T("false");
 
     // 19
-    szSetting[19] = (m_Config.m_Options.bStopOnErrors == true) ? _T("true") : _T("false");
+    szOptions[19] = (m_Config.m_Options.bStopOnErrors == true) ? _T("true") : _T("false");
 
     // 20
-    szSetting[20] = m_Config.m_Options.szLogFileName;
+    szOptions[20] = m_Config.m_Options.szLogFileName;
 
     // 21
-    szSetting[21].Format(_T("%d"), m_Config.m_Options.nLogEncoding);
+    szOptions[21].Format(_T("%d"), m_Config.m_Options.nLogEncoding);
 
     // 22
-    szSetting[22] = this->GetMenuItemCheck(ID_OPTIONS_FORCECONSOLEWINDOW);
+    szOptions[22] = this->GetMenuItemCheck(ID_OPTIONS_FORCECONSOLEWINDOW);
 
-    // store all settings from szSetting buffer
-    for (int i = 0; i < NUM_PROGRAM_SETTINGS; i++)
+    // store all options from szOptions buffer
+    for (int i = 0; i < NUM_PROGRAM_OPTIONS; i++)
     {
         CUtf8String szBuffUtf8;
-        tinyxml2::XMLElement *stg = doc.NewElement(g_szSettingsTags[i]);
-        stg->LinkEndChild(doc.NewText(szBuffUtf8.Create(szSetting[i])));
-        pSettingsElem->LinkEndChild(stg);
+        tinyxml2::XMLElement *stg = doc.NewElement(g_szOptionsTags[i]);
+        stg->LinkEndChild(doc.NewText(szBuffUtf8.Create(szOptions[i])));
+        pOptionsElem->LinkEndChild(stg);
         szBuffUtf8.Clear();
     }
 
@@ -1807,7 +1807,7 @@ bool CBatchEncoderDlg::SaveConfigFile()
     }
 
     /*
-    // TODO: Save m_EdtOutPath as part of CSettings
+    // TODO: Save m_EdtOutPath as part of COptions
     // get last browse for outpath this is special case
     // because user can change this value
     // without changing m_Config.m_Browse.szBrowsePath[4] variable
@@ -1824,14 +1824,10 @@ bool CBatchEncoderDlg::SaveConfigFile()
     return doc.SaveFileW(szMainConfigFile);
 }
 
-void CBatchEncoderDlg::LoadUserSettings()
+void CBatchEncoderDlg::LoadUserConfig()
 {
     if (bRunning == true)
         return;
-
-    // NOTE: not recommended to use this function at normal usage
-    // shortcut: Ctrl+Shift+L
-    // load main settings from file
 
     CFileDialog fd(TRUE, _T("config"), _T(""),
         OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER,
@@ -1841,34 +1837,25 @@ void CBatchEncoderDlg::LoadUserSettings()
 
     if (fd.DoModal() == IDOK)
     {
-        CString szPath;
-        szPath = fd.GetPathName();
-
-        // store config filename to temp buffer
+        CString szPath = fd.GetPathName();
         CString szTmp = szMainConfigFile;
 
-        // load settings from user file
         szMainConfigFile = szPath;
         if (this->LoadConfigFile() == false)
         {
-            MessageBox(_T("Failed to load settings!"),
+            MessageBox(_T("Failed to load configuration!"),
                 _T("ERROR"),
                 MB_OK | MB_ICONERROR);
         }
 
-        // restore config filename from temp buffer
         szMainConfigFile = szTmp;
     }
 }
 
-void CBatchEncoderDlg::SaveUserSettings()
+void CBatchEncoderDlg::SaveUserConfig()
 {
     if (bRunning == true)
         return;
-
-    // NOTE: not recommended to use this function at normal usage
-    // shortcut: Ctrl+Shift+S
-    // save main settings to file
 
     CFileDialog fd(FALSE, _T("config"), _T(""),
         OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER | OFN_OVERWRITEPROMPT,
@@ -1878,48 +1865,19 @@ void CBatchEncoderDlg::SaveUserSettings()
 
     if (fd.DoModal() == IDOK)
     {
-        CString szPath;
-        szPath = fd.GetPathName();
-
-        // store config filename to temp buffer
+        CString szPath = fd.GetPathName();
         CString szTmp = szMainConfigFile;
 
-        // load settings from user file
         szMainConfigFile = szPath;
         if (this->SaveConfigFile() == false)
         {
-            MessageBox(_T("Failed to save settings!"),
+            MessageBox(_T("Failed to save configuration!"),
                 _T("ERROR"),
                 MB_OK | MB_ICONERROR);
         }
 
-        // restore config filename from temp buffer
         szMainConfigFile = szTmp;
     }
-}
-
-void CBatchEncoderDlg::LoadDefaultSettings()
-{
-    if (bRunning == true)
-        return;
-
-    // NOTE: not recommended to use this function at normal usage
-    // shortcut: Ctrl+Shift+D
-    // load default settings from program resources
-
-    ::UpdatePath();
-
-    szMainConfigFile = ::GetExeFilePath() + MAIN_APP_CONFIG;
-
-    // delete default main config file
-    ::DeleteFile(MAIN_APP_CONFIG);
-
-    // delete default presets files
-    for (int i = 0; i < NUM_PRESET_FILES; i++)
-        ::DeleteFile(g_szPresetFiles[i]);
-
-    // load settings from resources
-    this->LoadConfigFile();
 }
 
 void CBatchEncoderDlg::OnBnClickedButtonConvert()
@@ -1930,8 +1888,8 @@ void CBatchEncoderDlg::OnBnClickedButtonConvert()
     DWORD_PTR dwSystemAffinityMask;
     int nProcessorsAvail = 1;
 
-    // get number of processors available for our enc/dec processes
-    // to run simultaneously on different processors for greater performance
+    // Get number of processors available for our encoder/decoder processes.
+    // Run simultaneously on different processors for greater performance.
 
     if(::GetProcessAffinityMask(hProcess,
         &dwProcessAffinityMask,
@@ -1951,7 +1909,6 @@ void CBatchEncoderDlg::OnBnClickedButtonConvert()
         default: nProcessorsAvail = 1; break;
         };
     }
-
 
     // select processor #1 for 1st process
     if(::SetProcessAffinityMask(hProcess, 2-1) == TRUE)
@@ -2102,24 +2059,17 @@ BOOL CBatchEncoderDlg::OnHelpInfo(HELPINFO* pHelpInfo)
     if (bRunning == true)
         return FALSE;
 
-    // note that this is not used
-    // return CResizeDialog::OnHelpInfo(pHelpInfo);
-
     return FALSE;
 }
 
 void CBatchEncoderDlg::OnOK()
 {
-    // CResizeDialog::OnOK();
-
     if (bRunning == true)
         return;
 }
 
 void CBatchEncoderDlg::OnCancel()
 {
-    // CResizeDialog::OnCancel();
-
     if (bRunning == true)
         return;
 }
@@ -2132,10 +2082,8 @@ void CBatchEncoderDlg::OnClose()
         return;
 
     // TODO: 
-    // - kill worker thread and any running command-line tool
-    // - don't save settings on read-only media
-    //   check if the path to exe is on read only media
-    //   if true then do not save settings to disk
+    // - Kill worker thread and any running command-line tool.
+    // - Don't save configuration on read-only media.
 
     if (this->GetMenu()->GetMenuState(ID_OPTIONS_DO_NOT_SAVE, MF_BYCOMMAND) != MF_CHECKED)
         this->SaveConfigFile();
@@ -2477,10 +2425,7 @@ void CBatchEncoderDlg::OnLvnKeydownListInputFiles(NMHDR *pNMHDR, LRESULT *pResul
     *pResult = 0;
 }
 
-void CBatchEncoderDlg::SearchFolderForFiles(CString szFile,
-    const bool bRecurse,
-    const TCHAR *szOutExt,
-    const int nPreset)
+void CBatchEncoderDlg::SearchFolderForFiles(CString szFile, const bool bRecurse, const TCHAR *szOutExt, const int nPreset)
 {
     try
     {
@@ -2581,12 +2526,10 @@ void CBatchEncoderDlg::HandleDropFiles(HDROP hDropInfo)
                 nReqChars * 2 + 8);
             if (::GetFileAttributes(szFile) & FILE_ATTRIBUTE_DIRECTORY)
             {
-                // insert dropped files in directory and subdirs
                 this->SearchFolderForFiles(szFile, true);
             }
             else
             {
-                // insert dropped files
                 nid.nAction = ADD_ITEM_MEMORY_AND_CONTROL;
                 nid.szPath = szFile;
                 nid.nItem = -1;
@@ -2629,7 +2572,7 @@ void CBatchEncoderDlg::OnDropFiles(HDROP hDropInfo)
 
 void CBatchEncoderDlg::OnNMRclickListInputFiles(NMHDR *pNMHDR, LRESULT *pResult)
 {
-    // right click contextmenu
+    // right click context menu
     POINT point;
     GetCursorPos(&point);
 

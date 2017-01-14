@@ -55,33 +55,33 @@ const TCHAR *g_szProcessPriority[] =
     _T("RealTime")                // 3
 };
 
-// tags used to store program settings
-// items: NUM_PROGRAM_SETTINGS
-const char *g_szSettingsTags[] =
+// tags used to store program options
+// items: NUM_PROGRAM_OPTIONS
+const char *g_szOptionsTags[] =
 {
-    "SelPresetIndex",       // 0
-    "SelFormatIndex",       // 1
-    "BrowsePath",           // 2
-    "DebugOutput",          // 3
-    "DeleteSourceFiles",    // 4
-    "StayOnTop",            // 5
-    "RecurseChecked",       // 6
-    "MainWndResize",        // 7
-    "FileListColumns",      // 8
-    "ShowGridLines",        // 9
-    "ShowTrayIcon",         // 10
-    "DoNotSaveSettings",    // 11
-    "PresetsWndResize",     // 12
-    "PresetsListColumns",   // 13
-    "FormatsWndResize",     // 14
-    "FormatsListColumns",   // 15
-    "ThreadPriority",       // 16
-    "ProcessPriority",      // 17
-    "DeleteOnError",        // 18
-    "StopOnErrors",         // 19
-    "LogFileName",          // 20
-    "LogFileEncoding",      // 21
-    "ForceConsoleWnd"       // 22
+    "SelPresetIndex",           // 0
+    "SelFormatIndex",           // 1
+    "BrowsePath",               // 2
+    "DebugOutput",              // 3
+    "DeleteSourceFiles",        // 4
+    "StayOnTop",                // 5
+    "RecurseChecked",           // 6
+    "MainWndResize",            // 7
+    "FileListColumns",          // 8
+    "ShowGridLines",            // 9
+    "ShowTrayIcon",             // 10
+    "DoNotSaveConfiguration",   // 11
+    "PresetsWndResize",         // 12
+    "PresetsListColumns",       // 13
+    "FormatsWndResize",         // 14
+    "FormatsListColumns",       // 15
+    "ThreadPriority",           // 16
+    "ProcessPriority",          // 17
+    "DeleteOnError",            // 18
+    "StopOnErrors",             // 19
+    "LogFileName",              // 20
+    "LogFileEncoding",          // 21
+    "ForceConsoleWnd"           // 22
 };
 
 // supported input file extensions

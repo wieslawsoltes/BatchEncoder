@@ -55,8 +55,8 @@
 // number of file tag attributes
 #define NUM_ITEM_ATTRIBUTES 9
 
-// number of tags used to store program settings
-#define NUM_PROGRAM_SETTINGS 23
+// number of tags used to store program options
+#define NUM_PROGRAM_OPTIONS 23
 
 // number of supported thread priorities
 #define NUM_THREAD_PRIORITY 7
@@ -74,7 +74,7 @@ extern const TCHAR *g_szFormatNames[];
 extern const TCHAR *g_szNames[];
 extern const char *g_szPresetTags[];
 extern const TCHAR *g_szPresetFiles[];
-extern const char *g_szSettingsTags[];
+extern const char *g_szOptionsTags[];
 
 int GetFormatId(CString szBuff);
 

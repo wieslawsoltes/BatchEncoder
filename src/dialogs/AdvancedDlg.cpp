@@ -59,12 +59,12 @@ BOOL CAdvancedDlg::OnInitDialog()
 
     SetComboBoxHeight(this->GetSafeHwnd(), IDC_COMBO_PRIORITY_THREAD);
 
-    this->SetAdvSettings();
+    this->SetAdvOptions();
 
     return TRUE;
 }
 
-void CAdvancedDlg::GetAdvSettings()
+void CAdvancedDlg::GetAdvOptions()
 {
     m_Options.nThreadPriorityIndex = this->m_CmbThread.GetCurSel();
     m_Options.nProcessPriorityIndex = this->m_CmbProcess.GetCurSel();
@@ -86,7 +86,7 @@ void CAdvancedDlg::GetAdvSettings()
         m_Options.nLogEncoding = 2;
 }
 
-void CAdvancedDlg::SetAdvSettings()
+void CAdvancedDlg::SetAdvOptions()
 {
     this->m_CmbThread.SetCurSel(m_Options.nThreadPriorityIndex);
     this->m_CmbProcess.SetCurSel(m_Options.nProcessPriorityIndex);
@@ -136,7 +136,7 @@ DWORD CAdvancedDlg::GetTheProcessPriority(void)
 
 void CAdvancedDlg::OnOK()
 {
-    GetAdvSettings();
+    GetAdvOptions();
     CDialog::OnOK();
 }
 

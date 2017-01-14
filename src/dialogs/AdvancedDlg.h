@@ -36,8 +36,8 @@ public:
     int GetTheThreadPriority(void);
     DWORD GetTheProcessPriority(void);
 public:
-    void GetAdvSettings();
-    void SetAdvSettings();
+    void GetAdvOptions();
+    void SetAdvOptions();
 protected:
     virtual void OnOK();
     virtual void OnCancel();

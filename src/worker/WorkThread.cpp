@@ -382,7 +382,7 @@ bool ConvertFile(CBatchEncoderDlg *pDlg,
     {
         // in this mode all encoders/decoders are forced 
         // to run in native system console windows
-        // all pipes and progress settings are omitted
+        // all pipes and progress options are omitted
         int nRet;
 
         _flushall();
@@ -1332,7 +1332,7 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
     {
         // NOTE: before shutdown we are doing OnClose() stuff
 
-        // save current settings to file
+        // save current configuration to file
         if (pDlg->GetMenu()->GetMenuState(ID_OPTIONS_DO_NOT_SAVE, MF_BYCOMMAND) != MF_CHECKED)
             pDlg->SaveConfigFile();
 

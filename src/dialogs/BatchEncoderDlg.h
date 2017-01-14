@@ -150,9 +150,8 @@ public:
     bool LoadConfigFile();
     bool SaveConfigFile();
 public:
-    afx_msg void LoadUserSettings();
-    afx_msg void SaveUserSettings();
-    afx_msg void LoadDefaultSettings();
+    afx_msg void LoadUserConfig();
+    afx_msg void SaveUserConfig();
 public:
     bool LoadPresets(CString szPresetsFName, CPresetsList *m_ListPresets);
     CPresetsList *GetCurrentPresetsList(void);
