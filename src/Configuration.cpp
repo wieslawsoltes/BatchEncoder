@@ -29,13 +29,11 @@ const char *g_szOptionsTags[] =
     "PresetsListColumns",       // 13
     "FormatsWndResize",         // 14
     "FormatsListColumns",       // 15
-    "ThreadPriority",           // 16
-    "ProcessPriority",          // 17
-    "DeleteOnError",            // 18
-    "StopOnErrors",             // 19
-    "LogFileName",              // 20
-    "LogFileEncoding",          // 21
-    "ForceConsoleWnd"           // 22
+    "DeleteOnError",            // 16
+    "StopOnErrors",             // 17
+    "LogFileName",              // 18
+    "LogFileEncoding",          // 19
+    "ForceConsoleWnd"           // 20
 };
 
 // supported input file extensions
