@@ -209,8 +209,6 @@ CBatchEncoderDlg::CBatchEncoderDlg(CWnd* pParent /*=NULL*/)
     szFormatsWndResize = _T("");
     szFormatsListColumns = _T("");
 
-    m_Config.m_Options.nThreadPriorityIndex = 3;
-    m_Config.m_Options.nProcessPriorityIndex = 1;
     m_Config.m_Options.bDeleteOnError = true;
     m_Config.m_Options.bStopOnErrors = false;
     m_Config.m_Options.szLogFileName = MAIN_APP_LOG;
@@ -1531,32 +1529,10 @@ bool CBatchEncoderDlg::LoadConfigFile()
     }
 
     // 16
-    // Description: encoder/decoder thread priority index
+    // Description: delete output file on error
     if (szOptions[16].Compare(_T("")) != 0)
     {
-        m_Config.m_Options.nThreadPriorityIndex = stoi(szOptions[16]);
-    }
-    else
-    {
-        m_Config.m_Options.nThreadPriorityIndex = 3;
-    }
-
-    // 17
-    // Description: encoder/decoder process priority index
-    if (szOptions[17].Compare(_T("")) != 0)
-    {
-        m_Config.m_Options.nProcessPriorityIndex = stoi(szOptions[17]);
-    }
-    else
-    {
-        m_Config.m_Options.nProcessPriorityIndex = 1;
-    }
-
-    // 18
-    // Description: delete output file on error
-    if (szOptions[18].Compare(_T("")) != 0)
-    {
-        if (szOptions[18].Compare(_T("true")) == 0)
+        if (szOptions[16].Compare(_T("true")) == 0)
             m_Config.m_Options.bDeleteOnError = true;
         else
             m_Config.m_Options.bDeleteOnError = false;
@@ -1566,11 +1542,11 @@ bool CBatchEncoderDlg::LoadConfigFile()
         m_Config.m_Options.bDeleteOnError = true;
     }
 
-    // 19
+    // 17
     // Description: stop conversion process on error
-    if (szOptions[19].Compare(_T("")) != 0)
+    if (szOptions[17].Compare(_T("")) != 0)
     {
-        if (szOptions[19].Compare(_T("true")) == 0)
+        if (szOptions[17].Compare(_T("true")) == 0)
             m_Config.m_Options.bStopOnErrors = true;
         else
             m_Config.m_Options.bStopOnErrors = false;
@@ -1580,33 +1556,33 @@ bool CBatchEncoderDlg::LoadConfigFile()
         m_Config.m_Options.bStopOnErrors = false;
     }
 
-    // 20
+    // 18
     // Description: log filename for console output
-    if (szOptions[20].Compare(_T("")) != 0)
+    if (szOptions[18].Compare(_T("")) != 0)
     {
-        m_Config.m_Options.szLogFileName = szOptions[20];
+        m_Config.m_Options.szLogFileName = szOptions[18];
     }
     else
     {
         m_Config.m_Options.szLogFileName = MAIN_APP_LOG;
     }
 
-    // 21
-    // Description: encoding of data stored in logfile
-    if (szOptions[21].Compare(_T("")) != 0)
+    // 19
+    // Description: encoding of data stored in log file
+    if (szOptions[19].Compare(_T("")) != 0)
     {
-        m_Config.m_Options.nLogEncoding = stoi(szOptions[21]);
+        m_Config.m_Options.nLogEncoding = stoi(szOptions[19]);
     }
     else
     {
         m_Config.m_Options.nLogEncoding = 2;
     }
 
-    // 22
+    // 20
     // Description: force console window instead of conversion progress
-    if (szOptions[22].Compare(_T("")) != 0)
+    if (szOptions[20].Compare(_T("")) != 0)
     {
-        if (szOptions[22].Compare(_T("true")) == 0)
+        if (szOptions[20].Compare(_T("true")) == 0)
         {
             this->GetMenu()->CheckMenuItem(ID_OPTIONS_FORCECONSOLEWINDOW, MF_CHECKED);
             this->bForceConsoleWindow = true;
@@ -1730,25 +1706,19 @@ bool CBatchEncoderDlg::SaveConfigFile()
     szOptions[15] = szFormatsListColumns;
 
     // 16
-    szOptions[16].Format(_T("%d"), m_Config.m_Options.nThreadPriorityIndex);
+    szOptions[16] = (m_Config.m_Options.bDeleteOnError == true) ? _T("true") : _T("false");
 
     // 17
-    szOptions[17].Format(_T("%d"), m_Config.m_Options.nProcessPriorityIndex);
+    szOptions[17] = (m_Config.m_Options.bStopOnErrors == true) ? _T("true") : _T("false");
 
     // 18
-    szOptions[18] = (m_Config.m_Options.bDeleteOnError == true) ? _T("true") : _T("false");
+    szOptions[18] = m_Config.m_Options.szLogFileName;
 
     // 19
-    szOptions[19] = (m_Config.m_Options.bStopOnErrors == true) ? _T("true") : _T("false");
+    szOptions[19].Format(_T("%d"), m_Config.m_Options.nLogEncoding);
 
     // 20
-    szOptions[20] = m_Config.m_Options.szLogFileName;
-
-    // 21
-    szOptions[21].Format(_T("%d"), m_Config.m_Options.nLogEncoding);
-
-    // 22
-    szOptions[22] = this->GetMenuItemCheck(ID_OPTIONS_FORCECONSOLEWINDOW);
+    szOptions[20] = this->GetMenuItemCheck(ID_OPTIONS_FORCECONSOLEWINDOW);
 
     // store all options from szOptions buffer
     for (int i = 0; i < NUM_PROGRAM_OPTIONS; i++)
@@ -1882,47 +1852,6 @@ void CBatchEncoderDlg::SaveUserConfig()
 
 void CBatchEncoderDlg::OnBnClickedButtonConvert()
 {
-    /*
-    HANDLE hProcess = ::GetCurrentProcess();
-    DWORD_PTR dwProcessAffinityMask;
-    DWORD_PTR dwSystemAffinityMask;
-    int nProcessorsAvail = 1;
-
-    // Get number of processors available for our encoder/decoder processes.
-    // Run simultaneously on different processors for greater performance.
-
-    if(::GetProcessAffinityMask(hProcess,
-        &dwProcessAffinityMask,
-        &dwSystemAffinityMask) == TRUE)
-    {
-        switch(dwProcessAffinityMask)
-        {
-        case 2-1: nProcessorsAvail = 1; break;
-        case 4-1: nProcessorsAvail = 2; break;
-        case 8-1: nProcessorsAvail = 3; break;
-        case 16-1: nProcessorsAvail = 4; break;
-        case 32-1: nProcessorsAvail = 5; break;
-        case 64-1: nProcessorsAvail = 6; break;
-        case 128-1: nProcessorsAvail = 7; break;
-        case 256-1: nProcessorsAvail = 8; break;
-        // (2^n)-1, n=1..32
-        default: nProcessorsAvail = 1; break;
-        };
-    }
-
-    // select processor #1 for 1st process
-    if(::SetProcessAffinityMask(hProcess, 2-1) == TRUE)
-    {
-        MessageBox(_T("#1 OK"));
-    }
-
-    // select processor #2 for 2nd process
-    if(::SetProcessAffinityMask(hProcess, 4-1) == TRUE)
-    {
-        MessageBox(_T("#2 OK"));
-    }
-    */
-
     static volatile bool bSafeCheck = false;
     if (bSafeCheck == true)
         return;

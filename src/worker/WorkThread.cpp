@@ -60,10 +60,7 @@ DWORD WINAPI ReadThread(LPVOID lpParam)
         return(1);
     }
 
-    // get the filesize
     nFileSize = GetFileSize64(hFile);
-
-    // nothing todo with 0 bytes file
     if (nFileSize == 0)
     {
         pReadData->bError = true;
@@ -87,9 +84,6 @@ DWORD WINAPI ReadThread(LPVOID lpParam)
         bRes = ::WriteFile(pReadData->hPipe, pReadBuff, dwReadBytes, &dwWriteBytes, 0);
         if ((bRes == FALSE) || (dwWriteBytes == 0) || (dwReadBytes != dwWriteBytes))
             break;
-
-        // NOTE: this is not used
-        // ::FlushFileBuffers(pReadData->wPipe);
 
         // count read/write bytes
         nTotalBytesRead += dwReadBytes;
@@ -161,9 +155,6 @@ DWORD WINAPI WriteThread(LPVOID lpParam)
         bRes = ::WriteFile(hFile, pReadBuff, dwReadBytes, &dwWriteBytes, 0);
         if ((bRes == FALSE) || (dwWriteBytes == 0) || (dwReadBytes != dwWriteBytes))
             break;
-
-        // NOTE: this is not used
-        // ::FlushFileBuffers(pReadData->wPipe);
 
         // count read/write bytes
         nTotalBytesWrite += dwReadBytes;
@@ -468,18 +459,6 @@ bool ConvertFile(CBatchEncoderDlg *pDlg,
             return false;
         }
 
-        // NOTE: save current priority for parent process/thread
-        // DWORD dwPriorityClass = ::GetPriorityClass(::GetCurrentProcess());
-        // int nPriority = ::GetThreadPriority(::GetCurrentThread());
-
-        // NOTE: set priority for parent process/thread
-        // ::SetPriorityClass(::GetCurrentProcess(), NORMAL_PRIORITY_CLASS);
-        // ::SetThreadPriority(::GetCurrentThread(), THREAD_PRIORITY_NORMAL);
-
-        // set priority for child process/thread
-        ::SetPriorityClass(pInfo.hProcess, g_dwProcessPriority[pDlg->m_Config.m_Options.nProcessPriorityIndex]);
-        ::SetThreadPriority(pInfo.hThread, g_nThreadPriority[pDlg->m_Config.m_Options.nThreadPriorityIndex]);
-
         // close unused pipes handles
         if ((bUseReadPipes == false) && (bUseWritePipes == false))
         {
@@ -712,9 +691,6 @@ bool ConvertFile(CBatchEncoderDlg *pDlg,
                 // DWORD dwAvailable;
                 // ::PeekNamedPipe(rOutErrPipe, NULL, 0, NULL, &dwAvailable, NULL);
 
-                // NOTE: this is not used
-                // ::FlushFileBuffers(rOutErrPipe);
-
                 bRes = ::ReadFile(rOutErrPipe, szReadBuff, 100, &dwReadBytes, 0);
                 if (bRes == FALSE || dwReadBytes == 0)
                     break;
@@ -917,10 +893,6 @@ bool ConvertFile(CBatchEncoderDlg *pDlg,
         ::CloseHandle(pInfo.hProcess);
         ::CloseHandle(pInfo.hThread);
     }
-
-    // NOTE: restore parent priority for process/thread
-    // ::SetPriorityClass(::GetCurrentProcess(), dwPriorityClass);
-    // ::SetThreadPriority(::GetCurrentThread(), nPriority);
 
     pDlg->WorkerCallback(nProgress, true, false, countTime.GetTime(), nIndex);
     if (nProgress == 100)

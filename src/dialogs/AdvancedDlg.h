@@ -25,19 +25,13 @@ public:
     CMyButton m_BtnCancel;
     CMyButton m_BtnOK;
 public:
-    CMyComboBox m_CmbThread;
-    CMyComboBox m_CmbProcess;
-public:
     CEdit m_EdtLog;
     CButton m_BtnBrowse;
 public:
     COptions m_Options;
 public:
-    int GetTheThreadPriority(void);
-    DWORD GetTheProcessPriority(void);
-public:
-    void GetAdvOptions();
-    void SetAdvOptions();
+    void GetAdvancedOptions();
+    void SetAdvancedOptions();
 protected:
     virtual void OnOK();
     virtual void OnCancel();

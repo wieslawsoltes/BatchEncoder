@@ -56,18 +56,8 @@
 #define NUM_ITEM_ATTRIBUTES 9
 
 // number of tags used to store program options
-#define NUM_PROGRAM_OPTIONS 23
+#define NUM_PROGRAM_OPTIONS 21
 
-// number of supported thread priorities
-#define NUM_THREAD_PRIORITY 7
-
-// number of supported process priorities
-#define NUM_PROCESS_PRIORITY 4
-
-extern const int g_nThreadPriority[];
-extern const DWORD g_dwProcessPriority[];
-extern const TCHAR *g_szThreadPriority[];
-extern const TCHAR *g_szProcessPriority[];
 extern const TCHAR *g_szAllInExt[];
 extern const TCHAR *g_szAllOutExt[];
 extern const TCHAR *g_szFormatNames[];
@@ -81,8 +71,6 @@ int GetFormatId(CString szBuff);
 class COptions
 {
 public:
-    int nThreadPriorityIndex;
-    int nProcessPriorityIndex;
     bool bDeleteOnError;
     bool bStopOnErrors;
     CString szLogFileName;
@@ -90,8 +78,6 @@ public:
 public:
     void Copy(COptions &other)
     {
-        other.nThreadPriorityIndex = this->nThreadPriorityIndex;
-        other.nProcessPriorityIndex = this->nProcessPriorityIndex;
         other.bDeleteOnError = this->bDeleteOnError;
         other.bStopOnErrors = this->bStopOnErrors;
         other.szLogFileName = this->szLogFileName;

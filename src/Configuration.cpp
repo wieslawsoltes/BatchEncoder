@@ -9,52 +9,6 @@
 #define new DEBUG_NEW
 #endif
 
-// supported thread priorities
-// items: NUM_THREAD_PRIORITY
-const int g_nThreadPriority[NUM_THREAD_PRIORITY] =
-{
-    THREAD_PRIORITY_IDLE,           // 0
-    THREAD_PRIORITY_LOWEST,         // 1
-    THREAD_PRIORITY_BELOW_NORMAL,   // 2
-    THREAD_PRIORITY_NORMAL,         // 3
-    THREAD_PRIORITY_ABOVE_NORMAL,   // 4
-    THREAD_PRIORITY_HIGHEST,        // 5
-    THREAD_PRIORITY_TIME_CRITICAL   // 6
-};
-
-// supported process priorities
-// items: NUM_PROCESS_PRIORITY
-const DWORD g_dwProcessPriority[NUM_PROCESS_PRIORITY] =
-{
-    IDLE_PRIORITY_CLASS,            // 0
-    NORMAL_PRIORITY_CLASS,          // 1
-    HIGH_PRIORITY_CLASS,            // 2
-    REALTIME_PRIORITY_CLASS         // 3
-};
-
-// supported thread priority names
-// items: NUM_THREAD_PRIORITY
-const TCHAR *g_szThreadPriority[] =
-{
-    _T("Idle"),                   // 0
-    _T("Lowest"),                 // 1
-    _T("Below Normal"),           // 2
-    _T("Normal"),                 // 3
-    _T("Above Normal"),           // 4
-    _T("Highest"),                // 5
-    _T("Time Critical")           // 6
-};
-
-// supported process priority names
-// items: NUM_PROCESS_PRIORITY
-const TCHAR *g_szProcessPriority[] =
-{
-    _T("Idle"),                   // 0
-    _T("Normal"),                 // 1
-    _T("High"),                   // 2
-    _T("RealTime")                // 3
-};
-
 // tags used to store program options
 // items: NUM_PROGRAM_OPTIONS
 const char *g_szOptionsTags[] =

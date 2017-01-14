@@ -14,12 +14,7 @@ IMPLEMENT_DYNAMIC(CAdvancedDlg, CDialog)
 CAdvancedDlg::CAdvancedDlg(CWnd* pParent /*=NULL*/)
     : CDialog(CAdvancedDlg::IDD, pParent)
 {
-    m_Options.nThreadPriorityIndex = 3;
-    m_Options.nProcessPriorityIndex = 1;
-    m_Options.bDeleteOnError = true;
-    m_Options.bStopOnErrors = false;
-    m_Options.szLogFileName = MAIN_APP_LOG;
-    m_Options.nLogEncoding = 2;
+
 }
 
 CAdvancedDlg::~CAdvancedDlg()
@@ -32,8 +27,6 @@ void CAdvancedDlg::DoDataExchange(CDataExchange* pDX)
     CDialog::DoDataExchange(pDX);
     DDX_Control(pDX, IDCANCEL, m_BtnCancel);
     DDX_Control(pDX, IDOK, m_BtnOK);
-    DDX_Control(pDX, IDC_COMBO_PRIORITY_THREAD, m_CmbThread);
-    DDX_Control(pDX, IDC_COMBO_PRIORITY_PROCESS, m_CmbProcess);
     DDX_Control(pDX, IDC_EDIT_CONSOLE_LOG_FILE, m_EdtLog);
     DDX_Control(pDX, IDC_BUTTON_BROWSE_LOG, m_BtnBrowse);
 }
@@ -49,26 +42,13 @@ BOOL CAdvancedDlg::OnInitDialog()
 {
     CDialog::OnInitDialog();
 
-    for (int i = 0; i < NUM_THREAD_PRIORITY; i++)
-        this->m_CmbThread.AddString(g_szThreadPriority[i]);
-
-    SetComboBoxHeight(this->GetSafeHwnd(), IDC_COMBO_PRIORITY_THREAD);
-
-    for (int i = 0; i < NUM_PROCESS_PRIORITY; i++)
-        this->m_CmbProcess.AddString(g_szProcessPriority[i]);
-
-    SetComboBoxHeight(this->GetSafeHwnd(), IDC_COMBO_PRIORITY_THREAD);
-
-    this->SetAdvOptions();
+    this->SetAdvancedOptions();
 
     return TRUE;
 }
 
-void CAdvancedDlg::GetAdvOptions()
+void CAdvancedDlg::GetAdvancedOptions()
 {
-    m_Options.nThreadPriorityIndex = this->m_CmbThread.GetCurSel();
-    m_Options.nProcessPriorityIndex = this->m_CmbProcess.GetCurSel();
-
     m_Options.bDeleteOnError = (this->IsDlgButtonChecked(IDC_CHECK_OPTION_DELETE) == BST_CHECKED) ? true : false;
     m_Options.bStopOnErrors = (this->IsDlgButtonChecked(IDC_CHECK_OPTION_ERROR) == BST_CHECKED) ? true : false;
 
@@ -86,11 +66,8 @@ void CAdvancedDlg::GetAdvOptions()
         m_Options.nLogEncoding = 2;
 }
 
-void CAdvancedDlg::SetAdvOptions()
+void CAdvancedDlg::SetAdvancedOptions()
 {
-    this->m_CmbThread.SetCurSel(m_Options.nThreadPriorityIndex);
-    this->m_CmbProcess.SetCurSel(m_Options.nProcessPriorityIndex);
-
     this->CheckDlgButton(IDC_CHECK_OPTION_DELETE,
         (m_Options.bDeleteOnError == true) ? BST_CHECKED : BST_UNCHECKED);
 
@@ -124,19 +101,9 @@ void CAdvancedDlg::SetAdvOptions()
     };
 }
 
-int CAdvancedDlg::GetTheThreadPriority(void)
-{
-    return(g_nThreadPriority[this->m_CmbThread.GetCurSel()]);
-}
-
-DWORD CAdvancedDlg::GetTheProcessPriority(void)
-{
-    return(g_dwProcessPriority[this->m_CmbProcess.GetCurSel()]);
-}
-
 void CAdvancedDlg::OnOK()
 {
-    GetAdvOptions();
+    GetAdvancedOptions();
     CDialog::OnOK();
 }
 
