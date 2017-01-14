@@ -96,7 +96,7 @@ BOOL CPresetsDlg::OnInitDialog()
 
     // file format combo-box
     for (int i = 0; i < NUM_PRESET_FILES; i++)
-        m_CmbFormat.InsertString(i, g_szNames[i]);
+        m_CmbFormat.InsertString(i, g_szPresetNames[i]);
 
     ::SetComboBoxHeight(this->GetSafeHwnd(), IDC_COMBO_PD_FORMAT);
 

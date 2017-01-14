@@ -7,64 +7,19 @@
 #include <afxwin.h>
 #include <afxcmn.h>
 
-// number of supported input file extension
+#define NUM_PROGRAM_OPTIONS 21
 #define NUM_INPUT_EXT 19
-
-// number of supported output file extension
 #define NUM_OUTPUT_EXT 14
-
-// number of supported format tool names
 #define NUM_FORMAT_NAMES (NUM_OUTPUT_EXT + (NUM_INPUT_EXT - 1))
-
-// number of command-line tools:
-// 00 - SSRC
-// 01 - LAME
-// 02 - MPPENC
-// 03 - MPPDEC
-// 04 - FAAC
-// 05 - FAAD
-// 06 - OGGENC
-// 07 - OGGDEC
-// 08 - AFTEN
-// 08 - FLAC
-// 09 - WAVPACK
-// 10 - WVUNPACK
-// 11 - MAC
-// 12 - OFR
-// 13 - TTAENC
-// 14 - TAK
-#define NUM_COMMADLINE_TOOLS 15
-
-// number of presets files:
-// 00 - WAV (Standard)
-// 01 - MP3 (MPEG Layer-3)
-// 02 - MPC (Musepack)
-// 03 - AAC (MPEG-2/AAC)
-// 04 - M4A (MPEG-4/AAC)
-// 05 - MP4 (MPEG-4/AAC)
-// 06 - OGG (Ogg Vorbis)
-// 07 - AC3 (ATSC A/52)
-// 08 - FLAC (Free Lossless Audio Codec)
-// 09 - WV (WavPack)
-// 10 - APE (Monkey's Audio)
-// 11 - OFR (OptimFROG Lossless Audio)
-// 12 - TTA (TTA1 Lossless Audio)
-// 13 - TAK (Tom's Lossless Audio Kompressor)
 #define NUM_PRESET_FILES 14
 
-// number of file tag attributes
-#define NUM_ITEM_ATTRIBUTES 9
-
-// number of tags used to store program options
-#define NUM_PROGRAM_OPTIONS 21
-
+extern const char *g_szOptionsTags[];
 extern const TCHAR *g_szAllInExt[];
 extern const TCHAR *g_szAllOutExt[];
 extern const TCHAR *g_szFormatNames[];
-extern const TCHAR *g_szNames[];
+extern const TCHAR *g_szPresetNames[];
 extern const char *g_szPresetTags[];
 extern const TCHAR *g_szPresetFiles[];
-extern const char *g_szOptionsTags[];
 
 int GetFormatId(CString szBuff);
 

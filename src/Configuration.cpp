@@ -9,9 +9,7 @@
 #define new DEBUG_NEW
 #endif
 
-// tags used to store program options
-// items: NUM_PROGRAM_OPTIONS
-const char *g_szOptionsTags[] =
+const char *g_szOptionsTags[NUM_PROGRAM_OPTIONS] =
 {
     "SelPresetIndex",           // 0
     "SelFormatIndex",           // 1
@@ -36,9 +34,7 @@ const char *g_szOptionsTags[] =
     "ForceConsoleWnd"           // 20
 };
 
-// supported input file extensions
-// items: NUM_INPUT_EXT
-const TCHAR *g_szAllInExt[] =
+const TCHAR *g_szAllInExt[NUM_INPUT_EXT] =
 {                 // nInFormat
     _T("WAV"),  // 0
     _T("MP1"),  // 1
@@ -61,9 +57,7 @@ const TCHAR *g_szAllInExt[] =
     _T("TAK")   // 18
 };
 
-// supported output file extensions
-// items: NUM_OUTPUT_EXT
-const TCHAR *g_szAllOutExt[] =
+const TCHAR *g_szAllOutExt[NUM_OUTPUT_EXT] =
 {                 // nOutFormat
     _T("WAV"),  // 0
     _T("MP3"),  // 1
@@ -81,9 +75,7 @@ const TCHAR *g_szAllOutExt[] =
     _T("TAK")   // 13
 };
 
-// supported format tool names
-// items: NUM_FORMAT_NAMES
-const TCHAR *g_szFormatNames[] =
+const TCHAR *g_szFormatNames[NUM_FORMAT_NAMES] =
 {
     // ENCODERS
     _T("ENC_WAV"),    // 0
@@ -121,9 +113,7 @@ const TCHAR *g_szFormatNames[] =
     _T("DEC_TAK")     // 31 (NOTE: not working, TAK decoding using pipes & console output does not work)
 };
 
-// default presets names for each file format
-// items: NUM_PRESET_FILES
-const TCHAR *g_szNames[] =
+const TCHAR *g_szPresetNames[NUM_PRESET_FILES] =
 {
     _T("WAV (Standard)"),                         // 0
     _T("MP3 (MPEG Layer-3)"),                     // 1
@@ -141,9 +131,7 @@ const TCHAR *g_szNames[] =
     _T("TAK (Tom's Lossless Audio Kompressor)")   // 13
 };
 
-// tags used to store presets filenames
-// items: NUM_PRESET_FILES
-const char *g_szPresetTags[] =
+const char *g_szPresetTags[NUM_PRESET_FILES] =
 {
     "PRESETS_WAV",      // 0
     "PRESETS_MP3",      // 1
@@ -161,9 +149,7 @@ const char *g_szPresetTags[] =
     "PRESETS_TAK"       // 13
 };
 
-// default presets configuration filenames
-// items: NUM_PRESET_FILES
-const TCHAR *g_szPresetFiles[] =
+const TCHAR *g_szPresetFiles[NUM_PRESET_FILES] =
 {
     _T("Presets_WAV_Ssrc.presets"),       // 0
     _T("Presets_MP3_Lame.presets"),       // 1
