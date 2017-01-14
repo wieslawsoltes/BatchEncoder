@@ -1225,7 +1225,6 @@ bool CBatchEncoderDlg::LoadConfigFile()
     // root: Formats
     // NOTE: 
     // same code as in CFormatsDlg::OnBnClickedButtonLoadConfig()
-    // only FirstChild("Formats").FirstChild("Format") is different
 
     tinyxml2::XMLElement *pFormatsElem = pRootElem->FirstChildElement("Formats");
     tinyxml2::XMLElement *pFormatElem = pFormatsElem->FirstChildElement("Format");
@@ -1240,10 +1239,8 @@ bool CBatchEncoderDlg::LoadConfigFile()
 
             nFormat = ::GetFormatId(szBuff);
 
-            // check if this is valid format name
             if ((nFormat < 0) || (nFormat >= NUM_FORMAT_NAMES))
             {
-                // invalid format Id
                 continue;
             }
 
@@ -1251,7 +1248,6 @@ bool CBatchEncoderDlg::LoadConfigFile()
         }
         else
         {
-            // unknown or invalid format
             continue;
         }
 
