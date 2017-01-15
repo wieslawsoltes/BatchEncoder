@@ -9,31 +9,6 @@
 #define new DEBUG_NEW
 #endif
 
-const char *g_szOptionsTags[NUM_PROGRAM_OPTIONS] =
-{
-    "SelectedPresets",          // 0
-    "SelectedFormat",           // 1
-    "OutputPathChecked",        // 2
-    "LogConsoleOutput",         // 3
-    "DeleteSourceFiles",        // 4
-    "StayOnTop",                // 5
-    "RecurseChecked",           // 6
-    "MainWindowResize",         // 7
-    "FileListColumns",          // 8
-    "ShowGridLines",            // 9
-    "ShowTrayIcon",             // 10
-    "DoNotSaveConfiguration",   // 11
-    "PresetsDialogResize",      // 12
-    "PresetsListColumns",       // 13
-    "FormatsDialogResize",      // 14
-    "FormatsListColumns",       // 15
-    "DeleteOnError",            // 16
-    "StopOnErrors",             // 17
-    "LogFileName",              // 18
-    "LogFileEncoding",          // 19
-    "ForceConsoleWindow"        // 20
-};
-
 const TCHAR *g_szAllInExt[NUM_INPUT_EXT] =
 {
     _T("WAV"),  // 0

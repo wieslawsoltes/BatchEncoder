@@ -7,7 +7,6 @@
 #include <afxwin.h>
 #include <afxcmn.h>
 
-#define NUM_PROGRAM_OPTIONS 21
 #define NUM_INPUT_EXT 19
 #define NUM_OUTPUT_EXT 14
 #define NUM_FORMAT_NAMES (NUM_OUTPUT_EXT + (NUM_INPUT_EXT - 1))
