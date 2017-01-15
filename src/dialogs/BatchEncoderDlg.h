@@ -140,14 +140,13 @@ public:
     void GetOptions();
     void SetOptions();
 public:
-    void LoadOptions(tinyxml2::XMLElement *pOptionsElem);
-    void SaveOptions(CXMLDocumentW &doc, tinyxml2::XMLElement *pOptionsElem);
+
 public:
     bool LoadList(CString szFileXml);
     bool SaveList(CString szFileXml);
 public:
-    bool LoadConfigFile();
-    bool SaveConfigFile();
+    bool LoadConfigFile(CString szFileXml);
+    bool SaveConfigFile(CString szFileXml);
 public:
     afx_msg void LoadUserConfig();
     afx_msg void SaveUserConfig();

@@ -430,7 +430,7 @@ BOOL CBatchEncoderDlg::OnInitDialog()
     AddAnchor(IDC_BUTTON_RUN, BOTTOM_RIGHT);
     AddAnchor(IDC_STATUSBAR, BOTTOM_LEFT, BOTTOM_RIGHT);
 
-    this->LoadConfigFile();
+    this->LoadConfigFile(this->szMainConfigFile);
     this->UpdateStatusBar();
 
     return TRUE;
@@ -1269,9 +1269,12 @@ void CBatchEncoderDlg::SetOptions()
     if (m_Config.m_Options.bOutputPathChecked)
     {
         m_ChkOutPath.SetCheck(BST_CHECKED);
+        m_BtnBrowse.EnableWindow(TRUE);
+        m_EdtOutPath.EnableWindow(TRUE);
     }
     else
     {
+        m_ChkOutPath.SetCheck(BST_UNCHECKED);
         m_BtnBrowse.EnableWindow(FALSE);
         m_EdtOutPath.EnableWindow(FALSE);
     }
@@ -1365,395 +1368,6 @@ void CBatchEncoderDlg::SetOptions()
         this->GetMenu()->CheckMenuItem(ID_OPTIONS_FORCECONSOLEWINDOW, MF_UNCHECKED);
 }
 
-void CBatchEncoderDlg::LoadOptions(tinyxml2::XMLElement *pOptionsElem)
-{
-    tinyxml2::XMLElement *pOptionElem;
-
-    // option: SelectedPresets
-    pOptionElem = pOptionsElem->FirstChildElement("SelectedPresets");
-    if (pOptionElem)
-    {
-        const char *tmpBuff = pOptionElem->GetText();
-        m_Config.m_Options.szSelectedPresets = GetConfigString(tmpBuff);
-    }
-    else
-    {
-        m_Config.m_Options.szSelectedPresets = _T("");
-    }
-
-    // option: SelectedFormat
-    pOptionElem = pOptionsElem->FirstChildElement("SelectedFormat");
-    if (pOptionElem)
-    {
-        const char *tmpBuff = pOptionElem->GetText();
-        m_Config.m_Options.nSelectedFormat = stoi(GetConfigString(tmpBuff));
-    }
-    else
-    {
-        m_Config.m_Options.nSelectedFormat = 0;
-    }
-
-    // option: OutputPath
-    pOptionElem = pOptionsElem->FirstChildElement("OutputPath");
-    if (pOptionElem)
-    {
-        const char *tmpBuff = pOptionElem->GetText();
-        m_Config.m_Options.szOutputPath = GetConfigString(tmpBuff);
-    }
-    else
-    {
-        m_Config.m_Options.szOutputPath = _T("");
-    }
-
-    // option: OutputPathChecked
-    pOptionElem = pOptionsElem->FirstChildElement("OutputPathChecked");
-    if (pOptionElem)
-    {
-        const char *tmpBuff = pOptionElem->GetText();
-        m_Config.m_Options.bOutputPathChecked = GetConfigString(tmpBuff).Compare(_T("true")) == 0;
-    }
-    else
-    {
-        m_Config.m_Options.bOutputPathChecked = false;
-    }
-
-    // option: LogConsoleOutput
-    pOptionElem = pOptionsElem->FirstChildElement("LogConsoleOutput");
-    if (pOptionElem)
-    {
-        const char *tmpBuff = pOptionElem->GetText();
-        m_Config.m_Options.bLogConsoleOutput = GetConfigString(tmpBuff).Compare(_T("true")) == 0;
-    }
-    else
-    {
-        m_Config.m_Options.bLogConsoleOutput = false;
-    }
-
-    // option: DeleteSourceFiles
-    pOptionElem = pOptionsElem->FirstChildElement("DeleteSourceFiles");
-    if (pOptionElem)
-    {
-        const char *tmpBuff = pOptionElem->GetText();
-        m_Config.m_Options.bDeleteSourceFiles = GetConfigString(tmpBuff).Compare(_T("true")) == 0;
-    }
-    else
-    {
-        m_Config.m_Options.bDeleteSourceFiles = false;
-    }
-
-    // option: StayOnTop
-    pOptionElem = pOptionsElem->FirstChildElement("StayOnTop");
-    if (pOptionElem)
-    {
-        const char *tmpBuff = pOptionElem->GetText();
-        m_Config.m_Options.bStayOnTop = GetConfigString(tmpBuff).Compare(_T("true")) == 0;
-    }
-    else
-    {
-        m_Config.m_Options.bStayOnTop = false;
-    }
-
-    // option: RecurseChecked
-    pOptionElem = pOptionsElem->FirstChildElement("RecurseChecked");
-    if (pOptionElem)
-    {
-        const char *tmpBuff = pOptionElem->GetText();
-        m_Config.m_Options.bRecurseChecked = GetConfigString(tmpBuff).Compare(_T("true")) == 0;
-    }
-    else
-    {
-        m_Config.m_Options.bRecurseChecked = false;
-    }
-
-    // option: MainWindowResize
-    pOptionElem = pOptionsElem->FirstChildElement("MainWindowResize");
-    if (pOptionElem)
-    {
-        const char *tmpBuff = pOptionElem->GetText();
-        m_Config.m_Options.szMainWindowResize = GetConfigString(tmpBuff);
-    }
-
-    // option: FileListColumns
-    pOptionElem = pOptionsElem->FirstChildElement("FileListColumns");
-    if (pOptionElem)
-    {
-        const char *tmpBuff = pOptionElem->GetText();
-        m_Config.m_Options.szFileListColumns = GetConfigString(tmpBuff);
-    }
-
-    // option: ShowGridLines
-    pOptionElem = pOptionsElem->FirstChildElement("ShowGridLines");
-    if (pOptionElem)
-    {
-        const char *tmpBuff = pOptionElem->GetText();
-        m_Config.m_Options.bShowGridLines = GetConfigString(tmpBuff).Compare(_T("true")) == 0;
-    }
-    else
-    {
-        m_Config.m_Options.bShowGridLines = false;
-    }
-
-    // option: ShowTrayIcon
-    pOptionElem = pOptionsElem->FirstChildElement("ShowTrayIcon");
-    if (pOptionElem)
-    {
-        const char *tmpBuff = pOptionElem->GetText();
-        m_Config.m_Options.bShowTrayIcon = GetConfigString(tmpBuff).Compare(_T("true")) == 0;
-    }
-    else
-    {
-        m_Config.m_Options.bShowTrayIcon = false;
-    }
-
-    // option: DoNotSaveConfiguration
-    pOptionElem = pOptionsElem->FirstChildElement("DoNotSaveConfiguration");
-    if (pOptionElem)
-    {
-        const char *tmpBuff = pOptionElem->GetText();
-        m_Config.m_Options.bDoNotSaveConfiguration = GetConfigString(tmpBuff).Compare(_T("true")) == 0;
-    }
-    else
-    {
-        m_Config.m_Options.bDoNotSaveConfiguration = false;
-    }
-
-    // option: PresetsDialogResize
-    pOptionElem = pOptionsElem->FirstChildElement("PresetsDialogResize");
-    if (pOptionElem)
-    {
-        const char *tmpBuff = pOptionElem->GetText();
-        m_Config.m_Options.szPresetsDialogResize = GetConfigString(tmpBuff);
-    }
-
-    // option: PresetsListColumns
-    pOptionElem = pOptionsElem->FirstChildElement("PresetsListColumns");
-    if (pOptionElem)
-    {
-        const char *tmpBuff = pOptionElem->GetText();
-        m_Config.m_Options.szPresetsListColumns = GetConfigString(tmpBuff);
-    }
-
-    // option: FormatsDialogResize
-    pOptionElem = pOptionsElem->FirstChildElement("FormatsDialogResize");
-    if (pOptionElem)
-    {
-        const char *tmpBuff = pOptionElem->GetText();
-        m_Config.m_Options.szFormatsDialogResize = GetConfigString(tmpBuff);
-    }
-
-    // option: FormatsListColumns
-    pOptionElem = pOptionsElem->FirstChildElement("FormatsListColumns");
-    if (pOptionElem)
-    {
-        const char *tmpBuff = pOptionElem->GetText();
-        m_Config.m_Options.szFormatsListColumns = GetConfigString(tmpBuff);
-    }
-
-    // option: DeleteOnError
-    pOptionElem = pOptionsElem->FirstChildElement("DeleteOnError");
-    if (pOptionElem)
-    {
-        const char *tmpBuff = pOptionElem->GetText();
-        m_Config.m_Options.bDeleteOnError = GetConfigString(tmpBuff).Compare(_T("true")) == 0;
-    }
-    else
-    {
-        m_Config.m_Options.bDeleteOnError = false;
-    }
-
-    // option: StopOnErrors
-    pOptionElem = pOptionsElem->FirstChildElement("StopOnErrors");
-    if (pOptionElem)
-    {
-        const char *tmpBuff = pOptionElem->GetText();
-        m_Config.m_Options.bStopOnErrors = GetConfigString(tmpBuff).Compare(_T("true")) == 0;
-    }
-    else
-    {
-        m_Config.m_Options.bStopOnErrors = false;
-    }
-
-    // option: LogFileName
-    pOptionElem = pOptionsElem->FirstChildElement("LogFileName");
-    if (pOptionElem)
-    {
-        const char *tmpBuff = pOptionElem->GetText();
-        m_Config.m_Options.szLogFileName = GetConfigString(tmpBuff);
-    }
-    else
-    {
-        m_Config.m_Options.szLogFileName = MAIN_APP_LOG;
-    }
-
-    // option: LogFileEncoding
-    pOptionElem = pOptionsElem->FirstChildElement("LogFileEncoding");
-    if (pOptionElem)
-    {
-        const char *tmpBuff = pOptionElem->GetText();
-        m_Config.m_Options.nLogEncoding = stoi(GetConfigString(tmpBuff));
-    }
-    else
-    {
-        m_Config.m_Options.nLogEncoding = 2;
-    }
-
-    // option: ForceConsoleWindow
-    pOptionElem = pOptionsElem->FirstChildElement("ForceConsoleWindow");
-    if (pOptionElem)
-    {
-        const char *tmpBuff = pOptionElem->GetText();
-        m_Config.m_Options.bForceConsoleWindow = GetConfigString(tmpBuff).Compare(_T("true")) == 0;
-    }
-    else
-    {
-        m_Config.m_Options.bForceConsoleWindow = false;
-    }
-}
-
-void CBatchEncoderDlg::SaveOptions(CXMLDocumentW &doc, tinyxml2::XMLElement *pOptionsElem)
-{
-    tinyxml2::XMLElement *pOptionElem;
-    CUtf8String szBuffUtf8;
-
-    // option: SelectedPresets
-    pOptionElem = doc.NewElement("SelectedPresets");
-    pOptionElem->LinkEndChild(doc.NewText(szBuffUtf8.Create(m_Config.m_Options.szSelectedPresets)));
-    pOptionsElem->LinkEndChild(pOptionElem);
-    szBuffUtf8.Clear();
-
-    // option: SelectedFormat
-    CString szSelectedFormat;
-    szSelectedFormat.Format(_T("%d\0"), m_Config.m_Options.nSelectedFormat);
-
-    pOptionElem = doc.NewElement("SelectedFormat");
-    pOptionElem->LinkEndChild(doc.NewText(szBuffUtf8.Create(szSelectedFormat)));
-    pOptionsElem->LinkEndChild(pOptionElem);
-    szBuffUtf8.Clear();
-
-    // option: OutputPath
-    pOptionElem = doc.NewElement("OutputPath");
-    pOptionElem->LinkEndChild(doc.NewText(szBuffUtf8.Create(m_Config.m_Options.szOutputPath)));
-    pOptionsElem->LinkEndChild(pOptionElem);
-    szBuffUtf8.Clear();
-
-    // option: OutputPathChecked
-    pOptionElem = doc.NewElement("OutputPathChecked");
-    pOptionElem->LinkEndChild(doc.NewText(szBuffUtf8.Create(m_Config.m_Options.bOutputPathChecked ? _T("true") : _T("false"))));
-    pOptionsElem->LinkEndChild(pOptionElem);
-    szBuffUtf8.Clear();
-
-    // option: LogConsoleOutput
-    pOptionElem = doc.NewElement("LogConsoleOutput");
-    pOptionElem->LinkEndChild(doc.NewText(szBuffUtf8.Create(m_Config.m_Options.bLogConsoleOutput ? _T("true") : _T("false"))));
-    pOptionsElem->LinkEndChild(pOptionElem);
-    szBuffUtf8.Clear();
-
-    // option: DeleteSourceFiles
-    pOptionElem = doc.NewElement("DeleteSourceFiles");
-    pOptionElem->LinkEndChild(doc.NewText(szBuffUtf8.Create(m_Config.m_Options.bDeleteSourceFiles ? _T("true") : _T("false"))));
-    pOptionsElem->LinkEndChild(pOptionElem);
-    szBuffUtf8.Clear();
-
-    // option: StayOnTop
-    pOptionElem = doc.NewElement("StayOnTop");
-    pOptionElem->LinkEndChild(doc.NewText(szBuffUtf8.Create(m_Config.m_Options.bStayOnTop ? _T("true") : _T("false"))));
-    pOptionsElem->LinkEndChild(pOptionElem);
-    szBuffUtf8.Clear();
-
-    // option: RecurseChecked
-    pOptionElem = doc.NewElement("RecurseChecked");
-    pOptionElem->LinkEndChild(doc.NewText(szBuffUtf8.Create(m_Config.m_Options.bRecurseChecked ? _T("true") : _T("false"))));
-    pOptionsElem->LinkEndChild(pOptionElem);
-    szBuffUtf8.Clear();
-
-    // option: MainWindowResize
-    pOptionElem = doc.NewElement("MainWindowResize");
-    pOptionElem->LinkEndChild(doc.NewText(szBuffUtf8.Create(m_Config.m_Options.szMainWindowResize)));
-    pOptionsElem->LinkEndChild(pOptionElem);
-    szBuffUtf8.Clear();
-
-    // option: FileListColumns
-    pOptionElem = doc.NewElement("FileListColumns");
-    pOptionElem->LinkEndChild(doc.NewText(szBuffUtf8.Create(m_Config.m_Options.szFileListColumns)));
-    pOptionsElem->LinkEndChild(pOptionElem);
-    szBuffUtf8.Clear();
-
-    // option: ShowGridLines
-    pOptionElem = doc.NewElement("ShowGridLines");
-    pOptionElem->LinkEndChild(doc.NewText(szBuffUtf8.Create(m_Config.m_Options.bShowGridLines ? _T("true") : _T("false"))));
-    pOptionsElem->LinkEndChild(pOptionElem);
-    szBuffUtf8.Clear();
-
-    // option: ShowTrayIcon
-    pOptionElem = doc.NewElement("ShowTrayIcon");
-    pOptionElem->LinkEndChild(doc.NewText(szBuffUtf8.Create(m_Config.m_Options.bShowTrayIcon ? _T("true") : _T("false"))));
-    pOptionsElem->LinkEndChild(pOptionElem);
-    szBuffUtf8.Clear();
-
-    // option: DoNotSaveConfiguration
-    pOptionElem = doc.NewElement("DoNotSaveConfiguration");
-    pOptionElem->LinkEndChild(doc.NewText(szBuffUtf8.Create(m_Config.m_Options.bDoNotSaveConfiguration ? _T("true") : _T("false"))));
-    pOptionsElem->LinkEndChild(pOptionElem);
-    szBuffUtf8.Clear();
-
-    // option: PresetsDialogResize
-    pOptionElem = doc.NewElement("PresetsDialogResize");
-    pOptionElem->LinkEndChild(doc.NewText(szBuffUtf8.Create(m_Config.m_Options.szPresetsDialogResize)));
-    pOptionsElem->LinkEndChild(pOptionElem);
-    szBuffUtf8.Clear();
-
-    // option: PresetsListColumns
-    pOptionElem = doc.NewElement("PresetsListColumns");
-    pOptionElem->LinkEndChild(doc.NewText(szBuffUtf8.Create(m_Config.m_Options.szPresetsListColumns)));
-    pOptionsElem->LinkEndChild(pOptionElem);
-    szBuffUtf8.Clear();
-
-    // option: FormatsDialogResize
-    pOptionElem = doc.NewElement("FormatsDialogResize");
-    pOptionElem->LinkEndChild(doc.NewText(szBuffUtf8.Create(m_Config.m_Options.szFormatsDialogResize)));
-    pOptionsElem->LinkEndChild(pOptionElem);
-    szBuffUtf8.Clear();
-
-    // option: FormatsListColumns
-    pOptionElem = doc.NewElement("FormatsListColumns");
-    pOptionElem->LinkEndChild(doc.NewText(szBuffUtf8.Create(m_Config.m_Options.szFormatsListColumns)));
-    pOptionsElem->LinkEndChild(pOptionElem);
-    szBuffUtf8.Clear();
-
-    // option: DeleteOnError
-    pOptionElem = doc.NewElement("DeleteOnError");
-    pOptionElem->LinkEndChild(doc.NewText(szBuffUtf8.Create(m_Config.m_Options.bDeleteOnError ? _T("true") : _T("false"))));
-    pOptionsElem->LinkEndChild(pOptionElem);
-    szBuffUtf8.Clear();
-
-    // option: StopOnErrors
-    pOptionElem = doc.NewElement("StopOnErrors");
-    pOptionElem->LinkEndChild(doc.NewText(szBuffUtf8.Create(m_Config.m_Options.bStopOnErrors ? _T("true") : _T("false"))));
-    pOptionsElem->LinkEndChild(pOptionElem);
-    szBuffUtf8.Clear();
-
-    // option: LogFileName
-    pOptionElem = doc.NewElement("LogFileName");
-    pOptionElem->LinkEndChild(doc.NewText(szBuffUtf8.Create(m_Config.m_Options.szLogFileName)));
-    pOptionsElem->LinkEndChild(pOptionElem);
-    szBuffUtf8.Clear();
-
-    // option: LogFileEncoding
-    CString szLogEncoding;
-    szLogEncoding.Format(_T("%d\0"), m_Config.m_Options.nLogEncoding);
-
-    pOptionElem = doc.NewElement("LogFileEncoding");
-    pOptionElem->LinkEndChild(doc.NewText(szBuffUtf8.Create(szLogEncoding)));
-    pOptionsElem->LinkEndChild(pOptionElem);
-    szBuffUtf8.Clear();
-
-    // option: ForceConsoleWindow
-    pOptionElem = doc.NewElement("ForceConsoleWindow");
-    pOptionElem->LinkEndChild(doc.NewText(szBuffUtf8.Create(m_Config.m_Options.bForceConsoleWindow ? _T("true") : _T("false"))));
-    pOptionsElem->LinkEndChild(pOptionElem);
-    szBuffUtf8.Clear();
-}
-
 bool CBatchEncoderDlg::LoadList(CString szFileXml)
 {
     CXMLDocumentW doc;
@@ -1797,12 +1411,12 @@ bool CBatchEncoderDlg::SaveList(CString szFileXml)
     return doc.SaveFileW(szFileXml);
 }
 
-bool CBatchEncoderDlg::LoadConfigFile()
+bool CBatchEncoderDlg::LoadConfigFile(CString szFileXml)
 {
     ::UpdatePath();
 
     CXMLDocumentW doc;
-    if (doc.LoadFileW(szMainConfigFile) == false)
+    if (doc.LoadFileW(szFileXml) == false)
         return false;
 
     tinyxml2::XMLElement *pRootElem = doc.FirstChildElement();
@@ -1817,7 +1431,7 @@ bool CBatchEncoderDlg::LoadConfigFile()
 
     // root: Options
     tinyxml2::XMLElement *pOptionsElem = pRootElem->FirstChildElement("Options");
-    this->LoadOptions(pOptionsElem);
+    doc.LoadOptions(pOptionsElem, m_Config.m_Options);
     this->SetOptions();
 
     // root: Presets
@@ -1837,8 +1451,9 @@ bool CBatchEncoderDlg::LoadConfigFile()
     }
 
     // root: Formats
-    int nFormat = -1;
     tinyxml2::XMLElement *pFormatsElem = pRootElem->FirstChildElement("Formats");
+
+    int nFormat = -1;
     tinyxml2::XMLElement *pFormatElem = pFormatsElem->FirstChildElement("Format");
     for (pFormatElem; pFormatElem; pFormatElem = pFormatElem->NextSiblingElement())
     {
@@ -1912,7 +1527,7 @@ bool CBatchEncoderDlg::LoadConfigFile()
     return true;
 }
 
-bool CBatchEncoderDlg::SaveConfigFile()
+bool CBatchEncoderDlg::SaveConfigFile(CString szFileXml)
 {
     CXMLDocumentW doc;
     CUtf8String szBuffUtf8;
@@ -1928,7 +1543,7 @@ bool CBatchEncoderDlg::SaveConfigFile()
     tinyxml2::XMLElement *pOptionsElem = doc.NewElement("Options");
     pRootElem->LinkEndChild(pOptionsElem);
     this->GetOptions();
-    this->SaveOptions(doc, pOptionsElem);
+    doc.SaveOptions(pOptionsElem, m_Config.m_Options);
 
     // root: Presets
     tinyxml2::XMLElement *pPresetsElem = doc.NewElement("Presets");
@@ -1975,7 +1590,7 @@ bool CBatchEncoderDlg::SaveConfigFile()
 
     // save file
     ::UpdatePath();
-    return doc.SaveFileW(szMainConfigFile);
+    return doc.SaveFileW(szFileXml);
 }
 
 void CBatchEncoderDlg::LoadUserConfig()
@@ -1992,17 +1607,12 @@ void CBatchEncoderDlg::LoadUserConfig()
     if (fd.DoModal() == IDOK)
     {
         CString szPath = fd.GetPathName();
-        CString szTmp = szMainConfigFile;
-
-        szMainConfigFile = szPath;
-        if (this->LoadConfigFile() == false)
+        if (this->LoadConfigFile(szPath) == false)
         {
             MessageBox(_T("Failed to load configuration!"),
                 _T("ERROR"),
                 MB_OK | MB_ICONERROR);
         }
-
-        szMainConfigFile = szTmp;
     }
 }
 
@@ -2020,17 +1630,12 @@ void CBatchEncoderDlg::SaveUserConfig()
     if (fd.DoModal() == IDOK)
     {
         CString szPath = fd.GetPathName();
-        CString szTmp = szMainConfigFile;
-
-        szMainConfigFile = szPath;
-        if (this->SaveConfigFile() == false)
+        if (this->SaveConfigFile(szPath) == false)
         {
             MessageBox(_T("Failed to save configuration!"),
                 _T("ERROR"),
                 MB_OK | MB_ICONERROR);
         }
-
-        szMainConfigFile = szTmp;
     }
 }
 
@@ -2199,7 +1804,7 @@ void CBatchEncoderDlg::OnClose()
     // - Don't save configuration on read-only media.
 
     if (this->GetMenu()->GetMenuState(ID_OPTIONS_DO_NOT_SAVE, MF_BYCOMMAND) != MF_CHECKED)
-        this->SaveConfigFile();
+        this->SaveConfigFile(this->szMainConfigFile);
 
     this->EnableTrayIcon(false);
 
