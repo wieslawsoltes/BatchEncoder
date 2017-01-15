@@ -12,7 +12,6 @@
 #define NUM_FORMAT_NAMES (NUM_OUTPUT_EXT + (NUM_INPUT_EXT - 1))
 #define NUM_PRESET_FILES 14
 
-extern const char *g_szOptionsTags[];
 extern const TCHAR *g_szAllInExt[];
 extern const TCHAR *g_szAllOutExt[];
 extern const TCHAR *g_szPresetNames[];
