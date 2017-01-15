@@ -13,20 +13,6 @@
 #define new DEBUG_NEW
 #endif
 
-ULONGLONG GetFileSize64(HANDLE hFile)
-{
-    ULARGE_INTEGER liSize;
-
-    liSize.LowPart = ::GetFileSize(hFile, &liSize.HighPart);
-    if (liSize.LowPart == (DWORD)-1)
-    {
-        if (::GetLastError() != NO_ERROR)
-            return(0);
-    }
-
-    return liSize.QuadPart;
-}
-
 DWORD WINAPI ReadThread(LPVOID lpParam)
 {
     // NOTE: 4096 bytes is default buffer for pipes (on XP SP2)

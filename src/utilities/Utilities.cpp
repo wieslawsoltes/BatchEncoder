@@ -123,6 +123,20 @@ CString GetFileName(CString szFilePath)
     return strResult;
 }
 
+ULONGLONG GetFileSize64(HANDLE hFile)
+{
+    ULARGE_INTEGER liSize;
+
+    liSize.LowPart = ::GetFileSize(hFile, &liSize.HighPart);
+    if (liSize.LowPart == (DWORD)-1)
+    {
+        if (::GetLastError() != NO_ERROR)
+            return(0);
+    }
+
+    return liSize.QuadPart;
+}
+
 CString GetExeFilePath()
 {
     TCHAR szExeFilePath[MAX_PATH + 1] = _T("");

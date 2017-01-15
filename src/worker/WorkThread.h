@@ -12,7 +12,6 @@ typedef struct TREAD_DATA
     volatile bool bFinished;
 } READ_DATA, *PREAD_DATA;
 
-ULONGLONG GetFileSize64(HANDLE hFile);
 DWORD WINAPI ReadThread(LPVOID lpParam);
 DWORD WINAPI WriteThread(LPVOID lpParam);
 bool ConvertFile(CBatchEncoderDlg *pDlg,
