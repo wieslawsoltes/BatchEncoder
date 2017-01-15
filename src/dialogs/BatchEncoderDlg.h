@@ -137,6 +137,9 @@ public:
     void LoadItems(tinyxml2::XMLElement *pItemsElem);
     void SaveItems(CXMLDocumentW &doc, tinyxml2::XMLElement *pItemsElem);
 public:
+    void GetOptions();
+    void SetOptions();
+public:
     void LoadOptions(tinyxml2::XMLElement *pOptionsElem);
     void SaveOptions(CXMLDocumentW &doc, tinyxml2::XMLElement *pOptionsElem);
 public:

@@ -1166,17 +1166,75 @@ void CBatchEncoderDlg::SaveItems(CXMLDocumentW &doc, tinyxml2::XMLElement *pItem
     }
 }
 
-void CBatchEncoderDlg::LoadOptions(tinyxml2::XMLElement *pOptionsElem)
+void CBatchEncoderDlg::GetOptions()
 {
-    tinyxml2::XMLElement *pOptionElem;
-
     // option: SelectedPresets
-    pOptionElem = pOptionsElem->FirstChildElement("SelectedPresets");
-    if (pOptionElem)
+    m_Config.m_Options.szSelectedPresets = _T("");
+    for (int i = 0; i < NUM_OUTPUT_EXT; i++)
     {
-        const char *tmpBuff = pOptionElem->GetText();
-        m_Config.m_Options.szSelectedPresets = GetConfigString(tmpBuff);
+        CString szTemp;
+        szTemp.Format(_T("%d"), nCurSel[i]);
+        m_Config.m_Options.szSelectedPresets += szTemp;
 
+        if (i < (NUM_OUTPUT_EXT - 1))
+            m_Config.m_Options.szSelectedPresets += _T(" ");
+    }
+
+    // option: SelectedFormat
+    m_Config.m_Options.nSelectedFormat = this->m_CmbFormat.GetCurSel();
+
+    // option: OutputPath
+    m_EdtOutPath.GetWindowText(m_Config.m_Options.szOutputPath);
+
+    // option: OutputPathChecked
+    m_Config.m_Options.bOutputPathChecked = this->m_ChkOutPath.GetCheck() == BST_CHECKED;
+
+    // option: LogConsoleOutput
+    m_Config.m_Options.bLogConsoleOutput = this->GetMenu()->GetMenuState(ID_OPTIONS_LOGCONSOLEOUTPUT, MF_BYCOMMAND) == MF_CHECKED;
+
+    // option: DeleteSourceFiles
+    m_Config.m_Options.bDeleteSourceFiles = this->GetMenu()->GetMenuState(ID_OPTIONS_DELETESOURCEFILEWHENDONE, MF_BYCOMMAND) == MF_CHECKED;
+
+    // option: StayOnTop
+    m_Config.m_Options.bStayOnTop = this->GetMenu()->GetMenuState(ID_OPTIONS_STAYONTOP, MF_BYCOMMAND) == MF_CHECKED;
+
+    // option: RecurseChecked
+    m_Config.m_Options.bRecurseChecked = ::bRecurseChecked;
+
+    // option: MainWindowResize
+    m_Config.m_Options.szMainWindowResize = this->GetWindowRectStr();
+
+    // option: FileListColumns
+    int nColWidth[7];
+    for (int i = 0; i < 7; i++)
+        nColWidth[i] = m_LstInputItems.GetColumnWidth(i);
+    m_Config.m_Options.szFileListColumns.Format(_T("%d %d %d %d %d %d %d"),
+        nColWidth[0],
+        nColWidth[1],
+        nColWidth[2],
+        nColWidth[3],
+        nColWidth[4],
+        nColWidth[5],
+        nColWidth[6]);
+
+    // option: ShowGridLines
+    m_Config.m_Options.bShowGridLines = this->GetMenu()->GetMenuState(ID_VIEW_SHOWGRIDLINES, MF_BYCOMMAND) == MF_CHECKED;
+
+    // option: ShowTrayIcon
+    m_Config.m_Options.bShowTrayIcon = this->GetMenu()->GetMenuState(ID_OPTIONS_SHOWTRAYICON, MF_BYCOMMAND) == MF_CHECKED;
+
+    // option: DoNotSaveConfiguration
+    m_Config.m_Options.bDoNotSaveConfiguration = this->GetMenu()->GetMenuState(ID_OPTIONS_DO_NOT_SAVE, MF_BYCOMMAND) == MF_CHECKED;
+
+    // option: ForceConsoleWindow
+    m_Config.m_Options.bForceConsoleWindow = this->GetMenu()->GetMenuState(ID_OPTIONS_FORCECONSOLEWINDOW, MF_BYCOMMAND) == MF_CHECKED;
+}
+
+void CBatchEncoderDlg::SetOptions()
+{
+    // option: SelectedFormat
+    if (m_Config.m_Options.szSelectedPresets.Compare(_T("")) != 0)
+    {
         int curPos = 0;
         int nIndex = 0;
         CString resToken = m_Config.m_Options.szSelectedPresets.Tokenize(_T(" "), curPos);
@@ -1189,8 +1247,138 @@ void CBatchEncoderDlg::LoadOptions(tinyxml2::XMLElement *pOptionsElem)
     }
     else
     {
-        m_Config.m_Options.szSelectedPresets = _T("");
         ZeroMemory(&nCurSel, sizeof(int) * NUM_OUTPUT_EXT);
+    }
+
+    // option: SelectedFormat
+
+    // option: OutputPath
+    if (m_Config.m_Options.szOutputPath.Compare(_T("")) != 0)
+    {
+        this->m_EdtOutPath.SetWindowText(m_Config.m_Options.szOutputPath);
+        szLastBrowse = m_Config.m_Options.szOutputPath;
+    }
+    else
+    {
+        m_Config.m_Options.szOutputPath = ::GetExeFilePath();
+        szLastBrowse = m_Config.m_Options.szOutputPath;
+        this->m_EdtOutPath.SetWindowText(m_Config.m_Options.szOutputPath);
+    }
+
+    // option: OutputPathChecked
+    if (m_Config.m_Options.bOutputPathChecked)
+    {
+        m_ChkOutPath.SetCheck(BST_CHECKED);
+    }
+    else
+    {
+        m_BtnBrowse.EnableWindow(FALSE);
+        m_EdtOutPath.EnableWindow(FALSE);
+    }
+
+    // option: LogConsoleOutput
+    if (m_Config.m_Options.bLogConsoleOutput)
+        this->GetMenu()->CheckMenuItem(ID_OPTIONS_LOGCONSOLEOUTPUT, MF_CHECKED);
+    else
+        this->GetMenu()->CheckMenuItem(ID_OPTIONS_LOGCONSOLEOUTPUT, MF_UNCHECKED);
+
+    // option: DeleteSourceFiles
+    if (m_Config.m_Options.bDeleteSourceFiles)
+        this->GetMenu()->CheckMenuItem(ID_OPTIONS_DELETESOURCEFILEWHENDONE, MF_CHECKED);
+    else
+        this->GetMenu()->CheckMenuItem(ID_OPTIONS_DELETESOURCEFILEWHENDONE, MF_UNCHECKED);
+
+    // option: StayOnTop
+    if (m_Config.m_Options.bStayOnTop)
+    {
+        this->SetWindowPos(CWnd::FromHandle(HWND_TOPMOST), 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
+        this->GetMenu()->CheckMenuItem(ID_OPTIONS_STAYONTOP, MF_CHECKED);
+    }
+    else
+    {
+        this->SetWindowPos(CWnd::FromHandle(HWND_NOTOPMOST), 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
+        this->GetMenu()->CheckMenuItem(ID_OPTIONS_STAYONTOP, MF_UNCHECKED);
+    }
+
+    // option: RecurseChecked
+    if (m_Config.m_Options.bRecurseChecked)
+        ::bRecurseChecked = true;
+    else
+        ::bRecurseChecked = false;
+
+    // option: MainWindowResize
+    if (m_Config.m_Options.szMainWindowResize.Compare(_T("")) != 0)
+    {
+        this->SetWindowRectStr(m_Config.m_Options.szMainWindowResize);
+    }
+
+    // option: FileListColumns
+    if (m_Config.m_Options.szFileListColumns.Compare(_T("")) != 0)
+    {
+        int nColWidth[7];
+        if (_stscanf(m_Config.m_Options.szFileListColumns, _T("%d %d %d %d %d %d %d"),
+            &nColWidth[0],
+            &nColWidth[1],
+            &nColWidth[2],
+            &nColWidth[3],
+            &nColWidth[4],
+            &nColWidth[5],
+            &nColWidth[6]) == 7)
+        {
+            for (int i = 0; i < 7; i++)
+                m_LstInputItems.SetColumnWidth(i, nColWidth[i]);
+        }
+    }
+
+    // option: ShowGridLines
+    ShowGridlines(m_Config.m_Options.bShowGridLines);
+
+    // option: ShowTrayIcon
+    EnableTrayIcon(m_Config.m_Options.bShowTrayIcon);
+
+    // option: DoNotSaveConfiguration
+    if (m_Config.m_Options.bDoNotSaveConfiguration)
+        this->GetMenu()->CheckMenuItem(ID_OPTIONS_DO_NOT_SAVE, MF_CHECKED);
+    else
+        this->GetMenu()->CheckMenuItem(ID_OPTIONS_DO_NOT_SAVE, MF_UNCHECKED);
+
+    // option: PresetsDialogResize
+
+    // option: PresetsListColumns
+
+    // option: FormatsDialogResize
+
+    // option: FormatsListColumns
+
+    // option: DeleteOnError
+
+    // option: StopOnErrors
+
+    // option: LogFileName
+
+    // option: LogFileEncoding
+
+    // option: ForceConsoleWindow
+    if (m_Config.m_Options.bForceConsoleWindow)
+        this->GetMenu()->CheckMenuItem(ID_OPTIONS_FORCECONSOLEWINDOW, MF_CHECKED);
+    else
+        this->GetMenu()->CheckMenuItem(ID_OPTIONS_FORCECONSOLEWINDOW, MF_UNCHECKED);
+}
+
+void CBatchEncoderDlg::LoadOptions(tinyxml2::XMLElement *pOptionsElem)
+{
+    tinyxml2::XMLElement *pOptionElem;
+
+    // option: SelectedPresets
+    pOptionElem = pOptionsElem->FirstChildElement("SelectedPresets");
+    if (pOptionElem)
+    {
+        const char *tmpBuff = pOptionElem->GetText();
+        m_Config.m_Options.szSelectedPresets = GetConfigString(tmpBuff);
+    }
+    else
+    {
+        m_Config.m_Options.szSelectedPresets = _T("");
     }
 
     // option: SelectedFormat
@@ -1199,8 +1387,6 @@ void CBatchEncoderDlg::LoadOptions(tinyxml2::XMLElement *pOptionsElem)
     {
         const char *tmpBuff = pOptionElem->GetText();
         m_Config.m_Options.nSelectedFormat = stoi(GetConfigString(tmpBuff));
-        if (m_Config.m_Options.nSelectedFormat < 0)
-            m_Config.m_Options.nSelectedFormat = 0;
     }
     else
     {
@@ -1213,17 +1399,6 @@ void CBatchEncoderDlg::LoadOptions(tinyxml2::XMLElement *pOptionsElem)
     {
         const char *tmpBuff = pOptionElem->GetText();
         m_Config.m_Options.szOutputPath = GetConfigString(tmpBuff);
-        if (m_Config.m_Options.szOutputPath.Compare(_T("")) != 0)
-        {
-            this->m_EdtOutPath.SetWindowText(m_Config.m_Options.szOutputPath);
-            szLastBrowse = m_Config.m_Options.szOutputPath;
-        }
-        else
-        {
-            m_Config.m_Options.szOutputPath = ::GetExeFilePath();
-            szLastBrowse = m_Config.m_Options.szOutputPath;
-            this->m_EdtOutPath.SetWindowText(m_Config.m_Options.szOutputPath);
-        }
     }
     else
     {
@@ -1236,21 +1411,10 @@ void CBatchEncoderDlg::LoadOptions(tinyxml2::XMLElement *pOptionsElem)
     {
         const char *tmpBuff = pOptionElem->GetText();
         m_Config.m_Options.bOutputPathChecked = GetConfigString(tmpBuff).Compare(_T("true")) == 0;
-        if (m_Config.m_Options.bOutputPathChecked)
-        {
-            m_ChkOutPath.SetCheck(BST_CHECKED);
-        }
-        else
-        {
-            m_BtnBrowse.EnableWindow(FALSE);
-            m_EdtOutPath.EnableWindow(FALSE);
-        }
     }
     else
     {
         m_Config.m_Options.bOutputPathChecked = false;
-        m_BtnBrowse.EnableWindow(FALSE);
-        m_EdtOutPath.EnableWindow(FALSE);
     }
 
     // option: LogConsoleOutput
@@ -1259,15 +1423,10 @@ void CBatchEncoderDlg::LoadOptions(tinyxml2::XMLElement *pOptionsElem)
     {
         const char *tmpBuff = pOptionElem->GetText();
         m_Config.m_Options.bLogConsoleOutput = GetConfigString(tmpBuff).Compare(_T("true")) == 0;
-        if (m_Config.m_Options.bLogConsoleOutput)
-            this->GetMenu()->CheckMenuItem(ID_OPTIONS_LOGCONSOLEOUTPUT, MF_CHECKED);
-        else
-            this->GetMenu()->CheckMenuItem(ID_OPTIONS_LOGCONSOLEOUTPUT, MF_UNCHECKED);
     }
     else
     {
         m_Config.m_Options.bLogConsoleOutput = false;
-        this->GetMenu()->CheckMenuItem(ID_OPTIONS_LOGCONSOLEOUTPUT, MF_UNCHECKED);
     }
 
     // option: DeleteSourceFiles
@@ -1276,15 +1435,10 @@ void CBatchEncoderDlg::LoadOptions(tinyxml2::XMLElement *pOptionsElem)
     {
         const char *tmpBuff = pOptionElem->GetText();
         m_Config.m_Options.bDeleteSourceFiles = GetConfigString(tmpBuff).Compare(_T("true")) == 0;
-        if (m_Config.m_Options.bDeleteSourceFiles)
-            this->GetMenu()->CheckMenuItem(ID_OPTIONS_DELETESOURCEFILEWHENDONE, MF_CHECKED);
-        else
-            this->GetMenu()->CheckMenuItem(ID_OPTIONS_DELETESOURCEFILEWHENDONE, MF_UNCHECKED);
     }
     else
     {
         m_Config.m_Options.bDeleteSourceFiles = false;
-        this->GetMenu()->CheckMenuItem(ID_OPTIONS_DELETESOURCEFILEWHENDONE, MF_UNCHECKED);
     }
 
     // option: StayOnTop
@@ -1293,21 +1447,10 @@ void CBatchEncoderDlg::LoadOptions(tinyxml2::XMLElement *pOptionsElem)
     {
         const char *tmpBuff = pOptionElem->GetText();
         m_Config.m_Options.bStayOnTop = GetConfigString(tmpBuff).Compare(_T("true")) == 0;
-        if (m_Config.m_Options.bStayOnTop)
-        {
-            this->SetWindowPos(CWnd::FromHandle(HWND_TOPMOST), 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
-            this->GetMenu()->CheckMenuItem(ID_OPTIONS_STAYONTOP, MF_CHECKED);
-        }
-        else
-        {
-            this->SetWindowPos(CWnd::FromHandle(HWND_NOTOPMOST), 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
-            this->GetMenu()->CheckMenuItem(ID_OPTIONS_STAYONTOP, MF_UNCHECKED);
-        }
     }
     else
     {
         m_Config.m_Options.bStayOnTop = false;
-        this->GetMenu()->CheckMenuItem(ID_OPTIONS_STAYONTOP, MF_UNCHECKED);
     }
 
     // option: RecurseChecked
@@ -1316,15 +1459,10 @@ void CBatchEncoderDlg::LoadOptions(tinyxml2::XMLElement *pOptionsElem)
     {
         const char *tmpBuff = pOptionElem->GetText();
         m_Config.m_Options.bRecurseChecked = GetConfigString(tmpBuff).Compare(_T("true")) == 0;
-        if (m_Config.m_Options.bRecurseChecked)
-            ::bRecurseChecked = true;
-        else
-            ::bRecurseChecked = false;
     }
     else
     {
         m_Config.m_Options.bRecurseChecked = false;
-        ::bRecurseChecked = true;
     }
 
     // option: MainWindowResize
@@ -1333,7 +1471,6 @@ void CBatchEncoderDlg::LoadOptions(tinyxml2::XMLElement *pOptionsElem)
     {
         const char *tmpBuff = pOptionElem->GetText();
         m_Config.m_Options.szMainWindowResize = GetConfigString(tmpBuff);
-        this->SetWindowRectStr(m_Config.m_Options.szMainWindowResize);
     }
 
     // option: FileListColumns
@@ -1342,22 +1479,6 @@ void CBatchEncoderDlg::LoadOptions(tinyxml2::XMLElement *pOptionsElem)
     {
         const char *tmpBuff = pOptionElem->GetText();
         m_Config.m_Options.szFileListColumns = GetConfigString(tmpBuff);
-        if (m_Config.m_Options.szFileListColumns.Compare(_T("")) != 0)
-        {
-            int nColWidth[7];
-            if (_stscanf(m_Config.m_Options.szFileListColumns, _T("%d %d %d %d %d %d %d"),
-                &nColWidth[0],
-                &nColWidth[1],
-                &nColWidth[2],
-                &nColWidth[3],
-                &nColWidth[4],
-                &nColWidth[5],
-                &nColWidth[6]) == 7)
-            {
-                for (int i = 0; i < 7; i++)
-                    m_LstInputItems.SetColumnWidth(i, nColWidth[i]);
-            }
-        }
     }
 
     // option: ShowGridLines
@@ -1366,12 +1487,10 @@ void CBatchEncoderDlg::LoadOptions(tinyxml2::XMLElement *pOptionsElem)
     {
         const char *tmpBuff = pOptionElem->GetText();
         m_Config.m_Options.bShowGridLines = GetConfigString(tmpBuff).Compare(_T("true")) == 0;
-        ShowGridlines(m_Config.m_Options.bShowGridLines);
     }
     else
     {
         m_Config.m_Options.bShowGridLines = false;
-        ShowGridlines(m_Config.m_Options.bShowGridLines);
     }
 
     // option: ShowTrayIcon
@@ -1380,12 +1499,10 @@ void CBatchEncoderDlg::LoadOptions(tinyxml2::XMLElement *pOptionsElem)
     {
         const char *tmpBuff = pOptionElem->GetText();
         m_Config.m_Options.bShowTrayIcon = GetConfigString(tmpBuff).Compare(_T("true")) == 0;
-        EnableTrayIcon(m_Config.m_Options.bShowTrayIcon);
     }
     else
     {
         m_Config.m_Options.bShowTrayIcon = false;
-        EnableTrayIcon(m_Config.m_Options.bShowTrayIcon);
     }
 
     // option: DoNotSaveConfiguration
@@ -1394,15 +1511,10 @@ void CBatchEncoderDlg::LoadOptions(tinyxml2::XMLElement *pOptionsElem)
     {
         const char *tmpBuff = pOptionElem->GetText();
         m_Config.m_Options.bDoNotSaveConfiguration = GetConfigString(tmpBuff).Compare(_T("true")) == 0;
-        if (m_Config.m_Options.bDoNotSaveConfiguration)
-            this->GetMenu()->CheckMenuItem(ID_OPTIONS_DO_NOT_SAVE, MF_CHECKED);
-        else
-            this->GetMenu()->CheckMenuItem(ID_OPTIONS_DO_NOT_SAVE, MF_UNCHECKED);
     }
     else
     {
         m_Config.m_Options.bDoNotSaveConfiguration = false;
-        this->GetMenu()->CheckMenuItem(ID_OPTIONS_DO_NOT_SAVE, MF_UNCHECKED);
     }
 
     // option: PresetsDialogResize
@@ -1491,15 +1603,10 @@ void CBatchEncoderDlg::LoadOptions(tinyxml2::XMLElement *pOptionsElem)
     {
         const char *tmpBuff = pOptionElem->GetText();
         m_Config.m_Options.bForceConsoleWindow = GetConfigString(tmpBuff).Compare(_T("true")) == 0;
-        if (m_Config.m_Options.bForceConsoleWindow)
-            this->GetMenu()->CheckMenuItem(ID_OPTIONS_FORCECONSOLEWINDOW, MF_CHECKED);
-        else
-            this->GetMenu()->CheckMenuItem(ID_OPTIONS_FORCECONSOLEWINDOW, MF_UNCHECKED);
     }
     else
     {
         m_Config.m_Options.bForceConsoleWindow = false;
-        this->GetMenu()->CheckMenuItem(ID_OPTIONS_FORCECONSOLEWINDOW, MF_UNCHECKED);
     }
 }
 
@@ -1509,25 +1616,12 @@ void CBatchEncoderDlg::SaveOptions(CXMLDocumentW &doc, tinyxml2::XMLElement *pOp
     CUtf8String szBuffUtf8;
 
     // option: SelectedPresets
-    m_Config.m_Options.szSelectedPresets = _T("");
-    for (int i = 0; i < NUM_OUTPUT_EXT; i++)
-    {
-        CString szTemp;
-        szTemp.Format(_T("%d"), nCurSel[i]);
-        m_Config.m_Options.szSelectedPresets += szTemp;
-
-        if (i < (NUM_OUTPUT_EXT - 1))
-            m_Config.m_Options.szSelectedPresets += _T(" ");
-    }
-
     pOptionElem = doc.NewElement("SelectedPresets");
     pOptionElem->LinkEndChild(doc.NewText(szBuffUtf8.Create(m_Config.m_Options.szSelectedPresets)));
     pOptionsElem->LinkEndChild(pOptionElem);
     szBuffUtf8.Clear();
 
     // option: SelectedFormat
-    m_Config.m_Options.nSelectedFormat = this->m_CmbFormat.GetCurSel();
-
     CString szSelectedFormat;
     szSelectedFormat.Format(_T("%d\0"), m_Config.m_Options.nSelectedFormat);
 
@@ -1537,98 +1631,66 @@ void CBatchEncoderDlg::SaveOptions(CXMLDocumentW &doc, tinyxml2::XMLElement *pOp
     szBuffUtf8.Clear();
 
     // option: OutputPath
-    m_EdtOutPath.GetWindowText(m_Config.m_Options.szOutputPath);
-
     pOptionElem = doc.NewElement("OutputPath");
     pOptionElem->LinkEndChild(doc.NewText(szBuffUtf8.Create(m_Config.m_Options.szOutputPath)));
     pOptionsElem->LinkEndChild(pOptionElem);
     szBuffUtf8.Clear();
 
     // option: OutputPathChecked
-    m_Config.m_Options.bOutputPathChecked = this->m_ChkOutPath.GetCheck() == BST_CHECKED;
-
     pOptionElem = doc.NewElement("OutputPathChecked");
     pOptionElem->LinkEndChild(doc.NewText(szBuffUtf8.Create(m_Config.m_Options.bOutputPathChecked ? _T("true") : _T("false"))));
     pOptionsElem->LinkEndChild(pOptionElem);
     szBuffUtf8.Clear();
 
     // option: LogConsoleOutput
-    m_Config.m_Options.bLogConsoleOutput = this->GetMenu()->GetMenuState(ID_OPTIONS_LOGCONSOLEOUTPUT, MF_BYCOMMAND) == MF_CHECKED;
-
     pOptionElem = doc.NewElement("LogConsoleOutput");
     pOptionElem->LinkEndChild(doc.NewText(szBuffUtf8.Create(m_Config.m_Options.bLogConsoleOutput ? _T("true") : _T("false"))));
     pOptionsElem->LinkEndChild(pOptionElem);
     szBuffUtf8.Clear();
 
     // option: DeleteSourceFiles
-    m_Config.m_Options.bDeleteSourceFiles = this->GetMenu()->GetMenuState(ID_OPTIONS_DELETESOURCEFILEWHENDONE, MF_BYCOMMAND) == MF_CHECKED;
-
     pOptionElem = doc.NewElement("DeleteSourceFiles");
     pOptionElem->LinkEndChild(doc.NewText(szBuffUtf8.Create(m_Config.m_Options.bDeleteSourceFiles ? _T("true") : _T("false"))));
     pOptionsElem->LinkEndChild(pOptionElem);
     szBuffUtf8.Clear();
 
     // option: StayOnTop
-    m_Config.m_Options.bStayOnTop = this->GetMenu()->GetMenuState(ID_OPTIONS_STAYONTOP, MF_BYCOMMAND) == MF_CHECKED;
-
     pOptionElem = doc.NewElement("StayOnTop");
     pOptionElem->LinkEndChild(doc.NewText(szBuffUtf8.Create(m_Config.m_Options.bStayOnTop ? _T("true") : _T("false"))));
     pOptionsElem->LinkEndChild(pOptionElem);
     szBuffUtf8.Clear();
 
     // option: RecurseChecked
-    m_Config.m_Options.bRecurseChecked = ::bRecurseChecked;
-
     pOptionElem = doc.NewElement("RecurseChecked");
     pOptionElem->LinkEndChild(doc.NewText(szBuffUtf8.Create(m_Config.m_Options.bRecurseChecked ? _T("true") : _T("false"))));
     pOptionsElem->LinkEndChild(pOptionElem);
     szBuffUtf8.Clear();
 
     // option: MainWindowResize
-    m_Config.m_Options.szMainWindowResize = this->GetWindowRectStr();
-
     pOptionElem = doc.NewElement("MainWindowResize");
     pOptionElem->LinkEndChild(doc.NewText(szBuffUtf8.Create(m_Config.m_Options.szMainWindowResize)));
     pOptionsElem->LinkEndChild(pOptionElem);
     szBuffUtf8.Clear();
 
     // option: FileListColumns
-    int nColWidth[7];
-    for (int i = 0; i < 7; i++)
-        nColWidth[i] = m_LstInputItems.GetColumnWidth(i);
-    m_Config.m_Options.szFileListColumns.Format(_T("%d %d %d %d %d %d %d"),
-        nColWidth[0],
-        nColWidth[1],
-        nColWidth[2],
-        nColWidth[3],
-        nColWidth[4],
-        nColWidth[5],
-        nColWidth[6]);
-
     pOptionElem = doc.NewElement("FileListColumns");
     pOptionElem->LinkEndChild(doc.NewText(szBuffUtf8.Create(m_Config.m_Options.szFileListColumns)));
     pOptionsElem->LinkEndChild(pOptionElem);
     szBuffUtf8.Clear();
 
     // option: ShowGridLines
-    m_Config.m_Options.bShowGridLines = this->GetMenu()->GetMenuState(ID_VIEW_SHOWGRIDLINES, MF_BYCOMMAND) == MF_CHECKED;
-
     pOptionElem = doc.NewElement("ShowGridLines");
     pOptionElem->LinkEndChild(doc.NewText(szBuffUtf8.Create(m_Config.m_Options.bShowGridLines ? _T("true") : _T("false"))));
     pOptionsElem->LinkEndChild(pOptionElem);
     szBuffUtf8.Clear();
 
     // option: ShowTrayIcon
-    m_Config.m_Options.bShowTrayIcon = this->GetMenu()->GetMenuState(ID_OPTIONS_SHOWTRAYICON, MF_BYCOMMAND) == MF_CHECKED;
-
     pOptionElem = doc.NewElement("ShowTrayIcon");
     pOptionElem->LinkEndChild(doc.NewText(szBuffUtf8.Create(m_Config.m_Options.bShowTrayIcon ? _T("true") : _T("false"))));
     pOptionsElem->LinkEndChild(pOptionElem);
     szBuffUtf8.Clear();
 
     // option: DoNotSaveConfiguration
-    m_Config.m_Options.bDoNotSaveConfiguration = this->GetMenu()->GetMenuState(ID_OPTIONS_DO_NOT_SAVE, MF_BYCOMMAND) == MF_CHECKED;
-
     pOptionElem = doc.NewElement("DoNotSaveConfiguration");
     pOptionElem->LinkEndChild(doc.NewText(szBuffUtf8.Create(m_Config.m_Options.bDoNotSaveConfiguration ? _T("true") : _T("false"))));
     pOptionsElem->LinkEndChild(pOptionElem);
@@ -1686,8 +1748,6 @@ void CBatchEncoderDlg::SaveOptions(CXMLDocumentW &doc, tinyxml2::XMLElement *pOp
     szBuffUtf8.Clear();
 
     // option: ForceConsoleWindow
-    m_Config.m_Options.bForceConsoleWindow = this->GetMenu()->GetMenuState(ID_OPTIONS_FORCECONSOLEWINDOW, MF_BYCOMMAND) == MF_CHECKED;
-
     pOptionElem = doc.NewElement("ForceConsoleWindow");
     pOptionElem->LinkEndChild(doc.NewText(szBuffUtf8.Create(m_Config.m_Options.bForceConsoleWindow ? _T("true") : _T("false"))));
     pOptionsElem->LinkEndChild(pOptionElem);
@@ -1758,6 +1818,7 @@ bool CBatchEncoderDlg::LoadConfigFile()
     // root: Options
     tinyxml2::XMLElement *pOptionsElem = pRootElem->FirstChildElement("Options");
     this->LoadOptions(pOptionsElem);
+    this->SetOptions();
 
     // root: Presets
     tinyxml2::XMLElement *pPresetsElem = pRootElem->FirstChildElement("Presets");
@@ -1866,6 +1927,7 @@ bool CBatchEncoderDlg::SaveConfigFile()
     // root: Options
     tinyxml2::XMLElement *pOptionsElem = doc.NewElement("Options");
     pRootElem->LinkEndChild(pOptionsElem);
+    this->GetOptions();
     this->SaveOptions(doc, pOptionsElem);
 
     // root: Presets
