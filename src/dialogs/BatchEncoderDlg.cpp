@@ -203,18 +203,7 @@ CBatchEncoderDlg::CBatchEncoderDlg(CWnd* pParent /*=NULL*/)
 
     szMainConfigFile = ::GetExeFilePath() + MAIN_APP_CONFIG;
 
-    m_Config.m_Options.bShowGridLines = true;
-    m_Config.m_Options.bShowTrayIcon = false;
-    m_Config.m_Options.bDoNotSaveConfiguration = false;
-    m_Config.m_Options.szPresetsDialogResize = _T("");
-    m_Config.m_Options.szPresetsListColumns = _T("");
-    m_Config.m_Options.szFormatsDialogResize = _T("");
-    m_Config.m_Options.szFormatsListColumns = _T("");
-    m_Config.m_Options.bDeleteOnError = true;
-    m_Config.m_Options.bStopOnErrors = false;
-    m_Config.m_Options.szLogFileName = MAIN_APP_LOG;
-    m_Config.m_Options.nLogEncoding = 2;
-    m_Config.m_Options.bForceConsoleWindow = false;
+    m_Config.m_Options.Defaults();
 }
 
 CBatchEncoderDlg::~CBatchEncoderDlg()
@@ -358,9 +347,6 @@ BOOL CBatchEncoderDlg::OnInitDialog()
     m_hAccel = ::LoadAccelerators(::GetModuleHandle(NULL),
         MAKEINTRESOURCE(IDR_ACCELERATOR_BATCHENCODER));
 
-    if (m_Config.m_Options.bShowTrayIcon == true)
-        this->EnableTrayIcon(true);
-
     // handle the OnNotifyFormat message (WM_NOTIFYFORMAT)
 #ifdef _UNICODE
     m_LstInputItems.SendMessage(CCM_SETUNICODEFORMAT, (WPARAM)(BOOL)TRUE, 0);
@@ -399,10 +385,9 @@ BOOL CBatchEncoderDlg::OnInitDialog()
     m_LstInputItems.InsertColumn(5, _T("Time"), LVCFMT_LEFT, 90);
     m_LstInputItems.InsertColumn(6, _T("Status"), LVCFMT_LEFT, 85);
 
-    // set ListCtrl columns order
+    // TODO: set ListCtrl columns order
     /*
     INT nOrder[7] = { 0, 1, 2, 3, 4, 5, 6 };
-
     this->m_LstInputItems.GetHeaderCtrl()->SetOrderArray(7, nOrder);
     this->m_LstInputItems.Invalidate();
     */
@@ -413,7 +398,7 @@ BOOL CBatchEncoderDlg::OnInitDialog()
     // hide ProgressBar when not running conversion process
     this->m_FileProgress.ShowWindow(SW_HIDE);
 
-    // enable files/dirs drag & drop for dialog
+    // enable files/directories drag & drop for dialog
     this->DragAcceptFiles(TRUE);
 
     // setup resize anchors

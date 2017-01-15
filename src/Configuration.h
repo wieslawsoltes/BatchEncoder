@@ -68,6 +68,32 @@ public:
         other.nLogEncoding = this->nLogEncoding;
         other.bForceConsoleWindow = this->bForceConsoleWindow;
     }
+public:
+    void Defaults()
+    {
+        this->szSelectedPresets = _T("");
+        this->nSelectedFormat = 0;
+        this->szOutputPath = _T("");
+        this->bOutputPathChecked = false;
+        this->bLogConsoleOutput = false;
+        this->bDeleteSourceFiles = false;
+        this->bStayOnTop = false;
+        this->bRecurseChecked = true;
+        this->szMainWindowResize = _T("");
+        this->szFileListColumns = _T("");
+        this->bShowGridLines = true;
+        this->bShowTrayIcon = false;
+        this->bDoNotSaveConfiguration = false;
+        this->szPresetsDialogResize = _T("");
+        this->szPresetsListColumns = _T("");
+        this->szFormatsDialogResize = _T("");
+        this->szFormatsListColumns = _T("");
+        this->bDeleteOnError = true;
+        this->bStopOnErrors = false;
+        this->szLogFileName = MAIN_APP_LOG;
+        this->nLogEncoding = 2;
+        this->bForceConsoleWindow = false;
+    }
 };
 
 class CPreset
