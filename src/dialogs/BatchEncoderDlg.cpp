@@ -899,7 +899,7 @@ bool CBatchEncoderDlg::LoadPresets(CString szPresetsFName, CPresetsList *m_ListP
             const char *pszOptions = pFilesNode->Attribute("options");
             if ((pszName != NULL) && (pszOptions != NULL))
             {
-                CString szNamea = GetConfigString(pszName);
+                CString szName = GetConfigString(pszName);
                 CString szOptions = GetConfigString(pszOptions);
                 m_ListPresets->InsertNode(szName);
                 m_ListPresets->SetPresetOptions(szOptions, nIndex);
