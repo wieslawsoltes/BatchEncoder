@@ -277,6 +277,96 @@ public:
         this->SetData(format1, idx2);
         this->SetData(format2, idx1);
     }
+public:
+    CFormat& GetInFormatByExt(CString szInExt)
+    {
+        szInExt.MakeUpper();
+        int nFormats = this->GetSize();
+        for (int i = 0; i < nFormats; i++)
+        {
+            CFormat& format = this->GetData(i);
+            if (format.nType == 1 && szInExt.Compare(format.szExtension.MakeUpper()) == 0)
+                return format;
+        }
+        throw "Can not find input format!";
+    }
+    CFormat& GetOutFormatByExt(CString szOutExt)
+    {
+        szOutExt.MakeUpper();
+        int nFormats = this->GetSize();
+        for (int i = 0; i < nFormats; i++)
+        {
+            CFormat& format = this->GetData(i);
+            if (format.nType == 0 && szOutExt.Compare(format.szExtension.MakeUpper()) == 0)
+                return format;
+        }
+        throw "Can not find output format!";
+    }
+public:
+    CFormat& GetInFormatById(CString szFormatId)
+    {
+        szFormatId.MakeUpper();
+        int nFormats = this->GetSize();
+        for (int i = 0; i < nFormats; i++)
+        {
+            CFormat& format = this->GetData(i);
+            if (format.nType == 1 && szFormatId.Compare(format.szId.MakeUpper()) == 0)
+                return format;
+        }
+        throw "Can not find input format!";
+    }
+    CFormat& GetOutFormatById(CString szFormatId)
+    {
+        szFormatId.MakeUpper();
+        int nFormats = this->GetSize();
+        for (int i = 0; i < nFormats; i++)
+        {
+            CFormat& format = this->GetData(i);
+            if (format.nType == 0 && szFormatId.Compare(format.szId.MakeUpper()) == 0)
+                return format;
+        }
+        throw "Can not find output format!";
+    }
+public:
+    bool IsValidInExtension(CString szInExt)
+    {
+        szInExt.MakeUpper();
+        int nFormats = this->GetSize();
+        for (int i = 0; i < nFormats; i++)
+        {
+            CFormat& format = this->GetData(i);
+            if (format.nType == 1 && szInExt.Compare(format.szExtension.MakeUpper()) == 0)
+                return true;
+        }
+        return false;
+    }
+    bool IsValidOutExtension(CString szOutExt)
+    {
+        szOutExt.MakeUpper();
+        int nFormats = this->GetSize();
+        for (int i = 0; i < nFormats; i++)
+        {
+            CFormat& format = this->GetData(i);
+            if (format.nType == 0 && szOutExt.Compare(format.szExtension.MakeUpper()) == 0)
+                return true;
+        }
+        return false;
+    }
+public:
+    bool IsValidInFileExtension(CString szInFilePath)
+    {
+        CString szInExt = ::PathFindExtension(szInFilePath);
+        szInExt.MakeUpper();
+        szInExt.Remove('.');
+        return IsValidInExtension(szInExt);
+    }
+    bool IsValidOutFileExtension(CString szOutFilePath)
+    {
+        CString szOutExt = ::PathFindExtension(szOutFilePath);
+        szOutExt.MakeUpper();
+        szOutExt.Remove('.');
+        return IsValidOutExtension(szOutExt);
+    }
 };
 
 class CItem
@@ -342,22 +432,24 @@ public:
         m_Items.AddTail(item);
     }
 public:
-    int InsertNode(CString szPath, const TCHAR *szName, const ULONGLONG nSize, const int nOutFormat, const int nOutPreset)
+    int InsertNode(CString szPath, const TCHAR *szName, const ULONGLONG nSize, const CString szFormatId, const int nPreset)
     {
         CItem item;
+
         item.szPath = szPath;
-        item.nSize = nSize;
+
+        CString szBuff;
+        szBuff.Format(_T("%I64d"), nSize);
+        item.szSize = szBuff;
 
         if ((szName == NULL) || (_tcslen(szName) == 0))
             item.szName = this->GetOnlyFileName(szPath);
         else
             item.szName = szName;
 
-        item.szInExt = this->GetFileExtUpperCase(szPath);
-        item.nInFormat = this->GetInFormatIndex(item.szInExt);
-        item.szOutExt = this->GetOutFormatExt(nOutFormat);
-        item.nOutFormat = nOutFormat;
-        item.nOutPreset = nOutPreset;
+        item.szExtension = this->GetFileExtUpperCase(szPath);
+        item.szFormatId = szFormatId;
+        item.nPreset = nPreset;
 
         m_Items.AddTail(item);
         return (int)m_Items.GetCount() - 1;
@@ -393,9 +485,6 @@ public:
         this->SetData(item1, idx2);
         this->SetData(item2, idx1);
     }
-
-
-
 public:
     UINT MyGetFileName(LPCTSTR lpszPathName, LPTSTR lpszTitle, UINT nMax)
     {
@@ -440,84 +529,6 @@ public:
         szExt.Remove('.');
         return szExt;
     }
-
-
-
-public:
-    static int GetInFormatIndex(CString szInExt)
-    {
-        szInExt.MakeUpper();
-        for (int i = 0; i < NUM_INPUT_EXT; i++)
-        {
-            if (szInExt.Compare(g_szAllInExt[i]) == 0)
-                return i;
-        }
-        return -1;
-    }
-    static int GetOutFormatIndex(CString szOutExt)
-    {
-        szOutExt.MakeUpper();
-        for (int i = 0; i < NUM_OUTPUT_EXT; i++)
-        {
-            if (szOutExt.Compare(g_szAllOutExt[i]) == 0)
-                return i;
-        }
-        return -1;
-    }
-public:
-    static CString GetInFormatExt(int nInFormat)
-    {
-        if ((nInFormat >= 0) && (nInFormat < NUM_INPUT_EXT))
-            return g_szAllInExt[nInFormat];
-        return NULL;
-    }
-    static CString GetOutFormatExt(int nOutFormat)
-    {
-        if ((nOutFormat >= 0) && (nOutFormat < NUM_OUTPUT_EXT))
-            return g_szAllOutExt[nOutFormat];
-        return NULL;
-    }
-public:
-    static bool IsValidInExtension(CString szInExt)
-    {
-        for (int i = 0; i < NUM_INPUT_EXT; i++)
-        {
-            if (szInExt.Compare(g_szAllInExt[i]) == 0)
-                return true;
-        }
-        return false;
-    }
-    static bool IsValidOutExtension(CString szOutExt)
-    {
-        for (int i = 0; i < NUM_OUTPUT_EXT; i++)
-        {
-            if (szOutExt.Compare(g_szAllOutExt[i]) == 0)
-                return true;
-        }
-        return false;
-    }
-
-
-
-public:
-    static bool IsValidInFileExtension(CString szInFilePath)
-    {
-        CString szInExt = ::PathFindExtension(szInFilePath);
-        szInExt.MakeUpper();
-        szInExt.Remove('.');
-        return IsValidInExtension(szInExt);
-    }
-    static bool IsValidOutFileExtension(CString szOutFilePath)
-    {
-        CString szOutExt = ::PathFindExtension(szOutFilePath);
-        szOutExt.MakeUpper();
-        szOutExt.Remove('.');
-        return IsValidOutExtension(szOutExt);
-    }
-
-
-
-
 };
 
 class CConfiguration
