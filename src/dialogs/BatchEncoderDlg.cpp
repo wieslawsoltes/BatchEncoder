@@ -435,10 +435,8 @@ BOOL CBatchEncoderDlg::PreTranslateMessage(MSG* pMsg)
 
 bool CBatchEncoderDlg::CreateBatchFile(CString szFileName)
 {
-    // TODO: handle command-line options (params)
-
     // NOTE: this function use same logic as WorkThread(...)
-
+    
     char *szPrefix = "@echo off\r\n@setlocal\r\n";
     char *szPostfix = "@endlocal\r\n@pause\r\n";
     char *szPreDel = "@del /F /Q \"";
