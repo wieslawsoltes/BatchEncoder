@@ -641,7 +641,7 @@ bool ConvertFile(CBatchEncoderDlg *pDlg,
             typedef int(*lpfnGetProgress)(char *szLineBuff, int nLineLen);
 
             lpfnGetProgress pProgressProc;
-            HMODULE hDll = ::LoadLibrary(pDlg->m_Config.m_Formats[nTool].szFunction);
+            HMODULE hDll = ::LoadLibrary(pDlg->m_Config.m_Formats.GetData(nTool).szFunction);
             if (hDll != NULL)
             {
                 // NOTE: the GetProcAddress function has only ANSI version
@@ -665,7 +665,7 @@ bool ConvertFile(CBatchEncoderDlg *pDlg,
                 if (bRes == FALSE || dwReadBytes == 0)
                     break;
 
-                // terminate readed data by '\0'
+                // terminate read data by '\0'
                 szReadBuff[dwReadBytes] = '\0';
 
                 for (int i = 0; i < (int)dwReadBytes; i++)
@@ -950,17 +950,15 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
             // 2. trans-coding - we need to decode input file to encoder stdin stream
             int nProcessingMode = -1;
 
-            // get input file format
-            int nIntputFormat = pDlg->m_Config.m_Items.GetItemInFormat(i);
+            CItem& item = pDlg->m_Config.m_Items.GetData(i);
 
-            // get output file format
-            int nOutputFormat = pDlg->m_Config.m_Items.GetItemOutFormat(i);
-
-            // get output preset for selected format
-            int nPreset = pDlg->m_Config.m_Items.GetItemOutPreset(i);
+            CFormat& intputFormat = pDlg->m_Config.m_Formats.GetInFormatByExt(item.szExtension);
+            CPreset& inputPreset = intputFormat.m_Presets.GetData(intputFormat.nDefaultPreset);
+            CFormat& outputFormat = pDlg->m_Config.m_Formats.GetOutFormatById(item.szFormatId);
+            CPreset& outputPreset = outputFormat.m_Presets.GetData(item.nPreset);
 
             // get full file path
-            CString szInputFile = pDlg->m_Config.m_Items.GetItemFilePath(i);
+            CString szInputFile = item.szPath;
 
             // output path is same as input file path
             if (bOutPath == false)
@@ -977,11 +975,11 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
             CString szDecoderExePath;
             CString szDecoderOptions;
 
-            szDecoderExePath = pDlg->GetDecoderExe(nIntputFormat);
-            szDecoderOptions = pDlg->GetDecoderOpt(nIntputFormat, -1);
+            szDecoderExePath = intputFormat.szPath;
+            szDecoderOptions = inputPreset.szOptions;
 
             // get only output filename
-            CString szName = pDlg->m_Config.m_Items.GetItemFileName(i);
+            CString szName = item.szName;
 
             // setup encoder steps:
             // 1. add extension to output filename
@@ -990,9 +988,9 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
             CString szEncoderExePath;
             CString szEncoderOptions;
 
-            szEncoderExePath = pDlg->GetEncoderExe(nOutputFormat);
-            szEncoderOptions = pDlg->GetEncoderOpt(nOutputFormat, nPreset);
-            szName = szName + _T(".") + pDlg->m_Config.m_Items.GetItemOutExt(i).MakeLower();
+            szEncoderExePath = outputFormat.szPath;
+            szEncoderOptions = outputPreset.szOptions;
+            szName = szName + _T(".") + item.szExtension.MakeLower();
 
             // set full path for output file
             CString szOutputFile;
@@ -1017,10 +1015,10 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
             if (nProcessingMode == 1)
                 nProcessingMode = 2;
 
-            // 1. Input is WAV, [Output is WAV], No Resampling          = Copy Input File (using SSRC without options)
-            // 2. Input is WAV, [Output is WAV], Resampling             = Encode Input File (using SSRC)
-            // 3. Input need decoding, [Output is WAV], No Resampling   = Decode Input File (using Decoder)
-            // 4. Input need decoding, [Output is WAV], Resampling      = Decode and Encode (using Decoder and SSRC)
+            // 1. Input is WAV, [Output is WAV], No Resampling              = Copy Input File (using SSRC without options)
+            // 2. Input is WAV, [Output is WAV], Resampling                 = Encode Input File (using SSRC)
+            // 3. Input requires decoding, [Output is WAV], No Resampling   = Decode Input File (using Decoder)
+            // 4. Input requires decoding, [Output is WAV], Resampling      = Decode and Encode (using Decoder and SSRC)
             if (nOutputFormat == 0)
             {
                 bool bNeedResampling = (szEncoderOptions.GetLength() > 0) ? true : false;
