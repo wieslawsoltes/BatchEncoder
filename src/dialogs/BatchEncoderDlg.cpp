@@ -358,12 +358,6 @@ BOOL CBatchEncoderDlg::OnInitDialog()
     // main dialog title with version number
     this->SetWindowText(MAIN_APP_NAME);
 
-    // output file format combo-box 
-    for (int i = 0; i < NUM_PRESET_FILES; i++)
-        m_CmbFormat.InsertString(i, g_szPresetNames[i]);
-
-    ::SetComboBoxHeight(this->GetSafeHwnd(), IDC_COMBO_FORMAT);
-
     // set flag to non running state
     bRunning = false;
 
@@ -416,7 +410,6 @@ BOOL CBatchEncoderDlg::OnInitDialog()
     AddAnchor(IDC_STATUSBAR, BOTTOM_LEFT, BOTTOM_RIGHT);
 
     this->LoadConfigFile(this->szMainConfigFile);
-    this->UpdateStatusBar();
 
     return TRUE;
 }
@@ -838,146 +831,47 @@ HCURSOR CBatchEncoderDlg::OnQueryDragIcon()
     return static_cast<HCURSOR>(m_hIcon);
 }
 
-CString CBatchEncoderDlg::GetDecoderExe(int nIntputFormat)
+void CBatchEncoderDlg::UpdateOutputComboBoxes()
 {
-    return m_Config.m_Formats[(NUM_OUTPUT_EXT + nIntputFormat - 1)].szPath;
-}
+    // update formats combo box
+    this->m_CmbFormat.ResetContent();
 
-CString CBatchEncoderDlg::GetDecoderOpt(int nIntputFormat, int nPreset)
-{
-    CString szRet = _T("");
-
-    // TOOD: Add support for decoder presets.
-
-    return szRet;
-}
-
-CString CBatchEncoderDlg::GetEncoderExe(int nOutputFormat)
-{
-    return m_Config.m_Formats[nOutputFormat].szPath;
-}
-
-CString CBatchEncoderDlg::GetEncoderOpt(int nOutputFormat, int nPreset)
-{
-    return m_Config.m_Presets[nOutputFormat].GetPresetOptions(nPreset);
-}
-
-bool CBatchEncoderDlg::LoadPresets(CString szPresetsFName, CPresetsList *m_ListPresets)
-{
-    CXMLDocumentW doc;
-    if (doc.LoadFileW(szPresetsFName) == true)
+    int nFormats = m_Config.m_Formats.GetSize();
+    for (int i = 0; i < nFormats; i++)
     {
-        // root: Presets
-        tinyxml2::XMLElement *pRootElem = doc.FirstChildElement();
-        if (!pRootElem)
-            return false;
-
-        // check for "Presets"
-        const char *szRoot = pRootElem->Value();
-        const char *szRootName = "Presets";
-        if (strcmp(szRootName, szRoot) != 0)
-            return false;
-
-        m_ListPresets->RemoveAllNodes();
-
-        int nIndex = 0;
-        tinyxml2::XMLElement *pFilesNode = pRootElem->FirstChildElement("Preset");
-        for (pFilesNode; pFilesNode; pFilesNode = pFilesNode->NextSiblingElement())
-        {
-            const char *pszName = pFilesNode->Attribute("name");
-            const char *pszOptions = pFilesNode->Attribute("options");
-            if ((pszName != NULL) && (pszOptions != NULL))
-            {
-                CString szName = GetConfigString(pszName);
-                CString szOptions = GetConfigString(pszOptions);
-                m_ListPresets->InsertNode(szName);
-                m_ListPresets->SetPresetOptions(szOptions, nIndex);
-                nIndex++;
-            }
-        }
-
-        return true;
+        CFormat& format = m_Config.m_Formats.GetData(i);
+        this->m_CmbFormat.InsertString(i, format.szName);
     }
 
-    return false;
-}
-
-void CBatchEncoderDlg::FillPresetComboBox(CPresetsList *m_ListPresets, int nSelIndex)
-{
-    if (m_ListPresets != NULL)
+    static bool bResizeFormatsComboBox = false;
+    if (bResizeFormatsComboBox == false)
     {
-        int nSize = m_ListPresets->GetSize();
-
-        // check if we have some presets
-        if (nSize == 0)
-        {
-            // reset presets ComboBox
-            this->m_CmbPresets.ResetContent();
-
-            // insert Error Message
-            this->m_CmbPresets.AddString(_T("Not Available"));
-
-            return;
-        }
-
-        // reset ComboBox content
-        this->m_CmbPresets.ResetContent();
-
-        // insert all preset names to combo-box
-        for (int i = 0; i < nSize; i++)
-        {
-            CString szName = m_ListPresets->GetPresetName(i);
-            this->m_CmbPresets.InsertString(i, szName);
-        }
-
-        // resize ComboBox only once
-        static bool bInitPresetsCombo = false;
-        if (bInitPresetsCombo == false)
-        {
-            ::SetComboBoxHeight(this->GetSafeHwnd(), IDC_COMBO_PRESETS);
-            bInitPresetsCombo = true;
-        }
-
-        // select default item in presets ComboBox
-        if ((nSelIndex < 0) || (nSelIndex > nSize - 1))
-            this->m_CmbPresets.SetCurSel(0); // ERROR, select first item
-        else
-            this->m_CmbPresets.SetCurSel(nSelIndex);
-    }
-}
-
-CPresetsList *CBatchEncoderDlg::GetCurrentPresetsList(void)
-{
-    int nSelFormatIndex = this->m_CmbFormat.GetCurSel();
-
-    if ((nSelFormatIndex >= 0) && (nSelFormatIndex < NUM_PRESET_FILES))
-        return &m_Config.m_Presets[nSelFormatIndex];
-    else
-        return NULL; // ERROR
-}
-
-void CBatchEncoderDlg::UpdateOutputComboBoxes(int nSelFormatIndex, int nSelPresetIndex)
-{
-    if (this->m_CmbFormat.GetCount() < nSelFormatIndex || nSelFormatIndex < 0)
-    {
-        this->m_CmbFormat.SetCurSel(0);
-        this->m_CmbPresets.SetCurSel(0);
-        return; // ERROR
+        ::SetComboBoxHeight(this->GetSafeHwnd(), IDC_COMBO_FORMAT);
+        bResizeFormatsComboBox = true;
     }
 
-    if ((nSelFormatIndex >= 0) && (nSelFormatIndex < NUM_PRESET_FILES))
+    this->m_CmbFormat.SetCurSel(m_Config.m_Options.nSelectedFormat);
+
+    // update presets combo box
+    this->m_CmbPresets.ResetContent();
+
+    CFormat& format = m_Config.m_Formats.GetData(m_Config.m_Options.nSelectedFormat);
+
+    int nPresets = format.m_Presets.GetSize();
+    for (int i = 0; i < nPresets; i++)
     {
-        this->FillPresetComboBox(&m_Config.m_Presets[nSelFormatIndex], nSelPresetIndex);
-    }
-    else
-    {
-        // ERROR
-        this->m_CmbPresets.ResetContent();
-        this->m_CmbPresets.InsertString(0, _T("Default"));
-        this->m_CmbPresets.SetCurSel(0);
+        CPreset& preset = format.m_Presets.GetData(i);
+        this->m_CmbPresets.InsertString(i, preset.szName);
     }
 
-    this->m_CmbFormat.SetCurSel(nSelFormatIndex);
+    static bool bResizePresetsComboBox = false;
+    if (bResizePresetsComboBox == false)
+    {
+        ::SetComboBoxHeight(this->GetSafeHwnd(), IDC_COMBO_PRESETS);
+        bResizePresetsComboBox = true;
+    }
+
+    this->m_CmbPresets.SetCurSel(format.nDefaultPreset);
 }
 
 LPTSTR CBatchEncoderDlg::GetMenuItemCheck(int nID)
@@ -1021,8 +915,6 @@ void CBatchEncoderDlg::ShowGridlines(bool bShow)
 
 void CBatchEncoderDlg::InitNewItemData(NewItemData &nid)
 {
-    nid.nAction = ADD_ITEM_NONE;
-    nid.nItem = -1;
     nid.szPath = _T("");
     nid.szName = _T("");
     nid.szOutExt = _T("");
@@ -1063,9 +955,7 @@ void CBatchEncoderDlg::LoadItems(tinyxml2::XMLElement *pItemsElem)
         NewItemData nid;
         this->InitNewItemData(nid);
 
-        nid.nAction = ADD_ITEM_MEMORY_AND_CONTROL;
         nid.szPath = GetConfigString(pszAttribPath);
-        nid.nItem = -1;
         nid.szName = GetConfigString(pszAttribName);
         nid.szOutExt = GetConfigString(pszAttribOutExt);
         nid.nOutPreset = stoi(GetConfigString(pszAttribOutPreset));
@@ -1079,71 +969,20 @@ void CBatchEncoderDlg::LoadItems(tinyxml2::XMLElement *pItemsElem)
 
 void CBatchEncoderDlg::SaveItems(CXMLDocumentW &doc, tinyxml2::XMLElement *pItemsElem)
 {
-    tinyxml2::XMLElement *pItemElem;
-    CUtf8String szBuffUtf8;
-
     int nItems = this->m_LstInputItems.GetItemCount();
     for (int i = 0; i < nItems; i++)
     {
-        pItemElem = doc.NewElement("Item");
-        pItemsElem->LinkEndChild(pItemElem);
-
-        char *pszAttribPath = szBuffUtf8.Create(m_Config.m_Items.GetItemFilePath(i));
-        pItemElem->SetAttribute("path", pszAttribPath);
-        szBuffUtf8.Clear();
-
-        char *pszAttribChecked = szBuffUtf8.Create((this->m_LstInputItems.GetCheck(i) == TRUE) ? _T("true") : _T("false"));
-        pItemElem->SetAttribute("checked", pszAttribChecked);
-        szBuffUtf8.Clear();
-
-        char *pszAttribName = szBuffUtf8.Create(m_Config.m_Items.GetItemFileName(i));
-        pItemElem->SetAttribute("name", pszAttribName);
-        szBuffUtf8.Clear();
-
-        char *pszAttribInExt = szBuffUtf8.Create(m_Config.m_Items.GetItemInExt(i));
-        pItemElem->SetAttribute("input", pszAttribInExt);
-        szBuffUtf8.Clear();
-
-        CString szSize;
-        szSize.Format(_T("%I64d"), m_Config.m_Items.GetItemFileSize(i));
-        char *pszAttribSize = szBuffUtf8.Create(szSize);
-        pItemElem->SetAttribute("size", pszAttribSize);
-        szBuffUtf8.Clear();
-
-        char *pszAttribOutExt = szBuffUtf8.Create(m_Config.m_Items.GetItemOutExt(i));
-        pItemElem->SetAttribute("output", pszAttribOutExt);
-        szBuffUtf8.Clear();
-
-        CString szOutPreset;
-        szOutPreset.Format(_T("%d"), m_Config.m_Items.GetItemOutPreset(i));
-        char *pszAttribOutPreset = szBuffUtf8.Create(szOutPreset);;
-        pItemElem->SetAttribute("preset", pszAttribOutPreset);
-        szBuffUtf8.Clear();
-
-        char *pszAttribTime = szBuffUtf8.Create(this->m_LstInputItems.GetItemText(i, 5));
-        pItemElem->SetAttribute("time", pszAttribTime);
-        szBuffUtf8.Clear();
-
-        char *pszAttribStatus = szBuffUtf8.Create(this->m_LstInputItems.GetItemText(i, 6));
-        pItemElem->SetAttribute("status", pszAttribStatus);
-        szBuffUtf8.Clear();
+        CItem& item = m_Config.m_Items.GetData(i);
+        item.bChecked = this->m_LstInputItems.GetCheck(i) == TRUE;
+        item.szTime = this->m_LstInputItems.GetItemText(i, 5);
+        item.szStatus = this->m_LstInputItems.GetItemText(i, 6);
     }
+
+    doc.SaveItems(pItemsElem, m_Config.m_Items);
 }
 
 void CBatchEncoderDlg::GetOptions()
 {
-    // option: SelectedPresets
-    m_Config.m_Options.szSelectedPresets = _T("");
-    for (int i = 0; i < NUM_OUTPUT_EXT; i++)
-    {
-        CString szTemp;
-        szTemp.Format(_T("%d"), nCurSel[i]);
-        m_Config.m_Options.szSelectedPresets += szTemp;
-
-        if (i < (NUM_OUTPUT_EXT - 1))
-            m_Config.m_Options.szSelectedPresets += _T(" ");
-    }
-
     // option: SelectedFormat
     m_Config.m_Options.nSelectedFormat = this->m_CmbFormat.GetCurSel();
 
@@ -1196,24 +1035,6 @@ void CBatchEncoderDlg::GetOptions()
 
 void CBatchEncoderDlg::SetOptions()
 {
-    // option: SelectedFormat
-    if (m_Config.m_Options.szSelectedPresets.Compare(_T("")) != 0)
-    {
-        int curPos = 0;
-        int nIndex = 0;
-        CString resToken = m_Config.m_Options.szSelectedPresets.Tokenize(_T(" "), curPos);
-        while (resToken != _T("") && nIndex <= (NUM_OUTPUT_EXT - 1))
-        {
-            nCurSel[nIndex] = stoi(resToken);
-            resToken = m_Config.m_Options.szSelectedPresets.Tokenize(_T(" "), curPos);
-            nIndex++;
-        }
-    }
-    else
-    {
-        ZeroMemory(&nCurSel, sizeof(int) * NUM_OUTPUT_EXT);
-    }
-
     // option: SelectedFormat
 
     // option: OutputPath
@@ -1396,71 +1217,14 @@ bool CBatchEncoderDlg::LoadConfigFile(CString szFileXml)
     // root: Options
     tinyxml2::XMLElement *pOptionsElem = pRootElem->FirstChildElement("Options");
     doc.LoadOptions(pOptionsElem, m_Config.m_Options);
-    this->SetOptions();
 
-    // root: Presets
-    tinyxml2::XMLElement *pPresetsElem = pRootElem->FirstChildElement("Presets");
-    for (int i = 0; i < NUM_PRESET_FILES; i++)
-    {
-        tinyxml2::XMLElement *pPresetElem = pPresetsElem->FirstChildElement(g_szPresetTags[i]);
-        if (pPresetElem)
-        {
-            const char *tmpBuff = pPresetElem->GetText();
-            m_Config.szPresetsFile[i] = GetConfigString(tmpBuff);
-        }
-        else
-        {
-            m_Config.szPresetsFile[i] = _T("");
-        }
-    }
+    this->SetOptions();
 
     // root: Formats
     tinyxml2::XMLElement *pFormatsElem = pRootElem->FirstChildElement("Formats");
+    doc.LoadFormats(pFormatsElem, m_Config.m_Formats);
 
-    int nFormat = -1;
-    tinyxml2::XMLElement *pFormatElem = pFormatsElem->FirstChildElement("Format");
-    for (pFormatElem; pFormatElem; pFormatElem = pFormatElem->NextSiblingElement())
-    {
-        const char *pszName = pFormatElem->Attribute("name");
-        if (pszName != NULL)
-        {
-            nFormat++;
-            m_Config.m_Formats[nFormat].szName = GetConfigString(pszName);
-        }
-        else
-        {
-            continue;
-        }
-
-        const char *pszTemplate = pFormatElem->Attribute("template");
-        if (pszTemplate != NULL)
-        {
-            m_Config.m_Formats[nFormat].szTemplate = GetConfigString(pszTemplate);
-        }
-
-        const char *pszPipesInput = pFormatElem->Attribute("input");
-        if (pszPipesInput != NULL)
-        {
-            CString szBuff = GetConfigString(pszPipesInput);
-            m_Config.m_Formats[nFormat].bInput = szBuff.CompareNoCase(_T("true")) == 0;
-        }
-
-        const char *pszPipesOutput = pFormatElem->Attribute("output");
-        if (pszPipesOutput != NULL)
-        {
-            CString szBuff = GetConfigString(pszPipesOutput);
-            m_Config.m_Formats[nFormat].bOutput = szBuff.CompareNoCase(_T("true")) == 0;
-        }
-
-        const char *pszFunction = pFormatElem->Attribute("function");
-        if (pszFunction != NULL)
-        {
-            m_Config.m_Formats[nFormat].szFunction = GetConfigString(pszFunction);
-        }
-
-        const char *tmpBuff = pFormatElem->GetText();
-        m_Config.m_Formats[nFormat].szPath = GetConfigString(tmpBuff);
-    }
+    this->UpdateOutputComboBoxes();
 
     // root: Items
     this->OnFileClearList();
@@ -1468,19 +1232,7 @@ bool CBatchEncoderDlg::LoadConfigFile(CString szFileXml)
     tinyxml2::XMLElement *pItemsElem = pRootElem->FirstChildElement("Items");
     this->LoadItems(pItemsElem);
 
-    // update presets
-    this->m_CmbPresets.ResetContent();
-    for (int i = 0; i < NUM_PRESET_FILES; i++)
-        m_Config.m_Presets[i].RemoveAllNodes();
-
-    for (int i = 0; i < NUM_PRESET_FILES; i++)
-    {
-        if (this->LoadPresets(m_Config.szPresetsFile[i], &m_Config.m_Presets[i]) == false)
-            return false;
-    }
-
-    // update formats
-    this->UpdateOutputComboBoxes(m_Config.m_Options.nSelectedFormat, nCurSel[m_Config.m_Options.nSelectedFormat]);
+    this->UpdateStatusBar();
 
     return true;
 }
@@ -1500,46 +1252,13 @@ bool CBatchEncoderDlg::SaveConfigFile(CString szFileXml)
     // root: Options
     tinyxml2::XMLElement *pOptionsElem = doc.NewElement("Options");
     pRootElem->LinkEndChild(pOptionsElem);
+
     this->GetOptions();
     doc.SaveOptions(pOptionsElem, m_Config.m_Options);
-
-    // root: Presets
-    tinyxml2::XMLElement *pPresetsElem = doc.NewElement("Presets");
-    pRootElem->LinkEndChild(pPresetsElem);
-
-    for (int i = 0; i < NUM_PRESET_FILES; i++)
-    {
-        tinyxml2::XMLElement *pPresetElem = doc.NewElement(g_szPresetTags[i]);
-        pPresetElem->LinkEndChild(doc.NewText(szBuffUtf8.Create(m_Config.szPresetsFile[i])));
-        pPresetsElem->LinkEndChild(pPresetElem);
-        szBuffUtf8.Clear();
-    }
 
     // root: Formats
     tinyxml2::XMLElement *pFormatsElem = doc.NewElement("Formats");
     pRootElem->LinkEndChild(pFormatsElem);
-
-    for (int i = 0; i < NUM_FORMAT_NAMES; i++)
-    {
-        tinyxml2::XMLElement *pFormatElem = doc.NewElement("Format");
-
-        pFormatElem->LinkEndChild(doc.NewText(szBuffUtf8.Create(m_Config.m_Formats[i].szPath)));
-        szBuffUtf8.Clear();
-
-        pFormatElem->SetAttribute("name", szBuffUtf8.Create(m_Config.m_Formats[i].szName));
-        szBuffUtf8.Clear();
-
-        pFormatElem->SetAttribute("template", szBuffUtf8.Create(m_Config.m_Formats[i].szTemplate));
-        szBuffUtf8.Clear();
-
-        pFormatElem->SetAttribute("input", (m_Config.m_Formats[i].bInput) ? "true" : "false");
-        pFormatElem->SetAttribute("output", (m_Config.m_Formats[i].bOutput) ? "true" : "false");
-
-        pFormatElem->SetAttribute("function", szBuffUtf8.Create(m_Config.m_Formats[i].szFunction));
-        szBuffUtf8.Clear();
-
-        pFormatsElem->LinkEndChild(pFormatElem);
-    }
 
     // root: Items
     tinyxml2::XMLElement *pItemsElem = doc.NewElement("Items");
@@ -1892,7 +1611,7 @@ void CBatchEncoderDlg::OnBnClickedCheckOutPath()
     }
 }
 
-bool CBatchEncoderDlg::InsertToMemoryList(NewItemData &nid)
+int CBatchEncoderDlg::InsertToMemoryList(NewItemData &nid)
 {
     WIN32_FIND_DATA FindFileData;
     HANDLE hFind;
@@ -1923,7 +1642,7 @@ bool CBatchEncoderDlg::InsertToMemoryList(NewItemData &nid)
 
     hFind = ::FindFirstFile(nid.szPath, &FindFileData);
     if (hFind == INVALID_HANDLE_VALUE)
-        return false;
+        return -1;
 
     ::FindClose(hFind);
 
@@ -1931,83 +1650,72 @@ bool CBatchEncoderDlg::InsertToMemoryList(NewItemData &nid)
     ulSize.LowPart = FindFileData.nFileSizeLow;
     nFileSize = ulSize.QuadPart;
 
-    nid.nItem = m_Config.m_Items.InsertNode(nid.szPath,
-        nid.szName,
-        nFileSize,
-        nCurFormat,
-        nCurPreset);
-
-    return true;
+    return m_Config.m_Items.InsertNode(nid.szPath, nid.szName, nFileSize, nCurFormat, nCurPreset);
 }
 
-bool CBatchEncoderDlg::InsertToControlList(NewItemData &nid)
+void CBatchEncoderDlg::InsertToControlList(int nItem)
 {
+    CItem& item = m_Config.m_Items.GetData(nItem);
+
     CString tmpBuf;
     LVITEM lvi;
     ZeroMemory(&lvi, sizeof(LVITEM));
     lvi.mask = LVIF_TEXT | LVIF_STATE;
-    lvi.iItem = nid.nItem;
+    lvi.iItem = nItem;
 
     // [Name] : file name
-    lvi.pszText = (LPTSTR)(LPCTSTR)(m_Config.m_Items.GetItemFileName(nid.nItem));
+    lvi.pszText = (LPTSTR)(LPCTSTR)(item.szName);
     m_LstInputItems.InsertItem(&lvi);
-    m_LstInputItems.SetItemData(nid.nItem, nid.nItem);
+    m_LstInputItems.SetItemData(nItem, nItem);
 
     // [Type] : input extension 
-    tmpBuf.Format(_T("%s"), m_Config.m_Items.GetItemInExt(nid.nItem));
+    tmpBuf.Format(_T("%s"), item.szExtension);
     lvi.iSubItem = 1;
     lvi.pszText = (LPTSTR)(LPCTSTR)(tmpBuf);
     m_LstInputItems.SetItemText(lvi.iItem, 1, lvi.pszText);
 
     // [Size (bytes)] : file size
-    tmpBuf.Format(_T("%I64d"), m_Config.m_Items.GetItemFileSize(nid.nItem));
+    tmpBuf.Format(_T("%s"), item.szSize);
     lvi.iSubItem = 2;
     lvi.pszText = (LPTSTR)(LPCTSTR)(tmpBuf);
     m_LstInputItems.SetItemText(lvi.iItem, 2, lvi.pszText);
 
-    // [Output] : output extension
-    tmpBuf.Format(_T("%s"), m_Config.m_Items.GetItemOutExt(nid.nItem));
+    // [Output] : output format
+    tmpBuf.Format(_T("%s"), item.szFormatId);
     lvi.iSubItem = 3;
     lvi.pszText = (LPTSTR)(LPCTSTR)(tmpBuf);
     m_LstInputItems.SetItemText(lvi.iItem, 3, lvi.pszText);
 
     // [Preset] : selected preset index
-    tmpBuf.Format(_T("%d"), m_Config.m_Items.GetItemOutPreset(nid.nItem));
+    tmpBuf.Format(_T("%d"), item.nPreset);
     lvi.iSubItem = 4;
     lvi.pszText = (LPTSTR)(LPCTSTR)(tmpBuf);
     m_LstInputItems.SetItemText(lvi.iItem, 4, lvi.pszText);
 
-    // [Time] : enc/dec conversion time
-    tmpBuf.Format(_T("%s"), (nid.szTime.Compare(_T("")) == 0) ? _T("--:--") : nid.szTime);
+    // [Time] : encoder/decoder conversion time
+    tmpBuf.Format(_T("%s"), (item.szTime.Compare(_T("")) == 0) ? _T("--:--") : item.szTime);
     lvi.iSubItem = 5;
     lvi.pszText = (LPTSTR)(LPCTSTR)(tmpBuf);
     m_LstInputItems.SetItemText(lvi.iItem, 5, lvi.pszText);
 
-    // [Status] : enc/dec progress status
-    tmpBuf.Format(_T("%s"), (nid.szStatus.Compare(_T("")) == 0) ? _T("Not Done") : nid.szStatus);
+    // [Status] : encoder/decoder progress status
+    tmpBuf.Format(_T("%s"), (item.szStatus.Compare(_T("")) == 0) ? _T("Not Done") : item.szStatus);
     lvi.iSubItem = 6;
     lvi.pszText = (LPTSTR)(LPCTSTR)(tmpBuf);
     m_LstInputItems.SetItemText(lvi.iItem, 6, lvi.pszText);
 
     // set item CheckBox state
-    m_LstInputItems.SetCheck(nid.nItem, nid.bChecked);
-
-    return true;
+    m_LstInputItems.SetCheck(nItem, item.bChecked);
 }
 
 bool CBatchEncoderDlg::InsertToList(NewItemData &nid)
 {
-    if (((nid.nAction == ADD_ITEM_MEMORY) || (nid.nAction == ADD_ITEM_MEMORY_AND_CONTROL)) && (nid.nItem == -1))
-    {
-        if (this->InsertToMemoryList(nid) == false)
-            return false;
-    }
+    int nItem = this->InsertToMemoryList(nid);
 
-    if (((nid.nAction == ADD_ITEM_CONTROL) || (nid.nAction == ADD_ITEM_MEMORY_AND_CONTROL)) && (nid.nItem >= 0))
-    {
-        if (this->InsertToControlList(nid) == false)
-            return false;
-    }
+    if (nItem == -1)
+        return false;
+
+    this->InsertToControlList(nItem);
 
     return true;
 }
@@ -2030,7 +1738,7 @@ void CBatchEncoderDlg::OnLvnKeydownListInputFiles(NMHDR *pNMHDR, LRESULT *pResul
     *pResult = 0;
 }
 
-void CBatchEncoderDlg::SearchFolderForFiles(CString szFile, const bool bRecurse, const TCHAR *szOutExt, const int nPreset)
+void CBatchEncoderDlg::SearchFolderForFiles(CString szFile, const bool bRecurse)
 {
     try
     {
@@ -2062,23 +1770,8 @@ void CBatchEncoderDlg::SearchFolderForFiles(CString szFile, const bool bRecurse,
                 NewItemData nid;
                 this->InitNewItemData(nid);
 
-                if ((szOutExt != NULL) && (nPreset != -1))
-                {
-                    nid.nAction = ADD_ITEM_MEMORY;
-                    nid.szPath = szTempBuf;
-                    nid.nItem = -1;
-                    nid.szName = _T("");
-                    nid.szOutExt = szOutExt;
-                    nid.nOutPreset = nPreset;
-                    this->InsertToList(nid);
-                }
-                else
-                {
-                    nid.nAction = ADD_ITEM_MEMORY_AND_CONTROL;
-                    nid.szPath = szTempBuf;
-                    nid.nItem = -1;
-                    this->InsertToList(nid);
-                }
+                nid.szPath = szTempBuf;
+                this->InsertToList(nid);
             }
 
             if (w32FileData.cFileName[0] != '.' &&
@@ -2086,7 +1779,7 @@ void CBatchEncoderDlg::SearchFolderForFiles(CString szFile, const bool bRecurse,
             {
                 wsprintf(cTempBuf, _T("%s\\%s\0"), szFile, w32FileData.cFileName);
                 if (bRecurse == true)
-                    this->SearchFolderForFiles(cTempBuf, true, szOutExt, nPreset);
+                    this->SearchFolderForFiles(cTempBuf, true);
             }
 
             if (FindNextFile(hSearch, &w32FileData) == FALSE)
@@ -2130,10 +1823,7 @@ void CBatchEncoderDlg::HandleDropFiles(HDROP hDropInfo)
             }
             else
             {
-                nid.nAction = ADD_ITEM_MEMORY_AND_CONTROL;
                 nid.szPath = szFile;
-                nid.nItem = -1;
-
                 this->InsertToList(nid);
             }
 
@@ -2503,10 +2193,7 @@ void CBatchEncoderDlg::OnEditAddFiles()
                 sFilePath = fd.GetNextPathName(pos);
                 if (!sFilePath.IsEmpty())
                 {
-                    nid.nAction = ADD_ITEM_MEMORY_AND_CONTROL;
                     nid.szPath = sFilePath;
-                    nid.nItem = -1;
-
                     this->InsertToList(nid);
                 }
             } while (pos != NULL);
@@ -2919,14 +2606,8 @@ void CBatchEncoderDlg::OnOptionsConfigurePresets()
     CPresetsDlg dlg;
     dlg.bShowGridLines = this->GridlinesVisible();
 
-    int nSelFormat = this->m_CmbFormat.GetCurSel();
-    int nSelPreset = this->m_CmbPresets.GetCurSel();
-
-    dlg.nSelFormat = nSelFormat;
-    dlg.nSelPreset = nSelPreset;
-
-    for (int i = 0; i < NUM_PRESET_FILES; i++)
-        dlg.szPresetsFile[i] = m_Config.szPresetsFile[i];
+    dlg.nSelectedFormat = this->m_CmbFormat.GetCurSel();
+    m_Config.m_Formats.Copy(dlg.m_Formats);
 
     dlg.szPresetsDialogResize = m_Config.m_Options.szPresetsDialogResize;
     dlg.szPresetsListColumns = m_Config.m_Options.szPresetsListColumns;
@@ -2934,13 +2615,9 @@ void CBatchEncoderDlg::OnOptionsConfigurePresets()
     INT_PTR nRet = dlg.DoModal();
     if (nRet == IDOK)
     {
-        for (int i = 0; i < NUM_PRESET_FILES; i++)
-        {
-            m_Config.szPresetsFile[i] = dlg.szPresetsFile[i];
-            this->LoadPresets(m_Config.szPresetsFile[i], &m_Config.m_Presets[i]);
-        }
-        
-        this->UpdateOutputComboBoxes(nSelFormat, nSelPreset);
+        m_Config.m_Formats.RemoveAllNodes();
+        dlg.m_Formats.Copy(m_Config.m_Formats);
+        this->UpdateOutputComboBoxes();
     }
 
     m_Config.m_Options.szPresetsDialogResize = dlg.szPresetsDialogResize;
@@ -2952,8 +2629,7 @@ void CBatchEncoderDlg::OnOptionsConfigureFormat()
     CFormatsDlg dlg;
     dlg.bShowGridLines = this->GridlinesVisible();
 
-    for (int i = 0; i < NUM_FORMAT_NAMES; i++)
-        m_Config.m_Formats[i].Copy(dlg.m_Formats[i]);
+    m_Config.m_Formats.Copy(dlg.m_Formats);
 
     dlg.szFormatsDialogResize = m_Config.m_Options.szFormatsDialogResize;
     dlg.szFormatsListColumns = m_Config.m_Options.szFormatsListColumns;
@@ -2961,8 +2637,9 @@ void CBatchEncoderDlg::OnOptionsConfigureFormat()
     INT_PTR nRet = dlg.DoModal();
     if (nRet == IDOK)
     {
-        for (int i = 0; i < NUM_FORMAT_NAMES; i++)
-            dlg.m_Formats[i].Copy(m_Config.m_Formats[i]);
+        m_Config.m_Formats.RemoveAllNodes();
+        dlg.m_Formats.Copy(m_Config.m_Formats);
+        this->UpdateOutputComboBoxes();
     }
 
     m_Config.m_Options.szFormatsDialogResize = dlg.szFormatsDialogResize;

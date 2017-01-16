@@ -14,16 +14,10 @@
 
 #define IDC_STATUSBAR 1500
 
-// nAction
-#define ADD_ITEM_NONE              -1
-#define ADD_ITEM_MEMORY             0
-#define ADD_ITEM_CONTROL            1
 #define ADD_ITEM_MEMORY_AND_CONTROL 2
 
 typedef struct TNewItemData
 {
-    int nAction;
-    int nItem;
     CString szPath;
     CString szName;
     CString szOutExt;
@@ -78,8 +72,6 @@ public:
     volatile int nProgressCurrent;
     bool bSameAsSourceEdit;
 public:
-    int nCurSel[NUM_OUTPUT_EXT];
-public:
     CEdit m_EdtOutPath;
 public:
     CProgressCtrl m_FileProgress;
@@ -97,20 +89,14 @@ public:
     CMyButton m_BtnConvert;
     CMyButton m_BtnBrowse;
 public:
-    CString GetEncoderExe(int nOutputFormat);
-    CString GetDecoderExe(int nIntputFormat);
-public:
-    CString GetEncoderOpt(int nOutputFormat, int nPreset);
-    CString GetDecoderOpt(int nIntputFormat, int nPreset);
-public:
     bool WorkerCallback(int nProgress,
         bool bFinished,
         bool bError = false,
         double fTime = 0.0,
         int nIndex = -1);
 public:
-    bool InsertToMemoryList(NewItemData &nid);
-    bool InsertToControlList(NewItemData &nid);
+    int InsertToMemoryList(NewItemData &nid);
+    void InsertToControlList(int nItem);
     bool InsertToList(NewItemData &nid);
 public:
     void HandleDropFiles(HDROP hDropInfo);
@@ -121,10 +107,7 @@ public:
     void ResetConvertionTime();
     void ResetConvertionStatus();
 public:
-    void SearchFolderForFiles(CString szFile,
-        const bool bRecurse,
-        const TCHAR *szOutExt = NULL,
-        const int nPreset = -1);
+    void SearchFolderForFiles(CString szFile, const bool bRecurse);
 public:
     LPTSTR GetMenuItemCheck(int nID);
     void SetMenuItemCheck(int nID, LPTSTR bChecked);
@@ -140,8 +123,6 @@ public:
     void GetOptions();
     void SetOptions();
 public:
-
-public:
     bool LoadList(CString szFileXml);
     bool SaveList(CString szFileXml);
 public:
@@ -151,11 +132,7 @@ public:
     afx_msg void LoadUserConfig();
     afx_msg void SaveUserConfig();
 public:
-    bool LoadPresets(CString szPresetsFName, CPresetsList *m_ListPresets);
-    CPresetsList *GetCurrentPresetsList(void);
-public:
-    void FillPresetComboBox(CPresetsList *m_ListPresets = NULL, int nSelIndex = -1);
-    void UpdateOutputComboBoxes(int nSelFormatIndex = -1, int nSelPresetIndex = -1);
+    void UpdateOutputComboBoxes();
 public:
     void EnableUserInterface(BOOL bEnable = TRUE);
 public:
