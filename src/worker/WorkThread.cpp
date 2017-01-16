@@ -15,8 +15,6 @@
 
 DWORD WINAPI ReadThread(LPVOID lpParam)
 {
-    // NOTE: 4096 bytes is default buffer for pipes (on XP SP2)
-
     PREAD_DATA pReadData = (PREAD_DATA)lpParam;
     HANDLE hFile = INVALID_HANDLE_VALUE;
     BYTE pReadBuff[4096];
@@ -99,8 +97,6 @@ DWORD WINAPI ReadThread(LPVOID lpParam)
 
 DWORD WINAPI WriteThread(LPVOID lpParam)
 {
-    // NOTE: 4096 bytes is default buffer for pipes (on XP SP2)
-
     PREAD_DATA pReadData = (PREAD_DATA)lpParam;
     HANDLE hFile = INVALID_HANDLE_VALUE;
     BYTE pReadBuff[4096];
@@ -169,24 +165,19 @@ bool ConvertFile(CBatchEncoderDlg *pDlg,
     bool bUseWritePipes)
 {
     // TODO:
-    // if there is no input pipes and output pipes are enabled
-    // we can not get progress status for out ProgressBars
+    // if there is no input pipe and output pipe enabled
+    // we can not get progress status for the ProgressBars
     // so for encoder/decoder mode treat this as an error
-    // and for trans-coding thread this as decoder to encoder piping
+    // and for trans-coding treat this as decoder to encoder piping
 
-    // TODO: handle bUseWritePipes flag mostly like bUseReadPipes
+    // TODO: handle bUseWritePipes flag like bUseReadPipes
 
     // NOTE: bUseReadPipes
     // if true use pipes to read source file and send the data to console stdin
     // if false create full command-line and read from stdout/stderr conversion progress
 
     // log console text output
-    bool bLogConsoleOutput = false;
-
-    CMenu *mainMenu = pDlg->GetMenu();
-    UINT nState = mainMenu->GetMenuState(ID_OPTIONS_LOGCONSOLEOUTPUT, MF_BYCOMMAND);
-    if (nState & MF_CHECKED)
-        bLogConsoleOutput = true;
+    bool bLogConsoleOutput = pDlg->GetMenu()->GetMenuState(ID_OPTIONS_LOGCONSOLEOUTPUT, MF_BYCOMMAND) & MF_CHECKED;
 
     // set the correct security attributes
     SECURITY_ATTRIBUTES secattr;
@@ -257,7 +248,7 @@ bool ConvertFile(CBatchEncoderDlg *pDlg,
             {
                 ::CloseHandle(rInPipe);
                 ::CloseHandle(wInPipe);
-
+                
                 pDlg->WorkerCallback(-1, true, true, 0.0, nIndex);
                 return false;
             }
@@ -287,7 +278,7 @@ bool ConvertFile(CBatchEncoderDlg *pDlg,
     // NOTE: DuplicateHandle prevents child process to close pipe
     if ((bUseReadPipes == false) && (bUseWritePipes == false))
     {
-        // this could be useful when reading from stderr
+        // NOTE: this could be used when reading from stderr
         if (::DuplicateHandle(::GetCurrentProcess(),
             rOutErrPipe,
             ::GetCurrentProcess(),
@@ -315,7 +306,7 @@ bool ConvertFile(CBatchEncoderDlg *pDlg,
 
     // TODO: 
     // when read pipes are disabled and write pipes enabled
-    // we maybe can get stderr progress from console
+    // we can try to get stderr progress from console
     // this was tested not tested with command-line tools
 
     if ((bUseReadPipes == false) && (bUseWritePipes == false))
@@ -349,16 +340,14 @@ bool ConvertFile(CBatchEncoderDlg *pDlg,
     int nProgress = 0;
     CTimeCount countTime;
 
-    // init conversion time counter
+    // init and start conversion time counter
     countTime.InitCounter();
-
-    // and start it right now
     countTime.StartCounter();
 
     if (pDlg->m_Config.m_Options.bForceConsoleWindow == true)
     {
         // in this mode all encoders/decoders are forced 
-        // to run in native system console windows
+        // to run in native system console window
         // all pipes and progress options are omitted
         int nRet;
 
@@ -399,13 +388,9 @@ bool ConvertFile(CBatchEncoderDlg *pDlg,
             _flushall();
             nRet = ::_tsystem(szSysCommandLine); // szCommandLine
             if (nRet == -1)
-            {
                 nProgress = -1;
-            }
             else
-            {
                 nProgress = 100;
-            }
         }
     }
     else
@@ -598,9 +583,8 @@ bool ConvertFile(CBatchEncoderDlg *pDlg,
             // ::ResumeThread(pInfo.hThread);
 
             // NOTE: 
-            // is there a need to check console output code-page
-            // all apps should be using system code-page
-            // or they are using UNICODE output?
+            // dow we need to check console output code-page?
+            // all apps should be using system code-page or they are using UNICODE output?
             char szReadBuff[512];
             char szLineBuff[512];
             DWORD dwReadBytes = 0L;
@@ -614,7 +598,7 @@ bool ConvertFile(CBatchEncoderDlg *pDlg,
             ZeroMemory(szReadBuff, sizeof(szReadBuff));
             ZeroMemory(szLineBuff, sizeof(szLineBuff));
 
-            // NOTE: what we get first start of line or end of line?
+            // NOTE: what we get is first start of line or end of line?
             bLineStart = false;
             bLineEnd = false;
 
@@ -723,7 +707,7 @@ bool ConvertFile(CBatchEncoderDlg *pDlg,
                     }
                     else if (bLineEnd == false)
                     {
-                        bLineStart = true; // for sure we have start
+                        bLineStart = true; // we have start
                         nLineLen++;
                         szLineBuff[nLineLen - 1] = szReadBuff[i];
                     }
@@ -838,7 +822,6 @@ bool ConvertFile(CBatchEncoderDlg *pDlg,
             {
                 // when properly finishing we need to wait
                 // for process to terminate = 5 seconds max
-                // here we are doing this right and clean
                 DWORD dwRet = ::WaitForSingleObject(hProc, 2000);
                 switch (dwRet)
                 {
@@ -905,20 +888,13 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
     ZeroMemory(szCommandLine, sizeof(szCommandLine));
 
     // check for delete flag
-    bool bDeleteAfterconversion = false;
-    if (pDlg->GetMenu()->GetMenuState(ID_OPTIONS_DELETESOURCEFILEWHENDONE, MF_BYCOMMAND) == MF_CHECKED)
-        bDeleteAfterconversion = true;
-    else
-        bDeleteAfterconversion = false;
+    bool bDeleteAfterconversion = pDlg->GetMenu()->GetMenuState(ID_OPTIONS_DELETESOURCEFILEWHENDONE, MF_BYCOMMAND) == MF_CHECKED;
 
     // check for output path
     CString szOutPath;
-    bool bOutPath;
     pDlg->m_EdtOutPath.GetWindowText(szOutPath);
-    if (pDlg->m_ChkOutPath.GetCheck() == BST_CHECKED)
-        bOutPath = true;
-    else
-        bOutPath = false;
+
+    bool bOutPath = pDlg->m_ChkOutPath.GetCheck() == BST_CHECKED;
 
     // get number of files in ListView
     int nFiles = pDlg->m_LstInputItems.GetItemCount();
@@ -964,13 +940,14 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
             // scroll list to ensure the item is visible
             pDlg->m_LstInputItems.EnsureVisible(i, FALSE);
 
-            // TODO: when trans-coding on decode pass sum the decode+encode passes as one
-            //       in the total progress-bar calculations
+            // TODO: 
+            // when trans-coding on decode pass sum the decode+encode passes as one
+            // in the total progress-bar calculations
 
             // processing modes:
-            // 0 - encoding - input is WAV file and we only have to encode
-            // 1 - decoding - we only have to decode input file to WAV
-            // 2 - trans-coding - we need to decode input file to encoder stdin stream
+            // 0. encoding - input is WAV file and we only have to encode
+            // 1. decoding - we only have to decode input file to WAV
+            // 2. trans-coding - we need to decode input file to encoder stdin stream
             int nProcessingMode = -1;
 
             // get input file format
@@ -1040,10 +1017,10 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
             if (nProcessingMode == 1)
                 nProcessingMode = 2;
 
-            // [1] Input is WAV, [Output is WAV], No Resampling          = Copy Input File (using SSRC without options)
-            // [2] Input is WAV, [Output is WAV], Resampling             = Encode Input File (using SSRC)
-            // [3] Input need decoding, [Output is WAV], No Resampling   = Decode Input File (using Decoder)
-            // [4] Input need decoding, [Output is WAV], Resampling      = Decode and Encode (using Decoder and SSRC)
+            // 1. Input is WAV, [Output is WAV], No Resampling          = Copy Input File (using SSRC without options)
+            // 2. Input is WAV, [Output is WAV], Resampling             = Encode Input File (using SSRC)
+            // 3. Input need decoding, [Output is WAV], No Resampling   = Decode Input File (using Decoder)
+            // 4. Input need decoding, [Output is WAV], Resampling      = Decode and Encode (using Decoder and SSRC)
             if (nOutputFormat == 0)
             {
                 bool bNeedResampling = (szEncoderOptions.GetLength() > 0) ? true : false;
@@ -1096,7 +1073,7 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
                     szOutputFile = _T("-");
 
                 // TODO:
-                // bUseOutPipes == true then handle szOutputFile same as input file
+                // bUseOutPipes == true than handle szOutputFile same as input file
                 if (nProcessingMode == 2)
                     szOutputFile = szOutputFile + _T(".wav");
 
