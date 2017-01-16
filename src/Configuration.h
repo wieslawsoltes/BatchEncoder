@@ -183,7 +183,6 @@ private:
         LPTSTR lpszTemp = ::PathFindFileName(lpszPathName);
         if (lpszTitle == NULL)
             return lstrlen(lpszTemp) + 1;
-
         lstrcpyn(lpszTitle, lpszTemp, nMax);
         return(0);
     }
@@ -192,10 +191,8 @@ public:
     {
         CItem item1 = this->GetData(idx1);
         CItem item2 = this->GetData(idx2);
-        if ((idx1 < 0) || (idx2 < 0) ||
-            (idx1 >= GetSize()) || (idx2 >= GetSize()))
+        if ((idx1 < 0) || (idx2 < 0) || (idx1 >= GetSize()) || (idx2 >= GetSize()))
             return;
-
         this->SetData(item1, idx2);
         this->SetData(item2, idx1);
     }
@@ -238,7 +235,6 @@ public:
 public:
     CItemsList()
     {
-
     }
     virtual ~CItemsList()
     {
@@ -328,21 +324,16 @@ public:
         CItem item;
         item.szPath = szPath;
         item.nSize = nSize;
-
         if ((szName == NULL) || (_tcslen(szName) == 0))
             item.szName = this->GetOnlyFileName(szPath);
         else
             item.szName = szName;
-
         item.szInExt = this->GetFileExtUpperCase(szPath);
         item.nInFormat = this->GetInFormatIndex(item.szInExt);
-
         item.szOutExt = this->GetOutFormatExt(nOutFormat);
         item.nOutFormat = nOutFormat;
         item.nOutPreset = nOutPreset;
-
         m_Items.AddTail(item);
-
         return (int)m_Items.GetCount() - 1;
     }
     void RemoveNode(int pstn = -1)
@@ -460,7 +451,6 @@ private:
 public:
     CPresetsList()
     {
-
     }
     virtual ~CPresetsList()
     {
