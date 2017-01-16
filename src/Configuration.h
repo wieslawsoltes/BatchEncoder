@@ -169,9 +169,9 @@ class CItemsList
 {
     CList<CItem, CItem&> m_Items;
 private:
-    void SetData(CItem listData, int idx)
+    void SetData(CItem item, int idx)
     {
-        m_Items.SetAt(m_Items.FindIndex(idx), listData);
+        m_Items.SetAt(m_Items.FindIndex(idx), item);
     }
     CItem GetData(int idx)
     {
@@ -190,33 +190,29 @@ private:
 public:
     void SwapItems(int idx1, int idx2)
     {
-        CItem tmpList1 = this->GetData(idx1);
-        CItem tmpList2 = this->GetData(idx2);
-
+        CItem item1 = this->GetData(idx1);
+        CItem item2 = this->GetData(idx2);
         if ((idx1 < 0) || (idx2 < 0) ||
             (idx1 >= GetSize()) || (idx2 >= GetSize()))
             return;
 
-        this->SetData(tmpList1, idx2);
-        this->SetData(tmpList2, idx1);
+        this->SetData(item1, idx2);
+        this->SetData(item2, idx1);
     }
 public:
     CString GetFileName(CString szFilePath)
     {
-        CString strResult;
-        MyGetFileName(szFilePath, strResult.GetBuffer(_MAX_FNAME), _MAX_FNAME);
-        strResult.ReleaseBuffer();
-        return strResult;
+        CString szFileName;
+        MyGetFileName(szFilePath, szFileName.GetBuffer(_MAX_FNAME), _MAX_FNAME);
+        szFileName.ReleaseBuffer();
+        return szFileName;
     }
     CString GetOnlyFileName(CString szFilePath)
     {
-        CString strResult;
-
-        strResult = this->GetFileName(szFilePath);
-        strResult.TrimRight(GetFileExt(szFilePath));
-        strResult.TrimRight(_T("."));
-
-        return strResult;
+        CString szFileName = this->GetFileName(szFilePath);
+        szFileName.TrimRight(GetFileExt(szFilePath));
+        szFileName.TrimRight(_T("."));
+        return szFileName;
     }
 public:
     CString GetFileExt(CString szFilePath)
@@ -230,7 +226,6 @@ public:
         CString szExt = ::PathFindExtension(szFilePath);
         szExt.MakeUpper();
         szExt.Remove('.');
-
         return szExt;
     }
     CString GetFileExtLowerCase(CString szFilePath)
@@ -238,7 +233,6 @@ public:
         CString szExt = ::PathFindExtension(szFilePath);
         szExt.MakeLower();
         szExt.Remove('.');
-
         return szExt;
     }
 public:
@@ -329,30 +323,25 @@ public:
         return IsValidOutExtension(szOutExt);
     }
 public:
-    int InsertNode(CString szPath,
-        const TCHAR *szName,
-        const ULONGLONG nSize,
-        const int nOutFormat,
-        const int nOutPreset)
+    int InsertNode(CString szPath, const TCHAR *szName, const ULONGLONG nSize, const int nOutFormat, const int nOutPreset)
     {
-        CItem tmp;
-
-        tmp.szPath = szPath;
-        tmp.nSize = nSize;
+        CItem item;
+        item.szPath = szPath;
+        item.nSize = nSize;
 
         if ((szName == NULL) || (_tcslen(szName) == 0))
-            tmp.szName = this->GetOnlyFileName(szPath);
+            item.szName = this->GetOnlyFileName(szPath);
         else
-            tmp.szName = szName;
+            item.szName = szName;
 
-        tmp.szInExt = this->GetFileExtUpperCase(szPath);
-        tmp.nInFormat = this->GetInFormatIndex(tmp.szInExt);
+        item.szInExt = this->GetFileExtUpperCase(szPath);
+        item.nInFormat = this->GetInFormatIndex(item.szInExt);
 
-        tmp.szOutExt = this->GetOutFormatExt(nOutFormat);
-        tmp.nOutFormat = nOutFormat;
-        tmp.nOutPreset = nOutPreset;
+        item.szOutExt = this->GetOutFormatExt(nOutFormat);
+        item.nOutFormat = nOutFormat;
+        item.nOutPreset = nOutPreset;
 
-        m_Items.AddTail(tmp);
+        m_Items.AddTail(item);
 
         return (int)m_Items.GetCount() - 1;
     }
@@ -368,9 +357,9 @@ public:
 public:
     void SetItemFilePath(CString szFilePath, int idx)
     {
-        CItem tmpList = this->GetData(idx);
-        tmpList.szPath = szFilePath;
-        this->SetData(tmpList, idx);
+        CItem item = this->GetData(idx);
+        item.szPath = szFilePath;
+        this->SetData(item, idx);
     }
     CString GetItemFilePath(int idx)
     {
@@ -379,9 +368,9 @@ public:
 public:
     void SetItemFileSize(ULONGLONG nFileSize, int idx)
     {
-        CItem tmpList = this->GetData(idx);
-        tmpList.nSize = nFileSize;
-        this->SetData(tmpList, idx);
+        CItem item = this->GetData(idx);
+        item.nSize = nFileSize;
+        this->SetData(item, idx);
     }
     ULONGLONG GetItemFileSize(int idx)
     {
@@ -390,9 +379,9 @@ public:
 public:
     void SetItemFileName(CString szFileName, int idx)
     {
-        CItem tmpList = this->GetData(idx);
-        tmpList.szName = szFileName;
-        this->SetData(tmpList, idx);
+        CItem item = this->GetData(idx);
+        item.szName = szFileName;
+        this->SetData(item, idx);
     }
     CString GetItemFileName(int idx)
     {
@@ -401,9 +390,9 @@ public:
 public:
     void SetItemInExt(CString szInExt, int idx)
     {
-        CItem tmpList = this->GetData(idx);
-        tmpList.szInExt = szInExt;
-        this->SetData(tmpList, idx);
+        CItem item = this->GetData(idx);
+        item.szInExt = szInExt;
+        this->SetData(item, idx);
     }
     CString GetItemInExt(int idx)
     {
@@ -412,9 +401,9 @@ public:
 public:
     void SetItemInFormat(int nInFormat, int idx)
     {
-        CItem tmpList = this->GetData(idx);
-        tmpList.nInFormat = nInFormat;
-        this->SetData(tmpList, idx);
+        CItem item = this->GetData(idx);
+        item.nInFormat = nInFormat;
+        this->SetData(item, idx);
     }
     int GetItemInFormat(int idx)
     {
@@ -423,9 +412,9 @@ public:
 public:
     void SetItemOutExt(CString szOutExt, int idx)
     {
-        CItem tmpList = this->GetData(idx);
-        tmpList.szOutExt = szOutExt;
-        this->SetData(tmpList, idx);
+        CItem item = this->GetData(idx);
+        item.szOutExt = szOutExt;
+        this->SetData(item, idx);
     }
     CString GetItemOutExt(int idx)
     {
@@ -434,9 +423,9 @@ public:
 public:
     void SetItemOutFormat(int nOutFormat, int idx)
     {
-        CItem tmpList = this->GetData(idx);
-        tmpList.nOutFormat = nOutFormat;
-        this->SetData(tmpList, idx);
+        CItem item = this->GetData(idx);
+        item.nOutFormat = nOutFormat;
+        this->SetData(item, idx);
     }
     int GetItemOutFormat(int idx)
     {
@@ -445,9 +434,9 @@ public:
 public:
     void SetItemOutPreset(int nOutPreset, int idx)
     {
-        CItem tmpList = this->GetData(idx);
-        tmpList.nOutPreset = nOutPreset;
-        this->SetData(tmpList, idx);
+        CItem item = this->GetData(idx);
+        item.nOutPreset = nOutPreset;
+        this->SetData(item, idx);
     }
     int GetItemOutPreset(int idx)
     {
@@ -460,9 +449,9 @@ class CPresetsList
 private:
     CList<CPreset, CPreset&> m_Presets;
 private:
-    void SetData(CPreset listData, int idx)
+    void SetData(CPreset preset, int idx)
     {
-        m_Presets.SetAt(m_Presets.FindIndex(idx), listData);
+        m_Presets.SetAt(m_Presets.FindIndex(idx), preset);
     }
     CPreset GetData(int idx)
     {
@@ -490,15 +479,14 @@ public:
 public:
     void InsertNode(CString szName)
     {
-        CPreset tmp;
-        tmp.szName = szName;
-        m_Presets.AddTail(tmp);
+        CPreset preset;
+        preset.szName = szName;
+        m_Presets.AddTail(preset);
     }
     void RemoveNode(int pstn = -1)
     {
         m_Presets.RemoveAt(m_Presets.FindIndex(pstn));
     }
-
     void RemoveAllNodes(void)
     {
         if (m_Presets.GetCount() != 0)
@@ -507,30 +495,26 @@ public:
 public:
     void SetPresetName(CString szName, int idx)
     {
-        CPreset tmpList;
-        tmpList = this->GetData(idx);
-        tmpList.szName = szName;
-        this->SetData(tmpList, idx);
+        CPreset preset = this->GetData(idx);
+        preset.szName = szName;
+        this->SetData(preset, idx);
     }
     CString GetPresetName(int idx)
     {
-        CPreset tmpList;
-        tmpList = this->GetData(idx);
-        return tmpList.szName;
+        CPreset preset = this->GetData(idx);
+        return preset.szName;
     }
 public:
     void SetPresetOptions(CString szOptions, int idx)
     {
-        CPreset tmpList;
-        tmpList = this->GetData(idx);
-        tmpList.szOptions = szOptions;
-        this->SetData(tmpList, idx);
+        CPreset preset = this->GetData(idx);
+        preset.szOptions = szOptions;
+        this->SetData(preset, idx);
     }
     CString GetPresetOptions(int idx)
     {
-        CPreset tmpList;
-        tmpList = this->GetData(idx);
-        return tmpList.szOptions;
+        CPreset preset = this->GetData(idx);
+        return preset.szOptions;
     }
 };
 
