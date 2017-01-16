@@ -89,9 +89,7 @@ Task("Package-Binaries")
             CopyFileToDirectory(File("LICENSE.TXT"), outputDir);
             CopyFileToDirectory(exeFile, outputDir);
             CopyFiles(path + "*.progress", outputDir);
-            CopyFiles("./src/data/Config/*.config", outputDir);
-            CopyFiles("./src/data/Presets/*.presets", outputDir);
-            CopyFiles("./src/data/Formats/*.formats", outputDir);
+            CopyFiles("./config/*.config", outputDir);
             Zip(outputDir, outputZip);
         });
     });

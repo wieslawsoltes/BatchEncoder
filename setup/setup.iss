@@ -44,11 +44,9 @@ UserInfoPage        =no
 [Components]
 
 Name: main; Description: Main Program; Types: full compact custom
-Name: config; Description: Configuration; Types: full compact
-Name: presets; Description: Presets; Types: full compact
-Name: formats; Description: Formats; Types: full compact
-Name: progress; Description: Progress Functions; Types: full compact
 Name: docs; Description: Documents; Types: full
+Name: config; Description: Configuration; Types: full compact
+Name: progress; Description: Progress Functions; Types: full compact
 
 [Tasks]
 
@@ -58,11 +56,9 @@ Name: quicklaunchicon; Description: {cm:CreateQuickLaunchIcon}; GroupDescription
 [Files]
 
 Source: {#BasePath}\src\bin\{#ProgramConfiguration}\{#ProgramBuild}\BatchEncoder.exe; DestDir: {app}; Flags: ignoreversion; Components: main
-Source: {#BasePath}\src\data\Config\BatchEncoder.config; DestDir: {app}; Flags: ignoreversion; Components: config
-Source: {#BasePath}\src\data\Presets\*.presets; DestDir: {app}; Flags: ignoreversion; Components: presets
-Source: {#BasePath}\src\data\Formats\*.formats; DestDir: {app}; Flags: ignoreversion; Components: formats
 Source: {#BasePath}\*.txt; DestDir: {app}; Flags: ignoreversion; Components: docs
 Source: {#BasePath}\*.md; DestDir: {app}; Flags: ignoreversion; Components: docs
+Source: {#BasePath}\config\*.config; DestDir: {app}; Flags: ignoreversion; Components: config
 Source: {#BasePath}\src\bin\{#ProgramConfiguration}\{#ProgramBuild}\*.progress; DestDir: {app}; Flags: ignoreversion; Components: progress
 
 [INI]
@@ -72,6 +68,7 @@ Filename: {app}\{#ProgramName}.url; Section: InternetShortcut; Key: URL; String:
 [Icons]
 
 Name: {group}\{#ProgramName}; Filename: {app}\BatchEncoder.exe; WorkingDir: {app}; Components: main
+Name: {group}\{#ProgramName} README; Filename: {app}\README.MD; WorkingDir: {app}; Components: docs
 Name: {group}\{#ProgramName} License; Filename: {app}\LICENSE.TXT; WorkingDir: {app}; Components: docs
 Name: {group}\{#ProgramName} Web Site; Filename: {app}\{#ProgramName}.url; WorkingDir: {app}
 Name: {group}\Uninstall {#ProgramName}; Filename: {uninstallexe}; WorkingDir: {app}
