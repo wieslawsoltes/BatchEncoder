@@ -45,9 +45,6 @@
     <ClCompile Include="BatchEncoder.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Configuration.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="controls\MyButton.cpp">
       <Filter>Source Files\Controls</Filter>
     </ClCompile>

@@ -7,20 +7,9 @@
 #include <afxwin.h>
 #include <afxcmn.h>
 
-#define NUM_INPUT_EXT 19
-#define NUM_OUTPUT_EXT 14
-#define NUM_FORMAT_NAMES (NUM_OUTPUT_EXT + (NUM_INPUT_EXT - 1))
-#define NUM_PRESET_FILES 14
-
-extern const TCHAR *g_szAllInExt[];
-extern const TCHAR *g_szAllOutExt[];
-extern const TCHAR *g_szPresetNames[];
-extern const char *g_szPresetTags[];
-
 class COptions
 {
 public:
-    CString szSelectedPresets;
     int nSelectedFormat;
     CString szOutputPath;
     bool bOutputPathChecked;
@@ -45,7 +34,6 @@ public:
 public:
     void Copy(COptions &other)
     {
-        other.szSelectedPresets = this->szSelectedPresets;
         other.nSelectedFormat = this->nSelectedFormat;
         other.szOutputPath = this->szOutputPath;
         other.bOutputPathChecked = this->bOutputPathChecked;
@@ -71,7 +59,6 @@ public:
 public:
     void Defaults()
     {
-        this->szSelectedPresets = _T("");
         this->nSelectedFormat = 0;
         this->szOutputPath = _T("");
         this->bOutputPathChecked = false;
@@ -109,42 +96,198 @@ public:
     }
 };
 
+class CPresetsList
+{
+private:
+    CList<CPreset, CPreset&> m_Presets;
+public:
+    void SetData(CPreset& preset, int idx)
+    {
+        m_Presets.SetAt(m_Presets.FindIndex(idx), preset);
+    }
+    CPreset& GetData(int idx)
+    {
+        return m_Presets.GetAt(m_Presets.FindIndex(idx));
+    }
+public:
+    CPresetsList()
+    {
+    }
+    virtual ~CPresetsList()
+    {
+        if (m_Presets.GetCount() != 0)
+            m_Presets.RemoveAll();
+    }
+public:
+    bool IsEmpty()
+    {
+        return (m_Presets.GetCount() == 0) ? true : false;
+    }
+    int GetSize()
+    {
+        return (int)m_Presets.GetCount();
+    }
+public:
+    void InsertNode(CPreset &preset)
+    {
+        m_Presets.AddTail(preset);
+    }
+    void InsertNode(CString szName)
+    {
+        CPreset preset;
+        preset.szName = szName;
+        m_Presets.AddTail(preset);
+    }
+    void RemoveNode(int pstn = -1)
+    {
+        m_Presets.RemoveAt(m_Presets.FindIndex(pstn));
+    }
+    void RemoveAllNodes(void)
+    {
+        if (m_Presets.GetCount() != 0)
+            m_Presets.RemoveAll();
+    }
+public:
+    void Copy(CPresetsList& other)
+    {
+        int nPresets = this->GetSize();
+        for (int i = 0; i < nPresets; i++)
+        {
+            CPreset& preset = this->GetData(i);
+            CPreset copy;
+            preset.Copy(copy);
+            other.InsertNode(copy);
+        }
+    }
+public:
+    void SwapItems(int idx1, int idx2)
+    {
+        CPreset& preset1 = this->GetData(idx1);
+        CPreset& preset2 = this->GetData(idx2);
+        if ((idx1 < 0) || (idx2 < 0) || (idx1 >= GetSize()) || (idx2 >= GetSize()))
+            return;
+        this->SetData(preset1, idx2);
+        this->SetData(preset2, idx1);
+    }
+};
+
 class CFormat
 {
 public:
+    CString szId;
     CString szName;
     CString szTemplate;
-    CString szPath;
     bool bInput;
     bool bOutput;
     CString szFunction;
+    CString szPath;
+    int nType; // 0 - Encoder, 1 - Decoder
+    CString szExtension;
+    int nDefaultPreset;
+    CPresetsList m_Presets;
 public:
     void Copy(CFormat &other)
     {
+        other.szId = this->szId;
         other.szName = this->szName;
         other.szTemplate = this->szTemplate;
-        other.szPath = this->szPath;
         other.bInput = this->bInput;
         other.bOutput = this->bOutput;
         other.szFunction = this->szFunction;
+        other.szPath = this->szPath;
+        other.nType = this->nType;
+        other.szExtension = this->szExtension;
+        other.nDefaultPreset = this->nDefaultPreset;
+
+        int nPresets = m_Presets.GetSize();
+        for (int i = 0; i < nPresets; i++)
+        {
+            CPreset preset = m_Presets.GetData(i);
+            CPreset copy;
+            preset.Copy(copy);
+            other.m_Presets.InsertNode(copy);
+        }
+    }
+};
+
+class CFormatsList
+{
+private:
+    CList<CFormat, CFormat&> m_Formats;
+public:
+    void SetData(CFormat& format, int idx)
+    {
+        m_Formats.SetAt(m_Formats.FindIndex(idx), format);
+    }
+    CFormat& GetData(int idx)
+    {
+        return m_Formats.GetAt(m_Formats.FindIndex(idx));
+    }
+public:
+    CFormatsList()
+    {
+    }
+    virtual ~CFormatsList()
+    {
+        if (m_Formats.GetCount() != 0)
+            m_Formats.RemoveAll();
+    }
+public:
+    bool IsEmpty()
+    {
+        return (m_Formats.GetCount() == 0) ? true : false;
+    }
+    int GetSize()
+    {
+        return (int)m_Formats.GetCount();
+    }
+public:
+    void InsertNode(CFormat &format)
+    {
+        m_Formats.AddTail(format);
+    }
+    void RemoveNode(int pstn = -1)
+    {
+        m_Formats.RemoveAt(m_Formats.FindIndex(pstn));
+    }
+    void RemoveAllNodes(void)
+    {
+        if (m_Formats.GetCount() != 0)
+            m_Formats.RemoveAll();
+    }
+public:
+    void Copy(CFormatsList& other)
+    {
+        int nFormats = this->GetSize();
+        for (int i = 0; i < nFormats; i++)
+        {
+            CFormat& format = this->GetData(i);
+            CFormat copy;
+            format.Copy(copy);
+            other.InsertNode(copy);
+        }
+    }
+public:
+    void SwapItems(int idx1, int idx2)
+    {
+        CFormat& format1 = this->GetData(idx1);
+        CFormat& format2 = this->GetData(idx2);
+        if ((idx1 < 0) || (idx2 < 0) || (idx1 >= GetSize()) || (idx2 >= GetSize()))
+            return;
+        this->SetData(format1, idx2);
+        this->SetData(format2, idx1);
     }
 };
 
 class CItem
 {
 public:
-    // File
     CString szPath;
-    ULONGLONG nSize;
-    // Input
+    CString szSize;
     CString szName;
-    CString szInExt;
-    int nInFormat;
-    // Output
-    CString szOutExt;
-    int nOutFormat;
-    int nOutPreset;
-    // Status
+    CString szExtension;
+    CString szFormatId;
+    int nPreset;
     bool bChecked;
     CString szTime;
     CString szStatus;
@@ -152,13 +295,11 @@ public:
     void Copy(CItem &other)
     {
         other.szPath = this->szPath;
-        other.nSize = this->nSize;
+        other.szSize = this->szSize;
         other.szName = this->szName;
-        other.szInExt = this->szInExt;
-        other.nInFormat = this->nInFormat;
-        other.szOutExt = this->szOutExt;
-        other.nOutFormat = this->nOutFormat;
-        other.nOutPreset = this->nOutPreset;
+        other.szExtension = this->szExtension;
+        other.szFormatId = this->szFormatId;
+        other.nPreset = this->nPreset;
         other.bChecked = this->bChecked;
         other.szTime = this->szTime;
         other.szStatus = this->szStatus;
@@ -168,16 +309,94 @@ public:
 class CItemsList
 {
     CList<CItem, CItem&> m_Items;
-private:
-    void SetData(CItem item, int idx)
+public:
+    void SetData(CItem& item, int idx)
     {
         m_Items.SetAt(m_Items.FindIndex(idx), item);
     }
-    CItem GetData(int idx)
+    CItem& GetData(int idx)
     {
         return m_Items.GetAt(m_Items.FindIndex(idx));
     }
-private:
+public:
+    CItemsList()
+    {
+    }
+    virtual ~CItemsList()
+    {
+        if (m_Items.GetCount() != 0)
+            m_Items.RemoveAll();
+    }
+public:
+    bool IsEmpty()
+    {
+        return (m_Items.GetCount() == 0) ? true : false;
+    }
+    int GetSize()
+    {
+        return (int)m_Items.GetCount();
+    }
+public:
+    void InsertNode(CItem& item)
+    {
+        m_Items.AddTail(item);
+    }
+public:
+    int InsertNode(CString szPath, const TCHAR *szName, const ULONGLONG nSize, const int nOutFormat, const int nOutPreset)
+    {
+        CItem item;
+        item.szPath = szPath;
+        item.nSize = nSize;
+
+        if ((szName == NULL) || (_tcslen(szName) == 0))
+            item.szName = this->GetOnlyFileName(szPath);
+        else
+            item.szName = szName;
+
+        item.szInExt = this->GetFileExtUpperCase(szPath);
+        item.nInFormat = this->GetInFormatIndex(item.szInExt);
+        item.szOutExt = this->GetOutFormatExt(nOutFormat);
+        item.nOutFormat = nOutFormat;
+        item.nOutPreset = nOutPreset;
+
+        m_Items.AddTail(item);
+        return (int)m_Items.GetCount() - 1;
+    }
+    void RemoveNode(int pstn = -1)
+    {
+        m_Items.RemoveAt(m_Items.FindIndex(pstn));
+    }
+    void RemoveAllNodes(void)
+    {
+        if (m_Items.GetCount() != 0)
+            m_Items.RemoveAll();
+    }
+public:
+    void Copy(CItemsList& other)
+    {
+        int nItems = this->GetSize();
+        for (int i = 0; i < nItems; i++)
+        {
+            CItem& item = this->GetData(i);
+            CItem copy;
+            item.Copy(copy);
+            other.InsertNode(copy);
+        }
+    }
+public:
+    void SwapItems(int idx1, int idx2)
+    {
+        CItem& item1 = this->GetData(idx1);
+        CItem& item2 = this->GetData(idx2);
+        if ((idx1 < 0) || (idx2 < 0) || (idx1 >= GetSize()) || (idx2 >= GetSize()))
+            return;
+        this->SetData(item1, idx2);
+        this->SetData(item2, idx1);
+    }
+
+
+
+public:
     UINT MyGetFileName(LPCTSTR lpszPathName, LPTSTR lpszTitle, UINT nMax)
     {
         LPTSTR lpszTemp = ::PathFindFileName(lpszPathName);
@@ -186,17 +405,6 @@ private:
         lstrcpyn(lpszTitle, lpszTemp, nMax);
         return(0);
     }
-public:
-    void SwapItems(int idx1, int idx2)
-    {
-        CItem item1 = this->GetData(idx1);
-        CItem item2 = this->GetData(idx2);
-        if ((idx1 < 0) || (idx2 < 0) || (idx1 >= GetSize()) || (idx2 >= GetSize()))
-            return;
-        this->SetData(item1, idx2);
-        this->SetData(item2, idx1);
-    }
-public:
     CString GetFileName(CString szFilePath)
     {
         CString szFileName;
@@ -232,24 +440,9 @@ public:
         szExt.Remove('.');
         return szExt;
     }
-public:
-    CItemsList()
-    {
-    }
-    virtual ~CItemsList()
-    {
-        if (m_Items.GetCount() != 0)
-            m_Items.RemoveAll();
-    }
-public:
-    bool IsEmpty()
-    {
-        return (m_Items.GetCount() == 0) ? true : false;
-    }
-    int GetSize()
-    {
-        return (int)m_Items.GetCount();
-    }
+
+
+
 public:
     static int GetInFormatIndex(CString szInExt)
     {
@@ -303,6 +496,9 @@ public:
         }
         return false;
     }
+
+
+
 public:
     static bool IsValidInFileExtension(CString szInFilePath)
     {
@@ -318,202 +514,16 @@ public:
         szOutExt.Remove('.');
         return IsValidOutExtension(szOutExt);
     }
-public:
-    int InsertNode(CString szPath, const TCHAR *szName, const ULONGLONG nSize, const int nOutFormat, const int nOutPreset)
-    {
-        CItem item;
-        item.szPath = szPath;
-        item.nSize = nSize;
-        if ((szName == NULL) || (_tcslen(szName) == 0))
-            item.szName = this->GetOnlyFileName(szPath);
-        else
-            item.szName = szName;
-        item.szInExt = this->GetFileExtUpperCase(szPath);
-        item.nInFormat = this->GetInFormatIndex(item.szInExt);
-        item.szOutExt = this->GetOutFormatExt(nOutFormat);
-        item.nOutFormat = nOutFormat;
-        item.nOutPreset = nOutPreset;
-        m_Items.AddTail(item);
-        return (int)m_Items.GetCount() - 1;
-    }
-    void RemoveNode(int pstn = -1)
-    {
-        m_Items.RemoveAt(m_Items.FindIndex(pstn));
-    }
-    void RemoveAllNodes(void)
-    {
-        if (m_Items.GetCount() != 0)
-            m_Items.RemoveAll();
-    }
-public:
-    void SetItemFilePath(CString szFilePath, int idx)
-    {
-        CItem item = this->GetData(idx);
-        item.szPath = szFilePath;
-        this->SetData(item, idx);
-    }
-    CString GetItemFilePath(int idx)
-    {
-        return this->GetData(idx).szPath;
-    }
-public:
-    void SetItemFileSize(ULONGLONG nFileSize, int idx)
-    {
-        CItem item = this->GetData(idx);
-        item.nSize = nFileSize;
-        this->SetData(item, idx);
-    }
-    ULONGLONG GetItemFileSize(int idx)
-    {
-        return this->GetData(idx).nSize;
-    }
-public:
-    void SetItemFileName(CString szFileName, int idx)
-    {
-        CItem item = this->GetData(idx);
-        item.szName = szFileName;
-        this->SetData(item, idx);
-    }
-    CString GetItemFileName(int idx)
-    {
-        return this->GetData(idx).szName;
-    }
-public:
-    void SetItemInExt(CString szInExt, int idx)
-    {
-        CItem item = this->GetData(idx);
-        item.szInExt = szInExt;
-        this->SetData(item, idx);
-    }
-    CString GetItemInExt(int idx)
-    {
-        return this->GetData(idx).szInExt;
-    }
-public:
-    void SetItemInFormat(int nInFormat, int idx)
-    {
-        CItem item = this->GetData(idx);
-        item.nInFormat = nInFormat;
-        this->SetData(item, idx);
-    }
-    int GetItemInFormat(int idx)
-    {
-        return this->GetData(idx).nInFormat;
-    }
-public:
-    void SetItemOutExt(CString szOutExt, int idx)
-    {
-        CItem item = this->GetData(idx);
-        item.szOutExt = szOutExt;
-        this->SetData(item, idx);
-    }
-    CString GetItemOutExt(int idx)
-    {
-        return this->GetData(idx).szOutExt;
-    }
-public:
-    void SetItemOutFormat(int nOutFormat, int idx)
-    {
-        CItem item = this->GetData(idx);
-        item.nOutFormat = nOutFormat;
-        this->SetData(item, idx);
-    }
-    int GetItemOutFormat(int idx)
-    {
-        return this->GetData(idx).nOutFormat;
-    }
-public:
-    void SetItemOutPreset(int nOutPreset, int idx)
-    {
-        CItem item = this->GetData(idx);
-        item.nOutPreset = nOutPreset;
-        this->SetData(item, idx);
-    }
-    int GetItemOutPreset(int idx)
-    {
-        return this->GetData(idx).nOutPreset;
-    }
-};
 
-class CPresetsList
-{
-private:
-    CList<CPreset, CPreset&> m_Presets;
-private:
-    void SetData(CPreset preset, int idx)
-    {
-        m_Presets.SetAt(m_Presets.FindIndex(idx), preset);
-    }
-    CPreset GetData(int idx)
-    {
-        return m_Presets.GetAt(m_Presets.FindIndex(idx));
-    }
-public:
-    CPresetsList()
-    {
-    }
-    virtual ~CPresetsList()
-    {
-        if (m_Presets.GetCount() != 0)
-            m_Presets.RemoveAll();
-    }
-public:
-    bool IsEmpty()
-    {
-        return (m_Presets.GetCount() == 0) ? true : false;
-    }
-    int GetSize()
-    {
-        return (int)m_Presets.GetCount();
-    }
-public:
-    void InsertNode(CString szName)
-    {
-        CPreset preset;
-        preset.szName = szName;
-        m_Presets.AddTail(preset);
-    }
-    void RemoveNode(int pstn = -1)
-    {
-        m_Presets.RemoveAt(m_Presets.FindIndex(pstn));
-    }
-    void RemoveAllNodes(void)
-    {
-        if (m_Presets.GetCount() != 0)
-            m_Presets.RemoveAll();
-    }
-public:
-    void SetPresetName(CString szName, int idx)
-    {
-        CPreset preset = this->GetData(idx);
-        preset.szName = szName;
-        this->SetData(preset, idx);
-    }
-    CString GetPresetName(int idx)
-    {
-        CPreset preset = this->GetData(idx);
-        return preset.szName;
-    }
-public:
-    void SetPresetOptions(CString szOptions, int idx)
-    {
-        CPreset preset = this->GetData(idx);
-        preset.szOptions = szOptions;
-        this->SetData(preset, idx);
-    }
-    CString GetPresetOptions(int idx)
-    {
-        CPreset preset = this->GetData(idx);
-        return preset.szOptions;
-    }
+
+
+
 };
 
 class CConfiguration
 {
 public:
     COptions m_Options;
-    CFormat m_Formats[NUM_FORMAT_NAMES];
-    CPresetsList m_Presets[NUM_PRESET_FILES];
-    CString szPresetsFile[NUM_PRESET_FILES];
+    CFormatsList m_Formats;
     CItemsList m_Items;
 };
