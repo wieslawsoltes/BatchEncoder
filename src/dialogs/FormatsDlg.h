@@ -27,7 +27,7 @@ protected:
 public:
     virtual BOOL OnInitDialog();
 public:
-    CFormat m_Formats[NUM_FORMAT_NAMES];
+    CFormatsList m_Formats;
 public:
     CString szFormatsDialogResize;
     CString szFormatsListColumns;
@@ -55,6 +55,9 @@ public:
 public:
     bool bShowGridLines;
     void ShowGridlines(bool bShow);
+public:
+    void InsertFormatsToListCtrl();
+    void UpdateFormatsFromListCtrl();
 public:
     void LoadFormatsFile(CString szFileXml);
     void SaveFormatsFile(CString szFileXml);
