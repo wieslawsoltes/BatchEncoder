@@ -430,6 +430,7 @@ bool CBatchEncoderDlg::CreateBatchFile(CString szFileName)
 {
     // TODO: Function is using same logic as WorkThread(...)
     
+    /*
     char *szPrefix = "@echo off\r\n@setlocal\r\n";
     char *szPostfix = "@endlocal\r\n@pause\r\n";
     char *szPreDel = "@del /F /Q \"";
@@ -622,6 +623,7 @@ bool CBatchEncoderDlg::CreateBatchFile(CString szFileName)
 
     fp.Write(szPostfix, (UINT)strlen(szPostfix));
     fp.Close();
+    */
 
     return true;
 }
@@ -785,8 +787,10 @@ LRESULT CBatchEncoderDlg::OnListItemChaged(WPARAM wParam, LPARAM lParam)
     INT nIndex = (INT)wParam;
     LPTSTR szText = (LPTSTR)lParam;
     if ((nIndex >= 0) && szText != NULL)
-        m_Config.m_Items.SetItemFileName(szText, nIndex);
-
+    {
+        CItem& item = m_Config.m_Items.GetData(nIndex);
+        item.szName = szText;
+    }
     return(0);
 }
 
@@ -798,7 +802,7 @@ void CBatchEncoderDlg::OnTrayMenuExit()
 
 LRESULT CBatchEncoderDlg::OnNotifyFormat(WPARAM wParam, LPARAM lParam)
 {
-    // required for ClistView control to receive notifications messages
+    // required for list view control to receive notifications messages
 #ifdef _UNICODE
     return NFR_UNICODE;
 #else
@@ -1461,6 +1465,10 @@ void CBatchEncoderDlg::UpdateFormatAndPreset()
 {
     int nFormat = this->m_CmbFormat.GetCurSel();
     int nPreset = this->m_CmbPresets.GetCurSel();
+
+    CFormat& format = m_Config.m_Formats.GetData(nFormat);
+    CPreset& preset = format.m_Presets.GetData(nPreset);
+
     int nCount = m_LstInputItems.GetItemCount();
     if (nCount > 0)
     {
@@ -1469,14 +1477,14 @@ void CBatchEncoderDlg::UpdateFormatAndPreset()
         {
             if (m_LstInputItems.GetItemState(i, LVIS_SELECTED) == LVIS_SELECTED)
             {
-                CString szOutExt = m_Config.m_Items.GetOutFormatExt(nFormat);
-                m_Config.m_Items.SetItemOutExt(szOutExt, i);
-                m_Config.m_Items.SetItemOutFormat(nFormat, i);
-                this->m_LstInputItems.SetItemText(i, 3, szOutExt);
+                CItem& item = m_Config.m_Items.GetData(i);
+                item.szFormatId = format.szId;
+                item.nPreset = nPreset;
+
+                this->m_LstInputItems.SetItemText(i, 3, format.szId);
 
                 CString szPreset;
                 szPreset.Format(_T("%d"), nPreset);
-                m_Config.m_Items.SetItemOutPreset(nPreset, i);
                 this->m_LstInputItems.SetItemText(i, 4, szPreset);
 
                 nSelected++;
@@ -1487,14 +1495,14 @@ void CBatchEncoderDlg::UpdateFormatAndPreset()
         {
             for (int i = 0; i < nCount; i++)
             {
-                CString szOutExt = m_Config.m_Items.GetOutFormatExt(nFormat);
-                m_Config.m_Items.SetItemOutExt(szOutExt, i);
-                m_Config.m_Items.SetItemOutFormat(nFormat, i);
-                this->m_LstInputItems.SetItemText(i, 3, szOutExt);
+                CItem& item = m_Config.m_Items.GetData(i);
+                item.szFormatId = format.szId;
+                item.nPreset = nPreset;
+
+                this->m_LstInputItems.SetItemText(i, 3, format.szId);
 
                 CString szPreset;
                 szPreset.Format(_T("%d"), nPreset);
-                m_Config.m_Items.SetItemOutPreset(nPreset, i);
                 this->m_LstInputItems.SetItemText(i, 4, szPreset);
             }
         }
@@ -1503,23 +1511,21 @@ void CBatchEncoderDlg::UpdateFormatAndPreset()
 
 void CBatchEncoderDlg::OnCbnSelchangeComboPresets()
 {
-    int nSelPresetIndex = this->m_CmbPresets.GetCurSel();
-    int nSelIndex = this->m_CmbFormat.GetCurSel();
+    int nFormat = this->m_CmbFormat.GetCurSel();
+    int nPreset = this->m_CmbPresets.GetCurSel();
     
-    nCurSel[nSelIndex] = nSelPresetIndex;
+    CFormat& format = m_Config.m_Formats.GetData(nFormat);
+    format.nDefaultPreset = nPreset;
 
     this->UpdateFormatAndPreset();
 }
 
 void CBatchEncoderDlg::OnCbnSelchangeComboFormat()
 {
-    int nSelIndex = this->m_CmbFormat.GetCurSel();
-    if (nSelIndex != -1)
+    int nFormat = this->m_CmbFormat.GetCurSel();
+    if (nFormat != -1)
     {
-        int nSelPresetIndex = this->m_CmbPresets.GetCurSel();
-        int nSelFormatIndex = this->m_CmbFormat.GetCurSel();
-        this->UpdateOutputComboBoxes(nSelFormatIndex, 0);
-        this->m_CmbPresets.SetCurSel(nCurSel[nSelFormatIndex]);
+        this->UpdateOutputComboBoxes();
     }
 
     this->UpdateFormatAndPreset();
@@ -1617,28 +1623,13 @@ int CBatchEncoderDlg::InsertToMemoryList(NewItemData &nid)
     HANDLE hFind;
     ULARGE_INTEGER ulSize;
     ULONGLONG nFileSize;
-    int nCurFormat;
-    int nCurPreset;
 
-    if (CItemsList::IsValidInFileExtension(nid.szPath) == false)
-        return false;
+    int nFormat = this->m_CmbFormat.GetCurSel();
+    int nPreset = this->m_CmbPresets.GetCurSel();
+    CFormat& format = m_Config.m_Formats.GetData(nFormat);
 
-    if (nid.szOutExt.Compare(_T("")) != 0)
-    {
-        if (CItemsList::IsValidOutExtension(nid.szOutExt) == false)
-            return false;
-
-        nCurFormat = m_Config.m_Items.GetOutFormatIndex(nid.szOutExt);
-    }
-    else
-    {
-        nCurFormat = this->m_CmbFormat.GetCurSel();
-    }
-
-    if (nid.nOutPreset != -1)
-        nCurPreset = nid.nOutPreset;
-    else
-        nCurPreset = this->m_CmbPresets.GetCurSel();
+    if (m_Config.m_Formats.IsValidInFileExtension(nid.szPath) == false)
+        return -1;
 
     hFind = ::FindFirstFile(nid.szPath, &FindFileData);
     if (hFind == INVALID_HANDLE_VALUE)
@@ -1650,7 +1641,7 @@ int CBatchEncoderDlg::InsertToMemoryList(NewItemData &nid)
     ulSize.LowPart = FindFileData.nFileSizeLow;
     nFileSize = ulSize.QuadPart;
 
-    return m_Config.m_Items.InsertNode(nid.szPath, nid.szName, nFileSize, nCurFormat, nCurPreset);
+    return m_Config.m_Items.InsertNode(nid.szPath, nid.szName, nFileSize, format.szId, nPreset);
 }
 
 void CBatchEncoderDlg::InsertToControlList(int nItem)
@@ -1892,18 +1883,23 @@ void CBatchEncoderDlg::OnLvnItemchangedListInputFiles(NMHDR *pNMHDR, LRESULT *pR
             int nItem = this->m_LstInputItems.GetNextSelectedItem(pos);
             if (nItem < m_Config.m_Items.GetSize())
             {
-                int nSelFormatIndex = m_Config.m_Items.GetItemOutFormat(nItem);
-                int nSelPresetIndex = m_Config.m_Items.GetItemOutPreset(nItem);
-                if (this->m_CmbFormat.GetCurSel() == nSelFormatIndex)
+                CItem& item = m_Config.m_Items.GetData(nItem);
+                CFormat& format = m_Config.m_Formats.GetData(this->m_CmbFormat.GetCurSel());
+
+                if (item.szFormatId.Compare(format.szId) == 0)
                 {
-                    this->m_CmbPresets.SetCurSel(nSelPresetIndex);
+                    format.nDefaultPreset = item.nPreset;
+                    this->m_CmbPresets.SetCurSel(item.nPreset);
                 }
                 else
                 {
-                    this->m_CmbFormat.SetCurSel(nSelFormatIndex);
-                    this->m_CmbPresets.SetCurSel(nSelPresetIndex);
+                    int nFormat = m_Config.m_Formats.GetFormatById(item.szFormatId);
+                    CFormat& format = m_Config.m_Formats.GetData(nFormat);
 
-                    this->UpdateOutputComboBoxes(nSelFormatIndex, nSelPresetIndex);
+                    m_Config.m_Options.nSelectedFormat = nFormat;
+                    format.nDefaultPreset = item.nPreset;
+
+                    this->UpdateOutputComboBoxes();
                 }
             }
         }
@@ -2375,8 +2371,8 @@ void CBatchEncoderDlg::OnEditOpen()
     if (pos != NULL)
     {
         int nItem = m_LstInputItems.GetNextSelectedItem(pos);
-        CString szPath = m_Config.m_Items.GetItemFilePath(nItem);
-        ::LaunchAndWait(szPath, _T(""), FALSE);
+        CItem& item = m_Config.m_Items.GetData(nItem);
+        ::LaunchAndWait(item.szPath, _T(""), FALSE);
     }
 }
 
@@ -2386,8 +2382,9 @@ void CBatchEncoderDlg::OnEditExplore()
     if (pos != NULL)
     {
         int nItem = m_LstInputItems.GetNextSelectedItem(pos);
-        CString szPath = m_Config.m_Items.GetItemFilePath(nItem);
-        CString szName = m_Config.m_Items.GetFileName(szPath);
+        CItem& item = m_Config.m_Items.GetData(nItem);
+        CString szPath = item.szPath;
+        CString szName = item.szName;
         szPath.TrimRight(szName);
         ::LaunchAndWait(szPath, _T(""), FALSE);
     }
