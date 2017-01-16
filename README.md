@@ -33,6 +33,7 @@ adds input and output file paths. For specific options for each format use help 
 
 * Audio conversion GUI.
 * Supports popular audio formats.
+* Supports file transcoding.
 * Easily configurable by new users.
 * Advanced options for experienced users.
 * Open-source, fast and simple.
