@@ -128,9 +128,7 @@
       <TargetMachine>MachineX86</TargetMachine>
     </Link>
     <PostBuildEvent>
-      <Command>copy /-Y data\Config\*.config $(OutDir)
-copy /-Y data\Presets\*.presets $(OutDir)
-copy /-Y data\Formats\*.formats $(OutDir)</Command>
+      <Command>copy /-Y ..\config\*.config $(OutDir)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -164,9 +162,7 @@ copy /-Y data\Formats\*.formats $(OutDir)</Command>
       <TargetMachine>MachineX64</TargetMachine>
     </Link>
     <PostBuildEvent>
-      <Command>copy /-Y data\Config\*.config $(OutDir)
-copy /-Y data\Presets\*.presets $(OutDir)
-copy /-Y data\Formats\*.formats $(OutDir)</Command>
+      <Command>copy /-Y ..\config\*.config $(OutDir)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -201,9 +197,7 @@ copy /-Y data\Formats\*.formats $(OutDir)</Command>
       <TargetMachine>MachineX86</TargetMachine>
     </Link>
     <PostBuildEvent>
-      <Command>copy /-Y data\Config\*.config $(OutDir)
-copy /-Y data\Presets\*.presets $(OutDir)
-copy /-Y data\Formats\*.formats $(OutDir)</Command>
+      <Command>copy /-Y ..\config\*.config $(OutDir)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -239,9 +233,7 @@ copy /-Y data\Formats\*.formats $(OutDir)</Command>
       <TargetMachine>MachineX64</TargetMachine>
     </Link>
     <PostBuildEvent>
-      <Command>copy /-Y data\Config\*.config $(OutDir)
-copy /-Y data\Presets\*.presets $(OutDir)
-copy /-Y data\Formats\*.formats $(OutDir)</Command>
+      <Command>copy /-Y ..\config\*.config $(OutDir)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
