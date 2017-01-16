@@ -177,7 +177,7 @@ bool ConvertFile(CBatchEncoderDlg *pDlg,
     // if false create full command-line and read from stdout/stderr conversion progress
 
     // log console text output
-    bool bLogConsoleOutput = pDlg->GetMenu()->GetMenuState(ID_OPTIONS_LOGCONSOLEOUTPUT, MF_BYCOMMAND) & MF_CHECKED;
+    bool bLogConsoleOutput = pDlg->GetMenu()->GetMenuState(ID_OPTIONS_LOGCONSOLEOUTPUT, MF_BYCOMMAND) == MF_CHECKED;
 
     // set the correct security attributes
     SECURITY_ATTRIBUTES secattr;
