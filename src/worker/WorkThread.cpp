@@ -1007,9 +1007,12 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
                 szOutputFile = szName;
             }
 
+            bool isInputWav = intputFormat.szExtension.MakeUpper().Compare(_T("WAV")) == 0;
+            bool isOutputWav = outputFormat.szExtension.MakeUpper().Compare(_T("WAV")) == 0;
+
             // set proper processing mode
             nProcessingMode = 1;
-            if (nIntputFormat == 0)
+            if (isInputWav)
                 nProcessingMode = 0;
 
             if (nProcessingMode == 1)
@@ -1019,24 +1022,24 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
             // 2. Input is WAV, [Output is WAV], Resampling                 = Encode Input File (using SSRC)
             // 3. Input requires decoding, [Output is WAV], No Resampling   = Decode Input File (using Decoder)
             // 4. Input requires decoding, [Output is WAV], Resampling      = Decode and Encode (using Decoder and SSRC)
-            if (nOutputFormat == 0)
+            if (isOutputWav)
             {
                 bool bNeedResampling = (szEncoderOptions.GetLength() > 0) ? true : false;
 
                 // case 1
-                if ((nIntputFormat == 0) && (bNeedResampling == false))
+                if (isInputWav && (bNeedResampling == false))
                     nProcessingMode = 0;
 
                 // case 2
-                if ((nIntputFormat == 0) && (bNeedResampling == true))
+                if (isInputWav && (bNeedResampling == true))
                     nProcessingMode = 0;
 
                 // case 3
-                if ((nIntputFormat > 0) && (bNeedResampling == false))
+                if (!isInputWav && (bNeedResampling == false))
                     nProcessingMode = 1;
 
                 // case 4
-                if ((nIntputFormat > 0) && (bNeedResampling == true))
+                if (!isInputWav && (bNeedResampling == true))
                     nProcessingMode = 2;
             }
 
@@ -1058,8 +1061,8 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
                 if (pDlg->m_Config.m_Options.bForceConsoleWindow == false)
                 {
                     // configure decoder input and output pipes
-                    bUseInPipesDec = pDlg->m_Config.m_Formats[(NUM_OUTPUT_EXT + nIntputFormat - 1)].bInput;
-                    bUseOutPipesDec = pDlg->m_Config.m_Formats[(NUM_OUTPUT_EXT + nIntputFormat - 1)].bOutput;
+                    bUseInPipesDec = intputFormat.bInput;
+                    bUseOutPipesDec = intputFormat.bOutput;
                 }
 
                 // input file is stdin
@@ -1079,7 +1082,7 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
 
                 // build full command line for decoder (DECODER-EXE + OPTIONS + INFILE + OUTFILE) 
                 // this is basic model, some of encoder may have different command-line structure
-                csExecute = pDlg->m_Config.m_Formats[(NUM_OUTPUT_EXT + nIntputFormat - 1)].szTemplate;
+                csExecute = intputFormat.szTemplate;
                 csExecute.Replace(_T("$EXE"), _T("\"$EXE\""));
                 csExecute.Replace(_T("$EXE"), szDecoderExePath);
                 csExecute.Replace(_T("$OPTIONS"), szDecoderOptions);
@@ -1089,8 +1092,8 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
                 csExecute.Replace(_T("$OUTFILE"), szOutputFile);
 
                 bDecode = true;
-                nTool = (NUM_OUTPUT_EXT + nIntputFormat - 1);
-
+                nTool = pDlg->m_Config.m_Formats.GetFormatById(intputFormat.szId);
+                
                 lstrcpy(szCommandLine, csExecute.GetBuffer(csExecute.GetLength()));
 
                 pDlg->m_LstInputItems.SetItemText(i, 5, _T("--:--"));
@@ -1141,8 +1144,8 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
             if (pDlg->m_Config.m_Options.bForceConsoleWindow == false)
             {
                 // configure encoder input and output pipes
-                bUseInPipesEnc = pDlg->m_Config.m_Formats[nOutputFormat].bInput;
-                bUseOutPipesEnc = pDlg->m_Config.m_Formats[nOutputFormat].bOutput;
+                bUseInPipesEnc = outputFormat.bInput;
+                bUseOutPipesEnc = outputFormat.bOutput;
             }
 
             if (nProcessingMode == 0)
@@ -1181,7 +1184,7 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
 
                 // build full command line for encoder (ENCODER-EXE + OPTIONS + INFILE + OUTFILE)
                 // this is basic model, some of encoder may have different command-line structure
-                csExecute = pDlg->m_Config.m_Formats[nOutputFormat].szTemplate;
+                csExecute = outputFormat.szTemplate;
                 csExecute.Replace(_T("$EXE"), _T("\"$EXE\""));
                 csExecute.Replace(_T("$EXE"), szEncoderExePath);
                 csExecute.Replace(_T("$OPTIONS"), szEncoderOptions);
@@ -1191,7 +1194,7 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
                 csExecute.Replace(_T("$OUTFILE"), szOutputFile);
 
                 bDecode = false;
-                nTool = nOutputFormat;
+                nTool = pDlg->m_Config.m_Formats.GetFormatById(outputFormat.szId);
 
                 lstrcpy(szCommandLine, csExecute.GetBuffer(csExecute.GetLength()));
 
