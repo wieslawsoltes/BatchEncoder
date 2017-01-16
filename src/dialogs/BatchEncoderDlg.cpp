@@ -889,24 +889,20 @@ bool CBatchEncoderDlg::LoadPresets(CString szPresetsFName, CPresetsList *m_ListP
         if (strcmp(szRootName, szRoot) != 0)
             return false;
 
-        // remove all presets from list
         m_ListPresets->RemoveAllNodes();
 
-        // fill list with new presets
         int nIndex = 0;
         tinyxml2::XMLElement *pFilesNode = pRootElem->FirstChildElement("Preset");
         for (pFilesNode; pFilesNode; pFilesNode = pFilesNode->NextSiblingElement())
         {
             const char *pszName = pFilesNode->Attribute("name");
             const char *pszOptions = pFilesNode->Attribute("options");
-
-            CString szNameData = GetConfigString(pszName);
-            CString szOptionsData = GetConfigString(pszOptions);
-
             if ((pszName != NULL) && (pszOptions != NULL))
             {
-                m_ListPresets->InsertNode(szNameData);
-                m_ListPresets->SetPresetOptions(szOptionsData, nIndex);
+                CString szNamea = GetConfigString(pszName);
+                CString szOptions = GetConfigString(pszOptions);
+                m_ListPresets->InsertNode(szName);
+                m_ListPresets->SetPresetOptions(szOptions, nIndex);
                 nIndex++;
             }
         }
