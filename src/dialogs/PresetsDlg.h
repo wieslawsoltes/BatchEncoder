@@ -29,18 +29,15 @@ public:
 private:
     volatile bool bUpdate;
 public:
-    int nSelFormat;
-    int nSelPreset;
+    int nSelectedFormat;
 public:
-    CPresetsList m_Presets;
+    CFormatsList m_Formats;
 public:
     CString szPresetsDialogResize;
     CString szPresetsListColumns;
 public:
     void LoadWindowSettings();
     void SaveWindowSettings();
-public:
-    CString szPresetsFile[NUM_PRESET_FILES];
 public:
     CMyStatic m_StcName;
     CMyStatic m_StcOptions;
@@ -72,11 +69,8 @@ public:
     void LoadPresetsFile(CString szFileXml);
     void SavePresetsFile(CString szFileXml);
 public:
-    void AddToList(CString szName, CString szOptions);
+    void AddToList(CString szName, CString szOptions, int nItem);
     void ListSelectionChange(void);
-public:
-    CString GetCurConfigFile();
-    void SetCurConfigFile(CString szFile);
 public:
     afx_msg void OnLvnItemchangedListPdPresets(NMHDR *pNMHDR, LRESULT *pResult);
 public:
