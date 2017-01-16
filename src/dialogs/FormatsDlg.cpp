@@ -374,20 +374,14 @@ void CFormatsDlg::LoadFormatsFile(CString szFileXml)
             if (pszPipesInput != NULL)
             {
                 CString szBuff = GetConfigString(pszPipesInput);
-                if (szBuff.CompareNoCase(_T("true")) == 0)
-                    m_Formats[nFormat].bInput = true;
-                else
-                    m_Formats[nFormat].bInput = false;
+                m_Formats[nFormat].bInput = szBuff.CompareNoCase(_T("true")) == 0;
             }
 
             const char *pszPipesOutput = pFormatElem->Attribute("output");
             if (pszPipesOutput != NULL)
             {
                 CString szBuff = GetConfigString(pszPipesOutput);
-                if (szBuff.CompareNoCase(_T("true")) == 0)
-                    m_Formats[nFormat].bOutput = true;
-                else
-                    m_Formats[nFormat].bOutput = false;
+                m_Formats[nFormat].bOutput = szBuff.CompareNoCase(_T("true")) == 0;
             }
 
             const char *pszFunction = pFormatElem->Attribute("function");
