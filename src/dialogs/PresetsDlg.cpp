@@ -330,19 +330,12 @@ void CPresetsDlg::LoadPresetsFile(CString szFileXml)
         for (pPresetElem; pPresetElem; pPresetElem = pPresetElem->NextSiblingElement())
         {
             const char *pszName = pPresetElem->Attribute("name");
-            if (pszName != NULL)
+            const char *pszOptions = pPresetElem->Attribute("options");
+            if ((pszName != NULL) && (pszOptions != NULL))
             {
-                CString szNameData = GetConfigString(pszName);
-                const char *pszOptions = pPresetElem->Attribute("options");
-                if (pszOptions != NULL)
-                {
-                    CString szOptionsData = GetConfigString(pszOptions);
-                    this->AddToList(szNameData, szOptionsData);
-                }
-                else
-                {
-                    // ERROR
-                }
+                CString szName = GetConfigString(pszName);
+                CString szOptions = GetConfigString(pszOptions);
+                this->AddToList(szName, szOptions);
             }
         }
 
@@ -382,11 +375,10 @@ void CPresetsDlg::SavePresetsFile(CString szFileXml)
         pPresetsElem->LinkEndChild(pPresetElem);
 
         CString szName = m_Presets.GetPresetName(i);
-        CString szOptions = m_Presets.GetPresetOptions(i);
-
         pPresetElem->SetAttribute("name", szBuffUtf8.Create(szName));
         szBuffUtf8.Clear();
-
+        
+        CString szOptions = m_Presets.GetPresetOptions(i);
         pPresetElem->SetAttribute("options", szBuffUtf8.Create(szOptions));
         szBuffUtf8.Clear();
     }
