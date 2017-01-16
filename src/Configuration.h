@@ -202,7 +202,7 @@ public:
         int nPresets = m_Presets.GetSize();
         for (int i = 0; i < nPresets; i++)
         {
-            CPreset preset = m_Presets.GetData(i);
+            CPreset& preset = m_Presets.GetData(i);
             CPreset copy;
             preset.Copy(copy);
             other.m_Presets.InsertNode(copy);
@@ -276,6 +276,19 @@ public:
             return;
         this->SetData(format1, idx2);
         this->SetData(format2, idx1);
+    }
+public:
+    int GetFormatById(CString szFormatId)
+    {
+        szFormatId.MakeUpper();
+        int nFormats = this->GetSize();
+        for (int i = 0; i < nFormats; i++)
+        {
+            CFormat& format = this->GetData(i);
+            if (szFormatId.Compare(format.szId.MakeUpper()) == 0)
+                return i;
+        }
+        return -1;
     }
 public:
     CFormat& GetInFormatByExt(CString szInExt)
