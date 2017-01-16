@@ -25,18 +25,6 @@ void CXMLDocumentW::LoadOptions(tinyxml2::XMLElement *pOptionsElem, COptions &m_
 {
     tinyxml2::XMLElement *pOptionElem;
 
-    // option: SelectedPresets
-    pOptionElem = pOptionsElem->FirstChildElement("SelectedPresets");
-    if (pOptionElem)
-    {
-        const char *tmpBuff = pOptionElem->GetText();
-        m_Options.szSelectedPresets = GetConfigString(tmpBuff);
-    }
-    else
-    {
-        m_Options.szSelectedPresets = _T("");
-    }
-
     // option: SelectedFormat
     pOptionElem = pOptionsElem->FirstChildElement("SelectedFormat");
     if (pOptionElem)
@@ -271,12 +259,6 @@ void CXMLDocumentW::SaveOptions(tinyxml2::XMLElement *pOptionsElem, COptions &m_
     tinyxml2::XMLElement *pOptionElem;
     CUtf8String szBuffUtf8;
 
-    // option: SelectedPresets
-    pOptionElem = this->NewElement("SelectedPresets");
-    pOptionElem->LinkEndChild(this->NewText(szBuffUtf8.Create(m_Options.szSelectedPresets)));
-    pOptionsElem->LinkEndChild(pOptionElem);
-    szBuffUtf8.Clear();
-
     // option: SelectedFormat
     CString szSelectedFormat;
     szSelectedFormat.Format(_T("%d\0"), m_Options.nSelectedFormat);
@@ -408,6 +390,287 @@ void CXMLDocumentW::SaveOptions(tinyxml2::XMLElement *pOptionsElem, COptions &m_
     pOptionElem->LinkEndChild(this->NewText(szBuffUtf8.Create(m_Options.bForceConsoleWindow ? _T("true") : _T("false"))));
     pOptionsElem->LinkEndChild(pOptionElem);
     szBuffUtf8.Clear();
+
+    pOptionsElem->LinkEndChild(pOptionElem);
+}
+
+void CXMLDocumentW::LoadPresets(tinyxml2::XMLElement *pPresetsElem, CPresetsList &m_Presets)
+{
+    tinyxml2::XMLElement *pPresetElem = pPresetsElem->FirstChildElement("Preset");
+    for (pPresetElem; pPresetElem; pPresetElem = pPresetElem->NextSiblingElement())
+    {
+        CPreset preset;
+
+        const char *pszName = pPresetElem->Attribute("name");
+        if (pszName != NULL)
+        {
+            preset.szName = GetConfigString(pszName);
+        }
+
+        const char *pszOptions = pPresetElem->Attribute("options");
+        if (pszOptions != NULL)
+        {
+            preset.szOptions = GetConfigString(pszOptions);
+        }
+
+        m_Presets.InsertNode(preset);
+    }
+}
+
+void CXMLDocumentW::SavePresets(tinyxml2::XMLElement *pPresetsElem, CPresetsList &m_Presets)
+{
+    CUtf8String szBuffUtf8;
+    tinyxml2::XMLElement *pPresetElem;
+
+    int nPresets = m_Presets.GetSize();
+    for (int i = 0; i < nPresets; i++)
+    {
+        CPreset& preset = m_Presets.GetData(i);
+
+        pPresetElem = this->NewElement("Preset");
+
+        pPresetElem->SetAttribute("name", szBuffUtf8.Create(preset.szName));
+        szBuffUtf8.Clear();
+
+        pPresetElem->SetAttribute("options", szBuffUtf8.Create(preset.szOptions));
+        szBuffUtf8.Clear();
+
+        pPresetsElem->LinkEndChild(pPresetElem);
+    }
+}
+
+void CXMLDocumentW::LoadFormats(tinyxml2::XMLElement *pFormatsElem, CFormatsList &m_Formats)
+{
+    tinyxml2::XMLElement *pFormatElem = pFormatsElem->FirstChildElement("Format");
+    for (pFormatElem; pFormatElem; pFormatElem = pFormatElem->NextSiblingElement())
+    {
+        CFormat format;
+
+        const char *pszId = pFormatElem->Attribute("id");
+        if (pszId != NULL)
+        {
+            format.szId = GetConfigString(pszId);
+        }
+
+        const char *pszName = pFormatElem->Attribute("name");
+        if (pszName != NULL)
+        {
+            format.szName = GetConfigString(pszName);
+        }
+
+        const char *pszTemplate = pFormatElem->Attribute("template");
+        if (pszTemplate != NULL)
+        {
+            format.szTemplate = GetConfigString(pszTemplate);
+        }
+
+        const char *pszPipesInput = pFormatElem->Attribute("input");
+        if (pszPipesInput != NULL)
+        {
+            format.bInput = GetConfigString(pszPipesInput).CompareNoCase(_T("true")) == 0;
+        }
+
+        const char *pszPipesOutput = pFormatElem->Attribute("output");
+        if (pszPipesOutput != NULL)
+        {
+            format.bOutput = GetConfigString(pszPipesOutput).CompareNoCase(_T("true")) == 0;
+        }
+
+        const char *pszFunction = pFormatElem->Attribute("function");
+        if (pszFunction != NULL)
+        {
+            format.szFunction = GetConfigString(pszFunction);
+        }
+
+        const char *pszPath = pFormatElem->Attribute("path");
+        if (pszPath != NULL)
+        {
+            format.szPath = GetConfigString(pszPath);
+        }
+
+        const char *pszType = pFormatElem->Attribute("type");
+        if (pszType != NULL)
+        {
+            format.nType = stoi(GetConfigString(pszType));
+        }
+
+        const char *pszExtension = pFormatElem->Attribute("extension");
+        if (pszExtension != NULL)
+        {
+            format.szExtension = GetConfigString(pszExtension);
+        }
+
+        const char *pszDefaultPreset = pFormatElem->Attribute("default");
+        if (pszDefaultPreset != NULL)
+        {
+            format.nDefaultPreset = stoi(GetConfigString(pszDefaultPreset));
+        }
+
+        tinyxml2::XMLElement *pPresetsElem = pFormatElem->FirstChildElement("Presets");
+        this->LoadPresets(pPresetsElem, format.m_Presets);
+
+        m_Formats.InsertNode(format);
+    }
+}
+
+void CXMLDocumentW::SaveFormats(tinyxml2::XMLElement *pFormatsElem, CFormatsList &m_Formats)
+{
+    CUtf8String szBuffUtf8;
+    tinyxml2::XMLElement *pFormatElem;
+
+    int nFormats = m_Formats.GetSize();
+    for (int i = 0; i < nFormats; i++)
+    {
+        CFormat& format = m_Formats.GetData(i);
+
+        pFormatElem = this->NewElement("Format");
+
+        pFormatElem->SetAttribute("id", szBuffUtf8.Create(format.szId));
+        szBuffUtf8.Clear();
+
+        pFormatElem->SetAttribute("name", szBuffUtf8.Create(format.szName));
+        szBuffUtf8.Clear();
+
+        pFormatElem->SetAttribute("template", szBuffUtf8.Create(format.szTemplate));
+        szBuffUtf8.Clear();
+
+        pFormatElem->SetAttribute("input", (format.bInput) ? "true" : "false");
+        pFormatElem->SetAttribute("output", (format.bOutput) ? "true" : "false");
+
+        pFormatElem->SetAttribute("function", szBuffUtf8.Create(format.szFunction));
+        szBuffUtf8.Clear();
+
+        pFormatElem->SetAttribute("path", szBuffUtf8.Create(format.szPath));
+        szBuffUtf8.Clear();
+
+        CString szType;
+        szType.Format(_T("%d\0"), format.nType);
+        pFormatElem->SetAttribute("type", szBuffUtf8.Create(szType));
+        szBuffUtf8.Clear();
+
+        pFormatElem->SetAttribute("extension", szBuffUtf8.Create(format.szExtension));
+        szBuffUtf8.Clear();
+
+        CString szDefaultPreset;
+        szDefaultPreset.Format(_T("%d\0"), format.nDefaultPreset);
+        pFormatElem->SetAttribute("default", szBuffUtf8.Create(szDefaultPreset));
+        szBuffUtf8.Clear();
+
+        tinyxml2::XMLElement *pPresetsElem = this->NewElement("Presets");
+        pFormatElem->LinkEndChild(pPresetsElem);
+        this->SavePresets(pPresetsElem, format.m_Presets);
+
+        pFormatsElem->LinkEndChild(pFormatElem);
+    }
+}
+
+void CXMLDocumentW::LoadItems(tinyxml2::XMLElement *pItemsElem, CItemsList &m_Items)
+{
+    tinyxml2::XMLElement *pItemElem = pItemsElem->FirstChildElement("Item");
+    for (pItemElem; pItemElem; pItemElem = pItemElem->NextSiblingElement())
+    {
+        CItem item;
+
+        const char *pszPath = pItemElem->Attribute("path");
+        if (pszPath != NULL)
+        {
+            item.szPath = GetConfigString(pszPath);
+        }
+
+        const char *pszSize = pItemElem->Attribute("size");
+        if (pszSize != NULL)
+        {
+            item.szSize = GetConfigString(pszSize);
+        }
+
+        const char *pszName = pItemElem->Attribute("name");
+        if (pszName != NULL)
+        {
+            item.szName = GetConfigString(pszName);
+        }
+
+        const char *pszExtension = pItemElem->Attribute("extension");
+        if (pszExtension != NULL)
+        {
+            item.szExtension = GetConfigString(pszExtension);
+        }
+
+        const char *pszFormatId = pItemElem->Attribute("format");
+        if (pszFormatId != NULL)
+        {
+            item.szFormatId = GetConfigString(pszFormatId);
+        }
+
+        const char *pszPreset = pItemElem->Attribute("preset");
+        if (pszPreset != NULL)
+        {
+            item.nPreset = stoi(GetConfigString(pszPreset));
+        }
+
+        const char *pszChecked = pItemElem->Attribute("checked");
+        if (pszChecked != NULL)
+        {
+            item.bChecked = GetConfigString(pszChecked).CompareNoCase(_T("true")) == 0;
+        }
+
+        const char *pszTime = pItemElem->Attribute("time");
+        if (pszTime != NULL)
+        {
+            item.szTime = GetConfigString(pszTime);
+        }
+
+        const char *pszStatus = pItemElem->Attribute("status");
+        if (pszStatus != NULL)
+        {
+            item.szStatus = GetConfigString(pszStatus);
+        }
+
+        m_Items.InsertNode(item);
+    }
+}
+
+void CXMLDocumentW::SaveItems(tinyxml2::XMLElement *pItemsElem, CItemsList &m_Items)
+{
+    CUtf8String szBuffUtf8;
+    tinyxml2::XMLElement *pItemElem;
+
+    int nFormats = m_Items.GetSize();
+    for (int i = 0; i < nFormats; i++)
+    {
+        CItem& item = m_Items.GetData(i);
+
+        pItemElem = this->NewElement("Item");
+
+        pItemElem->SetAttribute("path", szBuffUtf8.Create(item.szPath));
+        szBuffUtf8.Clear();
+
+        pItemElem->SetAttribute("size", szBuffUtf8.Create(item.szSize));
+        szBuffUtf8.Clear();
+
+        pItemElem->SetAttribute("name", szBuffUtf8.Create(item.szName));
+        szBuffUtf8.Clear();
+
+        pItemElem->SetAttribute("extension", szBuffUtf8.Create(item.szExtension));
+        szBuffUtf8.Clear();
+
+        pItemElem->SetAttribute("format", szBuffUtf8.Create(item.szFormatId));
+        szBuffUtf8.Clear();
+
+        CString szPreset;
+        szPreset.Format(_T("%d\0"), item.nPreset);
+        pItemElem->SetAttribute("preset", szBuffUtf8.Create(szPreset));
+        szBuffUtf8.Clear();
+
+        pItemElem->SetAttribute("checked", (item.bChecked) ? "true" : "false");
+
+        pItemElem->SetAttribute("time", szBuffUtf8.Create(item.szTime));
+        szBuffUtf8.Clear();
+
+        pItemElem->SetAttribute("status", szBuffUtf8.Create(item.szStatus));
+        szBuffUtf8.Clear();
+
+        pItemsElem->LinkEndChild(pItemElem);
+    }
 }
 
 bool CXMLDocumentW::LoadFileW(CString szFileName)
