@@ -864,15 +864,14 @@ void CBatchEncoderDlg::UpdateOutputComboBoxes()
     this->m_CmbFormat.SetCurSel(m_Config.m_Options.nSelectedFormat);
 
     // update presets combo box
-    /*
     this->m_CmbPresets.ResetContent();
 
     CFormat& format = m_Config.m_Formats.GetData(m_Config.m_Options.nSelectedFormat);
 
-    int nPresets = format.m_pPresets->GetSize();
+    int nPresets = format.m_Presets.GetSize();
     for (int i = 0; i < nPresets; i++)
     {
-        CPreset& preset = format.m_pPresets->GetData(i);
+        CPreset& preset = format.m_Presets.GetData(i);
         this->m_CmbPresets.InsertString(i, preset.szName);
     }
 
@@ -884,7 +883,6 @@ void CBatchEncoderDlg::UpdateOutputComboBoxes()
     }
 
     this->m_CmbPresets.SetCurSel(format.nDefaultPreset);
-    */
 }
 
 LPTSTR CBatchEncoderDlg::GetMenuItemCheck(int nID)
@@ -1491,7 +1489,7 @@ void CBatchEncoderDlg::UpdateFormatAndPreset()
     int nPreset = this->m_CmbPresets.GetCurSel();
 
     CFormat& format = m_Config.m_Formats.GetData(nFormat);
-    CPreset& preset = format.m_pPresets->GetData(nPreset);
+    CPreset& preset = format.m_Presets.GetData(nPreset);
 
     int nCount = m_LstInputItems.GetItemCount();
     if (nCount > 0)
