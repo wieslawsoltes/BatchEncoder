@@ -201,7 +201,7 @@ CBatchEncoderDlg::CBatchEncoderDlg(CWnd* pParent /*=NULL*/)
 {
     m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 
-    szMainConfigFile = ::GetExeFilePath() + MAIN_APP_CONFIG;
+    szMainConfigFile = ::GetExeFilePath() + _T("BatchEncoder.config");
 
     m_Config.m_Options.Defaults();
 }
@@ -1648,7 +1648,9 @@ int CBatchEncoderDlg::InsertToMemoryList(NewItemData &nid)
     int nPreset = this->m_CmbPresets.GetCurSel();
     CFormat& format = m_Config.m_Formats.GetData(nFormat);
 
-    if (m_Config.m_Formats.IsValidInFileExtension(nid.szPath) == false)
+    CString szExt = ::GetFileExtension(nid.szPath);
+    szExt.MakeUpper();
+    if (m_Config.m_Formats.IsValidInExtension(szExt) == false)
         return -1;
 
     hFind = ::FindFirstFile(nid.szPath, &FindFileData);

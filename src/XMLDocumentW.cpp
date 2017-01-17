@@ -226,7 +226,7 @@ void CXMLDocumentW::LoadOptions(tinyxml2::XMLElement *pOptionsElem, COptions &m_
     }
     else
     {
-        m_Options.szLogFileName = MAIN_APP_LOG;
+        m_Options.szLogFileName = _T("BatchEncoder.log");
     }
 
     // option: LogFileEncoding

@@ -123,6 +123,13 @@ CString GetFileName(CString szFilePath)
     return strResult;
 }
 
+CString GetFileExtension(CString szFilePath)
+{
+    CString szExt = ::PathFindExtension(szFilePath);
+    szExt.Remove('.');
+    return szExt;
+}
+
 ULONGLONG GetFileSize64(HANDLE hFile)
 {
     ULARGE_INTEGER liSize;

@@ -9,8 +9,6 @@
 #define MAIN_APP_NAME_VER       _T(VER_PRODUCTNAME_STR " v" VER_FILE_VERSION_SHORT_STR " " VER_COPYRIGHT_STR)
 #define MAIN_APP_WEBSITE        _T("https://github.com/wieslawsoltes/BatchEncoder")
 #define MAIN_APP_EMAIL          _T("wieslaw.soltes@gmail.com")
-#define MAIN_APP_CONFIG         _T("BatchEncoder.config")
-#define MAIN_APP_LOG            _T("BatchEncoder.log")
 
 #ifndef _SECURE_ATL
 #define _SECURE_ATL 1
