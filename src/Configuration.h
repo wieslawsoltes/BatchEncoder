@@ -32,6 +32,9 @@ public:
     int nLogEncoding; // 0 - ANSI, 1 - UNICODE, 2 - UTF-8
     bool bForceConsoleWindow;
 public:
+    COptions() { }
+    virtual ~COptions() { }
+public:
     void Copy(COptions &other)
     {
         other.nSelectedFormat = this->nSelectedFormat;
@@ -88,6 +91,9 @@ class CPreset
 public:
     CString szName;
     CString szOptions;
+public:
+    CPreset() { }
+    virtual ~CPreset() { }
 public:
     void Copy(CPreset &other)
     {
@@ -185,6 +191,9 @@ public:
     CString szExtension;
     int nDefaultPreset;
     CPresetsList m_Presets;
+public:
+    CFormat() { }
+    virtual ~CFormat() { }
 public:
     void Copy(CFormat &other)
     {
@@ -395,6 +404,9 @@ public:
     CString szTime;
     CString szStatus;
 public:
+    CItem() { }
+    virtual ~CItem() { }
+public:
     void Copy(CItem &other)
     {
         other.szPath = this->szPath;
@@ -550,4 +562,7 @@ public:
     COptions m_Options;
     CFormatsList m_Formats;
     CItemsList m_Items;
+public:
+    CConfiguration() { }
+    virtual ~CConfiguration() { }
 };
