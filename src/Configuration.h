@@ -190,7 +190,7 @@ public:
     int nType; // 0 - Encoder, 1 - Decoder
     CString szExtension;
     int nDefaultPreset;
-    CPresetsList m_Presets;
+    CPresetsList *m_Presets;
 public:
     CFormat() { }
     virtual ~CFormat() { }
@@ -211,10 +211,10 @@ public:
         int nPresets = m_Presets.GetSize();
         for (int i = 0; i < nPresets; i++)
         {
-            CPreset& preset = m_Presets.GetData(i);
+            CPreset& preset = m_Presets->GetData(i);
             CPreset copy;
             preset.Copy(copy);
-            other.m_Presets.InsertNode(copy);
+            other.m_Presets->InsertNode(copy);
         }
     }
 };
