@@ -195,14 +195,14 @@ public:
     CFormat() 
     {
         m_pPresets = new CPresetsList();
-MessageBox(_T("new CPresetsList()"), _T("ERROR"), MB_OK | MB_ICONERROR);
+MessageBox(NULL, _T("new CPresetsList()"), _T("ERROR"), MB_OK | MB_ICONERROR);
     }
     virtual ~CFormat() 
     {
         if (m_pPresets != NULL)
         {
             delete m_pPresets;
-MessageBox(_T("delete m_pPresets"), _T("ERROR"), MB_OK | MB_ICONERROR);
+MessageBox(NULL, _T("delete m_pPresets"), _T("ERROR"), MB_OK | MB_ICONERROR);
         }
     }
 public:
