@@ -32,32 +32,45 @@ public:
     int nLogEncoding; // 0 - ANSI, 1 - UNICODE, 2 - UTF-8
     bool bForceConsoleWindow;
 public:
-    COptions() { }
-    virtual ~COptions() { }
-public:
-    void Copy(COptions &other)
+    COptions() 
     {
-        other.nSelectedFormat = this->nSelectedFormat;
-        other.szOutputPath = this->szOutputPath;
-        other.bOutputPathChecked = this->bOutputPathChecked;
-        other.bLogConsoleOutput = this->bLogConsoleOutput;
-        other.bDeleteSourceFiles = this->bDeleteSourceFiles;
-        other.bStayOnTop = this->bStayOnTop;
-        other.bRecurseChecked = this->bRecurseChecked;
-        other.szMainWindowResize = this->szMainWindowResize;
-        other.szFileListColumns = this->szFileListColumns;
-        other.bShowGridLines = this->bShowGridLines;
-        other.bShowTrayIcon = this->bShowTrayIcon;
-        other.bDoNotSaveConfiguration = this->bDoNotSaveConfiguration;
-        other.szPresetsDialogResize = this->szPresetsDialogResize;
-        other.szPresetsListColumns = this->szPresetsListColumns;
-        other.szFormatsDialogResize = this->szFormatsDialogResize;
-        other.szFormatsListColumns = this->szFormatsListColumns;
-        other.bDeleteOnError = this->bDeleteOnError;
-        other.bStopOnErrors = this->bStopOnErrors;
-        other.szLogFileName = this->szLogFileName;
-        other.nLogEncoding = this->nLogEncoding;
-        other.bForceConsoleWindow = this->bForceConsoleWindow;
+    }
+    COptions(const COptions &other)
+    {
+        Copy(other);
+    }
+    COptions& operator=(const COptions &other)
+    {
+        Copy(other);
+        return *this;
+    }
+    virtual ~COptions() 
+    {
+    }
+public:
+    void Copy(const CFormat &other)
+    {
+        this->nSelectedFormat = other.nSelectedFormat;
+        this->szOutputPath = other.szOutputPath;
+        this->bOutputPathChecked = other.bOutputPathChecked;
+        this->bLogConsoleOutput = other.bLogConsoleOutput;
+        this->bDeleteSourceFiles = other.bDeleteSourceFiles;
+        this->bStayOnTop = other.bStayOnTop;
+        this->bRecurseChecked = other.bRecurseChecked;
+        this->szMainWindowResize = other.szMainWindowResize;
+        this->szFileListColumns = other.szFileListColumns;
+        this->bShowGridLines = other.bShowGridLines;
+        this->bShowTrayIcon = other.bShowTrayIcon;
+        this->bDoNotSaveConfiguration = other.bDoNotSaveConfiguration;
+        this->szPresetsDialogResize = other.szPresetsDialogResize;
+        this->szPresetsListColumns = other.szPresetsListColumns;
+        this->szFormatsDialogResize = other.szFormatsDialogResize;
+        this->szFormatsListColumns = other.szFormatsListColumns;
+        this->bDeleteOnError = other.bDeleteOnError;
+        this->bStopOnErrors = other.bStopOnErrors;
+        this->szLogFileName = other.szLogFileName;
+        this->nLogEncoding = other.nLogEncoding;
+        this->bForceConsoleWindow = other.bForceConsoleWindow;
     }
 public:
     void Defaults()
@@ -92,13 +105,26 @@ public:
     CString szName;
     CString szOptions;
 public:
-    CPreset() { }
-    virtual ~CPreset() { }
-public:
-    void Copy(CPreset &other)
+    CPreset() 
     {
-        other.szName = this->szName;
-        other.szOptions = this->szOptions;
+    }
+    CPreset(const CPreset &other)
+    {
+        Copy(other);
+    }
+    CPreset& operator=(const CPreset &other)
+    {
+        Copy(other);
+        return *this;
+    }
+    virtual ~CPreset() 
+    {
+    }
+public:
+    void Copy(const CFormat &other)
+    {
+        this->szName = other.szName;
+        this->szOptions = other.szOptions;
     }
 };
 
@@ -418,20 +444,33 @@ public:
     CString szTime;
     CString szStatus;
 public:
-    CItem() { }
-    virtual ~CItem() { }
-public:
-    void Copy(CItem &other)
+    CItem() 
     {
-        other.szPath = this->szPath;
-        other.szSize = this->szSize;
-        other.szName = this->szName;
-        other.szExtension = this->szExtension;
-        other.szFormatId = this->szFormatId;
-        other.nPreset = this->nPreset;
-        other.bChecked = this->bChecked;
-        other.szTime = this->szTime;
-        other.szStatus = this->szStatus;
+    }
+    CItem(const CItem &other)
+    {
+        Copy(other);
+    }
+    CItem& operator=(const CItem &other)
+    {
+        Copy(other);
+        return *this;
+    }
+    virtual ~CItem() 
+    {
+    }
+public:
+    void Copy(const CItem &other)
+    {
+        this->szPath = other.szPath;
+        this->szSize = other.szSize;
+        this->szName = other.szName;
+        this->szExtension = other.szExtension;
+        this->szFormatId = other.szFormatId;
+        this->nPreset = other.nPreset;
+        this->bChecked = other.bChecked;
+        this->szTime = other.szTime;
+        this->szStatus = other.szStatus;
     }
 };
 
@@ -577,6 +616,10 @@ public:
     CFormatsList m_Formats;
     CItemsList m_Items;
 public:
-    CConfiguration() { }
-    virtual ~CConfiguration() { }
+    CConfiguration() 
+    {
+    }
+    virtual ~CConfiguration() 
+    { 
+    }
 };
