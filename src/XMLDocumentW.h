@@ -17,8 +17,8 @@ public:
     void LoadOptions(tinyxml2::XMLElement *pOptionsElem, COptions &m_Options);
     void SaveOptions(tinyxml2::XMLElement *pOptionsElem, COptions &m_Options);
 public:
-    void LoadPresets(tinyxml2::XMLElement *pPresetsElem, CPresetsList *m_pPresets);
-    void SavePresets(tinyxml2::XMLElement *pPresetsElem, CPresetsList *m_pPresets);
+    void LoadPresets(tinyxml2::XMLElement *pPresetsElem, CPresetsList &m_Presets);
+    void SavePresets(tinyxml2::XMLElement *pPresetsElem, CPresetsList &m_Presets);
 public:
     void LoadFormats(tinyxml2::XMLElement *pFormatsElem, CFormatsList &m_Formats);
     void SaveFormats(tinyxml2::XMLElement *pFormatsElem, CFormatsList &m_Formats);
