@@ -11,16 +11,7 @@
 #include "..\XmlConfiguration.h"
 
 #define WM_TRAY (WM_USER + 0x10)
-
 #define IDC_STATUSBAR 1500
-
-#define ADD_ITEM_MEMORY_AND_CONTROL 2
-
-typedef struct TNewItemData
-{
-    CString szPath;
-    CString szName;
-} NewItemData, *PNewItemData;
 
 class CBatchEncoderDlg : public CResizeDialog
 {
