@@ -1579,8 +1579,6 @@ void CBatchEncoderDlg::OnBnClickedButtonBrowsePath()
     {
         if (::SHGetPathFromIDList(pidlBrowse, lpBuffer))
         {
-            // TODO: m_Config.m_Browse.szBrowsePath[4] = szLastBrowse;
-
             szLastBrowse.Format(_T("%s\0"), lpBuffer);
             m_EdtOutPath.SetWindowText(lpBuffer);
         }
