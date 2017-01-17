@@ -368,6 +368,7 @@ void CFormatsDlg::LoadFormatsFile(CString szFileXml)
 
         doc.LoadFormats(pFormatsElem, m_Formats);
 
+        this->InsertFormatsToListCtrl();
         this->UpdateEditableFields();
     }
     else
