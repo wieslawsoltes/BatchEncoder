@@ -864,6 +864,7 @@ void CBatchEncoderDlg::UpdateOutputComboBoxes()
     this->m_CmbFormat.SetCurSel(m_Config.m_Options.nSelectedFormat);
 
     // update presets combo box
+    /*
     this->m_CmbPresets.ResetContent();
 
     CFormat& format = m_Config.m_Formats.GetData(m_Config.m_Options.nSelectedFormat);
@@ -883,6 +884,7 @@ void CBatchEncoderDlg::UpdateOutputComboBoxes()
     }
 
     this->m_CmbPresets.SetCurSel(format.nDefaultPreset);
+    */
 }
 
 LPTSTR CBatchEncoderDlg::GetMenuItemCheck(int nID)
