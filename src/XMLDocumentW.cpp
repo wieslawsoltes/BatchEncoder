@@ -394,7 +394,7 @@ void CXMLDocumentW::SaveOptions(tinyxml2::XMLElement *pOptionsElem, COptions &m_
     pOptionsElem->LinkEndChild(pOptionElem);
 }
 
-void CXMLDocumentW::LoadPresets(tinyxml2::XMLElement *pPresetsElem, CPresetsList *m_pPresets)
+void CXMLDocumentW::LoadPresets(tinyxml2::XMLElement *pPresetsElem, CPresetsList &m_Presets)
 {
     tinyxml2::XMLElement *pPresetElem = pPresetsElem->FirstChildElement("Preset");
     for (pPresetElem; pPresetElem; pPresetElem = pPresetElem->NextSiblingElement())
@@ -413,19 +413,19 @@ void CXMLDocumentW::LoadPresets(tinyxml2::XMLElement *pPresetsElem, CPresetsList
             preset.szOptions = GetConfigString(pszOptions);
         }
 
-        m_pPresets->InsertNode(preset);
+        m_Presets.InsertNode(preset);
     }
 }
 
-void CXMLDocumentW::SavePresets(tinyxml2::XMLElement *pPresetsElem, CPresetsList *m_pPresets)
+void CXMLDocumentW::SavePresets(tinyxml2::XMLElement *pPresetsElem, CPresetsList &m_Presets)
 {
     CUtf8String szBuffUtf8;
     tinyxml2::XMLElement *pPresetElem;
 
-    int nPresets = m_pPresets->GetSize();
+    int nPresets = m_Presets.GetSize();
     for (int i = 0; i < nPresets; i++)
     {
-        CPreset& preset = m_pPresets->GetData(i);
+        CPreset& preset = m_Presets.GetData(i);
 
         pPresetElem = this->NewElement("Preset");
 
@@ -507,7 +507,7 @@ void CXMLDocumentW::LoadFormats(tinyxml2::XMLElement *pFormatsElem, CFormatsList
         }
 
         tinyxml2::XMLElement *pPresetsElem = pFormatElem->FirstChildElement("Presets");
-        this->LoadPresets(pPresetsElem, format.m_pPresets);
+        this->LoadPresets(pPresetsElem, format.m_Presets);
 
         m_Formats.InsertNode(format);
     }
@@ -558,7 +558,7 @@ void CXMLDocumentW::SaveFormats(tinyxml2::XMLElement *pFormatsElem, CFormatsList
 
         tinyxml2::XMLElement *pPresetsElem = this->NewElement("Presets");
         pFormatElem->LinkEndChild(pPresetsElem);
-        this->SavePresets(pPresetsElem, format.m_pPresets);
+        this->SavePresets(pPresetsElem, format.m_Presets);
 
         pFormatsElem->LinkEndChild(pFormatElem);
     }
