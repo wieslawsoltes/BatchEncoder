@@ -445,7 +445,9 @@ void CXMLDocumentW::LoadFormats(tinyxml2::XMLElement *pFormatsElem, CFormatsList
     for (pFormatElem; pFormatElem; pFormatElem = pFormatElem->NextSiblingElement())
     {
         CFormat format;
-
+        CPresetsList m_Presets;
+        format.m_pPresets = &m_Presets;
+        
         const char *pszId = pFormatElem->Attribute("id");
         if (pszId != NULL)
         {
@@ -507,7 +509,7 @@ void CXMLDocumentW::LoadFormats(tinyxml2::XMLElement *pFormatsElem, CFormatsList
         }
 
         tinyxml2::XMLElement *pPresetsElem = pFormatElem->FirstChildElement("Presets");
-        this->LoadPresets(pPresetsElem, format.m_Presets);
+        this->LoadPresets(pPresetsElem, format.m_pPresets);
 
         m_Formats.InsertNode(format);
     }
@@ -558,7 +560,7 @@ void CXMLDocumentW::SaveFormats(tinyxml2::XMLElement *pFormatsElem, CFormatsList
 
         tinyxml2::XMLElement *pPresetsElem = this->NewElement("Presets");
         pFormatElem->LinkEndChild(pPresetsElem);
-        this->SavePresets(pPresetsElem, format.m_Presets);
+        this->SavePresets(pPresetsElem, format.m_pPresets);
 
         pFormatsElem->LinkEndChild(pFormatElem);
     }
