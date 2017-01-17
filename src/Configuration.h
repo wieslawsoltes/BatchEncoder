@@ -280,7 +280,7 @@ public:
 
 class CFormatsList
 {
-private:
+public:
     CList<CFormat, const CFormat&> m_Formats;
 public:
     void SetData(CFormat& format, int idx)
@@ -312,7 +312,12 @@ public:
 public:
     void Copy(const CFormatsList &other)
     {
-        // TODO:
+        int nFormats = (int)other.m_Formats.GetCount();
+        for (int i = 0; i < nFormats; i++)
+        {
+            CFormat format = other.m_Formats.GetAt(other.m_Formats.FindIndex(i));
+            this->InsertNode(format);
+        }
     }
 public:
     bool IsEmpty()
@@ -509,6 +514,7 @@ public:
 
 class CItemsList
 {
+public
     CList<CItem, CItem&> m_Items;
 public:
     void SetData(CItem& item, int idx)
@@ -540,7 +546,12 @@ public:
 public:
     void Copy(const CItemsList &other)
     {
-        // TODO:
+        int nItems = (int)other.m_Items.GetCount();
+        for (int i = 0; i < nItems; i++)
+        {
+            CItem item = other.m_Items.GetAt(other.m_Items.FindIndex(i));
+            this->InsertNode(item);
+        }
     } 
 public:
     bool IsEmpty()
