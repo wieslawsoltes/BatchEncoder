@@ -265,16 +265,7 @@ public:
         this->nType = other.nType;
         this->szExtension = other.szExtension;
         this->nDefaultPreset = other.nDefaultPreset;
-/*
-        int nPresets = other.m_Presets.GetSize();
-        for (int i = 0; i < nPresets; i++)
-        {
-            CPreset& preset = other.m_Presets.GetData(i);
-            CPreset copy;
-            preset.Copy(copy);
-            this->m_Presets.InsertNode(copy);
-        }
-*/
+        this->m_Presets = other.m_Presets;
     }
 };
 
@@ -514,7 +505,7 @@ public:
 
 class CItemsList
 {
-public
+public:
     CList<CItem, CItem&> m_Items;
 public:
     void SetData(CItem& item, int idx)
