@@ -195,19 +195,20 @@ public:
     CFormat() 
     {
         m_pPresets = new CPresetsList();
-MessageBox(NULL, _T("new CPresetsList()"), _T("ERROR"), MB_OK | MB_ICONERROR);
+MessageBox(NULL, _T("CFormat() "), _T("ERROR"), MB_OK | MB_ICONERROR);
     }
     CFormat(const CFormat& other)
     {
         m_pPresets = new CPresetsList();
         other.Copy(this);
+MessageBox(NULL, _T("CFormat(const CFormat& other)"), _T("ERROR"), MB_OK | MB_ICONERROR);
     }
     virtual ~CFormat() 
     {
         if (m_pPresets != NULL)
         {
             delete m_pPresets;
-MessageBox(NULL, _T("delete m_pPresets"), _T("ERROR"), MB_OK | MB_ICONERROR);
+MessageBox(NULL, _T("virtual ~CFormat() s"), _T("ERROR"), MB_OK | MB_ICONERROR);
         }
     }
 public:
