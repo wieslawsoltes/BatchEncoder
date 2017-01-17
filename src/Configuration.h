@@ -190,34 +190,22 @@ public:
     int nType; // 0 - Encoder, 1 - Decoder
     CString szExtension;
     int nDefaultPreset;
-    CPresetsList *m_pPresets;
+    CPresetsList m_Presets;
 public:
     CFormat() 
     {
-        m_pPresets = new CPresetsList();
-        
-        MessageBox(NULL, _T("CFormat() "), _T("ERROR"), MB_OK | MB_ICONERROR);
     }
     CFormat(const CFormat &other)
     {
-        MessageBox(NULL, _T("CFormat(const CFormat &other)"), _T("ERROR"), MB_OK | MB_ICONERROR);
-        
         Copy(other);
     }
     CFormat& operator=(const CFormat &other)
     {
-        MessageBox(NULL, _T("CFormat& operator=(const CFormat &other)"), _T("ERROR"), MB_OK | MB_ICONERROR);
-        
         Copy(other);
         return *this;
     }
     virtual ~CFormat() 
     {
-        if (m_pPresets != NULL)
-        {
-            delete m_pPresets;
-MessageBox(NULL, _T("virtual ~CFormat() s"), _T("ERROR"), MB_OK | MB_ICONERROR);
-        }
     }
 public:
     void Copy(const CFormat &other)
@@ -233,17 +221,13 @@ public:
         this->szExtension = other.szExtension;
         this->nDefaultPreset = other.nDefaultPreset;
 
-        if (this->m_pPresets != NULL)
-            delete m_pPresets;
-        this->m_pPresets = new CPresetsList();
-        
-        int nPresets = other.m_pPresets->GetSize();
+        int nPresets = other.m_Presets.GetSize();
         for (int i = 0; i < nPresets; i++)
         {
-            CPreset& preset = other.m_pPresets->GetData(i);
+            CPreset& preset = other.m_Presets.GetData(i);
             CPreset copy;
             preset.Copy(copy);
-            this->m_pPresets->InsertNode(copy);
+            this->m_Presets.InsertNode(copy);
         }
     }
 };
