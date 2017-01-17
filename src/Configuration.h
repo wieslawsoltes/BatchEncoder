@@ -197,11 +197,17 @@ public:
         m_pPresets = new CPresetsList();
 MessageBox(NULL, _T("CFormat() "), _T("ERROR"), MB_OK | MB_ICONERROR);
     }
-    CFormat(const CFormat& other)
+    CFormat(const CFormat &other)
     {
+MessageBox(NULL, _T("CFormat(const CFormat &other)"), _T("ERROR"), MB_OK | MB_ICONERROR);
         m_pPresets = new CPresetsList();
-        other.Copy(this);
-MessageBox(NULL, _T("CFormat(const CFormat& other)"), _T("ERROR"), MB_OK | MB_ICONERROR);
+        Copy(other);
+    }
+    CFormat& operator=(const CFormat &other)
+    {
+MessageBox(NULL, _T("CFormat& operator=(const CFormat &other)"), _T("ERROR"), MB_OK | MB_ICONERROR);
+        Copy(other);
+        return *this;
     }
     virtual ~CFormat() 
     {
