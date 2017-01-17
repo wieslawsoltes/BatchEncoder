@@ -1035,7 +1035,7 @@ bool CBatchEncoderDlg::SaveConfigFile(CString szFileXml)
     doc.SaveItems(pItemsElem, m_Config.m_Items);
 
     ::UpdatePath();
-    
+
     return doc.SaveFileUtf8(szFileXml);
 }
 
@@ -1145,9 +1145,9 @@ void CBatchEncoderDlg::OnBnClickedButtonConvert()
 
         nProgressCurrent = 0;
         bRunning = true;
-        
+
         ::ResumeThread(hThread);
-        
+
         bSafeCheck = false;
     }
     else
@@ -1292,7 +1292,7 @@ void CBatchEncoderDlg::OnCbnSelchangeComboPresets()
 {
     int nFormat = this->m_CmbFormat.GetCurSel();
     int nPreset = this->m_CmbPresets.GetCurSel();
-    
+
     CFormat& format = m_Config.m_Formats.GetData(nFormat);
     format.nDefaultPreset = nPreset;
 
@@ -1594,7 +1594,7 @@ void CBatchEncoderDlg::OnDropFiles(HDROP hDropInfo)
         if (hDDThread == NULL)
             bHandleDrop = true;
     }
-    
+
     CResizeDialog::OnDropFiles(hDropInfo);
 }
 
@@ -2317,7 +2317,7 @@ void CBatchEncoderDlg::OnOptionsForceConsoleWindow()
 void CBatchEncoderDlg::OnOptionsAdvanced()
 {
     CAdvancedDlg dlg;
-    
+
     dlg.m_Options = m_Config.m_Options;
 
     if (dlg.DoModal() == IDOK)
