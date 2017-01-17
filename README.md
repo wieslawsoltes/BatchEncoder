@@ -85,7 +85,7 @@ adds input and output file paths. For specific options for each format use help 
 | FAAD            | Decoder     | AAC             | -.-           | faad.exe                         | GetProgress_FaadDec.progress              |
 | NEROAACDEC      | Decoder     | MP4             | -.-           | neroAacDec.exe                   | - none -                                  |
 | NEROAACDEC      | Decoder     | M4A             | -.-           | neroAacDec.exe                   | - none -                                  |
-| OPUSENC         | Decoder     | OPUS            |  -.-          | opusdec.exe                      | - none -                                  |
+| OPUSDEC         | Decoder     | OPUS            |  -.-          | opusdec.exe                      | - none -                                  |
 | OGGDEC          | Decoder     | OGG             | -.-           | oggdec.exe                       | GetProgress_OggDec.progress               |
 | AFTEN           | Decoder     | AC3             | -.-           | aften.exe                        | - none -                                  |
 | FLAC            | Decoder     | FLAC            | -.-           | flac.exe                         | GetProgress_FlacDec.progress              |
