@@ -1235,7 +1235,7 @@ bool CBatchEncoderDlg::LoadConfigFile(CString szFileXml)
     tinyxml2::XMLElement *pFormatsElem = pRootElem->FirstChildElement("Formats");
     doc.LoadFormats(pFormatsElem, m_Config.m_Formats);
 
-    this->UpdateOutputComboBoxes();
+    // TODO: this->UpdateOutputComboBoxes();
 
     // root: Items
     this->OnFileClearList();
