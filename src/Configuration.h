@@ -279,8 +279,6 @@ public:
         {
             CFormat& format = this->GetData(i);
             CFormat copy;
-            CPresetsList m_Presets;
-            copy.m_pPresets = &m_Presets;
             format.Copy(copy);
             other.InsertNode(copy);
         }
