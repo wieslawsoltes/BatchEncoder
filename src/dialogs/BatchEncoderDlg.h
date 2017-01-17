@@ -35,8 +35,6 @@ protected:
     virtual void OnOK();
     virtual void OnCancel();
 public:
-    bool CreateBatchFile(CString szFileName);
-public:
     CMyStatusBarCtrl m_StatusBar;
 public:
     void UpdateStatusBar();
@@ -80,9 +78,9 @@ public:
         double fTime = 0.0,
         int nIndex = -1);
 public:
-    int InsertToMemoryList(CString szPath, CString szName);
+    int InsertToMemoryList(CString szPath);
     void InsertToControlList(int nItem);
-    bool InsertToList(CString szPath, CString szName);
+    bool InsertToList(CString szPath);
 public:
     void HandleDropFiles(HDROP hDropInfo);
 public:
@@ -100,8 +98,8 @@ public:
     bool GridlinesVisible();
     void ShowGridlines(bool bShow);
 public:
-    void LoadItems(tinyxml2::XMLElement *pItemsElem);
-    void SaveItems(XmlConfiguration &doc, tinyxml2::XMLElement *pItemsElem);
+    void GetItems();
+    void SetItems();
 public:
     void GetOptions();
     void SetOptions();
@@ -159,7 +157,6 @@ public:
     afx_msg void OnFileLoadList();
     afx_msg void OnFileSaveList();
     afx_msg void OnFileClearList();
-    afx_msg void OnFileCreateBatchFile();
     afx_msg void OnFileExit();
 public:
     afx_msg void OnEditAddFiles();

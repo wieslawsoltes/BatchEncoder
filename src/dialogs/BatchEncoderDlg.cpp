@@ -254,7 +254,6 @@ BEGIN_MESSAGE_MAP(CBatchEncoderDlg, CResizeDialog)
     ON_COMMAND(ID_FILE_LOADLIST, OnFileLoadList)
     ON_COMMAND(ID_FILE_SAVELIST, OnFileSaveList)
     ON_COMMAND(ID_FILE_CLEARLIST, OnFileClearList)
-    ON_COMMAND(ID_FILE_CREATE_BATCH_FILE, OnFileCreateBatchFile)
     ON_COMMAND(ID_FILE_EXIT, OnFileExit)
     ON_COMMAND(ID_EDIT_ADDFILES, OnEditAddFiles)
     ON_COMMAND(ID_EDIT_REMOVECHECKED, OnEditRemoveChecked)
@@ -291,7 +290,6 @@ BEGIN_MESSAGE_MAP(CBatchEncoderDlg, CResizeDialog)
     ON_COMMAND(ID_ACCELERATOR_CTRL_L, OnFileLoadList)
     ON_COMMAND(ID_ACCELERATOR_CTRL_S, OnFileSaveList)
     ON_COMMAND(ID_ACCELERATOR_CTRL_E, OnFileClearList)
-    ON_COMMAND(ID_ACCELERATOR_CTRL_B, OnFileCreateBatchFile)
     ON_COMMAND(ID_ACCELERATOR_CTRL_SHIFT_L, LoadUserConfig)
     ON_COMMAND(ID_ACCELERATOR_CTRL_SHIFT_S, SaveUserConfig)
     ON_COMMAND(ID_ACCELERATOR_F3, OnEditResetTime)
@@ -431,208 +429,6 @@ BOOL CBatchEncoderDlg::PreTranslateMessage(MSG* pMsg)
     }
 
     return CDialog::PreTranslateMessage(pMsg);
-}
-
-bool CBatchEncoderDlg::CreateBatchFile(CString szFileName)
-{
-    // TODO: Function is using same logic as WorkThread(...)
-    
-    /*
-    char *szPrefix = "@echo off\r\n@setlocal\r\n";
-    char *szPostfix = "@endlocal\r\n@pause\r\n";
-    char *szPreDel = "@del /F /Q \"";
-    char *szPostDel = "\"\r\n";
-    char *szShutdown = "@shutdown -t 30 -s\r\n";
-    char *szLineEnd = "\r\n";
-
-    ::UpdatePath();
-
-    CFile fp;
-    if (fp.Open(szFileName, fp.modeCreate | fp.modeReadWrite) == FALSE)
-        return false;
-
-    fp.Write(szPrefix, (UINT)strlen(szPrefix));
-
-    bool bDeleteAfterconversion = this->GetMenu()->GetMenuState(ID_OPTIONS_DELETESOURCEFILEWHENDONE, MF_BYCOMMAND) == MF_CHECKED;
-
-    bool bOutPath = this->m_ChkOutPath.GetCheck() == BST_CHECKED;
-    CString szOutPath;
-
-    this->m_EdtOutPath.GetWindowText(szOutPath);
-
-    int nItems = this->m_LstInputItems.GetItemCount();
-    for (int i = 0; i < nItems; i++)
-    {
-        if (this->m_LstInputItems.GetCheck(i) == FALSE)
-            continue;
-
-        int nProcessingMode = -1;
-        int nIntputFormat = m_Config.m_Items.GetItemInFormat(i);
-        int nOutputFormat = m_Config.m_Items.GetItemOutFormat(i);
-        int nPreset = m_Config.m_Items.GetItemOutPreset(i);
-
-        CString szInputFile = m_Config.m_Items.GetItemFilePath(i);
-
-        if (bOutPath == false)
-        {
-            szOutPath = szInputFile;
-            CString szToRemove = m_Config.m_Items.GetFileName(szInputFile);
-            int nNewLenght = szOutPath.GetLength() - szToRemove.GetLength();
-            szOutPath.Truncate(nNewLenght);
-        }
-
-        CString szDecoderExePath;
-        CString szDecoderOptions;
-
-        szDecoderExePath = this->GetDecoderExe(nIntputFormat);
-        GetFullPathName(szDecoderExePath);
-
-        szDecoderOptions = this->GetDecoderOpt(nIntputFormat, -1);
-
-        CString szName = m_Config.m_Items.GetItemFileName(i);
-
-        CString szEncoderExePath;
-        CString szEncoderOptions;
-
-        szEncoderExePath = this->GetEncoderExe(nOutputFormat);
-        GetFullPathName(szEncoderExePath);
-
-        szEncoderOptions = this->GetEncoderOpt(nOutputFormat, nPreset);
-
-        szName = szName + _T(".") + m_Config.m_Items.GetItemOutExt(i).MakeLower();
-
-        CString szOutputFile;
-
-        if (szOutPath.GetLength() >= 1)
-        {
-            if (szOutPath[szOutPath.GetLength() - 1] == '\\' || szOutPath[szOutPath.GetLength() - 1] == '/')
-                szOutputFile = szOutPath + szName;
-            else
-                szOutputFile = szOutPath + _T("\\") + szName;
-        }
-        else
-        {
-            szOutputFile = szName;
-        }
-
-        nProcessingMode = 1;
-        if (nIntputFormat == 0)
-            nProcessingMode = 0;
-
-        if (nProcessingMode == 1)
-            nProcessingMode = 2;
-
-        if (nOutputFormat == 0)
-        {
-            bool bNeedResampling = (szEncoderOptions.GetLength() > 0) ? true : false;
-
-            if ((nIntputFormat == 0) && (bNeedResampling == false))
-                nProcessingMode = 0;
-
-            if ((nIntputFormat == 0) && (bNeedResampling == true))
-                nProcessingMode = 0;
-
-            if ((nIntputFormat > 0) && (bNeedResampling == false))
-                nProcessingMode = 1;
-
-            if ((nIntputFormat > 0) && (bNeedResampling == true))
-                nProcessingMode = 2;
-        }
-
-        CString csExecute;
-        bool bDecode = false;
-        int nTool = -1;
-
-        CString szOrgInputFile = szInputFile;
-        CString szOrgOutputFile = szOutputFile;
-
-        if (nProcessingMode == 2)
-            szOutputFile = szOutputFile + _T(".wav");
-
-        if ((nProcessingMode == 1) || (nProcessingMode == 2))
-        {
-            csExecute = m_Config.m_Formats[(NUM_OUTPUT_EXT + nIntputFormat - 1)].szTemplate;
-            csExecute.Replace(_T("$EXE"), _T("\"$EXE\""));
-            csExecute.Replace(_T("$EXE"), szDecoderExePath);
-            csExecute.Replace(_T("$OPTIONS"), szDecoderOptions);
-            csExecute.Replace(_T("$INFILE"), _T("\"$INFILE\""));
-            csExecute.Replace(_T("$INFILE"), szInputFile);
-            csExecute.Replace(_T("$OUTFILE"), _T("\"$OUTFILE\""));
-            csExecute.Replace(_T("$OUTFILE"), szOutputFile);
-
-            bDecode = true;
-            nTool = (NUM_OUTPUT_EXT + nIntputFormat - 1);
-
-            CUtf8String szBuffUtf8;
-            char *szCommandLine = szBuffUtf8.Create(csExecute);
-            fp.Write(szCommandLine, (UINT)strlen(szCommandLine));
-            szBuffUtf8.Clear();
-
-            fp.Write(szLineEnd, (UINT)strlen(szLineEnd));
-
-            if (bDeleteAfterconversion == true)
-            {
-                fp.Write(szPreDel, (UINT)strlen(szPreDel));
-
-                CUtf8String szBuffUtf8;
-                char *szDelFile = szBuffUtf8.Create(szOrgInputFile);
-                fp.Write(szDelFile, (UINT)strlen(szDelFile));
-                szBuffUtf8.Clear();
-
-                fp.Write(szPostDel, (UINT)strlen(szPostDel));
-            }
-        }
-
-        if (nProcessingMode == 2)
-        {
-            szInputFile = szOutputFile;
-            szOrgInputFile = szOutputFile;
-            szOutputFile = szOrgOutputFile;
-        }
-
-        if ((nProcessingMode == 0) || (nProcessingMode == 2))
-        {
-            csExecute = m_Config.m_Formats[nOutputFormat].szTemplate;
-            csExecute.Replace(_T("$EXE"), _T("\"$EXE\""));
-            csExecute.Replace(_T("$EXE"), szEncoderExePath);
-            csExecute.Replace(_T("$OPTIONS"), szEncoderOptions);
-            csExecute.Replace(_T("$INFILE"), _T("\"$INFILE\""));
-            csExecute.Replace(_T("$INFILE"), szInputFile);
-            csExecute.Replace(_T("$OUTFILE"), _T("\"$OUTFILE\""));
-            csExecute.Replace(_T("$OUTFILE"), szOutputFile);
-
-            bDecode = false;
-            nTool = nOutputFormat;
-
-            CUtf8String szBuffUtf8;
-            char *szCommandLine = szBuffUtf8.Create(csExecute);
-            fp.Write(szCommandLine, (UINT)strlen(szCommandLine));
-            szBuffUtf8.Clear();
-
-            fp.Write(szLineEnd, (UINT)strlen(szLineEnd));
-
-            if ((bDeleteAfterconversion == true) || (nProcessingMode == 2))
-            {
-                fp.Write(szPreDel, (UINT)strlen(szPreDel));
-
-                CUtf8String szBuffUtf8;
-                char *szDelFile = szBuffUtf8.Create(szOrgInputFile);
-                fp.Write(szDelFile, (UINT)strlen(szDelFile));
-                szBuffUtf8.Clear();
-
-                fp.Write(szPostDel, (UINT)strlen(szPostDel));
-            }
-        }
-    }
-
-    if (this->GetMenu()->GetMenuState(ID_OPTIONS_SHUTDOWN_WHEN_FINISHED, MF_BYCOMMAND) == MF_CHECKED)
-        fp.Write(szShutdown, (UINT)strlen(szShutdown));
-
-    fp.Write(szPostfix, (UINT)strlen(szPostfix));
-    fp.Close();
-    */
-
-    return true;
 }
 
 void CBatchEncoderDlg::UpdateStatusBar()
@@ -925,42 +721,7 @@ void CBatchEncoderDlg::ShowGridlines(bool bShow)
     }
 }
 
-void CBatchEncoderDlg::LoadItems(tinyxml2::XMLElement *pItemsElem)
-{
-    tinyxml2::XMLElement *pItemElem = pItemsElem->FirstChildElement("Item");
-    for (pItemElem; pItemElem; pItemElem = pItemElem->NextSiblingElement())
-    {
-        char *pszAttribPath = (char*)pItemElem->Attribute("path");
-        char *pszAttribChecked = (char*)pItemElem->Attribute("checked");
-        char *pszAttribName = (char*)pItemElem->Attribute("name");
-        char *pszAttribInExt = (char*)pItemElem->Attribute("input");
-        char *pszAttribSize = (char*)pItemElem->Attribute("size");
-        char *pszAttribOutExt = (char*)pItemElem->Attribute("output");
-        char *pszAttribOutPreset = (char*)pItemElem->Attribute("preset");
-        char *pszAttribTime = (char*)pItemElem->Attribute("time");
-        char *pszAttribStatus = (char*)pItemElem->Attribute("status");
-
-        if (pszAttribPath == NULL
-            || pszAttribChecked == NULL
-            || pszAttribName == NULL
-            || pszAttribInExt == NULL
-            || pszAttribSize == NULL
-            || pszAttribOutExt == NULL
-            || pszAttribOutPreset == NULL
-            || pszAttribTime == NULL
-            || pszAttribStatus == NULL)
-        {
-            continue;
-        }
-
-        CString szPath = GetConfigString(pszAttribPath);
-        CString szName = GetConfigString(pszAttribName);
-
-        this->InsertToList(szPath, szName);
-    }
-}
-
-void CBatchEncoderDlg::SaveItems(XmlConfiguration &doc, tinyxml2::XMLElement *pItemsElem)
+void CBatchEncoderDlg::GetItems()
 {
     int nItems = this->m_LstInputItems.GetItemCount();
     for (int i = 0; i < nItems; i++)
@@ -970,8 +731,15 @@ void CBatchEncoderDlg::SaveItems(XmlConfiguration &doc, tinyxml2::XMLElement *pI
         item.szTime = this->m_LstInputItems.GetItemText(i, 5);
         item.szStatus = this->m_LstInputItems.GetItemText(i, 6);
     }
+}
 
-    doc.SaveItems(pItemsElem, m_Config.m_Items);
+void CBatchEncoderDlg::SetItems()
+{
+    int nItems = m_Config.m_Items.GetSize();
+    for (int i = 0; i < nItems; i++)
+    {
+        this->InsertToControlList(i);
+    }
 }
 
 void CBatchEncoderDlg::GetOptions()
@@ -1166,7 +934,9 @@ bool CBatchEncoderDlg::LoadList(CString szFileXml)
 
         this->OnEditClear();
 
-        this->LoadItems(pItemsElem);
+        doc.LoadItems(pItemsElem, m_Config.m_Items);
+
+        this->SetItems();
 
         return true;
     }
@@ -1184,7 +954,8 @@ bool CBatchEncoderDlg::SaveList(CString szFileXml)
     tinyxml2::XMLElement *pItemsElem = doc.NewElement("Items");
     doc.LinkEndChild(pItemsElem);
 
-    this->SaveItems(doc, pItemsElem);
+    this->GetItems();
+    doc.SaveItems(pItemsElem, m_Config.m_Items);
 
     return doc.SaveFileUtf8(szFileXml);
 }
@@ -1224,8 +995,9 @@ bool CBatchEncoderDlg::LoadConfigFile(CString szFileXml)
     this->OnFileClearList();
 
     tinyxml2::XMLElement *pItemsElem = pRootElem->FirstChildElement("Items");
-    this->LoadItems(pItemsElem);
+    doc.LoadItems(pItemsElem, m_Config.m_Items);
 
+    this->SetItems();
     this->UpdateStatusBar();
 
     return true;
@@ -1258,7 +1030,9 @@ bool CBatchEncoderDlg::SaveConfigFile(CString szFileXml)
     // root: Items
     tinyxml2::XMLElement *pItemsElem = doc.NewElement("Items");
     pRootElem->LinkEndChild(pItemsElem);
-    this->SaveItems(doc, pItemsElem);
+
+    this->GetItems();
+    doc.SaveItems(pItemsElem, m_Config.m_Items);
 
     ::UpdatePath();
     
@@ -1621,33 +1395,18 @@ void CBatchEncoderDlg::OnBnClickedCheckOutPath()
     }
 }
 
-int CBatchEncoderDlg::InsertToMemoryList(CString szPath, CString szName)
+int CBatchEncoderDlg::InsertToMemoryList(CString szPath)
 {
-    WIN32_FIND_DATA FindFileData;
-    HANDLE hFind;
-    ULARGE_INTEGER ulSize;
-    ULONGLONG nFileSize;
-
     int nFormat = this->m_CmbFormat.GetCurSel();
     int nPreset = this->m_CmbPresets.GetCurSel();
-    CFormat& format = m_Config.m_Formats.GetData(nFormat);
+    CString szFormatId = m_Config.m_Formats.GetData(nFormat).szId;
 
     CString szExt = ::GetFileExtension(szPath);
     szExt.MakeUpper();
     if (m_Config.m_Formats.IsValidInExtension(szExt) == false)
         return -1;
 
-    hFind = ::FindFirstFile(szPath, &FindFileData);
-    if (hFind == INVALID_HANDLE_VALUE)
-        return -1;
-
-    ::FindClose(hFind);
-
-    ulSize.HighPart = FindFileData.nFileSizeHigh;
-    ulSize.LowPart = FindFileData.nFileSizeLow;
-    nFileSize = ulSize.QuadPart;
-
-    return m_Config.m_Items.InsertNode(szPath, szName, nFileSize, format.szId, nPreset);
+    return m_Config.m_Items.InsertNode(szPath, szFormatId, nPreset);
 }
 
 void CBatchEncoderDlg::InsertToControlList(int nItem)
@@ -1705,10 +1464,9 @@ void CBatchEncoderDlg::InsertToControlList(int nItem)
     m_LstInputItems.SetCheck(nItem, item.bChecked);
 }
 
-bool CBatchEncoderDlg::InsertToList(CString szPath, CString szName)
+bool CBatchEncoderDlg::InsertToList(CString szPath)
 {
-    int nItem = this->InsertToMemoryList(szPath, szName);
-
+    int nItem = this->InsertToMemoryList(szPath);
     if (nItem == -1)
         return false;
 
@@ -1763,7 +1521,7 @@ void CBatchEncoderDlg::SearchFolderForFiles(CString szFile, const bool bRecurse)
             {
                 CString szPath;
                 szPath.Format(_T("%s\\%s\0"), szFile, w32FileData.cFileName);
-                this->InsertToList(szPath, _T(""));
+                this->InsertToList(szPath);
             }
 
             if (w32FileData.cFileName[0] != '.' &&
@@ -1813,7 +1571,7 @@ void CBatchEncoderDlg::HandleDropFiles(HDROP hDropInfo)
             else
             {
                 CString szPath = szFile;
-                this->InsertToList(szPath, _T(""));
+                this->InsertToList(szPath);
             }
 
             szFile.ReleaseBuffer();
@@ -2095,33 +1853,6 @@ void CBatchEncoderDlg::OnFileClearList()
     this->OnEditClear();
 }
 
-void CBatchEncoderDlg::OnFileCreateBatchFile()
-{
-    CString szInitName;
-    SYSTEMTIME st;
-
-    ::GetLocalTime(&st);
-    szInitName.Format(_T("convert_%04d%02d%02d_%02d%02d%02d%03d"),
-        st.wYear, st.wMonth, st.wDay,
-        st.wHour, st.wMinute, st.wSecond, st.wMilliseconds);
-
-    CFileDialog fd(FALSE, _T("bat"), szInitName,
-        OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER | OFN_OVERWRITEPROMPT,
-        _T("Batch Files (*.bat)|*.bat|Script Files (*.cmd)|*.cmd|All Files|*.*||"), this);
-
-    if (fd.DoModal() == IDOK)
-    {
-        CString szFileBatch = fd.GetPathName();
-
-        if (this->CreateBatchFile(szFileBatch) == false)
-        {
-            MessageBox(_T("Failed to create batch-file!"),
-                _T("ERROR"),
-                MB_OK | MB_ICONERROR);
-        }
-    }
-}
-
 void CBatchEncoderDlg::OnFileExit()
 {
     if (this->bRunning == false)
@@ -2145,6 +1876,7 @@ void CBatchEncoderDlg::OnEditAddFiles()
 
         ZeroMemory(pFiles, dwMaxSize);
 
+        // TODO: Get extensions from input formats.
         CFileDialog fd(TRUE,
             _T(""),
             0,
@@ -2186,7 +1918,7 @@ void CBatchEncoderDlg::OnEditAddFiles()
                 if (!sFilePath.IsEmpty())
                 {
                     CString szPath = sFilePath;
-                    this->InsertToList(szPath, _T(""));
+                    this->InsertToList(szPath);
                 }
             } while (pos != NULL);
 

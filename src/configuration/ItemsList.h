@@ -66,27 +66,39 @@ public:
     {
         m_Items.AddTail(item);
     }
-public:
-    int InsertNode(CString szPath, const TCHAR *szName, const ULONGLONG nSize, const CString szFormatId, const int nPreset)
+    int InsertNode(const CString szPath, const CString szFormatId, const int nPreset)
     {
+        WIN32_FIND_DATA lpFindFileData;
+        HANDLE hFind;
+        ULARGE_INTEGER ulSize;
+        ULONGLONG nFileSize;
+
+        hFind = ::FindFirstFile(szPath, &lpFindFileData);
+        if (hFind == INVALID_HANDLE_VALUE)
+            return -1;
+
+        ::FindClose(hFind);
+
+        ulSize.HighPart = lpFindFileData.nFileSizeHigh;
+        ulSize.LowPart = lpFindFileData.nFileSizeLow;
+        nFileSize = ulSize.QuadPart;
+
         CItem item;
 
         item.szPath = szPath;
 
-        CString szBuff;
-        szBuff.Format(_T("%I64d"), nSize);
-        item.szSize = szBuff;
+        CString szFileSize;
+        szFileSize.Format(_T("%I64d"), nFileSize);
+        item.szSize = szFileSize;
 
-        if ((szName == NULL) || (_tcslen(szName) == 0))
-            item.szName = this->GetOnlyFileName(szPath);
-        else
-            item.szName = szName;
-
+        item.szName = this->GetOnlyFileName(szPath);
         item.szExtension = this->GetFileExtUpperCase(szPath);
+
         item.szFormatId = szFormatId;
         item.nPreset = nPreset;
 
         m_Items.AddTail(item);
+
         return (int)m_Items.GetCount() - 1;
     }
     void RemoveNode(int pstn = -1)

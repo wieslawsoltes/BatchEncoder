@@ -629,8 +629,8 @@ public:
         CUtf8String szBuffUtf8;
         tinyxml2::XMLElement *pItemElem;
 
-        int nFormats = m_Items.GetSize();
-        for (int i = 0; i < nFormats; i++)
+        int nItems = m_Items.GetSize();
+        for (int i = 0; i < nItems; i++)
         {
             CItem& item = m_Items.GetData(i);
 
