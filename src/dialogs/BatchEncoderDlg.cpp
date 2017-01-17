@@ -409,7 +409,14 @@ BOOL CBatchEncoderDlg::OnInitDialog()
     AddAnchor(IDC_BUTTON_RUN, BOTTOM_RIGHT);
     AddAnchor(IDC_STATUSBAR, BOTTOM_LEFT, BOTTOM_RIGHT);
 
-    this->LoadConfigFile(this->szMainConfigFile);
+    try
+    {
+        this->LoadConfigFile(this->szMainConfigFile);
+    }
+    catch (...)
+    {
+        MessageBox(_T("Error loading configuration file!"), _T("ERROR"), MB_OK | MB_ICONERROR);
+    }
 
     return TRUE;
 }
@@ -1285,11 +1292,18 @@ void CBatchEncoderDlg::LoadUserConfig()
     if (fd.DoModal() == IDOK)
     {
         CString szPath = fd.GetPathName();
-        if (this->LoadConfigFile(szPath) == false)
+        try
         {
-            MessageBox(_T("Failed to load configuration!"),
-                _T("ERROR"),
-                MB_OK | MB_ICONERROR);
+            if (this->LoadConfigFile(szPath) == false)
+            {
+                MessageBox(_T("Failed to load configuration!"),
+                    _T("ERROR"),
+                    MB_OK | MB_ICONERROR);
+            }
+        }
+        catch (...)
+        {
+            MessageBox(_T("Error loading configuration file!"), _T("ERROR"), MB_OK | MB_ICONERROR);
         }
     }
 }
@@ -1305,11 +1319,18 @@ void CBatchEncoderDlg::SaveUserConfig()
     if (fd.DoModal() == IDOK)
     {
         CString szPath = fd.GetPathName();
-        if (this->SaveConfigFile(szPath) == false)
+        try
         {
-            MessageBox(_T("Failed to save configuration!"),
-                _T("ERROR"),
-                MB_OK | MB_ICONERROR);
+            if (this->SaveConfigFile(szPath) == false)
+            {
+                MessageBox(_T("Failed to save configuration!"),
+                    _T("ERROR"),
+                    MB_OK | MB_ICONERROR);
+            }
+        }
+        catch (...)
+        {
+            MessageBox(_T("Error saving configuration file!"), _T("ERROR"), MB_OK | MB_ICONERROR);
         }
     }
 }
