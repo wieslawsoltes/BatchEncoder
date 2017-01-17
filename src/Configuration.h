@@ -48,7 +48,7 @@ public:
     {
     }
 public:
-    void Copy(const CFormat &other)
+    void Copy(const COptions &other)
     {
         this->nSelectedFormat = other.nSelectedFormat;
         this->szOutputPath = other.szOutputPath;
@@ -121,7 +121,7 @@ public:
     {
     }
 public:
-    void Copy(const CFormat &other)
+    void Copy(const CPreset &other)
     {
         this->szName = other.szName;
         this->szOptions = other.szOptions;
