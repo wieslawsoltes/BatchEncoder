@@ -345,8 +345,8 @@ void CFormatsDlg::UpdateFormatsFromListCtrl()
 
 void CFormatsDlg::LoadFormatsFile(CString szFileXml)
 {
-    CXMLDocumentW doc;
-    if (doc.LoadFileW(szFileXml) == true)
+    XmlConfiguration doc;
+    if (doc.LoadFileUtf8(szFileXml) == true)
     {
         tinyxml2::XMLElement *pFormatsElem = doc.FirstChildElement();
         if (!pFormatsElem)
@@ -378,7 +378,7 @@ void CFormatsDlg::LoadFormatsFile(CString szFileXml)
 
 void CFormatsDlg::SaveFormatsFile(CString szFileXml)
 {
-    CXMLDocumentW doc;
+    XmlConfiguration doc;
 
     tinyxml2::XMLDeclaration* decl = doc.NewDeclaration(UTF8_DOCUMENT_DECLARATION);
     doc.LinkEndChild(decl);
@@ -390,7 +390,7 @@ void CFormatsDlg::SaveFormatsFile(CString szFileXml)
 
     doc.SaveFormats(pFormatsElem, m_Formats);
 
-    if (doc.SaveFileW(szFileXml) != true)
+    if (doc.SaveFileUtf8(szFileXml) != true)
         MessageBox(_T("Failed to save file!"), _T("ERROR"), MB_OK | MB_ICONERROR);
 }
 

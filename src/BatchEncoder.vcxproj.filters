@@ -96,9 +96,6 @@
     <ClCompile Include="worker\WorkThread.cpp">
       <Filter>Source Files\Worker</Filter>
     </ClCompile>
-    <ClCompile Include="XMLDocumentW.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="StdAfx.h">
@@ -173,9 +170,6 @@
     <ClInclude Include="res\resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="XMLDocumentW.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="configuration\Configuration.h">
       <Filter>Header Files\Configuration</Filter>
     </ClInclude>
@@ -199,6 +193,9 @@
     </ClInclude>
     <ClInclude Include="configuration\PresetsList.h">
       <Filter>Header Files\Configuration</Filter>
+    </ClInclude>
+    <ClInclude Include="XmlConfiguration.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

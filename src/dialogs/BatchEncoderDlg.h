@@ -8,7 +8,7 @@
 #include "..\controls\Controls.h"
 #include "..\utilities\TimeCount.h"
 #include "..\Configuration.h"
-#include "..\XMLDocumentW.h"
+#include "..\XmlConfiguration.h"
 
 #define WM_TRAY (WM_USER + 0x10)
 
@@ -20,12 +20,6 @@ typedef struct TNewItemData
 {
     CString szPath;
     CString szName;
-    CString szOutExt;
-    int nOutPreset;
-    bool bChecked;
-    CString szTime;
-    CString szStatus;
-
 } NewItemData, *PNewItemData;
 
 class CBatchEncoderDlg : public CResizeDialog
@@ -95,9 +89,9 @@ public:
         double fTime = 0.0,
         int nIndex = -1);
 public:
-    int InsertToMemoryList(NewItemData &nid);
+    int InsertToMemoryList(CString szPath, CString szName);
     void InsertToControlList(int nItem);
-    bool InsertToList(NewItemData &nid);
+    bool InsertToList(CString szPath, CString szName);
 public:
     void HandleDropFiles(HDROP hDropInfo);
 public:
@@ -114,11 +108,9 @@ public:
 public:
     bool GridlinesVisible();
     void ShowGridlines(bool bShow);
-private:
-    void InitNewItemData(NewItemData &nid);
 public:
     void LoadItems(tinyxml2::XMLElement *pItemsElem);
-    void SaveItems(CXMLDocumentW &doc, tinyxml2::XMLElement *pItemsElem);
+    void SaveItems(XmlConfiguration &doc, tinyxml2::XMLElement *pItemsElem);
 public:
     void GetOptions();
     void SetOptions();

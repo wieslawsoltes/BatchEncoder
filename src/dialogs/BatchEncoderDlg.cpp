@@ -924,17 +924,6 @@ void CBatchEncoderDlg::ShowGridlines(bool bShow)
     }
 }
 
-void CBatchEncoderDlg::InitNewItemData(NewItemData &nid)
-{
-    nid.szPath = _T("");
-    nid.szName = _T("");
-    nid.szOutExt = _T("");
-    nid.nOutPreset = -1;
-    nid.bChecked = TRUE;
-    nid.szTime = _T("");
-    nid.szStatus = _T("");
-}
-
 void CBatchEncoderDlg::LoadItems(tinyxml2::XMLElement *pItemsElem)
 {
     tinyxml2::XMLElement *pItemElem = pItemsElem->FirstChildElement("Item");
@@ -963,22 +952,14 @@ void CBatchEncoderDlg::LoadItems(tinyxml2::XMLElement *pItemsElem)
             continue;
         }
 
-        NewItemData nid;
-        this->InitNewItemData(nid);
+        CString szPath = GetConfigString(pszAttribPath);
+        CString szName = GetConfigString(pszAttribName);
 
-        nid.szPath = GetConfigString(pszAttribPath);
-        nid.szName = GetConfigString(pszAttribName);
-        nid.szOutExt = GetConfigString(pszAttribOutExt);
-        nid.nOutPreset = stoi(GetConfigString(pszAttribOutPreset));
-        nid.bChecked = (GetConfigString(pszAttribChecked).Compare(_T("true")) == 0) ? TRUE : FALSE;
-        nid.szTime = GetConfigString(pszAttribTime);
-        nid.szStatus = GetConfigString(pszAttribStatus);
-
-        this->InsertToList(nid);
+        this->InsertToList(szPath, szName);
     }
 }
 
-void CBatchEncoderDlg::SaveItems(CXMLDocumentW &doc, tinyxml2::XMLElement *pItemsElem)
+void CBatchEncoderDlg::SaveItems(XmlConfiguration &doc, tinyxml2::XMLElement *pItemsElem)
 {
     int nItems = this->m_LstInputItems.GetItemCount();
     for (int i = 0; i < nItems; i++)
@@ -1166,8 +1147,8 @@ void CBatchEncoderDlg::SetOptions()
 
 bool CBatchEncoderDlg::LoadList(CString szFileXml)
 {
-    CXMLDocumentW doc;
-    if (doc.LoadFileW(szFileXml) == true)
+    XmlConfiguration doc;
+    if (doc.LoadFileUtf8(szFileXml) == true)
     {
         tinyxml2::XMLElement *pItemsElem = doc.FirstChildElement();
         if (!pItemsElem)
@@ -1194,7 +1175,7 @@ bool CBatchEncoderDlg::LoadList(CString szFileXml)
 
 bool CBatchEncoderDlg::SaveList(CString szFileXml)
 {
-    CXMLDocumentW doc;
+    XmlConfiguration doc;
 
     tinyxml2::XMLDeclaration* decl = doc.NewDeclaration(UTF8_DOCUMENT_DECLARATION);
     doc.LinkEndChild(decl);
@@ -1204,15 +1185,15 @@ bool CBatchEncoderDlg::SaveList(CString szFileXml)
 
     this->SaveItems(doc, pItemsElem);
 
-    return doc.SaveFileW(szFileXml);
+    return doc.SaveFileUtf8(szFileXml);
 }
 
 bool CBatchEncoderDlg::LoadConfigFile(CString szFileXml)
 {
     ::UpdatePath();
 
-    CXMLDocumentW doc;
-    if (doc.LoadFileW(szFileXml) == false)
+    XmlConfiguration doc;
+    if (doc.LoadFileUtf8(szFileXml) == false)
         return false;
 
     tinyxml2::XMLElement *pRootElem = doc.FirstChildElement();
@@ -1250,7 +1231,7 @@ bool CBatchEncoderDlg::LoadConfigFile(CString szFileXml)
 
 bool CBatchEncoderDlg::SaveConfigFile(CString szFileXml)
 {
-    CXMLDocumentW doc;
+    XmlConfiguration doc;
     CUtf8String szBuffUtf8;
 
     tinyxml2::XMLDeclaration* decl = doc.NewDeclaration(UTF8_DOCUMENT_DECLARATION);
@@ -1279,7 +1260,7 @@ bool CBatchEncoderDlg::SaveConfigFile(CString szFileXml)
 
     ::UpdatePath();
     
-    return doc.SaveFileW(szFileXml);
+    return doc.SaveFileUtf8(szFileXml);
 }
 
 void CBatchEncoderDlg::LoadUserConfig()
@@ -1637,7 +1618,7 @@ void CBatchEncoderDlg::OnBnClickedCheckOutPath()
     }
 }
 
-int CBatchEncoderDlg::InsertToMemoryList(NewItemData &nid)
+int CBatchEncoderDlg::InsertToMemoryList(CString szPath, CString szName)
 {
     WIN32_FIND_DATA FindFileData;
     HANDLE hFind;
@@ -1648,12 +1629,12 @@ int CBatchEncoderDlg::InsertToMemoryList(NewItemData &nid)
     int nPreset = this->m_CmbPresets.GetCurSel();
     CFormat& format = m_Config.m_Formats.GetData(nFormat);
 
-    CString szExt = ::GetFileExtension(nid.szPath);
+    CString szExt = ::GetFileExtension(szPath);
     szExt.MakeUpper();
     if (m_Config.m_Formats.IsValidInExtension(szExt) == false)
         return -1;
 
-    hFind = ::FindFirstFile(nid.szPath, &FindFileData);
+    hFind = ::FindFirstFile(szPath, &FindFileData);
     if (hFind == INVALID_HANDLE_VALUE)
         return -1;
 
@@ -1663,7 +1644,7 @@ int CBatchEncoderDlg::InsertToMemoryList(NewItemData &nid)
     ulSize.LowPart = FindFileData.nFileSizeLow;
     nFileSize = ulSize.QuadPart;
 
-    return m_Config.m_Items.InsertNode(nid.szPath, nid.szName, nFileSize, format.szId, nPreset);
+    return m_Config.m_Items.InsertNode(szPath, szName, nFileSize, format.szId, nPreset);
 }
 
 void CBatchEncoderDlg::InsertToControlList(int nItem)
@@ -1721,9 +1702,9 @@ void CBatchEncoderDlg::InsertToControlList(int nItem)
     m_LstInputItems.SetCheck(nItem, item.bChecked);
 }
 
-bool CBatchEncoderDlg::InsertToList(NewItemData &nid)
+bool CBatchEncoderDlg::InsertToList(CString szPath, CString szName)
 {
-    int nItem = this->InsertToMemoryList(nid);
+    int nItem = this->InsertToMemoryList(szPath, szName);
 
     if (nItem == -1)
         return false;
@@ -1777,14 +1758,9 @@ void CBatchEncoderDlg::SearchFolderForFiles(CString szFile, const bool bRecurse)
             if (w32FileData.cFileName[0] != '.' &&
                 !(w32FileData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) != 0)
             {
-                CString szTempBuf;
-                szTempBuf.Format(_T("%s\\%s\0"), szFile, w32FileData.cFileName);
-
-                NewItemData nid;
-                this->InitNewItemData(nid);
-
-                nid.szPath = szTempBuf;
-                this->InsertToList(nid);
+                CString szPath;
+                szPath.Format(_T("%s\\%s\0"), szFile, w32FileData.cFileName);
+                this->InsertToList(szPath, _T(""));
             }
 
             if (w32FileData.cFileName[0] != '.' &&
@@ -1818,9 +1794,6 @@ void CBatchEncoderDlg::HandleDropFiles(HDROP hDropInfo)
     int nCount = ::DragQueryFile(hDropInfo, (UINT)0xFFFFFFFF, NULL, 0);
     if (nCount > 0)
     {
-        NewItemData nid;
-        this->InitNewItemData(nid);
-
         for (int i = 0; i < nCount; i++)
         {
             int nReqChars = ::DragQueryFile(hDropInfo, i, NULL, 0);
@@ -1836,8 +1809,8 @@ void CBatchEncoderDlg::HandleDropFiles(HDROP hDropInfo)
             }
             else
             {
-                nid.szPath = szFile;
-                this->InsertToList(nid);
+                CString szPath = szFile;
+                this->InsertToList(szPath, _T(""));
             }
 
             szFile.ReleaseBuffer();
@@ -2203,16 +2176,13 @@ void CBatchEncoderDlg::OnEditAddFiles()
             CString sFilePath;
             POSITION pos = fd.GetStartPosition();
 
-            NewItemData nid;
-            this->InitNewItemData(nid);
-
             do
             {
                 sFilePath = fd.GetNextPathName(pos);
                 if (!sFilePath.IsEmpty())
                 {
-                    nid.szPath = sFilePath;
-                    this->InsertToList(nid);
+                    CString szPath = sFilePath;
+                    this->InsertToList(szPath, _T(""));
                 }
             } while (pos != NULL);
 
