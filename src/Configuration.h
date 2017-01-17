@@ -291,7 +291,7 @@ public:
         return -1;
     }
 public:
-    CFormat& GetInFormatByExt(CString szInExt)
+    int GetInFormatByExt(CString szInExt)
     {
         szInExt.MakeUpper();
         int nFormats = this->GetSize();
@@ -299,11 +299,11 @@ public:
         {
             CFormat& format = this->GetData(i);
             if (format.nType == 1 && szInExt.Compare(format.szExtension.MakeUpper()) == 0)
-                return format;
+                return i;
         }
-        throw "Can not find input format!";
+        return -1;
     }
-    CFormat& GetOutFormatByExt(CString szOutExt)
+    int GetOutFormatByExt(CString szOutExt)
     {
         szOutExt.MakeUpper();
         int nFormats = this->GetSize();
@@ -311,12 +311,12 @@ public:
         {
             CFormat& format = this->GetData(i);
             if (format.nType == 0 && szOutExt.Compare(format.szExtension.MakeUpper()) == 0)
-                return format;
+                return i;
         }
-        throw "Can not find output format!";
+        return -1;
     }
 public:
-    CFormat& GetInFormatById(CString szFormatId)
+    int GetInFormatById(CString szFormatId)
     {
         szFormatId.MakeUpper();
         int nFormats = this->GetSize();
@@ -324,11 +324,11 @@ public:
         {
             CFormat& format = this->GetData(i);
             if (format.nType == 1 && szFormatId.Compare(format.szId.MakeUpper()) == 0)
-                return format;
+                return i;
         }
-        throw "Can not find input format!";
+        return -1;
     }
-    CFormat& GetOutFormatById(CString szFormatId)
+    int GetOutFormatById(CString szFormatId)
     {
         szFormatId.MakeUpper();
         int nFormats = this->GetSize();
@@ -336,9 +336,9 @@ public:
         {
             CFormat& format = this->GetData(i);
             if (format.nType == 0 && szFormatId.Compare(format.szId.MakeUpper()) == 0)
-                return format;
+                return i;
         }
-        throw "Can not find output format!";
+        return -1;
     }
 public:
     bool IsValidInExtension(CString szInExt)

@@ -952,9 +952,12 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
 
             CItem& item = pDlg->m_Config.m_Items.GetData(i);
 
-            CFormat& intputFormat = pDlg->m_Config.m_Formats.GetInFormatByExt(item.szExtension);
+            int nIntputFormat = pDlg->m_Config.m_Formats.GetInFormatByExt(item.szExtension);
+            CFormat& intputFormat = pDlg->m_Config.m_Formats.GetData(nIntputFormat);
             CPreset& inputPreset = intputFormat.m_Presets.GetData(intputFormat.nDefaultPreset);
-            CFormat& outputFormat = pDlg->m_Config.m_Formats.GetOutFormatById(item.szFormatId);
+
+            int nOutputFormat = pDlg->m_Config.m_Formats.GetOutFormatById(item.szFormatId);
+            CFormat& outputFormat = pDlg->m_Config.m_Formats.GetData(nOutputFormat);
             CPreset& outputPreset = outputFormat.m_Presets.GetData(item.nPreset);
 
             // get full file path
