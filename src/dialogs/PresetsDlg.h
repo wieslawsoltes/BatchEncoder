@@ -48,14 +48,12 @@ public:
 public:
     CEdit m_EdtName;
     CEdit m_EdtOptions;
-    CEdit m_EdtConfigFile;
 public:
     CMyButton m_BtnOK;
     CMyButton m_BtnCancel;
 public:
     CMyButton m_BtnLoad;
     CMyButton m_BtnSave;
-    CMyButton m_BtnUpdateChanges;
     CMyButton m_BtnMoveUp;
     CMyButton m_BtnMoveDown;
     CMyButton m_BtnRemoveAll;
@@ -87,7 +85,6 @@ public:
     afx_msg void OnBnClickedButtonPdUpdatePreset();
     afx_msg void OnBnClickedButtonPdUp();
     afx_msg void OnBnClickedButtonPdDown();
-    afx_msg void OnBnClickedButtonPdUpdate();
 public:
     afx_msg void OnClose();
     afx_msg void OnEnChangeEditPdName();

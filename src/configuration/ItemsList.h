@@ -124,8 +124,8 @@ public:
 public:
     void SwapItems(int idx1, int idx2)
     {
-        CItem& item1 = this->GetData(idx1);
-        CItem& item2 = this->GetData(idx2);
+        CItem item1 = this->GetData(idx1);
+        CItem item2 = this->GetData(idx2);
         if ((idx1 < 0) || (idx2 < 0) || (idx1 >= GetSize()) || (idx2 >= GetSize()))
             return;
         this->SetData(item1, idx2);

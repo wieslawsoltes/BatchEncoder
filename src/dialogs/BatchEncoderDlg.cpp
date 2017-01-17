@@ -2343,6 +2343,7 @@ void CBatchEncoderDlg::OnOptionsConfigurePresets()
     {
         m_Config.m_Formats.RemoveAllNodes();
         m_Config.m_Formats = dlg.m_Formats;
+        this->UpdateFormatComboBox();
         this->UpdatePresetComboBox();
     }
 

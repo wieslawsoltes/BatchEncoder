@@ -35,7 +35,6 @@ void CPresetsDlg::DoDataExchange(CDataExchange* pDX)
     DDX_Control(pDX, IDC_EDIT_PD_PRESETS, m_LstPresets);
     DDX_Control(pDX, IDC_EDIT_PD_NAME, m_EdtName);
     DDX_Control(pDX, IDC_EDIT_PD_OPTIONS, m_EdtOptions);
-    DDX_Control(pDX, IDC_EDIT_PD_PATH_TO_CONFIG, m_EdtConfigFile);
     DDX_Control(pDX, IDOK, m_BtnOK);
     DDX_Control(pDX, IDCANCEL, m_BtnCancel);
     DDX_Control(pDX, IDC_COMBO_PD_FORMAT, m_CmbFormat);
@@ -43,7 +42,6 @@ void CPresetsDlg::DoDataExchange(CDataExchange* pDX)
     DDX_Control(pDX, IDC_STATIC_PD_TEXT_OPTIONS, m_StcOptions);
     DDX_Control(pDX, IDC_BUTTON_PD_LOAD_PRESETS, m_BtnLoad);
     DDX_Control(pDX, IDC_BUTTON_PD_SAVE_PRESETS, m_BtnSave);
-    DDX_Control(pDX, IDC_BUTTON_PD_UPDATE, m_BtnUpdateChanges);
     DDX_Control(pDX, IDC_BUTTON_PD_UP, m_BtnMoveUp);
     DDX_Control(pDX, IDC_BUTTON_PD_DOWN, m_BtnMoveDown);
     DDX_Control(pDX, IDC_BUTTON_PD_REMOVE_ALL_PRESETS, m_BtnRemoveAll);
@@ -67,7 +65,6 @@ BEGIN_MESSAGE_MAP(CPresetsDlg, CResizeDialog)
     ON_BN_CLICKED(IDOK, OnBnClickedOk)
     ON_BN_CLICKED(IDCANCEL, OnBnClickedCancel)
     ON_CBN_SELCHANGE(IDC_COMBO_PD_FORMAT, OnCbnSelchangeComboPdFormat)
-    ON_BN_CLICKED(IDC_BUTTON_PD_UPDATE, OnBnClickedButtonPdUpdate)
     ON_WM_CLOSE()
     ON_EN_CHANGE(IDC_EDIT_PD_NAME, OnEnChangeEditPdName)
     ON_EN_CHANGE(IDC_EDIT_PD_OPTIONS, OnEnChangeEditPdOptions)
@@ -101,35 +98,19 @@ BOOL CPresetsDlg::OnInitDialog()
 
     ::SetComboBoxHeight(this->GetSafeHwnd(), IDC_COMBO_PD_FORMAT);
 
-    nSelectedFormat = 0;
     m_CmbFormat.SetCurSel(nSelectedFormat);
 
-    // load configuration file for current format
     this->OnCbnSelchangeComboPdFormat();
-
-    // select current preset
-    int nItem = m_Formats.GetData(nSelectedFormat).nDefaultPreset;
-
-    CString szName = this->m_LstPresets.GetItemText(nItem, 0);
-    CString szOptions = this->m_LstPresets.GetItemText(nItem, 1);
-
-    this->m_EdtName.SetWindowText(szName);
-    this->m_EdtOptions.SetWindowText(szOptions);
-
-    m_LstPresets.SetItemState(nItem, LVIS_SELECTED, LVIS_SELECTED);
-    m_LstPresets.EnsureVisible(nItem, FALSE);
 
     // setup resize anchors
     AddAnchor(IDC_COMBO_PD_FORMAT, TOP_LEFT);
     AddAnchor(IDC_EDIT_PD_PRESETS, TOP_LEFT, BOTTOM_RIGHT);
-    AddAnchor(IDC_EDIT_PD_PATH_TO_CONFIG, TOP_LEFT, TOP_RIGHT);
     AddAnchor(IDC_BUTTON_PD_UP, TOP_RIGHT);
     AddAnchor(IDC_BUTTON_PD_DOWN, TOP_RIGHT);
     AddAnchor(IDC_BUTTON_PD_ADD_PRESET, BOTTOM_RIGHT);
     AddAnchor(IDC_BUTTON_PD_REMOVE_ALL_PRESETS, BOTTOM_RIGHT);
     AddAnchor(IDC_BUTTON_PD_REMOVE_PRESETS, BOTTOM_RIGHT);
     AddAnchor(IDC_BUTTON_PD_LOAD_PRESETS, BOTTOM_LEFT);
-    AddAnchor(IDC_BUTTON_PD_UPDATE, BOTTOM_LEFT);
     AddAnchor(IDC_BUTTON_PD_SAVE_PRESETS, BOTTOM_LEFT);
     AddAnchor(IDC_STATIC_PD_TEXT_NAME, BOTTOM_LEFT);
     AddAnchor(IDC_EDIT_PD_NAME, BOTTOM_LEFT);
@@ -254,6 +235,8 @@ void CPresetsDlg::ListSelectionChange(void)
     if (bUpdate == true)
         return;
 
+    bUpdate = true;
+
     POSITION pos = m_LstPresets.GetFirstSelectedItemPosition();
     if (pos != NULL)
     {
@@ -261,10 +244,13 @@ void CPresetsDlg::ListSelectionChange(void)
 
         CFormat& format = m_Formats.GetData(nSelectedFormat);
         CPreset& preset = format.m_Presets.GetData(nItem);
+        format.nDefaultPreset = nItem;
 
         this->m_EdtName.SetWindowText(preset.szName);
         this->m_EdtOptions.SetWindowText(preset.szOptions);
     }
+
+    bUpdate = false;
 }
 
 void CPresetsDlg::OnLvnItemchangedListPdPresets(NMHDR *pNMHDR, LRESULT *pResult)
@@ -339,8 +325,6 @@ void CPresetsDlg::LoadPresetsFile(CString szFileXml)
             CPreset& preset = format.m_Presets.GetData(i);
             this->AddToList(preset.szName, preset.szOptions, i);
         }
-
-        this->m_EdtConfigFile.SetWindowText(szFileXml);
     }
     else
     {
@@ -407,19 +391,30 @@ void CPresetsDlg::OnBnClickedButtonPdSavePresets()
 
 void CPresetsDlg::OnBnClickedButtonPdAddPreset()
 {
+    if (bUpdate == true)
+        return;
+
+    bUpdate = true;
+
     CString szName;
     CString szOptions;
-
     this->m_EdtName.GetWindowText(szName);
     this->m_EdtOptions.GetWindowText(szOptions);
 
     int nItem = m_LstPresets.GetItemCount();
 
+    CFormat& format = m_Formats.GetData(nSelectedFormat);
+    CPreset preset;
+    preset.szName = szName;
+    preset.szOptions = szOptions;
+    format.m_Presets.InsertNode(preset);
+
     AddToList(szName, szOptions, nItem);
 
     m_LstPresets.SetItemState(nItem, LVIS_SELECTED, LVIS_SELECTED);
-
     m_LstPresets.EnsureVisible(nItem, FALSE);
+
+    bUpdate = false;
 }
 
 void CPresetsDlg::OnBnClickedButtonPdUpdatePreset()
@@ -535,14 +530,28 @@ void CPresetsDlg::OnBnClickedCancel()
     OnCancel();
 }
 
-void CPresetsDlg::OnBnClickedButtonPdUpdate()
-{
-    // TODO: Remove this handler.
-}
-
 void CPresetsDlg::OnCbnSelchangeComboPdFormat()
 {
-    // TODO: Remove this handler.
+    m_LstPresets.DeleteAllItems();
+
+    nSelectedFormat = this->m_CmbFormat.GetCurSel();
+    CFormat& format = m_Formats.GetData(nSelectedFormat);
+
+    int nPresets = format.m_Presets.GetSize();
+    for (int i = 0; i < nPresets; i++)
+    {
+        CPreset& preset = format.m_Presets.GetData(i);
+        this->AddToList(preset.szName, preset.szOptions, i);
+    }
+
+    m_LstPresets.SetItemState(format.nDefaultPreset, LVIS_SELECTED, LVIS_SELECTED);
+    m_LstPresets.EnsureVisible(format.nDefaultPreset, FALSE);
+
+    CString szName = this->m_LstPresets.GetItemText(format.nDefaultPreset, 0);
+    CString szOptions = this->m_LstPresets.GetItemText(format.nDefaultPreset, 1);
+
+    this->m_EdtName.SetWindowText(szName);
+    this->m_EdtOptions.SetWindowText(szOptions);
 }
 
 void CPresetsDlg::OnClose()

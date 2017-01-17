@@ -51,10 +51,8 @@
 #define IDC_EDIT_FD_CLI_PROGRESS        1025
 #define IDC_BUTTON_PD_DOWN              1026
 #define IDC_BUTTON_FD_BROWSE_PROGRESS   1027
-#define IDC_BUTTON_PD_UPDATE            1028
 #define IDC_STATIC_TEXT_APP_NAME        1029
 #define IDC_COMBO_PD_FORMAT             1030
-#define IDC_EDIT_PD_PATH_TO_CONFIG      1031
 #define IDC_STATIC_TEXT_WEBSITE         1032
 #define IDC_STATIC_TEXT_EMAIL           1033
 #define IDC_STATIC_GROUP_OUTPUT         1034
