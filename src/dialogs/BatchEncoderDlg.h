@@ -124,7 +124,8 @@ public:
     afx_msg void LoadUserConfig();
     afx_msg void SaveUserConfig();
 public:
-    void UpdateOutputComboBoxes();
+    void UpdateFormatComboBox();
+    void UpdatePresetComboBox();
 public:
     void EnableUserInterface(BOOL bEnable = TRUE);
 public:

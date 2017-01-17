@@ -842,9 +842,8 @@ HCURSOR CBatchEncoderDlg::OnQueryDragIcon()
     return static_cast<HCURSOR>(m_hIcon);
 }
 
-void CBatchEncoderDlg::UpdateOutputComboBoxes()
+void CBatchEncoderDlg::UpdateFormatComboBox()
 {
-    // update formats combo box
     this->m_CmbFormat.ResetContent();
 
     int nFormats = m_Config.m_Formats.GetSize();
@@ -862,8 +861,10 @@ void CBatchEncoderDlg::UpdateOutputComboBoxes()
     }
 
     this->m_CmbFormat.SetCurSel(m_Config.m_Options.nSelectedFormat);
+}
 
-    // update presets combo box
+void CBatchEncoderDlg::UpdatePresetComboBox()
+{
     this->m_CmbPresets.ResetContent();
 
     CFormat& format = m_Config.m_Formats.GetData(m_Config.m_Options.nSelectedFormat);
@@ -1216,7 +1217,8 @@ bool CBatchEncoderDlg::LoadConfigFile(CString szFileXml)
     tinyxml2::XMLElement *pFormatsElem = pRootElem->FirstChildElement("Formats");
     doc.LoadFormats(pFormatsElem, m_Config.m_Formats);
 
-    this->UpdateOutputComboBoxes();
+    this->UpdateFormatComboBox();
+    this->UpdatePresetComboBox();
 
     // root: Items
     this->OnFileClearList();
@@ -1528,7 +1530,8 @@ void CBatchEncoderDlg::OnCbnSelchangeComboFormat()
     int nFormat = this->m_CmbFormat.GetCurSel();
     if (nFormat != -1)
     {
-        this->UpdateOutputComboBoxes();
+        m_Config.m_Options.nSelectedFormat = nFormat;
+        this->UpdatePresetComboBox();
     }
 
     this->UpdateFormatAndPreset();
@@ -1894,7 +1897,8 @@ void CBatchEncoderDlg::OnLvnItemchangedListInputFiles(NMHDR *pNMHDR, LRESULT *pR
                     m_Config.m_Options.nSelectedFormat = nFormat;
                     format.nDefaultPreset = item.nPreset;
 
-                    this->UpdateOutputComboBoxes();
+                    this->UpdateFormatComboBox();
+                    this->UpdatePresetComboBox();
                 }
             }
         }
@@ -2607,7 +2611,7 @@ void CBatchEncoderDlg::OnOptionsConfigurePresets()
     {
         m_Config.m_Formats.RemoveAllNodes();
         m_Config.m_Formats = dlg.m_Formats;
-        this->UpdateOutputComboBoxes();
+        this->UpdatePresetComboBox();
     }
 
     m_Config.m_Options.szPresetsDialogResize = dlg.szPresetsDialogResize;
@@ -2629,7 +2633,8 @@ void CBatchEncoderDlg::OnOptionsConfigureFormat()
     {
         m_Config.m_Formats.RemoveAllNodes();
         m_Config.m_Formats = dlg.m_Formats;
-        this->UpdateOutputComboBoxes();
+        this->UpdateFormatComboBox();
+        this->UpdatePresetComboBox();
     }
 
     m_Config.m_Options.szFormatsDialogResize = dlg.szFormatsDialogResize;
