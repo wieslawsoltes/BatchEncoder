@@ -165,7 +165,7 @@ public:
         int nPresets = (int)other.m_Presets.GetCount();
         for (int i = 0; i < nPresets; i++)
         {
-            CPreset& preset = other.m_Presets.GetAt(other.m_Presets.FindIndex(i));
+            CPreset preset = other.m_Presets.GetAt(other.m_Presets.FindIndex(i));
             this->InsertNode(preset);
         }
     }
