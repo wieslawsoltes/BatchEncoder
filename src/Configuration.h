@@ -668,7 +668,23 @@ public:
     CConfiguration() 
     {
     }
+    CConfiguration(const CConfiguration &other)
+    {
+        Copy(other);
+    }
+    CConfiguration& operator=(const CConfiguration &other)
+    {
+        Copy(other);
+        return *this;
+    }
     virtual ~CConfiguration() 
-    { 
+    {
+    }
+public:
+    void Copy(const CConfiguration &other)
+    {
+        this->m_Options = other.m_Options;
+        this->m_Formats = other.m_Formats;
+        this->m_Items = other.m_Items;
     }
 };
