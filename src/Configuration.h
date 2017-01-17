@@ -233,7 +233,7 @@ public:
         this->szExtension = other.szExtension;
         this->nDefaultPreset = other.nDefaultPreset;
 
-        if (this.m_pPresets != NULL)
+        if (this->m_pPresets != NULL)
             delete m_pPresets;
         this->m_pPresets = new CPresetsList();
         
