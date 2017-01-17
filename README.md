@@ -50,42 +50,49 @@ adds input and output file paths. For specific options for each format use help 
 
 ## Supported formats and tools
 
+### Encoders
+
 | Name            | Type        | File extension  | Version       | Executable                       | Progress function                         |
 |-----------------|-------------|-----------------|---------------|----------------------------------|-------------------------------------------|
 | SSRC            | Encoder     | WAV             | -.-           | ssrc.exe                         | GetProgress_SsrcEnc.progress              |
 | LAME            | Encoder     | MP3             | 3.99.5        | lame.exe                         | GetProgress_LameEnc.progress              |
-| LAME            | Decoder     | MP1             | 3.99.5        | lame.exe                         | GetProgress_LameDec.progress              |
-| LAME            | Decoder     | MP2             | 3.99.5        | lame.exe                         | GetProgress_LameDec.progress              |
-| LAME            | Decoder     | MP3             | 3.99.5        | lame.exe                         | GetProgress_LameDec.progress              |
-| MPPENC          | Encoder     | MPC             | -.-           | mppenc.exe                       | GetProgress_MppEnc.progress               |
+| MPPENC          | Encoder     | MPC             | 1.30.0        | mppenc.exe                       | GetProgress_MppEnc.progress               |
+| FAAC            | Encoder     | AAC             | 1.28-mod      | faac.exe                         | GetProgress_FaacEnc.progress              |
+| NEROAACENC      | Encoder     | M4A             | 1.5.4         | neroAacEnc.exe                   | - none -                                  |
+| NEROAACENC      | Encoder     | MP4             | 1.5.4         | neroAacEnc.exe                   | - none -                                  |
+| OGGENC          | Encoder     | OGG             | 2.88          | oggenc2.exe                      | GetProgress_OggEnc.progress               |
+| AFTEN           | Encoder     | AC3             | git-2009122   | aften.exe                        | - none -                                  |
+| FLAC            | Encoder     | FLAC            | 1.3.2         | flac.exe                         | GetProgress_FlacEnc.progress              |
+| WAVPACK         | Encoder     | WV              | 5.0.0         | wavpack.exe                      | GetProgress_WavPackEnc.progress           |
+| MAC             | Encoder     | APE             | 4.18          | mac.exe                          | GetProgress_MacEnc.progress               |
+| OFR             | Encoder     | OFR             | 5.100         | ofr.exe                          | GetProgress_OfrEnc.progress               |
+| TTAENC          | Encoder     | TTA             | -.-           | ttaenc.exe                       | GetProgress_TtaEnc.progress               |
+| TAKC            | Encoder     | TAK             | -.-           | takc.exe                         | - none -                                  |
+
+### Decoders
+
+| Name            | Type        | File extension  | Version       | Executable                       | Progress function                         |
+|-----------------|-------------|-----------------|---------------|----------------------------------|-------------------------------------------|
+| LAME            | Decoder     | MP1             | -.-           | lame.exe                         | GetProgress_LameDec.progress              |
+| LAME            | Decoder     | MP2             | -.-           | lame.exe                         | GetProgress_LameDec.progress              |
+| LAME            | Decoder     | MP3             | -.-           | lame.exe                         | GetProgress_LameDec.progress              |
 | MPPDEC          | Decoder     | MPC             | -.-           | mppdec.exe                       | GetProgress_MppDec.progress               |
 | MPPDEC          | Decoder     | MPP             | -.-           | mppdec.exe                       | GetProgress_MppDec.progress               |
 | MPPDEC          | Decoder     | MP+             | -.-           | mppdec.exe                       | GetProgress_MppDec.progress               |
-| FAAC            | Encoder     | AAC             | -.-           | faac.exe                         | GetProgress_FaacEnc.progress              |
 | FAAD            | Decoder     | MP4             | -.-           | faad.exe                         | GetProgress_FaadDec.progress              |
 | FAAD            | Decoder     | M4A             | -.-           | faad.exe                         | GetProgress_FaadDec.progress              |
 | FAAD            | Decoder     | AAC             | -.-           | faad.exe                         | GetProgress_FaadDec.progress              |
-| OGGENC          | Encoder     | OGG             | -.-           | oggenc2.exe                      | GetProgress_OggEnc.progress               |
-| OGGDEC          | Decoder     | OGG             | -.-           | oggdec.exe                       | GetProgress_OggDec.progress               |
-| AFTEN           | Encoder     | AC3             | git-2009122   | aften.exe                        | - none -                                  |
-| AFTEN           | Decoder     | AC3             | -.-           | aften.exe                        | - none -                                  |
-| FLAC            | Encoder     | FLAC            | 1.3.2         | flac.exe                         | GetProgress_FlacEnc.progress              |
-| FLAC            | Decoder     | FLAC            | 1.3.2         | flac.exe                         | GetProgress_FlacDec.progress              |
-| WAVPACK         | Encoder     | WV              | -.-           | wavpack.exe                      | GetProgress_WavPackEnc.progress           |
-| WVUNPACK        | Decoder     | WV              | -.-           | wvunpack.exe                     | GetProgress_WvUnpackDec.progress          |
-| MAC             | Encoder     | APE             | -.-           | mac.exe                          | GetProgress_MacEnc.progress               |
-| MAC             | Decoder     | APE             | -.-           | mac.exe                          | GetProgress_MacDec.progress               |
-| MAC             | Decoder     | MAC             | -.-           | mac.exe                          | GetProgress_MacDec.progress               |
-| OFR             | Encoder     | OFR             | -.-           | ofr.exe                          | GetProgress_OfrEnc.progress               |
-| OFR             | Decoder     | OFR             | -.-           | ofr.exe                          | GetProgress_OfrDec.progress               |
-| TTAENC          | Encoder     | TTA             | -.-           | ttaenc.exe                       | GetProgress_TtaEnc.progress               |
-| TTAENC          | Decoder     | TTA             | -.-           | ttaenc.exe                       | GetProgress_TtaDec.progress               |
-| TAKC            | Encoder     | TAK             | -.-           | takc.exe                         | - none -                                  |
-| TAKC            | Decoder     | TAK             | -.-           | takc.exe                         | - none -                                  |
-| NEROAACENC      | Encoder     | M4A             | 1.5.4         | neroAacEnc.exe                   | - none -                                  |
-| NEROAACENC      | Encoder     | MP4             | 1.5.4         | neroAacEnc.exe                   | - none -                                  |
 | NEROAACDEC      | Decoder     | MP4             | -.-           | neroAacDec.exe                   | - none -                                  |
 | NEROAACDEC      | Decoder     | M4A             | -.-           | neroAacDec.exe                   | - none -                                  |
+| OGGDEC          | Decoder     | OGG             | -.-           | oggdec.exe                       | GetProgress_OggDec.progress               |
+| AFTEN           | Decoder     | AC3             | -.-           | aften.exe                        | - none -                                  |
+| FLAC            | Decoder     | FLAC            | -.-           | flac.exe                         | GetProgress_FlacDec.progress              |
+| WVUNPACK        | Decoder     | WV              | -.-           | wvunpack.exe                     | GetProgress_WvUnpackDec.progress          |
+| MAC             | Decoder     | APE             | -.-           | mac.exe                          | GetProgress_MacDec.progress               |
+| MAC             | Decoder     | MAC             | -.-           | mac.exe                          | GetProgress_MacDec.progress               |
+| OFR             | Decoder     | OFR             | -.-           | ofr.exe                          | GetProgress_OfrDec.progress               |
+| TTAENC          | Decoder     | TTA             | -.-           | ttaenc.exe                       | GetProgress_TtaDec.progress               |
+| TAKC            | Decoder     | TAK             | -.-           | takc.exe                         | - none -                                  |
 
 ### Tool downloads
 
