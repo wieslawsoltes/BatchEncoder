@@ -105,7 +105,7 @@ public:
 class CPresetsList
 {
 private:
-    CList<CPreset, CPreset&> m_Presets;
+    CList<CPreset, const CPreset&> m_Presets;
 public:
     void SetData(CPreset& preset, int idx)
     {
@@ -235,7 +235,7 @@ public:
 class CFormatsList
 {
 private:
-    CList<CFormat, CFormat&> m_Formats;
+    CList<CFormat, const CFormat&> m_Formats;
 public:
     void SetData(CFormat& format, int idx)
     {
