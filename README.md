@@ -60,6 +60,7 @@ adds input and output file paths. For specific options for each format use help 
 | FAAC            | Encoder     | AAC             | 1.28-mod      | faac.exe                         | GetProgress_FaacEnc.progress              |
 | NEROAACENC      | Encoder     | M4A             | 1.5.4         | neroAacEnc.exe                   | - none -                                  |
 | NEROAACENC      | Encoder     | MP4             | 1.5.4         | neroAacEnc.exe                   | - none -                                  |
+| OPUSENC         | Encoder     | OPUS            | 1.2-alpha     | opusenc.exe                      | - none -                                  |
 | OGGENC          | Encoder     | OGG             | 2.88          | oggenc2.exe                      | GetProgress_OggEnc.progress               |
 | AFTEN           | Encoder     | AC3             | git-2009122   | aften.exe                        | - none -                                  |
 | FLAC            | Encoder     | FLAC            | 1.3.2         | flac.exe                         | GetProgress_FlacEnc.progress              |
@@ -84,6 +85,7 @@ adds input and output file paths. For specific options for each format use help 
 | FAAD            | Decoder     | AAC             | -.-           | faad.exe                         | GetProgress_FaadDec.progress              |
 | NEROAACDEC      | Decoder     | MP4             | -.-           | neroAacDec.exe                   | - none -                                  |
 | NEROAACDEC      | Decoder     | M4A             | -.-           | neroAacDec.exe                   | - none -                                  |
+| OPUSENC         | Decoder     | OPUS            |  -.-          | opusdec.exe                      | - none -                                  |
 | OGGDEC          | Decoder     | OGG             | -.-           | oggdec.exe                       | GetProgress_OggDec.progress               |
 | AFTEN           | Decoder     | AC3             | -.-           | aften.exe                        | - none -                                  |
 | FLAC            | Decoder     | FLAC            | -.-           | flac.exe                         | GetProgress_FlacDec.progress              |
@@ -104,6 +106,8 @@ adds input and output file paths. For specific options for each format use help 
 | MPPDEC          | https://musepack.net/index.php?pg=win                                                              |
 | FAAC            | http://rarewares.org/aac-encoders.php                                                              |
 | FAAD            | http://rarewares.org/aac-decoders.php                                                              |
+| OPUSENC         | https://sourceforge.net/projects/muldersoft/files/Opus%20Tools/                                    |
+| OPUSDEC         | https://sourceforge.net/projects/muldersoft/files/Opus%20Tools/                                    |
 | OGGENC          | http://rarewares.org/ogg-oggenc.php                                                                |
 | OGGDEC          | http://rarewares.org/ogg-oggdec.php                                                                |
 | AFTEN           | https://github.com/wieslawsoltes/wavtoac3encoder/releases                                          |
