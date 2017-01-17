@@ -140,15 +140,29 @@ public:
     CPreset& GetData(int idx)
     {
         return m_Presets.GetAt(m_Presets.FindIndex(idx));
-    }
+    }    
 public:
-    CPresetsList()
+    CPresetsList() 
     {
     }
-    virtual ~CPresetsList()
+    CPresetsList(const CPresetsList &other)
+    {
+        Copy(other);
+    }
+    CPresetsList& operator=(const CPresetsList &other)
+    {
+        Copy(other);
+        return *this;
+    }
+    virtual ~CPresetsList() 
     {
         if (m_Presets.GetCount() != 0)
             m_Presets.RemoveAll();
+    }
+public:
+    void Copy(const CPresetsList &other)
+    {
+        // TODO:
     }
 public:
     bool IsEmpty()
@@ -271,15 +285,29 @@ public:
     CFormat& GetData(int idx)
     {
         return m_Formats.GetAt(m_Formats.FindIndex(idx));
-    }
+    }  
 public:
-    CFormatsList()
+    CFormatsList() 
     {
     }
-    virtual ~CFormatsList()
+    CFormatsList(const CFormatsList &other)
+    {
+        Copy(other);
+    }
+    CFormatsList& operator=(const CFormatsList &other)
+    {
+        Copy(other);
+        return *this;
+    }
+    virtual ~CFormatsList() 
     {
         if (m_Formats.GetCount() != 0)
             m_Formats.RemoveAll();
+    }
+public:
+    void Copy(const CFormatsList &other)
+    {
+        // TODO:
     }
 public:
     bool IsEmpty()
@@ -485,16 +513,30 @@ public:
     CItem& GetData(int idx)
     {
         return m_Items.GetAt(m_Items.FindIndex(idx));
-    }
+    } 
 public:
-    CItemsList()
+    CItemsList() 
     {
     }
-    virtual ~CItemsList()
+    CItemsList(const CItemsList &other)
+    {
+        Copy(other);
+    }
+    CItemsList& operator=(const CItemsList &other)
+    {
+        Copy(other);
+        return *this;
+    }
+    virtual ~CItemsList() 
     {
         if (m_Items.GetCount() != 0)
             m_Items.RemoveAll();
     }
+public:
+    void Copy(const CItemsList &other)
+    {
+        // TODO:
+    } 
 public:
     bool IsEmpty()
     {
