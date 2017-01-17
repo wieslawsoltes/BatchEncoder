@@ -197,6 +197,11 @@ public:
         m_pPresets = new CPresetsList();
 MessageBox(NULL, _T("new CPresetsList()"), _T("ERROR"), MB_OK | MB_ICONERROR);
     }
+    CFormat(const CFormat& other)
+    {
+        m_pPresets = new CPresetsList();
+        other.Copy(this);
+    }
     virtual ~CFormat() 
     {
         if (m_pPresets != NULL)
