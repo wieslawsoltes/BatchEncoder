@@ -861,10 +861,10 @@ void CBatchEncoderDlg::UpdateOutputComboBoxes()
 
     CFormat& format = m_Config.m_Formats.GetData(m_Config.m_Options.nSelectedFormat);
 
-    int nPresets = format.m_Presets.GetSize();
+    int nPresets = format.m_pPresets->GetSize();
     for (int i = 0; i < nPresets; i++)
     {
-        CPreset& preset = format.m_Presets.GetData(i);
+        CPreset& preset = format.m_pPresets->GetData(i);
         this->m_CmbPresets.InsertString(i, preset.szName);
     }
 
@@ -1467,7 +1467,7 @@ void CBatchEncoderDlg::UpdateFormatAndPreset()
     int nPreset = this->m_CmbPresets.GetCurSel();
 
     CFormat& format = m_Config.m_Formats.GetData(nFormat);
-    CPreset& preset = format.m_Presets.GetData(nPreset);
+    CPreset& preset = format.m_pPresets->GetData(nPreset);
 
     int nCount = m_LstInputItems.GetItemCount();
     if (nCount > 0)
