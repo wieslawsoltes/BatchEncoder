@@ -445,8 +445,6 @@ void CXMLDocumentW::LoadFormats(tinyxml2::XMLElement *pFormatsElem, CFormatsList
     for (pFormatElem; pFormatElem; pFormatElem = pFormatElem->NextSiblingElement())
     {
         CFormat format;
-        CPresetsList m_Presets;
-        format.m_pPresets = &m_Presets;
         
         const char *pszId = pFormatElem->Attribute("id");
         if (pszId != NULL)
