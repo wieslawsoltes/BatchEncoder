@@ -192,8 +192,15 @@ public:
     int nDefaultPreset;
     CPresetsList *m_pPresets;
 public:
-    CFormat() { }
-    virtual ~CFormat() { }
+    CFormat() 
+    {
+        m_pPresets = new CPresetsList();
+    }
+    virtual ~CFormat() 
+    {
+        if (m_pPresets != NULL)
+            delete m_pPresets;
+    }
 public:
     void Copy(CFormat &other)
     {
