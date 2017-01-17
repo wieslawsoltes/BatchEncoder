@@ -220,7 +220,7 @@ public:
         this->nType = other.nType;
         this->szExtension = other.szExtension;
         this->nDefaultPreset = other.nDefaultPreset;
-
+/*
         int nPresets = other.m_Presets.GetSize();
         for (int i = 0; i < nPresets; i++)
         {
@@ -229,6 +229,7 @@ public:
             preset.Copy(copy);
             this->m_Presets.InsertNode(copy);
         }
+*/
     }
 };
 
