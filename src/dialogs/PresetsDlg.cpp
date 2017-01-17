@@ -392,7 +392,7 @@ void CPresetsDlg::OnBnClickedButtonPdLoadPresets()
 
 void CPresetsDlg::OnBnClickedButtonPdSavePresets()
 {
-    CFileDialog fd(FALSE, _T("presets"), _T(""),
+    CFileDialog fd(FALSE, _T("presets"), _T("presets"),
         OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER | OFN_OVERWRITEPROMPT,
         _T("Presets Files (*.presets)|*.presets|Xml Files (*.xml)|*.xml|All Files|*.*||"), this);
 

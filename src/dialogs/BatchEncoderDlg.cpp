@@ -1068,7 +1068,7 @@ void CBatchEncoderDlg::LoadUserConfig()
 
 void CBatchEncoderDlg::SaveUserConfig()
 {
-    CFileDialog fd(FALSE, _T("config"), _T(""),
+    CFileDialog fd(FALSE, _T("config"), _T("config"),
         OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER | OFN_OVERWRITEPROMPT,
         _T("Config Files (*.config)|*.config|Xml Files (*.xml)|*.xml|All Files|*.*||"), this);
 
@@ -1831,7 +1831,7 @@ void CBatchEncoderDlg::OnFileLoadList()
 
 void CBatchEncoderDlg::OnFileSaveList()
 {
-    CFileDialog fd(FALSE, _T("list"), _T(""),
+    CFileDialog fd(FALSE, _T("list"), _T("items"),
         OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER | OFN_OVERWRITEPROMPT,
         _T("List Items (*.list)|*.list|Xml Files (*.xml)|*.xml|All Files|*.*||"), this);
 

@@ -68,6 +68,7 @@ public:
         preset.szName = szName;
         m_Presets.AddTail(preset);
     }
+public:
     void RemoveNode(int pstn = -1)
     {
         m_Presets.RemoveAt(m_Presets.FindIndex(pstn));

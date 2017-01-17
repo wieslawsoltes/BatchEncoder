@@ -101,6 +101,7 @@ public:
 
         return (int)m_Items.GetCount() - 1;
     }
+public:
     void RemoveNode(int pstn = -1)
     {
         m_Items.RemoveAt(m_Items.FindIndex(pstn));
@@ -113,13 +114,11 @@ public:
 public:
     void Copy(CItemsList& other)
     {
-        int nItems = this->GetSize();
+        int nItems = (int)other.m_Items.GetCount();
         for (int i = 0; i < nItems; i++)
         {
-            CItem& item = this->GetData(i);
-            CItem copy;
-            item.Copy(copy);
-            other.InsertNode(copy);
+            CItem item = other.m_Items.GetAt(other.m_Items.FindIndex(i));
+            this->InsertNode(item);
         }
     }
 public:

@@ -409,7 +409,7 @@ void CFormatsDlg::OnBnClickedButtonLoadConfig()
 
 void CFormatsDlg::OnBnClickedButtonSaveConfig()
 {
-    CFileDialog fd(FALSE, _T("formats"), _T(""),
+    CFileDialog fd(FALSE, _T("formats"), _T("formats"),
         OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER | OFN_OVERWRITEPROMPT,
         _T("Formats Files (*.formats)|*.formats|Xml Files (*.xml)|*.xml|All Files|*.*||"), this);
 

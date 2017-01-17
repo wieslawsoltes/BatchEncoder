@@ -62,6 +62,7 @@ public:
     {
         m_Formats.AddTail(format);
     }
+public:
     void RemoveNode(int pstn = -1)
     {
         m_Formats.RemoveAt(m_Formats.FindIndex(pstn));
