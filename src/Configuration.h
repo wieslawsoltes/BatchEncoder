@@ -208,7 +208,7 @@ public:
         other.szExtension = this->szExtension;
         other.nDefaultPreset = this->nDefaultPreset;
 
-        int nPresets = m_Presets.GetSize();
+        int nPresets = m_Presets->GetSize();
         for (int i = 0; i < nPresets; i++)
         {
             CPreset& preset = m_Presets->GetData(i);
