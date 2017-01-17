@@ -260,7 +260,7 @@ void CPresetsDlg::ListSelectionChange(void)
         int nItem = m_LstPresets.GetNextSelectedItem(pos);
 
         CFormat& format = m_Formats.GetData(nSelectedFormat);
-        CPreset& preset = format.m_pPresets->GetData(nItem);
+        CPreset& preset = format.m_Presets.GetData(nItem);
 
         this->m_EdtName.SetWindowText(preset.szName);
         this->m_EdtOptions.SetWindowText(preset.szOptions);
@@ -279,7 +279,7 @@ void CPresetsDlg::OnLvnItemchangedListPdPresets(NMHDR *pNMHDR, LRESULT *pResult)
 void CPresetsDlg::OnBnClickedButtonPdRemoveAllPresets()
 {
     CFormat& format = m_Formats.GetData(nSelectedFormat);
-    format.m_pPresets->RemoveAllNodes();
+    format.m_Presets.RemoveAllNodes();
 
     m_LstPresets.DeleteAllItems();
 }
@@ -292,7 +292,7 @@ void CPresetsDlg::OnBnClickedButtonPdRemovePresets()
         int nItem = m_LstPresets.GetNextSelectedItem(pos);
 
         CFormat& format = m_Formats.GetData(nSelectedFormat);
-        format.m_pPresets->RemoveNode(nItem);
+        format.m_Presets.RemoveNode(nItem);
 
         m_LstPresets.DeleteItem(nItem);
 
@@ -327,16 +327,16 @@ void CPresetsDlg::LoadPresetsFile(CString szFileXml)
         }
 
         CFormat& format = m_Formats.GetData(nSelectedFormat);
-        //format.m_pPresets->RemoveAllNodes();
+        //format.m_Presets.RemoveAllNodes();
 
         //m_LstPresets.DeleteAllItems();
 
-        doc.LoadPresets(pPresetsElem, format.m_pPresets);
+        doc.LoadPresets(pPresetsElem, format.m_Presets);
 
-        int nPresets = format.m_pPresets->GetSize();
+        int nPresets = format.m_Presets.GetSize();
         for (int i = 0; i < nPresets; i++)
         {
-            CPreset& preset = format.m_pPresets->GetData(i);
+            CPreset& preset = format.m_Presets.GetData(i);
             this->AddToList(preset.szName, preset.szOptions, i);
         }
 
@@ -367,7 +367,7 @@ void CPresetsDlg::SavePresetsFile(CString szFileXml)
     doc.LinkEndChild(pPresetsElem);
 
     CFormat& format = m_Formats.GetData(nSelectedFormat);
-    doc.SavePresets(pPresetsElem, format.m_pPresets);
+    doc.SavePresets(pPresetsElem, format.m_Presets);
 
     if (doc.SaveFileW(szFileXml) != true)
     {
@@ -441,7 +441,7 @@ void CPresetsDlg::OnBnClickedButtonPdUpdatePreset()
         this->m_EdtOptions.GetWindowText(szOptions);
 
         CFormat& format = m_Formats.GetData(nSelectedFormat);
-        CPreset& preset = format.m_pPresets->GetData(nItem);
+        CPreset& preset = format.m_Presets.GetData(nItem);
         preset.szName = szName;
         preset.szOptions = szOptions;
 
@@ -468,15 +468,15 @@ void CPresetsDlg::OnBnClickedButtonPdUp()
         if (nItem > 0)
         {
             CFormat& format = m_Formats.GetData(nSelectedFormat);
-            CPreset& preset1 = format.m_pPresets->GetData(nItem);
-            CPreset& preset2 = format.m_pPresets->GetData(nItem - 1);
+            CPreset& preset1 = format.m_Presets.GetData(nItem);
+            CPreset& preset2 = format.m_Presets.GetData(nItem - 1);
 
             m_LstPresets.SetItemText(nItem, 0, preset2.szName);
             m_LstPresets.SetItemText(nItem, 1, preset2.szOptions);
             m_LstPresets.SetItemText(nItem - 1, 0, preset1.szName);
             m_LstPresets.SetItemText(nItem - 1, 1, preset1.szOptions);
 
-            format.m_pPresets->SwapItems(nItem, nItem - 1);
+            format.m_Presets.SwapItems(nItem, nItem - 1);
 
             m_LstPresets.SetItemState(nItem - 1, LVIS_SELECTED, LVIS_SELECTED);
 
@@ -502,15 +502,15 @@ void CPresetsDlg::OnBnClickedButtonPdDown()
         if (nItem != (nItems - 1) && nItem >= 0)
         {
             CFormat& format = m_Formats.GetData(nSelectedFormat);
-            CPreset& preset1 = format.m_pPresets->GetData(nItem);
-            CPreset& preset2 = format.m_pPresets->GetData(nItem + 1);
+            CPreset& preset1 = format.m_Presets.GetData(nItem);
+            CPreset& preset2 = format.m_Presets.GetData(nItem + 1);
 
             m_LstPresets.SetItemText(nItem, 0, preset2.szName);
             m_LstPresets.SetItemText(nItem, 1, preset2.szOptions);
             m_LstPresets.SetItemText(nItem + 1, 0, preset1.szName);
             m_LstPresets.SetItemText(nItem + 1, 1, preset1.szOptions);
 
-            format.m_pPresets->SwapItems(nItem, nItem + 1);
+            format.m_Presets.SwapItems(nItem, nItem + 1);
 
             m_LstPresets.SetItemState(nItem + 1, LVIS_SELECTED, LVIS_SELECTED);
 
