@@ -1272,6 +1272,7 @@ bool CBatchEncoderDlg::SaveConfigFile(CString szFileXml)
     // root: Formats
     tinyxml2::XMLElement *pFormatsElem = doc.NewElement("Formats");
     pRootElem->LinkEndChild(pFormatsElem);
+    doc.SaveFormats(pFormatsElem, m_Config.m_Formats);
 
     // root: Items
     tinyxml2::XMLElement *pItemsElem = doc.NewElement("Items");
