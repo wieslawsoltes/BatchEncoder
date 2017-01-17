@@ -993,8 +993,8 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
 
             szEncoderExePath = outputFormat.szPath;
             szEncoderOptions = outputPreset.szOptions;
-            szName = szName + _T(".") + item.szExtension.MakeLower();
-
+            szName = szName + _T(".") + outputFormat.szExtension.MakeLower();
+            
             // set full path for output file
             CString szOutputFile;
 
