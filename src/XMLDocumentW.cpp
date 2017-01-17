@@ -394,7 +394,7 @@ void CXMLDocumentW::SaveOptions(tinyxml2::XMLElement *pOptionsElem, COptions &m_
     pOptionsElem->LinkEndChild(pOptionElem);
 }
 
-void CXMLDocumentW::LoadPresets(tinyxml2::XMLElement *pPresetsElem, CPresetsList &m_Presets)
+void CXMLDocumentW::LoadPresets(tinyxml2::XMLElement *pPresetsElem, CPresetsList *m_pPresets)
 {
     tinyxml2::XMLElement *pPresetElem = pPresetsElem->FirstChildElement("Preset");
     for (pPresetElem; pPresetElem; pPresetElem = pPresetElem->NextSiblingElement())
@@ -413,19 +413,19 @@ void CXMLDocumentW::LoadPresets(tinyxml2::XMLElement *pPresetsElem, CPresetsList
             preset.szOptions = GetConfigString(pszOptions);
         }
 
-        m_Presets.InsertNode(preset);
+        m_pPresets->InsertNode(preset);
     }
 }
 
-void CXMLDocumentW::SavePresets(tinyxml2::XMLElement *pPresetsElem, CPresetsList &m_Presets)
+void CXMLDocumentW::SavePresets(tinyxml2::XMLElement *pPresetsElem, CPresetsList *m_pPresets)
 {
     CUtf8String szBuffUtf8;
     tinyxml2::XMLElement *pPresetElem;
 
-    int nPresets = m_Presets.GetSize();
+    int nPresets = m_pPresets->GetSize();
     for (int i = 0; i < nPresets; i++)
     {
-        CPreset& preset = m_Presets.GetData(i);
+        CPreset& preset = m_pPresets->GetData(i);
 
         pPresetElem = this->NewElement("Preset");
 
