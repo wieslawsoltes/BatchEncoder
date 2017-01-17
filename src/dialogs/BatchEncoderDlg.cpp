@@ -2610,11 +2610,12 @@ void CBatchEncoderDlg::OnOptionsAdvanced()
 {
     CAdvancedDlg dlg;
     
-    m_Config.m_Options.Copy(dlg.m_Options);
+    dlg.m_Options = m_Config.m_Options;
 
     if (dlg.DoModal() == IDOK)
     {
-        dlg.m_Options.Copy(m_Config.m_Options);
+        m_Config.m_Options = dlg.m_Options;
+        this->SetOptions();
     }
 }
 
@@ -2624,7 +2625,7 @@ void CBatchEncoderDlg::OnOptionsConfigurePresets()
     dlg.bShowGridLines = this->GridlinesVisible();
 
     dlg.nSelectedFormat = this->m_CmbFormat.GetCurSel();
-    m_Config.m_Formats.Copy(dlg.m_Formats);
+    dlg.m_Formats = m_Config.m_Formats;
 
     dlg.szPresetsDialogResize = m_Config.m_Options.szPresetsDialogResize;
     dlg.szPresetsListColumns = m_Config.m_Options.szPresetsListColumns;
@@ -2633,7 +2634,7 @@ void CBatchEncoderDlg::OnOptionsConfigurePresets()
     if (nRet == IDOK)
     {
         m_Config.m_Formats.RemoveAllNodes();
-        dlg.m_Formats.Copy(m_Config.m_Formats);
+        m_Config.m_Formats = dlg.m_Formats;
         this->UpdateOutputComboBoxes();
     }
 
@@ -2646,7 +2647,7 @@ void CBatchEncoderDlg::OnOptionsConfigureFormat()
     CFormatsDlg dlg;
     dlg.bShowGridLines = this->GridlinesVisible();
 
-    m_Config.m_Formats.Copy(dlg.m_Formats);
+    dlg.m_Formats = m_Config.m_Formats;
 
     dlg.szFormatsDialogResize = m_Config.m_Options.szFormatsDialogResize;
     dlg.szFormatsListColumns = m_Config.m_Options.szFormatsListColumns;
@@ -2655,7 +2656,7 @@ void CBatchEncoderDlg::OnOptionsConfigureFormat()
     if (nRet == IDOK)
     {
         m_Config.m_Formats.RemoveAllNodes();
-        dlg.m_Formats.Copy(m_Config.m_Formats);
+        m_Config.m_Formats = dlg.m_Formats;
         this->UpdateOutputComboBoxes();
     }
 
