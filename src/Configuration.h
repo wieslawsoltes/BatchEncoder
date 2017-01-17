@@ -162,7 +162,12 @@ public:
 public:
     void Copy(const CPresetsList &other)
     {
-        // TODO:
+        int nPresets = other.GetSize();
+        for (int i = 0; i < nPresets; i++)
+        {
+            CPreset& preset = other.m_Presets.GetData(i);
+            this->m_Presets.InsertNode(preset);
+        }
     }
 public:
     bool IsEmpty()
