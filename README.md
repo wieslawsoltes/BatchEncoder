@@ -67,7 +67,7 @@ adds input and output file paths. For specific options for each format use help 
 | MAC             | Encoder     | APE             | 4.18          | mac.exe                          | GetProgress_MacEnc.progress               |
 | OFR             | Encoder     | OFR             | 5.100         | ofr.exe                          | GetProgress_OfrEnc.progress               |
 | TTAENC          | Encoder     | TTA             | -.-           | ttaenc.exe                       | GetProgress_TtaEnc.progress               |
-| TAKC            | Encoder     | TAK             | -.-           | takc.exe                         | - none -                                  |
+| TAKC            | Encoder     | TAK             | 2.3.0         | takc.exe                         | - none -                                  |
 
 ### Decoders
 
