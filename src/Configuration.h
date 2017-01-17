@@ -200,7 +200,6 @@ MessageBox(NULL, _T("CFormat() "), _T("ERROR"), MB_OK | MB_ICONERROR);
     CFormat(const CFormat &other)
     {
 MessageBox(NULL, _T("CFormat(const CFormat &other)"), _T("ERROR"), MB_OK | MB_ICONERROR);
-        m_pPresets = new CPresetsList();
         Copy(other);
     }
     CFormat& operator=(const CFormat &other)
@@ -218,26 +217,36 @@ MessageBox(NULL, _T("virtual ~CFormat() s"), _T("ERROR"), MB_OK | MB_ICONERROR);
         }
     }
 public:
-    void Copy(CFormat &other)
+    void Copy(const CFormat &other)
     {
-        other.szId = this->szId;
-        other.szName = this->szName;
-        other.szTemplate = this->szTemplate;
-        other.bInput = this->bInput;
-        other.bOutput = this->bOutput;
-        other.szFunction = this->szFunction;
-        other.szPath = this->szPath;
-        other.nType = this->nType;
-        other.szExtension = this->szExtension;
-        other.nDefaultPreset = this->nDefaultPreset;
+        this->szId = other.szId;
+        this->szName = other.szName;
+        this->szTemplate = other.szTemplate;
+        this->bInput = other.bInput;
+        this->bOutput = other.bOutput;
+        this->szFunction = other.szFunction;
+        this->szPath = other.szPath;
+        this->nType = other.nType;
+        this->szExtension = other.szExtension;
+        this->nDefaultPreset = other.nDefaultPreset;
 
-        int nPresets = m_pPresets->GetSize();
-        for (int i = 0; i < nPresets; i++)
+        if (other.m_pPresets != NULL)
         {
-            CPreset& preset = m_pPresets->GetData(i);
-            CPreset copy;
-            preset.Copy(copy);
-            other.m_pPresets->InsertNode(copy);
+            delete m_pPresets;
+            this->m_pPresets = new CPresetsList();
+
+            int nPresets = other.m_pPresets->GetSize();
+            for (int i = 0; i < nPresets; i++)
+            {
+                CPreset& preset = other.m_pPresets->GetData(i);
+                CPreset copy;
+                preset.Copy(copy);
+                this->m_pPresets->InsertNode(copy);
+            }
+        }
+        else
+        {
+            this->m_pPresets = new CPresetsList();
         }
     }
 };
