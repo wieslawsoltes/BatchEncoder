@@ -130,7 +130,7 @@ public:
 
 class CPresetsList
 {
-private:
+public:
     CList<CPreset, const CPreset&> m_Presets;
 public:
     void SetData(CPreset& preset, int idx)
@@ -162,11 +162,11 @@ public:
 public:
     void Copy(const CPresetsList &other)
     {
-        int nPresets = other.GetSize();
+        int nPresets = (int)other.m_Presets.GetCount();
         for (int i = 0; i < nPresets; i++)
         {
-            CPreset& preset = other.m_Presets.GetData(i);
-            this->m_Presets.InsertNode(preset);
+            CPreset& preset = other.m_Presets.GetAt(other.m_Presets.FindIndex(i));
+            this->InsertNode(preset);
         }
     }
 public:
