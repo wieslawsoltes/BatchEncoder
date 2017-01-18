@@ -148,6 +148,18 @@ public:
             m_Options.bShowTrayIcon = false;
         }
 
+        // option: ShutdownWhenFinished
+        pOptionElem = pOptionsElem->FirstChildElement("ShutdownWhenFinished");
+        if (pOptionElem)
+        {
+            const char *tmpBuff = pOptionElem->GetText();
+            m_Options.bShutdownWhenFinished = GetConfigString(tmpBuff).Compare(_T("true")) == 0;
+        }
+        else
+        {
+            m_Options.bShutdownWhenFinished = false;
+        }
+
         // option: DoNotSaveConfiguration
         pOptionElem = pOptionsElem->FirstChildElement("DoNotSaveConfiguration");
         if (pOptionElem)
@@ -323,6 +335,12 @@ public:
         // option: ShowTrayIcon
         pOptionElem = this->NewElement("ShowTrayIcon");
         pOptionElem->LinkEndChild(this->NewText(szBuffUtf8.Create(m_Options.bShowTrayIcon ? _T("true") : _T("false"))));
+        pOptionsElem->LinkEndChild(pOptionElem);
+        szBuffUtf8.Clear();
+
+        // option: ShutdownWhenFinished
+        pOptionElem = this->NewElement("ShutdownWhenFinished");
+        pOptionElem->LinkEndChild(this->NewText(szBuffUtf8.Create(m_Options.bShutdownWhenFinished ? _T("true") : _T("false"))));
         pOptionsElem->LinkEndChild(pOptionElem);
         szBuffUtf8.Clear();
 

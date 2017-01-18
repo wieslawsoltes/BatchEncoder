@@ -19,6 +19,7 @@ public:
     CString szFileListColumns;
     bool bShowGridLines;
     bool bShowTrayIcon;
+    bool bShutdownWhenFinished;
     bool bDoNotSaveConfiguration;
     CString szPresetsDialogResize;
     CString szPresetsListColumns;
@@ -59,6 +60,7 @@ public:
         this->szFileListColumns = other.szFileListColumns;
         this->bShowGridLines = other.bShowGridLines;
         this->bShowTrayIcon = other.bShowTrayIcon;
+        this->bShutdownWhenFinished = other.bShutdownWhenFinished;
         this->bDoNotSaveConfiguration = other.bDoNotSaveConfiguration;
         this->szPresetsDialogResize = other.szPresetsDialogResize;
         this->szPresetsListColumns = other.szPresetsListColumns;

@@ -787,6 +787,9 @@ void CBatchEncoderDlg::GetOptions()
     // option: ShowTrayIcon
     m_Config.m_Options.bShowTrayIcon = this->GetMenu()->GetMenuState(ID_OPTIONS_SHOWTRAYICON, MF_BYCOMMAND) == MF_CHECKED;
 
+    // option: ShutdownWhenFinished
+    m_Config.m_Options.bShutdownWhenFinished = this->GetMenu()->GetMenuState(ID_OPTIONS_SHUTDOWN_WHEN_FINISHED, MF_BYCOMMAND) == MF_CHECKED;
+
     // option: DoNotSaveConfiguration
     m_Config.m_Options.bDoNotSaveConfiguration = this->GetMenu()->GetMenuState(ID_OPTIONS_DO_NOT_SAVE, MF_BYCOMMAND) == MF_CHECKED;
 
@@ -884,6 +887,12 @@ void CBatchEncoderDlg::SetOptions()
 
     // option: ShowTrayIcon
     EnableTrayIcon(m_Config.m_Options.bShowTrayIcon);
+
+    // option: ShutdownWhenFinished
+    if (m_Config.m_Options.bShutdownWhenFinished)
+        this->GetMenu()->CheckMenuItem(ID_OPTIONS_SHUTDOWN_WHEN_FINISHED, MF_CHECKED);
+    else
+        this->GetMenu()->CheckMenuItem(ID_OPTIONS_SHUTDOWN_WHEN_FINISHED, MF_UNCHECKED);
 
     // option: DoNotSaveConfiguration
     if (m_Config.m_Options.bDoNotSaveConfiguration)
