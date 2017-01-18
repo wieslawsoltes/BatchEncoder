@@ -240,7 +240,7 @@ bool ConvertFile(ConvertContext* lpContext)
                 ::CloseHandle(rInPipe);
                 ::CloseHandle(wInPipe);
                 
-                plpContext->Dlg->WorkerCallback(-1, true, true, 0.0, lpContext->nIndex);
+                lpContext->Dlg->WorkerCallback(-1, true, true, 0.0, lpContext->nIndex);
                 return false;
             }
         }
@@ -451,7 +451,7 @@ bool ConvertFile(ConvertContext* lpContext)
 
             rd.bError = false;
             rd.bFinished = false;
-            rd.pDlg = pDlg;
+            rd.pDlg = lpContext->pDlg;
             rd.szFileName = lpContext->szInputFile;
             rd.hPipe = wInPipe;
 
@@ -507,7 +507,7 @@ bool ConvertFile(ConvertContext* lpContext)
 
             wd.bError = false;
             wd.bFinished = false;
-            wd.pDlg = pDlg;
+            wd.pDlg = lpContext->pDlg;
             wd.szFileName = lpContext->szOutputFile;
             wd.hPipe = rOutPipe;
 
@@ -539,13 +539,13 @@ bool ConvertFile(ConvertContext* lpContext)
             if ((wd.bError == false) && (wd.bFinished == true))
             {
                 bWriteSuccess = true;
-                if (bUseReadPipes == false)
+                if (lpContext->bUseReadPipes == false)
                     nProgress = 100;
             }
             else
             {
                 bWriteSuccess = false;
-                if (bUseReadPipes == false)
+                if (lpContext->bUseReadPipes == false)
                     nProgress = -1;
             }
 
@@ -597,7 +597,7 @@ bool ConvertFile(ConvertContext* lpContext)
             CFile fp;
             bool bHaveLogFile = false;
 
-            if (lpContext->bLogConsoleOutput == true)
+            if (bLogConsoleOutput == true)
             {
                 ::UpdatePath();
                 
