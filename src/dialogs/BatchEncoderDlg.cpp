@@ -1923,27 +1923,7 @@ void CBatchEncoderDlg::OnEditAddFiles()
             _T(""),
             0,
             OFN_ALLOWMULTISELECT | OFN_HIDEREADONLY | OFN_ENABLESIZING,
-            _T("Supported Audio Files|")
-            _T("*.wav;*.mp1;*.mp2;*.mp3;*.mpc;*.mpp;*.mp+;*.mp4;*.m4a;*.aac;*.ogg;*.ac3;*.flac;*.wv;*.mac;*.ape;*.ofr;*.tta;*.tak|")
-            _T("WAV (*.wav)|*.wav|")
-            _T("MP1 (*.mp1)|*.mp1|")
-            _T("MP2 (*.mp2)|*.mp2|")
-            _T("MP3 (*.mp3)|*.mp3|")
-            _T("MPC (*.mpc)|*.mpc|")
-            _T("MPP (*.mpp)|*.mpp|")
-            _T("MP+ (*.mp+)|*.mp+|")
-            _T("MP4 (*.mp4)|*.mp4|")
-            _T("M4A (*.m4a)|*.m4a|")
-            _T("AAC (*.aac)|*.aac|")
-            _T("OGG (*.ogg)|*.ogg|")
-            _T("AC3 (*.ac3)|*.ac3|")
-            _T("FLAC (*.flac)|*.flac|")
-            _T("WV (*.wv)|*.wv|")
-            _T("MAC (*.mac)|*.mac|")
-            _T("APE (*.ape)|*.ape|")
-            _T("OFR (*.ofr)|*.ofr|")
-            _T("TTA (*.tta)|*.tta|")
-            _T("TAK (*.tak)|*.tak||"),
+            _T("All Files (*.*)|*.*||"),
             this);
 
         fd.m_ofn.lpstrFile = pFiles;
