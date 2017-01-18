@@ -13,17 +13,6 @@
 #include "AdvancedDlg.h"
 #include "..\worker\WorkThread.h"
 
-typedef struct TDRAGANDDROP
-{
-    CBatchEncoderDlg *pDlg;
-    HDROP hDropInfo;
-} DRAGANDDROP, *PDRAGANDDROP;
-
-static volatile bool bHandleDrop = true;
-static HANDLE hDDThread;
-static DWORD dwDDThreadID;
-static DRAGANDDROP m_DDParam;
-
 #define IDC_FOLDERTREE          0x3741
 #define IDC_TITLE               0x3742
 #define IDC_STATUSTEXT          0x3743
@@ -181,9 +170,20 @@ int CALLBACK BrowseCallbackOutPath(HWND hWnd, UINT uMsg, LPARAM lp, LPARAM pData
     return(0);
 }
 
+typedef struct tagDragAndDrop
+{
+    CBatchEncoderDlg *pDlg;
+    HDROP hDropInfo;
+} DragAndDrop;
+
+static volatile bool bHandleDrop = true;
+static HANDLE hDDThread;
+static DWORD dwDDThreadID;
+static DragAndDrop m_DDParam;
+
 DWORD WINAPI DragAndDropThread(LPVOID lpParam)
 {
-    PDRAGANDDROP m_ThreadParam = (PDRAGANDDROP)lpParam;
+    DragAndDrop* m_ThreadParam = (DragAndDrop*)lpParam;
 
     m_ThreadParam->pDlg->HandleDropFiles(m_ThreadParam->hDropInfo);
     bHandleDrop = true;
