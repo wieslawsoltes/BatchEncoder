@@ -158,6 +158,14 @@ CString GetExeFilePath()
     return NULL;
 }
 
+void GetFullPathName(CString &szFilePath)
+{
+    TCHAR szFullPath[MAX_PATH + 2] = _T("");
+    LPTSTR pszFilePos = NULL;
+    ::GetFullPathName(szFilePath, MAX_PATH + 1, szFullPath, &pszFilePos);
+    szFilePath = szFullPath;
+}
+
 void UpdatePath()
 {
     ::SetCurrentDirectory(::GetExeFilePath());
@@ -307,12 +315,4 @@ CString FormatTime(double fTime, int nFormat)
     }
 
     return szTime;
-}
-
-void GetFullPathName(CString &szFilePath)
-{
-    TCHAR szFullPath[MAX_PATH + 2] = _T("");
-    LPTSTR pszFilePos = NULL;
-    ::GetFullPathName(szFilePath, MAX_PATH + 1, szFullPath, &pszFilePos);
-    szFilePath = szFullPath;
 }
