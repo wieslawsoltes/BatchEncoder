@@ -5,10 +5,6 @@
 #include "..\BatchEncoder.h"
 #include "UnicodeUtf8.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
-
 // UNICODE to UTF8
 
 //

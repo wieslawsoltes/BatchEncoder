@@ -6,10 +6,6 @@
 #include "..\utilities\Utilities.h"
 #include "AdvancedDlg.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
-
 IMPLEMENT_DYNAMIC(CAdvancedDlg, CDialog)
 CAdvancedDlg::CAdvancedDlg(CWnd* pParent /*=NULL*/)
     : CDialog(CAdvancedDlg::IDD, pParent)

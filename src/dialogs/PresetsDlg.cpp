@@ -8,10 +8,6 @@
 #include "..\utilities\Utf8String.h"
 #include "PresetsDlg.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
-
 IMPLEMENT_DYNAMIC(CPresetsDlg, CDialog)
 CPresetsDlg::CPresetsDlg(CWnd* pParent /*=NULL*/)
     : CResizeDialog(CPresetsDlg::IDD, pParent)

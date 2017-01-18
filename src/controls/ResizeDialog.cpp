@@ -5,10 +5,6 @@
 #include "..\BatchEncoder.h"
 #include "ResizeDialog.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
-
 CResizeDialog::CResizeDialog()
 {
     InitVars();

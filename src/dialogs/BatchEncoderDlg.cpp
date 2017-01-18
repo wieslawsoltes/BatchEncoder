@@ -13,10 +13,6 @@
 #include "AdvancedDlg.h"
 #include "..\worker\WorkThread.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
-
 typedef struct TDRAGANDDROP
 {
     CBatchEncoderDlg *pDlg;

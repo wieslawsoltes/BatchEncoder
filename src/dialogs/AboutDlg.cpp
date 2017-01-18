@@ -6,10 +6,6 @@
 #include "..\utilities\Utilities.h"
 #include "AboutDlg.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
-
 IMPLEMENT_DYNAMIC(CAboutDlg, CDialog)
 CAboutDlg::CAboutDlg(CWnd* pParent /*=NULL*/)
     : CDialog(CAboutDlg::IDD, pParent)

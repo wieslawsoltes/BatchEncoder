@@ -9,10 +9,6 @@
 #include "..\dialogs\BatchEncoderDlg.h"
 #include "WorkThread.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
-
 DWORD WINAPI ReadThread(LPVOID lpParam)
 {
     PipeContext* pContext = (PipeContext*)lpParam;

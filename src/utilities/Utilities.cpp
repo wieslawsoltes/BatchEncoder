@@ -7,10 +7,6 @@
 #include "UnicodeUtf8.h"
 #include "Utf8String.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
-
 void DoTheShutdown()
 {
     // Windows XP or later

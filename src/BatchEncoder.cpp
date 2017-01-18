@@ -6,10 +6,6 @@
 #include "controls\ResizeDialog.h"
 #include "dialogs\BatchEncoderDlg.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
-
 BEGIN_MESSAGE_MAP(CBatchEncoderApp, CWinApp)
     ON_COMMAND(ID_HELP, CWinApp::OnHelp)
 END_MESSAGE_MAP()
