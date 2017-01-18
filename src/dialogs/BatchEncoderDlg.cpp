@@ -723,6 +723,7 @@ void CBatchEncoderDlg::GetItems()
     for (int i = 0; i < nItems; i++)
     {
         CItem& item = m_Config.m_Items.GetData(i);
+        item.nId = i;
         item.bChecked = this->m_LstInputItems.GetCheck(i) == TRUE;
         item.szTime = this->m_LstInputItems.GetItemText(i, 5);
         item.szStatus = this->m_LstInputItems.GetItemText(i, 6);

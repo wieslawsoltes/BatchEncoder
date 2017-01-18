@@ -585,6 +585,12 @@ public:
         {
             CItem item;
 
+            const char *pszId = pItemElem->Attribute("id");
+            if (pszId != NULL)
+            {
+                item.nId = stoi(GetConfigString(pszId));
+            }
+
             const char *pszPath = pItemElem->Attribute("path");
             if (pszPath != NULL)
             {
@@ -653,6 +659,11 @@ public:
             CItem& item = m_Items.GetData(i);
 
             pItemElem = this->NewElement("Item");
+
+            CString szId;
+            szId.Format(_T("%d\0"), i);
+            pItemElem->SetAttribute("id", szBuffUtf8.Create(szId));
+            szBuffUtf8.Clear();
 
             pItemElem->SetAttribute("path", szBuffUtf8.Create(item.szPath));
             szBuffUtf8.Clear();

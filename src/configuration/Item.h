@@ -8,6 +8,7 @@
 class CItem
 {
 public:
+    int nId;
     CString szPath;
     CString szSize;
     CString szName;
@@ -36,6 +37,7 @@ public:
 public:
     void Copy(const CItem &other)
     {
+        this->nId = other.nId;
         this->szPath = other.szPath;
         this->szSize = other.szSize;
         this->szName = other.szName;
