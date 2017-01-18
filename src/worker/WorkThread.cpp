@@ -8,11 +8,6 @@
 
 DWORD WINAPI WorkThread(LPVOID lpParam)
 {
-    // NOTE:
-    // input and output filenames are UNICODE but
-    // we can convert it to OS current code-page using CharToOem
-    // this should work if UNICODE chars are in code-page of OS
-
     ::UpdatePath();
 
     // get handle of main dialog
@@ -26,11 +21,12 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
     // get number of files in ListView
     int nItems = pDlg->m_Config.m_Items.GetSize();
 
-    // get number of checked files in ListView
     int nTotalFiles = 0;
     int nProcessedFiles = 0;
     int nDoneWithoutError = 0;
     int nErrors = 0;
+
+    // get number of checked files in ListView
     for (int i = 0; i < nItems; i++)
     {
         if (pDlg->m_Config.m_Items.GetData(i).bChecked == TRUE)
@@ -51,7 +47,6 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
         {
             // update status-bar conversion status
             nProcessedFiles++;
-
             nErrors = (nProcessedFiles - 1) - nDoneWithoutError;
             CString szText;
             szText.Format(_T("Processing item %d of %d (%d Done, %d %s)"),
