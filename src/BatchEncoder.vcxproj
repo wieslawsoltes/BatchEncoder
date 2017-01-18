@@ -259,7 +259,10 @@
     <ClCompile Include="utilities\UnicodeUtf8.cpp" />
     <ClCompile Include="utilities\Utf8String.cpp" />
     <ClCompile Include="utilities\Utilities.cpp" />
+    <ClCompile Include="worker\ConvertFile.cpp" />
+    <ClCompile Include="worker\ReadThread.cpp" />
     <ClCompile Include="worker\WorkThread.cpp" />
+    <ClCompile Include="worker\WriteThread.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="configuration\Format.h" />

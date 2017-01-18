@@ -96,6 +96,15 @@
     <ClCompile Include="worker\WorkThread.cpp">
       <Filter>Source Files\Worker</Filter>
     </ClCompile>
+    <ClCompile Include="worker\ReadThread.cpp">
+      <Filter>Source Files\Worker</Filter>
+    </ClCompile>
+    <ClCompile Include="worker\WriteThread.cpp">
+      <Filter>Source Files\Worker</Filter>
+    </ClCompile>
+    <ClCompile Include="worker\ConvertFile.cpp">
+      <Filter>Source Files\Worker</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="StdAfx.h">
