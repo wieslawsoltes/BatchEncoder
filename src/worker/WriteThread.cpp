@@ -55,7 +55,8 @@ DWORD WINAPI WriteThread(LPVOID lpParam)
         // handle user Stop
         if (pContext->pDlg->bRunning == false)
             break;
-    } while (bRes != FALSE);
+    } 
+    while (bRes != FALSE);
 
     // clean up memory
     ::CloseHandle(hFile);

@@ -69,7 +69,8 @@ DWORD WINAPI ReadThread(LPVOID lpParam)
         bRunning = pContext->pDlg->WorkerCallback(nProgress, false);
         if (bRunning == false)
             break;
-    } while (bRes != FALSE);
+    } 
+    while (bRes != FALSE);
 
     // clean up memory
     ::CloseHandle(hFile);
