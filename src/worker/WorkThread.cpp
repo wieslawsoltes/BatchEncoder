@@ -240,7 +240,7 @@ bool ConvertFile(ConvertContext* lpContext)
                 ::CloseHandle(rInPipe);
                 ::CloseHandle(wInPipe);
                 
-                lpContext->Dlg->WorkerCallback(-1, true, true, 0.0, lpContext->nIndex);
+                lpContext->pDlg->WorkerCallback(-1, true, true, 0.0, lpContext->nIndex);
                 return false;
             }
         }
