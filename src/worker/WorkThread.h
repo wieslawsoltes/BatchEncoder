@@ -31,4 +31,6 @@ DWORD WINAPI WriteThread(LPVOID lpParam);
 
 bool ConvertFile(ConvertContext* lpContext);
 
+bool ConvertItem(CItem& item, CBatchEncoderDlg *pDlg);
+
 DWORD WINAPI WorkThread(LPVOID lpParam);
