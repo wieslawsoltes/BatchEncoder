@@ -127,7 +127,7 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
             szEncoderExePath = outputFormat.szPath;
             szEncoderOptions = outputPreset.szOptions;
             szName = szName + _T(".") + outputFormat.szExtension.MakeLower();
-            
+
             // set full path for output file
             CString szOutputFile;
 
@@ -229,14 +229,14 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
 
                 bDecode = true;
                 nTool = pDlg->m_Config.m_Formats.GetFormatById(intputFormat.szId);
-                
+
                 lstrcpy(szCommandLine, csExecute.GetBuffer(csExecute.GetLength()));
 
                 pDlg->m_LstInputItems.SetItemText(i, 5, _T("--:--"));
                 pDlg->m_LstInputItems.SetItemText(i, 6, _T("Decoding..."));
 
                 ConvertContext context;
-                
+
                 context.pDlg = pDlg;
                 context.szInputFile = szOrgInputFile;
                 context.szOutputFile = szOrgOutputFile;
@@ -246,7 +246,7 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
                 context.nTool = nTool;
                 context.bUseReadPipes = bUseInPipesDec;
                 context.bUseWritePipes = bUseOutPipesDec;
-                
+
                 // TODO: when decoding in nProcessingMode == 2 don't show time stats
                 if (::ConvertFile(&context) == true)
                 {
@@ -342,7 +342,7 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
                 pDlg->m_LstInputItems.SetItemText(i, 6, _T("Encoding..."));
 
                 ConvertContext context;
-                
+
                 context.pDlg = pDlg;
                 context.szInputFile = szOrgInputFile;
                 context.szOutputFile = szOrgOutputFile;
@@ -352,7 +352,7 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
                 context.nTool = nTool;
                 context.bUseReadPipes = bUseInPipesEnc;
                 context.bUseWritePipes = bUseOutPipesEnc;
-                
+
                 if (::ConvertFile(&context) == true)
                 {
                     nDoneWithoutError++;

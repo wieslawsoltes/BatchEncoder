@@ -1176,7 +1176,7 @@ void CBatchEncoderDlg::FinishConvert()
     this->m_BtnConvert.SetWindowText(_T("Conve&rt"));
     this->GetMenu()->ModifyMenu(ID_ACTION_CONVERT, MF_BYCOMMAND, ID_ACTION_CONVERT, _T("Conve&rt\tF9"));
     this->EnableUserInterface(TRUE);
-    
+
     this->m_FileProgress.SetPos(0);
     this->bRunning = false;
 
@@ -1956,8 +1956,7 @@ void CBatchEncoderDlg::OnEditAddFiles()
                     CString szPath = sFilePath;
                     this->InsertToList(szPath);
                 }
-            } 
-            while (pos != NULL);
+            } while (pos != NULL);
 
             this->UpdateStatusBar();
         }
@@ -2177,8 +2176,7 @@ void CBatchEncoderDlg::OnEditCrop()
             m_Config.m_Items.RemoveNode(nItem);
             m_LstInputItems.DeleteItem(nItem);
         }
-    } 
-    while (nItem != -1);
+    } while (nItem != -1);
 
     if (m_LstInputItems.GetItemCount() == 0)
     {
@@ -2223,8 +2221,7 @@ void CBatchEncoderDlg::OnEditRemove()
 
             nItemLastRemoved = nItem;
         }
-    } 
-    while (nItem != -1);
+    } while (nItem != -1);
 
     int nItems = m_LstInputItems.GetItemCount();
     if (nItemLastRemoved != -1)
