@@ -890,9 +890,9 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
             nTotalFiles++;
     }
 
-    CTimeCount countTime;
-    countTime.InitCounter();
-    countTime.StartCounter();
+    CTimeCount timeCount;
+    timeCount.InitCounter();
+    timeCount.StartCounter();
 
     // process all checked files
     for (int i = 0; i < nItems; i++)
@@ -1236,13 +1236,13 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
         }
     }
 
-    countTime.StopCounter();
+    timeCount.StopCounter();
 
     // show total time
     if (nProcessedFiles > 0)
     {
         CString szText;
-        szText.Format(_T("Done in %s"), ::FormatTime(countTime.GetTime(), 3));
+        szText.Format(_T("Done in %s"), ::FormatTime(timeCount.GetTime(), 3));
         pDlg->m_StatusBar.SetText(szText, 1, 0);
     }
     else
@@ -1250,30 +1250,7 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
         pDlg->m_StatusBar.SetText(_T(""), 1, 0);
     }
 
-    // restore user interface to default state
-    if (pDlg->m_Config.m_Options.bShowTrayIcon == true)
-        pDlg->EnableTrayIcon(true, true);
-
-    pDlg->m_BtnConvert.SetWindowText(_T("Conve&rt"));
-    pDlg->GetMenu()->ModifyMenu(ID_ACTION_CONVERT, MF_BYCOMMAND, ID_ACTION_CONVERT, _T("Conve&rt\tF9"));
-    pDlg->m_FileProgress.SetPos(0);
-    pDlg->bRunning = false;
-    pDlg->EnableUserInterface(TRUE);
-
-    // now we shutdown the system
-    if (pDlg->GetMenu()->GetMenuState(ID_OPTIONS_SHUTDOWN_WHEN_FINISHED, MF_BYCOMMAND) == MF_CHECKED)
-    {
-        // NOTE: before shutdown we are doing OnClose() stuff
-
-        // save current configuration to file
-        if (pDlg->GetMenu()->GetMenuState(ID_OPTIONS_DO_NOT_SAVE, MF_BYCOMMAND) != MF_CHECKED)
-            pDlg->SaveConfigFile(pDlg->szMainConfigFile);
-
-        // disable tray icon
-        pDlg->EnableTrayIcon(false);
-
-        ::DoTheShutdown();
-    }
+    pDlg->FinishConvert();
 
     // close this worker thread handle
     return ::CloseHandle(pDlg->hThread);

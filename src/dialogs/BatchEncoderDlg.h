@@ -121,6 +121,9 @@ public:
     void EnableTrayIcon(bool bEnable = true, bool bModify = false);
     void ShowProgressTrayIcon(int nProgress);
 public:
+    void StartConvert();
+    void FinishConvert();
+public:
     afx_msg void OnSize(UINT nType, int cx, int cy);
 public:
     afx_msg LRESULT OnTrayIconMsg(WPARAM wParam, LPARAM lParam);

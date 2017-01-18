@@ -1102,7 +1102,7 @@ void CBatchEncoderDlg::SaveUserConfig()
     }
 }
 
-void CBatchEncoderDlg::OnBnClickedButtonConvert()
+void CBatchEncoderDlg::StartConvert()
 {
     static volatile bool bSafeCheck = false;
     if (bSafeCheck == true)
@@ -1169,6 +1169,38 @@ void CBatchEncoderDlg::OnBnClickedButtonConvert()
         bRunning = false;
         bSafeCheck = false;
     }
+}
+
+void CBatchEncoderDlg::FinishConvert()
+{
+    // restore user interface to default state
+    if (this->m_Config.m_Options.bShowTrayIcon == true)
+        this->EnableTrayIcon(true, true);
+
+    this->m_BtnConvert.SetWindowText(_T("Conve&rt"));
+    this->GetMenu()->ModifyMenu(ID_ACTION_CONVERT, MF_BYCOMMAND, ID_ACTION_CONVERT, _T("Conve&rt\tF9"));
+    this->EnableUserInterface(TRUE);
+    
+    this->m_FileProgress.SetPos(0);
+    this->bRunning = false;
+
+    // now we shutdown the system
+    if (this->m_Config.m_Options.bShutdownWhenFinished == true)
+    {
+        // save current configuration to file
+        if (this->m_Config.m_Options.bDoNotSaveConfiguration == false)
+            this->SaveConfigFile(this->szMainConfigFile);
+
+        // disable tray icon
+        this->EnableTrayIcon(false);
+
+        ::DoTheShutdown();
+    }
+}
+
+void CBatchEncoderDlg::OnBnClickedButtonConvert()
+{
+    this->StartConvert();
 }
 
 bool CBatchEncoderDlg::WorkerCallback(int nProgress, bool bFinished, bool bError, double fTime, int nIndex)
