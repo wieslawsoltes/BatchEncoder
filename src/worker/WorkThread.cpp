@@ -55,7 +55,12 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
             // scroll list to ensure the item is visible
             pDlg->m_LstInputItems.EnsureVisible(i, FALSE);
 
-            bool bSuccess = ConvertItem(item, pDlg);
+            ItemContext context;
+
+            context.pDlg = pDlg;
+            context.item = &item;
+
+            bool bSuccess = ConvertItem(&context);
             if (bSuccess == true)
             {
                 nDoneWithoutError++;

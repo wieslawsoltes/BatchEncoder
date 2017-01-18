@@ -6,7 +6,7 @@
 #include "..\dialogs\BatchEncoderDlg.h"
 #include "WorkThread.h"
 
-bool ConvertItem(CItem& item, CBatchEncoderDlg *pDlg)
+bool ConvertItem(ItemContext* pContext)
 {
     bool bSuccess = false;
 
@@ -17,30 +17,30 @@ bool ConvertItem(CItem& item, CBatchEncoderDlg *pDlg)
     // when trans-coding on decode pass sum the decode+encode passes as one
     // in the total progress-bar calculations
 
-    int nIntputFormat = pDlg->m_Config.m_Formats.GetInFormatByExt(item.szExtension);
-    CFormat& intputFormat = pDlg->m_Config.m_Formats.GetData(nIntputFormat);
+    int nIntputFormat = pContext->pDlg->m_Config.m_Formats.GetInFormatByExt(pContext->item->szExtension);
+    CFormat& intputFormat = pContext->pDlg->m_Config.m_Formats.GetData(nIntputFormat);
     CPreset& inputPreset = intputFormat.m_Presets.GetData(intputFormat.nDefaultPreset);
 
-    int nOutputFormat = pDlg->m_Config.m_Formats.GetOutFormatById(item.szFormatId);
-    CFormat& outputFormat = pDlg->m_Config.m_Formats.GetData(nOutputFormat);
-    CPreset& outputPreset = outputFormat.m_Presets.GetData(item.nPreset);
+    int nOutputFormat = pContext->pDlg->m_Config.m_Formats.GetOutFormatById(pContext->item->szFormatId);
+    CFormat& outputFormat = pContext->pDlg->m_Config.m_Formats.GetData(nOutputFormat);
+    CPreset& outputPreset = outputFormat.m_Presets.GetData(pContext->item->nPreset);
 
     // get full file path
-    CString szInputFile = item.szPath;
+    CString szInputFile = pContext->item->szPath;
 
     CString szOutPath;
 
     // output path is same as input file path
-    if (pDlg->m_Config.m_Options.bOutputPathChecked == false)
+    if (pContext->pDlg->m_Config.m_Options.bOutputPathChecked == false)
     {
         szOutPath = szInputFile;
-        CString szToRemove = pDlg->m_Config.m_Items.GetFileName(szInputFile);
+        CString szToRemove = pContext->pDlg->m_Config.m_Items.GetFileName(szInputFile);
         int nNewLenght = szOutPath.GetLength() - szToRemove.GetLength();
         szOutPath.Truncate(nNewLenght);
     }
     else
     {
-        szOutPath = pDlg->m_Config.m_Options.szOutputPath;
+        szOutPath = pContext->pDlg->m_Config.m_Options.szOutputPath;
     }
 
     // setup decoder steps:
@@ -50,7 +50,7 @@ bool ConvertItem(CItem& item, CBatchEncoderDlg *pDlg)
     CString szDecoderOptions = inputPreset.szOptions;
 
     // get only output filename
-    CString szName = item.szName;
+    CString szName = pContext->item->szName;
 
     // setup encoder steps:
     // 1. add extension to output filename
@@ -134,7 +134,7 @@ bool ConvertItem(CItem& item, CBatchEncoderDlg *pDlg)
     // decode
     if ((nProcessingMode == 1) || (nProcessingMode == 2))
     {
-        if (pDlg->m_Config.m_Options.bForceConsoleWindow == false)
+        if (pContext->pDlg->m_Config.m_Options.bForceConsoleWindow == false)
         {
             // configure decoder input and output pipes
             bUseInPipesDec = intputFormat.bInput;
@@ -168,20 +168,20 @@ bool ConvertItem(CItem& item, CBatchEncoderDlg *pDlg)
         csExecute.Replace(_T("$OUTFILE"), szOutputFile);
 
         bDecode = true;
-        nTool = pDlg->m_Config.m_Formats.GetFormatById(intputFormat.szId);
+        nTool = pContext->pDlg->m_Config.m_Formats.GetFormatById(intputFormat.szId);
 
         lstrcpy(szCommandLine, csExecute.GetBuffer(csExecute.GetLength()));
 
-        pDlg->m_LstInputItems.SetItemText(item.nId, 5, _T("--:--"));
-        pDlg->m_LstInputItems.SetItemText(item.nId, 6, _T("Decoding..."));
+        pContext->pDlg->m_LstInputItems.SetItemText(pContext->item->nId, 5, _T("--:--"));
+        pContext->pDlg->m_LstInputItems.SetItemText(pContext->item->nId, 6, _T("Decoding..."));
 
-        ConvertContext context;
+        FileContext context;
 
-        context.pDlg = pDlg;
+        context.pDlg = pContext->pDlg;
         context.szInputFile = szOrgInputFile;
         context.szOutputFile = szOrgOutputFile;
         context.szCommandLine = szCommandLine;
-        context.nIndex = item.nId;
+        context.nIndex = pContext->item->nId;
         context.bDecode = bDecode;
         context.nTool = nTool;
         context.bUseReadPipes = bUseInPipesDec;
@@ -193,26 +193,26 @@ bool ConvertItem(CItem& item, CBatchEncoderDlg *pDlg)
             if (nProcessingMode == 1)
                 bSuccess = true;
 
-            if (pDlg->m_Config.m_Options.bDeleteSourceFiles == true)
+            if (pContext->pDlg->m_Config.m_Options.bDeleteSourceFiles == true)
                 ::DeleteFile(szOrgInputFile);
 
             if (nProcessingMode == 1)
             {
-                pDlg->m_LstInputItems.SetCheck(item.nId, FALSE);
-                item.bChecked = false;
+                pContext->pDlg->m_LstInputItems.SetCheck(pContext->item->nId, FALSE);
+                pContext->item->bChecked = false;
             }
         }
         else
         {
             // delete output file on error
-            if (pDlg->m_Config.m_Options.bDeleteOnError == true)
+            if (pContext->pDlg->m_Config.m_Options.bDeleteOnError == true)
                 ::DeleteFile(szOutputFile);
 
-            if (pDlg->bRunning == false)
+            if (pContext->pDlg->bRunning == false)
                 return bSuccess;
 
             // stop conversion process on error
-            if (pDlg->m_Config.m_Options.bStopOnErrors == true)
+            if (pContext->pDlg->m_Config.m_Options.bStopOnErrors == true)
                 return bSuccess;
 
             // in processing mode 2 we are skipping to next file
@@ -221,10 +221,10 @@ bool ConvertItem(CItem& item, CBatchEncoderDlg *pDlg)
         }
     }
 
-    if (pDlg->bRunning == false)
+    if (pContext->pDlg->bRunning == false)
         return bSuccess;
 
-    if (pDlg->m_Config.m_Options.bForceConsoleWindow == false)
+    if (pContext->pDlg->m_Config.m_Options.bForceConsoleWindow == false)
     {
         // configure encoder input and output pipes
         bUseInPipesEnc = outputFormat.bInput;
@@ -277,20 +277,20 @@ bool ConvertItem(CItem& item, CBatchEncoderDlg *pDlg)
         csExecute.Replace(_T("$OUTFILE"), szOutputFile);
 
         bDecode = false;
-        nTool = pDlg->m_Config.m_Formats.GetFormatById(outputFormat.szId);
+        nTool = pContext->pDlg->m_Config.m_Formats.GetFormatById(outputFormat.szId);
 
         lstrcpy(szCommandLine, csExecute.GetBuffer(csExecute.GetLength()));
 
-        pDlg->m_LstInputItems.SetItemText(item.nId, 5, _T("--:--"));
-        pDlg->m_LstInputItems.SetItemText(item.nId, 6, _T("Encoding..."));
+        pContext->pDlg->m_LstInputItems.SetItemText(pContext->item->nId, 5, _T("--:--"));
+        pContext->pDlg->m_LstInputItems.SetItemText(pContext->item->nId, 6, _T("Encoding..."));
 
-        ConvertContext context;
+        FileContext context;
 
-        context.pDlg = pDlg;
+        context.pDlg = pContext->pDlg;
         context.szInputFile = szOrgInputFile;
         context.szOutputFile = szOrgOutputFile;
         context.szCommandLine = szCommandLine;
-        context.nIndex = item.nId;
+        context.nIndex = pContext->item->nId;
         context.bDecode = bDecode;
         context.nTool = nTool;
         context.bUseReadPipes = bUseInPipesEnc;
@@ -300,16 +300,16 @@ bool ConvertItem(CItem& item, CBatchEncoderDlg *pDlg)
         {
             bSuccess = true;
 
-            if (pDlg->m_Config.m_Options.bDeleteSourceFiles == true)
+            if (pContext->pDlg->m_Config.m_Options.bDeleteSourceFiles == true)
                 ::DeleteFile(szOrgInputFile);
 
-            pDlg->m_LstInputItems.SetCheck(item.nId, FALSE);
-            item.bChecked = false;
+            pContext->pDlg->m_LstInputItems.SetCheck(pContext->item->nId, FALSE);
+            pContext->item->bChecked = false;
         }
         else
         {
             // delete output file on error
-            if (pDlg->m_Config.m_Options.bDeleteOnError == true)
+            if (pContext->pDlg->m_Config.m_Options.bDeleteOnError == true)
                 ::DeleteFile(szOutputFile);
         }
 

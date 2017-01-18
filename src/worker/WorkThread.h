@@ -12,7 +12,7 @@ typedef struct tagPipeContext
     volatile bool bFinished;
 } PipeContext;
 
-typedef struct tagConvertContext
+typedef struct tagFileContext
 {
     CBatchEncoderDlg *pDlg;
     CString szInputFile;
@@ -23,14 +23,20 @@ typedef struct tagConvertContext
     int nTool;
     bool bUseReadPipes;
     bool bUseWritePipes;
-} ConvertContext;
+} FileContext;
+
+typedef struct tagItemContext
+{
+    CBatchEncoderDlg *pDlg;
+    CItem* item;
+} ItemContext;
 
 DWORD WINAPI ReadThread(LPVOID lpParam);
 
 DWORD WINAPI WriteThread(LPVOID lpParam);
 
-bool ConvertFile(ConvertContext* lpContext);
+bool ConvertFile(FileContext* pContext);
 
-bool ConvertItem(CItem& item, CBatchEncoderDlg *pDlg);
+bool ConvertItem(ItemContext* pContext);
 
 DWORD WINAPI WorkThread(LPVOID lpParam);
