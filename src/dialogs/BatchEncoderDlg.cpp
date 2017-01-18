@@ -1103,18 +1103,19 @@ void CBatchEncoderDlg::OnBnClickedButtonConvert()
     {
         bSafeCheck = true;
 
-        int nFiles = m_LstInputItems.GetItemCount();
-        if (nFiles <= 0)
+        this->GetOptions();
+        this->GetItems();
+
+        int nItems = this->m_Config.m_Items.GetSize();
+        if (nItems <= 0)
         {
             bSafeCheck = false;
             return;
         }
 
-        if (this->m_ChkOutPath.GetCheck() == BST_CHECKED)
+        if (this->m_Config.m_Options.bOutputPathChecked)
         {
-            CString szPath;
-
-            this->m_EdtOutPath.GetWindowText(szPath);
+            CString szPath = this->m_Config.m_Options.szOutputPath;
             if (szPath.GetLength() > 0)
             {
                 if (::MakeFullPath(szPath) == FALSE)
@@ -1125,8 +1126,6 @@ void CBatchEncoderDlg::OnBnClickedButtonConvert()
                 }
             }
         }
-
-        m_Config.m_Options.bForceConsoleWindow = this->GetMenu()->GetMenuState(ID_OPTIONS_FORCECONSOLEWINDOW, MF_BYCOMMAND) == MF_CHECKED;
 
         dwThreadID = 0;
         hThread = ::CreateThread(NULL, 0, WorkThread, this, CREATE_SUSPENDED, &dwThreadID);

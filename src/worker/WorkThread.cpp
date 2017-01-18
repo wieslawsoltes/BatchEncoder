@@ -61,7 +61,7 @@ DWORD WINAPI ReadThread(LPVOID lpParam)
         if ((bRes == FALSE) || (dwReadBytes == 0))
             break;
 
-        // NOTE: Sleep(0) solves problem writing to pipe error (MPPDEC)
+        // NOTE: Sleep(0) solves problem writing to pipe errors
         ::Sleep(0);
 
         // write data to write pipe
@@ -71,13 +71,12 @@ DWORD WINAPI ReadThread(LPVOID lpParam)
 
         // count read/write bytes
         nTotalBytesRead += dwReadBytes;
-
         nProgress = (int)((nTotalBytesRead * 100) / nFileSize);
-
         bRunning = pContext->pDlg->WorkerCallback(nProgress, false);
         if (bRunning == false)
             break;
-    } while (bRes != FALSE);
+    } 
+    while (bRes != FALSE);
 
     // clean up memory
     ::CloseHandle(hFile);
@@ -144,7 +143,8 @@ DWORD WINAPI WriteThread(LPVOID lpParam)
         // handle user Stop
         if (pContext->pDlg->bRunning == false)
             break;
-    } while (bRes != FALSE);
+    } 
+    while (bRes != FALSE);
 
     // clean up memory
     ::CloseHandle(hFile);
@@ -161,14 +161,13 @@ bool ConvertFile(ConvertContext* lpContext)
     // we can not get progress status for the ProgressBars
     // so for encoder/decoder mode treat this as an error
     // and for trans-coding treat this as decoder to encoder piping
+
     // TODO: 
     // handle bUseWritePipes flag like bUseReadPipes
+
     // NOTE:
     // if bUseReadPipes = true use pipes to read source file and send the data to console stdin
     // if bUseReadPipes = false create full command-line and read from stdout/stderr conversion progress
-
-    // log console text output
-    bool bLogConsoleOutput = lpContext->pDlg->GetMenu()->GetMenuState(ID_OPTIONS_LOGCONSOLEOUTPUT, MF_BYCOMMAND) == MF_CHECKED;
 
     // set the correct security attributes
     SECURITY_ATTRIBUTES secattr;
@@ -331,7 +330,7 @@ bool ConvertFile(ConvertContext* lpContext)
     int nProgress = 0;
     CTimeCount countTime;
 
-    // init and start conversion time counter
+    // initialize and start conversion time counter
     countTime.InitCounter();
     countTime.StartCounter();
 
@@ -372,7 +371,7 @@ bool ConvertFile(ConvertContext* lpContext)
             szToolName.Replace(_T("\""), _T(""));
             szSysCommandLine.Replace(szReplace, szToolName);
 
-            // set tool name to current dir because using only tool .exe name
+            // set tool name to current directory because using only tool .exe name
             ::SetCurrentDirectory(szToolPath);
 
             // use system(...) stdlib.h/process.h function
@@ -574,8 +573,8 @@ bool ConvertFile(ConvertContext* lpContext)
             // ::ResumeThread(pInfo.hThread);
 
             // NOTE: 
-            // dow we need to check console output code-page?
-            // all apps should be using system code-page or they are using UNICODE output?
+            // do we need to check console output code-page?
+            // all tools should be using system code-page or they are using UNICODE output?
             char szReadBuff[512];
             char szLineBuff[512];
             DWORD dwReadBytes = 0L;
@@ -585,7 +584,7 @@ bool ConvertFile(ConvertContext* lpContext)
             bool bRunning = true;
             int nLineLen = 0;
 
-            // init buffers
+            // initialize buffers
             ZeroMemory(szReadBuff, sizeof(szReadBuff));
             ZeroMemory(szLineBuff, sizeof(szLineBuff));
 
@@ -593,11 +592,11 @@ bool ConvertFile(ConvertContext* lpContext)
             bLineStart = false;
             bLineEnd = false;
 
-            // create logfile
+            // create log file
             CFile fp;
             bool bHaveLogFile = false;
 
-            if (bLogConsoleOutput == true)
+            if (lpContext->pDlg->m_Config.m_Options.bLogConsoleOutput == true)
             {
                 ::UpdatePath();
                 
@@ -684,8 +683,8 @@ bool ConvertFile(ConvertContext* lpContext)
                     {
                         // do nothing in most situations
 
-                        // NOTE: special case for wavpack and wvunpack
-                        // TODO: check for tool executable
+                        // TODO: special case for wavpack and wvunpack
+                        // TODO: check for tool executable instead
                         if (((lpContext->bDecode == false) && (lpContext->nTool == 10)) || // WAVPACK
                             ((lpContext->bDecode == true) && (lpContext->nTool == 28)))   // WVUNPACK
                         {
@@ -725,7 +724,7 @@ bool ConvertFile(ConvertContext* lpContext)
                             }
 
                             // log all console output for error checking
-                            if (bLogConsoleOutput == true)
+                            if (lpContext->pDlg->m_Config.m_Options.bLogConsoleOutput == true)
                             {
                                 if ((bHaveLogFile == true)
                                     && (fp.m_hFile != NULL)
@@ -790,8 +789,8 @@ bool ConvertFile(ConvertContext* lpContext)
             if (hDll != NULL)
                 ::FreeLibrary(hDll);
 
-            // close logfile
-            if ((bLogConsoleOutput == true) && (bHaveLogFile = true))
+            // close log file
+            if ((lpContext->pDlg->m_Config.m_Options.bLogConsoleOutput == true) && (bHaveLogFile = true))
             {
                 fp.Close();
                 bHaveLogFile = false;
@@ -857,10 +856,7 @@ bool ConvertFile(ConvertContext* lpContext)
     }
 
     lpContext->pDlg->WorkerCallback(nProgress, true, false, countTime.GetTime(), lpContext->nIndex);
-    if (nProgress == 100)
-        return true;
-    else
-        return false;
+    return nProgress == 100;
 }
 
 DWORD WINAPI WorkThread(LPVOID lpParam)
@@ -880,26 +876,17 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
     TCHAR szCommandLine[(64 * 1024)];
     ZeroMemory(szCommandLine, sizeof(szCommandLine));
 
-    // check for delete flag
-    bool bDeleteAfterconversion = pDlg->GetMenu()->GetMenuState(ID_OPTIONS_DELETESOURCEFILEWHENDONE, MF_BYCOMMAND) == MF_CHECKED;
-
-    // check for output path
-    CString szOutPath;
-    pDlg->m_EdtOutPath.GetWindowText(szOutPath);
-
-    bool bOutPath = pDlg->m_ChkOutPath.GetCheck() == BST_CHECKED;
-
     // get number of files in ListView
-    int nFiles = pDlg->m_LstInputItems.GetItemCount();
+    int nItems = pDlg->m_Config.m_Items.GetSize();
 
     // get number of checked files in ListView
     int nTotalFiles = 0;
     int nProcessedFiles = 0;
     int nDoneWithoutError = 0;
     int nErrors = 0;
-    for (int i = 0; i < nFiles; i++)
+    for (int i = 0; i < nItems; i++)
     {
-        if (pDlg->m_LstInputItems.GetCheck(i) == TRUE)
+        if (pDlg->m_Config.m_Items.GetData(i).bChecked == TRUE)
             nTotalFiles++;
     }
 
@@ -908,10 +895,12 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
     countTime.StartCounter();
 
     // process all checked files
-    for (int i = 0; i < nFiles; i++)
+    for (int i = 0; i < nItems; i++)
     {
+        CItem& item = pDlg->m_Config.m_Items.GetData(i);
+
         // get next file name and check if we need to encode/decode/trans-code
-        if (pDlg->m_LstInputItems.GetCheck(i) == TRUE)
+        if (item.bChecked == true)
         {
             // update status-bar conversion status
             nProcessedFiles++;
@@ -943,8 +932,6 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
             // 2. trans-coding - we need to decode input file to encoder stdin stream
             int nProcessingMode = -1;
 
-            CItem& item = pDlg->m_Config.m_Items.GetData(i);
-
             int nIntputFormat = pDlg->m_Config.m_Formats.GetInFormatByExt(item.szExtension);
             CFormat& intputFormat = pDlg->m_Config.m_Formats.GetData(nIntputFormat);
             CPreset& inputPreset = intputFormat.m_Presets.GetData(intputFormat.nDefaultPreset);
@@ -956,13 +943,19 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
             // get full file path
             CString szInputFile = item.szPath;
 
+            CString szOutPath;
+
             // output path is same as input file path
-            if (bOutPath == false)
+            if (pDlg->m_Config.m_Options.bOutputPathChecked == false)
             {
                 szOutPath = szInputFile;
                 CString szToRemove = pDlg->m_Config.m_Items.GetFileName(szInputFile);
                 int nNewLenght = szOutPath.GetLength() - szToRemove.GetLength();
                 szOutPath.Truncate(nNewLenght);
+            }
+            else
+            {
+                szOutPath = pDlg->m_Config.m_Options.szOutputPath;
             }
 
             // setup decoder steps:
@@ -1113,7 +1106,7 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
                     if (nProcessingMode == 1)
                         nDoneWithoutError++;
 
-                    if (bDeleteAfterconversion == true)
+                    if (pDlg->m_Config.m_Options.bDeleteSourceFiles == true)
                         ::DeleteFile(szOrgInputFile);
 
                     if (nProcessingMode == 1)
@@ -1210,14 +1203,14 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
                 context.nIndex = i;
                 context.bDecode = bDecode;
                 context.nTool = nTool;
-                context.bUseReadPipes = bUseInPipesDec;
-                context.bUseWritePipes = bUseOutPipesDec;
+                context.bUseReadPipes = bUseInPipesEnc;
+                context.bUseWritePipes = bUseOutPipesEnc;
                 
                 if (::ConvertFile(&context) == true)
                 {
                     nDoneWithoutError++;
 
-                    if (bDeleteAfterconversion == true)
+                    if (pDlg->m_Config.m_Options.bDeleteSourceFiles == true)
                         ::DeleteFile(szOrgInputFile);
 
                     pDlg->m_LstInputItems.SetCheck(i, FALSE);
