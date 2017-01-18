@@ -3,24 +3,32 @@
 
 #pragma once
 
-typedef struct TREAD_DATA
+typedef struct tagPipeContext
 {
+    CBatchEncoderDlg *pDlg;
     CString szFileName;
     HANDLE hPipe;
     volatile bool bError;
-    CBatchEncoderDlg *pDlg;
     volatile bool bFinished;
-} READ_DATA, *PREAD_DATA;
+} PipeContext;
+
+typedef struct tagConvertContext
+{
+    CBatchEncoderDlg *pDlg;
+    CString szInputFile;
+    CString szOutputFile;
+    TCHAR *szCommandLine;
+    int nIndex;
+    bool bDecode;
+    int nTool;
+    bool bUseReadPipes;
+    bool bUseWritePipes;
+} ConvertContext;
 
 DWORD WINAPI ReadThread(LPVOID lpParam);
+
 DWORD WINAPI WriteThread(LPVOID lpParam);
-bool ConvertFile(CBatchEncoderDlg *pDlg,
-    CString szInputFile,
-    CString szOutputFile,
-    TCHAR *szCommandLine,
-    int nIndex,
-    bool bDecode,
-    int nTool,
-    bool bUseReadPipes,
-    bool bUseWritePipes);
+
+bool ConvertFile(ConvertContext* lpContext);
+
 DWORD WINAPI WorkThread(LPVOID lpParam);
