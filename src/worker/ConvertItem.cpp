@@ -82,21 +82,24 @@ bool ConvertItem(CItem& item, CBatchEncoderDlg *pDlg)
     // 0. encoding - input is WAV file and we only have to encode
     // 1. decoding - we only have to decode input file to WAV
     // 2. trans-coding - we need to decode input file to encoder stdin stream
-    // setting proper processing mode:
-    // 1. Input is WAV, [Output is WAV], No Resampling              = Copy Input File (using SSRC without options)
-    // 2. Input is WAV, [Output is WAV], Resampling                 = Encode Input File (using SSRC)
-    // 3. Input requires decoding, [Output is WAV], No Resampling   = Decode Input File (using Decoder)
-    // 4. Input requires decoding, [Output is WAV], Resampling      = Decode and Encode (using Decoder and SSRC)
+
     int nProcessingMode = -1;
 
     if (isInputWav)
         nProcessingMode = 0;
-
-    if (nProcessingMode == 1)
+    else
         nProcessingMode = 2;
 
     if (isOutputWav)
     {
+        // TODO: special case for WAV and SSRC output is based only on options check
+
+        // setting proper processing mode:
+        // 1. Input is WAV, [Output is WAV], No Resampling              = Copy Input File (using SSRC without options)
+        // 2. Input is WAV, [Output is WAV], Resampling                 = Encode Input File (using SSRC)
+        // 3. Input requires decoding, [Output is WAV], No Resampling   = Decode Input File (using Decoder)
+        // 4. Input requires decoding, [Output is WAV], Resampling      = Decode and Encode (using Decoder and SSRC)
+
         bool bNeedResampling = (szEncoderOptions.GetLength() > 0) ? true : false;
 
         // case 1
