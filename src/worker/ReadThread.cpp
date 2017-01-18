@@ -26,7 +26,7 @@ DWORD WINAPI ReadThread(LPVOID lpParam)
     // open existing source file with read-only flag
     hFile = ::CreateFile(pContext->szFileName,
         GENERIC_READ,
-        0,
+        FILE_SHARE_READ,
         NULL,
         OPEN_EXISTING,
         0,
