@@ -286,8 +286,8 @@ BEGIN_MESSAGE_MAP(CBatchEncoderDlg, CResizeDialog)
     ON_COMMAND(ID_ACCELERATOR_CTRL_L, OnFileLoadList)
     ON_COMMAND(ID_ACCELERATOR_CTRL_S, OnFileSaveList)
     ON_COMMAND(ID_ACCELERATOR_CTRL_E, OnFileClearList)
-    ON_COMMAND(ID_ACCELERATOR_CTRL_SHIFT_L, LoadUserConfig)
-    ON_COMMAND(ID_ACCELERATOR_CTRL_SHIFT_S, SaveUserConfig)
+    ON_COMMAND(ID_ACCELERATOR_CTRL_SHIFT_L, LoadConfig)
+    ON_COMMAND(ID_ACCELERATOR_CTRL_SHIFT_S, SaveConfig)
     ON_COMMAND(ID_ACCELERATOR_F3, OnEditResetTime)
     ON_COMMAND(ID_ACCELERATOR_F4, OnEditResetOutput)
     ON_COMMAND(ID_ACCELERATOR_ALT_F4, OnFileExit)
@@ -920,7 +920,7 @@ void CBatchEncoderDlg::SetOptions()
         this->GetMenu()->CheckMenuItem(ID_OPTIONS_FORCECONSOLEWINDOW, MF_UNCHECKED);
 }
 
-bool CBatchEncoderDlg::LoadList(CString szFileXml)
+bool CBatchEncoderDlg::LoadListFile(CString szFileXml)
 {
     XmlConfiguration doc;
     if (doc.LoadFileUtf8(szFileXml) == true)
@@ -950,7 +950,7 @@ bool CBatchEncoderDlg::LoadList(CString szFileXml)
     return false;
 }
 
-bool CBatchEncoderDlg::SaveList(CString szFileXml)
+bool CBatchEncoderDlg::SaveListFile(CString szFileXml)
 {
     XmlConfiguration doc;
 
@@ -1045,7 +1045,7 @@ bool CBatchEncoderDlg::SaveConfigFile(CString szFileXml)
     return doc.SaveFileUtf8(szFileXml);
 }
 
-void CBatchEncoderDlg::LoadUserConfig()
+void CBatchEncoderDlg::LoadConfig()
 {
     CFileDialog fd(TRUE, _T("config"), _T(""),
         OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER,
@@ -1072,7 +1072,7 @@ void CBatchEncoderDlg::LoadUserConfig()
     }
 }
 
-void CBatchEncoderDlg::SaveUserConfig()
+void CBatchEncoderDlg::SaveConfig()
 {
     CFileDialog fd(FALSE, _T("config"), _T("config"),
         OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER | OFN_OVERWRITEPROMPT,
@@ -1853,7 +1853,7 @@ void CBatchEncoderDlg::OnFileLoadList()
     {
         CString szFileXml = fd.GetPathName();
 
-        if (this->LoadList(szFileXml) == false)
+        if (this->LoadListFile(szFileXml) == false)
         {
             MessageBox(_T("Failed to load file!"),
                 _T("ERROR"),
@@ -1876,7 +1876,7 @@ void CBatchEncoderDlg::OnFileSaveList()
     {
         CString szFileXml = fd.GetPathName();
 
-        if (this->SaveList(szFileXml) == false)
+        if (this->SaveListFile(szFileXml) == false)
         {
             MessageBox(_T("Failed to save file!"),
                 _T("ERROR"),

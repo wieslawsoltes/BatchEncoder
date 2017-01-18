@@ -104,14 +104,14 @@ public:
     void GetOptions();
     void SetOptions();
 public:
-    bool LoadList(CString szFileXml);
-    bool SaveList(CString szFileXml);
+    bool LoadListFile(CString szFileXml);
+    bool SaveListFile(CString szFileXml);
 public:
     bool LoadConfigFile(CString szFileXml);
     bool SaveConfigFile(CString szFileXml);
 public:
-    afx_msg void LoadUserConfig();
-    afx_msg void SaveUserConfig();
+    afx_msg void LoadConfig();
+    afx_msg void SaveConfig();
 public:
     void UpdateFormatComboBox();
     void UpdatePresetComboBox();
