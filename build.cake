@@ -16,6 +16,9 @@ var target = Argument("target", "Default");
 // SETTINGS
 ///////////////////////////////////////////////////////////////////////////////
 
+var isAppVeyorBuild = AppVeyor.IsRunningOnAppVeyor;
+var appveyorPlatform = EnvironmentVariable("AppveyorPlatform") ?? "";
+var appveyorConfiguration = EnvironmentVariable("AppveyorConfiguration") ?? "";
 var platforms = new [] { "Win32", "x64" }.ToList();
 var configurations = new [] { "Debug", "Release" }.ToList();
 var solution = "./BatchEncoder.sln";
@@ -25,6 +28,46 @@ var iscc = @"C:/Program Files (x86)/Inno Setup 5/ISCC.exe";
 var artifactsDir = (DirectoryPath)Directory("./artifacts");
 var binDir = (DirectoryPath)Directory("./src/bin");
 var objDir = (DirectoryPath)Directory("./src/obj");
+
+///////////////////////////////////////////////////////////////////////////////
+// ACTIONS
+///////////////////////////////////////////////////////////////////////////////
+
+var buildSolutionAction = new Action<string,string> ((configuration, platform) => 
+{
+    Information("Building: {0}, {1} / {2}", configuration, platform);
+    MSBuild(solution, settings => {
+        settings.SetConfiguration(configuration);
+        settings.WithProperty("Platform", "\"" + platform + "\"");
+        settings.SetVerbosity(Verbosity.Minimal);
+});
+
+var packageBinariesAction = new Action<string,string> ((configuration, platform) => 
+{
+    var path = "./src/bin/" + configuration + "/" + platform + "/";
+    var output = "BatchEncoder-" + version + "-" + platform + (configuration == "Release" ? "" : ("-(" + configuration + ")"));
+    var outputDir = artifactsDir.Combine(output);
+    var outputZip = artifactsDir.CombineWithFilePath(output + ".zip");
+    var exeFile = File(path + "BatchEncoder.exe");
+    CleanDirectory(outputDir);
+    CopyFileToDirectory(File("README.md"), outputDir);
+    CopyFileToDirectory(File("LICENSE.TXT"), outputDir);
+    CopyFileToDirectory(exeFile, outputDir);
+    CopyFiles(path + "*.progress", outputDir);
+    CopyFiles("./config/*.config", outputDir);
+    Zip(outputDir, outputZip);
+});
+
+var packageInstallersAction = new Action<string,string> ((configuration, platform) => 
+{
+    StartProcess(iscc, new ProcessSettings { 
+        Arguments = 
+            "\"" + installerScript.FullPath + "\""
+            + " /DCONFIGURATION=" + configuration
+            + " /DBUILD=" + platform
+            + " /DVERSION=" + version, 
+        WorkingDirectory = MakeAbsolute(artifactsDir) });
+});
 
 ///////////////////////////////////////////////////////////////////////////////
 // VERSION
@@ -57,61 +100,30 @@ Task("Build")
     .IsDependentOn("Clean")
     .Does(() =>
 {
-    configurations.ForEach(configuration => 
-    {
-        platforms.ForEach(platform => 
-        {
-            Information("Building: {0}, {1} / {2}", solution, configuration, platform);
-            MSBuild(solution, settings => {
-                settings.SetConfiguration(configuration);
-                settings.WithProperty("Platform", "\"" + platform + "\"");
-                settings.SetVerbosity(Verbosity.Minimal);
-            });
-        });
-    });
+    if (isAppVeyorBuild)
+        buildSolutionAction(appveyorPlatform, appveyorConfiguration)
+    else
+        configurations.ForEach(configuration => platforms.ForEach(platform => buildSolutionAction(configuration, platform)));
 });
 
 Task("Package-Binaries")
     .IsDependentOn("Build")
     .Does(() =>
 {
-    configurations.ForEach(configuration => 
-    {
-        platforms.ForEach(platform => 
-        {
-            var path = "./src/bin/" + configuration + "/" + platform + "/";
-            var output = "BatchEncoder-" + version + "-" + platform + (configuration == "Release" ? "" : ("-(" + configuration + ")"));
-            var outputDir = artifactsDir.Combine(output);
-            var outputZip = artifactsDir.CombineWithFilePath(output + ".zip");
-            var exeFile = File(path + "BatchEncoder.exe");
-            CleanDirectory(outputDir);
-            CopyFileToDirectory(File("README.md"), outputDir);
-            CopyFileToDirectory(File("LICENSE.TXT"), outputDir);
-            CopyFileToDirectory(exeFile, outputDir);
-            CopyFiles(path + "*.progress", outputDir);
-            CopyFiles("./config/*.config", outputDir);
-            Zip(outputDir, outputZip);
-        });
-    });
+    if (isAppVeyorBuild)
+        packageBinariesAction(appveyorPlatform, appveyorConfiguration)
+    else
+        configurations.ForEach(configuration => platforms.ForEach(platform => packageBinariesAction(configuration, platform)));
 });
 
 Task("Package-Installers")
     .IsDependentOn("Build")
     .Does(() =>
 {
-    configurations.ForEach(configuration => 
-    {
-        platforms.ForEach(platform => 
-        {
-            StartProcess(iscc, new ProcessSettings { 
-                Arguments = 
-                    "\"" + installerScript.FullPath + "\""
-                    + " /DCONFIGURATION=" + configuration
-                    + " /DBUILD=" + platform
-                    + " /DVERSION=" + version, 
-                WorkingDirectory = MakeAbsolute(artifactsDir) });
-        });
-    });
+    if (isAppVeyorBuild)
+        packageInstallersAction(appveyorPlatform, appveyorConfiguration)
+    else
+        configurations.ForEach(configuration => platforms.ForEach(platform => packageInstallersAction(configuration, platform)));
 });
 
 ///////////////////////////////////////////////////////////////////////////////
