@@ -9,7 +9,6 @@
 bool ConvertItem(ItemContext* pContext)
 {
     bool bSuccess = false;
-
     TCHAR szCommandLine[(64 * 1024)];
     ZeroMemory(szCommandLine, sizeof(szCommandLine));
 
