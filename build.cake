@@ -39,7 +39,7 @@ var buildSolutionAction = new Action<string,string> ((configuration, platform) =
     MSBuild(solution, settings => {
         settings.SetConfiguration(configuration);
         settings.WithProperty("Platform", "\"" + platform + "\"");
-        settings.SetVerbosity(Verbosity.Minimal);
+        settings.SetVerbosity(Verbosity.Minimal); });
 });
 
 var packageBinariesAction = new Action<string,string> ((configuration, platform) => 
