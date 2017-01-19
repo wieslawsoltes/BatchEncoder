@@ -47,6 +47,7 @@ Name: main; Description: Main Program; Types: full compact custom
 Name: docs; Description: Documents; Types: full
 Name: config; Description: Configuration; Types: full compact
 Name: progress; Description: Progress Functions; Types: full compact
+Name: scripts; Description: Scripts; Types: full
 
 [Tasks]
 
@@ -60,6 +61,7 @@ Source: {#BasePath}\*.txt; DestDir: {app}; Flags: ignoreversion; Components: doc
 Source: {#BasePath}\*.md; DestDir: {app}; Flags: ignoreversion; Components: docs
 Source: {#BasePath}\config\*.config; DestDir: {app}; Flags: ignoreversion; Components: config
 Source: {#BasePath}\src\bin\{#ProgramConfiguration}\{#ProgramBuild}\*.progress; DestDir: {app}; Flags: ignoreversion; Components: progress
+Source: {#BasePath}\scripts\*.ps1; DestDir: {app}; Flags: ignoreversion; Components: scripts
 
 [INI]
 
