@@ -35,7 +35,7 @@ var objDir = (DirectoryPath)Directory("./src/obj");
 
 var buildSolutionAction = new Action<string,string> ((configuration, platform) => 
 {
-    Information("Building: {0}, {1} / {2}", configuration, platform);
+    Information("Building: {0}, {1} / {2}", solution, configuration, platform);
     MSBuild(solution, settings => {
         settings.SetConfiguration(configuration);
         settings.WithProperty("Platform", "\"" + platform + "\"");
