@@ -261,6 +261,7 @@
     <ClCompile Include="utilities\Utilities.cpp" />
     <ClCompile Include="worker\ConvertFile.cpp" />
     <ClCompile Include="worker\ConvertItem.cpp" />
+    <ClCompile Include="worker\ConvertThread.cpp" />
     <ClCompile Include="worker\ReadThread.cpp" />
     <ClCompile Include="worker\WorkThread.cpp" />
     <ClCompile Include="worker\WriteThread.cpp" />

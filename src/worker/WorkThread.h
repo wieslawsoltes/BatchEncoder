@@ -25,11 +25,36 @@ typedef struct tagFileContext
     bool bUseWritePipes;
 } FileContext;
 
-typedef struct tagItemContext
+class ItemContext : public CObject
 {
+public:
     CBatchEncoderDlg *pDlg;
     CItem* item;
-} ItemContext;
+public:
+    ItemContext()
+    {
+    }
+    ItemContext(CBatchEncoderDlg *pDlg, CItem* item)
+    {  
+        this->pDlg = pDlg;
+        this->item = item;
+    }
+    ItemContext(const ItemContext& context) 
+    { 
+        pDlg = context.pDlg; 
+        item = context.item;
+    }
+    const ItemContext& operator=(const ItemContext& context)
+    {
+        pDlg = context.pDlg;
+        item = context.item;
+        return *this;
+    }
+    BOOL operator==(ItemContext context)
+    {
+        return pDlg == context.pDlg && item == context.item;
+    }
+};
 
 DWORD WINAPI ReadThread(LPVOID lpParam);
 
@@ -38,5 +63,7 @@ DWORD WINAPI WriteThread(LPVOID lpParam);
 bool ConvertFile(FileContext* pContext);
 
 bool ConvertItem(ItemContext* pContext);
+
+DWORD WINAPI ConvertThread(LPVOID lpParam);
 
 DWORD WINAPI WorkThread(LPVOID lpParam);

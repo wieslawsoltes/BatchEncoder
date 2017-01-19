@@ -26,6 +26,11 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
             nTotalFiles++;
     }
 
+    int nThreadCount = pDlg->m_Config.m_Options.nThreadCount;
+    HANDLE* hConvertThread = new HANDLE[nThreadCount];
+    DWORD* dwThreadID = new DWORD[nThreadCount];
+    CObList queue;
+
     CTimeCount timeCount;
     timeCount.InitCounter();
     timeCount.StartCounter();
@@ -37,17 +42,20 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
         if (item.bChecked == true)
         {
             // update status-bar conversion status
-            nProcessedFiles++;
-            nErrors = (nProcessedFiles - 1) - nDoneWithoutError;
-            CString szText;
-            szText.Format(_T("Processing item %d of %d (%d Done, %d %s)"),
-                nProcessedFiles,
-                nTotalFiles,
-                nDoneWithoutError,
-                nErrors,
-                ((nErrors == 0) || (nErrors > 1)) ? _T("Errors") : _T("Error"));
+            if (nThreadCount == 1)
+            {
+                nProcessedFiles++;
+                nErrors = (nProcessedFiles - 1) - nDoneWithoutError;
+                CString szText;
+                szText.Format(_T("Processing item %d of %d (%d Done, %d %s)"),
+                    nProcessedFiles,
+                    nTotalFiles,
+                    nDoneWithoutError,
+                    nErrors,
+                    ((nErrors == 0) || (nErrors > 1)) ? _T("Errors") : _T("Error"));
 
-            VERIFY(pDlg->m_StatusBar.SetText(szText, 1, 0));
+                VERIFY(pDlg->m_StatusBar.SetText(szText, 1, 0));
+            }
 
             // reset progress bar on start of next file
             pDlg->m_FileProgress.SetPos(0);
@@ -55,39 +63,68 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
             // scroll list to ensure the item is visible
             pDlg->m_LstInputItems.EnsureVisible(i, FALSE);
 
-            ItemContext context;
-
-            context.pDlg = pDlg;
-            context.item = &item;
-
-            bool bSuccess = ConvertItem(&context);
-            if (bSuccess == true)
+            if (nThreadCount > 1)
             {
-                nDoneWithoutError++;
+                // insert work item to queue
+                ItemContext* context = new ItemContext(pDlg, &item);
+                queue.AddTail(context);
             }
             else
             {
-                // stop conversion process on error
-                if (pDlg->m_Config.m_Options.bStopOnErrors == true)
+                ItemContext context(pDlg, &item);
+                bool bSuccess = ConvertItem(&context);
+                if (bSuccess == true)
+                {
+                    nDoneWithoutError++;
+                }
+                else
+                {
+                    // stop conversion process on error
+                    if (pDlg->m_Config.m_Options.bStopOnErrors == true)
+                        break;
+                }
+
+                if (pDlg->bRunning == false)
                     break;
             }
-
-            if (pDlg->bRunning == false)
-                break;
         }
+    }
+
+    if (nThreadCount > 1)
+    {
+        // create worker threads
+        for (int i = 0; i < nThreadCount; i++)
+        {
+            dwThreadID[i] = i;
+            hConvertThread[i] = ::CreateThread(NULL, 0, ConvertThread, &queue, CREATE_SUSPENDED, &dwThreadID[i]);
+            if (hConvertThread[i] == NULL)
+            {
+                break;
+            }
+            ::ResumeThread(hConvertThread[i]);
+        }
+
+        // wait for all workers to finish
+        ::WaitForMultipleObjects(nThreadCount, hConvertThread, TRUE, INFINITE);
+
+        delete hConvertThread;
+        delete dwThreadID;
     }
 
     timeCount.StopCounter();
 
-    if (nProcessedFiles > 0)
+    if (nThreadCount == 1)
     {
-        CString szText;
-        szText.Format(_T("Done in %s"), ::FormatTime(timeCount.GetTime(), 3));
-        pDlg->m_StatusBar.SetText(szText, 1, 0);
-    }
-    else
-    {
-        pDlg->m_StatusBar.SetText(_T(""), 1, 0);
+        if (nProcessedFiles > 0)
+        {
+            CString szText;
+            szText.Format(_T("Done in %s"), ::FormatTime(timeCount.GetTime(), 3));
+            pDlg->m_StatusBar.SetText(szText, 1, 0);
+        }
+        else
+        {
+            pDlg->m_StatusBar.SetText(_T(""), 1, 0);
+        }
     }
 
     pDlg->FinishConvert();

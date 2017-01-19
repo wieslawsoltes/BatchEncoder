@@ -105,6 +105,9 @@
     <ClCompile Include="worker\ConvertFile.cpp">
       <Filter>Source Files\Worker</Filter>
     </ClCompile>
+    <ClCompile Include="worker\ConvertThread.cpp">
+      <Filter>Source Files\Worker</Filter>
+    </ClCompile>
     <ClCompile Include="worker\ConvertItem.cpp">
       <Filter>Source Files\Worker</Filter>
     </ClCompile>
