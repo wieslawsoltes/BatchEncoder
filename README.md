@@ -101,6 +101,8 @@ adds input and output file paths. For specific options for each format use help 
 
 ### Tool downloads
 
+For more information about tools please see the [wiki page](https://github.com/wieslawsoltes/BatchEncoder/wiki/Tools).
+
 | Name            | Downloads                                                                                          |
 |-----------------|----------------------------------------------------------------------------------------------------|
 | SSRC            | http://shibatch.sourceforge.net/                                                                   |
