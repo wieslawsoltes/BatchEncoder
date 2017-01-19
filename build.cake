@@ -65,6 +65,7 @@ Task("Build")
             MSBuild(solution, settings => {
                 settings.SetConfiguration(configuration);
                 settings.WithProperty("Platform", "\"" + platform + "\"");
+                settings.WithProperty("BuildInParallel", "true");
                 settings.SetVerbosity(Verbosity.Minimal);
             });
         });
