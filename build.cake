@@ -101,7 +101,7 @@ Task("Build")
     .Does(() =>
 {
     if (isAppVeyorBuild)
-        buildSolutionAction(appveyorPlatform, appveyorConfiguration)
+        buildSolutionAction(appveyorPlatform, appveyorConfiguration);
     else
         configurations.ForEach(configuration => platforms.ForEach(platform => buildSolutionAction(configuration, platform)));
 });
@@ -111,7 +111,7 @@ Task("Package-Binaries")
     .Does(() =>
 {
     if (isAppVeyorBuild)
-        packageBinariesAction(appveyorPlatform, appveyorConfiguration)
+        packageBinariesAction(appveyorPlatform, appveyorConfiguration);
     else
         configurations.ForEach(configuration => platforms.ForEach(platform => packageBinariesAction(configuration, platform)));
 });
@@ -121,7 +121,7 @@ Task("Package-Installers")
     .Does(() =>
 {
     if (isAppVeyorBuild)
-        packageInstallersAction(appveyorPlatform, appveyorConfiguration)
+        packageInstallersAction(appveyorPlatform, appveyorConfiguration);
     else
         configurations.ForEach(configuration => platforms.ForEach(platform => packageInstallersAction(configuration, platform)));
 });
