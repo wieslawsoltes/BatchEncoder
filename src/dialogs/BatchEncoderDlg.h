@@ -9,6 +9,7 @@
 #include "..\utilities\TimeCount.h"
 #include "..\Configuration.h"
 #include "..\XmlConfiguration.h"
+#include "..\worker\WorkThread.h"
 
 #define WM_TRAY (WM_USER + 0x10)
 #define IDC_STATUSBAR 1500
@@ -48,11 +49,115 @@ public:
     CString szMainConfigFile;
 public:
     CConfiguration m_Config;
+private:
+    class CBatchEncoderWorkerContext : public WorkerContext
+    {
+        CTimeCount timeCount;
+        CBatchEncoderDlg *pDlg;
+    public:
+        CBatchEncoderWorkerContext(CConfiguration* pConfig, CBatchEncoderDlg *pDlg) : WorkerContext(pConfig)
+        {
+            this->pDlg = pDlg;
+        }
+    public:
+        void Init()
+        {
+            timeCount.InitCounter();
+            timeCount.StartCounter();
+        }
+        void Next(int nIndex)
+        {
+            // update status-bar conversion status
+            if (nThreadCount == 1)
+            {
+                nProcessedFiles++;
+                nErrors = (nProcessedFiles - 1) - nDoneWithoutError;
+                CString szText;
+                szText.Format(_T("Processing item %d of %d (%d Done, %d %s)"),
+                    nProcessedFiles,
+                    nTotalFiles,
+                    nDoneWithoutError,
+                    nErrors,
+                    ((nErrors == 0) || (nErrors > 1)) ? _T("Errors") : _T("Error"));
+
+                VERIFY(pDlg->m_StatusBar.SetText(szText, 1, 0));
+            }
+
+            // reset progress bar on start of next file
+            pDlg->m_FileProgress.SetPos(0);
+
+            // scroll list to ensure the item is visible
+            pDlg->m_LstInputItems.EnsureVisible(nIndex, FALSE);
+        }
+        void Done()
+        {
+            timeCount.StopCounter();
+
+            if (nThreadCount == 1)
+            {
+                if (nProcessedFiles > 0)
+                {
+                    CString szText;
+                    szText.Format(_T("Done in %s"), ::FormatTime(timeCount.GetTime(), 3));
+                    pDlg->m_StatusBar.SetText(szText, 1, 0);
+                }
+                else
+                {
+                    pDlg->m_StatusBar.SetText(_T(""), 1, 0);
+                }
+            }
+
+            pDlg->FinishConvert();
+        }
+    public:
+        bool Callback(int nProgress, bool bFinished, bool bError = false, double fTime = 0.0, int nIndex = -1)
+        {
+            if (bError == true)
+            {
+                pDlg->m_LstInputItems.SetItemText(nIndex, 5, _T("--:--")); // Time
+                pDlg->m_LstInputItems.SetItemText(nIndex, 6, _T("Error")); // Status
+                pDlg->m_FileProgress.SetPos(0);
+                this->bRunning = false;
+                return this->bRunning;
+            }
+
+            if (bFinished == false)
+            {
+                if (nProgress != this->nProgressCurrent)
+                {
+                    this->nProgressCurrent = nProgress;
+                    pDlg->m_FileProgress.SetPos(nProgress);
+                    pDlg->ShowProgressTrayIcon(nProgress);
+                }
+            }
+
+            if (bFinished == true)
+            {
+                if (nProgress != 100)
+                {
+                    pDlg->m_LstInputItems.SetItemText(nIndex, 5, _T("--:--")); // Time
+                    pDlg->m_LstInputItems.SetItemText(nIndex, 6, _T("Error")); // Status
+                    pDlg->m_FileProgress.SetPos(0);
+                }
+                else
+                {
+                    CString szTime = ::FormatTime(fTime, 1);
+                    pDlg->m_LstInputItems.SetItemText(nIndex, 5, szTime); // Time
+                    pDlg->m_LstInputItems.SetItemText(nIndex, 6, _T("Done")); // Status
+                }
+            }
+
+            return this->bRunning;
+        }
+        void Status(int nIndex, CString szTime, CString szStatus)
+        {
+            pDlg->m_LstInputItems.SetItemText(nIndex, 5, szTime); // Time
+            pDlg->m_LstInputItems.SetItemText(nIndex, 6, szStatus); // Status
+        };
+    };
 public:
-    HANDLE hThread;
-    DWORD dwThreadID;
-    volatile bool bRunning;
-    volatile int nProgressCurrent;
+    WorkerContext* pWorkerContext;
+public:
     bool bSameAsSourceEdit;
 public:
     CEdit m_EdtOutPath;
@@ -71,12 +176,6 @@ public:
 public:
     CMyButton m_BtnConvert;
     CMyButton m_BtnBrowse;
-public:
-    bool WorkerCallback(int nProgress,
-        bool bFinished,
-        bool bError = false,
-        double fTime = 0.0,
-        int nIndex = -1);
 public:
     int InsertToMemoryList(CString szPath);
     void InsertToControlList(int nItem);

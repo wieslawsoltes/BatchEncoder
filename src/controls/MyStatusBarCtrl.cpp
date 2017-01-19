@@ -26,7 +26,7 @@ void CMyStatusBarCtrl::OnNMRclick(NMHDR *pNMHDR, LRESULT *pResult)
 {
     // check if the conversion process is on
     CBatchEncoderDlg *pDlg = (CBatchEncoderDlg *)GetParent();
-    if (pDlg->bRunning == true)
+    if (pDlg->pWorkerContext->bRunning == true)
         return;
 
     // show status-bar popup menu

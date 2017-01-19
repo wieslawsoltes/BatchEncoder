@@ -3,7 +3,6 @@
 
 #include "StdAfx.h"
 #include "..\BatchEncoder.h"
-#include "..\dialogs\BatchEncoderDlg.h"
 #include "WorkThread.h"
 
 DWORD WINAPI WriteThread(LPVOID lpParam)
@@ -53,7 +52,7 @@ DWORD WINAPI WriteThread(LPVOID lpParam)
         nTotalBytesWrite += dwReadBytes;
 
         // handle user Stop
-        if (pContext->pDlg->bRunning == false)
+        if (pContext->pWorkerContext->bRunning == false)
             break;
     } while (bRes != FALSE);
 

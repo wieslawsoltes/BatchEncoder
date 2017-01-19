@@ -3,8 +3,6 @@
 
 #include "StdAfx.h"
 #include "..\BatchEncoder.h"
-#include "..\utilities\Utilities.h"
-#include "..\dialogs\BatchEncoderDlg.h"
 #include "WorkThread.h"
 
 DWORD WINAPI ReadThread(LPVOID lpParam)
@@ -66,7 +64,7 @@ DWORD WINAPI ReadThread(LPVOID lpParam)
         // count read/write bytes
         nTotalBytesRead += dwReadBytes;
         nProgress = (int)((nTotalBytesRead * 100) / nFileSize);
-        bRunning = pContext->pDlg->WorkerCallback(nProgress, false);
+        bRunning = pContext->pWorkerContext->Callback(nProgress, false);
         if (bRunning == false)
             break;
     } while (bRes != FALSE);

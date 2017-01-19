@@ -3,9 +3,9 @@
 
 #include "StdAfx.h"
 #include "..\BatchEncoder.h"
+#include "..\utilities\TimeCount.h"
 #include "..\utilities\UnicodeUtf8.h"
 #include "..\utilities\Utf8String.h"
-#include "..\dialogs\BatchEncoderDlg.h"
 #include "WorkThread.h"
 
 bool ConvertFile(FileContext* pContext)
@@ -16,8 +16,7 @@ bool ConvertFile(FileContext* pContext)
     // so for encoder/decoder mode treat this as an error
     // and for trans-coding treat this as decoder to encoder piping
 
-    // TODO: 
-    // handle bUseWritePipes flag like bUseReadPipes
+    // TODO: handle bUseWritePipes flag like bUseReadPipes
 
     // NOTE:
     // if bUseReadPipes = true use pipes to read source file and send the data to console stdin
@@ -43,7 +42,7 @@ bool ConvertFile(FileContext* pContext)
         bRet = ::CreatePipe(&rOutErrPipe, &wOutErrPipe, &secattr, 0);
         if (bRet == FALSE)
         {
-            pContext->pDlg->WorkerCallback(-1, true, true, 0.0, pContext->nIndex);
+            pContext->pWorkerContext->Callback(-1, true, true, 0.0, pContext->nIndex);
             return false;
         }
     }
@@ -56,7 +55,7 @@ bool ConvertFile(FileContext* pContext)
             bRet = ::CreatePipe(&rInPipe, &wInPipe, &secattr, 0);
             if (bRet == FALSE)
             {
-                pContext->pDlg->WorkerCallback(-1, true, true, 0.0, pContext->nIndex);
+                pContext->pWorkerContext->Callback(-1, true, true, 0.0, pContext->nIndex);
                 return false;
             }
         }
@@ -74,7 +73,7 @@ bool ConvertFile(FileContext* pContext)
                     ::CloseHandle(wInPipe);
                 }
 
-                pContext->pDlg->WorkerCallback(-1, true, true, 0.0, pContext->nIndex);
+                pContext->pWorkerContext->Callback(-1, true, true, 0.0, pContext->nIndex);
                 return false;
             }
         }
@@ -93,7 +92,7 @@ bool ConvertFile(FileContext* pContext)
                 ::CloseHandle(rInPipe);
                 ::CloseHandle(wInPipe);
 
-                pContext->pDlg->WorkerCallback(-1, true, true, 0.0, pContext->nIndex);
+                pContext->pWorkerContext->Callback(-1, true, true, 0.0, pContext->nIndex);
                 return false;
             }
         }
@@ -113,7 +112,7 @@ bool ConvertFile(FileContext* pContext)
                 ::CloseHandle(rOutPipe);
                 ::CloseHandle(wOutPipe);
 
-                pContext->pDlg->WorkerCallback(-1, true, true, 0.0, pContext->nIndex);
+                pContext->pWorkerContext->Callback(-1, true, true, 0.0, pContext->nIndex);
                 return false;
             }
         }
@@ -134,7 +133,7 @@ bool ConvertFile(FileContext* pContext)
             ::CloseHandle(rOutErrPipe);
             ::CloseHandle(wOutErrPipe);
 
-            pContext->pDlg->WorkerCallback(-1, true, true, 0.0, pContext->nIndex);
+            pContext->pWorkerContext->Callback(-1, true, true, 0.0, pContext->nIndex);
             return false;
         }
     }
@@ -188,7 +187,7 @@ bool ConvertFile(FileContext* pContext)
     countTime.InitCounter();
     countTime.StartCounter();
 
-    if (pContext->pDlg->m_Config.m_Options.bForceConsoleWindow == true)
+    if (pContext->pWorkerContext->pConfig->m_Options.bForceConsoleWindow == true)
     {
         // in this mode all encoders/decoders are forced 
         // to run in native system console window
@@ -270,7 +269,7 @@ bool ConvertFile(FileContext* pContext)
                 ::CloseHandle(wOutPipe);
             }
 
-            pContext->pDlg->WorkerCallback(-1, true, true, 0.0, pContext->nIndex);
+            pContext->pWorkerContext->Callback(-1, true, true, 0.0, pContext->nIndex);
             return false;
         }
 
@@ -304,7 +303,7 @@ bool ConvertFile(FileContext* pContext)
 
             rd.bError = false;
             rd.bFinished = false;
-            rd.pDlg = pContext->pDlg;
+            rd.pWorkerContext = pContext->pWorkerContext;
             rd.szFileName = pContext->szInputFile;
             rd.hPipe = wInPipe;
 
@@ -321,7 +320,7 @@ bool ConvertFile(FileContext* pContext)
 
                 ::CloseHandle(wInPipe);
 
-                pContext->pDlg->WorkerCallback(-1, true, true, 0.0, pContext->nIndex);
+                pContext->pWorkerContext->Callback(-1, true, true, 0.0, pContext->nIndex);
                 return false;
             }
 
@@ -360,7 +359,7 @@ bool ConvertFile(FileContext* pContext)
 
             wd.bError = false;
             wd.bFinished = false;
-            wd.pDlg = pContext->pDlg;
+            wd.pWorkerContext = pContext->pWorkerContext;
             wd.szFileName = pContext->szOutputFile;
             wd.hPipe = rOutPipe;
 
@@ -377,7 +376,7 @@ bool ConvertFile(FileContext* pContext)
 
                 ::CloseHandle(rOutPipe);
 
-                pContext->pDlg->WorkerCallback(-1, true, true, 0.0, pContext->nIndex);
+                pContext->pWorkerContext->Callback(-1, true, true, 0.0, pContext->nIndex);
                 return false;
             }
 
@@ -450,11 +449,11 @@ bool ConvertFile(FileContext* pContext)
             CFile fp;
             bool bHaveLogFile = false;
 
-            if (pContext->pDlg->m_Config.m_Options.bLogConsoleOutput == true)
+            if (pContext->pWorkerContext->pConfig->m_Options.bLogConsoleOutput == true)
             {
                 ::UpdatePath();
 
-                if (fp.Open(pContext->pDlg->m_Config.m_Options.szLogFileName, CFile::modeWrite | CFile::modeNoTruncate | CFile::modeCreate) == TRUE)
+                if (fp.Open(pContext->pWorkerContext->pConfig->m_Options.szLogFileName, CFile::modeWrite | CFile::modeNoTruncate | CFile::modeCreate) == TRUE)
                 {
                     bHaveLogFile = true;
 
@@ -463,7 +462,7 @@ bool ConvertFile(FileContext* pContext)
                         const unsigned char szHeaderUnicode[2] = { 0xFFU, 0xFEU };
                         const unsigned char szHeaderUtf8[3] = { 0xEFU, 0xBBU, 0xBFU };
 
-                        switch (pContext->pDlg->m_Config.m_Options.nLogEncoding)
+                        switch (pContext->pWorkerContext->pConfig->m_Options.nLogEncoding)
                         {
                         case 1: // UNICODE
                             fp.Write(szHeaderUnicode, 2);
@@ -486,15 +485,14 @@ bool ConvertFile(FileContext* pContext)
             typedef int(*lpfnGetProgress)(char *szLineBuff, int nLineLen);
 
             lpfnGetProgress pProgressProc;
-            HMODULE hDll = ::LoadLibrary(pContext->pDlg->m_Config.m_Formats.GetData(pContext->nTool).szFunction);
+            HMODULE hDll = ::LoadLibrary(pContext->pWorkerContext->pConfig->m_Formats.GetData(pContext->nTool).szFunction);
             if (hDll != NULL)
             {
+                // TODO: when failed to load dll we need to do more clean-up
                 // NOTE: the GetProcAddress function has only ANSI version
                 pProgressProc = (lpfnGetProgress) ::GetProcAddress(hDll, "GetProgress");
                 if (pProgressProc == NULL)
                     return false; // ERROR
-
-                                  // TODO: when failed to load dll we need to do more clean-up
             }
 
             // main loop
@@ -578,13 +576,13 @@ bool ConvertFile(FileContext* pContext)
                             }
 
                             // log all console output for error checking
-                            if (pContext->pDlg->m_Config.m_Options.bLogConsoleOutput == true)
+                            if (pContext->pWorkerContext->pConfig->m_Options.bLogConsoleOutput == true)
                             {
                                 if ((bHaveLogFile == true)
                                     && (fp.m_hFile != NULL)
                                     && (strlen(szLineBuff) > (size_t)0))
                                 {
-                                    switch (pContext->pDlg->m_Config.m_Options.nLogEncoding)
+                                    switch (pContext->pWorkerContext->pConfig->m_Options.nLogEncoding)
                                     {
                                     case 0: // ANSI, default string is ANSI
                                     {
@@ -621,7 +619,7 @@ bool ConvertFile(FileContext* pContext)
 
                             ZeroMemory(szLineBuff, sizeof(szLineBuff));
 
-                            bRunning = pContext->pDlg->WorkerCallback(nProgress, false);
+                            bRunning = pContext->pWorkerContext->Callback(nProgress, false);
                             if (bRunning == false)
                                 break;
                         }
@@ -644,7 +642,7 @@ bool ConvertFile(FileContext* pContext)
                 ::FreeLibrary(hDll);
 
             // close log file
-            if ((pContext->pDlg->m_Config.m_Options.bLogConsoleOutput == true) && (bHaveLogFile = true))
+            if ((pContext->pWorkerContext->pConfig->m_Options.bLogConsoleOutput == true) && (bHaveLogFile = true))
             {
                 fp.Close();
                 bHaveLogFile = false;
@@ -657,7 +655,7 @@ bool ConvertFile(FileContext* pContext)
     // finished, stop conversion time counter
     countTime.StopCounter();
 
-    if (pContext->pDlg->m_Config.m_Options.bForceConsoleWindow == false)
+    if (pContext->pWorkerContext->pConfig->m_Options.bForceConsoleWindow == false)
     {
         // terminate console process if there was error
         HANDLE hProc;
@@ -709,6 +707,6 @@ bool ConvertFile(FileContext* pContext)
         ::CloseHandle(pInfo.hThread);
     }
 
-    pContext->pDlg->WorkerCallback(nProgress, true, false, countTime.GetTime(), pContext->nIndex);
+    pContext->pWorkerContext->Callback(nProgress, true, false, countTime.GetTime(), pContext->nIndex);
     return nProgress == 100;
 }

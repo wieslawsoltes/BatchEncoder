@@ -3,18 +3,55 @@
 
 #pragma once
 
-typedef struct tagPipeContext
+#include "..\Configuration.h"
+
+class WorkerContext
 {
-    CBatchEncoderDlg *pDlg;
+public:
+    volatile bool bRunning;
+    CConfiguration* pConfig;
+public:
+    HANDLE hThread;
+    DWORD dwThreadID;
+    volatile int nProgressCurrent;
+public:
+    int nTotalFiles;
+    int nProcessedFiles;
+    int nDoneWithoutError;
+    int nErrors;
+public:
+    int nThreadCount;
+public:
+    WorkerContext(CConfiguration* pConfig)
+    {
+        this->pConfig = pConfig;
+    }
+    virtual ~WorkerContext()
+    {
+    }
+public:
+    virtual void Init() = 0;
+    virtual void Next(int nIndex) = 0;
+    virtual void Done() = 0;
+public:
+    virtual bool Callback(int nProgress, bool bFinished, bool bError = false, double fTime = 0.0, int nIndex = -1) = 0;
+    virtual void Status(int nIndex, CString szTime, CString szStatus) = 0;
+};
+
+class PipeContext
+{
+public:
+    WorkerContext* pWorkerContext;
     CString szFileName;
     HANDLE hPipe;
     volatile bool bError;
     volatile bool bFinished;
-} PipeContext;
+};
 
-typedef struct tagFileContext
+class FileContext
 {
-    CBatchEncoderDlg *pDlg;
+public:
+    WorkerContext* pWorkerContext;
     CString szInputFile;
     CString szOutputFile;
     TCHAR *szCommandLine;
@@ -23,36 +60,39 @@ typedef struct tagFileContext
     int nTool;
     bool bUseReadPipes;
     bool bUseWritePipes;
-} FileContext;
+};
 
 class ItemContext : public CObject
 {
 public:
-    CBatchEncoderDlg *pDlg;
+    WorkerContext *pWorkerContext;
     CItem* item;
 public:
     ItemContext()
     {
     }
-    ItemContext(CBatchEncoderDlg *pDlg, CItem* item)
-    {  
-        this->pDlg = pDlg;
+    ItemContext(WorkerContext *pWorkerContext, CItem* item)
+    {
+        this->pWorkerContext = pWorkerContext;
         this->item = item;
     }
-    ItemContext(const ItemContext& context) 
-    { 
-        pDlg = context.pDlg; 
+    ItemContext(const ItemContext& context)
+    {
+        pWorkerContext = context.pWorkerContext;
         item = context.item;
+    }
+    virtual ~ItemContext()
+    {
     }
     const ItemContext& operator=(const ItemContext& context)
     {
-        pDlg = context.pDlg;
+        pWorkerContext = context.pWorkerContext;
         item = context.item;
         return *this;
     }
     BOOL operator==(ItemContext context)
     {
-        return pDlg == context.pDlg && item == context.item;
+        return pWorkerContext == context.pWorkerContext && item == context.item;
     }
 };
 

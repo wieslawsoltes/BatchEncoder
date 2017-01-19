@@ -11,7 +11,6 @@
 #include "AboutDlg.h"
 #include "FormatsDlg.h"
 #include "AdvancedDlg.h"
-#include "..\worker\WorkThread.h"
 
 #define IDC_FOLDERTREE          0x3741
 #define IDC_TITLE               0x3742
@@ -200,11 +199,14 @@ CBatchEncoderDlg::CBatchEncoderDlg(CWnd* pParent /*=NULL*/)
     szMainConfigFile = ::GetExeFilePath() + _T("BatchEncoder.config");
 
     m_Config.m_Options.Defaults();
+
+    this->pWorkerContext = new CBatchEncoderWorkerContext(&m_Config, this);
 }
 
 CBatchEncoderDlg::~CBatchEncoderDlg()
 {
-
+    if (this->pWorkerContext != NULL)
+        delete this->pWorkerContext;
 }
 
 void CBatchEncoderDlg::DoDataExchange(CDataExchange* pDX)
@@ -353,7 +355,7 @@ BOOL CBatchEncoderDlg::OnInitDialog()
     this->SetWindowText(MAIN_APP_NAME);
 
     // set flag to non running state
-    bRunning = false;
+    pWorkerContext->bRunning = false;
 
     // clear progress status
     m_FileProgress.SetRange(0, 100);
@@ -544,7 +546,7 @@ LRESULT CBatchEncoderDlg::OnTrayIconMsg(WPARAM wParam, LPARAM lParam)
 
     if (uMouseMsg == WM_RBUTTONDOWN)
     {
-        if (bRunning == true)
+        if (this->pWorkerContext->bRunning == true)
             return(0);
 
         CMenu menu;
@@ -1110,12 +1112,14 @@ void CBatchEncoderDlg::StartConvert()
     if (bSafeCheck == true)
         return;
 
-    if (bRunning == false)
+    if (this->pWorkerContext->bRunning == false)
     {
         bSafeCheck = true;
 
         this->GetOptions();
         this->GetItems();
+
+        this->pWorkerContext->pConfig = &this->m_Config;
 
         int nItems = this->m_Config.m_Items.GetSize();
         if (nItems <= 0)
@@ -1138,9 +1142,9 @@ void CBatchEncoderDlg::StartConvert()
             }
         }
 
-        dwThreadID = 0;
-        hThread = ::CreateThread(NULL, 0, WorkThread, this, CREATE_SUSPENDED, &dwThreadID);
-        if (hThread == NULL)
+        this->pWorkerContext->dwThreadID = 0;
+        this->pWorkerContext->hThread = ::CreateThread(NULL, 0, WorkThread, this->pWorkerContext, CREATE_SUSPENDED, &this->pWorkerContext->dwThreadID);
+        if (this->pWorkerContext->hThread == NULL)
         {
             MessageBox(_T("Fatal Error when Creating Thread"), _T("ERROR"), MB_OK | MB_ICONERROR);
             bSafeCheck = false;
@@ -1153,10 +1157,10 @@ void CBatchEncoderDlg::StartConvert()
         m_BtnConvert.SetWindowText(_T("S&top"));
         this->GetMenu()->ModifyMenu(ID_ACTION_CONVERT, MF_BYCOMMAND, ID_ACTION_CONVERT, _T("S&top\tF9"));
 
-        nProgressCurrent = 0;
-        bRunning = true;
+        this->pWorkerContext->nProgressCurrent = 0;
+        this->pWorkerContext->bRunning = true;
 
-        ::ResumeThread(hThread);
+        ::ResumeThread(this->pWorkerContext->hThread);
 
         bSafeCheck = false;
     }
@@ -1168,7 +1172,7 @@ void CBatchEncoderDlg::StartConvert()
         this->GetMenu()->ModifyMenu(ID_ACTION_CONVERT, MF_BYCOMMAND, ID_ACTION_CONVERT, _T("Conve&rt\tF9"));
         this->EnableUserInterface(TRUE);
 
-        bRunning = false;
+        this->pWorkerContext->bRunning = false;
         bSafeCheck = false;
     }
 }
@@ -1184,7 +1188,7 @@ void CBatchEncoderDlg::FinishConvert()
     this->EnableUserInterface(TRUE);
 
     this->m_FileProgress.SetPos(0);
-    this->bRunning = false;
+    this->pWorkerContext->bRunning = false;
 
     // now we shutdown the system
     if (this->m_Config.m_Options.bShutdownWhenFinished == true)
@@ -1203,47 +1207,6 @@ void CBatchEncoderDlg::FinishConvert()
 void CBatchEncoderDlg::OnBnClickedButtonConvert()
 {
     this->StartConvert();
-}
-
-bool CBatchEncoderDlg::WorkerCallback(int nProgress, bool bFinished, bool bError, double fTime, int nIndex)
-{
-    if (bError == true)
-    {
-        m_LstInputItems.SetItemText(nIndex, 5, _T("--:--")); // Time
-        m_LstInputItems.SetItemText(nIndex, 6, _T("Error")); // Status
-        m_FileProgress.SetPos(0);
-        bRunning = false;
-        return bRunning;
-    }
-
-    if (bFinished == false)
-    {
-        if (nProgress != nProgressCurrent)
-        {
-            nProgressCurrent = nProgress;
-            m_FileProgress.SetPos(nProgress);
-            this->ShowProgressTrayIcon(nProgress);
-        }
-    }
-
-    if (bFinished == true)
-    {
-        if (nProgress != 100)
-        {
-            m_LstInputItems.SetItemText(nIndex, 5, _T("--:--")); // Time
-            m_LstInputItems.SetItemText(nIndex, 6, _T("Error")); // Status
-            m_FileProgress.SetPos(0);
-        }
-        else
-        {
-            CString szTime = ::FormatTime(fTime, 1);
-
-            m_LstInputItems.SetItemText(nIndex, 5, szTime); // Time
-            m_LstInputItems.SetItemText(nIndex, 6, _T("Done")); // Status
-        }
-    }
-
-    return bRunning;
 }
 
 BOOL CBatchEncoderDlg::OnHelpInfo(HELPINFO* pHelpInfo)
@@ -1897,7 +1860,7 @@ void CBatchEncoderDlg::OnFileClearList()
 
 void CBatchEncoderDlg::OnFileExit()
 {
-    if (this->bRunning == false)
+    if (this->pWorkerContext->bRunning == false)
         this->OnClose();
 }
 

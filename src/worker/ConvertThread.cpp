@@ -3,7 +3,6 @@
 
 #include "StdAfx.h"
 #include "..\BatchEncoder.h"
-#include "..\dialogs\BatchEncoderDlg.h"
 #include "WorkThread.h"
 
 DWORD WINAPI ConvertThread(LPVOID lpParam)
@@ -14,13 +13,13 @@ DWORD WINAPI ConvertThread(LPVOID lpParam)
         ItemContext* pContext = (ItemContext*)pQueue->RemoveHead();
         bool bResult = ConvertItem(pContext);
 
-        if (bResult = false && pContext->pDlg->m_Config.m_Options.bStopOnErrors == true)
+        if (bResult = false && pContext->pWorkerContext->pConfig->m_Options.bStopOnErrors == true)
         {
             delete pContext;
             return(1);
         }
 
-        if (pContext->pDlg->bRunning == false)
+        if (pContext->pWorkerContext->bRunning == false)
         {
             delete pContext;
             return(1);
