@@ -263,6 +263,18 @@ public:
         {
             m_Options.bForceConsoleWindow = false;
         }
+
+        // option: ThreadCount
+        pOptionElem = pOptionsElem->FirstChildElement("ThreadCount");
+        if (pOptionElem)
+        {
+            const char *tmpBuff = pOptionElem->GetText();
+            m_Options.nThreadCount = stoi(GetConfigString(tmpBuff));
+        }
+        else
+        {
+            m_Options.nThreadCount = 1;
+        }
     }
     void SaveOptions(tinyxml2::XMLElement *pOptionsElem, COptions &m_Options)
     {
@@ -404,6 +416,15 @@ public:
         // option: ForceConsoleWindow
         pOptionElem = this->NewElement("ForceConsoleWindow");
         pOptionElem->LinkEndChild(this->NewText(szBuffUtf8.Create(m_Options.bForceConsoleWindow ? _T("true") : _T("false"))));
+        pOptionsElem->LinkEndChild(pOptionElem);
+        szBuffUtf8.Clear();
+
+        // option: nThreadCount
+        CString szThreadCount;
+        szThreadCount.Format(_T("%d\0"), m_Options.nThreadCount);
+
+        pOptionElem = this->NewElement("ThreadCount");
+        pOptionElem->LinkEndChild(this->NewText(szBuffUtf8.Create(szThreadCount)));
         pOptionsElem->LinkEndChild(pOptionElem);
         szBuffUtf8.Clear();
 

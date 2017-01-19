@@ -30,6 +30,7 @@ public:
     CString szLogFileName;
     int nLogEncoding; // 0 - ANSI, 1 - UNICODE, 2 - UTF-8
     bool bForceConsoleWindow;
+    int nThreadCount;
 public:
     COptions()
     {
@@ -71,6 +72,7 @@ public:
         this->szLogFileName = other.szLogFileName;
         this->nLogEncoding = other.nLogEncoding;
         this->bForceConsoleWindow = other.bForceConsoleWindow;
+        this->nThreadCount = other.nThreadCount;
     }
 public:
     void Defaults()
@@ -97,5 +99,6 @@ public:
         this->szLogFileName = _T("BatchEncoder.log");
         this->nLogEncoding = 2;
         this->bForceConsoleWindow = false;
+        this->nThreadCount = 1;
     }
 };
