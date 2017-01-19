@@ -86,6 +86,7 @@ public:
         this->szFileListColumns = _T("");
         this->bShowGridLines = true;
         this->bShowTrayIcon = false;
+        this->bShutdownWhenFinished = false;
         this->bDoNotSaveConfiguration = false;
         this->szPresetsDialogResize = _T("");
         this->szPresetsListColumns = _T("");
