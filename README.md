@@ -2,7 +2,12 @@
 
 [![Gitter](https://badges.gitter.im/wieslawsoltes/BatchEncoder.svg)](https://gitter.im/wieslawsoltes/BatchEncoder?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
-[![Build status](https://ci.appveyor.com/api/projects/status/gf82ojfu97e7udx7/branch/master?svg=true)](https://ci.appveyor.com/project/wieslawsoltes/batchencoder/branch/master)
+| Platform              | Configuration  | Build status                                                                                                                                                                              |
+|-----------------------|----------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Windows 32-bit        | Debug          | [![Build status](https://ci.appveyor.com/api/projects/status/gf82ojfu97e7udx7/branch/master?svg=true)](https://ci.appveyor.com/project/wieslawsoltes/batchencoder/branch/master)          |
+| Windows 64-bit        | Release        | [![Build status](https://ci.appveyor.com/api/projects/status/p8dg4vxqs2r5m7g4/branch/master?svg=true)](https://ci.appveyor.com/project/wieslawsoltes/batchencoder-y606d/branch/master)    |
+| Windows 32-bit        | Debug          | [![Build status](https://ci.appveyor.com/api/projects/status/mg4yfh8vs7y8v7hk/branch/master?svg=true)](https://ci.appveyor.com/project/wieslawsoltes/batchencoder-3gv5t/branch/master)    |
+| Windows 64-bit        | Release        | [![Build status](https://ci.appveyor.com/api/projects/status/kcfeuspoto5xmgsi/branch/master?svg=true)](https://ci.appveyor.com/project/wieslawsoltes/batchencoder-1fq40/branch/master)    |
 
 BatchEncoder is an audio files conversion software.
 
