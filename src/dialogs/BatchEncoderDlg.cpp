@@ -2134,8 +2134,7 @@ void CBatchEncoderDlg::OnEditExplore()
         int nItem = m_LstInputItems.GetNextSelectedItem(pos);
         CItem& item = m_Config.m_Items.GetData(nItem);
         CString szPath = item.szPath;
-        CString szName = item.szName;
-        szPath.TrimRight(szName);
+        szPath.TrimRight(::GetFileName(item.szPath));
         ::LaunchAndWait(szPath, _T(""), FALSE);
     }
 }
