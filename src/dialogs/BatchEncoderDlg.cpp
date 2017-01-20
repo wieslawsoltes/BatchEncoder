@@ -27,12 +27,12 @@ static HWND hWndStaticText = NULL;
 
 int CALLBACK BrowseCallbackProc(HWND hWnd, UINT uMsg, LPARAM lp, LPARAM pData)
 {
-    TCHAR szPath[MAX_PATH + 1] = _T("");
-    wsprintf(szPath, _T("%s\0"), szLastBrowse);
-
-    if ((uMsg == BFFM_INITIALIZED))
+    if (uMsg == BFFM_INITIALIZED)
+    {
+        TCHAR szPath[MAX_PATH + 1] = _T("");
+        _stprintf(szPath, _T("%s\0"), szLastBrowse);
         ::SendMessage(hWnd, BFFM_SETSELECTION, TRUE, (LPARAM)szPath);
-
+    }
     return(0);
 }
 
@@ -41,26 +41,21 @@ LRESULT CALLBACK BrowseDlgWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM
     if (uMsg == WM_COMMAND)
     {
         if ((HIWORD(wParam) == BN_CLICKED) && ((HWND)lParam == hWndBtnRecurse))
-        {
-            if (::SendMessage(hWndBtnRecurse, BM_GETCHECK, (WPARAM)0, (LPARAM)0) == BST_CHECKED)
-                bRecurseChecked = true;
-            else
-                bRecurseChecked = false;
-        }
+            bRecurseChecked = ::SendMessage(hWndBtnRecurse, BM_GETCHECK, (WPARAM)0, (LPARAM)0) == BST_CHECKED;
     }
     return ::CallWindowProc(lpOldWindowProc, hWnd, uMsg, wParam, lParam);
 }
 
 int CALLBACK BrowseCallbackAddDir(HWND hWnd, UINT uMsg, LPARAM lp, LPARAM pData)
 {
-    TCHAR szPath[MAX_PATH + 1] = _T("");
-    wsprintf(szPath, _T("%s\0"), szLastBrowseAddDir);
-
     if (uMsg == BFFM_INITIALIZED)
     {
         HWND hWndTitle = NULL;
         HFONT hFont;
         RECT rc, rcTitle, rcTree, rcWnd;
+
+        TCHAR szPath[MAX_PATH + 1] = _T("");
+        _stprintf(szPath, _T("%s\0"), szLastBrowseAddDir);
 
         hWndTitle = ::GetDlgItem(hWnd, IDC_TITLE);
 
@@ -113,15 +108,15 @@ int CALLBACK BrowseCallbackAddDir(HWND hWnd, UINT uMsg, LPARAM lp, LPARAM pData)
 
 int CALLBACK BrowseCallbackOutPath(HWND hWnd, UINT uMsg, LPARAM lp, LPARAM pData)
 {
-    TCHAR szPath[MAX_PATH + 1] = _T("");
-    wsprintf(szPath, _T("%s\0"), szLastBrowse);
-
     if (uMsg == BFFM_INITIALIZED)
     {
         TCHAR szText[256] = _T("");
         HWND hWndTitle = NULL;
         HFONT hFont;
         RECT rc, rcTitle, rcTree, rcWnd;
+
+        TCHAR szPath[MAX_PATH + 1] = _T("");
+        _stprintf(szPath, _T("%s\0"), szLastBrowse);
 
         hWndTitle = ::GetDlgItem(hWnd, IDC_TITLE);
 
@@ -183,10 +178,8 @@ static DragAndDrop m_DDParam;
 DWORD WINAPI DragAndDropThread(LPVOID lpParam)
 {
     DragAndDrop* m_ThreadParam = (DragAndDrop*)lpParam;
-
     m_ThreadParam->pDlg->HandleDropFiles(m_ThreadParam->hDropInfo);
     bHandleDrop = true;
-
     return ::CloseHandle(hDDThread);
 }
 
@@ -194,13 +187,11 @@ IMPLEMENT_DYNAMIC(CBatchEncoderDlg, CDialog)
 CBatchEncoderDlg::CBatchEncoderDlg(CWnd* pParent /*=NULL*/)
     : CResizeDialog(CBatchEncoderDlg::IDD, pParent)
 {
-    m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
-
-    szMainConfigFile = ::GetExeFilePath() + _T("BatchEncoder.config");
-
-    m_Config.m_Options.Defaults();
-
-    this->pWorkerContext = new CBatchEncoderWorkerContext(&m_Config, this);
+    this->m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
+    this->szMainConfigFile = ::GetExeFilePath() + _T("BatchEncoder.config");
+    this->m_Config.m_Options.Defaults();
+    this->pWorkerContext = new CBatchEncoderWorkerContext(&this->m_Config, this);
+    this->pWorkerContext->bRunning = false;
 }
 
 CBatchEncoderDlg::~CBatchEncoderDlg()
@@ -330,7 +321,7 @@ BOOL CBatchEncoderDlg::OnInitDialog()
     SetIcon(m_hIcon, TRUE);
     SetIcon(m_hIcon, FALSE);
 
-    // create status-bar control
+    // status-bar
     VERIFY(m_StatusBar.Create(WS_CHILD | WS_VISIBLE | CCS_BOTTOM | SBARS_SIZEGRIP,
         CRect(0, 0, 0, 0),
         this,
@@ -339,34 +330,31 @@ BOOL CBatchEncoderDlg::OnInitDialog()
     int nStatusBarParts[2] = { 100, -1 };
     m_StatusBar.SetParts(2, nStatusBarParts);
 
-    // load accelerators
-    m_hAccel = ::LoadAccelerators(::GetModuleHandle(NULL),
-        MAKEINTRESOURCE(IDR_ACCELERATOR_BATCHENCODER));
+    // accelerators
+    m_hAccel = ::LoadAccelerators(::GetModuleHandle(NULL), MAKEINTRESOURCE(IDR_ACCELERATOR_BATCHENCODER));
 
-    // handle the OnNotifyFormat message (WM_NOTIFYFORMAT)
+    // OnNotifyFormat message WM_NOTIFYFORMAT
 #ifdef _UNICODE
     m_LstInputItems.SendMessage(CCM_SETUNICODEFORMAT, (WPARAM)(BOOL)TRUE, 0);
 #endif
 
-    // enable or disable '<< same as source file >>' option
+    // enable '<< same as source file >>'
     bSameAsSourceEdit = true;
 
-    // main dialog title with version number
+    // dialog title
     this->SetWindowText(MAIN_APP_NAME);
 
-    // set flag to non running state
-    pWorkerContext->bRunning = false;
-
-    // clear progress status
+    // progress status
     m_FileProgress.SetRange(0, 100);
     m_FileProgress.SetPos(0);
-
-    // update list style
+    m_FileProgress.ShowWindow(SW_HIDE);
+    
+    // list style
     DWORD dwExStyle = m_LstInputItems.GetExtendedStyle();
     dwExStyle |= LVS_EX_FULLROWSELECT | LVS_EX_CHECKBOXES;
     m_LstInputItems.SetExtendedStyle(dwExStyle);
 
-    // insert ListCtrl columns
+    // list columns
     m_LstInputItems.InsertColumn(0, _T("Name"), LVCFMT_LEFT, 165);
     m_LstInputItems.InsertColumn(1, _T("Input"), LVCFMT_LEFT, 50);
     m_LstInputItems.InsertColumn(2, _T("Size (bytes)"), LVCFMT_LEFT, 80);
@@ -375,23 +363,12 @@ BOOL CBatchEncoderDlg::OnInitDialog()
     m_LstInputItems.InsertColumn(5, _T("Time"), LVCFMT_LEFT, 90);
     m_LstInputItems.InsertColumn(6, _T("Status"), LVCFMT_LEFT, 85);
 
-    // TODO: set ListCtrl columns order
-    /*
-    INT nOrder[7] = { 0, 1, 2, 3, 4, 5, 6 };
-    this->m_LstInputItems.GetHeaderCtrl()->SetOrderArray(7, nOrder);
-    this->m_LstInputItems.Invalidate();
-    */
-
-    // set to bold Convert/Stop button font style
     m_BtnConvert.SetBold(true);
 
-    // hide ProgressBar when not running conversion process
-    this->m_FileProgress.ShowWindow(SW_HIDE);
-
-    // enable files/directories drag & drop for dialog
+    // enable drag & drop
     this->DragAcceptFiles(TRUE);
 
-    // setup resize anchors
+    // resize anchors
     AddAnchor(IDC_STATIC_GROUP_OUTPUT, TOP_LEFT, TOP_RIGHT);
     AddAnchor(IDC_STATIC_TEXT_FORMAT, TOP_LEFT);
     AddAnchor(IDC_COMBO_FORMAT, TOP_LEFT);
@@ -419,13 +396,11 @@ BOOL CBatchEncoderDlg::OnInitDialog()
 
 BOOL CBatchEncoderDlg::PreTranslateMessage(MSG* pMsg)
 {
-    // translate here all accelerators, because by default they are not translated
     if (m_hAccel != NULL)
     {
         if (::TranslateAccelerator(this->GetSafeHwnd(), m_hAccel, pMsg))
             return TRUE;
     }
-
     return CDialog::PreTranslateMessage(pMsg);
 }
 
@@ -438,12 +413,11 @@ void CBatchEncoderDlg::UpdateStatusBar()
         szText.Format(_T("%d %s"),
             nCount,
             (nCount > 1) ? _T("Items") : _T("Item"));
-
         VERIFY(m_StatusBar.SetText(szText, 0, 0));
     }
     else
     {
-        VERIFY(m_StatusBar.SetText(_T("No Files"), 0, 0));
+        VERIFY(m_StatusBar.SetText(_T("No Items"), 0, 0));
         VERIFY(m_StatusBar.SetText(_T(""), 1, 0));
     }
 }
@@ -451,8 +425,7 @@ void CBatchEncoderDlg::UpdateStatusBar()
 void CBatchEncoderDlg::EnableTrayIcon(bool bEnable, bool bModify)
 {
     NOTIFYICONDATA tnd;
-    HICON hIconExit;
-    hIconExit = LoadIcon(GetModuleHandle(NULL), MAKEINTRESOURCE(IDR_MAINFRAME));
+    HICON hIconExit = LoadIcon(GetModuleHandle(NULL), MAKEINTRESOURCE(IDR_MAINFRAME));
 
     tnd.cbSize = sizeof(NOTIFYICONDATA);
     tnd.hWnd = this->GetSafeHwnd();
@@ -486,43 +459,34 @@ void CBatchEncoderDlg::EnableTrayIcon(bool bEnable, bool bModify)
 
 void CBatchEncoderDlg::ShowProgressTrayIcon(int nProgress)
 {
-    if (m_Config.m_Options.bShowTrayIcon == false)
-        return;
-
     static const int nIconsIdCount = 12;
     static const int nIconId[nIconsIdCount] =
     {
-        IDI_ICON_PROGRESS_01,
-        IDI_ICON_PROGRESS_02,
-        IDI_ICON_PROGRESS_03,
-        IDI_ICON_PROGRESS_04,
-        IDI_ICON_PROGRESS_05,
-        IDI_ICON_PROGRESS_06,
-        IDI_ICON_PROGRESS_07,
-        IDI_ICON_PROGRESS_08,
-        IDI_ICON_PROGRESS_09,
-        IDI_ICON_PROGRESS_10,
-        IDI_ICON_PROGRESS_11,
-        IDI_ICON_PROGRESS_12
+        IDI_ICON_PROGRESS_01, IDI_ICON_PROGRESS_02, IDI_ICON_PROGRESS_03,
+        IDI_ICON_PROGRESS_04, IDI_ICON_PROGRESS_05, IDI_ICON_PROGRESS_06, 
+        IDI_ICON_PROGRESS_07, IDI_ICON_PROGRESS_08, IDI_ICON_PROGRESS_09,
+        IDI_ICON_PROGRESS_10, IDI_ICON_PROGRESS_11, IDI_ICON_PROGRESS_12
     };
+    
+    if (m_Config.m_Options.bShowTrayIcon == true)
+    {
+        int nIndex = (nIconsIdCount * nProgress) / 100;
+        HICON hIconProgress = LoadIcon(GetModuleHandle(NULL), MAKEINTRESOURCE(nIconId[nIndex]));
 
-    int nIndex = (nIconsIdCount * nProgress) / 100;
-    HICON hIconProgress = LoadIcon(GetModuleHandle(NULL), MAKEINTRESOURCE(nIconId[nIndex]));
+        NOTIFYICONDATA tnd;
+        tnd.cbSize = sizeof(NOTIFYICONDATA);
+        tnd.hWnd = this->GetSafeHwnd();
+        tnd.uID = 0x1000;
+        tnd.hIcon = hIconProgress;
+        tnd.uFlags = NIF_MESSAGE | NIF_ICON | NIF_TIP;
+        tnd.uCallbackMessage = WM_TRAY;
 
-    NOTIFYICONDATA tnd;
-    tnd.cbSize = sizeof(NOTIFYICONDATA);
-    tnd.hWnd = this->GetSafeHwnd();
-    tnd.uID = 0x1000;
-    tnd.hIcon = hIconProgress;
-    tnd.uFlags = NIF_MESSAGE | NIF_ICON | NIF_TIP;
-    tnd.uCallbackMessage = WM_TRAY;
+        TCHAR szText[64];
+        _stprintf(szText, _T("%d%%"), nProgress);
+        _tcscpy(tnd.szTip, szText);
 
-    TCHAR szText[64];
-
-    _stprintf(szText, _T("%d%%"), nProgress);
-    _tcscpy(tnd.szTip, szText);
-
-    Shell_NotifyIcon(NIM_MODIFY, &tnd);
+        Shell_NotifyIcon(NIM_MODIFY, &tnd);
+    }
 }
 
 void CBatchEncoderDlg::OnSize(UINT nType, int cx, int cy)
@@ -540,46 +504,44 @@ LRESULT CBatchEncoderDlg::OnTrayIconMsg(WPARAM wParam, LPARAM lParam)
 {
     UINT uID = (UINT)wParam;
     UINT uMouseMsg = (UINT)lParam;
-
-    if (m_Config.m_Options.bShowTrayIcon == false)
-        return(0);
-
-    if (uMouseMsg == WM_RBUTTONDOWN)
+    if (m_Config.m_Options.bShowTrayIcon == true)
     {
-        if (this->pWorkerContext->bRunning == true)
-            return(0);
-
-        CMenu menu;
-        if (!menu.LoadMenu(IDR_MENU_TRAY))
-            return(0);
-
-        CMenu* pSubMenu = menu.GetSubMenu(0);
-        if (!pSubMenu)
-            return(0);
-
-        ::SetMenuDefaultItem(pSubMenu->m_hMenu, 0, TRUE);
-
-        CPoint mouse;
-        GetCursorPos(&mouse);
-        ::SetForegroundWindow(this->GetSafeHwnd());
-        ::TrackPopupMenu(pSubMenu->m_hMenu, 0, mouse.x, mouse.y, 0, this->GetSafeHwnd(), NULL);
-        ::PostMessage(this->GetSafeHwnd(), WM_NULL, 0, 0);
-    }
-    else if (uMouseMsg == WM_LBUTTONDOWN)
-    {
-        if (this->IsWindowVisible() == FALSE)
+        if (uMouseMsg == WM_RBUTTONDOWN)
         {
-            ShowWindow(SW_SHOW);
-            ShowWindow(SW_RESTORE);
-            SetFocus();
-            SetActiveWindow();
+            if (this->pWorkerContext->bRunning == true)
+                return(0);
+
+            CMenu menu;
+            if (!menu.LoadMenu(IDR_MENU_TRAY))
+                return(0);
+
+            CMenu* pSubMenu = menu.GetSubMenu(0);
+            if (!pSubMenu)
+                return(0);
+
+            ::SetMenuDefaultItem(pSubMenu->m_hMenu, 0, TRUE);
+
+            CPoint mouse;
+            GetCursorPos(&mouse);
+            ::SetForegroundWindow(this->GetSafeHwnd());
+            ::TrackPopupMenu(pSubMenu->m_hMenu, 0, mouse.x, mouse.y, 0, this->GetSafeHwnd(), NULL);
+            ::PostMessage(this->GetSafeHwnd(), WM_NULL, 0, 0);
         }
-        else
+        else if (uMouseMsg == WM_LBUTTONDOWN)
         {
-            ShowWindow(SW_MINIMIZE);
+            if (this->IsWindowVisible() == FALSE)
+            {
+                ShowWindow(SW_SHOW);
+                ShowWindow(SW_RESTORE);
+                SetFocus();
+                SetActiveWindow();
+            }
+            else
+            {
+                ShowWindow(SW_MINIMIZE);
+            }
         }
     }
-
     return(0);
 }
 
@@ -603,7 +565,6 @@ void CBatchEncoderDlg::OnTrayMenuExit()
 
 LRESULT CBatchEncoderDlg::OnNotifyFormat(WPARAM wParam, LPARAM lParam)
 {
-    // required for list view control to receive notifications messages
 #ifdef _UNICODE
     return NFR_UNICODE;
 #else
@@ -644,12 +605,8 @@ void CBatchEncoderDlg::UpdateFormatComboBox()
     for (int i = 0; i < nFormats; i++)
     {
         CFormat& format = m_Config.m_Formats.GetData(i);
-
-        // NOTE: insert only encoder, decoders are only for internal use
         if (format.nType == 0)
-        {
             this->m_CmbFormat.InsertString(i, format.szName);
-        }
     }
 
     static bool bResizeFormatsComboBox = false;
@@ -667,7 +624,6 @@ void CBatchEncoderDlg::UpdatePresetComboBox()
     this->m_CmbPresets.ResetContent();
 
     CFormat& format = m_Config.m_Formats.GetData(m_Config.m_Options.nSelectedFormat);
-
     int nPresets = format.m_Presets.GetSize();
     for (int i = 0; i < nPresets; i++)
     {
@@ -1179,7 +1135,6 @@ void CBatchEncoderDlg::StartConvert()
 
 void CBatchEncoderDlg::FinishConvert()
 {
-    // restore user interface to default state
     if (this->m_Config.m_Options.bShowTrayIcon == true)
         this->EnableTrayIcon(true, true);
 
@@ -1190,14 +1145,11 @@ void CBatchEncoderDlg::FinishConvert()
     this->m_FileProgress.SetPos(0);
     this->pWorkerContext->bRunning = false;
 
-    // now we shutdown the system
     if (this->m_Config.m_Options.bShutdownWhenFinished == true)
     {
-        // save current configuration to file
         if (this->m_Config.m_Options.bDoNotSaveConfiguration == false)
             this->SaveConfigFile(this->szMainConfigFile);
 
-        // disable tray icon
         this->EnableTrayIcon(false);
 
         ::DoTheShutdown();
@@ -1249,10 +1201,8 @@ void CBatchEncoderDlg::UpdateFormatAndPreset()
 {
     int nFormat = this->m_CmbFormat.GetCurSel();
     int nPreset = this->m_CmbPresets.GetCurSel();
-
     CFormat& format = m_Config.m_Formats.GetData(nFormat);
     CPreset& preset = format.m_Presets.GetData(nPreset);
-
     int nCount = m_LstInputItems.GetItemCount();
     if (nCount > 0)
     {
@@ -1424,7 +1374,7 @@ void CBatchEncoderDlg::InsertToControlList(int nItem)
     lvi.mask = LVIF_TEXT | LVIF_STATE;
     lvi.iItem = nItem;
 
-    // [Name] : file name
+    // [Name] : item name
     lvi.pszText = (LPTSTR)(LPCTSTR)(item.szName);
     m_LstInputItems.InsertItem(&lvi);
     m_LstInputItems.SetItemData(nItem, nItem);
@@ -1465,7 +1415,7 @@ void CBatchEncoderDlg::InsertToControlList(int nItem)
     lvi.pszText = (LPTSTR)(LPCTSTR)(tmpBuf);
     m_LstInputItems.SetItemText(lvi.iItem, 6, lvi.pszText);
 
-    // set item CheckBox state
+    // item CheckBox state
     m_LstInputItems.SetCheck(nItem, item.bChecked);
 }
 
@@ -1483,7 +1433,6 @@ bool CBatchEncoderDlg::InsertToList(CString szPath)
 void CBatchEncoderDlg::OnLvnKeydownListInputFiles(NMHDR *pNMHDR, LRESULT *pResult)
 {
     LPNMLVKEYDOWN pLVKeyDow = reinterpret_cast<LPNMLVKEYDOWN>(pNMHDR);
-
     switch (pLVKeyDow->wVKey)
     {
     case VK_INSERT:
@@ -1512,8 +1461,7 @@ void CBatchEncoderDlg::SearchFolderForFiles(CString szFile, const bool bRecurse)
 
         szFile.TrimRight(_T("\\"));
         szFile.TrimRight(_T("/"));
-
-        wsprintf(cTempBuf, _T("%s\\*.*\0"), szFile);
+        _stprintf(cTempBuf, _T("%s\\*.*\0"), szFile);
 
         hSearch = FindFirstFile(cTempBuf, &w32FileData);
         if (hSearch == INVALID_HANDLE_VALUE)
@@ -1532,7 +1480,7 @@ void CBatchEncoderDlg::SearchFolderForFiles(CString szFile, const bool bRecurse)
             if (w32FileData.cFileName[0] != '.' &&
                 w32FileData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
             {
-                wsprintf(cTempBuf, _T("%s\\%s\0"), szFile, w32FileData.cFileName);
+                _stprintf(cTempBuf, _T("%s\\%s\0"), szFile, w32FileData.cFileName);
                 if (bRecurse == true)
                     this->SearchFolderForFiles(cTempBuf, true);
             }
@@ -1565,10 +1513,7 @@ void CBatchEncoderDlg::HandleDropFiles(HDROP hDropInfo)
             int nReqChars = ::DragQueryFile(hDropInfo, i, NULL, 0);
 
             CString szFile;
-            ::DragQueryFile(hDropInfo,
-                i,
-                szFile.GetBuffer(nReqChars * 2 + 8),
-                nReqChars * 2 + 8);
+            ::DragQueryFile(hDropInfo, i, szFile.GetBuffer(nReqChars * 2 + 8), nReqChars * 2 + 8);
             if (::GetFileAttributes(szFile) & FILE_ATTRIBUTE_DIRECTORY)
             {
                 this->SearchFolderForFiles(szFile, true);
@@ -1646,7 +1591,6 @@ void CBatchEncoderDlg::OnLvnItemchangedListInputFiles(NMHDR *pNMHDR, LRESULT *pR
             {
                 CItem& item = m_Config.m_Items.GetData(nItem);
                 CFormat& format = m_Config.m_Formats.GetData(this->m_CmbFormat.GetCurSel());
-
                 if (item.szFormatId.Compare(format.szId) == 0)
                 {
                     format.nDefaultPreset = item.nPreset;
@@ -1746,7 +1690,6 @@ void CBatchEncoderDlg::EnableUserInterface(BOOL bEnable)
     }
 
     CMenu* pSysMenu = GetSystemMenu(FALSE);
-
     if (bEnable == FALSE)
         pSysMenu->EnableMenuItem(SC_CLOSE, MF_GRAYED);
     else
@@ -1820,7 +1763,6 @@ void CBatchEncoderDlg::OnFileLoadList()
     if (fd.DoModal() == IDOK)
     {
         CString szFileXml = fd.GetPathName();
-
         if (this->LoadListFile(szFileXml) == false)
         {
             MessageBox(_T("Failed to load file!"),
@@ -1843,7 +1785,6 @@ void CBatchEncoderDlg::OnFileSaveList()
     if (fd.DoModal() == IDOK)
     {
         CString szFileXml = fd.GetPathName();
-
         if (this->SaveListFile(szFileXml) == false)
         {
             MessageBox(_T("Failed to save file!"),
@@ -2315,10 +2256,8 @@ void CBatchEncoderDlg::OnOptionsConfigurePresets()
 {
     CPresetsDlg dlg;
     dlg.bShowGridLines = this->GridlinesVisible();
-
     dlg.nSelectedFormat = this->m_CmbFormat.GetCurSel();
     dlg.m_Formats = m_Config.m_Formats;
-
     dlg.szPresetsDialogResize = m_Config.m_Options.szPresetsDialogResize;
     dlg.szPresetsListColumns = m_Config.m_Options.szPresetsListColumns;
 
@@ -2339,9 +2278,7 @@ void CBatchEncoderDlg::OnOptionsConfigureFormat()
 {
     CFormatsDlg dlg;
     dlg.bShowGridLines = this->GridlinesVisible();
-
     dlg.m_Formats = m_Config.m_Formats;
-
     dlg.szFormatsDialogResize = m_Config.m_Options.szFormatsDialogResize;
     dlg.szFormatsListColumns = m_Config.m_Options.szFormatsListColumns;
 
