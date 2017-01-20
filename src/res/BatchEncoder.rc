@@ -82,6 +82,8 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 // remains consistent on all systems.
 IDR_MAINFRAME           ICON                    "BatchEncoder.ico"
 
+IDI_TRAYICON            ICON                    "TrayIcon.ico"
+
 IDI_ICON_PROGRESS_01    ICON                    "ProgressIcon01.ico"
 
 IDI_ICON_PROGRESS_02    ICON                    "ProgressIcon02.ico"

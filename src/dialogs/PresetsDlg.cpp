@@ -12,7 +12,7 @@ IMPLEMENT_DYNAMIC(CPresetsDlg, CDialog)
 CPresetsDlg::CPresetsDlg(CWnd* pParent /*=NULL*/)
     : CResizeDialog(CPresetsDlg::IDD, pParent)
 {
-    m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
+    m_hIcon = AfxGetApp()->LoadIcon(IDI_TRAYICON);
     nSelectedFormat = 0;
     szPresetsDialogResize = _T("");
     szPresetsListColumns = _T("");

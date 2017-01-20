@@ -311,6 +311,7 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\BatchEncoder.ico" />
+    <Image Include="res\TrayIcon.ico" />
     <Image Include="res\ProgressIcon01.ico" />
     <Image Include="res\ProgressIcon02.ico" />
     <Image Include="res\ProgressIcon03.ico" />

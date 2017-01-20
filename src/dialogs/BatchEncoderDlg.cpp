@@ -187,7 +187,7 @@ IMPLEMENT_DYNAMIC(CBatchEncoderDlg, CDialog)
 CBatchEncoderDlg::CBatchEncoderDlg(CWnd* pParent /*=NULL*/)
     : CResizeDialog(CBatchEncoderDlg::IDD, pParent)
 {
-    this->m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
+    this->m_hIcon = AfxGetApp()->LoadIcon(IDI_TRAYICON);
     this->szMainConfigFile = ::GetExeFilePath() + _T("BatchEncoder.config");
     this->m_Config.m_Options.Defaults();
     this->pWorkerContext = new CBatchEncoderWorkerContext(&this->m_Config, this);
@@ -425,7 +425,7 @@ void CBatchEncoderDlg::UpdateStatusBar()
 void CBatchEncoderDlg::EnableTrayIcon(bool bEnable, bool bModify)
 {
     NOTIFYICONDATA tnd;
-    HICON hIconExit = LoadIcon(GetModuleHandle(NULL), MAKEINTRESOURCE(IDR_MAINFRAME));
+    HICON hIconExit = LoadIcon(GetModuleHandle(NULL), MAKEINTRESOURCE(IDI_TRAYICON));
 
     tnd.cbSize = sizeof(NOTIFYICONDATA);
     tnd.hWnd = this->GetSafeHwnd();

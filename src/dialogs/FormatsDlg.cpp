@@ -12,7 +12,7 @@ IMPLEMENT_DYNAMIC(CFormatsDlg, CDialog)
 CFormatsDlg::CFormatsDlg(CWnd* pParent /*=NULL*/)
     : CResizeDialog(CFormatsDlg::IDD, pParent)
 {
-    m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
+    m_hIcon = AfxGetApp()->LoadIcon(IDI_TRAYICON);
     szFormatsDialogResize = _T("");
     szFormatsListColumns = _T("");
     this->bShowGridLines = true;

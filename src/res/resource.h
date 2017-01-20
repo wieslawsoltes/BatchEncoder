@@ -2,7 +2,6 @@
 // Microsoft Visual C++ generated include file.
 // Used by BatchEncoder.rc
 //
-
 #define IDR_MAINFRAME                   101
 #define IDD_BATCHENCODER_DIALOG         102
 #define IDD_DIALOG_PRESETS              103
@@ -25,6 +24,7 @@
 #define IDI_ICON_PROGRESS_10            120
 #define IDI_ICON_PROGRESS_11            121
 #define IDI_ICON_PROGRESS_12            122
+#define IDI_TRAYICON                    123
 #define IDC_BUTTON_LOAD_CONFIG          1001
 #define IDC_BUTTON_SAVE_CONFIG          1002
 #define IDC_BUTTON_RUN                  1004
@@ -148,13 +148,12 @@
 #define ID_EDIT_REMOVEUNCHECKED         32841
 #define ID_OPTIONS_FORCECONSOLEWINDOW   32842
 #define ID_ACCELERATOR_CTRL_SHIFT_F     32843
-#define ID_OPTIONS_CONFIGUREEXTENSIONS  32846
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        123
+#define _APS_NEXT_RESOURCE_VALUE        124
 #define _APS_NEXT_COMMAND_VALUE         32847
 #define _APS_NEXT_CONTROL_VALUE         1057
 #define _APS_NEXT_SYMED_VALUE           101
