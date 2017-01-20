@@ -30,7 +30,7 @@ int CALLBACK BrowseCallbackProc(HWND hWnd, UINT uMsg, LPARAM lp, LPARAM pData)
     if (uMsg == BFFM_INITIALIZED)
     {
         TCHAR szPath[MAX_PATH + 1] = _T("");
-        _stprintf(szPath, _T("%s\0"), szLastBrowse);
+        wsprintf(szPath, _T("%s\0"), szLastBrowse);
         ::SendMessage(hWnd, BFFM_SETSELECTION, TRUE, (LPARAM)szPath);
     }
     return(0);
@@ -55,7 +55,7 @@ int CALLBACK BrowseCallbackAddDir(HWND hWnd, UINT uMsg, LPARAM lp, LPARAM pData)
         RECT rc, rcTitle, rcTree, rcWnd;
 
         TCHAR szPath[MAX_PATH + 1] = _T("");
-        _stprintf(szPath, _T("%s\0"), szLastBrowseAddDir);
+        wsprintf(szPath, _T("%s\0"), szLastBrowseAddDir);
 
         hWndTitle = ::GetDlgItem(hWnd, IDC_TITLE);
 
@@ -116,7 +116,7 @@ int CALLBACK BrowseCallbackOutPath(HWND hWnd, UINT uMsg, LPARAM lp, LPARAM pData
         RECT rc, rcTitle, rcTree, rcWnd;
 
         TCHAR szPath[MAX_PATH + 1] = _T("");
-        _stprintf(szPath, _T("%s\0"), szLastBrowse);
+        wsprintf(szPath, _T("%s\0"), szLastBrowse);
 
         hWndTitle = ::GetDlgItem(hWnd, IDC_TITLE);
 
@@ -482,7 +482,7 @@ void CBatchEncoderDlg::ShowProgressTrayIcon(int nProgress)
         tnd.uCallbackMessage = WM_TRAY;
 
         TCHAR szText[64];
-        _stprintf(szText, _T("%d%%"), nProgress);
+        wsprintf(szText, _T("%d%%"), nProgress);
         _tcscpy(tnd.szTip, szText);
 
         Shell_NotifyIcon(NIM_MODIFY, &tnd);
@@ -1461,7 +1461,7 @@ void CBatchEncoderDlg::SearchFolderForFiles(CString szFile, const bool bRecurse)
 
         szFile.TrimRight(_T("\\"));
         szFile.TrimRight(_T("/"));
-        _stprintf(cTempBuf, _T("%s\\*.*\0"), szFile);
+        wsprintf(cTempBuf, _T("%s\\*.*\0"), szFile);
 
         hSearch = FindFirstFile(cTempBuf, &w32FileData);
         if (hSearch == INVALID_HANDLE_VALUE)
@@ -1480,7 +1480,7 @@ void CBatchEncoderDlg::SearchFolderForFiles(CString szFile, const bool bRecurse)
             if (w32FileData.cFileName[0] != '.' &&
                 w32FileData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
             {
-                _stprintf(cTempBuf, _T("%s\\%s\0"), szFile, w32FileData.cFileName);
+                wsprintf(cTempBuf, _T("%s\\%s\0"), szFile, w32FileData.cFileName);
                 if (bRecurse == true)
                     this->SearchFolderForFiles(cTempBuf, true);
             }
