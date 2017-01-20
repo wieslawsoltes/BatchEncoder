@@ -190,6 +190,25 @@ You can also add custom options (additional command-line parameters) and text in
 
 https://github.com/wieslawsoltes/BatchEncoder/tree/master/config
 
+### Progress function format
+
+Progress function are compiled windows DLL libraries with exported `GetProgress` function as `C` api. The `progress` file extension is used instead of `dll`.
+
+The progress function `C` signature:
+```C
+int GetProgress(char *szLineBuff, int nLineLen);
+```
+
+The example of the progress function export definition:
+```
+LIBRARY GetProgress.dll
+EXPORTS
+
+GetProgress             @1
+```
+
+For a quick start use [GetProgress_Null](https://github.com/wieslawsoltes/BatchEncoder/tree/master/src/progress/Null) VC++ project as a template.
+
 ### Default progress functions
 
 https://github.com/wieslawsoltes/BatchEncoder/tree/master/src/progress
