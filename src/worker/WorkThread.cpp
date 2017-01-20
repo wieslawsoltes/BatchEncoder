@@ -43,21 +43,21 @@ int GetLogicalProcessorInformation(LogicalProcessorInformation* info)
     PSYSTEM_LOGICAL_PROCESSOR_INFORMATION buffer = NULL;
     PSYSTEM_LOGICAL_PROCESSOR_INFORMATION ptr = NULL;
     DWORD returnLength = 0;
-
     DWORD byteOffset = 0;
     PCACHE_DESCRIPTOR Cache;
 
     glpi = (LPFN_GLPI)GetProcAddress(GetModuleHandle(TEXT("kernel32")), "GetLogicalProcessorInformation");
     if (NULL == glpi)
     {
-        _tprintf(TEXT("\nGetLogicalProcessorInformation is not supported.\n"));
+#ifdef _DEBUG
+        _tprintf(_T("\nGetLogicalProcessorInformation is not supported.\n"));
+#endif
         return (1);
     }
 
     while (!done)
     {
         DWORD rc = glpi(buffer, &returnLength);
-
         if (FALSE == rc)
         {
             if (GetLastError() == ERROR_INSUFFICIENT_BUFFER)
@@ -65,18 +65,20 @@ int GetLogicalProcessorInformation(LogicalProcessorInformation* info)
                 if (buffer)
                     free(buffer);
 
-                buffer = (PSYSTEM_LOGICAL_PROCESSOR_INFORMATION)malloc(
-                    returnLength);
-
+                buffer = (PSYSTEM_LOGICAL_PROCESSOR_INFORMATION)malloc(returnLength);
                 if (NULL == buffer)
                 {
-                    _tprintf(TEXT("\nError: Allocation failure\n"));
+#ifdef _DEBUG
+                    _tprintf(_T("\nError: Allocation failure\n"));
+#endif
                     return (2);
                 }
             }
             else
             {
-                _tprintf(TEXT("\nError %d\n"), GetLastError());
+#ifdef _DEBUG
+                _tprintf(_T("\nError %d\n"), GetLastError());
+#endif
                 return (3);
             }
         }
@@ -96,14 +98,11 @@ int GetLogicalProcessorInformation(LogicalProcessorInformation* info)
             // Non-NUMA systems report a single record of this type.
             info->numaNodeCount++;
             break;
-
         case RelationProcessorCore:
             info->processorCoreCount++;
-
             // A hyperthreaded core supplies more than one logical processor.
             info->logicalProcessorCount += CountSetBits(ptr->ProcessorMask);
             break;
-
         case RelationCache:
             // Cache data is in ptr->Cache, one CACHE_DESCRIPTOR structure for each cache. 
             Cache = &ptr->Cache;
@@ -120,15 +119,13 @@ int GetLogicalProcessorInformation(LogicalProcessorInformation* info)
                 info->processorL3CacheCount++;
             }
             break;
-
         case RelationProcessorPackage:
             // Logical processors share a physical package.
             info->processorPackageCount++;
             break;
-
         default:
 #ifdef _DEBUG
-            _tprintf(TEXT("\nError: Unsupported LOGICAL_PROCESSOR_RELATIONSHIP value.\n"));
+            _tprintf(_T("\nError: Unsupported LOGICAL_PROCESSOR_RELATIONSHIP value.\n"));
 #endif
             break;
         }
@@ -137,19 +134,18 @@ int GetLogicalProcessorInformation(LogicalProcessorInformation* info)
     }
 
 #ifdef _DEBUG
-    _tprintf(TEXT("\nGetLogicalProcessorInformation results:\n"));
-    _tprintf(TEXT("Number of NUMA nodes: %d\n"), info->numaNodeCount);
-    _tprintf(TEXT("Number of physical processor packages: %d\n"), info->processorPackageCount);
-    _tprintf(TEXT("Number of processor cores: %d\n"), info->processorCoreCount);
-    _tprintf(TEXT("Number of logical processors: %d\n"), info->logicalProcessorCount);
-    _tprintf(TEXT("Number of processor L1/L2/L3 caches: %d/%d/%d\n"),
+    _tprintf(_T("\nGetLogicalProcessorInformation results:\n"));
+    _tprintf(_T("Number of NUMA nodes: %d\n"), info->numaNodeCount);
+    _tprintf(_T("Number of physical processor packages: %d\n"), info->processorPackageCount);
+    _tprintf(_T("Number of processor cores: %d\n"), info->processorCoreCount);
+    _tprintf(_T("Number of logical processors: %d\n"), info->logicalProcessorCount);
+    _tprintf(_T("Number of processor L1/L2/L3 caches: %d/%d/%d\n"),
         info->processorL1CacheCount,
         info->processorL2CacheCount,
         info->processorL3CacheCount);
 #endif
 
     free(buffer);
-
     return (0);
 }
 
