@@ -96,6 +96,7 @@ public:
 
         item.szFormatId = szFormatId;
         item.nPreset = nPreset;
+        item.bChecked = true;
 
         m_Items.AddTail(item);
 
