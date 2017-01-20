@@ -80,8 +80,6 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 
 // Icon with lowest ID value placed first to ensure application icon
 // remains consistent on all systems.
-IDR_MAINFRAME           ICON                    "BatchEncoder.ico"
-
 IDI_TRAYICON            ICON                    "TrayIcon.ico"
 
 IDI_ICON_PROGRESS_01    ICON                    "ProgressIcon01.ico"

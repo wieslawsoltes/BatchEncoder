@@ -214,9 +214,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="res\BatchEncoder.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
     <Image Include="res\ProgressIcon01.ico">
       <Filter>Resource Files</Filter>
     </Image>
