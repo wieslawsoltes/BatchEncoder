@@ -171,6 +171,21 @@ Files extensions:
 
 Use only UTF-8 compatible text editors (e.g. Notepad) to edit xml configuration files.
 
+### Template format
+
+| Variable        | Description                                                                                        |
+|-----------------|----------------------------------------------------------------------------------------------------|
+| $EXE            | Executable path replaced with format `path` attribute.                                             |
+| $OPTIONS        | Executable command-line options replaced with preset `options` attribute.                          |
+| $INFILE         | Input file path (if pipes are supported `-` is automatically used).                                |
+| $OUTFILE        | Output file path (if pipes are supported `-` is automatically used).                               |
+
+The output file name is generated from the combination of output path, item `name` attribute and output format `extension` attribute.
+
+Default template format order is `$EXE $OPTIONS $INFILE $OUTFILE`. 
+
+You can also add custom options (additional command-line parameters) and text inside the `template` string.
+
 ### Default configuration files
 
 https://github.com/wieslawsoltes/BatchEncoder/tree/master/config
