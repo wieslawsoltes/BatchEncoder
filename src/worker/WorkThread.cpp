@@ -51,8 +51,6 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
         CItem& item = pWorkerContext->pConfig->m_Items.GetData(i);
         if (item.bChecked == true)
         {
-            pWorkerContext->Next(i);
-
             if (pWorkerContext->nThreadCount > 1)
             {
                 // insert work item to queue
@@ -61,6 +59,8 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
             }
             else
             {
+                pWorkerContext->Next(i);
+
                 ItemContext context(pWorkerContext, &item);
                 bool bSuccess = ConvertItem(&context);
                 if (bSuccess == true)

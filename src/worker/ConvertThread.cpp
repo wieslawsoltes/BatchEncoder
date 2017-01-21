@@ -11,18 +11,29 @@ DWORD WINAPI ConvertThread(LPVOID lpParam)
     while (!pQueue->IsEmpty())
     {
         ItemContext* pContext = (ItemContext*)pQueue->RemoveHead();
-        bool bResult = ConvertItem(pContext);
+        
+        if (pContext->pWorkerContext->nThreadCount > 1)
+            pContext->pWorkerContext->Next(pContext->item->nId);
 
-        if (bResult = false && pContext->pWorkerContext->pConfig->m_Options.bStopOnErrors == true)
+        bool bSuccess = ConvertItem(pContext);
+
+        if (bSuccess == true)
         {
-            delete pContext;
-            return(1);
+            pContext->pWorkerContext->nDoneWithoutError++;
+        }
+        else
+        {
+            if (pContext->pWorkerContext->pConfig->m_Options.bStopOnErrors == true)
+            {
+                delete pContext;
+                return(1);
+            }
         }
 
         if (pContext->pWorkerContext->bRunning == false)
         {
             delete pContext;
-            return(1);
+            return(0);
         }
 
         delete pContext;
