@@ -61,22 +61,14 @@ $tools =
 
 Function Download {
     Param ($path, $url, $name, $dir)
-    (New-Object System.Net.WebClient).DownloadFile($url,$path + "\"  + $name)
+    (New-Object System.Net.WebClient).DownloadFile($url, $path + "\"  + $name)
     New-Item -Name $dir -ItemType directory
-}
-
-Function Unzip {
-    Param ($path, $name, $dir)
-    $shell = New-Object -com shell.application
-    $shell.namespace($path + "\"  + $dir).Copyhere($shell.namespace($path + "\"  + $name).items())
 }
 
 foreach ($tool in $tools) {
     Try {
         "Downloading: " + $tool[0]
         Download $path $tool[0] $tool[1] $tool[2]
-        "Unzipping: " + $tool[1] + " to: " + $tool[2]
-        Unzip $path $tool[1] $tool[2]
     }
     Catch {
         "Failed to download: " + $tool[0]
