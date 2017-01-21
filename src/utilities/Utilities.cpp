@@ -5,6 +5,135 @@
 #include "..\BatchEncoder.h"
 #include "Utilities.h"
 
+DWORD CountSetBits(ULONG_PTR bitMask)
+{
+    DWORD LSHIFT = sizeof(ULONG_PTR) * 8 - 1;
+    DWORD bitSetCount = 0;
+    ULONG_PTR bitTest = (ULONG_PTR)1 << LSHIFT;
+    DWORD i;
+
+    for (i = 0; i <= LSHIFT; ++i)
+    {
+        bitSetCount += ((bitMask & bitTest) ? 1 : 0);
+        bitTest /= 2;
+    }
+
+    return bitSetCount;
+}
+
+int GetLogicalProcessorInformation(LogicalProcessorInformation* info)
+{
+    LPFN_GLPI glpi;
+    BOOL done = FALSE;
+    PSYSTEM_LOGICAL_PROCESSOR_INFORMATION buffer = NULL;
+    PSYSTEM_LOGICAL_PROCESSOR_INFORMATION ptr = NULL;
+    DWORD returnLength = 0;
+    DWORD byteOffset = 0;
+    PCACHE_DESCRIPTOR Cache;
+
+    glpi = (LPFN_GLPI)GetProcAddress(GetModuleHandle(TEXT("kernel32")), "GetLogicalProcessorInformation");
+    if (NULL == glpi)
+    {
+#ifdef _DEBUG
+        _tprintf(_T("\nGetLogicalProcessorInformation is not supported.\n"));
+#endif
+        return (1);
+    }
+
+    while (!done)
+    {
+        DWORD rc = glpi(buffer, &returnLength);
+        if (FALSE == rc)
+        {
+            if (GetLastError() == ERROR_INSUFFICIENT_BUFFER)
+            {
+                if (buffer)
+                    free(buffer);
+
+                buffer = (PSYSTEM_LOGICAL_PROCESSOR_INFORMATION)malloc(returnLength);
+                if (NULL == buffer)
+                {
+#ifdef _DEBUG
+                    _tprintf(_T("\nError: Allocation failure\n"));
+#endif
+                    return (2);
+                }
+            }
+            else
+            {
+#ifdef _DEBUG
+                _tprintf(_T("\nError %d\n"), GetLastError());
+#endif
+                return (3);
+            }
+        }
+        else
+        {
+            done = TRUE;
+        }
+    }
+
+    ptr = buffer;
+
+    while (byteOffset + sizeof(SYSTEM_LOGICAL_PROCESSOR_INFORMATION) <= returnLength)
+    {
+        switch (ptr->Relationship)
+        {
+        case RelationNumaNode:
+            // Non-NUMA systems report a single record of this type.
+            info->numaNodeCount++;
+            break;
+        case RelationProcessorCore:
+            info->processorCoreCount++;
+            // A hyperthreaded core supplies more than one logical processor.
+            info->logicalProcessorCount += CountSetBits(ptr->ProcessorMask);
+            break;
+        case RelationCache:
+            // Cache data is in ptr->Cache, one CACHE_DESCRIPTOR structure for each cache. 
+            Cache = &ptr->Cache;
+            if (Cache->Level == 1)
+            {
+                info->processorL1CacheCount++;
+            }
+            else if (Cache->Level == 2)
+            {
+                info->processorL2CacheCount++;
+            }
+            else if (Cache->Level == 3)
+            {
+                info->processorL3CacheCount++;
+            }
+            break;
+        case RelationProcessorPackage:
+            // Logical processors share a physical package.
+            info->processorPackageCount++;
+            break;
+        default:
+#ifdef _DEBUG
+            _tprintf(_T("\nError: Unsupported LOGICAL_PROCESSOR_RELATIONSHIP value.\n"));
+#endif
+            break;
+        }
+        byteOffset += sizeof(SYSTEM_LOGICAL_PROCESSOR_INFORMATION);
+        ptr++;
+    }
+
+#ifdef _DEBUG
+    _tprintf(_T("\nGetLogicalProcessorInformation results:\n"));
+    _tprintf(_T("Number of NUMA nodes: %d\n"), info->numaNodeCount);
+    _tprintf(_T("Number of physical processor packages: %d\n"), info->processorPackageCount);
+    _tprintf(_T("Number of processor cores: %d\n"), info->processorCoreCount);
+    _tprintf(_T("Number of logical processors: %d\n"), info->logicalProcessorCount);
+    _tprintf(_T("Number of processor L1/L2/L3 caches: %d/%d/%d\n"),
+        info->processorL1CacheCount,
+        info->processorL2CacheCount,
+        info->processorL3CacheCount);
+#endif
+
+    free(buffer);
+    return (0);
+}
+
 void DoTheShutdown()
 {
     // Windows XP or later
@@ -98,7 +227,7 @@ void SetComboBoxHeight(HWND hDlg, int nComboBoxID)
         SWP_NOZORDER | SWP_NOMOVE | SWP_SHOWWINDOW);
 }
 
-static UINT MyGetFileName(LPCTSTR lpszPathName, LPTSTR lpszTitle, UINT nMax)
+UINT MyGetFileName(LPCTSTR lpszPathName, LPTSTR lpszTitle, UINT nMax)
 {
     LPTSTR lpszTemp = ::PathFindFileName(lpszPathName);
     if (lpszTitle == NULL)
