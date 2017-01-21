@@ -186,7 +186,7 @@ CBatchEncoderDlg::CBatchEncoderDlg(CWnd* pParent /*=NULL*/)
     : CResizeDialog(CBatchEncoderDlg::IDD, pParent)
 {
     this->m_hIcon = AfxGetApp()->LoadIcon(IDI_TRAYICON);
-    this->szMainConfigFile = ::GetExeFilePath() + _T("BatchEncoder.config");
+    this->szConfigFile = ::GetExeFilePath() + _T("BatchEncoder.config");
     this->m_Config.m_Options.Defaults();
     this->pWorkerContext = new CBatchEncoderWorkerContext(&this->m_Config, this);
     this->pWorkerContext->bRunning = false;
@@ -277,8 +277,8 @@ BEGIN_MESSAGE_MAP(CBatchEncoderDlg, CResizeDialog)
     ON_COMMAND(ID_ACCELERATOR_CTRL_L, OnFileLoadList)
     ON_COMMAND(ID_ACCELERATOR_CTRL_S, OnFileSaveList)
     ON_COMMAND(ID_ACCELERATOR_CTRL_E, OnFileClearList)
-    ON_COMMAND(ID_ACCELERATOR_CTRL_SHIFT_L, LoadConfig)
-    ON_COMMAND(ID_ACCELERATOR_CTRL_SHIFT_S, SaveConfig)
+    ON_COMMAND(ID_ACCELERATOR_CTRL_SHIFT_L, LoadConfiguration)
+    ON_COMMAND(ID_ACCELERATOR_CTRL_SHIFT_S, SaveConfiguration)
     ON_COMMAND(ID_ACCELERATOR_F3, OnEditResetTime)
     ON_COMMAND(ID_ACCELERATOR_F4, OnEditResetOutput)
     ON_COMMAND(ID_ACCELERATOR_ALT_F4, OnFileExit)
@@ -346,7 +346,7 @@ BOOL CBatchEncoderDlg::OnInitDialog()
     m_FileProgress.SetRange(0, 100);
     m_FileProgress.SetPos(0);
     m_FileProgress.ShowWindow(SW_HIDE);
-    
+
     // list style
     DWORD dwExStyle = m_LstInputItems.GetExtendedStyle();
     dwExStyle |= LVS_EX_FULLROWSELECT | LVS_EX_CHECKBOXES;
@@ -382,7 +382,7 @@ BOOL CBatchEncoderDlg::OnInitDialog()
 
     try
     {
-        this->LoadConfigFile(this->szMainConfigFile);
+        this->LoadConfiguration(this->szConfigFile);
     }
     catch (...)
     {
@@ -461,11 +461,11 @@ void CBatchEncoderDlg::ShowProgressTrayIcon(int nProgress)
     static const int nIconId[nIconsIdCount] =
     {
         IDI_ICON_PROGRESS_01, IDI_ICON_PROGRESS_02, IDI_ICON_PROGRESS_03,
-        IDI_ICON_PROGRESS_04, IDI_ICON_PROGRESS_05, IDI_ICON_PROGRESS_06, 
+        IDI_ICON_PROGRESS_04, IDI_ICON_PROGRESS_05, IDI_ICON_PROGRESS_06,
         IDI_ICON_PROGRESS_07, IDI_ICON_PROGRESS_08, IDI_ICON_PROGRESS_09,
         IDI_ICON_PROGRESS_10, IDI_ICON_PROGRESS_11, IDI_ICON_PROGRESS_12
     };
-    
+
     if (m_Config.m_Options.bShowTrayIcon == true)
     {
         int nIndex = (nIconsIdCount * nProgress) / 100;
@@ -639,16 +639,6 @@ void CBatchEncoderDlg::UpdatePresetComboBox()
     this->m_CmbPresets.SetCurSel(format.nDefaultPreset);
 }
 
-LPTSTR CBatchEncoderDlg::GetMenuItemCheck(int nID)
-{
-    return (this->GetMenu()->GetMenuState(nID, MF_BYCOMMAND) == MF_CHECKED) ? _T("true") : _T("false");
-}
-
-void CBatchEncoderDlg::SetMenuItemCheck(int nID, LPTSTR bChecked)
-{
-    this->GetMenu()->CheckMenuItem(nID, (lstrcmp(_T("true"), bChecked) == 0) ? MF_CHECKED : MF_UNCHECKED);
-}
-
 bool CBatchEncoderDlg::GridlinesVisible()
 {
     DWORD dwExStyle = m_LstInputItems.GetExtendedStyle();
@@ -696,7 +686,8 @@ void CBatchEncoderDlg::SetItems()
     int nItems = m_Config.m_Items.GetSize();
     for (int i = 0; i < nItems; i++)
     {
-        this->InsertToControlList(i);
+        CItem& item = m_Config.m_Items.GetData(i);
+        this->AddToList(item, i);
     }
 }
 
@@ -905,7 +896,7 @@ bool CBatchEncoderDlg::SaveItems(CString szFileXml)
     return doc.Save(szFileXml);
 }
 
-bool CBatchEncoderDlg::LoadConfigFile(CString szFileXml)
+bool CBatchEncoderDlg::LoadConfiguration(CString szFileXml)
 {
     this->m_LstInputItems.DeleteAllItems();
 
@@ -927,7 +918,7 @@ bool CBatchEncoderDlg::LoadConfigFile(CString szFileXml)
     return true;
 }
 
-bool CBatchEncoderDlg::SaveConfigFile(CString szFileXml)
+bool CBatchEncoderDlg::SaveConfiguration(CString szFileXml)
 {
     this->GetOptions();
     this->GetItems();
@@ -935,60 +926,6 @@ bool CBatchEncoderDlg::SaveConfigFile(CString szFileXml)
     XmlConfiguration doc;
     doc.SetConfiguration(this->m_Config);
     return doc.Save(szFileXml);
-}
-
-void CBatchEncoderDlg::LoadConfig()
-{
-    CFileDialog fd(TRUE, _T("config"), _T(""),
-        OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER,
-        _T("Config Files (*.config)|*.config|Xml Files (*.xml)|*.xml|All Files|*.*||"), this);
-
-    fd.m_ofn.lpstrInitialDir = ::GetExeFilePath();
-
-    if (fd.DoModal() == IDOK)
-    {
-        CString szPath = fd.GetPathName();
-        try
-        {
-            if (this->LoadConfigFile(szPath) == false)
-            {
-                MessageBox(_T("Failed to load configuration!"),
-                    _T("ERROR"),
-                    MB_OK | MB_ICONERROR);
-            }
-        }
-        catch (...)
-        {
-            MessageBox(_T("Error loading configuration file!"), _T("ERROR"), MB_OK | MB_ICONERROR);
-        }
-    }
-}
-
-void CBatchEncoderDlg::SaveConfig()
-{
-    CFileDialog fd(FALSE, _T("config"), _T("config"),
-        OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER | OFN_OVERWRITEPROMPT,
-        _T("Config Files (*.config)|*.config|Xml Files (*.xml)|*.xml|All Files|*.*||"), this);
-
-    fd.m_ofn.lpstrInitialDir = ::GetExeFilePath();
-
-    if (fd.DoModal() == IDOK)
-    {
-        CString szPath = fd.GetPathName();
-        try
-        {
-            if (this->SaveConfigFile(szPath) == false)
-            {
-                MessageBox(_T("Failed to save configuration!"),
-                    _T("ERROR"),
-                    MB_OK | MB_ICONERROR);
-            }
-        }
-        catch (...)
-        {
-            MessageBox(_T("Error saving configuration file!"), _T("ERROR"), MB_OK | MB_ICONERROR);
-        }
-    }
 }
 
 void CBatchEncoderDlg::StartConvert()
@@ -1077,7 +1014,7 @@ void CBatchEncoderDlg::FinishConvert()
     if (this->m_Config.m_Options.bShutdownWhenFinished == true)
     {
         if (this->m_Config.m_Options.bDoNotSaveConfiguration == false)
-            this->SaveConfigFile(this->szMainConfigFile);
+            this->SaveConfiguration(this->szConfigFile);
 
         this->EnableTrayIcon(false);
 
@@ -1112,7 +1049,7 @@ void CBatchEncoderDlg::OnClose()
     // TODO: Kill worker thread and running command-line tool.
 
     if (this->GetMenu()->GetMenuState(ID_OPTIONS_DO_NOT_SAVE, MF_BYCOMMAND) != MF_CHECKED)
-        this->SaveConfigFile(this->szMainConfigFile);
+        this->SaveConfiguration(this->szConfigFile);
 
     this->EnableTrayIcon(false);
 
@@ -1293,10 +1230,8 @@ int CBatchEncoderDlg::InsertToMemoryList(CString szPath)
     return m_Config.m_Items.InsertNode(szPath, szFormatId, nPreset);
 }
 
-void CBatchEncoderDlg::InsertToControlList(int nItem)
+void CBatchEncoderDlg::AddToList(CItem &item, int nItem)
 {
-    CItem& item = m_Config.m_Items.GetData(nItem);
-
     CString tmpBuf;
     LVITEM lvi;
     ZeroMemory(&lvi, sizeof(LVITEM));
@@ -1348,13 +1283,14 @@ void CBatchEncoderDlg::InsertToControlList(int nItem)
     m_LstInputItems.SetCheck(nItem, item.bChecked);
 }
 
-bool CBatchEncoderDlg::InsertToList(CString szPath)
+bool CBatchEncoderDlg::AddToList(CString szPath)
 {
     int nItem = this->InsertToMemoryList(szPath);
     if (nItem == -1)
         return false;
 
-    this->InsertToControlList(nItem);
+    CItem& item = m_Config.m_Items.GetData(nItem);
+    this->AddToList(item, nItem);
 
     return true;
 }
@@ -1403,7 +1339,7 @@ void CBatchEncoderDlg::SearchFolderForFiles(CString szFile, const bool bRecurse)
             {
                 CString szPath;
                 szPath.Format(_T("%s\\%s\0"), szFile, w32FileData.cFileName);
-                this->InsertToList(szPath);
+                this->AddToList(szPath);
             }
 
             if (w32FileData.cFileName[0] != '.' &&
@@ -1450,7 +1386,7 @@ void CBatchEncoderDlg::HandleDropFiles(HDROP hDropInfo)
             else
             {
                 CString szPath = szFile;
-                this->InsertToList(szPath);
+                this->AddToList(szPath);
             }
 
             szFile.ReleaseBuffer();
@@ -1683,6 +1619,60 @@ void CBatchEncoderDlg::OnEnKillFocusEditOutPath()
     }
 }
 
+void CBatchEncoderDlg::LoadConfiguration()
+{
+    CFileDialog fd(TRUE, _T("config"), _T(""),
+        OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER,
+        _T("Config Files (*.config)|*.config|Xml Files (*.xml)|*.xml|All Files|*.*||"), this);
+
+    fd.m_ofn.lpstrInitialDir = ::GetExeFilePath();
+
+    if (fd.DoModal() == IDOK)
+    {
+        CString szPath = fd.GetPathName();
+        try
+        {
+            if (this->LoadConfiguration(szPath) == false)
+            {
+                MessageBox(_T("Failed to load configuration!"),
+                    _T("ERROR"),
+                    MB_OK | MB_ICONERROR);
+            }
+        }
+        catch (...)
+        {
+            MessageBox(_T("Error loading configuration file!"), _T("ERROR"), MB_OK | MB_ICONERROR);
+        }
+    }
+}
+
+void CBatchEncoderDlg::SaveConfiguration()
+{
+    CFileDialog fd(FALSE, _T("config"), _T("config"),
+        OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER | OFN_OVERWRITEPROMPT,
+        _T("Config Files (*.config)|*.config|Xml Files (*.xml)|*.xml|All Files|*.*||"), this);
+
+    fd.m_ofn.lpstrInitialDir = ::GetExeFilePath();
+
+    if (fd.DoModal() == IDOK)
+    {
+        CString szPath = fd.GetPathName();
+        try
+        {
+            if (this->SaveConfiguration(szPath) == false)
+            {
+                MessageBox(_T("Failed to save configuration!"),
+                    _T("ERROR"),
+                    MB_OK | MB_ICONERROR);
+            }
+        }
+        catch (...)
+        {
+            MessageBox(_T("Error saving configuration file!"), _T("ERROR"), MB_OK | MB_ICONERROR);
+        }
+    }
+}
+
 void CBatchEncoderDlg::OnFileLoadList()
 {
     CFileDialog fd(TRUE, _T("list"), _T(""),
@@ -1773,7 +1763,7 @@ void CBatchEncoderDlg::OnEditAddFiles()
                 if (!sFilePath.IsEmpty())
                 {
                     CString szPath = sFilePath;
-                    this->InsertToList(szPath);
+                    this->AddToList(szPath);
                 }
             } while (pos != NULL);
 

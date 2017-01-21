@@ -26,32 +26,21 @@ protected:
     DECLARE_MESSAGE_MAP()
 public:
     virtual BOOL OnInitDialog();
-private:
+public:
     volatile bool bUpdate;
-public:
     int nSelectedFormat;
-public:
     CFormatsList m_Formats;
-public:
     CString szPresetsDialogResize;
     CString szPresetsListColumns;
 public:
-    void LoadWindowSettings();
-    void SaveWindowSettings();
-public:
     CMyStatic m_StcName;
     CMyStatic m_StcOptions;
-public:
     CListCtrl m_LstPresets;
-public:
     CComboBox m_CmbFormat;
-public:
     CEdit m_EdtName;
     CEdit m_EdtOptions;
-public:
     CMyButton m_BtnOK;
     CMyButton m_BtnCancel;
-public:
     CMyButton m_BtnLoad;
     CMyButton m_BtnSave;
     CMyButton m_BtnMoveUp;
@@ -60,6 +49,9 @@ public:
     CMyButton m_BtnRemove;
     CMyButton m_BtnUpdate;
     CMyButton m_BtnAdd;
+public:
+    void LoadWindowSettings();
+    void SaveWindowSettings();
 public:
     bool bShowGridLines;
     void ShowGridlines(bool bShow);

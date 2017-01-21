@@ -36,20 +36,12 @@ protected:
     virtual void OnOK();
     virtual void OnCancel();
 public:
-    CMyStatusBarCtrl m_StatusBar;
-public:
     void UpdateStatusBar();
-protected:
-    CProgressCtrl m_Progress;
 public:
     HACCEL m_hAccel;
 public:
     BOOL PreTranslateMessage(MSG* pMsg);
 public:
-    CString szMainConfigFile;
-public:
-    CConfiguration m_Config;
-private:
     class CBatchEncoderWorkerContext : public WorkerContext
     {
         CTimeCount timeCount;
@@ -156,30 +148,26 @@ private:
         };
     };
 public:
+    CString szConfigFile;
+    CConfiguration m_Config;
     WorkerContext* pWorkerContext;
-public:
     bool bSameAsSourceEdit;
-public:
-    CEdit m_EdtOutPath;
-public:
-    CProgressCtrl m_FileProgress;
-public:
-    CMyComboBox m_CmbPresets;
-    CMyComboBox m_CmbFormat;
-public:
-    CItemListCtrl m_LstInputItems;
 public:
     CMyStatic m_StcPreset;
     CMyStatic m_StcFormat;
-public:
+    CMyComboBox m_CmbPresets;
+    CMyComboBox m_CmbFormat;
+    CItemListCtrl m_LstInputItems;
     CButton m_ChkOutPath;
-public:
-    CMyButton m_BtnConvert;
     CMyButton m_BtnBrowse;
+    CEdit m_EdtOutPath;
+    CProgressCtrl m_FileProgress;
+    CMyButton m_BtnConvert;
+    CMyStatusBarCtrl m_StatusBar;
 public:
     int InsertToMemoryList(CString szPath);
-    void InsertToControlList(int nItem);
-    bool InsertToList(CString szPath);
+    bool AddToList(CString szPath);
+    void AddToList(CItem &item, int nItem);
 public:
     void HandleDropFiles(HDROP hDropInfo);
 public:
@@ -190,9 +178,6 @@ public:
     void ResetConvertionStatus();
 public:
     void SearchFolderForFiles(CString szFile, const bool bRecurse);
-public:
-    LPTSTR GetMenuItemCheck(int nID);
-    void SetMenuItemCheck(int nID, LPTSTR bChecked);
 public:
     bool GridlinesVisible();
     void ShowGridlines(bool bShow);
@@ -206,11 +191,8 @@ public:
     bool LoadItems(CString szFileXml);
     bool SaveItems(CString szFileXml);
 public:
-    bool LoadConfigFile(CString szFileXml);
-    bool SaveConfigFile(CString szFileXml);
-public:
-    afx_msg void LoadConfig();
-    afx_msg void SaveConfig();
+    bool LoadConfiguration(CString szFileXml);
+    bool SaveConfiguration(CString szFileXml);
 public:
     void UpdateFormatComboBox();
     void UpdatePresetComboBox();
@@ -255,6 +237,9 @@ public:
     afx_msg void OnEnChangeEditOutPath();
     afx_msg void OnEnSetFocusEditOutPath();
     afx_msg void OnEnKillFocusEditOutPath();
+public:
+    afx_msg void LoadConfiguration();
+    afx_msg void SaveConfiguration();
 public:
     afx_msg void OnFileLoadList();
     afx_msg void OnFileSaveList();

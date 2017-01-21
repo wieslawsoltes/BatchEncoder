@@ -22,13 +22,12 @@ protected:
 public:
     virtual BOOL OnInitDialog();
 public:
+    COptions m_Options;
+public:
     CMyButton m_BtnCancel;
     CMyButton m_BtnOK;
-public:
     CEdit m_EdtLog;
     CButton m_BtnBrowse;
-public:
-    COptions m_Options;
 public:
     void GetAdvancedOptions();
     void SetAdvancedOptions();

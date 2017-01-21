@@ -24,7 +24,6 @@ protected:
     virtual void OnCancel();
 public:
     CMyButton m_BtnOK;
-public:
     CMyStatic m_StcMainAppName;
     CHyperlink m_StcWebsite;
     CHyperlink m_StcEmail;
