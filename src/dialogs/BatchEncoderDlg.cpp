@@ -2121,7 +2121,7 @@ void CBatchEncoderDlg::OnOptionsDeleteLog()
     if (CFile::GetStatus(m_Config.m_Options.szLogFileName, rStatus) == TRUE)
     {
         if (::DeleteFile(m_Config.m_Options.szLogFileName) == FALSE)
-            this->MessageBox(_T("Failed to delete logfile!"), _T("ERROR"), MB_OK | MB_ICONERROR);
+            this->MessageBox(_T("Failed to delete log file!"), _T("ERROR"), MB_OK | MB_ICONERROR);
     }
 }
 
