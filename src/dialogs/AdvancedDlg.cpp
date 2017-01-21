@@ -25,6 +25,7 @@ void CAdvancedDlg::DoDataExchange(CDataExchange* pDX)
     DDX_Control(pDX, IDOK, m_BtnOK);
     DDX_Control(pDX, IDC_EDIT_CONSOLE_LOG_FILE, m_EdtLog);
     DDX_Control(pDX, IDC_BUTTON_BROWSE_LOG, m_BtnBrowse);
+    DDX_Control(pDX, IDC_EDIT_THREADCOUNT, m_EdtThreads);
 }
 
 BEGIN_MESSAGE_MAP(CAdvancedDlg, CDialog)
@@ -60,6 +61,10 @@ void CAdvancedDlg::GetAdvancedOptions()
         m_Options.nLogEncoding = 2;
     else
         m_Options.nLogEncoding = 2;
+
+    CString szThreadCount;
+    m_EdtThreads.GetWindowText(szThreadCount);
+    m_Options.nThreadCount = _tstoi(szThreadCount);
 }
 
 void CAdvancedDlg::SetAdvancedOptions()
@@ -95,6 +100,10 @@ void CAdvancedDlg::SetAdvancedOptions()
             IDC_RADIO_ENCODING_UTF8);
         break;
     };
+
+    CString szThreadCount;
+    szThreadCount.Format(_T("%d\0"), m_Options.nThreadCount);
+    m_EdtThreads.SetWindowText(szThreadCount);
 }
 
 void CAdvancedDlg::OnOK()

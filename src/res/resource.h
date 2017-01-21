@@ -75,6 +75,7 @@
 #define IDC_STATIC_FD_TEXT_TEMPLATE     1054
 #define IDC_STATIC_FD_TEXT_PROGRESS     1055
 #define IDC_STATIC_GROUP_FD_PIPES       1056
+#define IDC_EDIT_THREADCOUNT            1057
 #define ID_HELP_ABOUT                   32771
 #define ID_FILE_EXIT                    32772
 #define ID_HELP_WEBSITE                 32773
@@ -153,8 +154,8 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        123
-#define _APS_NEXT_COMMAND_VALUE         32847
-#define _APS_NEXT_CONTROL_VALUE         1057
+#define _APS_NEXT_COMMAND_VALUE         32844
+#define _APS_NEXT_CONTROL_VALUE         1058
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif
