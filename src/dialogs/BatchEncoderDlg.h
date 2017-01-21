@@ -180,16 +180,11 @@ public:
     {
         this->timeCount.Stop();
 
+        CString szText = _T("");
         if (nProcessedFiles > 0)
-        {
-            CString szText;
             szText.Format(_T("Done in %s"), ::FormatTime(this->timeCount.ElapsedTime(), 3));
-            pDlg->m_StatusBar.SetText(szText, 1, 0);
-        }
-        else
-        {
-            pDlg->m_StatusBar.SetText(_T(""), 1, 0);
-        }
+
+        pDlg->m_StatusBar.SetText(szText, 1, 0);
 
         pDlg->FinishConvert();
     }
