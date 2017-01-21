@@ -11,6 +11,14 @@
 #include "..\XmlConfiguration.h"
 #include "..\worker\WorkThread.h"
 
+#define ITEM_COLUMN_NAME    0
+#define ITEM_COLUMN_INPUT   1
+#define ITEM_COLUMN_SIZE    2
+#define ITEM_COLUMN_OUTPUT  3
+#define ITEM_COLUMN_PRESET  4
+#define ITEM_COLUMN_TIME    5
+#define ITEM_COLUMN_STATUS  6
+
 class CBatchEncoderDlg : public CResizeDialog
 {
     DECLARE_DYNAMIC(CBatchEncoderDlg)
@@ -193,8 +201,8 @@ public:
     {
         if (bError == true)
         {
-            pDlg->m_LstInputItems.SetItemText(nIndex, 5, _T("--:--")); // Time
-            pDlg->m_LstInputItems.SetItemText(nIndex, 6, _T("Error")); // Status
+            pDlg->m_LstInputItems.SetItemText(nIndex, ITEM_COLUMN_TIME, _T("--:--")); // Time
+            pDlg->m_LstInputItems.SetItemText(nIndex, ITEM_COLUMN_STATUS, _T("Error")); // Status
             pDlg->m_FileProgress.SetPos(0);
             this->bRunning = false;
             return this->bRunning;
@@ -204,15 +212,15 @@ public:
         {
             if (nProgress != 100)
             {
-                pDlg->m_LstInputItems.SetItemText(nIndex, 5, _T("--:--")); // Time
-                pDlg->m_LstInputItems.SetItemText(nIndex, 6, _T("Error")); // Status
+                pDlg->m_LstInputItems.SetItemText(nIndex, ITEM_COLUMN_TIME, _T("--:--")); // Time
+                pDlg->m_LstInputItems.SetItemText(nIndex, ITEM_COLUMN_STATUS, _T("Error")); // Status
                 pDlg->m_FileProgress.SetPos(0);
             }
             else
             {
                 CString szTime = ::FormatTime(fTime, 1);
-                pDlg->m_LstInputItems.SetItemText(nIndex, 5, szTime); // Time
-                pDlg->m_LstInputItems.SetItemText(nIndex, 6, _T("Done")); // Status
+                pDlg->m_LstInputItems.SetItemText(nIndex, ITEM_COLUMN_TIME, szTime); // Time
+                pDlg->m_LstInputItems.SetItemText(nIndex, ITEM_COLUMN_STATUS, _T("Done")); // Status
             }
         }
         else
@@ -232,7 +240,7 @@ public:
     }
     void Status(int nIndex, CString szTime, CString szStatus)
     {
-        pDlg->m_LstInputItems.SetItemText(nIndex, 5, szTime); // Time
-        pDlg->m_LstInputItems.SetItemText(nIndex, 6, szStatus); // Status
+        pDlg->m_LstInputItems.SetItemText(nIndex, ITEM_COLUMN_TIME, szTime); // Time
+        pDlg->m_LstInputItems.SetItemText(nIndex, ITEM_COLUMN_STATUS, szStatus); // Status
     };
 };

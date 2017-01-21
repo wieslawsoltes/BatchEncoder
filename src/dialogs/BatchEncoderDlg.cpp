@@ -351,13 +351,13 @@ BOOL CBatchEncoderDlg::OnInitDialog()
     m_LstInputItems.SetExtendedStyle(dwExStyle);
 
     // list columns
-    m_LstInputItems.InsertColumn(0, _T("Name"), LVCFMT_LEFT, 165);
-    m_LstInputItems.InsertColumn(1, _T("Input"), LVCFMT_LEFT, 50);
-    m_LstInputItems.InsertColumn(2, _T("Size (bytes)"), LVCFMT_LEFT, 80);
-    m_LstInputItems.InsertColumn(3, _T("Output"), LVCFMT_LEFT, 50);
-    m_LstInputItems.InsertColumn(4, _T("Preset#"), LVCFMT_LEFT, 55);
-    m_LstInputItems.InsertColumn(5, _T("Time"), LVCFMT_LEFT, 90);
-    m_LstInputItems.InsertColumn(6, _T("Status"), LVCFMT_LEFT, 85);
+    m_LstInputItems.InsertColumn(ITEM_COLUMN_NAME, _T("Name"), LVCFMT_LEFT, 165);
+    m_LstInputItems.InsertColumn(ITEM_COLUMN_INPUT, _T("Input"), LVCFMT_LEFT, 50);
+    m_LstInputItems.InsertColumn(ITEM_COLUMN_SIZE, _T("Size (bytes)"), LVCFMT_LEFT, 80);
+    m_LstInputItems.InsertColumn(ITEM_COLUMN_OUTPUT, _T("Output"), LVCFMT_LEFT, 50);
+    m_LstInputItems.InsertColumn(ITEM_COLUMN_PRESET, _T("Preset#"), LVCFMT_LEFT, 55);
+    m_LstInputItems.InsertColumn(ITEM_COLUMN_TIME, _T("Time"), LVCFMT_LEFT, 90);
+    m_LstInputItems.InsertColumn(ITEM_COLUMN_STATUS, _T("Status"), LVCFMT_LEFT, 85);
 
     m_BtnConvert.SetBold(true);
 
@@ -672,8 +672,8 @@ void CBatchEncoderDlg::GetItems()
         CItem& item = m_Config.m_Items.GetData(i);
         item.nId = i;
         item.bChecked = this->m_LstInputItems.GetCheck(i) == TRUE;
-        item.szTime = this->m_LstInputItems.GetItemText(i, 5);
-        item.szStatus = this->m_LstInputItems.GetItemText(i, 6);
+        item.szTime = this->m_LstInputItems.GetItemText(i, ITEM_COLUMN_TIME);
+        item.szStatus = this->m_LstInputItems.GetItemText(i, ITEM_COLUMN_STATUS);
     }
 }
 
@@ -1078,11 +1078,11 @@ void CBatchEncoderDlg::UpdateFormatAndPreset()
                 item.szFormatId = format.szId;
                 item.nPreset = nPreset;
 
-                this->m_LstInputItems.SetItemText(i, 3, format.szId);
+                this->m_LstInputItems.SetItemText(i, ITEM_COLUMN_OUTPUT, format.szId);
 
                 CString szPreset;
                 szPreset.Format(_T("%d"), nPreset);
-                this->m_LstInputItems.SetItemText(i, 4, szPreset);
+                this->m_LstInputItems.SetItemText(i, ITEM_COLUMN_PRESET, szPreset);
 
                 nSelected++;
             }
@@ -1096,11 +1096,11 @@ void CBatchEncoderDlg::UpdateFormatAndPreset()
                 item.szFormatId = format.szId;
                 item.nPreset = nPreset;
 
-                this->m_LstInputItems.SetItemText(i, 3, format.szId);
+                this->m_LstInputItems.SetItemText(i, ITEM_COLUMN_OUTPUT, format.szId);
 
                 CString szPreset;
                 szPreset.Format(_T("%d"), nPreset);
-                this->m_LstInputItems.SetItemText(i, 4, szPreset);
+                this->m_LstInputItems.SetItemText(i, ITEM_COLUMN_PRESET, szPreset);
             }
         }
     }
@@ -1242,39 +1242,39 @@ void CBatchEncoderDlg::AddToList(CItem &item, int nItem)
 
     // [Type] : input extension 
     tmpBuf.Format(_T("%s"), item.szExtension);
-    lvi.iSubItem = 1;
+    lvi.iSubItem = ITEM_COLUMN_INPUT;
     lvi.pszText = (LPTSTR)(LPCTSTR)(tmpBuf);
-    m_LstInputItems.SetItemText(lvi.iItem, 1, lvi.pszText);
+    m_LstInputItems.SetItemText(lvi.iItem, ITEM_COLUMN_INPUT, lvi.pszText);
 
     // [Size (bytes)] : file size
     tmpBuf.Format(_T("%s"), item.szSize);
-    lvi.iSubItem = 2;
+    lvi.iSubItem = ITEM_COLUMN_SIZE;
     lvi.pszText = (LPTSTR)(LPCTSTR)(tmpBuf);
-    m_LstInputItems.SetItemText(lvi.iItem, 2, lvi.pszText);
+    m_LstInputItems.SetItemText(lvi.iItem, ITEM_COLUMN_SIZE, lvi.pszText);
 
     // [Output] : output format
     tmpBuf.Format(_T("%s"), item.szFormatId);
-    lvi.iSubItem = 3;
+    lvi.iSubItem = ITEM_COLUMN_OUTPUT;
     lvi.pszText = (LPTSTR)(LPCTSTR)(tmpBuf);
-    m_LstInputItems.SetItemText(lvi.iItem, 3, lvi.pszText);
+    m_LstInputItems.SetItemText(lvi.iItem, ITEM_COLUMN_OUTPUT, lvi.pszText);
 
     // [Preset] : selected preset index
     tmpBuf.Format(_T("%d"), item.nPreset);
-    lvi.iSubItem = 4;
+    lvi.iSubItem = ITEM_COLUMN_PRESET;
     lvi.pszText = (LPTSTR)(LPCTSTR)(tmpBuf);
-    m_LstInputItems.SetItemText(lvi.iItem, 4, lvi.pszText);
+    m_LstInputItems.SetItemText(lvi.iItem, ITEM_COLUMN_PRESET, lvi.pszText);
 
     // [Time] : encoder/decoder conversion time
     tmpBuf.Format(_T("%s"), (item.szTime.Compare(_T("")) == 0) ? _T("--:--") : item.szTime);
-    lvi.iSubItem = 5;
+    lvi.iSubItem = ITEM_COLUMN_TIME;
     lvi.pszText = (LPTSTR)(LPCTSTR)(tmpBuf);
-    m_LstInputItems.SetItemText(lvi.iItem, 5, lvi.pszText);
+    m_LstInputItems.SetItemText(lvi.iItem, ITEM_COLUMN_TIME, lvi.pszText);
 
     // [Status] : encoder/decoder progress status
     tmpBuf.Format(_T("%s"), (item.szStatus.Compare(_T("")) == 0) ? _T("Not Done") : item.szStatus);
-    lvi.iSubItem = 6;
+    lvi.iSubItem = ITEM_COLUMN_STATUS;
     lvi.pszText = (LPTSTR)(LPCTSTR)(tmpBuf);
-    m_LstInputItems.SetItemText(lvi.iItem, 6, lvi.pszText);
+    m_LstInputItems.SetItemText(lvi.iItem, ITEM_COLUMN_STATUS, lvi.pszText);
 
     // item CheckBox state
     m_LstInputItems.SetCheck(nItem, item.bChecked);
@@ -1491,7 +1491,7 @@ void CBatchEncoderDlg::ResetConvertionTime()
         {
             if (m_LstInputItems.GetItemState(i, LVIS_SELECTED) == LVIS_SELECTED)
             {
-                this->m_LstInputItems.SetItemText(i, 5, _T("--:--"));
+                this->m_LstInputItems.SetItemText(i, ITEM_COLUMN_TIME, _T("--:--"));
                 nSelected++;
             }
         }
@@ -1499,7 +1499,7 @@ void CBatchEncoderDlg::ResetConvertionTime()
         if (nSelected == 0)
         {
             for (int i = 0; i < nCount; i++)
-                this->m_LstInputItems.SetItemText(i, 5, _T("--:--"));
+                this->m_LstInputItems.SetItemText(i, ITEM_COLUMN_TIME, _T("--:--"));
         }
     }
 }
@@ -1514,7 +1514,7 @@ void CBatchEncoderDlg::ResetConvertionStatus()
         {
             if (m_LstInputItems.GetItemState(i, LVIS_SELECTED) == LVIS_SELECTED)
             {
-                this->m_LstInputItems.SetItemText(i, 6, _T("Not Done"));
+                this->m_LstInputItems.SetItemText(i, ITEM_COLUMN_STATUS, _T("Not Done"));
                 nSelected++;
             }
         }
@@ -1522,7 +1522,7 @@ void CBatchEncoderDlg::ResetConvertionStatus()
         if (nSelected == 0)
         {
             for (int i = 0; i < nCount; i++)
-                this->m_LstInputItems.SetItemText(i, 6, _T("Not Done"));
+                this->m_LstInputItems.SetItemText(i, ITEM_COLUMN_STATUS, _T("Not Done"));
         }
     }
 }
