@@ -4,8 +4,6 @@
 #include "StdAfx.h"
 #include "..\BatchEncoder.h"
 #include "..\utilities\Utilities.h"
-#include "..\utilities\UnicodeUtf8.h"
-#include "..\utilities\Utf8String.h"
 #include "BatchEncoderDlg.h"
 #include "PresetsDlg.h"
 #include "AboutDlg.h"
@@ -886,7 +884,7 @@ void CBatchEncoderDlg::SetOptions()
 bool CBatchEncoderDlg::LoadListFile(CString szFileXml)
 {
     XmlConfiguration doc;
-    if (doc.LoadFileUtf8(szFileXml) == true)
+    if (doc.Open(szFileXml) == true)
     {
         tinyxml2::XMLElement *pItemsElem = doc.FirstChildElement();
         if (!pItemsElem)
@@ -903,7 +901,7 @@ bool CBatchEncoderDlg::LoadListFile(CString szFileXml)
 
         this->OnEditClear();
 
-        doc.LoadItems(pItemsElem, m_Config.m_Items);
+        doc.GetItems(pItemsElem, m_Config.m_Items);
 
         this->SetItems();
 
@@ -924,9 +922,9 @@ bool CBatchEncoderDlg::SaveListFile(CString szFileXml)
     doc.LinkEndChild(pItemsElem);
 
     this->GetItems();
-    doc.SaveItems(pItemsElem, m_Config.m_Items);
+    doc.SetItems(pItemsElem, m_Config.m_Items);
 
-    return doc.SaveFileUtf8(szFileXml);
+    return doc.Save(szFileXml);
 }
 
 bool CBatchEncoderDlg::LoadConfigFile(CString szFileXml)
@@ -934,13 +932,13 @@ bool CBatchEncoderDlg::LoadConfigFile(CString szFileXml)
     this->m_LstInputItems.DeleteAllItems();
 
     XmlConfiguration doc;
-    if (doc.LoadFileUtf8(szFileXml) == false)
+    if (doc.Open(szFileXml) == false)
         return false;
 
     this->m_Config.m_Formats.RemoveAllNodes();
     this->m_Config.m_Items.RemoveAllNodes();
 
-    doc.LoadConfiguration(this->m_Config);
+    doc.GetConfiguration(this->m_Config);
 
     this->SetOptions();
     this->UpdateFormatComboBox();
@@ -957,8 +955,8 @@ bool CBatchEncoderDlg::SaveConfigFile(CString szFileXml)
     this->GetItems();
 
     XmlConfiguration doc;
-    doc.SaveConfiguration(this->m_Config);
-    return doc.SaveFileUtf8(szFileXml);
+    doc.SetConfiguration(this->m_Config);
+    return doc.Save(szFileXml);
 }
 
 void CBatchEncoderDlg::LoadConfig()

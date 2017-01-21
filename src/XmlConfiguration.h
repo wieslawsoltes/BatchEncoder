@@ -20,7 +20,7 @@ public:
     {
     }
 public:
-    void LoadOptions(tinyxml2::XMLElement *pOptionsElem, COptions &m_Options)
+    void GetOptions(tinyxml2::XMLElement *pOptionsElem, COptions &m_Options)
     {
         tinyxml2::XMLElement *pOptionElem;
 
@@ -276,7 +276,7 @@ public:
             m_Options.nThreadCount = 1;
         }
     }
-    void SaveOptions(tinyxml2::XMLElement *pOptionsElem, COptions &m_Options)
+    void SetOptions(tinyxml2::XMLElement *pOptionsElem, COptions &m_Options)
     {
         tinyxml2::XMLElement *pOptionElem;
         CUtf8String szBuffUtf8;
@@ -431,7 +431,7 @@ public:
         pOptionsElem->LinkEndChild(pOptionElem);
     }
 public:
-    void LoadPresets(tinyxml2::XMLElement *pPresetsElem, CPresetsList &m_Presets)
+    void GetPresets(tinyxml2::XMLElement *pPresetsElem, CPresetsList &m_Presets)
     {
         tinyxml2::XMLElement *pPresetElem = pPresetsElem->FirstChildElement("Preset");
         for (pPresetElem; pPresetElem; pPresetElem = pPresetElem->NextSiblingElement())
@@ -453,7 +453,7 @@ public:
             m_Presets.InsertNode(preset);
         }
     }
-    void SavePresets(tinyxml2::XMLElement *pPresetsElem, CPresetsList &m_Presets)
+    void SetPresets(tinyxml2::XMLElement *pPresetsElem, CPresetsList &m_Presets)
     {
         CUtf8String szBuffUtf8;
         tinyxml2::XMLElement *pPresetElem;
@@ -475,7 +475,7 @@ public:
         }
     }
 public:
-    void LoadFormats(tinyxml2::XMLElement *pFormatsElem, CFormatsList &m_Formats)
+    void GetFormats(tinyxml2::XMLElement *pFormatsElem, CFormatsList &m_Formats)
     {
         tinyxml2::XMLElement *pFormatElem = pFormatsElem->FirstChildElement("Format");
         for (pFormatElem; pFormatElem; pFormatElem = pFormatElem->NextSiblingElement())
@@ -543,12 +543,12 @@ public:
             }
 
             tinyxml2::XMLElement *pPresetsElem = pFormatElem->FirstChildElement("Presets");
-            this->LoadPresets(pPresetsElem, format.m_Presets);
+            this->GetPresets(pPresetsElem, format.m_Presets);
 
             m_Formats.InsertNode(format);
         }
     }
-    void SaveFormats(tinyxml2::XMLElement *pFormatsElem, CFormatsList &m_Formats)
+    void SetFormats(tinyxml2::XMLElement *pFormatsElem, CFormatsList &m_Formats)
     {
         CUtf8String szBuffUtf8;
         tinyxml2::XMLElement *pFormatElem;
@@ -593,13 +593,13 @@ public:
 
             tinyxml2::XMLElement *pPresetsElem = this->NewElement("Presets");
             pFormatElem->LinkEndChild(pPresetsElem);
-            this->SavePresets(pPresetsElem, format.m_Presets);
+            this->SetPresets(pPresetsElem, format.m_Presets);
 
             pFormatsElem->LinkEndChild(pFormatElem);
         }
     }
 public:
-    void LoadItems(tinyxml2::XMLElement *pItemsElem, CItemsList &m_Items)
+    void GetItems(tinyxml2::XMLElement *pItemsElem, CItemsList &m_Items)
     {
         tinyxml2::XMLElement *pItemElem = pItemsElem->FirstChildElement("Item");
         for (pItemElem; pItemElem; pItemElem = pItemElem->NextSiblingElement())
@@ -669,7 +669,7 @@ public:
             m_Items.InsertNode(item);
         }
     }
-    void SaveItems(tinyxml2::XMLElement *pItemsElem, CItemsList &m_Items)
+    void SetItems(tinyxml2::XMLElement *pItemsElem, CItemsList &m_Items)
     {
         CUtf8String szBuffUtf8;
         tinyxml2::XMLElement *pItemElem;
@@ -718,7 +718,7 @@ public:
         }
     }
 public:
-    void LoadConfiguration(CConfiguration &m_Config)
+    void GetConfiguration(CConfiguration &m_Config)
     {
         tinyxml2::XMLElement *pRootElem = this->FirstChildElement();
         if (pRootElem != NULL)
@@ -731,21 +731,21 @@ public:
                 // root: Options
                 tinyxml2::XMLElement *pOptionsElem = pRootElem->FirstChildElement("Options");
                 if (pOptionsElem != NULL)
-                    this->LoadOptions(pOptionsElem, m_Config.m_Options);
+                    this->GetOptions(pOptionsElem, m_Config.m_Options);
 
                 // root: Formats
                 tinyxml2::XMLElement *pFormatsElem = pRootElem->FirstChildElement("Formats");
                 if (pFormatsElem != NULL)
-                    this->LoadFormats(pFormatsElem, m_Config.m_Formats);
+                    this->GetFormats(pFormatsElem, m_Config.m_Formats);
 
                 // root: Items
                 tinyxml2::XMLElement *pItemsElem = pRootElem->FirstChildElement("Items");
                 if (pItemsElem != NULL)
-                    this->LoadItems(pItemsElem, m_Config.m_Items);
+                    this->GetItems(pItemsElem, m_Config.m_Items);
             }
         }
     }
-    void SaveConfiguration(CConfiguration &m_Config)
+    void SetConfiguration(CConfiguration &m_Config)
     {
         tinyxml2::XMLDeclaration* decl = this->NewDeclaration(UTF8_DOCUMENT_DECLARATION);
         this->LinkEndChild(decl);
@@ -757,20 +757,20 @@ public:
         // root: Options
         tinyxml2::XMLElement *pOptionsElem = this->NewElement("Options");
         pRootElem->LinkEndChild(pOptionsElem);
-        this->SaveOptions(pOptionsElem, m_Config.m_Options);
+        this->SetOptions(pOptionsElem, m_Config.m_Options);
 
         // root: Formats
         tinyxml2::XMLElement *pFormatsElem = this->NewElement("Formats");
         pRootElem->LinkEndChild(pFormatsElem);
-        this->SaveFormats(pFormatsElem, m_Config.m_Formats);
+        this->SetFormats(pFormatsElem, m_Config.m_Formats);
 
         // root: Items
         tinyxml2::XMLElement *pItemsElem = this->NewElement("Items");
         pRootElem->LinkEndChild(pItemsElem);
-        this->SaveItems(pItemsElem, m_Config.m_Items);
+        this->SetItems(pItemsElem, m_Config.m_Items);
     }
 public:
-    bool LoadFileUtf8(CString szFileName)
+    bool Open(CString szFileName)
     {
         CStdioFile fp;
         if (fp.Open(szFileName, CFile::modeRead | CFile::typeBinary) == TRUE)
@@ -781,7 +781,7 @@ public:
         }
         return false;
     }
-    bool SaveFileUtf8(CString szFileName)
+    bool Save(CString szFileName)
     {
         CStdioFile fp;
         if (fp.Open(szFileName, CFile::modeCreate | CFile::modeWrite | CFile::typeText) == TRUE)

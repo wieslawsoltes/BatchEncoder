@@ -342,7 +342,7 @@ void CFormatsDlg::UpdateFormatsFromListCtrl()
 void CFormatsDlg::LoadFormatsFile(CString szFileXml)
 {
     XmlConfiguration doc;
-    if (doc.LoadFileUtf8(szFileXml) == true)
+    if (doc.Open(szFileXml) == true)
     {
         tinyxml2::XMLElement *pFormatsElem = doc.FirstChildElement();
         if (!pFormatsElem)
@@ -362,7 +362,7 @@ void CFormatsDlg::LoadFormatsFile(CString szFileXml)
         m_Formats.RemoveAllNodes();
         m_LstFormats.DeleteAllItems();
 
-        doc.LoadFormats(pFormatsElem, m_Formats);
+        doc.GetFormats(pFormatsElem, m_Formats);
 
         this->InsertFormatsToListCtrl();
         this->UpdateEditableFields();
@@ -385,9 +385,9 @@ void CFormatsDlg::SaveFormatsFile(CString szFileXml)
 
     this->UpdateFormatsFromListCtrl();
 
-    doc.SaveFormats(pFormatsElem, m_Formats);
+    doc.SetFormats(pFormatsElem, m_Formats);
 
-    if (doc.SaveFileUtf8(szFileXml) != true)
+    if (doc.Save(szFileXml) != true)
         MessageBox(_T("Failed to save file!"), _T("ERROR"), MB_OK | MB_ICONERROR);
 }
 

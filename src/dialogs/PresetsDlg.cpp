@@ -291,7 +291,7 @@ void CPresetsDlg::LoadPresetsFile(CString szFileXml)
     ::UpdatePath();
 
     XmlConfiguration doc;
-    if (doc.LoadFileUtf8(szFileXml) == true)
+    if (doc.Open(szFileXml) == true)
     {
         tinyxml2::XMLElement *pPresetsElem = doc.FirstChildElement();
         if (!pPresetsElem)
@@ -313,7 +313,7 @@ void CPresetsDlg::LoadPresetsFile(CString szFileXml)
 
         //m_LstPresets.DeleteAllItems();
 
-        doc.LoadPresets(pPresetsElem, format.m_Presets);
+        doc.GetPresets(pPresetsElem, format.m_Presets);
 
         int nPresets = format.m_Presets.GetSize();
         for (int i = 0; i < nPresets; i++)
@@ -347,9 +347,9 @@ void CPresetsDlg::SavePresetsFile(CString szFileXml)
     doc.LinkEndChild(pPresetsElem);
 
     CFormat& format = m_Formats.GetData(nSelectedFormat);
-    doc.SavePresets(pPresetsElem, format.m_Presets);
+    doc.SetPresets(pPresetsElem, format.m_Presets);
 
-    if (doc.SaveFileUtf8(szFileXml) != true)
+    if (doc.Save(szFileXml) != true)
     {
         MessageBox(_T("Failed to save file!"), _T("ERROR"), MB_OK | MB_ICONERROR);
     }
