@@ -64,11 +64,12 @@ public:
     bool bShowGridLines;
     void ShowGridlines(bool bShow);
 public:
+    void AddToList(CPreset &preset, int nItem);
+    void InsertPresetsToListCtrl();
+    void ListSelectionChange();
+public:
     void LoadPresets(CString szFileXml);
     void SavePresets(CString szFileXml);
-public:
-    void AddToList(CString szName, CString szOptions, int nItem);
-    void ListSelectionChange(void);
 public:
     afx_msg void OnLvnItemchangedListPdPresets(NMHDR *pNMHDR, LRESULT *pResult);
 public:

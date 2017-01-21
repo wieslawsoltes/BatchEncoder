@@ -12,9 +12,9 @@ IMPLEMENT_DYNAMIC(CFormatsDlg, CDialog)
 CFormatsDlg::CFormatsDlg(CWnd* pParent /*=NULL*/)
     : CResizeDialog(CFormatsDlg::IDD, pParent)
 {
-    m_hIcon = AfxGetApp()->LoadIcon(IDI_TRAYICON);
-    szFormatsDialogResize = _T("");
-    szFormatsListColumns = _T("");
+    this->m_hIcon = AfxGetApp()->LoadIcon(IDI_TRAYICON);
+    this->szFormatsDialogResize = _T("");
+    this->szFormatsListColumns = _T("");
     this->bShowGridLines = true;
 }
 
@@ -284,43 +284,47 @@ void CFormatsDlg::OnBnClickedCancel()
     OnCancel();
 }
 
+void CFormatsDlg::AddToList(CFormat &format, int nItem)
+{
+    LVITEM lvi;
+
+    ZeroMemory(&lvi, sizeof(LVITEM));
+
+    lvi.mask = LVIF_TEXT;
+    lvi.iItem = nItem;
+
+    lvi.iSubItem = 0;
+    lvi.pszText = (LPTSTR)(LPCTSTR)(format.szName);
+    m_LstFormats.InsertItem(&lvi);
+
+    lvi.iSubItem = 1;
+    lvi.pszText = (LPTSTR)(LPCTSTR)(format.szTemplate);
+    m_LstFormats.SetItemText(lvi.iItem, 1, lvi.pszText);
+
+    lvi.iSubItem = 2;
+    lvi.pszText = (LPTSTR)(LPCTSTR)(format.szPath);
+    m_LstFormats.SetItemText(lvi.iItem, 2, lvi.pszText);
+
+    lvi.iSubItem = 3;
+    lvi.pszText = (LPTSTR)(LPCTSTR)(format.bInput) ? _T("true") : _T("false");
+    m_LstFormats.SetItemText(lvi.iItem, 3, lvi.pszText);
+
+    lvi.iSubItem = 4;
+    lvi.pszText = (LPTSTR)(LPCTSTR)(format.bOutput) ? _T("true") : _T("false");
+    m_LstFormats.SetItemText(lvi.iItem, 4, lvi.pszText);
+
+    lvi.iSubItem = 5;
+    lvi.pszText = (LPTSTR)(LPCTSTR)(format.szFunction);
+    m_LstFormats.SetItemText(lvi.iItem, 5, lvi.pszText);
+}
+
 void CFormatsDlg::InsertFormatsToListCtrl()
 {
     int nFormats = m_Formats.GetSize();
     for (int i = 0; i < nFormats; i++)
     {
         CFormat& format = m_Formats.GetData(i);
-
-        LVITEM lvi;
-
-        ZeroMemory(&lvi, sizeof(LVITEM));
-
-        lvi.mask = LVIF_TEXT;
-        lvi.iItem = i;
-
-        lvi.iSubItem = 0;
-        lvi.pszText = (LPTSTR)(LPCTSTR)(format.szName);
-        m_LstFormats.InsertItem(&lvi);
-
-        lvi.iSubItem = 1;
-        lvi.pszText = (LPTSTR)(LPCTSTR)(format.szTemplate);
-        m_LstFormats.SetItemText(lvi.iItem, 1, lvi.pszText);
-
-        lvi.iSubItem = 2;
-        lvi.pszText = (LPTSTR)(LPCTSTR)(format.szPath);
-        m_LstFormats.SetItemText(lvi.iItem, 2, lvi.pszText);
-
-        lvi.iSubItem = 3;
-        lvi.pszText = (LPTSTR)(LPCTSTR)(format.bInput) ? _T("true") : _T("false");
-        m_LstFormats.SetItemText(lvi.iItem, 3, lvi.pszText);
-
-        lvi.iSubItem = 4;
-        lvi.pszText = (LPTSTR)(LPCTSTR)(format.bOutput) ? _T("true") : _T("false");
-        m_LstFormats.SetItemText(lvi.iItem, 4, lvi.pszText);
-
-        lvi.iSubItem = 5;
-        lvi.pszText = (LPTSTR)(LPCTSTR)(format.szFunction);
-        m_LstFormats.SetItemText(lvi.iItem, 5, lvi.pszText);
+        this->AddToList(format, i);
     }
 }
 
@@ -339,30 +343,15 @@ void CFormatsDlg::UpdateFormatsFromListCtrl()
     }
 }
 
-void CFormatsDlg::LoadFormatsFile(CString szFileXml)
+void CFormatsDlg::LoadFormats(CString szFileXml)
 {
     XmlConfiguration doc;
     if (doc.Open(szFileXml) == true)
     {
-        tinyxml2::XMLElement *pFormatsElem = doc.FirstChildElement();
-        if (!pFormatsElem)
-        {
-            MessageBox(_T("Failed to load file!"), _T("ERROR"), MB_OK | MB_ICONERROR);
-            return;
-        }
+        this->m_Formats.RemoveAllNodes();
+        this->m_LstFormats.DeleteAllItems();
 
-        const char *szRoot = pFormatsElem->Value();
-        const char *szRootName = "Formats";
-        if (strcmp(szRootName, szRoot) != 0)
-        {
-            MessageBox(_T("Failed to load file!"), _T("ERROR"), MB_OK | MB_ICONERROR);
-            return;
-        }
-
-        m_Formats.RemoveAllNodes();
-        m_LstFormats.DeleteAllItems();
-
-        doc.GetFormats(pFormatsElem, m_Formats);
+        doc.GetFormats(this->m_Formats);
 
         this->InsertFormatsToListCtrl();
         this->UpdateEditableFields();
@@ -373,22 +362,14 @@ void CFormatsDlg::LoadFormatsFile(CString szFileXml)
     }
 }
 
-void CFormatsDlg::SaveFormatsFile(CString szFileXml)
+void CFormatsDlg::SaveFormats(CString szFileXml)
 {
     XmlConfiguration doc;
-
-    tinyxml2::XMLDeclaration* decl = doc.NewDeclaration(UTF8_DOCUMENT_DECLARATION);
-    doc.LinkEndChild(decl);
-
-    tinyxml2::XMLElement *pFormatsElem = doc.NewElement("Formats");
-    doc.LinkEndChild(pFormatsElem);
-
-    this->UpdateFormatsFromListCtrl();
-
-    doc.SetFormats(pFormatsElem, m_Formats);
-
+    doc.SetFormats(this->m_Formats);
     if (doc.Save(szFileXml) != true)
+    {
         MessageBox(_T("Failed to save file!"), _T("ERROR"), MB_OK | MB_ICONERROR);
+    }
 }
 
 void CFormatsDlg::OnBnClickedButtonLoadConfig()
@@ -400,7 +381,7 @@ void CFormatsDlg::OnBnClickedButtonLoadConfig()
     if (fd.DoModal() == IDOK)
     {
         CString szFileXml = fd.GetPathName();
-        this->LoadFormatsFile(szFileXml);
+        this->LoadFormats(szFileXml);
     }
 }
 
@@ -413,7 +394,7 @@ void CFormatsDlg::OnBnClickedButtonSaveConfig()
     if (fd.DoModal() == IDOK)
     {
         CString szFileXml = fd.GetPathName();
-        this->SaveFormatsFile(szFileXml);
+        this->SaveFormats(szFileXml);
     }
 }
 

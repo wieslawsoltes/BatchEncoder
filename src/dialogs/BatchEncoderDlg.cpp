@@ -884,36 +884,24 @@ void CBatchEncoderDlg::SetOptions()
 bool CBatchEncoderDlg::LoadItems(CString szFileXml)
 {
     XmlConfiguration doc;
-    if (doc.Open(szFileXml) == true)
-    {
-        tinyxml2::XMLElement *pItemsElem = doc.FirstChildElement("Items");
-        if (pItemsElem != NULL)
-        {
-            this->OnEditClear();
+    if (doc.Open(szFileXml) == false)
+        return false;
 
-            doc.GetItems(pItemsElem, m_Config.m_Items);
+    this->OnEditClear();
 
-            this->SetItems();
+    doc.GetItems(this->m_Config.m_Items);
 
-            return true;
-        }
-    }
-    return false;
+    this->SetItems();
+
+    return true;
 }
 
 bool CBatchEncoderDlg::SaveItems(CString szFileXml)
 {
-    XmlConfiguration doc;
-
-    tinyxml2::XMLDeclaration* decl = doc.NewDeclaration(UTF8_DOCUMENT_DECLARATION);
-    doc.LinkEndChild(decl);
-
-    tinyxml2::XMLElement *pItemsElem = doc.NewElement("Items");
-    doc.LinkEndChild(pItemsElem);
-
     this->GetItems();
-    doc.SetItems(pItemsElem, m_Config.m_Items);
 
+    XmlConfiguration doc;
+    doc.SetItems(this->m_Config.m_Items);
     return doc.Save(szFileXml);
 }
 

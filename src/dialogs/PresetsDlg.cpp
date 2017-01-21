@@ -12,11 +12,11 @@ IMPLEMENT_DYNAMIC(CPresetsDlg, CDialog)
 CPresetsDlg::CPresetsDlg(CWnd* pParent /*=NULL*/)
     : CResizeDialog(CPresetsDlg::IDD, pParent)
 {
-    m_hIcon = AfxGetApp()->LoadIcon(IDI_TRAYICON);
-    nSelectedFormat = 0;
-    szPresetsDialogResize = _T("");
-    szPresetsListColumns = _T("");
-    bUpdate = false;
+    this->m_hIcon = AfxGetApp()->LoadIcon(IDI_TRAYICON);
+    this->nSelectedFormat = 0;
+    this->szPresetsDialogResize = _T("");
+    this->szPresetsListColumns = _T("");
+    this->bUpdate = false;
     this->bShowGridLines = true;
 }
 
@@ -201,54 +201,6 @@ void CPresetsDlg::SaveWindowSettings()
         nColWidth[1]);
 }
 
-void CPresetsDlg::AddToList(CString szName, CString szOptions, int nItem)
-{
-    // insert item to list view
-    CString tmpBuf;
-    LVITEM lvi;
-
-    // prepare item struct
-    ZeroMemory(&lvi, sizeof(LVITEM));
-    lvi.mask = LVIF_TEXT | LVIF_STATE;
-    lvi.state = 0;
-    lvi.stateMask = 0;
-
-    // name
-    lvi.iItem = nItem; // position
-    lvi.iSubItem = 0;
-
-    lvi.pszText = (LPTSTR)(LPCTSTR)(szName);
-    m_LstPresets.InsertItem(&lvi);
-
-    // options
-    lvi.iSubItem = 1;
-    lvi.pszText = (LPTSTR)(LPCTSTR)(szOptions);
-    m_LstPresets.SetItemText(lvi.iItem, 1, lvi.pszText);
-}
-
-void CPresetsDlg::ListSelectionChange(void)
-{
-    if (bUpdate == true)
-        return;
-
-    bUpdate = true;
-
-    POSITION pos = m_LstPresets.GetFirstSelectedItemPosition();
-    if (pos != NULL)
-    {
-        int nItem = m_LstPresets.GetNextSelectedItem(pos);
-
-        CFormat& format = m_Formats.GetData(nSelectedFormat);
-        CPreset& preset = format.m_Presets.GetData(nItem);
-        format.nDefaultPreset = nItem;
-
-        this->m_EdtName.SetWindowText(preset.szName);
-        this->m_EdtOptions.SetWindowText(preset.szOptions);
-    }
-
-    bUpdate = false;
-}
-
 void CPresetsDlg::OnLvnItemchangedListPdPresets(NMHDR *pNMHDR, LRESULT *pResult)
 {
     LPNMLISTVIEW pNMLV = reinterpret_cast<LPNMLISTVIEW>(pNMHDR);
@@ -286,41 +238,73 @@ void CPresetsDlg::OnBnClickedButtonPdRemovePresets()
     }
 }
 
+void CPresetsDlg::AddToList(CPreset &preset, int nItem)
+{
+    LVITEM lvi;
+
+    ZeroMemory(&lvi, sizeof(LVITEM));
+    lvi.mask = LVIF_TEXT | LVIF_STATE;
+    lvi.state = 0;
+    lvi.stateMask = 0;
+
+    lvi.iItem = nItem;
+    lvi.iSubItem = 0;
+
+    lvi.pszText = (LPTSTR)(LPCTSTR)(preset.szName);
+    m_LstPresets.InsertItem(&lvi);
+
+    lvi.iSubItem = 1;
+    lvi.pszText = (LPTSTR)(LPCTSTR)(preset.szOptions);
+    m_LstPresets.SetItemText(lvi.iItem, 1, lvi.pszText);
+}
+
+void CPresetsDlg::InsertPresetsToListCtrl()
+{
+    CFormat& format = this->m_Formats.GetData(this->nSelectedFormat);
+    int nPresets = format.m_Presets.GetSize();
+    for (int i = 0; i < nPresets; i++)
+    {
+        CPreset& preset = format.m_Presets.GetData(i);
+        this->AddToList(preset, i);
+    }
+}
+
+void CPresetsDlg::ListSelectionChange()
+{
+    if (bUpdate == true)
+        return;
+
+    bUpdate = true;
+
+    POSITION pos = m_LstPresets.GetFirstSelectedItemPosition();
+    if (pos != NULL)
+    {
+        int nItem = m_LstPresets.GetNextSelectedItem(pos);
+
+        CFormat& format = m_Formats.GetData(nSelectedFormat);
+        CPreset& preset = format.m_Presets.GetData(nItem);
+        format.nDefaultPreset = nItem;
+
+        this->m_EdtName.SetWindowText(preset.szName);
+        this->m_EdtOptions.SetWindowText(preset.szOptions);
+    }
+
+    bUpdate = false;
+}
+
 void CPresetsDlg::LoadPresets(CString szFileXml)
 {
-    ::UpdatePath();
-
     XmlConfiguration doc;
     if (doc.Open(szFileXml) == true)
     {
-        tinyxml2::XMLElement *pPresetsElem = doc.FirstChildElement();
-        if (!pPresetsElem)
-        {
-            MessageBox(_T("Failed to load file!"), _T("ERROR"), MB_OK | MB_ICONERROR);
-            return;
-        }
+        this->m_LstPresets.DeleteAllItems();
 
-        const char *szRoot = pPresetsElem->Value();
-        const char *szRootName = "Presets";
-        if (strcmp(szRootName, szRoot) != 0)
-        {
-            MessageBox(_T("Failed to load file!"), _T("ERROR"), MB_OK | MB_ICONERROR);
-            return;
-        }
+        CFormat& format = this->m_Formats.GetData(this->nSelectedFormat);
+        format.m_Presets.RemoveAllNodes();
 
-        CFormat& format = m_Formats.GetData(nSelectedFormat);
-        //format.m_Presets.RemoveAllNodes();
+        doc.GetPresets(format.m_Presets);
 
-        //m_LstPresets.DeleteAllItems();
-
-        doc.GetPresets(pPresetsElem, format.m_Presets);
-
-        int nPresets = format.m_Presets.GetSize();
-        for (int i = 0; i < nPresets; i++)
-        {
-            CPreset& preset = format.m_Presets.GetData(i);
-            this->AddToList(preset.szName, preset.szOptions, i);
-        }
+        this->InsertPresetsToListCtrl();
     }
     else
     {
@@ -330,25 +314,10 @@ void CPresetsDlg::LoadPresets(CString szFileXml)
 
 void CPresetsDlg::SavePresets(CString szFileXml)
 {
-    if (szFileXml.Compare(_T("")) == 0)
-    {
-        this->OnBnClickedButtonPdSavePresets();
-        return;
-    }
-
-    ::UpdatePath();
+    CFormat& format = this->m_Formats.GetData(this->nSelectedFormat);
 
     XmlConfiguration doc;
-
-    tinyxml2::XMLDeclaration* decl = doc.NewDeclaration(UTF8_DOCUMENT_DECLARATION);
-    doc.LinkEndChild(decl);
-
-    tinyxml2::XMLElement *pPresetsElem = doc.NewElement("Presets");
-    doc.LinkEndChild(pPresetsElem);
-
-    CFormat& format = m_Formats.GetData(nSelectedFormat);
-    doc.SetPresets(pPresetsElem, format.m_Presets);
-
+    doc.SetPresets(format.m_Presets);
     if (doc.Save(szFileXml) != true)
     {
         MessageBox(_T("Failed to save file!"), _T("ERROR"), MB_OK | MB_ICONERROR);
@@ -405,7 +374,7 @@ void CPresetsDlg::OnBnClickedButtonPdAddPreset()
     preset.szOptions = szOptions;
     format.m_Presets.InsertNode(preset);
 
-    AddToList(szName, szOptions, nItem);
+    AddToList(preset, nItem);
 
     m_LstPresets.SetItemState(nItem, LVIS_SELECTED, LVIS_SELECTED);
     m_LstPresets.EnsureVisible(nItem, FALSE);
@@ -531,14 +500,10 @@ void CPresetsDlg::OnCbnSelchangeComboPdFormat()
     m_LstPresets.DeleteAllItems();
 
     nSelectedFormat = this->m_CmbFormat.GetCurSel();
-    CFormat& format = m_Formats.GetData(nSelectedFormat);
 
-    int nPresets = format.m_Presets.GetSize();
-    for (int i = 0; i < nPresets; i++)
-    {
-        CPreset& preset = format.m_Presets.GetData(i);
-        this->AddToList(preset.szName, preset.szOptions, i);
-    }
+    this->InsertPresetsToListCtrl();
+
+    CFormat& format = m_Formats.GetData(nSelectedFormat);
 
     m_LstPresets.SetItemState(format.nDefaultPreset, LVIS_SELECTED, LVIS_SELECTED);
     m_LstPresets.EnsureVisible(format.nDefaultPreset, FALSE);

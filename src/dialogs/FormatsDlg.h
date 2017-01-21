@@ -56,11 +56,12 @@ public:
     bool bShowGridLines;
     void ShowGridlines(bool bShow);
 public:
+    void AddToList(CFormat &format, int nItem);
     void InsertFormatsToListCtrl();
     void UpdateFormatsFromListCtrl();
 public:
-    void LoadFormatsFile(CString szFileXml);
-    void SaveFormatsFile(CString szFileXml);
+    void LoadFormats(CString szFileXml);
+    void SaveFormats(CString szFileXml);
 public:
     void UpdateEditableFields(void);
 public:

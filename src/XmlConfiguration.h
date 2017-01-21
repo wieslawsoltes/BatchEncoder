@@ -475,6 +475,25 @@ public:
         }
     }
 public:
+    void GetPresets(CPresetsList &m_Presets)
+    {
+        tinyxml2::XMLElement *pPresetsElem = this->FirstChildElement("Presets");
+        if (pPresetsElem != NULL)
+        {
+            this->GetPresets(pPresetsElem, m_Presets);
+        }
+    }
+    void SetPresets(CPresetsList &m_Presets)
+    {
+        tinyxml2::XMLDeclaration* decl = this->NewDeclaration(UTF8_DOCUMENT_DECLARATION);
+        this->LinkEndChild(decl);
+
+        tinyxml2::XMLElement *pPresetsElem = this->NewElement("Presets");
+        this->LinkEndChild(pPresetsElem);
+
+        this->SetPresets(pPresetsElem, m_Presets);
+    }
+public:
     void GetFormats(tinyxml2::XMLElement *pFormatsElem, CFormatsList &m_Formats)
     {
         tinyxml2::XMLElement *pFormatElem = pFormatsElem->FirstChildElement("Format");
@@ -599,6 +618,25 @@ public:
         }
     }
 public:
+    void GetFormats(CFormatsList &m_Formats)
+    {
+        tinyxml2::XMLElement *pFormatsElem = this->FirstChildElement("Formats");
+        if (pFormatsElem != NULL)
+        {
+            this->GetFormats(pFormatsElem, m_Formats);
+        }
+    }
+    void SetFormats(CFormatsList &m_Formats)
+    {
+        tinyxml2::XMLDeclaration* decl = this->NewDeclaration(UTF8_DOCUMENT_DECLARATION);
+        this->LinkEndChild(decl);
+
+        tinyxml2::XMLElement *pFormatsElem = this->NewElement("Formats");
+        this->LinkEndChild(pFormatsElem);
+
+        this->SetFormats(pFormatsElem, m_Formats);
+    }
+public:
     void GetItems(tinyxml2::XMLElement *pItemsElem, CItemsList &m_Items)
     {
         tinyxml2::XMLElement *pItemElem = pItemsElem->FirstChildElement("Item");
@@ -716,6 +754,25 @@ public:
 
             pItemsElem->LinkEndChild(pItemElem);
         }
+    }
+public:
+    void GetItems(CItemsList &m_Items)
+    {
+        tinyxml2::XMLElement *pItemsElem = this->FirstChildElement("Items");
+        if (pItemsElem != NULL)
+        {
+            this->GetItems(pItemsElem, m_Items);
+        }
+    }
+    void SetItems(CItemsList &m_Items)
+    {
+        tinyxml2::XMLDeclaration* decl = this->NewDeclaration(UTF8_DOCUMENT_DECLARATION);
+        this->LinkEndChild(decl);
+
+        tinyxml2::XMLElement *pItemsElem = this->NewElement("Items");
+        this->LinkEndChild(pItemsElem);
+
+        this->SetItems(pItemsElem, m_Items);
     }
 public:
     void GetConfiguration(CConfiguration &m_Config)
