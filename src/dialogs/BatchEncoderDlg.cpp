@@ -10,6 +10,14 @@
 #include "FormatsDlg.h"
 #include "AdvancedDlg.h"
 
+#define ITEM_COLUMN_NAME    0
+#define ITEM_COLUMN_INPUT   1
+#define ITEM_COLUMN_SIZE    2
+#define ITEM_COLUMN_OUTPUT  3
+#define ITEM_COLUMN_PRESET  4
+#define ITEM_COLUMN_TIME    5
+#define ITEM_COLUMN_STATUS  6
+
 #define WM_TRAY (WM_USER + 0x10)
 #define IDC_STATUSBAR 1500
 
@@ -2221,3 +2229,90 @@ void CBatchEncoderDlg::OnHelpAbout()
     CAboutDlg dlg;
     dlg.DoModal();
 }
+
+void CBatchEncoderWorkerContext::Init()
+{
+    this->timeCount.Start();
+}
+
+void CBatchEncoderWorkerContext::Next(int nIndex)
+{
+    if (this->nThreadCount == 1)
+    {
+        this->nProcessedFiles++;
+        this->nErrors = (this->nProcessedFiles - 1) - this->nDoneWithoutError;
+
+        CString szText;
+        szText.Format(_T("Processing item %d of %d (%d Done, %d %s)"),
+            this->nProcessedFiles,
+            this->nTotalFiles,
+            this->nDoneWithoutError,
+            this->nErrors,
+            ((this->nErrors == 0) || (this->nErrors > 1)) ? _T("Errors") : _T("Error"));
+        pDlg->m_StatusBar.SetText(szText, 1, 0);
+
+        pDlg->m_FileProgress.SetPos(0);
+        pDlg->m_LstInputItems.EnsureVisible(nIndex, FALSE);
+    }
+}
+
+void CBatchEncoderWorkerContext::Done()
+{
+    this->timeCount.Stop();
+
+    CString szText = _T("");
+    if (nProcessedFiles > 0)
+        szText.Format(_T("Done in %s"), ::FormatTime(this->timeCount.ElapsedTime(), 3));
+
+    pDlg->m_StatusBar.SetText(szText, 1, 0);
+
+    pDlg->FinishConvert();
+}
+
+bool CBatchEncoderWorkerContext::Callback(int nProgress, bool bFinished, bool bError, double fTime, int nIndex)
+{
+    if (bError == true)
+    {
+        pDlg->m_LstInputItems.SetItemText(nIndex, ITEM_COLUMN_TIME, _T("--:--")); // Time
+        pDlg->m_LstInputItems.SetItemText(nIndex, ITEM_COLUMN_STATUS, _T("Error")); // Status
+        pDlg->m_FileProgress.SetPos(0);
+        this->bRunning = false;
+        return this->bRunning;
+    }
+
+    if (bFinished == true)
+    {
+        if (nProgress != 100)
+        {
+            pDlg->m_LstInputItems.SetItemText(nIndex, ITEM_COLUMN_TIME, _T("--:--")); // Time
+            pDlg->m_LstInputItems.SetItemText(nIndex, ITEM_COLUMN_STATUS, _T("Error")); // Status
+            pDlg->m_FileProgress.SetPos(0);
+        }
+        else
+        {
+            CString szTime = ::FormatTime(fTime, 1);
+            pDlg->m_LstInputItems.SetItemText(nIndex, ITEM_COLUMN_TIME, szTime); // Time
+            pDlg->m_LstInputItems.SetItemText(nIndex, ITEM_COLUMN_STATUS, _T("Done")); // Status
+        }
+    }
+    else
+    {
+        if (this->nThreadCount == 1)
+        {
+            if (nProgress != this->nProgressCurrent)
+            {
+                this->nProgressCurrent = nProgress;
+                pDlg->m_FileProgress.SetPos(nProgress);
+                pDlg->ShowProgressTrayIcon(nProgress);
+            }
+        }
+    }
+
+    return this->bRunning;
+}
+
+void CBatchEncoderWorkerContext::Status(int nIndex, CString szTime, CString szStatus)
+{
+    pDlg->m_LstInputItems.SetItemText(nIndex, ITEM_COLUMN_TIME, szTime); // Time
+    pDlg->m_LstInputItems.SetItemText(nIndex, ITEM_COLUMN_STATUS, szStatus); // Status
+};

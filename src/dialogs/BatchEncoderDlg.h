@@ -11,14 +11,6 @@
 #include "..\XmlConfiguration.h"
 #include "..\worker\WorkThread.h"
 
-#define ITEM_COLUMN_NAME    0
-#define ITEM_COLUMN_INPUT   1
-#define ITEM_COLUMN_SIZE    2
-#define ITEM_COLUMN_OUTPUT  3
-#define ITEM_COLUMN_PRESET  4
-#define ITEM_COLUMN_TIME    5
-#define ITEM_COLUMN_STATUS  6
-
 class CBatchEncoderDlg : public CResizeDialog
 {
     DECLARE_DYNAMIC(CBatchEncoderDlg)
@@ -154,93 +146,14 @@ class CBatchEncoderWorkerContext : public WorkerContext
     CTimeCount timeCount;
     CBatchEncoderDlg *pDlg;
 public:
-    CBatchEncoderWorkerContext(CConfiguration* pConfig, CBatchEncoderDlg* pDlg)
-        : WorkerContext(pConfig)
+    CBatchEncoderWorkerContext(CConfiguration* pConfig, CBatchEncoderDlg* pDlg) : WorkerContext(pConfig)
     {
         this->pDlg = pDlg;
     }
 public:
-    void Init()
-    {
-        timeCount.Start();
-    }
-    void Next(int nIndex)
-    {
-        if (nThreadCount == 1)
-        {
-            this->nProcessedFiles++;
-            this->nErrors = (this->nProcessedFiles - 1) - this->nDoneWithoutError;
-
-            CString szText;
-            szText.Format(_T("Processing item %d of %d (%d Done, %d %s)"),
-                this->nProcessedFiles,
-                this->nTotalFiles,
-                this->nDoneWithoutError,
-                this->nErrors,
-                ((this->nErrors == 0) || (this->nErrors > 1)) ? _T("Errors") : _T("Error"));
-            pDlg->m_StatusBar.SetText(szText, 1, 0);
-
-            pDlg->m_FileProgress.SetPos(0);
-            pDlg->m_LstInputItems.EnsureVisible(nIndex, FALSE);
-        }
-    }
-    void Done()
-    {
-        this->timeCount.Stop();
-
-        CString szText = _T("");
-        if (nProcessedFiles > 0)
-            szText.Format(_T("Done in %s"), ::FormatTime(this->timeCount.ElapsedTime(), 3));
-
-        pDlg->m_StatusBar.SetText(szText, 1, 0);
-
-        pDlg->FinishConvert();
-    }
-public:
-    bool Callback(int nProgress, bool bFinished, bool bError = false, double fTime = 0.0, int nIndex = -1)
-    {
-        if (bError == true)
-        {
-            pDlg->m_LstInputItems.SetItemText(nIndex, ITEM_COLUMN_TIME, _T("--:--")); // Time
-            pDlg->m_LstInputItems.SetItemText(nIndex, ITEM_COLUMN_STATUS, _T("Error")); // Status
-            pDlg->m_FileProgress.SetPos(0);
-            this->bRunning = false;
-            return this->bRunning;
-        }
-
-        if (bFinished == true)
-        {
-            if (nProgress != 100)
-            {
-                pDlg->m_LstInputItems.SetItemText(nIndex, ITEM_COLUMN_TIME, _T("--:--")); // Time
-                pDlg->m_LstInputItems.SetItemText(nIndex, ITEM_COLUMN_STATUS, _T("Error")); // Status
-                pDlg->m_FileProgress.SetPos(0);
-            }
-            else
-            {
-                CString szTime = ::FormatTime(fTime, 1);
-                pDlg->m_LstInputItems.SetItemText(nIndex, ITEM_COLUMN_TIME, szTime); // Time
-                pDlg->m_LstInputItems.SetItemText(nIndex, ITEM_COLUMN_STATUS, _T("Done")); // Status
-            }
-        }
-        else
-        {
-            if (this->nThreadCount == 1)
-            {
-                if (nProgress != this->nProgressCurrent)
-                {
-                    this->nProgressCurrent = nProgress;
-                    pDlg->m_FileProgress.SetPos(nProgress);
-                    pDlg->ShowProgressTrayIcon(nProgress);
-                }
-            }
-        }
-
-        return this->bRunning;
-    }
-    void Status(int nIndex, CString szTime, CString szStatus)
-    {
-        pDlg->m_LstInputItems.SetItemText(nIndex, ITEM_COLUMN_TIME, szTime); // Time
-        pDlg->m_LstInputItems.SetItemText(nIndex, ITEM_COLUMN_STATUS, szStatus); // Status
-    };
+    void Init();
+    void Next(int nIndex);
+    void Done();
+    bool Callback(int nProgress, bool bFinished, bool bError = false, double fTime = 0.0, int nIndex = -1);
+    void Status(int nIndex, CString szTime, CString szStatus);
 };

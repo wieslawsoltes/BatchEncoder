@@ -33,7 +33,6 @@ public:
     virtual void Init() = 0;
     virtual void Next(int nIndex) = 0;
     virtual void Done() = 0;
-public:
     virtual bool Callback(int nProgress, bool bFinished, bool bError = false, double fTime = 0.0, int nIndex = -1) = 0;
     virtual void Status(int nIndex, CString szTime, CString szStatus) = 0;
 };
