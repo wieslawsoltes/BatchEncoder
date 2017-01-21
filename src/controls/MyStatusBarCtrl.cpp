@@ -3,7 +3,6 @@
 
 #include "StdAfx.h"
 #include "..\BatchEncoder.h"
-#include "..\dialogs\BatchEncoderDlg.h"
 #include "MyStatusBarCtrl.h"
 
 IMPLEMENT_DYNAMIC(CMyStatusBarCtrl, CStatusBarCtrl)
@@ -24,22 +23,12 @@ END_MESSAGE_MAP()
 
 void CMyStatusBarCtrl::OnNMRclick(NMHDR *pNMHDR, LRESULT *pResult)
 {
-    // check if the conversion process is on
-    CBatchEncoderDlg *pDlg = (CBatchEncoderDlg *)GetParent();
-    if (pDlg->pWorkerContext->bRunning == true)
-        return;
-
-    // show status-bar popup menu
     POINT point;
-    GetCursorPos(&point);
-
     CMenu m_Menu;
+
+    GetCursorPos(&point);
     m_Menu.LoadMenu(IDR_MENU_STAT);
-
-    CMenu *m_SubMenu;
-    m_SubMenu = m_Menu.GetSubMenu(0);
-
-    m_SubMenu->TrackPopupMenu(0, point.x, point.y, this, NULL);
+    (m_Menu.GetSubMenu(0))->TrackPopupMenu(0, point.x, point.y, this, NULL);
 
     *pResult = 0;
 }
