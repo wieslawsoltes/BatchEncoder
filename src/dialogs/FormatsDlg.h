@@ -28,30 +28,26 @@ public:
     virtual BOOL OnInitDialog();
 public:
     CFormatsList m_Formats;
-public:
     CString szFormatsDialogResize;
     CString szFormatsListColumns;
 public:
-    void LoadWindowSettings();
-    void SaveWindowSettings();
-public:
     CListCtrl m_LstFormats;
-public:
     CEdit m_EdtPath;
     CEdit m_EdtTemplate;
     CEdit m_EdtProgress;
-public:
     CMyStatic m_GrpPipes;
     CMyStatic m_StcPath;
     CMyStatic m_StcTemplate;
     CMyStatic m_StcProgress;
-public:
     CMyButton m_BtnOK;
     CMyButton m_BtnCancel;
     CMyButton m_BtnLoad;
     CMyButton m_BtnSave;
     CMyButton m_BtnBrowse;
     CMyButton m_BtnChange;
+public:
+    void LoadWindowSettings();
+    void SaveWindowSettings();
 public:
     bool bShowGridLines;
     void ShowGridlines(bool bShow);
