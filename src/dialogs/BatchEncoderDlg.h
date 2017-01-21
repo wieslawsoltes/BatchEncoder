@@ -146,7 +146,7 @@ class CBatchEncoderWorkerContext : public WorkerContext
     CTimeCount timeCount;
     CBatchEncoderDlg *pDlg;
 public:
-    CBatchEncoderWorkerContext(CConfiguration* pConfig, CBatchEncoderDlg *pDlg)
+    CBatchEncoderWorkerContext(CConfiguration* pConfig, CBatchEncoderDlg* pDlg)
         : WorkerContext(pConfig)
     {
         this->pDlg = pDlg;
