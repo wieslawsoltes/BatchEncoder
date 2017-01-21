@@ -886,26 +886,17 @@ bool CBatchEncoderDlg::LoadItems(CString szFileXml)
     XmlConfiguration doc;
     if (doc.Open(szFileXml) == true)
     {
-        tinyxml2::XMLElement *pItemsElem = doc.FirstChildElement();
-        if (!pItemsElem)
+        tinyxml2::XMLElement *pItemsElem = doc.FirstChildElement("Items");
+        if (pItemsElem != NULL)
         {
-            return false;
+            this->OnEditClear();
+
+            doc.GetItems(pItemsElem, m_Config.m_Items);
+
+            this->SetItems();
+
+            return true;
         }
-
-        const char *pszRoot = pItemsElem->Value();
-        const char *pszRootName = "Items";
-        if (strcmp(pszRootName, pszRoot) != 0)
-        {
-            return false;
-        }
-
-        this->OnEditClear();
-
-        doc.GetItems(pItemsElem, m_Config.m_Items);
-
-        this->SetItems();
-
-        return true;
     }
     return false;
 }
