@@ -931,16 +931,16 @@ bool CBatchEncoderDlg::SaveListFile(CString szFileXml)
 
 bool CBatchEncoderDlg::LoadConfigFile(CString szFileXml)
 {
-    m_LstInputItems.DeleteAllItems();
+    this->m_LstInputItems.DeleteAllItems();
 
     XmlConfiguration doc;
     if (doc.LoadFileUtf8(szFileXml) == false)
         return false;
 
-    m_Config.m_Formats.RemoveAllNodes();
-    m_Config.m_Items.RemoveAllNodes();
+    this->m_Config.m_Formats.RemoveAllNodes();
+    this->m_Config.m_Items.RemoveAllNodes();
 
-    doc.LoadConfiguration(m_Config);
+    doc.LoadConfiguration(this->m_Config);
 
     this->SetOptions();
     this->UpdateFormatComboBox();
@@ -957,7 +957,7 @@ bool CBatchEncoderDlg::SaveConfigFile(CString szFileXml)
     this->GetItems();
 
     XmlConfiguration doc;
-    doc.SaveConfiguration(m_Config);
+    doc.SaveConfiguration(this->m_Config);
     return doc.SaveFileUtf8(szFileXml);
 }
 
