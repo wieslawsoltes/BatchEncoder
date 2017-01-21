@@ -123,6 +123,8 @@ adds input and output file paths. For specific options for each format use help 
 
 For more information about tools please see the [wiki page](https://github.com/wieslawsoltes/BatchEncoder/wiki/Tools).
 
+There is also available PowerShell [download script](https://github.com/wieslawsoltes/BatchEncoder/blob/master/scripts/download.ps1) for all supported tools.
+
 | Name            | Downloads                                                                                          |
 |-----------------|----------------------------------------------------------------------------------------------------|
 | SSRC            | http://shibatch.sourceforge.net/                                                                   |
