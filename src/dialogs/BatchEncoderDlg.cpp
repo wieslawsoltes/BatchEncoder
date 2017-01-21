@@ -2167,6 +2167,7 @@ void CBatchEncoderDlg::OnOptionsAdvanced()
 {
     CAdvancedDlg dlg;
 
+    this->GetOptions();
     dlg.m_Options = m_Config.m_Options;
 
     if (dlg.DoModal() == IDOK)
