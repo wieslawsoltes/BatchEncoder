@@ -23,23 +23,18 @@ public:
     enum { IDD = IDD_BATCHENCODER_DIALOG };
 protected:
     virtual void DoDataExchange(CDataExchange* pDX);
+    DECLARE_MESSAGE_MAP()
 protected:
     HICON m_hIcon;
     afx_msg HCURSOR OnQueryDragIcon();
-protected:
     afx_msg void OnPaint();
-protected:
+public:
     virtual BOOL OnInitDialog();
-protected:
-    DECLARE_MESSAGE_MAP()
 protected:
     virtual void OnOK();
     virtual void OnCancel();
-public:
-    void UpdateStatusBar();
-public:
+protected:
     HACCEL m_hAccel;
-public:
     BOOL PreTranslateMessage(MSG* pMsg);
 public:
     class CBatchEncoderWorkerContext : public WorkerContext
@@ -165,87 +160,61 @@ public:
     CMyButton m_BtnConvert;
     CMyStatusBarCtrl m_StatusBar;
 public:
+    void UpdateStatusBar();
     int InsertToMemoryList(CString szPath);
     bool AddToList(CString szPath);
     void AddToList(CItem &item, int nItem);
-public:
     void HandleDropFiles(HDROP hDropInfo);
-public:
     void UpdateFormatAndPreset();
-public:
     void ResetOutput();
     void ResetConvertionTime();
     void ResetConvertionStatus();
-public:
     void SearchFolderForFiles(CString szFile, const bool bRecurse);
-public:
     bool GridlinesVisible();
     void ShowGridlines(bool bShow);
-public:
     void GetItems();
     void SetItems();
-public:
     void GetOptions();
     void SetOptions();
-public:
     bool LoadItems(CString szFileXml);
     bool SaveItems(CString szFileXml);
-public:
     bool LoadConfiguration(CString szFileXml);
     bool SaveConfiguration(CString szFileXml);
-public:
     void UpdateFormatComboBox();
     void UpdatePresetComboBox();
-public:
     void EnableUserInterface(BOOL bEnable = TRUE);
-public:
     void EnableTrayIcon(bool bEnable = true, bool bModify = false);
     void ShowProgressTrayIcon(int nProgress);
-public:
     void StartConvert();
     void FinishConvert();
 public:
     afx_msg void OnSize(UINT nType, int cx, int cy);
-public:
     afx_msg LRESULT OnTrayIconMsg(WPARAM wParam, LPARAM lParam);
     afx_msg void OnTrayMenuExit();
-public:
     afx_msg LRESULT OnListItemChaged(WPARAM wParam, LPARAM lParam);
-protected:
     afx_msg LRESULT OnNotifyFormat(WPARAM wParam, LPARAM lParam);
-public:
     afx_msg BOOL OnHelpInfo(HELPINFO* pHelpInfo);
-public:
     afx_msg void OnClose();
     afx_msg void OnDestroy();
     afx_msg void OnDropFiles(HDROP hDropInfo);
-public:
     afx_msg void OnBnClickedCheckOutPath();
-public:
     afx_msg void OnBnClickedButtonConvert();
     afx_msg void OnBnClickedButtonBrowsePath();
-public:
     afx_msg void OnCbnSelchangeComboPresets();
     afx_msg void OnCbnSelchangeComboFormat();
-public:
     afx_msg void OnLvnKeydownListInputFiles(NMHDR *pNMHDR, LRESULT *pResult);
     afx_msg void OnLvnItemchangedListInputFiles(NMHDR *pNMHDR, LRESULT *pResult);
-public:
     afx_msg void OnNMRclickListInputFiles(NMHDR *pNMHDR, LRESULT *pResult);
     afx_msg void OnNMDblclkListInputFiles(NMHDR *pNMHDR, LRESULT *pResult);
-public:
     afx_msg void OnEnChangeEditOutPath();
     afx_msg void OnEnSetFocusEditOutPath();
     afx_msg void OnEnKillFocusEditOutPath();
-public:
     afx_msg void LoadConfiguration();
     afx_msg void SaveConfiguration();
-public:
     afx_msg void OnFileLoadList();
     afx_msg void OnFileSaveList();
     afx_msg void OnFileClearList();
     afx_msg void OnFileExit();
-public:
     afx_msg void OnEditAddFiles();
     afx_msg void OnEditClear();
     afx_msg void OnEditRemoveChecked();
@@ -263,11 +232,8 @@ public:
     afx_msg void OnEditSelectAll();
     afx_msg void OnEditResetOutput();
     afx_msg void OnEditResetTime();
-public:
     afx_msg void OnViewShowGridLines();
-public:
     afx_msg void OnActionConvert();
-public:
     afx_msg void OnOptionsStayOnTop();
     afx_msg void OnOptionsShowTrayIcon();
     afx_msg void OnOptionsLogConsoleOutput();
@@ -280,7 +246,6 @@ public:
     afx_msg void OnOptionsAdvanced();
     afx_msg void OnOptionsConfigurePresets();
     afx_msg void OnOptionsConfigureFormat();
-public:
     afx_msg void OnHelpWebsite();
     afx_msg void OnHelpAbout();
 };

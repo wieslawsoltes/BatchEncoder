@@ -158,44 +158,6 @@ void CFormatsDlg::ShowGridlines(bool bShow)
     }
 }
 
-void CFormatsDlg::UpdateEditableFields(void)
-{
-    POSITION pos = m_LstFormats.GetFirstSelectedItemPosition();
-    if (pos != NULL)
-    {
-        int nItem = m_LstFormats.GetNextSelectedItem(pos);
-
-        CString szTemplate = this->m_LstFormats.GetItemText(nItem, 1);
-        CString szPath = this->m_LstFormats.GetItemText(nItem, 2);
-        CString szCheckIn = this->m_LstFormats.GetItemText(nItem, 3);
-        CString szCheckOut = this->m_LstFormats.GetItemText(nItem, 4);
-        CString szFunctions = this->m_LstFormats.GetItemText(nItem, 5);
-
-        this->m_EdtTemplate.SetWindowText(szTemplate);
-        this->m_EdtPath.SetWindowText(szPath);
-
-        if (szCheckIn.Compare(_T("true")) == 0)
-            CheckDlgButton(IDC_CHECK_FD_PIPES_INPUT, BST_CHECKED);
-        else
-            CheckDlgButton(IDC_CHECK_FD_PIPES_INPUT, BST_UNCHECKED);
-
-        if (szCheckOut.Compare(_T("true")) == 0)
-            CheckDlgButton(IDC_CHECK_FD_PIPES_OUTPUT, BST_CHECKED);
-        else
-            CheckDlgButton(IDC_CHECK_FD_PIPES_OUTPUT, BST_UNCHECKED);
-
-        this->m_EdtProgress.SetWindowText(szFunctions);
-    }
-    else
-    {
-        this->m_EdtTemplate.SetWindowText(_T(""));
-        this->m_EdtPath.SetWindowText(_T(""));
-        CheckDlgButton(IDC_CHECK_FD_PIPES_INPUT, BST_UNCHECKED);
-        CheckDlgButton(IDC_CHECK_FD_PIPES_OUTPUT, BST_UNCHECKED);
-        this->m_EdtProgress.SetWindowText(_T(""));
-    }
-}
-
 void CFormatsDlg::LoadWindowSettings()
 {
     // set window rectangle and position
@@ -236,6 +198,44 @@ void CFormatsDlg::SaveWindowSettings()
         nColWidth[3],
         nColWidth[4],
         nColWidth[5]);
+}
+
+void CFormatsDlg::UpdateEditableFields(void)
+{
+    POSITION pos = m_LstFormats.GetFirstSelectedItemPosition();
+    if (pos != NULL)
+    {
+        int nItem = m_LstFormats.GetNextSelectedItem(pos);
+
+        CString szTemplate = this->m_LstFormats.GetItemText(nItem, 1);
+        CString szPath = this->m_LstFormats.GetItemText(nItem, 2);
+        CString szCheckIn = this->m_LstFormats.GetItemText(nItem, 3);
+        CString szCheckOut = this->m_LstFormats.GetItemText(nItem, 4);
+        CString szFunctions = this->m_LstFormats.GetItemText(nItem, 5);
+
+        this->m_EdtTemplate.SetWindowText(szTemplate);
+        this->m_EdtPath.SetWindowText(szPath);
+
+        if (szCheckIn.Compare(_T("true")) == 0)
+            CheckDlgButton(IDC_CHECK_FD_PIPES_INPUT, BST_CHECKED);
+        else
+            CheckDlgButton(IDC_CHECK_FD_PIPES_INPUT, BST_UNCHECKED);
+
+        if (szCheckOut.Compare(_T("true")) == 0)
+            CheckDlgButton(IDC_CHECK_FD_PIPES_OUTPUT, BST_CHECKED);
+        else
+            CheckDlgButton(IDC_CHECK_FD_PIPES_OUTPUT, BST_UNCHECKED);
+
+        this->m_EdtProgress.SetWindowText(szFunctions);
+    }
+    else
+    {
+        this->m_EdtTemplate.SetWindowText(_T(""));
+        this->m_EdtPath.SetWindowText(_T(""));
+        CheckDlgButton(IDC_CHECK_FD_PIPES_INPUT, BST_UNCHECKED);
+        CheckDlgButton(IDC_CHECK_FD_PIPES_OUTPUT, BST_UNCHECKED);
+        this->m_EdtProgress.SetWindowText(_T(""));
+    }
 }
 
 bool CFormatsDlg::BrowseForCliExe(CString szDefaultFName, CEdit *pEdit, int nID)

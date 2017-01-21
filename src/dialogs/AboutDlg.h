@@ -30,6 +30,5 @@ public:
     CMyStatic m_StcLicense;
 public:
     afx_msg void OnClose();
-public:
     afx_msg void OnBnClickedOk();
 };

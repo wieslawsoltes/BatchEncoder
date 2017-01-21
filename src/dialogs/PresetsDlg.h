@@ -17,13 +17,12 @@ public:
     virtual ~CPresetsDlg();
     enum { IDD = IDD_DIALOG_PRESETS };
 protected:
-    HICON m_hIcon;
-    afx_msg HCURSOR OnQueryDragIcon();
-protected:
-    afx_msg void OnPaint();
-protected:
     virtual void DoDataExchange(CDataExchange* pDX);
     DECLARE_MESSAGE_MAP()
+protected:
+    HICON m_hIcon;
+    afx_msg HCURSOR OnQueryDragIcon();
+    afx_msg void OnPaint();
 public:
     virtual BOOL OnInitDialog();
 public:
@@ -32,6 +31,7 @@ public:
     CFormatsList m_Formats;
     CString szPresetsDialogResize;
     CString szPresetsListColumns;
+    bool bShowGridLines;
 public:
     CMyStatic m_StcName;
     CMyStatic m_StcOptions;
@@ -52,24 +52,17 @@ public:
 public:
     void LoadWindowSettings();
     void SaveWindowSettings();
-public:
-    bool bShowGridLines;
     void ShowGridlines(bool bShow);
-public:
     void AddToList(CPreset &preset, int nItem);
     void InsertPresetsToListCtrl();
     void ListSelectionChange();
-public:
     void LoadPresets(CString szFileXml);
     void SavePresets(CString szFileXml);
 public:
     afx_msg void OnLvnItemchangedListPdPresets(NMHDR *pNMHDR, LRESULT *pResult);
-public:
     afx_msg void OnCbnSelchangeComboPdFormat();
-public:
     afx_msg void OnBnClickedOk();
     afx_msg void OnBnClickedCancel();
-public:
     afx_msg void OnBnClickedButtonPdRemoveAllPresets();
     afx_msg void OnBnClickedButtonPdRemovePresets();
     afx_msg void OnBnClickedButtonPdLoadPresets();
@@ -78,7 +71,6 @@ public:
     afx_msg void OnBnClickedButtonPdUpdatePreset();
     afx_msg void OnBnClickedButtonPdUp();
     afx_msg void OnBnClickedButtonPdDown();
-public:
     afx_msg void OnClose();
     afx_msg void OnEnChangeEditPdName();
     afx_msg void OnEnChangeEditPdOptions();

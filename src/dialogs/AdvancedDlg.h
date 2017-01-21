@@ -21,6 +21,9 @@ protected:
     DECLARE_MESSAGE_MAP()
 public:
     virtual BOOL OnInitDialog();
+protected:
+    virtual void OnOK();
+    virtual void OnCancel();
 public:
     COptions m_Options;
 public:
@@ -31,12 +34,8 @@ public:
 public:
     void GetAdvancedOptions();
     void SetAdvancedOptions();
-protected:
-    virtual void OnOK();
-    virtual void OnCancel();
 public:
     afx_msg void OnClose();
     afx_msg void OnDestroy();
-public:
     afx_msg void OnBnClickedButtonBrowseLog();
 };

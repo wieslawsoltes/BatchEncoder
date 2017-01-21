@@ -17,19 +17,19 @@ public:
     virtual ~CFormatsDlg();
     enum { IDD = IDD_DIALOG_FORMATS };
 protected:
-    HICON m_hIcon;
-    afx_msg HCURSOR OnQueryDragIcon();
-protected:
-    afx_msg void OnPaint();
-protected:
     virtual void DoDataExchange(CDataExchange* pDX);
     DECLARE_MESSAGE_MAP()
+protected:
+    HICON m_hIcon;
+    afx_msg HCURSOR OnQueryDragIcon();
+    afx_msg void OnPaint();
 public:
     virtual BOOL OnInitDialog();
 public:
     CFormatsList m_Formats;
     CString szFormatsDialogResize;
     CString szFormatsListColumns;
+    bool bShowGridLines;
 public:
     CListCtrl m_LstFormats;
     CEdit m_EdtPath;
@@ -48,18 +48,15 @@ public:
 public:
     void LoadWindowSettings();
     void SaveWindowSettings();
-public:
-    bool bShowGridLines;
     void ShowGridlines(bool bShow);
-public:
     void AddToList(CFormat &format, int nItem);
     void InsertFormatsToListCtrl();
     void UpdateFormatsFromListCtrl();
-public:
     void LoadFormats(CString szFileXml);
     void SaveFormats(CString szFileXml);
-public:
     void UpdateEditableFields(void);
+    bool BrowseForCliExe(CString szDefaultFName, CEdit *pEdit, int nID);
+    bool BrowseForProgress(CString szDefaultFName, CEdit *pEdit, int nID);
 public:
     afx_msg void OnBnClickedOk();
     afx_msg void OnBnClickedCancel();
@@ -68,18 +65,11 @@ public:
     afx_msg void OnBnClickedButtonFdBrowse();
     afx_msg void OnBnClickedButtonFdBrowseProgress();
     afx_msg void OnBnClickedButtonFdUpdatePreset();
-public:
-    bool BrowseForCliExe(CString szDefaultFName, CEdit *pEdit, int nID);
-    bool BrowseForProgress(CString szDefaultFName, CEdit *pEdit, int nID);
-public:
     afx_msg void OnLvnItemchangedEditFdFormats(NMHDR *pNMHDR, LRESULT *pResult);
-public:
     afx_msg void OnEnChangeEditFdCliPath();
     afx_msg void OnEnChangeEditFdCliTemplate();
     afx_msg void OnEnChangeEditFdCliProgress();
-public:
     afx_msg void OnBnClickedCheckFdPipesInput();
     afx_msg void OnBnClickedCheckFdPipesOutput();
-public:
     afx_msg void OnClose();
 };
