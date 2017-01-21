@@ -718,6 +718,58 @@ public:
         }
     }
 public:
+    void LoadConfiguration(CConfiguration &m_Config)
+    {
+        tinyxml2::XMLElement *pRootElem = this->FirstChildElement();
+        if (pRootElem != NULL)
+        {
+            // root: "Configuration"
+            const char *szRoot = pRootElem->Value();
+            const char *szRootName = "Configuration";
+            if (strcmp(szRootName, szRoot) == 0)
+            {
+                // root: Options
+                tinyxml2::XMLElement *pOptionsElem = pRootElem->FirstChildElement("Options");
+                if (pOptionsElem != NULL)
+                    this->LoadOptions(pOptionsElem, m_Config.m_Options);
+
+                // root: Formats
+                tinyxml2::XMLElement *pFormatsElem = pRootElem->FirstChildElement("Formats");
+                if (pFormatsElem != NULL)
+                    this->LoadFormats(pFormatsElem, m_Config.m_Formats);
+
+                // root: Items
+                tinyxml2::XMLElement *pItemsElem = pRootElem->FirstChildElement("Items");
+                if (pItemsElem != NULL)
+                    this->LoadItems(pItemsElem, m_Config.m_Items);
+            }
+        }
+    }
+    void SaveConfiguration(CConfiguration &m_Config)
+    {
+        tinyxml2::XMLDeclaration* decl = this->NewDeclaration(UTF8_DOCUMENT_DECLARATION);
+        this->LinkEndChild(decl);
+
+        // root: Configuration
+        tinyxml2::XMLElement *pRootElem = this->NewElement("Configuration");
+        this->LinkEndChild(pRootElem);
+
+        // root: Options
+        tinyxml2::XMLElement *pOptionsElem = this->NewElement("Options");
+        pRootElem->LinkEndChild(pOptionsElem);
+        this->SaveOptions(pOptionsElem, m_Config.m_Options);
+
+        // root: Formats
+        tinyxml2::XMLElement *pFormatsElem = this->NewElement("Formats");
+        pRootElem->LinkEndChild(pFormatsElem);
+        this->SaveFormats(pFormatsElem, m_Config.m_Formats);
+
+        // root: Items
+        tinyxml2::XMLElement *pItemsElem = this->NewElement("Items");
+        pRootElem->LinkEndChild(pItemsElem);
+        this->SaveItems(pItemsElem, m_Config.m_Items);
+    }
+public:
     bool LoadFileUtf8(CString szFileName)
     {
         CStdioFile fp;

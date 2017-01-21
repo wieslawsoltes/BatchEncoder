@@ -931,41 +931,20 @@ bool CBatchEncoderDlg::SaveListFile(CString szFileXml)
 
 bool CBatchEncoderDlg::LoadConfigFile(CString szFileXml)
 {
-    ::UpdatePath();
+    m_LstInputItems.DeleteAllItems();
 
     XmlConfiguration doc;
     if (doc.LoadFileUtf8(szFileXml) == false)
         return false;
 
-    tinyxml2::XMLElement *pRootElem = doc.FirstChildElement();
-    if (!pRootElem)
-        return false;
+    m_Config.m_Formats.RemoveAllNodes();
+    m_Config.m_Items.RemoveAllNodes();
 
-    // root: "Configuration"
-    const char *szRoot = pRootElem->Value();
-    const char *szRootName = "Configuration";
-    if (strcmp(szRootName, szRoot) != 0)
-        return false;
-
-    // root: Options
-    tinyxml2::XMLElement *pOptionsElem = pRootElem->FirstChildElement("Options");
-    doc.LoadOptions(pOptionsElem, m_Config.m_Options);
+    doc.LoadConfiguration(m_Config);
 
     this->SetOptions();
-
-    // root: Formats
-    tinyxml2::XMLElement *pFormatsElem = pRootElem->FirstChildElement("Formats");
-    doc.LoadFormats(pFormatsElem, m_Config.m_Formats);
-
     this->UpdateFormatComboBox();
     this->UpdatePresetComboBox();
-
-    // root: Items
-    this->OnFileClearList();
-
-    tinyxml2::XMLElement *pItemsElem = pRootElem->FirstChildElement("Items");
-    doc.LoadItems(pItemsElem, m_Config.m_Items);
-
     this->SetItems();
     this->UpdateStatusBar();
 
@@ -974,37 +953,11 @@ bool CBatchEncoderDlg::LoadConfigFile(CString szFileXml)
 
 bool CBatchEncoderDlg::SaveConfigFile(CString szFileXml)
 {
-    XmlConfiguration doc;
-    CUtf8String szBuffUtf8;
-
-    tinyxml2::XMLDeclaration* decl = doc.NewDeclaration(UTF8_DOCUMENT_DECLARATION);
-    doc.LinkEndChild(decl);
-
-    // root: Configuration
-    tinyxml2::XMLElement *pRootElem = doc.NewElement("Configuration");
-    doc.LinkEndChild(pRootElem);
-
-    // root: Options
-    tinyxml2::XMLElement *pOptionsElem = doc.NewElement("Options");
-    pRootElem->LinkEndChild(pOptionsElem);
-
     this->GetOptions();
-    doc.SaveOptions(pOptionsElem, m_Config.m_Options);
-
-    // root: Formats
-    tinyxml2::XMLElement *pFormatsElem = doc.NewElement("Formats");
-    pRootElem->LinkEndChild(pFormatsElem);
-    doc.SaveFormats(pFormatsElem, m_Config.m_Formats);
-
-    // root: Items
-    tinyxml2::XMLElement *pItemsElem = doc.NewElement("Items");
-    pRootElem->LinkEndChild(pItemsElem);
-
     this->GetItems();
-    doc.SaveItems(pItemsElem, m_Config.m_Items);
 
-    ::UpdatePath();
-
+    XmlConfiguration doc;
+    doc.SaveConfiguration(m_Config);
     return doc.SaveFileUtf8(szFileXml);
 }
 
