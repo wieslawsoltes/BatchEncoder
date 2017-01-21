@@ -1062,6 +1062,7 @@ void CBatchEncoderDlg::OnDestroy()
     CResizeDialog::OnDestroy();
 
     m_Config.m_Items.RemoveAllNodes();
+    m_Config.m_Formats.RemoveAllNodes();
 }
 
 void CBatchEncoderDlg::UpdateFormatAndPreset()
