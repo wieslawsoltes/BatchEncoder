@@ -2254,6 +2254,11 @@ void CBatchEncoderWorkerContext::Next(int nIndex)
         pDlg->m_FileProgress.SetPos(0);
         pDlg->m_LstInputItems.EnsureVisible(nIndex, FALSE);
     }
+    else if (this->nThreadCount > 1)
+    {
+        this->nProcessedFiles++;
+        this->nErrors = (this->nProcessedFiles - 1) - this->nDoneWithoutError;
+    }
 }
 
 void CBatchEncoderWorkerContext::Done()
