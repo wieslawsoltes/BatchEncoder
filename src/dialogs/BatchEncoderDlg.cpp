@@ -10,6 +10,9 @@
 #include "FormatsDlg.h"
 #include "AdvancedDlg.h"
 
+#define WM_TRAY (WM_USER + 0x10)
+#define IDC_STATUSBAR 1500
+
 #define IDC_FOLDERTREE          0x3741
 #define IDC_TITLE               0x3742
 #define IDC_STATUSTEXT          0x3743
@@ -17,7 +20,6 @@
 #define IDC_BROWSE_NEW_FOLDER   0x3746
 
 static CString szLastBrowse;
-static CString szLastBrowseAddDir;
 static WNDPROC lpOldWindowProc;
 static bool bRecurseChecked = true;
 static HWND hWndBtnRecurse = NULL;
@@ -53,7 +55,6 @@ int CALLBACK BrowseCallbackAddDir(HWND hWnd, UINT uMsg, LPARAM lp, LPARAM pData)
         RECT rc, rcTitle, rcTree, rcWnd;
 
         TCHAR szPath[MAX_PATH + 1] = _T("");
-        wsprintf(szPath, _T("%s\0"), szLastBrowseAddDir);
 
         hWndTitle = ::GetDlgItem(hWnd, IDC_TITLE);
 
@@ -1168,7 +1169,7 @@ void CBatchEncoderDlg::OnBnClickedButtonBrowsePath()
     bi.hwndOwner = this->GetSafeHwnd();
     bi.pidlRoot = pidlDesktop;
     bi.pszDisplayName = lpBuffer;
-    bi.lpszTitle = _T("Output path for converted files:");
+    bi.lpszTitle = _T("Output path:");
     bi.lpfn = NULL;
     bi.lParam = 0;
     bi.ulFlags = BIF_STATUSTEXT | BIF_RETURNONLYFSDIRS | BIF_NEWDIALOGSTYLE;
@@ -1817,7 +1818,7 @@ void CBatchEncoderDlg::OnEditAddDir()
     bi.hwndOwner = this->GetSafeHwnd();
     bi.pidlRoot = pidlDesktop;
     bi.pszDisplayName = lpBuffer;
-    bi.lpszTitle = _T("Select folder with Audio Files:");
+    bi.lpszTitle = _T("Select folder:");
     bi.lpfn = NULL;
     bi.lParam = 0;
     bi.ulFlags = BIF_STATUSTEXT | BIF_RETURNONLYFSDIRS | BIF_NEWDIALOGSTYLE;

@@ -181,11 +181,9 @@ bool ConvertFile(FileContext* pContext)
     }
 
     int nProgress = 0;
-    CTimeCount countTime;
 
-    // initialize and start conversion time counter
-    countTime.InitCounter();
-    countTime.StartCounter();
+    CTimeCount timeCount;
+    timeCount.Start();
 
     if (pContext->pWorkerContext->pConfig->m_Options.bForceConsoleWindow == true)
     {
@@ -252,7 +250,7 @@ bool ConvertFile(FileContext* pContext)
             &pInfo);
         if (bRet == FALSE)
         {
-            countTime.StopCounter();
+            timeCount.Stop();
 
             ::CloseHandle(rOutErrPipe);
             ::CloseHandle(wOutErrPipe);
@@ -316,7 +314,7 @@ bool ConvertFile(FileContext* pContext)
                 &dwReadThreadID);
             if (hReadThread == NULL)
             {
-                countTime.StopCounter();
+                timeCount.Stop();
 
                 ::CloseHandle(wInPipe);
 
@@ -372,7 +370,7 @@ bool ConvertFile(FileContext* pContext)
                 &dwWriteThreadID);
             if (hWriteThread == NULL)
             {
-                countTime.StopCounter();
+                timeCount.Stop();
 
                 ::CloseHandle(rOutPipe);
 
@@ -652,8 +650,7 @@ bool ConvertFile(FileContext* pContext)
         }
     }
 
-    // finished, stop conversion time counter
-    countTime.StopCounter();
+    timeCount.Stop();
 
     if (pContext->pWorkerContext->pConfig->m_Options.bForceConsoleWindow == false)
     {
@@ -707,6 +704,6 @@ bool ConvertFile(FileContext* pContext)
         ::CloseHandle(pInfo.hThread);
     }
 
-    pContext->pWorkerContext->Callback(nProgress, true, false, countTime.GetTime(), pContext->nIndex);
+    pContext->pWorkerContext->Callback(nProgress, true, false, timeCount.ElapsedTime(), pContext->nIndex);
     return nProgress == 100;
 }

@@ -6,34 +6,27 @@
 class CTimeCount
 {
 private:
-    LARGE_INTEGER liCount[3];
-    double fTime;
+    LARGE_INTEGER f[3];
 public:
-    CTimeCount(void)
-    {
-        this->InitCounter();
+    CTimeCount(void) 
+    { 
     };
-    virtual ~CTimeCount(void) { };
+    virtual ~CTimeCount(void) 
+    { 
+    };
 public:
-    void InitCounter(void)
+    void Start(void)
     {
-        this->fTime = 0.0;
-        ZeroMemory(this->liCount, (3 * sizeof(LARGE_INTEGER)));
-        ::QueryPerformanceFrequency(&this->liCount[0]);
+        ZeroMemory(this->f, (3 * sizeof(LARGE_INTEGER)));
+        ::QueryPerformanceFrequency(&this->f[0]);
+        ::QueryPerformanceCounter(&this->f[1]);
     }
-    void StartCounter(void)
+    void Stop(void)
     {
-        ::QueryPerformanceCounter(&this->liCount[1]);
+        ::QueryPerformanceCounter(&this->f[2]);
     }
-    void StopCounter(void)
+    double ElapsedTime(void)
     {
-        ::QueryPerformanceCounter(&this->liCount[2]);
-    }
-    double GetTime(void)
-    {
-        this->fTime = (double)((this->liCount[2].QuadPart - this->liCount[1].QuadPart)
-            / (double)this->liCount[0].QuadPart);
-
-        return(this->fTime);
+        return (double)((this->f[2].QuadPart - this->f[1].QuadPart) / (double)this->f[0].QuadPart);
     }
 };
