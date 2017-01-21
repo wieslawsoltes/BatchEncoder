@@ -203,8 +203,8 @@ public:
     void GetOptions();
     void SetOptions();
 public:
-    bool LoadListFile(CString szFileXml);
-    bool SaveListFile(CString szFileXml);
+    bool LoadItems(CString szFileXml);
+    bool SaveItems(CString szFileXml);
 public:
     bool LoadConfigFile(CString szFileXml);
     bool SaveConfigFile(CString szFileXml);

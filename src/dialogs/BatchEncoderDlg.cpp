@@ -881,7 +881,7 @@ void CBatchEncoderDlg::SetOptions()
         this->GetMenu()->CheckMenuItem(ID_OPTIONS_FORCECONSOLEWINDOW, MF_UNCHECKED);
 }
 
-bool CBatchEncoderDlg::LoadListFile(CString szFileXml)
+bool CBatchEncoderDlg::LoadItems(CString szFileXml)
 {
     XmlConfiguration doc;
     if (doc.Open(szFileXml) == true)
@@ -907,11 +907,10 @@ bool CBatchEncoderDlg::LoadListFile(CString szFileXml)
 
         return true;
     }
-
     return false;
 }
 
-bool CBatchEncoderDlg::SaveListFile(CString szFileXml)
+bool CBatchEncoderDlg::SaveItems(CString szFileXml)
 {
     XmlConfiguration doc;
 
@@ -1714,7 +1713,7 @@ void CBatchEncoderDlg::OnFileLoadList()
     if (fd.DoModal() == IDOK)
     {
         CString szFileXml = fd.GetPathName();
-        if (this->LoadListFile(szFileXml) == false)
+        if (this->LoadItems(szFileXml) == false)
         {
             MessageBox(_T("Failed to load file!"),
                 _T("ERROR"),
@@ -1736,7 +1735,7 @@ void CBatchEncoderDlg::OnFileSaveList()
     if (fd.DoModal() == IDOK)
     {
         CString szFileXml = fd.GetPathName();
-        if (this->SaveListFile(szFileXml) == false)
+        if (this->SaveItems(szFileXml) == false)
         {
             MessageBox(_T("Failed to save file!"),
                 _T("ERROR"),

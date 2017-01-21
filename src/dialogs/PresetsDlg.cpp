@@ -286,7 +286,7 @@ void CPresetsDlg::OnBnClickedButtonPdRemovePresets()
     }
 }
 
-void CPresetsDlg::LoadPresetsFile(CString szFileXml)
+void CPresetsDlg::LoadPresets(CString szFileXml)
 {
     ::UpdatePath();
 
@@ -328,7 +328,7 @@ void CPresetsDlg::LoadPresetsFile(CString szFileXml)
     }
 }
 
-void CPresetsDlg::SavePresetsFile(CString szFileXml)
+void CPresetsDlg::SavePresets(CString szFileXml)
 {
     if (szFileXml.Compare(_T("")) == 0)
     {
@@ -366,7 +366,7 @@ void CPresetsDlg::OnBnClickedButtonPdLoadPresets()
     if (fd.DoModal() == IDOK)
     {
         CString szFileXml = fd.GetPathName();
-        this->LoadPresetsFile(szFileXml);
+        this->LoadPresets(szFileXml);
     }
 }
 
@@ -381,7 +381,7 @@ void CPresetsDlg::OnBnClickedButtonPdSavePresets()
     if (fd.DoModal() == IDOK)
     {
         CString szFileXml = fd.GetPathName();
-        this->SavePresetsFile(szFileXml);
+        this->SavePresets(szFileXml);
     }
 }
 

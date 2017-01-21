@@ -64,8 +64,8 @@ public:
     bool bShowGridLines;
     void ShowGridlines(bool bShow);
 public:
-    void LoadPresetsFile(CString szFileXml);
-    void SavePresetsFile(CString szFileXml);
+    void LoadPresets(CString szFileXml);
+    void SavePresets(CString szFileXml);
 public:
     void AddToList(CString szName, CString szOptions, int nItem);
     void ListSelectionChange(void);
