@@ -15,12 +15,12 @@ public:
     DWORD dwThreadID;
     volatile int nProgressCurrent;
 public:
-    int nTotalFiles;
-    int nProcessedFiles;
-    int nDoneWithoutError;
-    int nErrors;
+    volatile int nTotalFiles;
+    volatile int nProcessedFiles;
+    volatile int nDoneWithoutError;
+    volatile int nErrors;
 public:
-    int nThreadCount;
+    volatile int nThreadCount;
 public:
     WorkerContext(CConfiguration* pConfig)
     {
