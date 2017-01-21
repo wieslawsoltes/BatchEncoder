@@ -5,6 +5,7 @@
 
 #include "xml\tinyxml2.h" // https://github.com/leethomason/tinyxml2
 #include "utilities\Utilities.h"
+#include "utilities\UnicodeUtf8.h"
 #include "utilities\Utf8String.h"
 #include "Configuration.h"
 
@@ -19,6 +20,33 @@ public:
     virtual ~XmlConfiguration()
     {
     }
+private:
+    CString ToCString(const char *pszUtf8)
+    {
+        CString szBuff;
+
+        if (pszUtf8 == NULL)
+            return _T("");
+
+        if (strlen(pszUtf8) == 0)
+            return _T("");
+
+#ifdef _UNICODE
+        // UTF-8 to UNICODE
+        wchar_t *pszUnicode;
+        pszUnicode = MakeUnicodeString((unsigned char *)pszUtf8);
+        szBuff = pszUnicode;
+        free(pszUnicode);
+#else
+        // UTF-8 to ANSI
+        char *pszAnsi;
+        Utf8Decode(pszUtf8, &pszAnsi);
+        szBuff = pszAnsi;
+        free(pszAnsi);
+#endif
+
+        return szBuff;
+    }
 public:
     void GetOptions(tinyxml2::XMLElement *pOptionsElem, COptions &m_Options)
     {
@@ -29,7 +57,7 @@ public:
         if (pOptionElem)
         {
             const char *tmpBuff = pOptionElem->GetText();
-            m_Options.nSelectedFormat = stoi(GetConfigString(tmpBuff));
+            m_Options.nSelectedFormat = _tstoi(ToCString(tmpBuff));
         }
         else
         {
@@ -41,7 +69,7 @@ public:
         if (pOptionElem)
         {
             const char *tmpBuff = pOptionElem->GetText();
-            m_Options.szOutputPath = GetConfigString(tmpBuff);
+            m_Options.szOutputPath = ToCString(tmpBuff);
         }
         else
         {
@@ -53,7 +81,7 @@ public:
         if (pOptionElem)
         {
             const char *tmpBuff = pOptionElem->GetText();
-            m_Options.bOutputPathChecked = GetConfigString(tmpBuff).Compare(_T("true")) == 0;
+            m_Options.bOutputPathChecked = ToCString(tmpBuff).Compare(_T("true")) == 0;
         }
         else
         {
@@ -65,7 +93,7 @@ public:
         if (pOptionElem)
         {
             const char *tmpBuff = pOptionElem->GetText();
-            m_Options.bLogConsoleOutput = GetConfigString(tmpBuff).Compare(_T("true")) == 0;
+            m_Options.bLogConsoleOutput = ToCString(tmpBuff).Compare(_T("true")) == 0;
         }
         else
         {
@@ -77,7 +105,7 @@ public:
         if (pOptionElem)
         {
             const char *tmpBuff = pOptionElem->GetText();
-            m_Options.bDeleteSourceFiles = GetConfigString(tmpBuff).Compare(_T("true")) == 0;
+            m_Options.bDeleteSourceFiles = ToCString(tmpBuff).Compare(_T("true")) == 0;
         }
         else
         {
@@ -89,7 +117,7 @@ public:
         if (pOptionElem)
         {
             const char *tmpBuff = pOptionElem->GetText();
-            m_Options.bStayOnTop = GetConfigString(tmpBuff).Compare(_T("true")) == 0;
+            m_Options.bStayOnTop = ToCString(tmpBuff).Compare(_T("true")) == 0;
         }
         else
         {
@@ -101,7 +129,7 @@ public:
         if (pOptionElem)
         {
             const char *tmpBuff = pOptionElem->GetText();
-            m_Options.bRecurseChecked = GetConfigString(tmpBuff).Compare(_T("true")) == 0;
+            m_Options.bRecurseChecked = ToCString(tmpBuff).Compare(_T("true")) == 0;
         }
         else
         {
@@ -113,7 +141,7 @@ public:
         if (pOptionElem)
         {
             const char *tmpBuff = pOptionElem->GetText();
-            m_Options.szMainWindowResize = GetConfigString(tmpBuff);
+            m_Options.szMainWindowResize = ToCString(tmpBuff);
         }
 
         // option: FileListColumns
@@ -121,7 +149,7 @@ public:
         if (pOptionElem)
         {
             const char *tmpBuff = pOptionElem->GetText();
-            m_Options.szFileListColumns = GetConfigString(tmpBuff);
+            m_Options.szFileListColumns = ToCString(tmpBuff);
         }
 
         // option: ShowGridLines
@@ -129,7 +157,7 @@ public:
         if (pOptionElem)
         {
             const char *tmpBuff = pOptionElem->GetText();
-            m_Options.bShowGridLines = GetConfigString(tmpBuff).Compare(_T("true")) == 0;
+            m_Options.bShowGridLines = ToCString(tmpBuff).Compare(_T("true")) == 0;
         }
         else
         {
@@ -141,7 +169,7 @@ public:
         if (pOptionElem)
         {
             const char *tmpBuff = pOptionElem->GetText();
-            m_Options.bShowTrayIcon = GetConfigString(tmpBuff).Compare(_T("true")) == 0;
+            m_Options.bShowTrayIcon = ToCString(tmpBuff).Compare(_T("true")) == 0;
         }
         else
         {
@@ -153,7 +181,7 @@ public:
         if (pOptionElem)
         {
             const char *tmpBuff = pOptionElem->GetText();
-            m_Options.bShutdownWhenFinished = GetConfigString(tmpBuff).Compare(_T("true")) == 0;
+            m_Options.bShutdownWhenFinished = ToCString(tmpBuff).Compare(_T("true")) == 0;
         }
         else
         {
@@ -165,7 +193,7 @@ public:
         if (pOptionElem)
         {
             const char *tmpBuff = pOptionElem->GetText();
-            m_Options.bDoNotSaveConfiguration = GetConfigString(tmpBuff).Compare(_T("true")) == 0;
+            m_Options.bDoNotSaveConfiguration = ToCString(tmpBuff).Compare(_T("true")) == 0;
         }
         else
         {
@@ -177,7 +205,7 @@ public:
         if (pOptionElem)
         {
             const char *tmpBuff = pOptionElem->GetText();
-            m_Options.szPresetsDialogResize = GetConfigString(tmpBuff);
+            m_Options.szPresetsDialogResize = ToCString(tmpBuff);
         }
 
         // option: PresetsListColumns
@@ -185,7 +213,7 @@ public:
         if (pOptionElem)
         {
             const char *tmpBuff = pOptionElem->GetText();
-            m_Options.szPresetsListColumns = GetConfigString(tmpBuff);
+            m_Options.szPresetsListColumns = ToCString(tmpBuff);
         }
 
         // option: FormatsDialogResize
@@ -193,7 +221,7 @@ public:
         if (pOptionElem)
         {
             const char *tmpBuff = pOptionElem->GetText();
-            m_Options.szFormatsDialogResize = GetConfigString(tmpBuff);
+            m_Options.szFormatsDialogResize = ToCString(tmpBuff);
         }
 
         // option: FormatsListColumns
@@ -201,7 +229,7 @@ public:
         if (pOptionElem)
         {
             const char *tmpBuff = pOptionElem->GetText();
-            m_Options.szFormatsListColumns = GetConfigString(tmpBuff);
+            m_Options.szFormatsListColumns = ToCString(tmpBuff);
         }
 
         // option: DeleteOnError
@@ -209,7 +237,7 @@ public:
         if (pOptionElem)
         {
             const char *tmpBuff = pOptionElem->GetText();
-            m_Options.bDeleteOnError = GetConfigString(tmpBuff).Compare(_T("true")) == 0;
+            m_Options.bDeleteOnError = ToCString(tmpBuff).Compare(_T("true")) == 0;
         }
         else
         {
@@ -221,7 +249,7 @@ public:
         if (pOptionElem)
         {
             const char *tmpBuff = pOptionElem->GetText();
-            m_Options.bStopOnErrors = GetConfigString(tmpBuff).Compare(_T("true")) == 0;
+            m_Options.bStopOnErrors = ToCString(tmpBuff).Compare(_T("true")) == 0;
         }
         else
         {
@@ -233,7 +261,7 @@ public:
         if (pOptionElem)
         {
             const char *tmpBuff = pOptionElem->GetText();
-            m_Options.szLogFileName = GetConfigString(tmpBuff);
+            m_Options.szLogFileName = ToCString(tmpBuff);
         }
         else
         {
@@ -245,7 +273,7 @@ public:
         if (pOptionElem)
         {
             const char *tmpBuff = pOptionElem->GetText();
-            m_Options.nLogEncoding = stoi(GetConfigString(tmpBuff));
+            m_Options.nLogEncoding = _tstoi(ToCString(tmpBuff));
         }
         else
         {
@@ -257,7 +285,7 @@ public:
         if (pOptionElem)
         {
             const char *tmpBuff = pOptionElem->GetText();
-            m_Options.bForceConsoleWindow = GetConfigString(tmpBuff).Compare(_T("true")) == 0;
+            m_Options.bForceConsoleWindow = ToCString(tmpBuff).Compare(_T("true")) == 0;
         }
         else
         {
@@ -269,7 +297,7 @@ public:
         if (pOptionElem)
         {
             const char *tmpBuff = pOptionElem->GetText();
-            m_Options.nThreadCount = stoi(GetConfigString(tmpBuff));
+            m_Options.nThreadCount = _tstoi(ToCString(tmpBuff));
         }
         else
         {
@@ -441,13 +469,13 @@ public:
             const char *pszName = pPresetElem->Attribute("name");
             if (pszName != NULL)
             {
-                preset.szName = GetConfigString(pszName);
+                preset.szName = ToCString(pszName);
             }
 
             const char *pszOptions = pPresetElem->Attribute("options");
             if (pszOptions != NULL)
             {
-                preset.szOptions = GetConfigString(pszOptions);
+                preset.szOptions = ToCString(pszOptions);
             }
 
             m_Presets.InsertNode(preset);
@@ -504,61 +532,61 @@ public:
             const char *pszId = pFormatElem->Attribute("id");
             if (pszId != NULL)
             {
-                format.szId = GetConfigString(pszId);
+                format.szId = ToCString(pszId);
             }
 
             const char *pszName = pFormatElem->Attribute("name");
             if (pszName != NULL)
             {
-                format.szName = GetConfigString(pszName);
+                format.szName = ToCString(pszName);
             }
 
             const char *pszTemplate = pFormatElem->Attribute("template");
             if (pszTemplate != NULL)
             {
-                format.szTemplate = GetConfigString(pszTemplate);
+                format.szTemplate = ToCString(pszTemplate);
             }
 
             const char *pszPipesInput = pFormatElem->Attribute("input");
             if (pszPipesInput != NULL)
             {
-                format.bInput = GetConfigString(pszPipesInput).CompareNoCase(_T("true")) == 0;
+                format.bInput = ToCString(pszPipesInput).CompareNoCase(_T("true")) == 0;
             }
 
             const char *pszPipesOutput = pFormatElem->Attribute("output");
             if (pszPipesOutput != NULL)
             {
-                format.bOutput = GetConfigString(pszPipesOutput).CompareNoCase(_T("true")) == 0;
+                format.bOutput = ToCString(pszPipesOutput).CompareNoCase(_T("true")) == 0;
             }
 
             const char *pszFunction = pFormatElem->Attribute("function");
             if (pszFunction != NULL)
             {
-                format.szFunction = GetConfigString(pszFunction);
+                format.szFunction = ToCString(pszFunction);
             }
 
             const char *pszPath = pFormatElem->Attribute("path");
             if (pszPath != NULL)
             {
-                format.szPath = GetConfigString(pszPath);
+                format.szPath = ToCString(pszPath);
             }
 
             const char *pszType = pFormatElem->Attribute("type");
             if (pszType != NULL)
             {
-                format.nType = stoi(GetConfigString(pszType));
+                format.nType = _tstoi(ToCString(pszType));
             }
 
             const char *pszExtension = pFormatElem->Attribute("extension");
             if (pszExtension != NULL)
             {
-                format.szExtension = GetConfigString(pszExtension);
+                format.szExtension = ToCString(pszExtension);
             }
 
             const char *pszDefaultPreset = pFormatElem->Attribute("default");
             if (pszDefaultPreset != NULL)
             {
-                format.nDefaultPreset = stoi(GetConfigString(pszDefaultPreset));
+                format.nDefaultPreset = _tstoi(ToCString(pszDefaultPreset));
             }
 
             tinyxml2::XMLElement *pPresetsElem = pFormatElem->FirstChildElement("Presets");
@@ -647,61 +675,61 @@ public:
             const char *pszId = pItemElem->Attribute("id");
             if (pszId != NULL)
             {
-                item.nId = stoi(GetConfigString(pszId));
+                item.nId = _tstoi(ToCString(pszId));
             }
 
             const char *pszPath = pItemElem->Attribute("path");
             if (pszPath != NULL)
             {
-                item.szPath = GetConfigString(pszPath);
+                item.szPath = ToCString(pszPath);
             }
 
             const char *pszSize = pItemElem->Attribute("size");
             if (pszSize != NULL)
             {
-                item.szSize = GetConfigString(pszSize);
+                item.szSize = ToCString(pszSize);
             }
 
             const char *pszName = pItemElem->Attribute("name");
             if (pszName != NULL)
             {
-                item.szName = GetConfigString(pszName);
+                item.szName = ToCString(pszName);
             }
 
             const char *pszExtension = pItemElem->Attribute("extension");
             if (pszExtension != NULL)
             {
-                item.szExtension = GetConfigString(pszExtension);
+                item.szExtension = ToCString(pszExtension);
             }
 
             const char *pszFormatId = pItemElem->Attribute("format");
             if (pszFormatId != NULL)
             {
-                item.szFormatId = GetConfigString(pszFormatId);
+                item.szFormatId = ToCString(pszFormatId);
             }
 
             const char *pszPreset = pItemElem->Attribute("preset");
             if (pszPreset != NULL)
             {
-                item.nPreset = stoi(GetConfigString(pszPreset));
+                item.nPreset = _tstoi(ToCString(pszPreset));
             }
 
             const char *pszChecked = pItemElem->Attribute("checked");
             if (pszChecked != NULL)
             {
-                item.bChecked = GetConfigString(pszChecked).CompareNoCase(_T("true")) == 0;
+                item.bChecked = ToCString(pszChecked).CompareNoCase(_T("true")) == 0;
             }
 
             const char *pszTime = pItemElem->Attribute("time");
             if (pszTime != NULL)
             {
-                item.szTime = GetConfigString(pszTime);
+                item.szTime = ToCString(pszTime);
             }
 
             const char *pszStatus = pItemElem->Attribute("status");
             if (pszStatus != NULL)
             {
-                item.szStatus = GetConfigString(pszStatus);
+                item.szStatus = ToCString(pszStatus);
             }
 
             m_Items.InsertNode(item);

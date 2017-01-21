@@ -146,7 +146,7 @@ class CBatchEncoderWorkerContext : public WorkerContext
     CTimeCount timeCount;
     CBatchEncoderDlg *pDlg;
 public:
-    CBatchEncoderWorkerContext(CConfiguration* pConfig, CBatchEncoderDlg *pDlg) 
+    CBatchEncoderWorkerContext(CConfiguration* pConfig, CBatchEncoderDlg *pDlg)
         : WorkerContext(pConfig)
     {
         this->pDlg = pDlg;
@@ -158,44 +158,37 @@ public:
     }
     void Next(int nIndex)
     {
-        // update status-bar conversion status
         if (nThreadCount == 1)
         {
-            nProcessedFiles++;
-            nErrors = (nProcessedFiles - 1) - nDoneWithoutError;
+            this->nProcessedFiles++;
+            this->nErrors = (this->nProcessedFiles - 1) - this->nDoneWithoutError;
+
             CString szText;
             szText.Format(_T("Processing item %d of %d (%d Done, %d %s)"),
-                nProcessedFiles,
-                nTotalFiles,
-                nDoneWithoutError,
-                nErrors,
-                ((nErrors == 0) || (nErrors > 1)) ? _T("Errors") : _T("Error"));
+                this->nProcessedFiles,
+                this->nTotalFiles,
+                this->nDoneWithoutError,
+                this->nErrors,
+                ((this->nErrors == 0) || (this->nErrors > 1)) ? _T("Errors") : _T("Error"));
+            pDlg->m_StatusBar.SetText(szText, 1, 0);
 
-            VERIFY(pDlg->m_StatusBar.SetText(szText, 1, 0));
+            pDlg->m_FileProgress.SetPos(0);
+            pDlg->m_LstInputItems.EnsureVisible(nIndex, FALSE);
         }
-
-        // reset progress bar on start of next file
-        pDlg->m_FileProgress.SetPos(0);
-
-        // scroll list to ensure the item is visible
-        pDlg->m_LstInputItems.EnsureVisible(nIndex, FALSE);
     }
     void Done()
     {
-        timeCount.Stop();
+        this->timeCount.Stop();
 
-        if (nThreadCount == 1)
+        if (nProcessedFiles > 0)
         {
-            if (nProcessedFiles > 0)
-            {
-                CString szText;
-                szText.Format(_T("Done in %s"), ::FormatTime(timeCount.ElapsedTime(), 3));
-                pDlg->m_StatusBar.SetText(szText, 1, 0);
-            }
-            else
-            {
-                pDlg->m_StatusBar.SetText(_T(""), 1, 0);
-            }
+            CString szText;
+            szText.Format(_T("Done in %s"), ::FormatTime(this->timeCount.ElapsedTime(), 3));
+            pDlg->m_StatusBar.SetText(szText, 1, 0);
+        }
+        else
+        {
+            pDlg->m_StatusBar.SetText(_T(""), 1, 0);
         }
 
         pDlg->FinishConvert();
@@ -212,16 +205,6 @@ public:
             return this->bRunning;
         }
 
-        if (bFinished == false)
-        {
-            if (nProgress != this->nProgressCurrent)
-            {
-                this->nProgressCurrent = nProgress;
-                pDlg->m_FileProgress.SetPos(nProgress);
-                pDlg->ShowProgressTrayIcon(nProgress);
-            }
-        }
-
         if (bFinished == true)
         {
             if (nProgress != 100)
@@ -235,6 +218,18 @@ public:
                 CString szTime = ::FormatTime(fTime, 1);
                 pDlg->m_LstInputItems.SetItemText(nIndex, 5, szTime); // Time
                 pDlg->m_LstInputItems.SetItemText(nIndex, 6, _T("Done")); // Status
+            }
+        }
+        else
+        {
+            if (this->nThreadCount == 1)
+            {
+                if (nProgress != this->nProgressCurrent)
+                {
+                    this->nProgressCurrent = nProgress;
+                    pDlg->m_FileProgress.SetPos(nProgress);
+                    pDlg->ShowProgressTrayIcon(nProgress);
+                }
             }
         }
 

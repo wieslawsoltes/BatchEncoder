@@ -4,18 +4,23 @@
 #pragma once
 
 void DoTheShutdown();
+
 void LaunchAndWait(LPCTSTR file, LPCTSTR params, BOOL bWait);
+
 void SetComboBoxHeight(HWND hDlg, int nComboBoxID);
 
 CString GetFileName(CString szFilePath);
+
 CString GetFileExtension(CString szFilePath);
+
 ULONGLONG GetFileSize64(HANDLE hFile);
+
 CString GetExeFilePath();
+
 void GetFullPathName(CString &szFilePath);
+
 void UpdatePath();
 
-CString GetConfigString(const char *pszUtf8);
-int stoi(CString szData);
-
 BOOL MakeFullPath(CString szPath);
+
 CString FormatTime(double fTime, int nFormat);

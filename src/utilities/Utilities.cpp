@@ -4,8 +4,6 @@
 #include "StdAfx.h"
 #include "..\BatchEncoder.h"
 #include "Utilities.h"
-#include "UnicodeUtf8.h"
-#include "Utf8String.h"
 
 void DoTheShutdown()
 {
@@ -44,7 +42,7 @@ void LaunchAndWait(LPCTSTR file, LPCTSTR params, BOOL bWait)
 
     sei.cbSize = sizeof(SHELLEXECUTEINFO);
     sei.fMask = SEE_MASK_NOCLOSEPROCESS;
-    // sei.lpVerb is uninitialised, so that default action will be taken
+    // sei.lpVerb is uninitialized, so that default action will be taken
     sei.nShow = SW_SHOWNORMAL;
     sei.lpFile = file;
     sei.lpParameters = params;
@@ -66,7 +64,7 @@ void SetComboBoxHeight(HWND hDlg, int nComboBoxID)
 
     HWND hComboxBox = ::GetDlgItem(hDlg, nComboBoxID);
 
-    // NOTE: on WinXP standard method does not work but we are using CB_SETMINVISIBLE message
+    // NOTE: on WinXP standard method does not work so we are using CB_SETMINVISIBLE message
     // Windows XP or later
     if (true)
     {
@@ -86,7 +84,6 @@ void SetComboBoxHeight(HWND hDlg, int nComboBoxID)
     int nCY = 0;
 
     ::GetWindowRect(hComboxBox, &rcCB);
-
     if (nCount > nSizeLimit)
         nCY = nHeight * nSizeLimit;
     else
@@ -171,44 +168,6 @@ void UpdatePath()
     ::SetCurrentDirectory(::GetExeFilePath());
 }
 
-CString GetConfigString(const char *pszUtf8)
-{
-    CString szBuff;
-
-    if (pszUtf8 == NULL)
-    {
-        szBuff = _T("");
-        return szBuff;
-    }
-
-    if (strlen(pszUtf8) == 0)
-    {
-        szBuff = _T("");
-        return szBuff;
-    }
-
-#ifdef _UNICODE
-    // UTF-8 to UNICODE
-    wchar_t *pszUnicode;
-    pszUnicode = MakeUnicodeString((unsigned char *)pszUtf8);
-    szBuff = pszUnicode;
-    free(pszUnicode);
-#else
-    // UTF-8 to ANSI
-    char *pszAnsi;
-    Utf8Decode(pszUtf8, &pszAnsi);
-    szBuff = pszAnsi;
-    free(pszAnsi);
-#endif
-
-    return szBuff;
-}
-
-int stoi(CString szData)
-{
-    return _tstoi(szData);
-}
-
 BOOL MakeFullPath(CString szPath)
 {
     if (szPath[szPath.GetLength() - 1] != '\\')
@@ -258,7 +217,7 @@ CString FormatTime(double fTime, int nFormat)
     }
     else if (nFormat == 1)
     {
-        // exclude only days if not used
+        // exclude days if not used
         if (dwTime[0] != 0)
         {
             szTime.Format(_T("(%02ld:%02ld:%02ld:%02ld.%03ld"),
@@ -301,7 +260,7 @@ CString FormatTime(double fTime, int nFormat)
     }
     else if (nFormat == 3)
     {
-        // exclude days if not used and doąt show milliseconds
+        // exclude days if not used and don't show milliseconds
         if (dwTime[0] != 0)
         {
             szTime.Format(_T("(%02ld:%02ld:%02ld:%02ld"),

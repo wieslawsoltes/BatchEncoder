@@ -211,7 +211,6 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
                 }
                 else
                 {
-                    // stop conversion process on error
                     if (pWorkerContext->pConfig->m_Options.bStopOnErrors == true)
                         break;
                 }

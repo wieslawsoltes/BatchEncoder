@@ -321,10 +321,7 @@ BOOL CBatchEncoderDlg::OnInitDialog()
     SetIcon(m_hIcon, FALSE);
 
     // status-bar
-    VERIFY(m_StatusBar.Create(WS_CHILD | WS_VISIBLE | CCS_BOTTOM | SBARS_SIZEGRIP,
-        CRect(0, 0, 0, 0),
-        this,
-        IDC_STATUSBAR));
+    m_StatusBar.Create(WS_CHILD | WS_VISIBLE | CCS_BOTTOM | SBARS_SIZEGRIP, CRect(0, 0, 0, 0), this, IDC_STATUSBAR);
 
     int nStatusBarParts[2] = { 100, -1 };
     m_StatusBar.SetParts(2, nStatusBarParts);
@@ -332,7 +329,7 @@ BOOL CBatchEncoderDlg::OnInitDialog()
     // accelerators
     m_hAccel = ::LoadAccelerators(::GetModuleHandle(NULL), MAKEINTRESOURCE(IDR_ACCELERATOR_BATCHENCODER));
 
-    // OnNotifyFormat message WM_NOTIFYFORMAT
+    // OnNotifyFormat WM_NOTIFYFORMAT
 #ifdef _UNICODE
     m_LstInputItems.SendMessage(CCM_SETUNICODEFORMAT, (WPARAM)(BOOL)TRUE, 0);
 #endif
@@ -343,7 +340,7 @@ BOOL CBatchEncoderDlg::OnInitDialog()
     // dialog title
     this->SetWindowText(MAIN_APP_NAME);
 
-    // progress status
+    // progress
     m_FileProgress.SetRange(0, 100);
     m_FileProgress.SetPos(0);
     m_FileProgress.ShowWindow(SW_HIDE);
@@ -409,15 +406,13 @@ void CBatchEncoderDlg::UpdateStatusBar()
     if (nCount > 0)
     {
         CString szText;
-        szText.Format(_T("%d %s"),
-            nCount,
-            (nCount > 1) ? _T("Items") : _T("Item"));
-        VERIFY(m_StatusBar.SetText(szText, 0, 0));
+        szText.Format(_T("%d %s"), nCount, (nCount > 1) ? _T("Items") : _T("Item"));
+        m_StatusBar.SetText(szText, 0, 0);
     }
     else
     {
-        VERIFY(m_StatusBar.SetText(_T("No Items"), 0, 0));
-        VERIFY(m_StatusBar.SetText(_T(""), 1, 0));
+        m_StatusBar.SetText(_T("No Items"), 0, 0);
+        m_StatusBar.SetText(_T(""), 1, 0);
     }
 }
 
@@ -976,7 +971,7 @@ void CBatchEncoderDlg::StartConvert()
 
         this->EnableUserInterface(FALSE);
 
-        VERIFY(m_StatusBar.SetText(_T(""), 1, 0));
+        m_StatusBar.SetText(_T(""), 1, 0);
         m_BtnConvert.SetWindowText(_T("S&top"));
         this->GetMenu()->ModifyMenu(ID_ACTION_CONVERT, MF_BYCOMMAND, ID_ACTION_CONVERT, _T("S&top\tF9"));
 
