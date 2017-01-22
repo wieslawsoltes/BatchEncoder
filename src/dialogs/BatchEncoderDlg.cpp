@@ -234,10 +234,11 @@ BEGIN_MESSAGE_MAP(CBatchEncoderDlg, CResizeDialog)
     ON_MESSAGE(WM_TRAY, OnTrayIconMsg)
     ON_MESSAGE(WM_ITEMCHANGED, OnListItemChaged)
     ON_COMMAND(ID_TRAYMENU_EXIT, OnTrayMenuExit)
-    ON_NOTIFY(LVN_KEYDOWN, IDC_EDIT_INPUT_ITEMS, OnLvnKeydownListInputFiles)
-    ON_NOTIFY(LVN_ITEMCHANGED, IDC_EDIT_INPUT_ITEMS, OnLvnItemchangedListInputFiles)
-    ON_NOTIFY(NM_RCLICK, IDC_EDIT_INPUT_ITEMS, OnNMRclickListInputFiles)
-    ON_NOTIFY(NM_DBLCLK, IDC_EDIT_INPUT_ITEMS, OnNMDblclkListInputFiles)
+    ON_NOTIFY(LVN_KEYDOWN, IDC_EDIT_INPUT_ITEMS, OnLvnKeydownListInputItems)
+    ON_NOTIFY(LVN_ITEMCHANGING, IDC_EDIT_INPUT_ITEMS, OnLvnItemchangingListInputItems)
+    ON_NOTIFY(LVN_ITEMCHANGED, IDC_EDIT_INPUT_ITEMS, OnLvnItemchangedListInputItems)
+    ON_NOTIFY(NM_RCLICK, IDC_EDIT_INPUT_ITEMS, OnNMRclickListInputItems)
+    ON_NOTIFY(NM_DBLCLK, IDC_EDIT_INPUT_ITEMS, OnNMDblclkListInputItems)
     ON_CBN_SELCHANGE(IDC_COMBO_PRESETS, OnCbnSelchangeComboPresets)
     ON_CBN_SELCHANGE(IDC_COMBO_FORMAT, OnCbnSelchangeComboFormat)
     ON_BN_CLICKED(IDC_BUTTON_RUN, OnBnClickedButtonConvert)
@@ -1320,7 +1321,7 @@ bool CBatchEncoderDlg::AddToList(CString szPath)
     return true;
 }
 
-void CBatchEncoderDlg::OnLvnKeydownListInputFiles(NMHDR *pNMHDR, LRESULT *pResult)
+void CBatchEncoderDlg::OnLvnKeydownListInputItems(NMHDR *pNMHDR, LRESULT *pResult)
 {
     if (this->pWorkerContext->bRunning == false)
     {
@@ -1441,7 +1442,7 @@ void CBatchEncoderDlg::OnDropFiles(HDROP hDropInfo)
     CResizeDialog::OnDropFiles(hDropInfo);
 }
 
-void CBatchEncoderDlg::OnNMRclickListInputFiles(NMHDR *pNMHDR, LRESULT *pResult)
+void CBatchEncoderDlg::OnNMRclickListInputItems(NMHDR *pNMHDR, LRESULT *pResult)
 {
     if (this->pWorkerContext->bRunning == false)
     {
@@ -1461,7 +1462,7 @@ void CBatchEncoderDlg::OnViewShowGridLines()
         ShowGridlines(true);
 }
 
-void CBatchEncoderDlg::OnNMDblclkListInputFiles(NMHDR *pNMHDR, LRESULT *pResult)
+void CBatchEncoderDlg::OnNMDblclkListInputItems(NMHDR *pNMHDR, LRESULT *pResult)
 {
     POSITION pos = m_LstInputItems.GetFirstSelectedItemPosition();
     if (pos != NULL)
@@ -1472,7 +1473,17 @@ void CBatchEncoderDlg::OnNMDblclkListInputFiles(NMHDR *pNMHDR, LRESULT *pResult)
     *pResult = 0;
 }
 
-void CBatchEncoderDlg::OnLvnItemchangedListInputFiles(NMHDR *pNMHDR, LRESULT *pResult)
+void CBatchEncoderDlg::OnLvnItemchangingListInputItems(NMHDR* pNMHDR, LRESULT* pResult)
+{
+    if (this->pWorkerContext->bRunning == true)
+    {
+        *pResult = true;
+        return;
+    }
+    *pResult = false;
+}
+
+void CBatchEncoderDlg::OnLvnItemchangedListInputItems(NMHDR *pNMHDR, LRESULT *pResult)
 {
     if (this->pWorkerContext->bRunning == false)
     {

@@ -93,10 +93,11 @@ public:
     afx_msg void OnBnClickedButtonBrowsePath();
     afx_msg void OnCbnSelchangeComboPresets();
     afx_msg void OnCbnSelchangeComboFormat();
-    afx_msg void OnLvnKeydownListInputFiles(NMHDR *pNMHDR, LRESULT *pResult);
-    afx_msg void OnLvnItemchangedListInputFiles(NMHDR *pNMHDR, LRESULT *pResult);
-    afx_msg void OnNMRclickListInputFiles(NMHDR *pNMHDR, LRESULT *pResult);
-    afx_msg void OnNMDblclkListInputFiles(NMHDR *pNMHDR, LRESULT *pResult);
+    afx_msg void OnLvnKeydownListInputItems(NMHDR *pNMHDR, LRESULT *pResult);
+    afx_msg void OnLvnItemchangingListInputItems(NMHDR* pNMHDR, LRESULT* pResult);
+    afx_msg void OnLvnItemchangedListInputItems(NMHDR *pNMHDR, LRESULT *pResult);
+    afx_msg void OnNMRclickListInputItems(NMHDR *pNMHDR, LRESULT *pResult);
+    afx_msg void OnNMDblclkListInputItems(NMHDR *pNMHDR, LRESULT *pResult);
     afx_msg void OnEnChangeEditOutPath();
     afx_msg void OnEnSetFocusEditOutPath();
     afx_msg void OnEnKillFocusEditOutPath();
