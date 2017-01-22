@@ -290,6 +290,10 @@
     <ClInclude Include="version.h" />
     <ClInclude Include="BatchEncoder.h" />
     <ClInclude Include="Configuration.h" />
+    <ClInclude Include="worker\context\FileContext.h" />
+    <ClInclude Include="worker\context\ItemContext.h" />
+    <ClInclude Include="worker\context\PipeContext.h" />
+    <ClInclude Include="worker\context\WorkerContext.h" />
     <ClInclude Include="XmlConfiguration.h" />
     <ClInclude Include="controls\Controls.h" />
     <ClInclude Include="controls\MyListCtrl.h" />

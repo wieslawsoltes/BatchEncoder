@@ -40,6 +40,9 @@
     <Filter Include="Header Files\Configuration">
       <UniqueIdentifier>{1e005ea3-fc6a-4599-a2d3-a5ba272d5366}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Worker\Context">
+      <UniqueIdentifier>{146a33e9-1cdb-4223-ac8e-9bad62481487}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="StdAfx.cpp">
@@ -217,6 +220,18 @@
     </ClInclude>
     <ClInclude Include="controls\MyEdit.h">
       <Filter>Header Files\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="worker\context\WorkerContext.h">
+      <Filter>Header Files\Worker\Context</Filter>
+    </ClInclude>
+    <ClInclude Include="worker\context\PipeContext.h">
+      <Filter>Header Files\Worker\Context</Filter>
+    </ClInclude>
+    <ClInclude Include="worker\context\FileContext.h">
+      <Filter>Header Files\Worker\Context</Filter>
+    </ClInclude>
+    <ClInclude Include="worker\context\ItemContext.h">
+      <Filter>Header Files\Worker\Context</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
