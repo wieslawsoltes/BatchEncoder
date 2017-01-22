@@ -983,7 +983,6 @@ void CBatchEncoderDlg::StartConvert()
         m_BtnConvert.SetWindowText(_T("S&top"));
         this->GetMenu()->ModifyMenu(ID_ACTION_CONVERT, MF_BYCOMMAND, ID_ACTION_CONVERT, _T("S&top\tF9"));
 
-        this->pWorkerContext->nProgressCurrent = 0;
         this->pWorkerContext->bRunning = true;
 
         ::ResumeThread(this->pWorkerContext->hThread);
@@ -2238,10 +2237,11 @@ void CBatchEncoderWorkerContext::Init()
 
 void CBatchEncoderWorkerContext::Next(int nIndex)
 {
+    this->nProcessedFiles++;
+    this->nErrors = (this->nProcessedFiles - 1) - this->nDoneWithoutError;
+
     if (this->nThreadCount == 1)
     {
-        this->nProcessedFiles++;
-        this->nErrors = (this->nProcessedFiles - 1) - this->nDoneWithoutError;
 
         CString szText;
         szText.Format(_T("Processing item %d of %d (%d Done, %d %s)"),
@@ -2257,8 +2257,7 @@ void CBatchEncoderWorkerContext::Next(int nIndex)
     }
     else if (this->nThreadCount > 1)
     {
-        this->nProcessedFiles++;
-        this->nErrors = (this->nProcessedFiles - 1) - this->nDoneWithoutError;
+        // TODO:
     }
 }
 
@@ -2275,7 +2274,7 @@ void CBatchEncoderWorkerContext::Done()
     pDlg->FinishConvert();
 }
 
-bool CBatchEncoderWorkerContext::Callback(int nProgress, bool bFinished, bool bError, double fTime, int nIndex)
+bool CBatchEncoderWorkerContext::Callback(int nIndex, int nProgress, bool bFinished, bool bError, double fTime)
 {
     if (bError == true)
     {
@@ -2305,12 +2304,15 @@ bool CBatchEncoderWorkerContext::Callback(int nProgress, bool bFinished, bool bE
     {
         if (this->nThreadCount == 1)
         {
-            if (nProgress != this->nProgressCurrent)
-            {
-                this->nProgressCurrent = nProgress;
-                pDlg->m_FileProgress.SetPos(nProgress);
-                pDlg->ShowProgressTrayIcon(nProgress);
-            }
+            pDlg->m_FileProgress.SetPos(nProgress);
+            pDlg->ShowProgressTrayIcon(nProgress);
+        }
+        else if (this->nThreadCount > 1)
+        {
+            CString szProgress;
+            szProgress.Format(_T("%d%%\0"), nProgress);
+            pDlg->m_LstInputItems.SetItemText(nIndex, ITEM_COLUMN_STATUS, szProgress); // Status
+            // TODO: Update total progress.
         }
     }
 

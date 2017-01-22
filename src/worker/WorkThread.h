@@ -13,7 +13,6 @@ public:
 public:
     HANDLE hThread;
     DWORD dwThreadID;
-    volatile int nProgressCurrent;
 public:
     volatile int nTotalFiles;
     volatile int nProcessedFiles;
@@ -33,7 +32,7 @@ public:
     virtual void Init() = 0;
     virtual void Next(int nIndex) = 0;
     virtual void Done() = 0;
-    virtual bool Callback(int nProgress, bool bFinished, bool bError = false, double fTime = 0.0, int nIndex = -1) = 0;
+    virtual bool Callback(int nIndex, int nProgress, bool bFinished, bool bError = false, double fTime = 0.0) = 0;
     virtual void Status(int nIndex, CString szTime, CString szStatus) = 0;
 };
 
@@ -43,6 +42,7 @@ public:
     WorkerContext* pWorkerContext;
     CString szFileName;
     HANDLE hPipe;
+    int nIndex;
     volatile bool bError;
     volatile bool bFinished;
 };

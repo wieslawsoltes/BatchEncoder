@@ -42,7 +42,7 @@ bool ConvertFile(FileContext* pContext)
         bRet = ::CreatePipe(&rOutErrPipe, &wOutErrPipe, &secattr, 0);
         if (bRet == FALSE)
         {
-            pContext->pWorkerContext->Callback(-1, true, true, 0.0, pContext->nIndex);
+            pContext->pWorkerContext->Callback(pContext->nIndex, -1, true, true, 0.0);
             return false;
         }
     }
@@ -55,7 +55,7 @@ bool ConvertFile(FileContext* pContext)
             bRet = ::CreatePipe(&rInPipe, &wInPipe, &secattr, 0);
             if (bRet == FALSE)
             {
-                pContext->pWorkerContext->Callback(-1, true, true, 0.0, pContext->nIndex);
+                pContext->pWorkerContext->Callback(pContext->nIndex, -1, true, true, 0.0);
                 return false;
             }
         }
@@ -73,7 +73,7 @@ bool ConvertFile(FileContext* pContext)
                     ::CloseHandle(wInPipe);
                 }
 
-                pContext->pWorkerContext->Callback(-1, true, true, 0.0, pContext->nIndex);
+                pContext->pWorkerContext->Callback(pContext->nIndex, -1, true, true, 0.0);
                 return false;
             }
         }
@@ -92,7 +92,7 @@ bool ConvertFile(FileContext* pContext)
                 ::CloseHandle(rInPipe);
                 ::CloseHandle(wInPipe);
 
-                pContext->pWorkerContext->Callback(-1, true, true, 0.0, pContext->nIndex);
+                pContext->pWorkerContext->Callback(pContext->nIndex, -1, true, true, 0.0);
                 return false;
             }
         }
@@ -112,7 +112,7 @@ bool ConvertFile(FileContext* pContext)
                 ::CloseHandle(rOutPipe);
                 ::CloseHandle(wOutPipe);
 
-                pContext->pWorkerContext->Callback(-1, true, true, 0.0, pContext->nIndex);
+                pContext->pWorkerContext->Callback(pContext->nIndex, -1, true, true, 0.0);
                 return false;
             }
         }
@@ -133,7 +133,7 @@ bool ConvertFile(FileContext* pContext)
             ::CloseHandle(rOutErrPipe);
             ::CloseHandle(wOutErrPipe);
 
-            pContext->pWorkerContext->Callback(-1, true, true, 0.0, pContext->nIndex);
+            pContext->pWorkerContext->Callback(pContext->nIndex, -1, true, true, 0.0);
             return false;
         }
     }
@@ -181,6 +181,7 @@ bool ConvertFile(FileContext* pContext)
     }
 
     int nProgress = 0;
+    int nPreviousProgress = 0;
 
     CTimeCount timeCount;
     timeCount.Start();
@@ -267,7 +268,7 @@ bool ConvertFile(FileContext* pContext)
                 ::CloseHandle(wOutPipe);
             }
 
-            pContext->pWorkerContext->Callback(-1, true, true, 0.0, pContext->nIndex);
+            pContext->pWorkerContext->Callback(pContext->nIndex, -1, true, true, 0.0);
             return false;
         }
 
@@ -304,6 +305,7 @@ bool ConvertFile(FileContext* pContext)
             rd.pWorkerContext = pContext->pWorkerContext;
             rd.szFileName = pContext->szInputFile;
             rd.hPipe = wInPipe;
+            rd.nIndex = pContext->nIndex;
 
             dwReadThreadID = 0L;
             hReadThread = ::CreateThread(NULL,
@@ -318,7 +320,7 @@ bool ConvertFile(FileContext* pContext)
 
                 ::CloseHandle(wInPipe);
 
-                pContext->pWorkerContext->Callback(-1, true, true, 0.0, pContext->nIndex);
+                pContext->pWorkerContext->Callback(pContext->nIndex, -1, true, true, 0.0);
                 return false;
             }
 
@@ -360,6 +362,7 @@ bool ConvertFile(FileContext* pContext)
             wd.pWorkerContext = pContext->pWorkerContext;
             wd.szFileName = pContext->szOutputFile;
             wd.hPipe = rOutPipe;
+            wd.nIndex = pContext->nIndex;
 
             dwWriteThreadID = 0L;
             hWriteThread = ::CreateThread(NULL,
@@ -374,7 +377,7 @@ bool ConvertFile(FileContext* pContext)
 
                 ::CloseHandle(rOutPipe);
 
-                pContext->pWorkerContext->Callback(-1, true, true, 0.0, pContext->nIndex);
+                pContext->pWorkerContext->Callback(pContext->nIndex, -1, true, true, 0.0);
                 return false;
             }
 
@@ -617,7 +620,12 @@ bool ConvertFile(FileContext* pContext)
 
                             ZeroMemory(szLineBuff, sizeof(szLineBuff));
 
-                            bRunning = pContext->pWorkerContext->Callback(nProgress, false);
+                            if (nProgress != nPreviousProgress)
+                            {
+                                bRunning = pContext->pWorkerContext->Callback(pContext->nIndex, nProgress, false);
+                                nPreviousProgress = nProgress;
+                            }
+
                             if (bRunning == false)
                                 break;
                         }
@@ -704,6 +712,6 @@ bool ConvertFile(FileContext* pContext)
         ::CloseHandle(pInfo.hThread);
     }
 
-    pContext->pWorkerContext->Callback(nProgress, true, false, timeCount.ElapsedTime(), pContext->nIndex);
+    pContext->pWorkerContext->Callback(pContext->nIndex, nProgress, true, false, timeCount.ElapsedTime());
     return nProgress == 100;
 }

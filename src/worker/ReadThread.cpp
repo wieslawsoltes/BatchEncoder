@@ -16,6 +16,7 @@ DWORD WINAPI ReadThread(LPVOID lpParam)
     ULONGLONG nTotalBytesRead = 0;
     ULONGLONG nFileSize = 0;
     int nProgress = -1;
+    int nPreviousProgress = -1;
     bool bRunning = true;
 
     pContext->bError = false;
@@ -64,7 +65,13 @@ DWORD WINAPI ReadThread(LPVOID lpParam)
         // count read/write bytes
         nTotalBytesRead += dwReadBytes;
         nProgress = (int)((nTotalBytesRead * 100) / nFileSize);
-        bRunning = pContext->pWorkerContext->Callback(nProgress, false);
+
+        if (nProgress != nPreviousProgress)
+        {
+            bRunning = pContext->pWorkerContext->Callback(pContext->nIndex, nProgress, false);
+            nPreviousProgress = nProgress;
+        }
+
         if (bRunning == false)
             break;
     } while (bRes != FALSE);
