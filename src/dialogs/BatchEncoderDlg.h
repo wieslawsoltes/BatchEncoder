@@ -47,7 +47,7 @@ public:
     CButton m_ChkOutPath;
     CMyButton m_BtnBrowse;
     CEdit m_EdtOutPath;
-    CProgressCtrl m_FileProgress;
+    CProgressCtrl m_Progress;
     CMyButton m_BtnConvert;
     CMyStatusBarCtrl m_StatusBar;
 public:

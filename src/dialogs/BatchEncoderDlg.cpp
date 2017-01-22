@@ -210,7 +210,7 @@ CBatchEncoderDlg::~CBatchEncoderDlg()
 void CBatchEncoderDlg::DoDataExchange(CDataExchange* pDX)
 {
     CResizeDialog::DoDataExchange(pDX);
-    DDX_Control(pDX, IDC_PROGRESS_WORK, m_FileProgress);
+    DDX_Control(pDX, IDC_PROGRESS_WORK, m_Progress);
     DDX_Control(pDX, IDC_COMBO_PRESETS, m_CmbPresets);
     DDX_Control(pDX, IDC_COMBO_FORMAT, m_CmbFormat);
     DDX_Control(pDX, IDC_EDIT_INPUT_ITEMS, m_LstInputItems);
@@ -349,9 +349,9 @@ BOOL CBatchEncoderDlg::OnInitDialog()
     this->SetWindowText(MAIN_APP_NAME);
 
     // progress
-    m_FileProgress.SetRange(0, 100);
-    m_FileProgress.SetPos(0);
-    m_FileProgress.ShowWindow(SW_HIDE);
+    m_Progress.SetRange(0, 100);
+    m_Progress.SetPos(0);
+    m_Progress.ShowWindow(SW_HIDE);
 
     // list style
     DWORD dwExStyle = m_LstInputItems.GetExtendedStyle();
@@ -1020,7 +1020,7 @@ void CBatchEncoderDlg::FinishConvert()
     this->GetMenu()->ModifyMenu(ID_ACTION_CONVERT, MF_BYCOMMAND, ID_ACTION_CONVERT, _T("Conve&rt\tF9"));
     this->EnableUserInterface(TRUE);
 
-    this->m_FileProgress.SetPos(0);
+    this->m_Progress.SetPos(0);
     this->pWorkerContext->bRunning = false;
 
     if (this->m_Config.m_Options.bShutdownWhenFinished == true)
@@ -1573,14 +1573,14 @@ void CBatchEncoderDlg::EnableUserInterface(BOOL bEnable)
             this->m_ChkOutPath.ShowWindow(SW_HIDE);
             this->m_EdtOutPath.ShowWindow(SW_HIDE);
             this->m_BtnBrowse.ShowWindow(SW_HIDE);
-            this->m_FileProgress.ShowWindow(SW_SHOW);
+            this->m_Progress.ShowWindow(SW_SHOW);
         }
     }
     else
     {
         if (m_Config.m_Options.bForceConsoleWindow == false)
         {
-            this->m_FileProgress.ShowWindow(SW_HIDE);
+            this->m_Progress.ShowWindow(SW_HIDE);
             this->m_ChkOutPath.ShowWindow(SW_SHOW);
             this->m_EdtOutPath.ShowWindow(SW_SHOW);
             this->m_BtnBrowse.ShowWindow(SW_SHOW);
@@ -2390,7 +2390,7 @@ void CBatchEncoderWorkerContext::Next(int nIndex)
             ((this->nErrors == 0) || (this->nErrors > 1)) ? _T("Errors") : _T("Error"));
         pDlg->m_StatusBar.SetText(szText, 1, 0);
 
-        pDlg->m_FileProgress.SetPos(0);
+        pDlg->m_Progress.SetPos(0);
         pDlg->m_LstInputItems.EnsureVisible(nIndex, FALSE);
     }
     else if (this->nThreadCount > 1)
@@ -2418,7 +2418,7 @@ bool CBatchEncoderWorkerContext::Callback(int nIndex, int nProgress, bool bFinis
     {
         pDlg->m_LstInputItems.SetItemText(nIndex, ITEM_COLUMN_TIME, _T("--:--")); // Time
         pDlg->m_LstInputItems.SetItemText(nIndex, ITEM_COLUMN_STATUS, _T("Error")); // Status
-        pDlg->m_FileProgress.SetPos(0);
+        pDlg->m_Progress.SetPos(0);
         this->bRunning = false;
         return this->bRunning;
     }
@@ -2429,7 +2429,7 @@ bool CBatchEncoderWorkerContext::Callback(int nIndex, int nProgress, bool bFinis
         {
             pDlg->m_LstInputItems.SetItemText(nIndex, ITEM_COLUMN_TIME, _T("--:--")); // Time
             pDlg->m_LstInputItems.SetItemText(nIndex, ITEM_COLUMN_STATUS, _T("Error")); // Status
-            pDlg->m_FileProgress.SetPos(0);
+            pDlg->m_Progress.SetPos(0);
         }
         else
         {
@@ -2442,7 +2442,7 @@ bool CBatchEncoderWorkerContext::Callback(int nIndex, int nProgress, bool bFinis
     {
         if (this->nThreadCount == 1)
         {
-            pDlg->m_FileProgress.SetPos(nProgress);
+            pDlg->m_Progress.SetPos(nProgress);
             pDlg->ShowProgressTrayIcon(nProgress);
         }
         else if (this->nThreadCount > 1)
