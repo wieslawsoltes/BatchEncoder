@@ -21,6 +21,7 @@ public:
     HANDLE* hConvertThread;
     DWORD* dwConvertThreadID;
     CObList* pQueue;
+    int* nProgess;
 public:
     CWorkerContext(CConfiguration* pConfig)
     {

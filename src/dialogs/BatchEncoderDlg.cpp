@@ -2383,6 +2383,8 @@ void CBatchEncoderDlg::OnHelpAbout()
 void CBatchEncoderWorkerContext::Init()
 {
     this->timeCount.Start();
+
+    pDlg->m_Progress.SetPos(0);
 }
 
 void CBatchEncoderWorkerContext::Next(int nIndex)
@@ -2403,10 +2405,6 @@ void CBatchEncoderWorkerContext::Next(int nIndex)
 
         pDlg->m_Progress.SetPos(0);
         pDlg->m_LstInputItems.EnsureVisible(nIndex, FALSE);
-    }
-    else if (this->nThreadCount > 1)
-    {
-        // TODO: Update total progress.
     }
 }
 
@@ -2461,7 +2459,26 @@ bool CBatchEncoderWorkerContext::Callback(int nIndex, int nProgress, bool bFinis
             CString szProgress;
             szProgress.Format(_T("%d%%\0"), nProgress);
             pDlg->m_LstInputItems.SetItemText(nIndex, ITEM_COLUMN_STATUS, szProgress); // Status
-            // TODO: Update total progress.
+            pDlg->pWorkerContext->nProgess[nIndex] = nProgress;
+
+            static volatile bool bSafeCheck = false;
+            if (bSafeCheck == false)
+            {
+                bSafeCheck = true;
+
+                int nTotalProgress = 0;
+                int nItems = pDlg->pWorkerContext->pConfig->m_Items.GetSize();
+                for (int i = 0; i < nItems; i++)
+                {
+                    nTotalProgress += pDlg->pWorkerContext->nProgess[i];
+                }
+
+                int nPos = nTotalProgress / nItems;
+                if (pDlg->m_Progress.GetPos() != nPos)
+                    pDlg->m_Progress.SetPos(nPos);
+
+                bSafeCheck = false;
+            }
         }
     }
 
