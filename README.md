@@ -57,6 +57,7 @@ adds input and output file paths. For specific options for each format use help 
 * Graphical user interface for command-line tools.
 * Supported are most popular audio formats.
 * Supported file transcoding between audio formats.
+* Support for multi-threaded conversion.
 * Out of the box configuration for new users.
 * Advanced options for experienced users.
 * Open-source, fast and simple.
