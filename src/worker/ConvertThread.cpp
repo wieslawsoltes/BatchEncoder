@@ -7,10 +7,10 @@
 
 DWORD WINAPI ConvertThread(LPVOID lpParam)
 {
-    WorkerContext* pWorkerContext = (WorkerContext*)lpParam;
+    CWorkerContext* pWorkerContext = (CWorkerContext*)lpParam;
     while (!pWorkerContext->pQueue->IsEmpty())
     {
-        ItemContext* pContext = (ItemContext*)pWorkerContext->pQueue->RemoveHead();
+        CItemContext* pContext = (CItemContext*)pWorkerContext->pQueue->RemoveHead();
         
         if (pContext->pWorkerContext->nThreadCount > 1)
             pContext->pWorkerContext->Next(pContext->item->nId);

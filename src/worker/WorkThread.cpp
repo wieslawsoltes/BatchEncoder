@@ -11,7 +11,7 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
 {
     ::UpdatePath();
 
-    WorkerContext* pWorkerContext = (WorkerContext*)lpParam;
+    CWorkerContext* pWorkerContext = (CWorkerContext*)lpParam;
     if (pWorkerContext == NULL)
         return (DWORD)(-1);
 
@@ -53,14 +53,14 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
             if (pWorkerContext->nThreadCount > 1)
             {
                 // insert work item to queue
-                ItemContext* context = new ItemContext(pWorkerContext, &item);
+                CItemContext* context = new CItemContext(pWorkerContext, &item);
                 pWorkerContext->pQueue->AddTail(context);
             }
             else
             {
                 pWorkerContext->Next(i);
 
-                ItemContext context(pWorkerContext, &item);
+                CItemContext context(pWorkerContext, &item);
                 bool bSuccess = ConvertItem(&context);
                 if (bSuccess == true)
                 {

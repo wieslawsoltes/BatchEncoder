@@ -5,7 +5,7 @@
 #include "..\BatchEncoder.h"
 #include "WorkThread.h"
 
-bool ConvertItem(ItemContext* pContext)
+bool ConvertItem(CItemContext* pContext)
 {
     bool bSuccess = false;
     TCHAR szCommandLine[(64 * 1024)];
@@ -169,7 +169,7 @@ bool ConvertItem(ItemContext* pContext)
 
         pContext->pWorkerContext->Status(pContext->item->nId, _T("--:--"), _T("Decoding..."));
 
-        FileContext context;
+        CFileContext context;
 
         context.pWorkerContext = pContext->pWorkerContext;
         context.szInputFile = szOrgInputFile;
@@ -271,7 +271,7 @@ bool ConvertItem(ItemContext* pContext)
 
         pContext->pWorkerContext->Status(pContext->item->nId, _T("--:--"), _T("Encoding..."));
 
-        FileContext context;
+        CFileContext context;
 
         context.pWorkerContext = pContext->pWorkerContext;
         context.szInputFile = szOrgInputFile;

@@ -5,7 +5,7 @@
 
 #include "..\Configuration.h"
 
-class WorkerContext
+class CWorkerContext
 {
 public:
     volatile bool bRunning;
@@ -24,11 +24,11 @@ public:
     DWORD* dwConvertThreadID;
     CObList* pQueue;
 public:
-    WorkerContext(CConfiguration* pConfig)
+    CWorkerContext(CConfiguration* pConfig)
     {
         this->pConfig = pConfig;
     }
-    virtual ~WorkerContext()
+    virtual ~CWorkerContext()
     {
     }
 public:
@@ -39,10 +39,10 @@ public:
     virtual void Status(int nIndex, CString szTime, CString szStatus) = 0;
 };
 
-class PipeContext
+class CPipeContext
 {
 public:
-    WorkerContext* pWorkerContext;
+    CWorkerContext* pWorkerContext;
     CString szFileName;
     HANDLE hPipe;
     int nIndex;
@@ -50,10 +50,10 @@ public:
     volatile bool bFinished;
 };
 
-class FileContext
+class CFileContext
 {
 public:
-    WorkerContext* pWorkerContext;
+    CWorkerContext* pWorkerContext;
     CString szInputFile;
     CString szOutputFile;
     TCHAR *szCommandLine;
@@ -64,35 +64,35 @@ public:
     bool bUseWritePipes;
 };
 
-class ItemContext : public CObject
+class CItemContext : public CObject
 {
 public:
-    WorkerContext *pWorkerContext;
+    CWorkerContext *pWorkerContext;
     CItem* item;
 public:
-    ItemContext()
+    CItemContext()
     {
     }
-    ItemContext(WorkerContext *pWorkerContext, CItem* item)
+    CItemContext(CWorkerContext *pWorkerContext, CItem* item)
     {
         this->pWorkerContext = pWorkerContext;
         this->item = item;
     }
-    ItemContext(const ItemContext& context)
+    CItemContext(const CItemContext& context)
     {
         pWorkerContext = context.pWorkerContext;
         item = context.item;
     }
-    virtual ~ItemContext()
+    virtual ~CItemContext()
     {
     }
-    const ItemContext& operator=(const ItemContext& context)
+    const CItemContext& operator=(const CItemContext& context)
     {
         pWorkerContext = context.pWorkerContext;
         item = context.item;
         return *this;
     }
-    BOOL operator==(ItemContext context)
+    BOOL operator==(CItemContext context)
     {
         return pWorkerContext == context.pWorkerContext && item == context.item;
     }
@@ -102,9 +102,9 @@ DWORD WINAPI ReadThread(LPVOID lpParam);
 
 DWORD WINAPI WriteThread(LPVOID lpParam);
 
-bool ConvertFile(FileContext* pContext);
+bool ConvertFile(CFileContext* pContext);
 
-bool ConvertItem(ItemContext* pContext);
+bool ConvertItem(CItemContext* pContext);
 
 DWORD WINAPI ConvertThread(LPVOID lpParam);
 

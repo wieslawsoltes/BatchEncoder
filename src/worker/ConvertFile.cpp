@@ -8,7 +8,7 @@
 #include "..\utilities\Utf8String.h"
 #include "WorkThread.h"
 
-bool ConvertFile(FileContext* pContext)
+bool ConvertFile(CFileContext* pContext)
 {
     // TODO:
     // if there is no input pipe and output pipe enabled
@@ -287,8 +287,8 @@ bool ConvertFile(FileContext* pContext)
         }
 
         bool bWriteSuccess = false;
-        PipeContext rd;
-        PipeContext wd;
+        CPipeContext rd;
+        CPipeContext wd;
         DWORD dwReadThreadID = 0L;
         DWORD dwWriteThreadID = 0L;
         HANDLE hReadThread = NULL;

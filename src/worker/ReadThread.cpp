@@ -7,7 +7,7 @@
 
 DWORD WINAPI ReadThread(LPVOID lpParam)
 {
-    PipeContext* pContext = (PipeContext*)lpParam;
+    CPipeContext* pContext = (CPipeContext*)lpParam;
     HANDLE hFile = INVALID_HANDLE_VALUE;
     BYTE pReadBuff[4096];
     BOOL bRes = FALSE;

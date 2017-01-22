@@ -36,7 +36,7 @@ protected:
 public:
     CString szConfigFile;
     CConfiguration m_Config;
-    WorkerContext* pWorkerContext;
+    CWorkerContext* pWorkerContext;
     bool bSameAsSourceEdit;
 public:
     CMyStatic m_StcPreset;
@@ -142,12 +142,12 @@ public:
     afx_msg void OnHelpAbout();
 };
 
-class CBatchEncoderWorkerContext : public WorkerContext
+class CBatchEncoderWorkerContext : public CWorkerContext
 {
     CTimeCount timeCount;
     CBatchEncoderDlg *pDlg;
 public:
-    CBatchEncoderWorkerContext(CConfiguration* pConfig, CBatchEncoderDlg* pDlg) : WorkerContext(pConfig)
+    CBatchEncoderWorkerContext(CConfiguration* pConfig, CBatchEncoderDlg* pDlg) : CWorkerContext(pConfig)
     {
         this->pDlg = pDlg;
     }
