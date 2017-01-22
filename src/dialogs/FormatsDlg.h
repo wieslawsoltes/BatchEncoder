@@ -32,9 +32,9 @@ public:
     bool bShowGridLines;
 public:
     CMyListCtrl m_LstFormats;
-    CEdit m_EdtPath;
-    CEdit m_EdtTemplate;
-    CEdit m_EdtProgress;
+    CMyEdit m_EdtPath;
+    CMyEdit m_EdtTemplate;
+    CMyEdit m_EdtProgress;
     CMyStatic m_GrpPipes;
     CMyStatic m_StcPath;
     CMyStatic m_StcTemplate;

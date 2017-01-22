@@ -29,9 +29,9 @@ public:
 public:
     CMyButton m_BtnCancel;
     CMyButton m_BtnOK;
-    CEdit m_EdtLog;
+    CMyEdit m_EdtLog;
     CButton m_BtnBrowse;
-    CEdit m_EdtThreads;
+    CMyEdit m_EdtThreads;
 public:
     void GetAdvancedOptions();
     void SetAdvancedOptions();

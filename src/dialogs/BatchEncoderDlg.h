@@ -46,7 +46,7 @@ public:
     CMyListCtrl m_LstInputItems;
     CButton m_ChkOutPath;
     CMyButton m_BtnBrowse;
-    CEdit m_EdtOutPath;
+    CMyEdit m_EdtOutPath;
     CProgressCtrl m_Progress;
     CMyButton m_BtnConvert;
     CMyStatusBarCtrl m_StatusBar;

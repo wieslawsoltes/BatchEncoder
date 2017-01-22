@@ -7,6 +7,7 @@
 #include "MyListCtrl.h"
 #include "MyButton.h"
 #include "MyComboBox.h"
+#include "MyEdit.h"
 #include "MyStatic.h"
 #include "MyStatusBarCtrl.h"
 #include "ResizeDialog.h"

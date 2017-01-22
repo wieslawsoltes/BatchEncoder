@@ -245,6 +245,7 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="controls\MyEdit.cpp" />
     <ClCompile Include="StdAfx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -283,6 +284,7 @@
     <ClInclude Include="configuration\Options.h" />
     <ClInclude Include="configuration\Preset.h" />
     <ClInclude Include="configuration\PresetsList.h" />
+    <ClInclude Include="controls\MyEdit.h" />
     <ClInclude Include="StdAfx.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="version.h" />

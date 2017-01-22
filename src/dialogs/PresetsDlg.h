@@ -37,8 +37,8 @@ public:
     CMyStatic m_StcOptions;
     CMyListCtrl m_LstPresets;
     CMyComboBox m_CmbFormat;
-    CEdit m_EdtName;
-    CEdit m_EdtOptions;
+    CMyEdit m_EdtName;
+    CMyEdit m_EdtOptions;
     CMyButton m_BtnOK;
     CMyButton m_BtnCancel;
     CMyButton m_BtnLoad;

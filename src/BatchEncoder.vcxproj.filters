@@ -111,6 +111,9 @@
     <ClCompile Include="controls\MyListCtrl.cpp">
       <Filter>Source Files\Controls</Filter>
     </ClCompile>
+    <ClCompile Include="controls\MyEdit.cpp">
+      <Filter>Source Files\Controls</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="StdAfx.h">
@@ -210,6 +213,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="controls\MyListCtrl.h">
+      <Filter>Header Files\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="controls\MyEdit.h">
       <Filter>Header Files\Controls</Filter>
     </ClInclude>
   </ItemGroup>
