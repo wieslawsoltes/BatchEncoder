@@ -7,16 +7,15 @@
 
 DWORD WINAPI ConvertThread(LPVOID lpParam)
 {
-    CObList* pQueue = (CObList *)lpParam;
-    while (!pQueue->IsEmpty())
+    WorkerContext* pWorkerContext = (WorkerContext*)lpParam;
+    while (!pWorkerContext->pQueue->IsEmpty())
     {
-        ItemContext* pContext = (ItemContext*)pQueue->RemoveHead();
+        ItemContext* pContext = (ItemContext*)pWorkerContext->pQueue->RemoveHead();
         
         if (pContext->pWorkerContext->nThreadCount > 1)
             pContext->pWorkerContext->Next(pContext->item->nId);
 
         bool bSuccess = ConvertItem(pContext);
-
         if (bSuccess == true)
         {
             pContext->pWorkerContext->nDoneWithoutError++;

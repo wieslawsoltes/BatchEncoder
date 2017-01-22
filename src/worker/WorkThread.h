@@ -20,6 +20,9 @@ public:
     volatile int nErrors;
 public:
     volatile int nThreadCount;
+    HANDLE* hConvertThread;
+    DWORD* dwConvertThreadID;
+    CObList* pQueue;
 public:
     WorkerContext(CConfiguration* pConfig)
     {

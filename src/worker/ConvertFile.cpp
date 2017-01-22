@@ -308,12 +308,7 @@ bool ConvertFile(FileContext* pContext)
             rd.nIndex = pContext->nIndex;
 
             dwReadThreadID = 0L;
-            hReadThread = ::CreateThread(NULL,
-                0,
-                ReadThread,
-                (LPVOID)&rd,
-                /* CREATE_SUSPENDED */ 0,
-                &dwReadThreadID);
+            hReadThread = ::CreateThread(NULL, 0, ReadThread, (LPVOID)&rd, /* CREATE_SUSPENDED */ 0, &dwReadThreadID);
             if (hReadThread == NULL)
             {
                 timeCount.Stop();
@@ -365,12 +360,7 @@ bool ConvertFile(FileContext* pContext)
             wd.nIndex = pContext->nIndex;
 
             dwWriteThreadID = 0L;
-            hWriteThread = ::CreateThread(NULL,
-                0,
-                WriteThread,
-                (LPVOID)&wd,
-                /* CREATE_SUSPENDED */ 0,
-                &dwWriteThreadID);
+            hWriteThread = ::CreateThread(NULL, 0, WriteThread, (LPVOID)&wd, /* CREATE_SUSPENDED */ 0, &dwWriteThreadID);
             if (hWriteThread == NULL)
             {
                 timeCount.Stop();

@@ -31,10 +31,9 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
             pWorkerContext->nThreadCount = 1;
     }
 
-    HANDLE* hConvertThread = new HANDLE[pWorkerContext->nThreadCount];
-    DWORD* dwThreadID = new DWORD[pWorkerContext->nThreadCount];
-
-    CObList queue;
+    pWorkerContext->hConvertThread = new HANDLE[pWorkerContext->nThreadCount];
+    pWorkerContext->dwConvertThreadID = new DWORD[pWorkerContext->nThreadCount];
+    pWorkerContext->pQueue = new CObList();
 
     pWorkerContext->Init();
 
@@ -55,7 +54,7 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
             {
                 // insert work item to queue
                 ItemContext* context = new ItemContext(pWorkerContext, &item);
-                queue.AddTail(context);
+                pWorkerContext->pQueue->AddTail(context);
             }
             else
             {
@@ -84,26 +83,27 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
         // create worker threads
         for (int i = 0; i < pWorkerContext->nThreadCount; i++)
         {
-            dwThreadID[i] = i;
-            hConvertThread[i] = ::CreateThread(NULL, 0, ConvertThread, &queue, CREATE_SUSPENDED, &dwThreadID[i]);
-            if (hConvertThread[i] == NULL)
+            pWorkerContext->dwConvertThreadID[i] = i;
+            pWorkerContext->hConvertThread[i] = ::CreateThread(NULL, 0, ConvertThread, pWorkerContext, CREATE_SUSPENDED, &pWorkerContext->dwConvertThreadID[i]);
+            if (pWorkerContext->hConvertThread[i] == NULL)
             {
                 break;
             }
-            ::ResumeThread(hConvertThread[i]);
+            ::ResumeThread(pWorkerContext->hConvertThread[i]);
         }
 
         // wait for all workers to finish
-        ::WaitForMultipleObjects(pWorkerContext->nThreadCount, hConvertThread, TRUE, INFINITE);
+        ::WaitForMultipleObjects(pWorkerContext->nThreadCount, pWorkerContext->hConvertThread, TRUE, INFINITE);
 
         // close convert thread handles
         for (int i = 0; i < pWorkerContext->nThreadCount; i++)
         {
-            ::CloseHandle(hConvertThread[i]);
+            ::CloseHandle(pWorkerContext->hConvertThread[i]);
         }
 
-        delete hConvertThread;
-        delete dwThreadID;
+        delete pWorkerContext->hConvertThread;
+        delete pWorkerContext->dwConvertThreadID;
+        delete pWorkerContext->pQueue;
     }
 
     pWorkerContext->Done();
