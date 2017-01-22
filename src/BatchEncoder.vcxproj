@@ -257,7 +257,7 @@
     <ClCompile Include="dialogs\BatchEncoderDlg.cpp" />
     <ClCompile Include="dialogs\FormatsDlg.cpp" />
     <ClCompile Include="dialogs\PresetsDlg.cpp" />
-    <ClCompile Include="controls\ItemListCtrl.cpp" />
+    <ClCompile Include="controls\MyListCtrl.cpp" />
     <ClCompile Include="controls\Hyperlink.cpp" />
     <ClCompile Include="controls\MyButton.cpp" />
     <ClCompile Include="controls\MyComboBox.cpp" />
@@ -290,7 +290,7 @@
     <ClInclude Include="Configuration.h" />
     <ClInclude Include="XmlConfiguration.h" />
     <ClInclude Include="controls\Controls.h" />
-    <ClInclude Include="controls\ItemListCtrl.h" />
+    <ClInclude Include="controls\MyListCtrl.h" />
     <ClInclude Include="controls\Hyperlink.h" />
     <ClInclude Include="controls\MyButton.h" />
     <ClInclude Include="controls\MyComboBox.h" />

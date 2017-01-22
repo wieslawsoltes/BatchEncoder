@@ -66,9 +66,6 @@
     <ClCompile Include="controls\Hyperlink.cpp">
       <Filter>Source Files\Controls</Filter>
     </ClCompile>
-    <ClCompile Include="controls\ItemListCtrl.cpp">
-      <Filter>Source Files\Controls</Filter>
-    </ClCompile>
     <ClCompile Include="dialogs\AboutDlg.cpp">
       <Filter>Source Files\Dialogs</Filter>
     </ClCompile>
@@ -111,6 +108,9 @@
     <ClCompile Include="worker\ConvertItem.cpp">
       <Filter>Source Files\Worker</Filter>
     </ClCompile>
+    <ClCompile Include="controls\MyListCtrl.cpp">
+      <Filter>Source Files\Controls</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="StdAfx.h">
@@ -147,9 +147,6 @@
       <Filter>Header Files\Controls</Filter>
     </ClInclude>
     <ClInclude Include="controls\ResizeDialog.h">
-      <Filter>Header Files\Controls</Filter>
-    </ClInclude>
-    <ClInclude Include="controls\ItemListCtrl.h">
       <Filter>Header Files\Controls</Filter>
     </ClInclude>
     <ClInclude Include="dialogs\AboutDlg.h">
@@ -211,6 +208,9 @@
     </ClInclude>
     <ClInclude Include="XmlConfiguration.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="controls\MyListCtrl.h">
+      <Filter>Header Files\Controls</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

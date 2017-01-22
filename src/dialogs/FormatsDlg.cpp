@@ -75,7 +75,7 @@ BOOL CFormatsDlg::OnInitDialog()
 
     // update list style
     DWORD dwExStyle = m_LstFormats.GetExtendedStyle();
-    dwExStyle |= LVS_EX_FULLROWSELECT;
+    dwExStyle |= LVS_EX_FULLROWSELECT | LVS_EX_DOUBLEBUFFER;
     m_LstFormats.SetExtendedStyle(dwExStyle);
 
     // insert all ListCtrl columns

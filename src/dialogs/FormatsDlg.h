@@ -31,7 +31,7 @@ public:
     CString szFormatsListColumns;
     bool bShowGridLines;
 public:
-    CListCtrl m_LstFormats;
+    CMyListCtrl m_LstFormats;
     CEdit m_EdtPath;
     CEdit m_EdtTemplate;
     CEdit m_EdtProgress;

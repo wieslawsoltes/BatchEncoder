@@ -5,12 +5,12 @@
 
 #define WM_ITEMCHANGED (WM_USER + 0x20)
 
-class CItemListCtrl : public CListCtrl
+class CMyListCtrl : public CListCtrl
 {
-    DECLARE_DYNAMIC(CItemListCtrl)
+    DECLARE_DYNAMIC(CMyListCtrl)
 public:
-    CItemListCtrl();
-    virtual ~CItemListCtrl();
+    CMyListCtrl();
+    virtual ~CMyListCtrl();
 protected:
     DECLARE_MESSAGE_MAP()
 public:

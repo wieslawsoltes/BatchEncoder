@@ -3,32 +3,30 @@
 
 #include "StdAfx.h"
 #include "..\BatchEncoder.h"
-#include "ItemListCtrl.h"
+#include "MyListCtrl.h"
 
-IMPLEMENT_DYNAMIC(CItemListCtrl, CListCtrl)
-CItemListCtrl::CItemListCtrl()
+IMPLEMENT_DYNAMIC(CMyListCtrl, CListCtrl)
+CMyListCtrl::CMyListCtrl()
 {
 
 }
 
-CItemListCtrl::~CItemListCtrl()
+CMyListCtrl::~CMyListCtrl()
 {
 
 }
 
-BEGIN_MESSAGE_MAP(CItemListCtrl, CListCtrl)
+BEGIN_MESSAGE_MAP(CMyListCtrl, CListCtrl)
     ON_NOTIFY_REFLECT(LVN_ENDLABELEDIT, OnLvnEndlabeledit)
 END_MESSAGE_MAP()
 
-void CItemListCtrl::OnLvnEndlabeledit(NMHDR *pNMHDR, LRESULT *pResult)
+void CMyListCtrl::OnLvnEndlabeledit(NMHDR *pNMHDR, LRESULT *pResult)
 {
     NMLVDISPINFO *pDispInfo = reinterpret_cast<NMLVDISPINFO*>(pNMHDR);
     if (pDispInfo->item.pszText != NULL)
     {
         CString szText;
-        CEdit *edt = this->GetEditControl();
-
-        edt->GetWindowText(szText);
+        this->GetEditControl()->GetWindowText(szText);
         if (szText.GetLength() > 0)
         {
             this->SetItemText(pDispInfo->item.iItem, 0, szText);
@@ -38,6 +36,5 @@ void CItemListCtrl::OnLvnEndlabeledit(NMHDR *pNMHDR, LRESULT *pResult)
             szText.ReleaseBuffer();
         }
     }
-
     *pResult = 0;
 }

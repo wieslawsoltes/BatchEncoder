@@ -77,7 +77,7 @@ BOOL CPresetsDlg::OnInitDialog()
 
     // update list style
     DWORD dwExStyle = m_LstPresets.GetExtendedStyle();
-    dwExStyle |= LVS_EX_FULLROWSELECT;
+    dwExStyle |= LVS_EX_FULLROWSELECT | LVS_EX_DOUBLEBUFFER;
     m_LstPresets.SetExtendedStyle(dwExStyle);
 
     // insert listView columns

@@ -43,7 +43,7 @@ public:
     CMyStatic m_StcFormat;
     CMyComboBox m_CmbPresets;
     CMyComboBox m_CmbFormat;
-    CItemListCtrl m_LstInputItems;
+    CMyListCtrl m_LstInputItems;
     CButton m_ChkOutPath;
     CMyButton m_BtnBrowse;
     CEdit m_EdtOutPath;

@@ -356,7 +356,7 @@ BOOL CBatchEncoderDlg::OnInitDialog()
 
     // list style
     DWORD dwExStyle = m_LstInputItems.GetExtendedStyle();
-    dwExStyle |= LVS_EX_FULLROWSELECT | LVS_EX_CHECKBOXES;
+    dwExStyle |= LVS_EX_FULLROWSELECT | LVS_EX_CHECKBOXES | LVS_EX_DOUBLEBUFFER;
     m_LstInputItems.SetExtendedStyle(dwExStyle);
 
     // list columns

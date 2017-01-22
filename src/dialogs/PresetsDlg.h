@@ -35,8 +35,8 @@ public:
 public:
     CMyStatic m_StcName;
     CMyStatic m_StcOptions;
-    CListCtrl m_LstPresets;
-    CComboBox m_CmbFormat;
+    CMyListCtrl m_LstPresets;
+    CMyComboBox m_CmbFormat;
     CEdit m_EdtName;
     CEdit m_EdtOptions;
     CMyButton m_BtnOK;
