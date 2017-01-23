@@ -9,6 +9,8 @@
 class CFormat
 {
 public:
+    const CString szExtensionsTokens = _T(",");
+public:
     CString szId;
     CString szName;
     CString szTemplate;
@@ -56,15 +58,16 @@ public:
 public:
     bool IsValidInputExtension(CString szExt)
     {
-        CString szTokens = _T(",");
+        szExt.MakeUpper();
+
         int nTokenPos = 0;
-        CString strToken = this->szInputExtensions.Tokenize(szTokens, nTokenPos);
+        CString strToken = this->szInputExtensions.Tokenize(szExtensionsTokens, nTokenPos);
         while (!strToken.IsEmpty())
         {
-            if (strToken.MakeUpper().Compare(szExt.MakeUpper()) == 0)
+            if (strToken.MakeUpper().Compare(szExt) == 0)
                 return true;
 
-            strToken = this->szInputExtensions.Tokenize(szTokens, nTokenPos);
+            strToken = this->szInputExtensions.Tokenize(szExtensionsTokens, nTokenPos);
         }
         return false;
     }
