@@ -613,8 +613,7 @@ void CBatchEncoderDlg::UpdateFormatComboBox()
         for (int i = 0; i < nFormats; i++)
         {
             CFormat& format = m_Config.m_Formats.GetData(i);
-            if (format.nType == 0)
-                this->m_CmbFormat.InsertString(i, format.szName);
+            this->m_CmbFormat.InsertString(i, format.szName);
         }
 
         static bool bResizeFormatsComboBox = false;
