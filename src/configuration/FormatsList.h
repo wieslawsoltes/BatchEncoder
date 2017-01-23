@@ -108,78 +108,28 @@ public:
         return -1;
     }
 public:
-    int GetInFormatByExt(CString szInExt)
+    int GetEncoderFormatByExt(CString szExt)
     {
-        szInExt.MakeUpper();
+        szExt.MakeUpper();
         int nFormats = this->GetSize();
         for (int i = 0; i < nFormats; i++)
         {
             CFormat& format = this->GetData(i);
-            if (format.nType == 1 && szInExt.Compare(format.szExtension.MakeUpper()) == 0)
+            if (format.nType == 0 && szExt.Compare(format.szOutputExtension.MakeUpper()) == 0)
                 return i;
         }
         return -1;
     }
-    int GetOutFormatByExt(CString szOutExt)
+    int GetDecoderFormatByExt(CString szExt)
     {
-        szOutExt.MakeUpper();
+        szExt.MakeUpper();
         int nFormats = this->GetSize();
         for (int i = 0; i < nFormats; i++)
         {
             CFormat& format = this->GetData(i);
-            if (format.nType == 0 && szOutExt.Compare(format.szExtension.MakeUpper()) == 0)
+            if (format.nType == 1 && format.IsValidInputExtension(szExt))
                 return i;
         }
         return -1;
-    }
-public:
-    int GetInFormatById(CString szFormatId)
-    {
-        szFormatId.MakeUpper();
-        int nFormats = this->GetSize();
-        for (int i = 0; i < nFormats; i++)
-        {
-            CFormat& format = this->GetData(i);
-            if (format.nType == 1 && szFormatId.Compare(format.szId.MakeUpper()) == 0)
-                return i;
-        }
-        return -1;
-    }
-    int GetOutFormatById(CString szFormatId)
-    {
-        szFormatId.MakeUpper();
-        int nFormats = this->GetSize();
-        for (int i = 0; i < nFormats; i++)
-        {
-            CFormat& format = this->GetData(i);
-            if (format.nType == 0 && szFormatId.Compare(format.szId.MakeUpper()) == 0)
-                return i;
-        }
-        return -1;
-    }
-public:
-    bool IsValidInExtension(CString szInExt)
-    {
-        szInExt.MakeUpper();
-        int nFormats = this->GetSize();
-        for (int i = 0; i < nFormats; i++)
-        {
-            CFormat& format = this->GetData(i);
-            if (format.nType == 1 && szInExt.Compare(format.szExtension.MakeUpper()) == 0)
-                return true;
-        }
-        return false;
-    }
-    bool IsValidOutExtension(CString szOutExt)
-    {
-        szOutExt.MakeUpper();
-        int nFormats = this->GetSize();
-        for (int i = 0; i < nFormats; i++)
-        {
-            CFormat& format = this->GetData(i);
-            if (format.nType == 0 && szOutExt.Compare(format.szExtension.MakeUpper()) == 0)
-                return true;
-        }
-        return false;
     }
 };

@@ -5,28 +5,19 @@
 #include "..\BatchEncoder.h"
 #include "WorkThread.h"
 
+enum Mode { None = -1, Encode = 0, Transcode = 1 };
+
 bool ConvertItem(CItemContext* pContext)
 {
     bool bSuccess = false;
     TCHAR szCommandLine[(64 * 1024)];
     ZeroMemory(szCommandLine, sizeof(szCommandLine));
 
-    // TODO: when trans-coding on decode pass sum the decode+encode passes as one in the total progress-bar calculations
-
-    int nIntputFormat = pContext->pWorkerContext->pConfig->m_Formats.GetInFormatByExt(pContext->item->szExtension);
-    CFormat& intputFormat = pContext->pWorkerContext->pConfig->m_Formats.GetData(nIntputFormat);
-    CPreset& inputPreset = intputFormat.m_Presets.GetData(intputFormat.nDefaultPreset);
-
-    int nOutputFormat = pContext->pWorkerContext->pConfig->m_Formats.GetOutFormatById(pContext->item->szFormatId);
-    CFormat& outputFormat = pContext->pWorkerContext->pConfig->m_Formats.GetData(nOutputFormat);
-    CPreset& outputPreset = outputFormat.m_Presets.GetData(pContext->item->nPreset);
-
-    // get full file path
+    // input path
     CString szInputFile = pContext->item->szPath;
 
+    // output path
     CString szOutPath;
-
-    // output path is same as input file path
     if (pContext->pWorkerContext->pConfig->m_Options.bOutputPathChecked == false)
     {
         szOutPath = szInputFile;
@@ -39,25 +30,22 @@ bool ConvertItem(CItemContext* pContext)
         szOutPath = pContext->pWorkerContext->pConfig->m_Options.szOutputPath;
     }
 
-    // setup decoder steps:
-    // 1. set encoder exe path
-    // 2. set encoder options string
-    CString szDecoderExePath = intputFormat.szPath;
-    CString szDecoderOptions = inputPreset.szOptions;
+    // output format
+    int nEncoder = pContext->pWorkerContext->pConfig->m_Formats.GetFormatById(pContext->item->szFormatId);
+    if (nEncoder == -1)
+        return bSuccess;
 
-    // get only output filename
-    CString szName = pContext->item->szName;
+    CFormat& encoderFormat = pContext->pWorkerContext->pConfig->m_Formats.GetData(nEncoder);
+    CPreset& encoderPreset = encoderFormat.m_Presets.GetData(pContext->item->nPreset);
+    CString szEncoderExePath = encoderFormat.szPath;
+    CString szEncoderOptions = encoderPreset.szOptions;
 
-    // setup encoder steps:
-    // 1. add extension to output filename
-    // 2. set encoder exe path
-    // 3. set encoder options string
-    CString szEncoderExePath = outputFormat.szPath;
-    CString szEncoderOptions = outputPreset.szOptions;
+    // check input extensions
+    CString szInputFileExt = ::GetFileExtension(szInputFile).MakeUpper();
+    bool bCanDecodeInput = encoderFormat.IsValidInputExtension(szInputFileExt);
 
-    szName = szName + _T(".") + outputFormat.szExtension.MakeLower();
-
-    // set full path for output file
+    // output path
+    CString szName = pContext->item->szName + _T(".") + encoderFormat.szOutputExtension.MakeLower();
     CString szOutputFile;
     if (szOutPath.GetLength() >= 1)
     {
@@ -71,70 +59,42 @@ bool ConvertItem(CItemContext* pContext)
         szOutputFile = szName;
     }
 
-    bool isInputWav = intputFormat.szExtension.MakeUpper().Compare(_T("WAV")) == 0;
-    bool isOutputWav = outputFormat.szExtension.MakeUpper().Compare(_T("WAV")) == 0;
-
-    // processing modes:
-    // 0. encoding - input is WAV file and we only have to encode
-    // 1. decoding - we only have to decode input file to WAV
-    // 2. trans-coding - we need to decode input file to encoder stdin stream
-
-    int nProcessingMode = -1;
-
-    if (isInputWav)
-        nProcessingMode = 0;
+    // processing mode
+    Mode nProcessingMode = None;
+    if (bCanDecodeInput)
+        nProcessingMode = Encode;
     else
-        nProcessingMode = 2;
+        nProcessingMode = Transcode;
 
-    if (isOutputWav)
-    {
-        // TODO: special case for WAV and SSRC output is based only on options check
-
-        // setting proper processing mode:
-        // 1. Input is WAV, [Output is WAV], No Resampling              = Copy Input File (using SSRC without options)
-        // 2. Input is WAV, [Output is WAV], Resampling                 = Encode Input File (using SSRC)
-        // 3. Input requires decoding, [Output is WAV], No Resampling   = Decode Input File (using Decoder)
-        // 4. Input requires decoding, [Output is WAV], Resampling      = Decode and Encode (using Decoder and SSRC)
-
-        bool bNeedResampling = (szEncoderOptions.GetLength() > 0) ? true : false;
-
-        // case 1
-        if (isInputWav && (bNeedResampling == false))
-            nProcessingMode = 0;
-
-        // case 2
-        if (isInputWav && (bNeedResampling == true))
-            nProcessingMode = 0;
-
-        // case 3
-        if (!isInputWav && (bNeedResampling == false))
-            nProcessingMode = 1;
-
-        // case 4
-        if (!isInputWav && (bNeedResampling == true))
-            nProcessingMode = 2;
-    }
-
-    // build proper command-line depending on processing mode:
-    CString csExecute;
     bool bDecode = false;
     int nTool = -1;
     bool bUseInPipesEnc = false;
     bool bUseOutPipesEnc = false;
     bool bUseInPipesDec = false;
     bool bUseOutPipesDec = false;
-
     CString szOrgInputFile = szInputFile;
     CString szOrgOutputFile = szOutputFile;
 
-    // decode
-    if ((nProcessingMode == 1) || (nProcessingMode == 2))
+    // decode before encoding
+    if (nProcessingMode == Transcode)
     {
+        int nDecoder = pContext->pWorkerContext->pConfig->m_Formats.GetDecoderFormatByExt(pContext->item->szExtension);
+        if (nDecoder == -1)
+        {
+            pContext->pWorkerContext->Callback(pContext->item->nId, -1, true, true, 0.0);
+            return bSuccess;
+        }
+
+        CFormat& decoderFormat = pContext->pWorkerContext->pConfig->m_Formats.GetData(nDecoder);
+        CPreset& decoderPreset = decoderFormat.m_Presets.GetData(decoderFormat.nDefaultPreset);
+        CString szDecoderExePath = decoderFormat.szPath;
+        CString szDecoderOptions = decoderPreset.szOptions;
+
         if (pContext->pWorkerContext->pConfig->m_Options.bForceConsoleWindow == false)
         {
             // configure decoder input and output pipes
-            bUseInPipesDec = intputFormat.bInput;
-            bUseOutPipesDec = intputFormat.bOutput;
+            bUseInPipesDec = decoderFormat.bInput;
+            bUseOutPipesDec = decoderFormat.bOutput;
         }
 
         // input file is stdin
@@ -146,14 +106,13 @@ bool ConvertItem(CItemContext* pContext)
             szOutputFile = _T("-");
 
         // TODO: bUseOutPipes == true than handle szOutputFile same as input file
-        if (nProcessingMode == 2)
-            szOutputFile = szOutputFile + _T(".wav");
-
-        // TODO: validate the command-line template
+        if (nProcessingMode == Transcode)
+            szOutputFile = szOutputFile + +_T(".") + decoderFormat.szOutputExtension.MakeLower();
 
         // build full command line for decoder (DECODER-EXE + OPTIONS + INFILE + OUTFILE) 
         // this is basic model, some of encoder may have different command-line structure
-        csExecute = intputFormat.szTemplate;
+        CString csExecute;
+        csExecute = decoderFormat.szTemplate;
         csExecute.Replace(_T("$EXE"), _T("\"$EXE\""));
         csExecute.Replace(_T("$EXE"), szDecoderExePath);
         csExecute.Replace(_T("$OPTIONS"), szDecoderOptions);
@@ -163,14 +122,13 @@ bool ConvertItem(CItemContext* pContext)
         csExecute.Replace(_T("$OUTFILE"), szOutputFile);
 
         bDecode = true;
-        nTool = pContext->pWorkerContext->pConfig->m_Formats.GetFormatById(intputFormat.szId);
+        nTool = pContext->pWorkerContext->pConfig->m_Formats.GetFormatById(decoderFormat.szId);
 
         lstrcpy(szCommandLine, csExecute.GetBuffer(csExecute.GetLength()));
 
         pContext->pWorkerContext->Status(pContext->item->nId, _T("--:--"), _T("Decoding..."));
 
         CFileContext context;
-
         context.pWorkerContext = pContext->pWorkerContext;
         context.szInputFile = szOrgInputFile;
         context.szOutputFile = szOrgOutputFile;
@@ -181,30 +139,26 @@ bool ConvertItem(CItemContext* pContext)
         context.bUseReadPipes = bUseInPipesDec;
         context.bUseWritePipes = bUseOutPipesDec;
 
-        // TODO: when decoding in nProcessingMode == 2 don't show time stats
+        // TODO: when transcoding don't show time stats
         if (::ConvertFile(&context) == true)
         {
-            if (nProcessingMode == 1)
-                bSuccess = true;
-
             if (pContext->pWorkerContext->pConfig->m_Options.bDeleteSourceFiles == true)
                 ::DeleteFile(szOrgInputFile);
         }
         else
         {
-            // delete output file on error
+            pContext->pWorkerContext->Status(pContext->item->nId, _T("--:--"), _T("Error"));
+
             if (pContext->pWorkerContext->pConfig->m_Options.bDeleteOnError == true)
                 ::DeleteFile(szOutputFile);
 
             if (pContext->pWorkerContext->bRunning == false)
                 return bSuccess;
 
-            // stop conversion process on error
             if (pContext->pWorkerContext->pConfig->m_Options.bStopOnErrors == true)
                 return bSuccess;
 
-            // in processing mode 2 we are skipping to next file
-            // no encoding is done when decoding failed
+            // when transcoding we are skipping to next file no encoding can be done when decoding failed
             return bSuccess;
         }
     }
@@ -215,11 +169,11 @@ bool ConvertItem(CItemContext* pContext)
     if (pContext->pWorkerContext->pConfig->m_Options.bForceConsoleWindow == false)
     {
         // configure encoder input and output pipes
-        bUseInPipesEnc = outputFormat.bInput;
-        bUseOutPipesEnc = outputFormat.bOutput;
+        bUseInPipesEnc = encoderFormat.bInput;
+        bUseOutPipesEnc = encoderFormat.bOutput;
     }
 
-    if (nProcessingMode == 0)
+    if (nProcessingMode == Encode)
     {
         // input file is stdin
         if (bUseInPipesEnc == true)
@@ -230,7 +184,7 @@ bool ConvertItem(CItemContext* pContext)
             szOutputFile = _T("-");
     }
 
-    if (nProcessingMode == 2)
+    if (nProcessingMode == Transcode)
     {
         // input filename is decoded output filename
         szInputFile = szOutputFile;
@@ -249,13 +203,12 @@ bool ConvertItem(CItemContext* pContext)
     }
 
     // encode
-    if ((nProcessingMode == 0) || (nProcessingMode == 2))
+    if ((nProcessingMode == Encode) || (nProcessingMode == Transcode))
     {
-        // TODO: validate the command-line template
-
         // build full command line for encoder (ENCODER-EXE + OPTIONS + INFILE + OUTFILE)
         // this is basic model, some of encoder may have different command-line structure
-        csExecute = outputFormat.szTemplate;
+        CString csExecute;
+        csExecute = encoderFormat.szTemplate;
         csExecute.Replace(_T("$EXE"), _T("\"$EXE\""));
         csExecute.Replace(_T("$EXE"), szEncoderExePath);
         csExecute.Replace(_T("$OPTIONS"), szEncoderOptions);
@@ -265,14 +218,13 @@ bool ConvertItem(CItemContext* pContext)
         csExecute.Replace(_T("$OUTFILE"), szOutputFile);
 
         bDecode = false;
-        nTool = pContext->pWorkerContext->pConfig->m_Formats.GetFormatById(outputFormat.szId);
+        nTool = pContext->pWorkerContext->pConfig->m_Formats.GetFormatById(encoderFormat.szId);
 
         lstrcpy(szCommandLine, csExecute.GetBuffer(csExecute.GetLength()));
 
         pContext->pWorkerContext->Status(pContext->item->nId, _T("--:--"), _T("Encoding..."));
 
         CFileContext context;
-
         context.pWorkerContext = pContext->pWorkerContext;
         context.szInputFile = szOrgInputFile;
         context.szOutputFile = szOrgOutputFile;
@@ -293,13 +245,13 @@ bool ConvertItem(CItemContext* pContext)
         }
         else
         {
-            // delete output file on error
+            pContext->pWorkerContext->Status(pContext->item->nId, _T("--:--"), _T("Error"));
+
             if (pContext->pWorkerContext->pConfig->m_Options.bDeleteOnError == true)
                 ::DeleteFile(szOutputFile);
         }
 
-        // delete temporary file
-        if (nProcessingMode == 2)
+        if (nProcessingMode == Transcode)
             ::DeleteFile(szOrgInputFile);
     }
 

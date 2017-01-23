@@ -577,10 +577,16 @@ public:
                 format.nType = _tstoi(ToCString(pszType));
             }
 
+            const char *pszFormats = pFormatElem->Attribute("formats");
+            if (pszFormats != NULL)
+            {
+                format.szInputExtensions = ToCString(pszFormats);
+            }
+
             const char *pszExtension = pFormatElem->Attribute("extension");
             if (pszExtension != NULL)
             {
-                format.szExtension = ToCString(pszExtension);
+                format.szOutputExtension = ToCString(pszExtension);
             }
 
             const char *pszDefaultPreset = pFormatElem->Attribute("default");
@@ -630,7 +636,10 @@ public:
             pFormatElem->SetAttribute("type", szBuffUtf8.Create(szType));
             szBuffUtf8.Clear();
 
-            pFormatElem->SetAttribute("extension", szBuffUtf8.Create(format.szExtension));
+            pFormatElem->SetAttribute("formats", szBuffUtf8.Create(format.szInputExtensions));
+            szBuffUtf8.Clear();
+
+            pFormatElem->SetAttribute("extension", szBuffUtf8.Create(format.szOutputExtension));
             szBuffUtf8.Clear();
 
             CString szDefaultPreset;

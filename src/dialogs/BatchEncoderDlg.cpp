@@ -1247,12 +1247,6 @@ int CBatchEncoderDlg::InsertToMemoryList(CString szPath)
     int nFormat = this->m_CmbFormat.GetCurSel();
     int nPreset = this->m_CmbPresets.GetCurSel();
     CString szFormatId = m_Config.m_Formats.GetData(nFormat).szId;
-
-    CString szExt = ::GetFileExtension(szPath);
-    szExt.MakeUpper();
-    if (m_Config.m_Formats.IsValidInExtension(szExt) == false)
-        return -1;
-
     return m_Config.m_Items.InsertNode(szPath, szFormatId, nPreset);
 }
 

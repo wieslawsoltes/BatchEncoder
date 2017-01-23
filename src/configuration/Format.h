@@ -17,7 +17,8 @@ public:
     CString szFunction;
     CString szPath;
     int nType; // 0 - Encoder, 1 - Decoder
-    CString szExtension;
+    CString szInputExtensions;
+    CString szOutputExtension;
     int nDefaultPreset;
     CPresetsList m_Presets;
 public:
@@ -47,8 +48,24 @@ public:
         this->szFunction = other.szFunction;
         this->szPath = other.szPath;
         this->nType = other.nType;
-        this->szExtension = other.szExtension;
+        this->szInputExtensions = other.szInputExtensions;
+        this->szOutputExtension = other.szOutputExtension;
         this->nDefaultPreset = other.nDefaultPreset;
         this->m_Presets = other.m_Presets;
+    }
+public:
+    bool IsValidInputExtension(CString szExt)
+    {
+        CString szTokens = _T(",");
+        int nTokenPos = 0;
+        CString strToken = this->szInputExtensions.Tokenize(szTokens, nTokenPos);
+        while (!strToken.IsEmpty())
+        {
+            if (strToken.MakeUpper().Compare(szExt.MakeUpper()) == 0)
+                return true;
+
+            strToken = this->szInputExtensions.Tokenize(szTokens, nTokenPos);
+        }
+        return false;
     }
 };

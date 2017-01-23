@@ -419,8 +419,8 @@ bool ConvertFile(CFileContext* pContext)
             // NOTE: 
             // do we need to check console output code-page?
             // all tools should be using system code-page or they are using UNICODE output?
-            char szReadBuff[512];
-            char szLineBuff[512];
+            char szReadBuff[4096];
+            char szLineBuff[4096];
             DWORD dwReadBytes = 0L;
             BOOL bRes = FALSE;
             bool bLineStart;
