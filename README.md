@@ -17,6 +17,8 @@ BatchEncoder is an audio files conversion software.
 
 ### Download BatchEncoder
 
+NOTE: Version 1.0 is in the works, please download latest CI server builds.
+
 | Platforn              | Type        | Version       | Download                                                                                                                               |
 |-----------------------|-------------|---------------|----------------------------------------------------------------------------------------------------------------------------------------|
 | Windows 32-bit        | Installer   | 1.0           | [BatchEncoder-1.0-Win32.exe](https://github.com/wieslawsoltes/BatchEncoder/releases/download/1.0/BatchEncoder-1.0-Win32.exe)           |
