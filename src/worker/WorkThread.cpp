@@ -107,9 +107,7 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
 
         // close convert thread handles
         for (int i = 0; i < pWorkerContext->nThreadCount; i++)
-        {
             ::CloseHandle(pWorkerContext->hConvertThread[i]);
-        }
 
         delete pWorkerContext->hConvertThread;
         delete pWorkerContext->dwConvertThreadID;
