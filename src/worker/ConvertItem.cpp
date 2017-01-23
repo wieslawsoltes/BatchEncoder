@@ -140,7 +140,15 @@ bool ConvertItem(CItemContext* pContext)
         context.bUseWritePipes = bUseOutPipesDec;
 
         // TODO: when transcoding don't show time stats
-        if (::ConvertFile(&context) == true)
+        bool bResult = false;
+
+        try
+        {
+            bResult = ::ConvertFile(&context);
+        }
+        catch (...) {}
+
+        if (bResult = true)
         {
             if (pContext->pWorkerContext->pConfig->m_Options.bDeleteSourceFiles == true)
                 ::DeleteFile(szOrgInputFile);
@@ -235,13 +243,19 @@ bool ConvertItem(CItemContext* pContext)
         context.bUseReadPipes = bUseInPipesEnc;
         context.bUseWritePipes = bUseOutPipesEnc;
 
-        if (::ConvertFile(&context) == true)
+        bool bResult = false;
+        try
+        {
+            bResult = ::ConvertFile(&context);
+        }
+        catch (...) { }
+
+        if (bResult = true)
         {
             bSuccess = true;
 
             if (pContext->pWorkerContext->pConfig->m_Options.bDeleteSourceFiles == true)
                 ::DeleteFile(szOrgInputFile);
-
         }
         else
         {
