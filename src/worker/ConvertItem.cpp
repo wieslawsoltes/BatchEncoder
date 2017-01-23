@@ -248,7 +248,7 @@ bool ConvertItem(CItemContext* pContext)
         {
             bResult = ::ConvertFile(&context);
         }
-        catch (...) { }
+        catch (...) {}
 
         if (bResult = true)
         {
