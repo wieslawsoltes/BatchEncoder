@@ -529,7 +529,7 @@ bool ConvertFile(CFileContext* pContext)
                         // TODO: special case for wavpack and wvunpack
                         // TODO: check for tool executable instead
                         if (((pContext->bDecode == false) && (pContext->nTool == 10)) || // WAVPACK
-                            ((pContext->bDecode == true) && (pContext->nTool == 29)))   // WVUNPACK
+                            ((pContext->bDecode == true) && (pContext->nTool == 28)))   // WVUNPACK
                         {
                             // NOTE: same code as if(szReadBuff[i] == '\r')
                             if ((bLineStart == true) && (bLineEnd == false))

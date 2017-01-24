@@ -13,5 +13,5 @@ protected:
     DECLARE_MESSAGE_MAP()
 public:
     afx_msg void OnNMRclick(NMHDR *pNMHDR, LRESULT *pResult);
-    afx_msg void OnStatusMenuResetConversionStatus();
+    afx_msg void OnStatusMenuReset();
 };

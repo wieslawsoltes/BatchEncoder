@@ -30,9 +30,9 @@
 #define IDC_PROGRESS_WORK               1005
 #define IDC_COMBO_PRESETS               1006
 #define IDC_COMBO_FORMAT                1007
-#define IDC_EDIT_OUT_PATH               1008
-#define IDC_BUTTON_BROWSE_PATH          1009
-#define IDC_CHECK_OUT_PATH              1010
+#define IDC_EDIT_OUTPUT                 1008
+#define IDC_BUTTON_BROWSE_OUTPUT        1009
+#define IDC_CHECK_OUTPUT                1010
 #define IDC_EDIT_INPUT_ITEMS            1011
 #define IDC_LIST_PRESETS                1012
 #define IDC_BUTTON_PRESET_SAVE          1013
@@ -73,7 +73,7 @@
 #define IDC_STATIC_FORMAT_PATH          1052
 #define IDC_STATIC_LICENSE              1053
 #define IDC_STATIC_FORMAT_TEMPLATE      1054
-#define IDC_STATIC_FORMAT_FUNCTIO       1055
+#define IDC_STATIC_FORMAT_FUNCTION      1055
 #define IDC_STATIC_GROUP_FORMAT_PIPES   1056
 #define IDC_EDIT_THREADCOUNT            1057
 #define ID_HELP_ABOUT                   32771
@@ -141,7 +141,7 @@
 #define ID_ACCELERATOR_CTRL_SHIFT_O     32834
 #define ID_ACCELERATOR_F11              32835
 #define ID_ACCELERATOR_CTRL_X           32836
-#define ID_STATUSMENU_RESETCONVERSIONSTATUS 32837
+#define ID_STATUSMENU_RESET             32837
 #define ID_OPTIONS_DELETELOG            32838
 #define ID_ACCELERATOR_SHIFT_F12        32839
 #define ID_EDIT_REMOVECHECKED           32840

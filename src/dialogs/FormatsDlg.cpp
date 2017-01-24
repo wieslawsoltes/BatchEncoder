@@ -20,6 +20,7 @@ CFormatsDlg::CFormatsDlg(CWnd* pParent /*=NULL*/)
     this->szFormatsListColumns = _T("");
     this->bShowGridLines = true;
     this->bUpdate = false;
+    this->nSelectedFormat = 0;
 }
 
 CFormatsDlg::~CFormatsDlg()
@@ -33,7 +34,7 @@ void CFormatsDlg::DoDataExchange(CDataExchange* pDX)
     DDX_Control(pDX, IDC_STATIC_GROUP_FORMAT_PIPES, m_GrpPipes);
     DDX_Control(pDX, IDC_STATIC_FORMAT_PATH, m_StcPath);
     DDX_Control(pDX, IDC_STATIC_FORMAT_TEMPLATE, m_StcTemplate);
-    DDX_Control(pDX, IDC_STATIC_FORMAT_FUNCTIO, m_StcProgress);
+    DDX_Control(pDX, IDC_STATIC_FORMAT_FUNCTION, m_StcProgress);
     DDX_Control(pDX, IDC_LIST_FORMATS, m_LstFormats);
     DDX_Control(pDX, IDC_EDIT_FORMAT_PATH, m_EdtPath);
     DDX_Control(pDX, IDC_EDIT_FORMAT_TEMPLATE, m_EdtTemplate);
@@ -89,6 +90,9 @@ BOOL CFormatsDlg::OnInitDialog()
     // insert all ListCtrl items and sub items
     this->InsertFormatsToListCtrl();
 
+    m_LstFormats.SetItemState(nSelectedFormat, LVIS_SELECTED, LVIS_SELECTED);
+    m_LstFormats.EnsureVisible(nSelectedFormat, FALSE);
+
     // setup resize anchors
     AddAnchor(IDC_LIST_FORMATS, TOP_LEFT, BOTTOM_RIGHT);
     AddAnchor(IDC_STATIC_FORMAT_PATH, BOTTOM_LEFT);
@@ -99,7 +103,7 @@ BOOL CFormatsDlg::OnInitDialog()
     AddAnchor(IDC_CHECK_FORMAT_PIPES_OUTPUT, BOTTOM_LEFT);
     AddAnchor(IDC_STATIC_FORMAT_TEMPLATE, BOTTOM_LEFT, BOTTOM_RIGHT);
     AddAnchor(IDC_EDIT_FORMAT_TEMPLATE, BOTTOM_LEFT, BOTTOM_RIGHT);
-    AddAnchor(IDC_STATIC_FORMAT_FUNCTIO, BOTTOM_RIGHT);
+    AddAnchor(IDC_STATIC_FORMAT_FUNCTION, BOTTOM_RIGHT);
     AddAnchor(IDC_EDIT_FORMAT_FUNCTION, BOTTOM_RIGHT);
     AddAnchor(IDC_BUTTON_BROWSE_PROGRESS, BOTTOM_RIGHT);
     AddAnchor(IDC_BUTTON_FORMAT_LOAD, BOTTOM_LEFT);
@@ -326,6 +330,10 @@ bool CFormatsDlg::BrowseForFunction(CString szDefaultFName, CEdit *pEdit, int nI
 
 void CFormatsDlg::OnBnClickedOk()
 {
+    POSITION pos = m_LstFormats.GetFirstSelectedItemPosition();
+    if (pos != NULL)
+        nSelectedFormat = m_LstFormats.GetNextSelectedItem(pos);
+
     this->SaveWindowSettings();
 
     OnOK();

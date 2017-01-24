@@ -214,18 +214,17 @@ void CBatchEncoderDlg::DoDataExchange(CDataExchange* pDX)
     DDX_Control(pDX, IDC_COMBO_PRESETS, m_CmbPresets);
     DDX_Control(pDX, IDC_COMBO_FORMAT, m_CmbFormat);
     DDX_Control(pDX, IDC_EDIT_INPUT_ITEMS, m_LstInputItems);
-    DDX_Control(pDX, IDC_CHECK_OUT_PATH, m_ChkOutPath);
-    DDX_Control(pDX, IDC_EDIT_OUT_PATH, m_EdtOutPath);
+    DDX_Control(pDX, IDC_CHECK_OUTPUT, m_ChkOutPath);
+    DDX_Control(pDX, IDC_EDIT_OUTPUT, m_EdtOutPath);
     DDX_Control(pDX, IDC_STATIC_TEXT_PRESET, m_StcPreset);
     DDX_Control(pDX, IDC_STATIC_TEXT_FORMAT, m_StcFormat);
     DDX_Control(pDX, IDC_BUTTON_RUN, m_BtnConvert);
-    DDX_Control(pDX, IDC_BUTTON_BROWSE_PATH, m_BtnBrowse);
+    DDX_Control(pDX, IDC_BUTTON_BROWSE_OUTPUT, m_BtnBrowse);
 }
 
 BEGIN_MESSAGE_MAP(CBatchEncoderDlg, CResizeDialog)
     ON_WM_PAINT()
     ON_WM_QUERYDRAGICON()
-    //}}AFX_MSG_MAP
     ON_WM_CLOSE()
     ON_WM_DESTROY()
     ON_WM_DROPFILES()
@@ -242,11 +241,11 @@ BEGIN_MESSAGE_MAP(CBatchEncoderDlg, CResizeDialog)
     ON_CBN_SELCHANGE(IDC_COMBO_PRESETS, OnCbnSelchangeComboPresets)
     ON_CBN_SELCHANGE(IDC_COMBO_FORMAT, OnCbnSelchangeComboFormat)
     ON_BN_CLICKED(IDC_BUTTON_RUN, OnBnClickedButtonConvert)
-    ON_BN_CLICKED(IDC_BUTTON_BROWSE_PATH, OnBnClickedButtonBrowsePath)
-    ON_BN_CLICKED(IDC_CHECK_OUT_PATH, OnBnClickedCheckOutPath)
-    ON_EN_CHANGE(IDC_EDIT_OUT_PATH, OnEnChangeEditOutPath)
-    ON_EN_SETFOCUS(IDC_EDIT_OUT_PATH, OnEnSetFocusEditOutPath)
-    ON_EN_KILLFOCUS(IDC_EDIT_OUT_PATH, OnEnKillFocusEditOutPath)
+    ON_BN_CLICKED(IDC_BUTTON_BROWSE_OUTPUT, OnBnClickedButtonBrowsePath)
+    ON_BN_CLICKED(IDC_CHECK_OUTPUT, OnBnClickedCheckOutPath)
+    ON_EN_CHANGE(IDC_EDIT_OUTPUT, OnEnChangeEditOutPath)
+    ON_EN_SETFOCUS(IDC_EDIT_OUTPUT, OnEnSetFocusEditOutPath)
+    ON_EN_KILLFOCUS(IDC_EDIT_OUTPUT, OnEnKillFocusEditOutPath)
     ON_MESSAGE(WM_NOTIFYFORMAT, OnNotifyFormat)
     ON_COMMAND(ID_FILE_LOADLIST, OnFileLoadList)
     ON_COMMAND(ID_FILE_SAVELIST, OnFileSaveList)
@@ -380,9 +379,9 @@ BOOL CBatchEncoderDlg::OnInitDialog()
     AddAnchor(IDC_STATIC_TEXT_PRESET, TOP_LEFT);
     AddAnchor(IDC_COMBO_PRESETS, TOP_LEFT, TOP_RIGHT);
     AddAnchor(IDC_EDIT_INPUT_ITEMS, TOP_LEFT, BOTTOM_RIGHT);
-    AddAnchor(IDC_CHECK_OUT_PATH, BOTTOM_LEFT);
-    AddAnchor(IDC_EDIT_OUT_PATH, BOTTOM_LEFT, BOTTOM_RIGHT);
-    AddAnchor(IDC_BUTTON_BROWSE_PATH, BOTTOM_RIGHT);
+    AddAnchor(IDC_CHECK_OUTPUT, BOTTOM_LEFT);
+    AddAnchor(IDC_EDIT_OUTPUT, BOTTOM_LEFT, BOTTOM_RIGHT);
+    AddAnchor(IDC_BUTTON_BROWSE_OUTPUT, BOTTOM_RIGHT);
     AddAnchor(IDC_PROGRESS_WORK, BOTTOM_LEFT, BOTTOM_RIGHT);
     AddAnchor(IDC_BUTTON_RUN, BOTTOM_RIGHT);
     AddAnchor(IDC_STATUSBAR, BOTTOM_LEFT, BOTTOM_RIGHT);
@@ -2341,6 +2340,7 @@ void CBatchEncoderDlg::OnOptionsConfigureFormat()
     {
         CFormatsDlg dlg;
         dlg.bShowGridLines = this->GridlinesVisible();
+        dlg.nSelectedFormat = this->m_CmbFormat.GetCurSel();
         dlg.m_Formats = m_Config.m_Formats;
         dlg.szFormatsDialogResize = m_Config.m_Options.szFormatsDialogResize;
         dlg.szFormatsListColumns = m_Config.m_Options.szFormatsListColumns;
@@ -2350,6 +2350,10 @@ void CBatchEncoderDlg::OnOptionsConfigureFormat()
         {
             m_Config.m_Formats.RemoveAllNodes();
             m_Config.m_Formats = dlg.m_Formats;
+
+            if (dlg.nSelectedFormat >= 0)
+                m_Config.m_Options.nSelectedFormat = dlg.nSelectedFormat;
+
             this->UpdateFormatComboBox();
             this->UpdatePresetComboBox();
         }

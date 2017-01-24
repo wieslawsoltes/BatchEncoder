@@ -18,7 +18,7 @@ CMyStatusBarCtrl::~CMyStatusBarCtrl()
 
 BEGIN_MESSAGE_MAP(CMyStatusBarCtrl, CStatusBarCtrl)
     ON_NOTIFY_REFLECT(NM_RCLICK, OnNMRclick)
-    ON_COMMAND(ID_STATUSMENU_RESETCONVERSIONSTATUS, OnStatusMenuResetConversionStatus)
+    ON_COMMAND(ID_STATUSMENU_RESET, OnStatusMenuReset)
 END_MESSAGE_MAP()
 
 void CMyStatusBarCtrl::OnNMRclick(NMHDR *pNMHDR, LRESULT *pResult)
@@ -33,7 +33,7 @@ void CMyStatusBarCtrl::OnNMRclick(NMHDR *pNMHDR, LRESULT *pResult)
     *pResult = 0;
 }
 
-void CMyStatusBarCtrl::OnStatusMenuResetConversionStatus()
+void CMyStatusBarCtrl::OnStatusMenuReset()
 {
     SetText(_T(""), 1, 0);
 }

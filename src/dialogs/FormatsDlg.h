@@ -30,6 +30,7 @@ public:
     CString szFormatsListColumns;
     bool bShowGridLines;
     volatile bool bUpdate;
+    int nSelectedFormat;
     CFormatsList m_Formats;
 public:
     CMyStatic m_GrpPipes;
