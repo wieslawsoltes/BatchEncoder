@@ -632,6 +632,8 @@ void CBatchEncoderDlg::UpdatePresetComboBox()
     {
         this->m_CmbPresets.ResetContent();
 
+        int nPreset = -1;
+
         if (m_Config.m_Options.nSelectedFormat >= 0 && m_Config.m_Formats.GetSize() > 0)
         {
             CFormat& format = m_Config.m_Formats.GetData(m_Config.m_Options.nSelectedFormat);
@@ -642,7 +644,7 @@ void CBatchEncoderDlg::UpdatePresetComboBox()
                 this->m_CmbPresets.InsertString(i, preset.szName);
             }
 
-            this->m_CmbPresets.SetCurSel(format.nDefaultPreset);
+            nPreset = format.nDefaultPreset;
         }
 
         static bool bResizePresetsComboBox = false;
@@ -651,6 +653,8 @@ void CBatchEncoderDlg::UpdatePresetComboBox()
             ::SetComboBoxHeight(this->GetSafeHwnd(), IDC_COMBO_PRESETS);
             bResizePresetsComboBox = true;
         }
+
+        this->m_CmbPresets.SetCurSel(nPreset);
     }
 }
 
