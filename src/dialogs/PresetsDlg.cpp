@@ -16,11 +16,11 @@ CPresetsDlg::CPresetsDlg(CWnd* pParent /*=NULL*/)
     : CResizeDialog(CPresetsDlg::IDD, pParent)
 {
     this->m_hIcon = AfxGetApp()->LoadIcon(IDI_TRAYICON);
-    this->nSelectedFormat = 0;
     this->szPresetsDialogResize = _T("");
     this->szPresetsListColumns = _T("");
-    this->bUpdate = false;
     this->bShowGridLines = true;
+    this->bUpdate = false;
+    this->nSelectedFormat = 0;
 }
 
 CPresetsDlg::~CPresetsDlg()
@@ -31,42 +31,42 @@ CPresetsDlg::~CPresetsDlg()
 void CPresetsDlg::DoDataExchange(CDataExchange* pDX)
 {
     CResizeDialog::DoDataExchange(pDX);
-    DDX_Control(pDX, IDC_EDIT_PD_PRESETS, m_LstPresets);
-    DDX_Control(pDX, IDC_EDIT_PD_NAME, m_EdtName);
-    DDX_Control(pDX, IDC_EDIT_PD_OPTIONS, m_EdtOptions);
+    DDX_Control(pDX, IDC_STATIC_PRESET_NAME, m_StcName);
+    DDX_Control(pDX, IDC_STATIC_PRESET_OPTIONS, m_StcOptions);
+    DDX_Control(pDX, IDC_LIST_PRESETS, m_LstPresets);
+    DDX_Control(pDX, IDC_COMBO_PRESET_FORMAT, m_CmbFormat);
+    DDX_Control(pDX, IDC_EDIT_PRESET_NAME, m_EdtName);
+    DDX_Control(pDX, IDC_EDIT_PRESET_OPTIONS, m_EdtOptions);
     DDX_Control(pDX, IDOK, m_BtnOK);
     DDX_Control(pDX, IDCANCEL, m_BtnCancel);
-    DDX_Control(pDX, IDC_COMBO_PD_FORMAT, m_CmbFormat);
-    DDX_Control(pDX, IDC_STATIC_PD_TEXT_NAME, m_StcName);
-    DDX_Control(pDX, IDC_STATIC_PD_TEXT_OPTIONS, m_StcOptions);
-    DDX_Control(pDX, IDC_BUTTON_PD_LOAD_PRESETS, m_BtnLoad);
-    DDX_Control(pDX, IDC_BUTTON_PD_SAVE_PRESETS, m_BtnSave);
-    DDX_Control(pDX, IDC_BUTTON_PD_UP, m_BtnMoveUp);
-    DDX_Control(pDX, IDC_BUTTON_PD_DOWN, m_BtnMoveDown);
-    DDX_Control(pDX, IDC_BUTTON_PD_REMOVE_ALL_PRESETS, m_BtnRemoveAll);
-    DDX_Control(pDX, IDC_BUTTON_PD_REMOVE_PRESETS, m_BtnRemove);
-    DDX_Control(pDX, IDC_BUTTON_PD_UPDATE_PRESET, m_BtnUpdate);
-    DDX_Control(pDX, IDC_BUTTON_PD_ADD_PRESET, m_BtnAdd);
+    DDX_Control(pDX, IDC_BUTTON_PRESET_LOAD, m_BtnLoad);
+    DDX_Control(pDX, IDC_BUTTON_PRESET_SAVE, m_BtnSave);
+    DDX_Control(pDX, IDC_BUTTON_PRESET_UP, m_BtnMoveUp);
+    DDX_Control(pDX, IDC_BUTTON_PRESET_DOWN, m_BtnMoveDown);
+    DDX_Control(pDX, IDC_BUTTON_PRESET_REMOVE_ALL, m_BtnRemoveAll);
+    DDX_Control(pDX, IDC_BUTTON_PRESET_REMOVE, m_BtnRemove);
+    DDX_Control(pDX, IDC_BUTTON_PRESET_UPDATE, m_BtnUpdate);
+    DDX_Control(pDX, IDC_BUTTON_PRESET_ADD, m_BtnAdd);
 }
 
 BEGIN_MESSAGE_MAP(CPresetsDlg, CResizeDialog)
     ON_WM_PAINT()
     ON_WM_QUERYDRAGICON()
-    ON_NOTIFY(LVN_ITEMCHANGED, IDC_EDIT_PD_PRESETS, OnLvnItemchangedListPdPresets)
-    ON_BN_CLICKED(IDC_BUTTON_PD_REMOVE_ALL_PRESETS, OnBnClickedButtonPdRemoveAllPresets)
-    ON_BN_CLICKED(IDC_BUTTON_PD_REMOVE_PRESETS, OnBnClickedButtonPdRemovePresets)
-    ON_BN_CLICKED(IDC_BUTTON_PD_LOAD_PRESETS, OnBnClickedButtonPdLoadPresets)
-    ON_BN_CLICKED(IDC_BUTTON_PD_SAVE_PRESETS, OnBnClickedButtonPdSavePresets)
-    ON_BN_CLICKED(IDC_BUTTON_PD_ADD_PRESET, OnBnClickedButtonPdAddPreset)
-    ON_BN_CLICKED(IDC_BUTTON_PD_UPDATE_PRESET, OnBnClickedButtonPdUpdatePreset)
-    ON_BN_CLICKED(IDC_BUTTON_PD_UP, OnBnClickedButtonPdUp)
-    ON_BN_CLICKED(IDC_BUTTON_PD_DOWN, OnBnClickedButtonPdDown)
     ON_BN_CLICKED(IDOK, OnBnClickedOk)
     ON_BN_CLICKED(IDCANCEL, OnBnClickedCancel)
-    ON_CBN_SELCHANGE(IDC_COMBO_PD_FORMAT, OnCbnSelchangeComboPdFormat)
+    ON_NOTIFY(LVN_ITEMCHANGED, IDC_LIST_PRESETS, OnLvnItemchangedListPresets)
+    ON_CBN_SELCHANGE(IDC_COMBO_PRESET_FORMAT, OnCbnSelchangeComboPresetFormat)
+    ON_BN_CLICKED(IDC_BUTTON_PRESET_REMOVE_ALL, OnBnClickedButtonRemoveAllPresets)
+    ON_BN_CLICKED(IDC_BUTTON_PRESET_REMOVE, OnBnClickedButtonRemovePreset)
+    ON_BN_CLICKED(IDC_BUTTON_PRESET_ADD, OnBnClickedButtonAddPreset)
+    ON_BN_CLICKED(IDC_BUTTON_PRESET_UPDATE, OnBnClickedButtonUpdatePreset)
+    ON_BN_CLICKED(IDC_BUTTON_PRESET_UP, OnBnClickedButtonPresetUp)
+    ON_BN_CLICKED(IDC_BUTTON_PRESET_DOWN, OnBnClickedButtonPresetDown)
+    ON_EN_CHANGE(IDC_EDIT_PRESET_NAME, OnEnChangeEditPresetName)
+    ON_EN_CHANGE(IDC_EDIT_PRESET_OPTIONS, OnEnChangeEditPresetOptions)
+    ON_BN_CLICKED(IDC_BUTTON_PRESET_LOAD, OnBnClickedButtonLoadPresets)
+    ON_BN_CLICKED(IDC_BUTTON_PRESET_SAVE, OnBnClickedButtonSavePresets)
     ON_WM_CLOSE()
-    ON_EN_CHANGE(IDC_EDIT_PD_NAME, OnEnChangeEditPdName)
-    ON_EN_CHANGE(IDC_EDIT_PD_OPTIONS, OnEnChangeEditPdOptions)
 END_MESSAGE_MAP()
 
 BOOL CPresetsDlg::OnInitDialog()
@@ -95,27 +95,27 @@ BOOL CPresetsDlg::OnInitDialog()
         m_CmbFormat.InsertString(i, format.szName);
     }
 
-    ::SetComboBoxHeight(this->GetSafeHwnd(), IDC_COMBO_PD_FORMAT);
+    ::SetComboBoxHeight(this->GetSafeHwnd(), IDC_COMBO_PRESET_FORMAT);
 
     m_CmbFormat.SetCurSel(nSelectedFormat);
 
-    this->OnCbnSelchangeComboPdFormat();
+    this->OnCbnSelchangeComboPresetFormat();
 
     // setup resize anchors
-    AddAnchor(IDC_COMBO_PD_FORMAT, TOP_LEFT);
-    AddAnchor(IDC_EDIT_PD_PRESETS, TOP_LEFT, BOTTOM_RIGHT);
-    AddAnchor(IDC_BUTTON_PD_UP, TOP_RIGHT);
-    AddAnchor(IDC_BUTTON_PD_DOWN, TOP_RIGHT);
-    AddAnchor(IDC_BUTTON_PD_ADD_PRESET, BOTTOM_RIGHT);
-    AddAnchor(IDC_BUTTON_PD_REMOVE_ALL_PRESETS, BOTTOM_RIGHT);
-    AddAnchor(IDC_BUTTON_PD_REMOVE_PRESETS, BOTTOM_RIGHT);
-    AddAnchor(IDC_BUTTON_PD_LOAD_PRESETS, BOTTOM_LEFT);
-    AddAnchor(IDC_BUTTON_PD_SAVE_PRESETS, BOTTOM_LEFT);
-    AddAnchor(IDC_STATIC_PD_TEXT_NAME, BOTTOM_LEFT);
-    AddAnchor(IDC_EDIT_PD_NAME, BOTTOM_LEFT);
-    AddAnchor(IDC_STATIC_PD_TEXT_OPTIONS, BOTTOM_LEFT, BOTTOM_RIGHT);
-    AddAnchor(IDC_EDIT_PD_OPTIONS, BOTTOM_LEFT, BOTTOM_RIGHT);
-    AddAnchor(IDC_BUTTON_PD_UPDATE_PRESET, BOTTOM_RIGHT);
+    AddAnchor(IDC_COMBO_PRESET_FORMAT, TOP_LEFT);
+    AddAnchor(IDC_LIST_PRESETS, TOP_LEFT, BOTTOM_RIGHT);
+    AddAnchor(IDC_BUTTON_PRESET_UP, TOP_RIGHT);
+    AddAnchor(IDC_BUTTON_PRESET_DOWN, TOP_RIGHT);
+    AddAnchor(IDC_BUTTON_PRESET_ADD, BOTTOM_RIGHT);
+    AddAnchor(IDC_BUTTON_PRESET_REMOVE_ALL, BOTTOM_RIGHT);
+    AddAnchor(IDC_BUTTON_PRESET_REMOVE, BOTTOM_RIGHT);
+    AddAnchor(IDC_BUTTON_PRESET_LOAD, BOTTOM_LEFT);
+    AddAnchor(IDC_BUTTON_PRESET_SAVE, BOTTOM_LEFT);
+    AddAnchor(IDC_STATIC_PRESET_NAME, BOTTOM_LEFT);
+    AddAnchor(IDC_EDIT_PRESET_NAME, BOTTOM_LEFT);
+    AddAnchor(IDC_STATIC_PRESET_OPTIONS, BOTTOM_LEFT, BOTTOM_RIGHT);
+    AddAnchor(IDC_EDIT_PRESET_OPTIONS, BOTTOM_LEFT, BOTTOM_RIGHT);
+    AddAnchor(IDC_BUTTON_PRESET_UPDATE, BOTTOM_RIGHT);
     AddAnchor(IDOK, BOTTOM_RIGHT);
     AddAnchor(IDCANCEL, BOTTOM_RIGHT);
 
@@ -152,24 +152,6 @@ HCURSOR CPresetsDlg::OnQueryDragIcon()
     return static_cast<HCURSOR>(m_hIcon);
 }
 
-void CPresetsDlg::ShowGridlines(bool bShow)
-{
-    DWORD dwExStyle = m_LstPresets.GetExtendedStyle();
-    if (bShow == true)
-    {
-        dwExStyle |= LVS_EX_GRIDLINES;
-        m_LstPresets.SetExtendedStyle(dwExStyle);
-    }
-    else
-    {
-        if (dwExStyle & LVS_EX_GRIDLINES)
-        {
-            dwExStyle = dwExStyle ^ LVS_EX_GRIDLINES;
-            m_LstPresets.SetExtendedStyle(dwExStyle);
-        }
-    }
-}
-
 void CPresetsDlg::LoadWindowSettings()
 {
     // set window rectangle and position
@@ -204,40 +186,21 @@ void CPresetsDlg::SaveWindowSettings()
         nColWidth[1]);
 }
 
-void CPresetsDlg::OnLvnItemchangedListPdPresets(NMHDR *pNMHDR, LRESULT *pResult)
+void CPresetsDlg::ShowGridlines(bool bShow)
 {
-    LPNMLISTVIEW pNMLV = reinterpret_cast<LPNMLISTVIEW>(pNMHDR);
-
-    this->ListSelectionChange();
-
-    *pResult = 0;
-}
-
-void CPresetsDlg::OnBnClickedButtonPdRemoveAllPresets()
-{
-    CFormat& format = m_Formats.GetData(nSelectedFormat);
-    format.m_Presets.RemoveAllNodes();
-
-    m_LstPresets.DeleteAllItems();
-}
-
-void CPresetsDlg::OnBnClickedButtonPdRemovePresets()
-{
-    POSITION pos = m_LstPresets.GetFirstSelectedItemPosition();
-    if (pos != NULL)
+    DWORD dwExStyle = m_LstPresets.GetExtendedStyle();
+    if (bShow == true)
     {
-        int nItem = m_LstPresets.GetNextSelectedItem(pos);
-
-        CFormat& format = m_Formats.GetData(nSelectedFormat);
-        format.m_Presets.RemoveNode(nItem);
-
-        m_LstPresets.DeleteItem(nItem);
-
-        int nItems = m_LstPresets.GetItemCount();
-        if (nItem < nItems && nItems >= 0)
-            m_LstPresets.SetItemState(nItem, LVIS_SELECTED, LVIS_SELECTED);
-        else if (nItem >= nItems && nItems >= 0)
-            m_LstPresets.SetItemState(nItem - 1, LVIS_SELECTED, LVIS_SELECTED);
+        dwExStyle |= LVS_EX_GRIDLINES;
+        m_LstPresets.SetExtendedStyle(dwExStyle);
+    }
+    else
+    {
+        if (dwExStyle & LVS_EX_GRIDLINES)
+        {
+            dwExStyle = dwExStyle ^ LVS_EX_GRIDLINES;
+            m_LstPresets.SetExtendedStyle(dwExStyle);
+        }
     }
 }
 
@@ -291,6 +254,11 @@ void CPresetsDlg::ListSelectionChange()
         this->m_EdtName.SetWindowText(preset.szName);
         this->m_EdtOptions.SetWindowText(preset.szOptions);
     }
+    else
+    {
+        this->m_EdtName.SetWindowText(_T(""));
+        this->m_EdtOptions.SetWindowText(_T(""));
+    }
 
     bUpdate = false;
 }
@@ -327,37 +295,58 @@ void CPresetsDlg::SavePresets(CString szFileXml)
     }
 }
 
-void CPresetsDlg::OnBnClickedButtonPdLoadPresets()
+void CPresetsDlg::OnBnClickedOk()
 {
-    CFileDialog fd(TRUE, _T("presets"), _T(""),
-        OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER,
-        _T("Presets Files (*.presets)|*.presets|Xml Files (*.xml)|*.xml|All Files|*.*||"), this);
+    this->SaveWindowSettings();
 
-    int nPreset = this->m_CmbFormat.GetCurSel();
+    OnOK();
+}
 
-    if (fd.DoModal() == IDOK)
+void CPresetsDlg::OnBnClickedCancel()
+{
+    this->SaveWindowSettings();
+
+    OnCancel();
+}
+
+void CPresetsDlg::OnLvnItemchangedListPresets(NMHDR *pNMHDR, LRESULT *pResult)
+{
+    LPNMLISTVIEW pNMLV = reinterpret_cast<LPNMLISTVIEW>(pNMHDR);
+
+    this->ListSelectionChange();
+
+    *pResult = 0;
+}
+
+void CPresetsDlg::OnBnClickedButtonRemoveAllPresets()
+{
+    CFormat& format = m_Formats.GetData(nSelectedFormat);
+    format.m_Presets.RemoveAllNodes();
+
+    m_LstPresets.DeleteAllItems();
+}
+
+void CPresetsDlg::OnBnClickedButtonRemovePreset()
+{
+    POSITION pos = m_LstPresets.GetFirstSelectedItemPosition();
+    if (pos != NULL)
     {
-        CString szFileXml = fd.GetPathName();
-        this->LoadPresets(szFileXml);
+        int nItem = m_LstPresets.GetNextSelectedItem(pos);
+
+        CFormat& format = m_Formats.GetData(nSelectedFormat);
+        format.m_Presets.RemoveNode(nItem);
+
+        m_LstPresets.DeleteItem(nItem);
+
+        int nItems = m_LstPresets.GetItemCount();
+        if (nItem < nItems && nItems >= 0)
+            m_LstPresets.SetItemState(nItem, LVIS_SELECTED, LVIS_SELECTED);
+        else if (nItem >= nItems && nItems >= 0)
+            m_LstPresets.SetItemState(nItem - 1, LVIS_SELECTED, LVIS_SELECTED);
     }
 }
 
-void CPresetsDlg::OnBnClickedButtonPdSavePresets()
-{
-    CFileDialog fd(FALSE, _T("presets"), _T("presets"),
-        OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER | OFN_OVERWRITEPROMPT,
-        _T("Presets Files (*.presets)|*.presets|Xml Files (*.xml)|*.xml|All Files|*.*||"), this);
-
-    int nPreset = this->m_CmbFormat.GetCurSel();
-
-    if (fd.DoModal() == IDOK)
-    {
-        CString szFileXml = fd.GetPathName();
-        this->SavePresets(szFileXml);
-    }
-}
-
-void CPresetsDlg::OnBnClickedButtonPdAddPreset()
+void CPresetsDlg::OnBnClickedButtonAddPreset()
 {
     if (bUpdate == true)
         return;
@@ -385,7 +374,7 @@ void CPresetsDlg::OnBnClickedButtonPdAddPreset()
     bUpdate = false;
 }
 
-void CPresetsDlg::OnBnClickedButtonPdUpdatePreset()
+void CPresetsDlg::OnBnClickedButtonUpdatePreset()
 {
     if (bUpdate == true)
         return;
@@ -397,8 +386,8 @@ void CPresetsDlg::OnBnClickedButtonPdUpdatePreset()
     {
         int nItem = m_LstPresets.GetNextSelectedItem(pos);
 
-        CString szName;
-        CString szOptions;
+        CString szName = _T("");
+        CString szOptions = _T("");
 
         this->m_EdtName.GetWindowText(szName);
         this->m_EdtOptions.GetWindowText(szOptions);
@@ -417,7 +406,7 @@ void CPresetsDlg::OnBnClickedButtonPdUpdatePreset()
     bUpdate = false;
 }
 
-void CPresetsDlg::OnBnClickedButtonPdUp()
+void CPresetsDlg::OnBnClickedButtonPresetUp()
 {
     if (bUpdate == true)
         return;
@@ -450,7 +439,7 @@ void CPresetsDlg::OnBnClickedButtonPdUp()
     bUpdate = false;
 }
 
-void CPresetsDlg::OnBnClickedButtonPdDown()
+void CPresetsDlg::OnBnClickedButtonPresetDown()
 {
     if (bUpdate == true)
         return;
@@ -484,21 +473,7 @@ void CPresetsDlg::OnBnClickedButtonPdDown()
     bUpdate = false;
 }
 
-void CPresetsDlg::OnBnClickedOk()
-{
-    this->SaveWindowSettings();
-
-    OnOK();
-}
-
-void CPresetsDlg::OnBnClickedCancel()
-{
-    this->SaveWindowSettings();
-
-    OnCancel();
-}
-
-void CPresetsDlg::OnCbnSelchangeComboPdFormat()
+void CPresetsDlg::OnCbnSelchangeComboPresetFormat()
 {
     m_LstPresets.DeleteAllItems();
 
@@ -518,25 +493,55 @@ void CPresetsDlg::OnCbnSelchangeComboPdFormat()
     this->m_EdtOptions.SetWindowText(szOptions);
 }
 
+void CPresetsDlg::OnEnChangeEditPresetName()
+{
+    if (bUpdate == true)
+        return;
+
+    OnBnClickedButtonUpdatePreset();
+}
+
+void CPresetsDlg::OnEnChangeEditPresetOptions()
+{
+    if (bUpdate == true)
+        return;
+
+    OnBnClickedButtonUpdatePreset();
+}
+
+void CPresetsDlg::OnBnClickedButtonLoadPresets()
+{
+    CFileDialog fd(TRUE, _T("presets"), _T(""),
+        OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER,
+        _T("Presets Files (*.presets)|*.presets|Xml Files (*.xml)|*.xml|All Files|*.*||"), this);
+
+    int nPreset = this->m_CmbFormat.GetCurSel();
+
+    if (fd.DoModal() == IDOK)
+    {
+        CString szFileXml = fd.GetPathName();
+        this->LoadPresets(szFileXml);
+    }
+}
+
+void CPresetsDlg::OnBnClickedButtonSavePresets()
+{
+    CFileDialog fd(FALSE, _T("presets"), _T("presets"),
+        OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER | OFN_OVERWRITEPROMPT,
+        _T("Presets Files (*.presets)|*.presets|Xml Files (*.xml)|*.xml|All Files|*.*||"), this);
+
+    int nPreset = this->m_CmbFormat.GetCurSel();
+
+    if (fd.DoModal() == IDOK)
+    {
+        CString szFileXml = fd.GetPathName();
+        this->SavePresets(szFileXml);
+    }
+}
+
 void CPresetsDlg::OnClose()
 {
     this->SaveWindowSettings();
 
     CResizeDialog::OnClose();
-}
-
-void CPresetsDlg::OnEnChangeEditPdName()
-{
-    if (bUpdate == true)
-        return;
-
-    OnBnClickedButtonPdUpdatePreset();
-}
-
-void CPresetsDlg::OnEnChangeEditPdOptions()
-{
-    if (bUpdate == true)
-        return;
-
-    OnBnClickedButtonPdUpdatePreset();
 }

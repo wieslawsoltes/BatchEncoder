@@ -633,12 +633,17 @@ void CBatchEncoderDlg::UpdatePresetComboBox()
     {
         this->m_CmbPresets.ResetContent();
 
-        CFormat& format = m_Config.m_Formats.GetData(m_Config.m_Options.nSelectedFormat);
-        int nPresets = format.m_Presets.GetSize();
-        for (int i = 0; i < nPresets; i++)
+        if (m_Config.m_Options.nSelectedFormat >= 0)
         {
-            CPreset& preset = format.m_Presets.GetData(i);
-            this->m_CmbPresets.InsertString(i, preset.szName);
+            CFormat& format = m_Config.m_Formats.GetData(m_Config.m_Options.nSelectedFormat);
+            int nPresets = format.m_Presets.GetSize();
+            for (int i = 0; i < nPresets; i++)
+            {
+                CPreset& preset = format.m_Presets.GetData(i);
+                this->m_CmbPresets.InsertString(i, preset.szName);
+            }
+
+            this->m_CmbPresets.SetCurSel(format.nDefaultPreset);
         }
 
         static bool bResizePresetsComboBox = false;
@@ -647,8 +652,6 @@ void CBatchEncoderDlg::UpdatePresetComboBox()
             ::SetComboBoxHeight(this->GetSafeHwnd(), IDC_COMBO_PRESETS);
             bResizePresetsComboBox = true;
         }
-
-        this->m_CmbPresets.SetCurSel(format.nDefaultPreset);
     }
 }
 

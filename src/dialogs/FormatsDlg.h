@@ -26,19 +26,20 @@ protected:
 public:
     virtual BOOL OnInitDialog();
 public:
-    CFormatsList m_Formats;
     CString szFormatsDialogResize;
     CString szFormatsListColumns;
     bool bShowGridLines;
+    volatile bool bUpdate;
+    CFormatsList m_Formats;
 public:
-    CMyListCtrl m_LstFormats;
-    CMyEdit m_EdtPath;
-    CMyEdit m_EdtTemplate;
-    CMyEdit m_EdtProgress;
     CMyStatic m_GrpPipes;
     CMyStatic m_StcPath;
     CMyStatic m_StcTemplate;
     CMyStatic m_StcProgress;
+    CMyListCtrl m_LstFormats;
+    CMyEdit m_EdtPath;
+    CMyEdit m_EdtTemplate;
+    CMyEdit m_EdtFunction;
     CMyButton m_BtnOK;
     CMyButton m_BtnCancel;
     CMyButton m_BtnLoad;
@@ -51,25 +52,24 @@ public:
     void ShowGridlines(bool bShow);
     void AddToList(CFormat &format, int nItem);
     void InsertFormatsToListCtrl();
-    void UpdateFormatsFromListCtrl();
+    void ListSelectionChange();
     void LoadFormats(CString szFileXml);
     void SaveFormats(CString szFileXml);
-    void UpdateEditableFields(void);
-    bool BrowseForCliExe(CString szDefaultFName, CEdit *pEdit, int nID);
-    bool BrowseForProgress(CString szDefaultFName, CEdit *pEdit, int nID);
+    bool BrowseForPath(CString szDefaultFName, CEdit *pEdit, int nID);
+    bool BrowseForFunction(CString szDefaultFName, CEdit *pEdit, int nID);
 public:
     afx_msg void OnBnClickedOk();
     afx_msg void OnBnClickedCancel();
-    afx_msg void OnBnClickedButtonLoadConfig();
-    afx_msg void OnBnClickedButtonSaveConfig();
-    afx_msg void OnBnClickedButtonFdBrowse();
-    afx_msg void OnBnClickedButtonFdBrowseProgress();
-    afx_msg void OnBnClickedButtonFdUpdatePreset();
-    afx_msg void OnLvnItemchangedEditFdFormats(NMHDR *pNMHDR, LRESULT *pResult);
-    afx_msg void OnEnChangeEditFdCliPath();
-    afx_msg void OnEnChangeEditFdCliTemplate();
-    afx_msg void OnEnChangeEditFdCliProgress();
-    afx_msg void OnBnClickedCheckFdPipesInput();
-    afx_msg void OnBnClickedCheckFdPipesOutput();
+    afx_msg void OnLvnItemchangedListFormats(NMHDR *pNMHDR, LRESULT *pResult);
+    afx_msg void OnBnClickedButtonUpdateFormat();
+    afx_msg void OnBnClickedCheckPipesInput();
+    afx_msg void OnBnClickedCheckPipesOutput();
+    afx_msg void OnEnChangeEditFormatPath();
+    afx_msg void OnEnChangeEditFormatTemplate();
+    afx_msg void OnEnChangeEditFormatFunction();
+    afx_msg void OnBnClickedButtonLoadFormats();
+    afx_msg void OnBnClickedButtonSaveFormats();
+    afx_msg void OnBnClickedButtonBrowsePath();
+    afx_msg void OnBnClickedButtonBrowseProgress();
     afx_msg void OnClose();
 };

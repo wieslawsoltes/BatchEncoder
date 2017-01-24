@@ -26,12 +26,12 @@ protected:
 public:
     virtual BOOL OnInitDialog();
 public:
-    volatile bool bUpdate;
-    int nSelectedFormat;
-    CFormatsList m_Formats;
     CString szPresetsDialogResize;
     CString szPresetsListColumns;
     bool bShowGridLines;
+    volatile bool bUpdate;
+    int nSelectedFormat;
+    CFormatsList m_Formats;
 public:
     CMyStatic m_StcName;
     CMyStatic m_StcOptions;
@@ -59,19 +59,19 @@ public:
     void LoadPresets(CString szFileXml);
     void SavePresets(CString szFileXml);
 public:
-    afx_msg void OnLvnItemchangedListPdPresets(NMHDR *pNMHDR, LRESULT *pResult);
-    afx_msg void OnCbnSelchangeComboPdFormat();
     afx_msg void OnBnClickedOk();
     afx_msg void OnBnClickedCancel();
-    afx_msg void OnBnClickedButtonPdRemoveAllPresets();
-    afx_msg void OnBnClickedButtonPdRemovePresets();
-    afx_msg void OnBnClickedButtonPdLoadPresets();
-    afx_msg void OnBnClickedButtonPdSavePresets();
-    afx_msg void OnBnClickedButtonPdAddPreset();
-    afx_msg void OnBnClickedButtonPdUpdatePreset();
-    afx_msg void OnBnClickedButtonPdUp();
-    afx_msg void OnBnClickedButtonPdDown();
+    afx_msg void OnLvnItemchangedListPresets(NMHDR *pNMHDR, LRESULT *pResult);
+    afx_msg void OnCbnSelchangeComboPresetFormat();
+    afx_msg void OnBnClickedButtonRemoveAllPresets();
+    afx_msg void OnBnClickedButtonRemovePreset();
+    afx_msg void OnBnClickedButtonAddPreset();
+    afx_msg void OnBnClickedButtonUpdatePreset();
+    afx_msg void OnBnClickedButtonPresetUp();
+    afx_msg void OnBnClickedButtonPresetDown();
+    afx_msg void OnEnChangeEditPresetName();
+    afx_msg void OnEnChangeEditPresetOptions();
+    afx_msg void OnBnClickedButtonLoadPresets();
+    afx_msg void OnBnClickedButtonSavePresets();
     afx_msg void OnClose();
-    afx_msg void OnEnChangeEditPdName();
-    afx_msg void OnEnChangeEditPdOptions();
 };
