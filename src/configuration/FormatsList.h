@@ -41,6 +41,7 @@ public:
 public:
     void Copy(const CFormatsList &other)
     {
+        this->RemoveAllNodes();
         int nFormats = (int)other.m_Formats.GetCount();
         for (int i = 0; i < nFormats; i++)
         {
@@ -79,8 +80,7 @@ public:
         for (int i = 0; i < nFormats; i++)
         {
             CFormat& format = this->GetData(i);
-            CFormat copy;
-            format.Copy(copy);
+            CFormat copy = format;
             other.InsertNode(copy);
         }
     }

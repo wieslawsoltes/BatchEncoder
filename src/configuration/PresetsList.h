@@ -41,6 +41,7 @@ public:
 public:
     void Copy(const CPresetsList &other)
     {
+        this->RemoveAllNodes();
         int nPresets = (int)other.m_Presets.GetCount();
         for (int i = 0; i < nPresets; i++)
         {
@@ -85,8 +86,7 @@ public:
         for (int i = 0; i < nPresets; i++)
         {
             CPreset& preset = this->GetData(i);
-            CPreset copy;
-            preset.Copy(copy);
+            CPreset copy = preset;
             other.InsertNode(copy);
         }
     }
