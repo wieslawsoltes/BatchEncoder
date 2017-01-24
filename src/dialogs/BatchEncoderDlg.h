@@ -17,7 +17,7 @@ class CBatchEncoderDlg : public CResizeDialog
 public:
     CBatchEncoderDlg(CWnd* pParent = NULL);
     virtual ~CBatchEncoderDlg();
-    enum { IDD = IDD_BATCHENCODER_DIALOG };
+    enum { IDD = IDD_DIALOG_BATCHENCODER };
 protected:
     virtual void DoDataExchange(CDataExchange* pDX);
     DECLARE_MESSAGE_MAP()

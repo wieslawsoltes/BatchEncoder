@@ -39,14 +39,14 @@ void CPresetsDlg::DoDataExchange(CDataExchange* pDX)
     DDX_Control(pDX, IDC_EDIT_PRESET_OPTIONS, m_EdtOptions);
     DDX_Control(pDX, IDOK, m_BtnOK);
     DDX_Control(pDX, IDCANCEL, m_BtnCancel);
-    DDX_Control(pDX, IDC_BUTTON_PRESET_LOAD, m_BtnLoad);
-    DDX_Control(pDX, IDC_BUTTON_PRESET_SAVE, m_BtnSave);
-    DDX_Control(pDX, IDC_BUTTON_PRESET_UP, m_BtnMoveUp);
-    DDX_Control(pDX, IDC_BUTTON_PRESET_DOWN, m_BtnMoveDown);
     DDX_Control(pDX, IDC_BUTTON_PRESET_REMOVE_ALL, m_BtnRemoveAll);
     DDX_Control(pDX, IDC_BUTTON_PRESET_REMOVE, m_BtnRemove);
-    DDX_Control(pDX, IDC_BUTTON_PRESET_UPDATE, m_BtnUpdate);
     DDX_Control(pDX, IDC_BUTTON_PRESET_ADD, m_BtnAdd);
+    DDX_Control(pDX, IDC_BUTTON_PRESET_UP, m_BtnMoveUp);
+    DDX_Control(pDX, IDC_BUTTON_PRESET_DOWN, m_BtnMoveDown);
+    DDX_Control(pDX, IDC_BUTTON_PRESET_UPDATE, m_BtnUpdate);
+    DDX_Control(pDX, IDC_BUTTON_PRESET_LOAD, m_BtnLoad);
+    DDX_Control(pDX, IDC_BUTTON_PRESET_SAVE, m_BtnSave);
 }
 
 BEGIN_MESSAGE_MAP(CPresetsDlg, CResizeDialog)
@@ -59,9 +59,9 @@ BEGIN_MESSAGE_MAP(CPresetsDlg, CResizeDialog)
     ON_BN_CLICKED(IDC_BUTTON_PRESET_REMOVE_ALL, OnBnClickedButtonRemoveAllPresets)
     ON_BN_CLICKED(IDC_BUTTON_PRESET_REMOVE, OnBnClickedButtonRemovePreset)
     ON_BN_CLICKED(IDC_BUTTON_PRESET_ADD, OnBnClickedButtonAddPreset)
-    ON_BN_CLICKED(IDC_BUTTON_PRESET_UPDATE, OnBnClickedButtonUpdatePreset)
     ON_BN_CLICKED(IDC_BUTTON_PRESET_UP, OnBnClickedButtonPresetUp)
     ON_BN_CLICKED(IDC_BUTTON_PRESET_DOWN, OnBnClickedButtonPresetDown)
+    ON_BN_CLICKED(IDC_BUTTON_PRESET_UPDATE, OnBnClickedButtonUpdatePreset)
     ON_EN_CHANGE(IDC_EDIT_PRESET_NAME, OnEnChangeEditPresetName)
     ON_EN_CHANGE(IDC_EDIT_PRESET_OPTIONS, OnEnChangeEditPresetOptions)
     ON_BN_CLICKED(IDC_BUTTON_PRESET_LOAD, OnBnClickedButtonLoadPresets)
@@ -226,13 +226,22 @@ void CPresetsDlg::AddToList(CPreset &preset, int nItem)
 
 void CPresetsDlg::InsertPresetsToListCtrl()
 {
-    CFormat& format = this->m_Formats.GetData(this->nSelectedFormat);
-    int nPresets = format.m_Presets.GetSize();
-    for (int i = 0; i < nPresets; i++)
+    if (this->m_Formats.GetSize() > 0)
     {
-        CPreset& preset = format.m_Presets.GetData(i);
-        this->AddToList(preset, i);
+        CFormat& format = this->m_Formats.GetData(this->nSelectedFormat);
+        int nPresets = format.m_Presets.GetSize();
+        for (int i = 0; i < nPresets; i++)
+        {
+            CPreset& preset = format.m_Presets.GetData(i);
+            this->AddToList(preset, i);
+        }
     }
+}
+
+void CPresetsDlg::UpdateFields(CPreset& preset)
+{
+    this->m_EdtName.SetWindowText(preset.szName);
+    this->m_EdtOptions.SetWindowText(preset.szOptions);
 }
 
 void CPresetsDlg::ListSelectionChange()
@@ -251,8 +260,7 @@ void CPresetsDlg::ListSelectionChange()
         CPreset& preset = format.m_Presets.GetData(nItem);
         format.nDefaultPreset = nItem;
 
-        this->m_EdtName.SetWindowText(preset.szName);
-        this->m_EdtOptions.SetWindowText(preset.szOptions);
+        this->UpdateFields(preset);
     }
     else
     {
@@ -320,10 +328,15 @@ void CPresetsDlg::OnLvnItemchangedListPresets(NMHDR *pNMHDR, LRESULT *pResult)
 
 void CPresetsDlg::OnBnClickedButtonRemoveAllPresets()
 {
-    CFormat& format = m_Formats.GetData(nSelectedFormat);
-    format.m_Presets.RemoveAllNodes();
+    if (m_Formats.GetSize() > 0)
+    {
+        CFormat& format = m_Formats.GetData(nSelectedFormat);
+        format.m_Presets.RemoveAllNodes();
 
-    m_LstPresets.DeleteAllItems();
+        m_LstPresets.DeleteAllItems();
+
+        this->ListSelectionChange();
+    }
 }
 
 void CPresetsDlg::OnBnClickedButtonRemovePreset()
@@ -343,33 +356,100 @@ void CPresetsDlg::OnBnClickedButtonRemovePreset()
             m_LstPresets.SetItemState(nItem, LVIS_SELECTED, LVIS_SELECTED);
         else if (nItem >= nItems && nItems >= 0)
             m_LstPresets.SetItemState(nItem - 1, LVIS_SELECTED, LVIS_SELECTED);
+
+        this->ListSelectionChange();
     }
 }
 
 void CPresetsDlg::OnBnClickedButtonAddPreset()
+{
+    if (m_Formats.GetSize() > 0)
+    {
+        if (bUpdate == true)
+            return;
+
+        bUpdate = true;
+
+        int nItem = m_LstPresets.GetItemCount();
+
+        CFormat& format = m_Formats.GetData(nSelectedFormat);
+        CPreset preset;
+        preset.szName = _T("Preset");
+        preset.szOptions = _T("");
+        format.m_Presets.InsertNode(preset);
+
+        AddToList(preset, nItem);
+
+        m_LstPresets.SetItemState(nItem, LVIS_SELECTED, LVIS_SELECTED);
+        m_LstPresets.EnsureVisible(nItem, FALSE);
+
+        bUpdate = false;
+
+        this->ListSelectionChange();
+    }
+}
+
+void CPresetsDlg::OnBnClickedButtonPresetUp()
 {
     if (bUpdate == true)
         return;
 
     bUpdate = true;
 
-    CString szName;
-    CString szOptions;
-    this->m_EdtName.GetWindowText(szName);
-    this->m_EdtOptions.GetWindowText(szOptions);
+    POSITION pos = m_LstPresets.GetFirstSelectedItemPosition();
+    if (pos != NULL)
+    {
+        int nItem = m_LstPresets.GetNextSelectedItem(pos);
+        if (nItem > 0)
+        {
+            CFormat& format = m_Formats.GetData(nSelectedFormat);
+            CPreset& preset1 = format.m_Presets.GetData(nItem);
+            CPreset& preset2 = format.m_Presets.GetData(nItem - 1);
 
-    int nItem = m_LstPresets.GetItemCount();
+            m_LstPresets.SetItemText(nItem, PRESET_COLUMN_NAME, preset2.szName);
+            m_LstPresets.SetItemText(nItem, PRESET_COLUMN_OPTIONS, preset2.szOptions);
+            m_LstPresets.SetItemText(nItem - 1, PRESET_COLUMN_NAME, preset1.szName);
+            m_LstPresets.SetItemText(nItem - 1, PRESET_COLUMN_OPTIONS, preset1.szOptions);
 
-    CFormat& format = m_Formats.GetData(nSelectedFormat);
-    CPreset preset;
-    preset.szName = szName;
-    preset.szOptions = szOptions;
-    format.m_Presets.InsertNode(preset);
+            format.m_Presets.SwapItems(nItem, nItem - 1);
 
-    AddToList(preset, nItem);
+            m_LstPresets.SetItemState(nItem - 1, LVIS_SELECTED, LVIS_SELECTED);
+            m_LstPresets.EnsureVisible(nItem - 1, FALSE);
+        }
+    }
 
-    m_LstPresets.SetItemState(nItem, LVIS_SELECTED, LVIS_SELECTED);
-    m_LstPresets.EnsureVisible(nItem, FALSE);
+    bUpdate = false;
+}
+
+void CPresetsDlg::OnBnClickedButtonPresetDown()
+{
+    if (bUpdate == true)
+        return;
+
+    bUpdate = true;
+
+    POSITION pos = m_LstPresets.GetFirstSelectedItemPosition();
+    if (pos != NULL)
+    {
+        int nItem = m_LstPresets.GetNextSelectedItem(pos);
+        int nItems = m_LstPresets.GetItemCount();
+        if (nItem != (nItems - 1) && nItem >= 0)
+        {
+            CFormat& format = m_Formats.GetData(nSelectedFormat);
+            CPreset& preset1 = format.m_Presets.GetData(nItem);
+            CPreset& preset2 = format.m_Presets.GetData(nItem + 1);
+
+            m_LstPresets.SetItemText(nItem, PRESET_COLUMN_NAME, preset2.szName);
+            m_LstPresets.SetItemText(nItem, PRESET_COLUMN_OPTIONS, preset2.szOptions);
+            m_LstPresets.SetItemText(nItem + 1, PRESET_COLUMN_NAME, preset1.szName);
+            m_LstPresets.SetItemText(nItem + 1, PRESET_COLUMN_OPTIONS, preset1.szOptions);
+
+            format.m_Presets.SwapItems(nItem, nItem + 1);
+
+            m_LstPresets.SetItemState(nItem + 1, LVIS_SELECTED, LVIS_SELECTED);
+            m_LstPresets.EnsureVisible(nItem + 1, FALSE);
+        }
+    }
 
     bUpdate = false;
 }
@@ -406,73 +486,6 @@ void CPresetsDlg::OnBnClickedButtonUpdatePreset()
     bUpdate = false;
 }
 
-void CPresetsDlg::OnBnClickedButtonPresetUp()
-{
-    if (bUpdate == true)
-        return;
-
-    bUpdate = true;
-
-    POSITION pos = m_LstPresets.GetFirstSelectedItemPosition();
-    if (pos != NULL)
-    {
-        int nItem = m_LstPresets.GetNextSelectedItem(pos);
-        if (nItem > 0)
-        {
-            CFormat& format = m_Formats.GetData(nSelectedFormat);
-            CPreset& preset1 = format.m_Presets.GetData(nItem);
-            CPreset& preset2 = format.m_Presets.GetData(nItem - 1);
-
-            m_LstPresets.SetItemText(nItem, PRESET_COLUMN_NAME, preset2.szName);
-            m_LstPresets.SetItemText(nItem, PRESET_COLUMN_OPTIONS, preset2.szOptions);
-            m_LstPresets.SetItemText(nItem - 1, PRESET_COLUMN_NAME, preset1.szName);
-            m_LstPresets.SetItemText(nItem - 1, PRESET_COLUMN_OPTIONS, preset1.szOptions);
-
-            format.m_Presets.SwapItems(nItem, nItem - 1);
-
-            m_LstPresets.SetItemState(nItem - 1, LVIS_SELECTED, LVIS_SELECTED);
-
-            m_LstPresets.EnsureVisible(nItem - 1, FALSE);
-        }
-    }
-
-    bUpdate = false;
-}
-
-void CPresetsDlg::OnBnClickedButtonPresetDown()
-{
-    if (bUpdate == true)
-        return;
-
-    bUpdate = true;
-
-    POSITION pos = m_LstPresets.GetFirstSelectedItemPosition();
-    if (pos != NULL)
-    {
-        int nItem = m_LstPresets.GetNextSelectedItem(pos);
-        int nItems = m_LstPresets.GetItemCount();
-        if (nItem != (nItems - 1) && nItem >= 0)
-        {
-            CFormat& format = m_Formats.GetData(nSelectedFormat);
-            CPreset& preset1 = format.m_Presets.GetData(nItem);
-            CPreset& preset2 = format.m_Presets.GetData(nItem + 1);
-
-            m_LstPresets.SetItemText(nItem, PRESET_COLUMN_NAME, preset2.szName);
-            m_LstPresets.SetItemText(nItem, PRESET_COLUMN_OPTIONS, preset2.szOptions);
-            m_LstPresets.SetItemText(nItem + 1, PRESET_COLUMN_NAME, preset1.szName);
-            m_LstPresets.SetItemText(nItem + 1, PRESET_COLUMN_OPTIONS, preset1.szOptions);
-
-            format.m_Presets.SwapItems(nItem, nItem + 1);
-
-            m_LstPresets.SetItemState(nItem + 1, LVIS_SELECTED, LVIS_SELECTED);
-
-            m_LstPresets.EnsureVisible(nItem + 1, FALSE);
-        }
-    }
-
-    bUpdate = false;
-}
-
 void CPresetsDlg::OnCbnSelchangeComboPresetFormat()
 {
     m_LstPresets.DeleteAllItems();
@@ -481,16 +494,19 @@ void CPresetsDlg::OnCbnSelchangeComboPresetFormat()
 
     this->InsertPresetsToListCtrl();
 
-    CFormat& format = m_Formats.GetData(nSelectedFormat);
+    if (this->m_Formats.GetSize() > 0)
+    {
+        CFormat& format = this->m_Formats.GetData(nSelectedFormat);
 
-    m_LstPresets.SetItemState(format.nDefaultPreset, LVIS_SELECTED, LVIS_SELECTED);
-    m_LstPresets.EnsureVisible(format.nDefaultPreset, FALSE);
+        m_LstPresets.SetItemState(format.nDefaultPreset, LVIS_SELECTED, LVIS_SELECTED);
+        m_LstPresets.EnsureVisible(format.nDefaultPreset, FALSE);
 
-    CString szName = this->m_LstPresets.GetItemText(format.nDefaultPreset, PRESET_COLUMN_NAME);
-    CString szOptions = this->m_LstPresets.GetItemText(format.nDefaultPreset, PRESET_COLUMN_OPTIONS);
+        CString szName = this->m_LstPresets.GetItemText(format.nDefaultPreset, PRESET_COLUMN_NAME);
+        CString szOptions = this->m_LstPresets.GetItemText(format.nDefaultPreset, PRESET_COLUMN_OPTIONS);
 
-    this->m_EdtName.SetWindowText(szName);
-    this->m_EdtOptions.SetWindowText(szOptions);
+        this->m_EdtName.SetWindowText(szName);
+        this->m_EdtOptions.SetWindowText(szOptions);
+    }
 }
 
 void CPresetsDlg::OnEnChangeEditPresetName()

@@ -43,16 +43,22 @@ public:
     CMyEdit m_EdtFunction;
     CMyButton m_BtnOK;
     CMyButton m_BtnCancel;
+    CMyButton m_BtnRemoveAll;
+    CMyButton m_BtnRemove;
+    CMyButton m_BtnAdd;
+    CMyButton m_BtnMoveUp;
+    CMyButton m_BtnMoveDown;
+    CMyButton m_BtnUpdate;
     CMyButton m_BtnLoad;
     CMyButton m_BtnSave;
     CMyButton m_BtnBrowse;
-    CMyButton m_BtnChange;
 public:
     void LoadWindowSettings();
     void SaveWindowSettings();
     void ShowGridlines(bool bShow);
     void AddToList(CFormat &format, int nItem);
     void InsertFormatsToListCtrl();
+    void UpdateFields(CFormat &format);
     void ListSelectionChange();
     void LoadFormats(CString szFileXml);
     void SaveFormats(CString szFileXml);
@@ -62,6 +68,11 @@ public:
     afx_msg void OnBnClickedOk();
     afx_msg void OnBnClickedCancel();
     afx_msg void OnLvnItemchangedListFormats(NMHDR *pNMHDR, LRESULT *pResult);
+    afx_msg void OnBnClickedButtonRemoveAllFormats();
+    afx_msg void OnBnClickedButtonRemoveFormat();
+    afx_msg void OnBnClickedButtonAddFormat();
+    afx_msg void OnBnClickedButtonFormatUp();
+    afx_msg void OnBnClickedButtonFormatDown();
     afx_msg void OnBnClickedButtonUpdateFormat();
     afx_msg void OnBnClickedCheckPipesInput();
     afx_msg void OnBnClickedCheckPipesOutput();

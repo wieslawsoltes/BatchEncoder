@@ -41,20 +41,21 @@ public:
     CMyEdit m_EdtOptions;
     CMyButton m_BtnOK;
     CMyButton m_BtnCancel;
-    CMyButton m_BtnLoad;
-    CMyButton m_BtnSave;
-    CMyButton m_BtnMoveUp;
-    CMyButton m_BtnMoveDown;
     CMyButton m_BtnRemoveAll;
     CMyButton m_BtnRemove;
-    CMyButton m_BtnUpdate;
     CMyButton m_BtnAdd;
+    CMyButton m_BtnMoveUp;
+    CMyButton m_BtnMoveDown;
+    CMyButton m_BtnUpdate;
+    CMyButton m_BtnLoad;
+    CMyButton m_BtnSave;
 public:
     void LoadWindowSettings();
     void SaveWindowSettings();
     void ShowGridlines(bool bShow);
     void AddToList(CPreset &preset, int nItem);
     void InsertPresetsToListCtrl();
+    void UpdateFields(CPreset &preset);
     void ListSelectionChange();
     void LoadPresets(CString szFileXml);
     void SavePresets(CString szFileXml);
@@ -66,9 +67,9 @@ public:
     afx_msg void OnBnClickedButtonRemoveAllPresets();
     afx_msg void OnBnClickedButtonRemovePreset();
     afx_msg void OnBnClickedButtonAddPreset();
-    afx_msg void OnBnClickedButtonUpdatePreset();
     afx_msg void OnBnClickedButtonPresetUp();
     afx_msg void OnBnClickedButtonPresetDown();
+    afx_msg void OnBnClickedButtonUpdatePreset();
     afx_msg void OnEnChangeEditPresetName();
     afx_msg void OnEnChangeEditPresetOptions();
     afx_msg void OnBnClickedButtonLoadPresets();

@@ -33,7 +33,10 @@ bool ConvertItem(CItemContext* pContext)
     // output format
     int nEncoder = pContext->pWorkerContext->pConfig->m_Formats.GetFormatById(pContext->item->szFormatId);
     if (nEncoder == -1)
+    {
+        pContext->pWorkerContext->Status(pContext->item->nId, _T("--:--"), _T("Error"));
         return bSuccess;
+    }
 
     CFormat& encoderFormat = pContext->pWorkerContext->pConfig->m_Formats.GetData(nEncoder);
     CPreset& encoderPreset = encoderFormat.m_Presets.GetData(pContext->item->nPreset);
@@ -81,7 +84,7 @@ bool ConvertItem(CItemContext* pContext)
         int nDecoder = pContext->pWorkerContext->pConfig->m_Formats.GetDecoderFormatByExt(pContext->item->szExtension);
         if (nDecoder == -1)
         {
-            pContext->pWorkerContext->Callback(pContext->item->nId, -1, true, true, 0.0);
+            pContext->pWorkerContext->Status(pContext->item->nId, _T("--:--"), _T("Error"));
             return bSuccess;
         }
 

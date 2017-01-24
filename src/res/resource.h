@@ -3,7 +3,7 @@
 // Used by BatchEncoder.rc
 //
 #define IDI_TRAYICON                    101
-#define IDD_BATCHENCODER_DIALOG         102
+#define IDD_DIALOG_BATCHENCODER         102
 #define IDD_DIALOG_PRESETS              103
 #define IDD_DIALOG_FORMATS              104
 #define IDD_DIALOG_ABOUT                105
@@ -49,7 +49,7 @@
 #define IDC_BUTTON_PRESET_UP            1024
 #define IDC_EDIT_FORMAT_FUNCTION        1025
 #define IDC_BUTTON_PRESET_DOWN          1026
-#define IDC_BUTTON_BROWSE_PROGRESS      1027
+#define IDC_BUTTON_BROWSE_FUNCTION      1027
 #define IDC_STATIC_TEXT_APP_NAME        1029
 #define IDC_COMBO_PRESET_FORMAT         1030
 #define IDC_STATIC_TEXT_WEBSITE         1032
@@ -76,6 +76,11 @@
 #define IDC_STATIC_FORMAT_FUNCTION      1055
 #define IDC_STATIC_GROUP_FORMAT_PIPES   1056
 #define IDC_EDIT_THREADCOUNT            1057
+#define IDC_BUTTON_FORMAT_REMOVE        1058
+#define IDC_BUTTON_FORMAT_REMOVE_ALL    1059
+#define IDC_BUTTON_FORMAT_UP            1060
+#define IDC_BUTTON_FORMAT_DOWN          1061
+#define IDC_BUTTON_FORMAT_ADD           1062
 #define ID_HELP_ABOUT                   32771
 #define ID_FILE_EXIT                    32772
 #define ID_HELP_WEBSITE                 32773
@@ -155,7 +160,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        123
 #define _APS_NEXT_COMMAND_VALUE         32844
-#define _APS_NEXT_CONTROL_VALUE         1058
+#define _APS_NEXT_CONTROL_VALUE         1063
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

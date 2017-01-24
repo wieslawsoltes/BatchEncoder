@@ -632,7 +632,7 @@ void CBatchEncoderDlg::UpdatePresetComboBox()
     {
         this->m_CmbPresets.ResetContent();
 
-        if (m_Config.m_Options.nSelectedFormat >= 0)
+        if (m_Config.m_Options.nSelectedFormat >= 0 && m_Config.m_Formats.GetSize() > 0)
         {
             CFormat& format = m_Config.m_Formats.GetData(m_Config.m_Options.nSelectedFormat);
             int nPresets = format.m_Presets.GetSize();
@@ -1247,7 +1247,11 @@ int CBatchEncoderDlg::InsertToMemoryList(CString szPath)
 {
     int nFormat = this->m_CmbFormat.GetCurSel();
     int nPreset = this->m_CmbPresets.GetCurSel();
-    CString szFormatId = m_Config.m_Formats.GetData(nFormat).szId;
+
+    CString szFormatId = _T("");
+    if (m_Config.m_Formats.GetSize() > 0)
+        szFormatId = m_Config.m_Formats.GetData(nFormat).szId;
+
     return m_Config.m_Items.InsertNode(szPath, szFormatId, nPreset);
 }
 
@@ -1494,22 +1498,28 @@ void CBatchEncoderDlg::OnLvnItemchangedListInputItems(NMHDR *pNMHDR, LRESULT *pR
                 if (nItem < m_Config.m_Items.GetSize())
                 {
                     CItem& item = m_Config.m_Items.GetData(nItem);
-                    CFormat& format = m_Config.m_Formats.GetData(this->m_CmbFormat.GetCurSel());
-                    if (item.szFormatId.Compare(format.szId) == 0)
+                    if (m_Config.m_Formats.GetSize() > 0)
                     {
-                        format.nDefaultPreset = item.nPreset;
-                        this->m_CmbPresets.SetCurSel(item.nPreset);
-                    }
-                    else
-                    {
-                        int nFormat = m_Config.m_Formats.GetFormatById(item.szFormatId);
-                        CFormat& format = m_Config.m_Formats.GetData(nFormat);
+                        CFormat& format = m_Config.m_Formats.GetData(this->m_CmbFormat.GetCurSel());
+                        if (item.szFormatId.Compare(format.szId) == 0)
+                        {
+                            format.nDefaultPreset = item.nPreset;
+                            this->m_CmbPresets.SetCurSel(item.nPreset);
+                        }
+                        else
+                        {
+                            int nFormat = m_Config.m_Formats.GetFormatById(item.szFormatId);
+                            if (nFormat >= 0)
+                            {
+                                CFormat& format = m_Config.m_Formats.GetData(nFormat);
 
-                        m_Config.m_Options.nSelectedFormat = nFormat;
-                        format.nDefaultPreset = item.nPreset;
+                                m_Config.m_Options.nSelectedFormat = nFormat;
+                                format.nDefaultPreset = item.nPreset;
 
-                        this->UpdateFormatComboBox();
-                        this->UpdatePresetComboBox();
+                                this->UpdateFormatComboBox();
+                                this->UpdatePresetComboBox();
+                            }
+                        }
                     }
                 }
             }
@@ -2413,7 +2423,7 @@ void CBatchEncoderWorkerContext::Done()
     this->timeCount.Stop();
 
     CString szText = _T("");
-    if (nProcessedFiles > 0)
+    if (this->nProcessedFiles > 0)
         szText.Format(_T("Done in %s"), ::FormatTime(this->timeCount.ElapsedTime(), 3));
 
     pDlg->m_StatusBar.SetText(szText, 1, 0);

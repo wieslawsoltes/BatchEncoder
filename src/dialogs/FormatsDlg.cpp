@@ -41,10 +41,15 @@ void CFormatsDlg::DoDataExchange(CDataExchange* pDX)
     DDX_Control(pDX, IDC_EDIT_FORMAT_FUNCTION, m_EdtFunction);
     DDX_Control(pDX, IDOK, m_BtnOK);
     DDX_Control(pDX, IDCANCEL, m_BtnCancel);
+    DDX_Control(pDX, IDC_BUTTON_FORMAT_REMOVE_ALL, m_BtnRemoveAll);
+    DDX_Control(pDX, IDC_BUTTON_FORMAT_REMOVE, m_BtnRemove);
+    DDX_Control(pDX, IDC_BUTTON_FORMAT_ADD, m_BtnAdd);
+    DDX_Control(pDX, IDC_BUTTON_FORMAT_UP, m_BtnMoveUp);
+    DDX_Control(pDX, IDC_BUTTON_FORMAT_DOWN, m_BtnMoveDown);
+    DDX_Control(pDX, IDC_BUTTON_FORMAT_UPDATE, m_BtnUpdate);
     DDX_Control(pDX, IDC_BUTTON_FORMAT_LOAD, m_BtnLoad);
     DDX_Control(pDX, IDC_BUTTON_FORMAT_SAVE, m_BtnSave);
     DDX_Control(pDX, IDC_BUTTON_BROWSE_PATH, m_BtnBrowse);
-    DDX_Control(pDX, IDC_BUTTON_FORMAT_UPDATE, m_BtnChange);
 }
 
 BEGIN_MESSAGE_MAP(CFormatsDlg, CResizeDialog)
@@ -53,16 +58,21 @@ BEGIN_MESSAGE_MAP(CFormatsDlg, CResizeDialog)
     ON_BN_CLICKED(IDOK, OnBnClickedOk)
     ON_BN_CLICKED(IDCANCEL, OnBnClickedCancel)
     ON_NOTIFY(LVN_ITEMCHANGED, IDC_LIST_FORMATS, OnLvnItemchangedListFormats)
-    ON_BN_CLICKED(IDC_BUTTON_FORMAT_UPDATE, OnBnClickedButtonUpdateFormat)
     ON_BN_CLICKED(IDC_CHECK_FORMAT_PIPES_INPUT, OnBnClickedCheckPipesInput)
     ON_BN_CLICKED(IDC_CHECK_FORMAT_PIPES_OUTPUT, OnBnClickedCheckPipesOutput)
     ON_EN_CHANGE(IDC_EDIT_FORMAT_PATH, OnEnChangeEditFormatPath)
     ON_EN_CHANGE(IDC_EDIT_FORMAT_TEMPLATE, OnEnChangeEditFormatTemplate)
     ON_EN_CHANGE(IDC_EDIT_FORMAT_FUNCTION, OnEnChangeEditFormatFunction)
+    ON_BN_CLICKED(IDC_BUTTON_FORMAT_REMOVE_ALL, OnBnClickedButtonRemoveAllFormats)
+    ON_BN_CLICKED(IDC_BUTTON_FORMAT_REMOVE, OnBnClickedButtonRemoveFormat)
+    ON_BN_CLICKED(IDC_BUTTON_FORMAT_ADD, OnBnClickedButtonAddFormat)
+    ON_BN_CLICKED(IDC_BUTTON_FORMAT_UP, OnBnClickedButtonFormatUp)
+    ON_BN_CLICKED(IDC_BUTTON_FORMAT_DOWN, OnBnClickedButtonFormatDown)
+    ON_BN_CLICKED(IDC_BUTTON_FORMAT_UPDATE, OnBnClickedButtonUpdateFormat)
     ON_BN_CLICKED(IDC_BUTTON_FORMAT_LOAD, OnBnClickedButtonLoadFormats)
     ON_BN_CLICKED(IDC_BUTTON_FORMAT_SAVE, OnBnClickedButtonSaveFormats)
     ON_BN_CLICKED(IDC_BUTTON_BROWSE_PATH, OnBnClickedButtonBrowsePath)
-    ON_BN_CLICKED(IDC_BUTTON_BROWSE_PROGRESS, OnBnClickedButtonBrowseProgress)
+    ON_BN_CLICKED(IDC_BUTTON_BROWSE_FUNCTION, OnBnClickedButtonBrowseProgress)
     ON_WM_CLOSE()
 END_MESSAGE_MAP()
 
@@ -84,8 +94,8 @@ BOOL CFormatsDlg::OnInitDialog()
     m_LstFormats.SetExtendedStyle(dwExStyle);
 
     // insert all ListCtrl columns
-    m_LstFormats.InsertColumn(FORMAT_COLUMN_NAME, _T("Name"), LVCFMT_LEFT, 215);
-    m_LstFormats.InsertColumn(FORMAT_COLUMN_TEMPLATE, _T("Template"), LVCFMT_LEFT, 360);
+    m_LstFormats.InsertColumn(FORMAT_COLUMN_NAME, _T("Name"), LVCFMT_LEFT, 195);
+    m_LstFormats.InsertColumn(FORMAT_COLUMN_TEMPLATE, _T("Template"), LVCFMT_LEFT, 295);
 
     // insert all ListCtrl items and sub items
     this->InsertFormatsToListCtrl();
@@ -105,7 +115,12 @@ BOOL CFormatsDlg::OnInitDialog()
     AddAnchor(IDC_EDIT_FORMAT_TEMPLATE, BOTTOM_LEFT, BOTTOM_RIGHT);
     AddAnchor(IDC_STATIC_FORMAT_FUNCTION, BOTTOM_RIGHT);
     AddAnchor(IDC_EDIT_FORMAT_FUNCTION, BOTTOM_RIGHT);
-    AddAnchor(IDC_BUTTON_BROWSE_PROGRESS, BOTTOM_RIGHT);
+    AddAnchor(IDC_BUTTON_BROWSE_FUNCTION, BOTTOM_RIGHT);
+    AddAnchor(IDC_BUTTON_FORMAT_UP, TOP_RIGHT);
+    AddAnchor(IDC_BUTTON_FORMAT_DOWN, TOP_RIGHT);
+    AddAnchor(IDC_BUTTON_FORMAT_ADD, BOTTOM_RIGHT);
+    AddAnchor(IDC_BUTTON_FORMAT_REMOVE_ALL, BOTTOM_RIGHT);
+    AddAnchor(IDC_BUTTON_FORMAT_REMOVE, BOTTOM_RIGHT);
     AddAnchor(IDC_BUTTON_FORMAT_LOAD, BOTTOM_LEFT);
     AddAnchor(IDC_BUTTON_FORMAT_SAVE, BOTTOM_LEFT);
     AddAnchor(IDOK, BOTTOM_RIGHT);
@@ -226,13 +241,30 @@ void CFormatsDlg::InsertFormatsToListCtrl()
     }
 }
 
+void CFormatsDlg::UpdateFields(CFormat &format)
+{
+    this->m_EdtTemplate.SetWindowText(format.szTemplate);
+    this->m_EdtPath.SetWindowText(format.szPath);
+
+    if (format.bInput)
+        CheckDlgButton(IDC_CHECK_FORMAT_PIPES_INPUT, BST_CHECKED);
+    else
+        CheckDlgButton(IDC_CHECK_FORMAT_PIPES_INPUT, BST_UNCHECKED);
+
+    if (format.bOutput)
+        CheckDlgButton(IDC_CHECK_FORMAT_PIPES_OUTPUT, BST_CHECKED);
+    else
+        CheckDlgButton(IDC_CHECK_FORMAT_PIPES_OUTPUT, BST_UNCHECKED);
+
+    this->m_EdtFunction.SetWindowText(format.szFunction);
+}
+
 void CFormatsDlg::ListSelectionChange()
 {
     if (bUpdate == true)
         return;
 
     bUpdate = true;
-
 
     POSITION pos = m_LstFormats.GetFirstSelectedItemPosition();
     if (pos != NULL)
@@ -241,20 +273,7 @@ void CFormatsDlg::ListSelectionChange()
 
         CFormat& format = this->m_Formats.GetData(nItem);
 
-        this->m_EdtTemplate.SetWindowText(format.szTemplate);
-        this->m_EdtPath.SetWindowText(format.szPath);
-
-        if (format.bInput)
-            CheckDlgButton(IDC_CHECK_FORMAT_PIPES_INPUT, BST_CHECKED);
-        else
-            CheckDlgButton(IDC_CHECK_FORMAT_PIPES_INPUT, BST_UNCHECKED);
-
-        if (format.bOutput)
-            CheckDlgButton(IDC_CHECK_FORMAT_PIPES_OUTPUT, BST_CHECKED);
-        else
-            CheckDlgButton(IDC_CHECK_FORMAT_PIPES_OUTPUT, BST_UNCHECKED);
-
-        this->m_EdtFunction.SetWindowText(format.szFunction);
+        this->UpdateFields(format);
     }
     else
     {
@@ -277,6 +296,9 @@ void CFormatsDlg::LoadFormats(CString szFileXml)
         this->m_LstFormats.DeleteAllItems();
 
         doc.GetFormats(this->m_Formats);
+
+        if (this->m_Formats.GetSize() > 0)
+            nSelectedFormat = 0;
 
         this->InsertFormatsToListCtrl();
         this->ListSelectionChange();
@@ -333,6 +355,8 @@ void CFormatsDlg::OnBnClickedOk()
     POSITION pos = m_LstFormats.GetFirstSelectedItemPosition();
     if (pos != NULL)
         nSelectedFormat = m_LstFormats.GetNextSelectedItem(pos);
+    else
+        nSelectedFormat = -1;
 
     this->SaveWindowSettings();
 
@@ -353,6 +377,143 @@ void CFormatsDlg::OnLvnItemchangedListFormats(NMHDR *pNMHDR, LRESULT *pResult)
     this->ListSelectionChange();
 
     *pResult = 0;
+}
+
+void CFormatsDlg::OnBnClickedButtonRemoveAllFormats()
+{
+    if (m_Formats.GetSize() > 0)
+    {
+        CFormat& format = m_Formats.GetData(nSelectedFormat);
+        m_Formats.RemoveAllNodes();
+
+        m_LstFormats.DeleteAllItems();
+
+        this->ListSelectionChange();
+    }
+}
+
+void CFormatsDlg::OnBnClickedButtonRemoveFormat()
+{
+    POSITION pos = m_LstFormats.GetFirstSelectedItemPosition();
+    if (pos != NULL)
+    {
+        int nItem = m_LstFormats.GetNextSelectedItem(pos);
+
+        CFormat& format = m_Formats.GetData(nItem);
+        m_Formats.RemoveNode(nItem);
+
+        m_LstFormats.DeleteItem(nItem);
+
+        int nItems = m_LstFormats.GetItemCount();
+        if (nItem < nItems && nItems >= 0)
+            m_LstFormats.SetItemState(nItem, LVIS_SELECTED, LVIS_SELECTED);
+        else if (nItem >= nItems && nItems >= 0)
+            m_LstFormats.SetItemState(nItem - 1, LVIS_SELECTED, LVIS_SELECTED);
+
+        this->ListSelectionChange();
+    }
+}
+
+void CFormatsDlg::OnBnClickedButtonAddFormat()
+{
+    if (bUpdate == true)
+        return;
+
+    bUpdate = true;
+
+    int nItem = m_LstFormats.GetItemCount();
+
+    CFormat format;
+    format.szId = _T("ID");
+    format.szName = _T("Format");
+    format.szTemplate = _T("$EXE $OPTIONS $INFILE $OUTFILE");
+    format.bInput = true;
+    format.bOutput = false;
+    format.szFunction = _T("- none -");
+    format.szPath = _T("program.exe");
+    format.nType = 0;
+    format.szInputExtensions = _T("WAV");
+    format.szOutputExtension = _T("EXT");
+    format.nDefaultPreset = 0;
+
+    CPreset preset;
+    preset.szName = _T("Default");
+    preset.szOptions = _T("");
+    format.m_Presets.InsertNode(preset);
+
+    m_Formats.InsertNode(format);
+
+    AddToList(format, nItem);
+
+    m_LstFormats.SetItemState(nItem, LVIS_SELECTED, LVIS_SELECTED);
+    m_LstFormats.EnsureVisible(nItem, FALSE);
+
+    bUpdate = false;
+
+    this->ListSelectionChange();
+}
+
+void CFormatsDlg::OnBnClickedButtonFormatUp()
+{
+    if (bUpdate == true)
+        return;
+
+    bUpdate = true;
+
+    POSITION pos = m_LstFormats.GetFirstSelectedItemPosition();
+    if (pos != NULL)
+    {
+        int nItem = m_LstFormats.GetNextSelectedItem(pos);
+        if (nItem > 0)
+        {
+            CFormat& format1 = m_Formats.GetData(nItem);
+            CFormat& format2 = m_Formats.GetData(nItem - 1);
+
+            m_LstFormats.SetItemText(nItem, FORMAT_COLUMN_NAME, format2.szName);
+            m_LstFormats.SetItemText(nItem, FORMAT_COLUMN_TEMPLATE, format2.szTemplate);
+            m_LstFormats.SetItemText(nItem - 1, FORMAT_COLUMN_NAME, format1.szName);
+            m_LstFormats.SetItemText(nItem - 1, FORMAT_COLUMN_TEMPLATE, format1.szTemplate);
+
+            m_Formats.SwapItems(nItem, nItem - 1);
+
+            m_LstFormats.SetItemState(nItem - 1, LVIS_SELECTED, LVIS_SELECTED);
+            m_LstFormats.EnsureVisible(nItem - 1, FALSE);
+        }
+    }
+
+    bUpdate = false;
+}
+
+void CFormatsDlg::OnBnClickedButtonFormatDown()
+{
+    if (bUpdate == true)
+        return;
+
+    bUpdate = true;
+
+    POSITION pos = m_LstFormats.GetFirstSelectedItemPosition();
+    if (pos != NULL)
+    {
+        int nItem = m_LstFormats.GetNextSelectedItem(pos);
+        int nItems = m_LstFormats.GetItemCount();
+        if (nItem != (nItems - 1) && nItem >= 0)
+        {
+            CFormat& format1 = m_Formats.GetData(nItem);
+            CFormat& format2 = m_Formats.GetData(nItem + 1);
+
+            m_LstFormats.SetItemText(nItem, FORMAT_COLUMN_NAME, format2.szName);
+            m_LstFormats.SetItemText(nItem, FORMAT_COLUMN_TEMPLATE, format2.szTemplate);
+            m_LstFormats.SetItemText(nItem + 1, FORMAT_COLUMN_NAME, format1.szName);
+            m_LstFormats.SetItemText(nItem + 1, FORMAT_COLUMN_TEMPLATE, format1.szTemplate);
+
+            m_Formats.SwapItems(nItem, nItem + 1);
+
+            m_LstFormats.SetItemState(nItem + 1, LVIS_SELECTED, LVIS_SELECTED);
+            m_LstFormats.EnsureVisible(nItem + 1, FALSE);
+        }
+    }
+
+    bUpdate = false;
 }
 
 void CFormatsDlg::OnBnClickedButtonUpdateFormat()
