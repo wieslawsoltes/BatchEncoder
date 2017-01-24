@@ -1,4 +1,4 @@
-# Download tools https://github.com/wieslawsoltes/BatchEncoder/wiki/Tools
+﻿# Download tools https://github.com/wieslawsoltes/BatchEncoder/wiki/Tools
 
 $path = (Get-Item -Path ".\" -Verbose).FullName
 
@@ -56,7 +56,10 @@ $tools =
     # qaac
     ( "https://sites.google.com/site/qaacpage/cabinet/qaac_2.62.zip?attredirects=0&d=1", "qaac_2.62.zip", "qaac_2.62" ),
     # lossyWAV
-    ( "https://hydrogenaud.io/index.php?action=dlattach;topic=112649.0;attach=10350", "lossyWAV_v1.4.2.zip", "lossyWAV_v1.4.2" )
+    ( "https://hydrogenaud.io/index.php?action=dlattach;topic=112649.0;attach=10350", "lossyWAV_v1.4.2.zip", "lossyWAV_v1.4.2" ),
+    # FFmpeg
+    ( "https://ffmpeg.zeranoe.com/builds/win32/static/ffmpeg-3.2.2-win32-static.zip", "ffmpeg-3.2.2-win32-static.zip", "ffmpeg-3.2.2-win32-static" ),
+    ( "https://ffmpeg.zeranoe.com/builds/win64/static/ffmpeg-3.2.2-win64-static.zip", "ffmpeg-3.2.2-win64-static.zip", "ffmpeg-3.2.2-win64-static" )
 )
 
 Function Download {
