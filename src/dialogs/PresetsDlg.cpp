@@ -8,6 +8,9 @@
 #include "..\utilities\Utf8String.h"
 #include "PresetsDlg.h"
 
+#define PRESET_COLUMN_NAME      0
+#define PRESET_COLUMN_OPTIONS   1
+
 IMPLEMENT_DYNAMIC(CPresetsDlg, CDialog)
 CPresetsDlg::CPresetsDlg(CWnd* pParent /*=NULL*/)
     : CResizeDialog(CPresetsDlg::IDD, pParent)
@@ -81,8 +84,8 @@ BOOL CPresetsDlg::OnInitDialog()
     m_LstPresets.SetExtendedStyle(dwExStyle);
 
     // insert listView columns
-    m_LstPresets.InsertColumn(0, _T("Name"), LVCFMT_LEFT, 200);
-    m_LstPresets.InsertColumn(1, _T("Options"), LVCFMT_LEFT, 290);
+    m_LstPresets.InsertColumn(PRESET_COLUMN_NAME, _T("Name"), LVCFMT_LEFT, 200);
+    m_LstPresets.InsertColumn(PRESET_COLUMN_OPTIONS, _T("Options"), LVCFMT_LEFT, 290);
 
     // file format combo-box
     int nFormats = m_Formats.GetSize();
@@ -243,19 +246,19 @@ void CPresetsDlg::AddToList(CPreset &preset, int nItem)
     LVITEM lvi;
 
     ZeroMemory(&lvi, sizeof(LVITEM));
+
     lvi.mask = LVIF_TEXT | LVIF_STATE;
     lvi.state = 0;
     lvi.stateMask = 0;
-
     lvi.iItem = nItem;
-    lvi.iSubItem = 0;
 
+    lvi.iSubItem = PRESET_COLUMN_NAME;
     lvi.pszText = (LPTSTR)(LPCTSTR)(preset.szName);
     m_LstPresets.InsertItem(&lvi);
 
-    lvi.iSubItem = 1;
+    lvi.iSubItem = PRESET_COLUMN_OPTIONS;
     lvi.pszText = (LPTSTR)(LPCTSTR)(preset.szOptions);
-    m_LstPresets.SetItemText(lvi.iItem, 1, lvi.pszText);
+    m_LstPresets.SetItemText(lvi.iItem, PRESET_COLUMN_OPTIONS, lvi.pszText);
 }
 
 void CPresetsDlg::InsertPresetsToListCtrl()
@@ -405,8 +408,8 @@ void CPresetsDlg::OnBnClickedButtonPdUpdatePreset()
         preset.szName = szName;
         preset.szOptions = szOptions;
 
-        m_LstPresets.SetItemText(nItem, 0, szName);
-        m_LstPresets.SetItemText(nItem, 1, szOptions);
+        m_LstPresets.SetItemText(nItem, PRESET_COLUMN_NAME, szName);
+        m_LstPresets.SetItemText(nItem, PRESET_COLUMN_OPTIONS, szOptions);
 
         m_LstPresets.SetItemState(nItem, LVIS_SELECTED, LVIS_SELECTED);
     }
@@ -431,10 +434,10 @@ void CPresetsDlg::OnBnClickedButtonPdUp()
             CPreset& preset1 = format.m_Presets.GetData(nItem);
             CPreset& preset2 = format.m_Presets.GetData(nItem - 1);
 
-            m_LstPresets.SetItemText(nItem, 0, preset2.szName);
-            m_LstPresets.SetItemText(nItem, 1, preset2.szOptions);
-            m_LstPresets.SetItemText(nItem - 1, 0, preset1.szName);
-            m_LstPresets.SetItemText(nItem - 1, 1, preset1.szOptions);
+            m_LstPresets.SetItemText(nItem, PRESET_COLUMN_NAME, preset2.szName);
+            m_LstPresets.SetItemText(nItem, PRESET_COLUMN_OPTIONS, preset2.szOptions);
+            m_LstPresets.SetItemText(nItem - 1, PRESET_COLUMN_NAME, preset1.szName);
+            m_LstPresets.SetItemText(nItem - 1, PRESET_COLUMN_OPTIONS, preset1.szOptions);
 
             format.m_Presets.SwapItems(nItem, nItem - 1);
 
@@ -465,10 +468,10 @@ void CPresetsDlg::OnBnClickedButtonPdDown()
             CPreset& preset1 = format.m_Presets.GetData(nItem);
             CPreset& preset2 = format.m_Presets.GetData(nItem + 1);
 
-            m_LstPresets.SetItemText(nItem, 0, preset2.szName);
-            m_LstPresets.SetItemText(nItem, 1, preset2.szOptions);
-            m_LstPresets.SetItemText(nItem + 1, 0, preset1.szName);
-            m_LstPresets.SetItemText(nItem + 1, 1, preset1.szOptions);
+            m_LstPresets.SetItemText(nItem, PRESET_COLUMN_NAME, preset2.szName);
+            m_LstPresets.SetItemText(nItem, PRESET_COLUMN_OPTIONS, preset2.szOptions);
+            m_LstPresets.SetItemText(nItem + 1, PRESET_COLUMN_NAME, preset1.szName);
+            m_LstPresets.SetItemText(nItem + 1, PRESET_COLUMN_OPTIONS, preset1.szOptions);
 
             format.m_Presets.SwapItems(nItem, nItem + 1);
 
@@ -508,8 +511,8 @@ void CPresetsDlg::OnCbnSelchangeComboPdFormat()
     m_LstPresets.SetItemState(format.nDefaultPreset, LVIS_SELECTED, LVIS_SELECTED);
     m_LstPresets.EnsureVisible(format.nDefaultPreset, FALSE);
 
-    CString szName = this->m_LstPresets.GetItemText(format.nDefaultPreset, 0);
-    CString szOptions = this->m_LstPresets.GetItemText(format.nDefaultPreset, 1);
+    CString szName = this->m_LstPresets.GetItemText(format.nDefaultPreset, PRESET_COLUMN_NAME);
+    CString szOptions = this->m_LstPresets.GetItemText(format.nDefaultPreset, PRESET_COLUMN_OPTIONS);
 
     this->m_EdtName.SetWindowText(szName);
     this->m_EdtOptions.SetWindowText(szOptions);
