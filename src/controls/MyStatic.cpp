@@ -7,7 +7,7 @@
 
 CMyStatic::CMyStatic()
 {
-    bIsBold = true;
+    bIsBold = false;
 }
 
 CMyStatic::~CMyStatic()
