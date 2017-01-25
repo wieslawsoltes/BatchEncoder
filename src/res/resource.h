@@ -94,6 +94,10 @@
 #define IDC_EDIT_FORMAT_EXTENSION       1073
 #define IDC_EDIT_FORMAT_FORMATS         1074
 #define IDC_EDIT_FORMAT_DEFAULT         1075
+#define IDC_STATIC_GROUP_MISC           1076
+#define IDC_STATIC_GROUP_LOG            1077
+#define IDC_STATIC_LOG_ENCODING         1078
+#define IDC_STATIC_THREAD_COUNT         1079
 #define ID_HELP_ABOUT                   32771
 #define ID_FILE_EXIT                    32772
 #define ID_HELP_WEBSITE                 32773
@@ -173,7 +177,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        123
 #define _APS_NEXT_COMMAND_VALUE         32844
-#define _APS_NEXT_CONTROL_VALUE         1076
+#define _APS_NEXT_CONTROL_VALUE         1080
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

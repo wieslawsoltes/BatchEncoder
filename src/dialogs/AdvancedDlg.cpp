@@ -21,6 +21,10 @@ CAdvancedDlg::~CAdvancedDlg()
 void CAdvancedDlg::DoDataExchange(CDataExchange* pDX)
 {
     CDialog::DoDataExchange(pDX);
+    DDX_Control(pDX, IDC_STATIC_GROUP_MISC, m_GrpMisc);
+    DDX_Control(pDX, IDC_STATIC_GROUP_LOG, m_GrpLog);
+    DDX_Control(pDX, IDC_STATIC_LOG_ENCODING, m_StcEncoding);
+    DDX_Control(pDX, IDC_STATIC_THREAD_COUNT, m_StcThreads);
     DDX_Control(pDX, IDCANCEL, m_BtnCancel);
     DDX_Control(pDX, IDOK, m_BtnOK);
     DDX_Control(pDX, IDC_EDIT_CONSOLE_LOG_FILE, m_EdtLog);

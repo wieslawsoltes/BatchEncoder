@@ -27,8 +27,12 @@ protected:
 public:
     COptions m_Options;
 public:
-    CMyButton m_BtnCancel;
+    CMyStatic m_GrpMisc;
+    CMyStatic m_GrpLog;
+    CMyStatic m_StcEncoding;
+    CMyStatic m_StcThreads;
     CMyButton m_BtnOK;
+    CMyButton m_BtnCancel;
     CMyEdit m_EdtLog;
     CButton m_BtnBrowse;
     CMyEdit m_EdtThreads;

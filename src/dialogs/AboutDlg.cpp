@@ -38,9 +38,6 @@ BOOL CAboutDlg::OnInitDialog()
     CDialog::OnInitDialog();
 
     m_StcMainAppName.SetBold(true);
-    m_StcWebsite.SetBold(false);
-    m_StcEmail.SetBold(false);
-    m_StcLicense.SetBold(false);
 
     m_StcMainAppName.SetWindowText(MAIN_APP_NAME_VER);
     m_StcWebsite.SetWindowText(MAIN_APP_WEBSITE);
