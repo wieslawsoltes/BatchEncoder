@@ -63,11 +63,11 @@ bool ConvertItem(CItemContext* pContext)
     }
 
     // processing mode
-    Mode nProcessingMode = None;
+    Mode nProcessingMode = Mode::None;
     if (bCanDecodeInput)
-        nProcessingMode = Encode;
+        nProcessingMode = Mode::Encode;
     else
-        nProcessingMode = Transcode;
+        nProcessingMode = Mode::Transcode;
 
     bool bDecode = false;
     int nTool = -1;
@@ -79,7 +79,7 @@ bool ConvertItem(CItemContext* pContext)
     CString szOrgOutputFile = szOutputFile;
 
     // decode before encoding
-    if (nProcessingMode == Transcode)
+    if (nProcessingMode == Mode::Transcode)
     {
         int nDecoder = pContext->pWorkerContext->pConfig->m_Formats.GetDecoderFormatByExt(pContext->item->szExtension);
         if (nDecoder == -1)
@@ -109,7 +109,7 @@ bool ConvertItem(CItemContext* pContext)
             szOutputFile = _T("-");
 
         // TODO: bUseOutPipes == true than handle szOutputFile same as input file
-        if (nProcessingMode == Transcode)
+        if (nProcessingMode == Mode::Transcode)
             szOutputFile = szOutputFile + +_T(".") + decoderFormat.szOutputExtension.MakeLower();
 
         // build full command line for decoder (DECODER-EXE + OPTIONS + INFILE + OUTFILE) 
@@ -184,7 +184,7 @@ bool ConvertItem(CItemContext* pContext)
         bUseOutPipesEnc = encoderFormat.bOutput;
     }
 
-    if (nProcessingMode == Encode)
+    if (nProcessingMode == Mode::Encode)
     {
         // input file is stdin
         if (bUseInPipesEnc == true)
@@ -195,7 +195,7 @@ bool ConvertItem(CItemContext* pContext)
             szOutputFile = _T("-");
     }
 
-    if (nProcessingMode == Transcode)
+    if (nProcessingMode == Mode::Transcode)
     {
         // input filename is decoded output filename
         szInputFile = szOutputFile;
@@ -214,7 +214,7 @@ bool ConvertItem(CItemContext* pContext)
     }
 
     // encode
-    if ((nProcessingMode == Encode) || (nProcessingMode == Transcode))
+    if ((nProcessingMode == Mode::Encode) || (nProcessingMode == Mode::Transcode))
     {
         // build full command line for encoder (ENCODER-EXE + OPTIONS + INFILE + OUTFILE)
         // this is basic model, some of encoder may have different command-line structure
@@ -268,7 +268,7 @@ bool ConvertItem(CItemContext* pContext)
                 ::DeleteFile(szOutputFile);
         }
 
-        if (nProcessingMode == Transcode)
+        if (nProcessingMode == Mode::Transcode)
             ::DeleteFile(szOrgInputFile);
     }
 
