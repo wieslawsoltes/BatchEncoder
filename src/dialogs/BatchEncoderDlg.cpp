@@ -2427,7 +2427,10 @@ bool CBatchEncoderWorkerContext::Callback(int nIndex, int nProgress, bool bFinis
 
                 int nPos = nTotalProgress / nItems;
                 if (pDlg->m_Progress.GetPos() != nPos)
+                {
                     pDlg->m_Progress.SetPos(nPos);
+                    pDlg->ShowProgressTrayIcon(nPos);
+                }
 
                 bSafeCheck = false;
             }
