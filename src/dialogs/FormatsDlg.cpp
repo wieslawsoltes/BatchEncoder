@@ -69,6 +69,8 @@ BEGIN_MESSAGE_MAP(CFormatsDlg, CResizeDialog)
     ON_BN_CLICKED(IDOK, OnBnClickedOk)
     ON_BN_CLICKED(IDCANCEL, OnBnClickedCancel)
     ON_NOTIFY(LVN_ITEMCHANGED, IDC_LIST_FORMATS, OnLvnItemchangedListFormats)
+    ON_BN_CLICKED(IDC_RADIO_TYPE_ENCODER, OnBnClickedRadioTypeEncoder)
+    ON_BN_CLICKED(IDC_RADIO_TYPE_DECODER, OnBnClickedRadioTypeDecoder)
     ON_BN_CLICKED(IDC_CHECK_FORMAT_PIPES_INPUT, OnBnClickedCheckPipesInput)
     ON_BN_CLICKED(IDC_CHECK_FORMAT_PIPES_OUTPUT, OnBnClickedCheckPipesOutput)
     ON_EN_CHANGE(IDC_EDIT_FORMAT_ID, OnEnChangeEditFormatId)
@@ -650,6 +652,22 @@ void CFormatsDlg::OnBnClickedButtonUpdateFormat()
     }
 
     bUpdate = false;
+}
+
+void CFormatsDlg::OnBnClickedRadioTypeEncoder()
+{
+    if (bUpdate == true)
+        return;
+
+    OnBnClickedButtonUpdateFormat();
+}
+
+void CFormatsDlg::OnBnClickedRadioTypeDecoder()
+{
+    if (bUpdate == true)
+        return;
+
+    OnBnClickedButtonUpdateFormat();
 }
 
 void CFormatsDlg::OnBnClickedCheckPipesInput()

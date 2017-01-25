@@ -85,6 +85,8 @@ public:
     afx_msg void OnBnClickedButtonFormatUp();
     afx_msg void OnBnClickedButtonFormatDown();
     afx_msg void OnBnClickedButtonUpdateFormat();
+    afx_msg void OnBnClickedRadioTypeEncoder();
+    afx_msg void OnBnClickedRadioTypeDecoder();
     afx_msg void OnBnClickedCheckPipesInput();
     afx_msg void OnBnClickedCheckPipesOutput();
     afx_msg void OnEnChangeEditFormatId();
