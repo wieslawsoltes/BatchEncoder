@@ -335,7 +335,7 @@ BOOL CBatchEncoderDlg::OnInitDialog()
     bSameAsSourceEdit = true;
 
     // dialog title
-    this->SetWindowText(MAIN_APP_NAME);
+    this->SetWindowText(_T(VER_PRODUCTNAME_STR));
 
     // progress
     m_Progress.SetRange(0, 100);
@@ -2319,7 +2319,7 @@ void CBatchEncoderDlg::OnHelpWebsite()
 {
     if (this->pWorkerContext->bRunning == false)
     {
-        ::LaunchAndWait(MAIN_APP_WEBSITE, _T(""), FALSE);
+        ::LaunchAndWait(_T("https://github.com/wieslawsoltes/BatchEncoder"), _T(""), FALSE);
     }
 }
 

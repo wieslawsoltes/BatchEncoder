@@ -38,15 +38,11 @@ BOOL CAboutDlg::OnInitDialog()
     CDialog::OnInitDialog();
 
     m_StcMainAppName.SetBold(true);
-
-    m_StcMainAppName.SetWindowText(MAIN_APP_NAME_VER);
-    m_StcWebsite.SetWindowText(MAIN_APP_WEBSITE);
-    m_StcWebsite.SetTargetUrl(MAIN_APP_WEBSITE);
-
-    CString szEmail;
-    szEmail.Format(_T("mailto:%s"), MAIN_APP_EMAIL);
-    m_StcEmail.SetWindowText(MAIN_APP_EMAIL);
-    m_StcEmail.SetTargetUrl(szEmail);
+    m_StcMainAppName.SetWindowText(_T(VER_PRODUCTNAME_STR " v" VER_FILE_VERSION_SHORT_STR " " VER_COPYRIGHT_STR));
+    m_StcWebsite.SetWindowText(_T("https://github.com/wieslawsoltes/BatchEncoder"));
+    m_StcWebsite.SetTargetUrl(_T("https://github.com/wieslawsoltes/BatchEncoder"));
+    m_StcEmail.SetWindowText(_T("wieslaw.soltes@gmail.com"));
+    m_StcEmail.SetTargetUrl(_T("mailto:wieslaw.soltes@gmail.com"));
 
     return TRUE;
 }
