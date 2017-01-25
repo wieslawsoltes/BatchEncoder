@@ -83,17 +83,14 @@ public:
         ulSize.LowPart = lpFindFileData.nFileSizeLow;
         nFileSize = ulSize.QuadPart;
 
-        CItem item;
-
-        item.szPath = szPath;
-
         CString szFileSize;
         szFileSize.Format(_T("%I64d"), nFileSize);
-        item.szSize = szFileSize;
 
+        CItem item;
+        item.szPath = szPath;
+        item.szSize = szFileSize;
         item.szName = this->GetOnlyFileName(szPath);
         item.szExtension = this->GetFileExtUpperCase(szPath);
-
         item.szFormatId = szFormatId;
         item.nPreset = nPreset;
         item.bChecked = true;

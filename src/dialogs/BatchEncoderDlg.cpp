@@ -234,7 +234,6 @@ BEGIN_MESSAGE_MAP(CBatchEncoderDlg, CResizeDialog)
     ON_BN_CLICKED(IDC_BUTTON_RUN, OnBnClickedButtonConvert)
     ON_BN_CLICKED(IDC_BUTTON_BROWSE_OUTPUT, OnBnClickedButtonBrowsePath)
     ON_BN_CLICKED(IDC_CHECK_OUTPUT, OnBnClickedCheckOutPath)
-    ON_EN_CHANGE(IDC_EDIT_OUTPUT, OnEnChangeEditOutPath)
     ON_EN_SETFOCUS(IDC_EDIT_OUTPUT, OnEnSetFocusEditOutPath)
     ON_EN_KILLFOCUS(IDC_EDIT_OUTPUT, OnEnKillFocusEditOutPath)
     ON_MESSAGE(WM_NOTIFYFORMAT, OnNotifyFormat)
@@ -1578,16 +1577,6 @@ void CBatchEncoderDlg::EnableUserInterface(BOOL bEnable)
         this->m_BtnBrowse.EnableWindow(bEnable);
 
     this->m_ChkOutPath.EnableWindow(bEnable);
-}
-
-void CBatchEncoderDlg::OnEnChangeEditOutPath()
-{
-    if (this->pWorkerContext->bRunning == false)
-    {
-        // TODO:
-        // CString szPath;
-        // m_EdtOutPath.GetWindowText(szPath); 
-    }
 }
 
 void CBatchEncoderDlg::OnEnSetFocusEditOutPath()

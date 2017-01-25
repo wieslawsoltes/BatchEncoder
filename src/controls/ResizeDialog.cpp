@@ -47,7 +47,7 @@ void CResizeDialog::InitVars()
     m_bUseMinTrack = TRUE;
     m_bUseMaxTrack = FALSE;
     m_bUseMaxRect = FALSE;
-    m_bShowGrip = FALSE; // TODO: find how-to create XP style size-grip
+    m_bShowGrip = FALSE;
     m_szGripSize.cx = GetSystemMetrics(SM_CXVSCROLL);
     m_szGripSize.cy = GetSystemMetrics(SM_CYHSCROLL);
 }
@@ -144,8 +144,9 @@ void CResizeDialog::AddAnchor(HWND wnd, CSize tl_type, CSize br_type)
     BOOL refresh = FALSE;
     if (st == _T("STATIC"))
     {
-        // FIXME: there is problem with refreshing non SS_SIMPLE STATIC text
-        //        looks like disabling this refreshing work fine here
+        // TODO: 
+        // there is problem with refreshing non SS_SIMPLE STATIC text
+        // looks like disabling this refreshing work fine here
 
         //DWORD style = GetWindowLong(wnd, GWL_STYLE);
         //switch(style & SS_TYPEMASK)

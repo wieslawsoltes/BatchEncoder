@@ -10,7 +10,8 @@
 
 int GetProgress(char *szLineBuff, int nLineLen)
 {
-    // TODO: Add GetProgress code here.
+    // Add your code here.
+
     szLineBuff = szLineBuff;
     nLineLen = nLineLen;
 

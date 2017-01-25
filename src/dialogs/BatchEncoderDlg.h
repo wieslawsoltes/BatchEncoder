@@ -95,7 +95,6 @@ public:
     afx_msg void OnLvnItemchangingListInputItems(NMHDR* pNMHDR, LRESULT* pResult);
     afx_msg void OnLvnItemchangedListInputItems(NMHDR *pNMHDR, LRESULT *pResult);
     afx_msg void OnNMRclickListInputItems(NMHDR *pNMHDR, LRESULT *pResult);
-    afx_msg void OnEnChangeEditOutPath();
     afx_msg void OnEnSetFocusEditOutPath();
     afx_msg void OnEnKillFocusEditOutPath();
     afx_msg void LoadConfiguration();
