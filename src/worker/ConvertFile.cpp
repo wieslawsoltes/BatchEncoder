@@ -524,21 +524,14 @@ bool ConvertFile(CFileContext* pContext)
                     }
                     else if (szReadBuff[i] == '\b') // '\b'
                     {
-                        // do nothing in most situations
-
-                        // TODO: special case for wavpack and wvunpack
-                        // TODO: check for tool executable instead
-                        if (((pContext->bDecode == false) && (pContext->nTool == 10)) || // WAVPACK
-                            ((pContext->bDecode == true) && (pContext->nTool == 28)))   // WVUNPACK
+                        // do nothing (most of the tools)
+                        // NOTE: same code as if(szReadBuff[i] == '\r')
+                        if ((bLineStart == true) && (bLineEnd == false))
                         {
-                            // NOTE: same code as if(szReadBuff[i] == '\r')
-                            if ((bLineStart == true) && (bLineEnd == false))
-                            {
-                                bLineEnd = true;
-                                bLineStart = false;
-                                szLineBuff[nLineLen] = '\0';
-                            }
-                        }
+                            bLineEnd = true;
+                            bLineStart = false;
+                            szLineBuff[nLineLen] = '\0';
+                        } 
                     }
                     else if (bLineEnd == false)
                     {
