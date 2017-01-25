@@ -1559,9 +1559,6 @@ void CBatchEncoderDlg::EnableUserInterface(BOOL bEnable)
     UINT nItems = pMainMenu->GetMenuItemCount();
     for (UINT i = 0; i < nItems; i++)
     {
-        if (i == 3)
-            continue;
-
         CMenu *pSubMenu = pMainMenu->GetSubMenu(i);
         UINT nSubItems = pSubMenu->GetMenuItemCount();
         for (UINT j = 0; j < nSubItems; j++)
