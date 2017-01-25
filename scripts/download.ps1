@@ -44,7 +44,6 @@ $tools =
     ( "http://losslessaudio.org/Downloads/A1C0/5100/Win/OptimFROG_Win_x86_5100.zip", "OptimFROG_Win_x86_5100.zip", "OptimFROG_Win_x86_5100" ),
     ( "http://losslessaudio.org/Downloads/A1C0/5100/Win/OptimFROG_Win_x64_5100.zip", "OptimFROG_Win_x64_5100.zip", "OptimFROG_Win_x64_5100" ),
     # The True Audio
-    ( "https://downloads.sourceforge.net/project/tta/tta/ttaenc-win/ttaenc-3.4.1.zip?use_mirror=netassist", "ttaenc-3.4.1.zip", "ttaenc-3.4.1" ),
     ( "https://downloads.sourceforge.net/project/tta/tta/ttaenc-win/tta-2.3-32bit.zip?use_mirror=netassist", "tta-2.3-32bit.zip", "tta-2.3-32bit" ),
     ( "https://downloads.sourceforge.net/project/tta/tta/ttaenc-win/tta-2.3-32bit-sse4.zip?use_mirror=netassist", "tta-2.3-32bit-sse4.zip", "tta-2.3-32bit-sse4" ),
     ( "https://downloads.sourceforge.net/project/tta/tta/ttaenc-win/tta-2.3-64bit.zip?use_mirror=netassist", "tta-2.3-64bit.zip", "tta-2.3-64bit" ),

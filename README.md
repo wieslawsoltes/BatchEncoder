@@ -91,10 +91,10 @@ adds input and output file paths. For specific options for each format use help 
 | AFTEN           | Encoder     | AC3             | git-2009122   | aften.exe                        | - none -                                  |
 | FLAC            | Encoder     | FLAC            | 1.3.2         | flac.exe                         | GetProgress_FlacEnc.progress              |
 | WAVPACK         | Encoder     | WV              | 5.0.0         | wavpack.exe                      | GetProgress_WavPackEnc.progress           |
-| QAAC            | Encoder     | M4A             | 2.62         | qaac.exe                          | - none -                                  |
+| QAAC            | Encoder     | M4A             | 2.62          | qaac.exe                         | - none -                                  |
 | MAC             | Encoder     | APE             | 4.18          | mac.exe                          | GetProgress_MacEnc.progress               |
 | OFR             | Encoder     | OFR             | 5.100         | ofr.exe                          | GetProgress_OfrEnc.progress               |
-| TTAENC          | Encoder     | TTA             | -.-           | ttaenc.exe                       | GetProgress_TtaEnc.progress               |
+| TTA             | Encoder     | TTA             | 2.3           | tta.exe                          | GetProgress_TtaEnc.progress               |
 | TAKC            | Encoder     | TAK             | 2.3.0         | takc.exe                         | - none -                                  |
 
 ### Decoders
@@ -119,7 +119,7 @@ adds input and output file paths. For specific options for each format use help 
 | MAC             | Decoder     | APE             | -.-           | mac.exe                          | GetProgress_MacDec.progress               |
 | MAC             | Decoder     | MAC             | -.-           | mac.exe                          | GetProgress_MacDec.progress               |
 | OFR             | Decoder     | OFR             | -.-           | ofr.exe                          | GetProgress_OfrDec.progress               |
-| TTAENC          | Decoder     | TTA             | -.-           | ttaenc.exe                       | GetProgress_TtaDec.progress               |
+| TTA             | Decoder     | TTA             | 2.3           | tta.exe                          | GetProgress_TtaDec.progress               |
 | TAKC            | Decoder     | TAK             | -.-           | takc.exe                         | - none -                                  |
 
 ### Tool downloads
@@ -147,7 +147,7 @@ There is also available PowerShell [download script](https://github.com/wieslaws
 | QAAC            | https://sites.google.com/site/qaacpage/cabinet                                                     |
 | MAC             | http://www.monkeysaudio.com/download.html                                                          |
 | OFR             | http://losslessaudio.org/Downloads.php                                                             |
-| TTAENC          | https://sourceforge.net/projects/tta/files/tta/ttaenc-win/                                         |
+| TTA             | https://sourceforge.net/projects/tta/files/tta/ttaenc-win/                                         |
 | TAKC            | http://www.thbeck.de/Tak/Tak.html                                                                  |
 | NEROAACENC      | http://www.videohelp.com/software/Nero-AAC-Codec                                                   |
 | NEROAACDEC      | http://www.videohelp.com/software/Nero-AAC-Codec                                                   |
