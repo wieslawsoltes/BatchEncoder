@@ -82,29 +82,29 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 // remains consistent on all systems.
 IDI_TRAYICON            ICON                    "TrayIcon.ico"
 
-IDI_ICON_PROGRESS_01    ICON                    "ProgressIcon01.ico"
+IDI_ICON_PROGRESS_01    ICON                    "progress\\ProgressIcon01.ico"
 
-IDI_ICON_PROGRESS_02    ICON                    "ProgressIcon02.ico"
+IDI_ICON_PROGRESS_02    ICON                    "progress\\ProgressIcon02.ico"
 
-IDI_ICON_PROGRESS_03    ICON                    "ProgressIcon03.ico"
+IDI_ICON_PROGRESS_03    ICON                    "progress\\ProgressIcon03.ico"
 
-IDI_ICON_PROGRESS_04    ICON                    "ProgressIcon04.ico"
+IDI_ICON_PROGRESS_04    ICON                    "progress\\ProgressIcon04.ico"
 
-IDI_ICON_PROGRESS_05    ICON                    "ProgressIcon05.ico"
+IDI_ICON_PROGRESS_05    ICON                    "progress\\ProgressIcon05.ico"
 
-IDI_ICON_PROGRESS_06    ICON                    "ProgressIcon06.ico"
+IDI_ICON_PROGRESS_06    ICON                    "progress\\ProgressIcon06.ico"
 
-IDI_ICON_PROGRESS_07    ICON                    "ProgressIcon07.ico"
+IDI_ICON_PROGRESS_07    ICON                    "progress\\ProgressIcon07.ico"
 
-IDI_ICON_PROGRESS_08    ICON                    "ProgressIcon08.ico"
+IDI_ICON_PROGRESS_08    ICON                    "progress\\ProgressIcon08.ico"
 
-IDI_ICON_PROGRESS_09    ICON                    "ProgressIcon09.ico"
+IDI_ICON_PROGRESS_09    ICON                    "progress\\ProgressIcon09.ico"
 
-IDI_ICON_PROGRESS_10    ICON                    "ProgressIcon10.ico"
+IDI_ICON_PROGRESS_10    ICON                    "progress\\ProgressIcon10.ico"
 
-IDI_ICON_PROGRESS_11    ICON                    "ProgressIcon11.ico"
+IDI_ICON_PROGRESS_11    ICON                    "progress\\ProgressIcon11.ico"
 
-IDI_ICON_PROGRESS_12    ICON                    "ProgressIcon12.ico"
+IDI_ICON_PROGRESS_12    ICON                    "progress\\ProgressIcon12.ico"
 
 
 /////////////////////////////////////////////////////////////////////////////
