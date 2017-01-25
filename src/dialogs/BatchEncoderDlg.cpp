@@ -367,6 +367,8 @@ BOOL CBatchEncoderDlg::OnInitDialog()
     m_LstInputItems.InsertColumn(ITEM_COLUMN_TIME, _T("Time"), LVCFMT_LEFT, 90);
     m_LstInputItems.InsertColumn(ITEM_COLUMN_STATUS, _T("Status"), LVCFMT_LEFT, 85);
 
+    m_StcFormat.SetBold(true);
+    m_StcPreset.SetBold(true);
     m_BtnConvert.SetBold(true);
 
     // enable drag & drop
