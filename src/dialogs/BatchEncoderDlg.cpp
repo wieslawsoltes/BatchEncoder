@@ -584,7 +584,7 @@ void CBatchEncoderDlg::OnPaint()
         int x = (rect.Width() - cxIcon + 1) / 2;
         int y = (rect.Height() - cyIcon + 1) / 2;
         dc.DrawIcon(x, y, m_hIcon);
-    }
+}
     else
     {
         CResizeDialog::OnPaint();
@@ -1213,8 +1213,8 @@ void CBatchEncoderDlg::OnBnClickedButtonBrowsePath()
         pMalloc->Free(pidlDesktop);
         pMalloc->Free(lpBuffer);
         pMalloc->Release();
-        }
     }
+}
 
 void CBatchEncoderDlg::OnBnClickedCheckOutPath()
 {
@@ -1914,8 +1914,8 @@ void CBatchEncoderDlg::OnEditAddDir()
         pMalloc->Free(pidlDesktop);
         pMalloc->Free(lpBuffer);
         pMalloc->Release();
-        }
     }
+}
 
 void CBatchEncoderDlg::OnEditClear()
 {
