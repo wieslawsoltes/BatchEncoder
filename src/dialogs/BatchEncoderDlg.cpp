@@ -93,15 +93,11 @@ int CALLBACK BrowseCallbackAddDir(HWND hWnd, UINT uMsg, LPARAM lp, LPARAM pData)
             else
                 ::SendMessage(hWndBtnRecurse, BM_SETCHECK, (WPARAM)BST_UNCHECKED, (LPARAM)0);
 
-            // disable warnings 4311 and 4312
 #pragma warning(push)
 #pragma warning(disable:4311)
 #pragma warning(disable:4312)
-
             lpOldWindowProc = (WNDPROC)SetWindowLongPtr(hWnd, GWLP_WNDPROC, (LONG_PTR)BrowseDlgWindowProc);
             ::ShowWindow(hWndBtnRecurse, SW_SHOW);
-
-            // enable warnings 4311 and 4312
 #pragma warning(pop)
 
             hFont = (HFONT) ::SendMessage(hWnd, WM_GETFONT, 0, 0);
@@ -151,15 +147,11 @@ int CALLBACK BrowseCallbackOutPath(HWND hWnd, UINT uMsg, LPARAM lp, LPARAM pData
             ::ShowWindow(hWndTitle, SW_HIDE);
             ::ShowWindow(::GetDlgItem(hWnd, IDC_STATUSTEXT), SW_HIDE);
 
-            // disable warnings 4311 and 4312
 #pragma warning(push)
 #pragma warning(disable:4311)
 #pragma warning(disable:4312)
-
             lpOldWindowProc = (WNDPROC)SetWindowLongPtr(hWnd, GWLP_WNDPROC, (LONG_PTR)BrowseDlgWindowProc);
             ::ShowWindow(hWndStaticText, SW_SHOW);
-
-            // enable warnings 4311 and 4312
 #pragma warning(pop)
 
             hFont = (HFONT) ::SendMessage(hWnd, WM_GETFONT, 0, 0);
