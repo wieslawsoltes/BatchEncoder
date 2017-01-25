@@ -151,7 +151,7 @@ bool ConvertItem(CItemContext* pContext)
         }
         catch (...) {}
 
-        if (bResult = true)
+        if (bResult == true)
         {
             if (pContext->pWorkerContext->pConfig->m_Options.bDeleteSourceFiles == true)
                 ::DeleteFile(szOrgInputFile);
@@ -253,7 +253,7 @@ bool ConvertItem(CItemContext* pContext)
         }
         catch (...) {}
 
-        if (bResult = true)
+        if (bResult == true)
         {
             bSuccess = true;
 
