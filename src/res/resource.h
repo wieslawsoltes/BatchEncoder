@@ -81,6 +81,19 @@
 #define IDC_BUTTON_FORMAT_UP            1060
 #define IDC_BUTTON_FORMAT_DOWN          1061
 #define IDC_BUTTON_FORMAT_ADD           1062
+#define IDC_RADIO_TYPE_ENCODER          1063
+#define IDC_RADIO_TYPE_DECODER          1064
+#define IDC_STATIC_GROUP_FORMAT_TYPE    1065
+#define IDC_STATIC_FORMAT_ID            1066
+#define IDC_STATIC_FORMAT_NAME          1067
+#define IDC_STATIC_FORMAT_EXTENSION     1068
+#define IDC_STATIC_FORMAT_FORMATS       1069
+#define IDC_STATIC_FORMAT_DEFAULT       1070
+#define IDC_EDIT_FORMAT_ID              1071
+#define IDC_EDIT_FORMAT_NAME            1072
+#define IDC_EDIT_FORMAT_EXTENSION       1073
+#define IDC_EDIT_FORMAT_FORMATS         1074
+#define IDC_EDIT_FORMAT_DEFAULT         1075
 #define ID_HELP_ABOUT                   32771
 #define ID_FILE_EXIT                    32772
 #define ID_HELP_WEBSITE                 32773
@@ -160,7 +173,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        123
 #define _APS_NEXT_COMMAND_VALUE         32844
-#define _APS_NEXT_CONTROL_VALUE         1063
+#define _APS_NEXT_CONTROL_VALUE         1076
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

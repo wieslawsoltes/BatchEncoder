@@ -34,10 +34,21 @@ public:
     CFormatsList m_Formats;
 public:
     CMyStatic m_GrpPipes;
+    CMyStatic m_GrpTypes;
+    CMyStatic m_StcId;
+    CMyStatic m_StcName;
+    CMyStatic m_StcExtension;
+    CMyStatic m_StcFormats;
+    CMyStatic m_StcDefault;
     CMyStatic m_StcPath;
     CMyStatic m_StcTemplate;
     CMyStatic m_StcProgress;
     CMyListCtrl m_LstFormats;
+    CMyEdit m_EdtId;
+    CMyEdit m_EdtName;
+    CMyEdit m_EdtExtension;
+    CMyEdit m_EdtFormats;
+    CMyEdit m_EdtDefault;
     CMyEdit m_EdtPath;
     CMyEdit m_EdtTemplate;
     CMyEdit m_EdtFunction;
@@ -76,6 +87,11 @@ public:
     afx_msg void OnBnClickedButtonUpdateFormat();
     afx_msg void OnBnClickedCheckPipesInput();
     afx_msg void OnBnClickedCheckPipesOutput();
+    afx_msg void OnEnChangeEditFormatId();
+    afx_msg void OnEnChangeEditFormatName();
+    afx_msg void OnEnChangeEditFormatExtension();
+    afx_msg void OnEnChangeEditFormatFormats();
+    afx_msg void OnEnChangeEditFormatDefault();
     afx_msg void OnEnChangeEditFormatPath();
     afx_msg void OnEnChangeEditFormatTemplate();
     afx_msg void OnEnChangeEditFormatFunction();

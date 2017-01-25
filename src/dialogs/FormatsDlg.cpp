@@ -32,10 +32,21 @@ void CFormatsDlg::DoDataExchange(CDataExchange* pDX)
 {
     CResizeDialog::DoDataExchange(pDX);
     DDX_Control(pDX, IDC_STATIC_GROUP_FORMAT_PIPES, m_GrpPipes);
+    DDX_Control(pDX, IDC_STATIC_GROUP_FORMAT_TYPE, m_GrpTypes);
+    DDX_Control(pDX, IDC_STATIC_FORMAT_ID, m_StcId);
+    DDX_Control(pDX, IDC_STATIC_FORMAT_NAME, m_StcName);
+    DDX_Control(pDX, IDC_STATIC_FORMAT_EXTENSION, m_StcExtension);
+    DDX_Control(pDX, IDC_STATIC_FORMAT_FORMATS, m_StcFormats);
+    DDX_Control(pDX, IDC_STATIC_FORMAT_DEFAULT, m_StcDefault);
     DDX_Control(pDX, IDC_STATIC_FORMAT_PATH, m_StcPath);
     DDX_Control(pDX, IDC_STATIC_FORMAT_TEMPLATE, m_StcTemplate);
     DDX_Control(pDX, IDC_STATIC_FORMAT_FUNCTION, m_StcProgress);
     DDX_Control(pDX, IDC_LIST_FORMATS, m_LstFormats);
+    DDX_Control(pDX, IDC_EDIT_FORMAT_ID, m_EdtId);
+    DDX_Control(pDX, IDC_EDIT_FORMAT_NAME, m_EdtName);
+    DDX_Control(pDX, IDC_EDIT_FORMAT_EXTENSION, m_EdtExtension);
+    DDX_Control(pDX, IDC_EDIT_FORMAT_FORMATS, m_EdtFormats);
+    DDX_Control(pDX, IDC_EDIT_FORMAT_DEFAULT, m_EdtDefault);
     DDX_Control(pDX, IDC_EDIT_FORMAT_PATH, m_EdtPath);
     DDX_Control(pDX, IDC_EDIT_FORMAT_TEMPLATE, m_EdtTemplate);
     DDX_Control(pDX, IDC_EDIT_FORMAT_FUNCTION, m_EdtFunction);
@@ -60,6 +71,11 @@ BEGIN_MESSAGE_MAP(CFormatsDlg, CResizeDialog)
     ON_NOTIFY(LVN_ITEMCHANGED, IDC_LIST_FORMATS, OnLvnItemchangedListFormats)
     ON_BN_CLICKED(IDC_CHECK_FORMAT_PIPES_INPUT, OnBnClickedCheckPipesInput)
     ON_BN_CLICKED(IDC_CHECK_FORMAT_PIPES_OUTPUT, OnBnClickedCheckPipesOutput)
+    ON_EN_CHANGE(IDC_EDIT_FORMAT_ID, OnEnChangeEditFormatId)
+    ON_EN_CHANGE(IDC_EDIT_FORMAT_NAME, OnEnChangeEditFormatName)
+    ON_EN_CHANGE(IDC_EDIT_FORMAT_EXTENSION, OnEnChangeEditFormatExtension)
+    ON_EN_CHANGE(IDC_EDIT_FORMAT_FORMATS, OnEnChangeEditFormatFormats)
+    ON_EN_CHANGE(IDC_EDIT_FORMAT_DEFAULT, OnEnChangeEditFormatDefault)
     ON_EN_CHANGE(IDC_EDIT_FORMAT_PATH, OnEnChangeEditFormatPath)
     ON_EN_CHANGE(IDC_EDIT_FORMAT_TEMPLATE, OnEnChangeEditFormatTemplate)
     ON_EN_CHANGE(IDC_EDIT_FORMAT_FUNCTION, OnEnChangeEditFormatFunction)
@@ -105,6 +121,19 @@ BOOL CFormatsDlg::OnInitDialog()
 
     // setup resize anchors
     AddAnchor(IDC_LIST_FORMATS, TOP_LEFT, BOTTOM_RIGHT);
+    AddAnchor(IDC_STATIC_GROUP_FORMAT_TYPE, BOTTOM_LEFT);
+    AddAnchor(IDC_RADIO_TYPE_ENCODER, BOTTOM_LEFT);
+    AddAnchor(IDC_RADIO_TYPE_DECODER, BOTTOM_LEFT);
+    AddAnchor(IDC_STATIC_FORMAT_ID, BOTTOM_LEFT);
+    AddAnchor(IDC_EDIT_FORMAT_ID, BOTTOM_LEFT);
+    AddAnchor(IDC_STATIC_FORMAT_EXTENSION, BOTTOM_LEFT);
+    AddAnchor(IDC_EDIT_FORMAT_EXTENSION, BOTTOM_LEFT);
+    AddAnchor(IDC_STATIC_FORMAT_NAME, BOTTOM_LEFT, BOTTOM_RIGHT);
+    AddAnchor(IDC_EDIT_FORMAT_NAME, BOTTOM_LEFT, BOTTOM_RIGHT);
+    AddAnchor(IDC_STATIC_FORMAT_FORMATS, BOTTOM_LEFT, BOTTOM_RIGHT);
+    AddAnchor(IDC_EDIT_FORMAT_FORMATS, BOTTOM_LEFT, BOTTOM_RIGHT);
+    AddAnchor(IDC_STATIC_FORMAT_DEFAULT, BOTTOM_RIGHT);
+    AddAnchor(IDC_EDIT_FORMAT_DEFAULT, BOTTOM_RIGHT);
     AddAnchor(IDC_STATIC_FORMAT_PATH, BOTTOM_LEFT);
     AddAnchor(IDC_EDIT_FORMAT_PATH, BOTTOM_LEFT, BOTTOM_RIGHT);
     AddAnchor(IDC_BUTTON_BROWSE_PATH, BOTTOM_RIGHT);
@@ -243,8 +272,36 @@ void CFormatsDlg::InsertFormatsToListCtrl()
 
 void CFormatsDlg::UpdateFields(CFormat &format)
 {
+    this->m_EdtId.SetWindowText(format.szId);
+    this->m_EdtName.SetWindowText(format.szName);
+    this->m_EdtExtension.SetWindowText(format.szOutputExtension);
+    this->m_EdtFormats.SetWindowText(format.szInputExtensions);
+
+    CString szDefaultPreset;
+    szDefaultPreset.Format(_T("%d\0"), format.nDefaultPreset);
+    this->m_EdtDefault.SetWindowText(szDefaultPreset);
+
     this->m_EdtTemplate.SetWindowText(format.szTemplate);
     this->m_EdtPath.SetWindowText(format.szPath);
+
+    switch (format.nType)
+    {
+    case 0:
+        this->CheckRadioButton(IDC_RADIO_TYPE_ENCODER,
+            IDC_RADIO_TYPE_DECODER,
+            IDC_RADIO_TYPE_ENCODER);
+        break;
+    case 1:
+        this->CheckRadioButton(IDC_RADIO_TYPE_ENCODER,
+            IDC_RADIO_TYPE_DECODER,
+            IDC_RADIO_TYPE_DECODER);
+        break;
+    default:
+        this->CheckRadioButton(IDC_RADIO_TYPE_ENCODER,
+            IDC_RADIO_TYPE_DECODER,
+            IDC_RADIO_TYPE_ENCODER);
+        break;
+    };
 
     if (format.bInput)
         CheckDlgButton(IDC_CHECK_FORMAT_PIPES_INPUT, BST_CHECKED);
@@ -277,8 +334,16 @@ void CFormatsDlg::ListSelectionChange()
     }
     else
     {
+        this->m_EdtId.SetWindowText(_T(""));
+        this->m_EdtName.SetWindowText(_T(""));
+        this->m_EdtExtension.SetWindowText(_T(""));
+        this->m_EdtFormats.SetWindowText(_T(""));
+        this->m_EdtDefault.SetWindowText(_T(""));
         this->m_EdtTemplate.SetWindowText(_T(""));
         this->m_EdtPath.SetWindowText(_T(""));
+        this->CheckRadioButton(IDC_RADIO_TYPE_ENCODER,
+            IDC_RADIO_TYPE_DECODER,
+            IDC_RADIO_TYPE_ENCODER);
         CheckDlgButton(IDC_CHECK_FORMAT_PIPES_INPUT, BST_UNCHECKED);
         CheckDlgButton(IDC_CHECK_FORMAT_PIPES_OUTPUT, BST_UNCHECKED);
         this->m_EdtFunction.SetWindowText(_T(""));
@@ -528,15 +593,33 @@ void CFormatsDlg::OnBnClickedButtonUpdateFormat()
     {
         int nItem = m_LstFormats.GetNextSelectedItem(pos);
 
-        //CString szName = _T("");
+        CString szId = _T("");
+        CString szName = _T("");
+        CString szExtension = _T("");
+        CString szFormats = _T("");
+        CString szDefault = _T("");
         CString szTemplate = _T("");
         CString szPath = _T("");
+        int nType = 0;
         bool bInput = false;
         bool bOutput = false;
         CString szFunction = _T("");
 
-        //this->m_EdtName.GetWindowText(szName);
+        m_EdtId.GetWindowText(szId);
+        m_EdtName.GetWindowText(szName);
+        m_EdtExtension.GetWindowText(szExtension);
+        m_EdtFormats.GetWindowText(szFormats);
+        m_EdtDefault.GetWindowText(szDefault);
+        this->m_EdtName.GetWindowText(szName);
         this->m_EdtTemplate.GetWindowText(szTemplate);
+
+        int nCheckID = this->GetCheckedRadioButton(IDC_RADIO_TYPE_ENCODER, IDC_RADIO_TYPE_DECODER);
+        if (nCheckID == IDC_RADIO_TYPE_ENCODER)
+            nType = 0;
+        else if (nCheckID == IDC_RADIO_TYPE_DECODER)
+            nType = 1;
+        else
+            nType = 0;
 
         if (IsDlgButtonChecked(IDC_CHECK_FORMAT_PIPES_INPUT) == BST_CHECKED)
             bInput = true;
@@ -548,13 +631,19 @@ void CFormatsDlg::OnBnClickedButtonUpdateFormat()
         this->m_EdtFunction.GetWindowText(szFunction);
 
         CFormat& format = m_Formats.GetData(nItem);
+        format.szId = szId;
+        format.szName = szName;
+        format.szOutputExtension = szExtension;
+        format.szInputExtensions = szFormats;
+        format.nDefaultPreset = _tstoi(szDefault);
         format.szTemplate = szTemplate;
+        format.nType = nType;
         format.bInput = bInput;
         format.bOutput = bOutput;
         format.szPath = szPath;
         format.szFunction = szFunction;
 
-        //m_LstFormats.SetItemText(nItem, FORMAT_COLUMN_NAME, szName);
+        m_LstFormats.SetItemText(nItem, FORMAT_COLUMN_NAME, szName);
         m_LstFormats.SetItemText(nItem, FORMAT_COLUMN_TEMPLATE, szTemplate);
 
         m_LstFormats.SetItemState(nItem, LVIS_SELECTED, LVIS_SELECTED);
@@ -572,6 +661,46 @@ void CFormatsDlg::OnBnClickedCheckPipesInput()
 }
 
 void CFormatsDlg::OnBnClickedCheckPipesOutput()
+{
+    if (bUpdate == true)
+        return;
+
+    OnBnClickedButtonUpdateFormat();
+}
+
+void CFormatsDlg::OnEnChangeEditFormatId()
+{
+    if (bUpdate == true)
+        return;
+
+    OnBnClickedButtonUpdateFormat();
+}
+
+void CFormatsDlg::OnEnChangeEditFormatName()
+{
+    if (bUpdate == true)
+        return;
+
+    OnBnClickedButtonUpdateFormat();
+}
+
+void CFormatsDlg::OnEnChangeEditFormatExtension()
+{
+    if (bUpdate == true)
+        return;
+
+    OnBnClickedButtonUpdateFormat();
+}
+
+void CFormatsDlg::OnEnChangeEditFormatFormats()
+{
+    if (bUpdate == true)
+        return;
+
+    OnBnClickedButtonUpdateFormat();
+}
+
+void CFormatsDlg::OnEnChangeEditFormatDefault()
 {
     if (bUpdate == true)
         return;
