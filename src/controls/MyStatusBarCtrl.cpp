@@ -27,7 +27,7 @@ void CMyStatusBarCtrl::OnNMRclick(NMHDR *pNMHDR, LRESULT *pResult)
     CMenu m_Menu;
 
     GetCursorPos(&point);
-    m_Menu.LoadMenu(IDR_MENU_STAT);
+    m_Menu.LoadMenu(IDR_MENU_STATUS);
     (m_Menu.GetSubMenu(0))->TrackPopupMenu(0, point.x, point.y, this, NULL);
 
     *pResult = 0;

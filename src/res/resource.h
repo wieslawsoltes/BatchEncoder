@@ -8,9 +8,9 @@
 #define IDD_DIALOG_FORMATS              104
 #define IDD_DIALOG_ABOUT                105
 #define IDD_DIALOG_ADVANCED             106
-#define IDR_MENU_MAIN                   107
+#define IDR_MENU_BATCHENCODER           107
 #define IDR_MENU_TRAY                   108
-#define IDR_MENU_STAT                   109
+#define IDR_MENU_STATUS                 109
 #define IDR_ACCELERATOR_BATCHENCODER    110
 #define IDI_ICON_PROGRESS_01            111
 #define IDI_ICON_PROGRESS_02            112
@@ -33,7 +33,7 @@
 #define IDC_EDIT_OUTPUT                 1008
 #define IDC_BUTTON_BROWSE_OUTPUT        1009
 #define IDC_CHECK_OUTPUT                1010
-#define IDC_EDIT_INPUT_ITEMS            1011
+#define IDC_LIST_ITEMS                  1011
 #define IDC_LIST_PRESETS                1012
 #define IDC_BUTTON_PRESET_SAVE          1013
 #define IDC_BUTTON_PRESET_LOAD          1014

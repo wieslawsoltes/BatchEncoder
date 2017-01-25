@@ -205,7 +205,7 @@ void CBatchEncoderDlg::DoDataExchange(CDataExchange* pDX)
     DDX_Control(pDX, IDC_PROGRESS_WORK, m_Progress);
     DDX_Control(pDX, IDC_COMBO_PRESETS, m_CmbPresets);
     DDX_Control(pDX, IDC_COMBO_FORMAT, m_CmbFormat);
-    DDX_Control(pDX, IDC_EDIT_INPUT_ITEMS, m_LstInputItems);
+    DDX_Control(pDX, IDC_LIST_ITEMS, m_LstInputItems);
     DDX_Control(pDX, IDC_CHECK_OUTPUT, m_ChkOutPath);
     DDX_Control(pDX, IDC_EDIT_OUTPUT, m_EdtOutPath);
     DDX_Control(pDX, IDC_STATIC_TEXT_PRESET, m_StcPreset);
@@ -225,11 +225,11 @@ BEGIN_MESSAGE_MAP(CBatchEncoderDlg, CResizeDialog)
     ON_MESSAGE(WM_TRAY, OnTrayIconMsg)
     ON_MESSAGE(WM_ITEMCHANGED, OnListItemChaged)
     ON_COMMAND(ID_TRAYMENU_EXIT, OnTrayMenuExit)
-    ON_NOTIFY(LVN_KEYDOWN, IDC_EDIT_INPUT_ITEMS, OnLvnKeydownListInputItems)
-    ON_NOTIFY(LVN_ITEMCHANGING, IDC_EDIT_INPUT_ITEMS, OnLvnItemchangingListInputItems)
-    ON_NOTIFY(LVN_ITEMCHANGED, IDC_EDIT_INPUT_ITEMS, OnLvnItemchangedListInputItems)
-    ON_NOTIFY(NM_RCLICK, IDC_EDIT_INPUT_ITEMS, OnNMRclickListInputItems)
-    ON_NOTIFY(NM_DBLCLK, IDC_EDIT_INPUT_ITEMS, OnNMDblclkListInputItems)
+    ON_NOTIFY(LVN_KEYDOWN, IDC_LIST_ITEMS, OnLvnKeydownListInputItems)
+    ON_NOTIFY(LVN_ITEMCHANGING, IDC_LIST_ITEMS, OnLvnItemchangingListInputItems)
+    ON_NOTIFY(LVN_ITEMCHANGED, IDC_LIST_ITEMS, OnLvnItemchangedListInputItems)
+    ON_NOTIFY(NM_RCLICK, IDC_LIST_ITEMS, OnNMRclickListInputItems)
+    ON_NOTIFY(NM_DBLCLK, IDC_LIST_ITEMS, OnNMDblclkListInputItems)
     ON_CBN_SELCHANGE(IDC_COMBO_PRESETS, OnCbnSelchangeComboPresets)
     ON_CBN_SELCHANGE(IDC_COMBO_FORMAT, OnCbnSelchangeComboFormat)
     ON_BN_CLICKED(IDC_BUTTON_RUN, OnBnClickedButtonConvert)
@@ -372,7 +372,7 @@ BOOL CBatchEncoderDlg::OnInitDialog()
     AddAnchor(IDC_COMBO_FORMAT, TOP_LEFT);
     AddAnchor(IDC_STATIC_TEXT_PRESET, TOP_LEFT);
     AddAnchor(IDC_COMBO_PRESETS, TOP_LEFT, TOP_RIGHT);
-    AddAnchor(IDC_EDIT_INPUT_ITEMS, TOP_LEFT, BOTTOM_RIGHT);
+    AddAnchor(IDC_LIST_ITEMS, TOP_LEFT, BOTTOM_RIGHT);
     AddAnchor(IDC_CHECK_OUTPUT, BOTTOM_LEFT);
     AddAnchor(IDC_EDIT_OUTPUT, BOTTOM_LEFT, BOTTOM_RIGHT);
     AddAnchor(IDC_BUTTON_BROWSE_OUTPUT, BOTTOM_RIGHT);
