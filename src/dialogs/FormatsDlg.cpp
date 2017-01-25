@@ -103,9 +103,6 @@ BOOL CFormatsDlg::OnInitDialog()
     SetIcon(m_hIcon, TRUE);
     SetIcon(m_hIcon, FALSE);
 
-    // set pipes group font to normal
-    m_GrpPipes.SetBold(false);
-
     // update list style
     DWORD dwExStyle = m_LstFormats.GetExtendedStyle();
     dwExStyle |= LVS_EX_FULLROWSELECT | LVS_EX_DOUBLEBUFFER;
