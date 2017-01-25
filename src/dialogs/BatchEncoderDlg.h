@@ -61,8 +61,6 @@ public:
     void ResetConvertionTime();
     void ResetConvertionStatus();
     void SearchFolderForFiles(CString szFile, const bool bRecurse);
-    bool GridlinesVisible();
-    void ShowGridlines(bool bShow);
     void GetItems();
     void SetItems();
     void GetOptions();
@@ -97,7 +95,6 @@ public:
     afx_msg void OnLvnItemchangingListInputItems(NMHDR* pNMHDR, LRESULT* pResult);
     afx_msg void OnLvnItemchangedListInputItems(NMHDR *pNMHDR, LRESULT *pResult);
     afx_msg void OnNMRclickListInputItems(NMHDR *pNMHDR, LRESULT *pResult);
-    afx_msg void OnNMDblclkListInputItems(NMHDR *pNMHDR, LRESULT *pResult);
     afx_msg void OnEnChangeEditOutPath();
     afx_msg void OnEnSetFocusEditOutPath();
     afx_msg void OnEnKillFocusEditOutPath();
@@ -124,7 +121,6 @@ public:
     afx_msg void OnEditSelectAll();
     afx_msg void OnEditResetOutput();
     afx_msg void OnEditResetTime();
-    afx_msg void OnViewShowGridLines();
     afx_msg void OnActionConvert();
     afx_msg void OnOptionsStayOnTop();
     afx_msg void OnOptionsShowTrayIcon();

@@ -17,7 +17,6 @@ public:
     bool bRecurseChecked;
     CString szMainWindowResize;
     CString szFileListColumns;
-    bool bShowGridLines;
     bool bShowTrayIcon;
     bool bShutdownWhenFinished;
     bool bDoNotSaveConfiguration;
@@ -59,7 +58,6 @@ public:
         this->bRecurseChecked = other.bRecurseChecked;
         this->szMainWindowResize = other.szMainWindowResize;
         this->szFileListColumns = other.szFileListColumns;
-        this->bShowGridLines = other.bShowGridLines;
         this->bShowTrayIcon = other.bShowTrayIcon;
         this->bShutdownWhenFinished = other.bShutdownWhenFinished;
         this->bDoNotSaveConfiguration = other.bDoNotSaveConfiguration;
@@ -86,7 +84,6 @@ public:
         this->bRecurseChecked = true;
         this->szMainWindowResize = _T("");
         this->szFileListColumns = _T("");
-        this->bShowGridLines = true;
         this->bShowTrayIcon = false;
         this->bShutdownWhenFinished = false;
         this->bDoNotSaveConfiguration = false;

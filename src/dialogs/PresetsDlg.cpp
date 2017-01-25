@@ -18,7 +18,6 @@ CPresetsDlg::CPresetsDlg(CWnd* pParent /*=NULL*/)
     this->m_hIcon = AfxGetApp()->LoadIcon(IDI_TRAYICON);
     this->szPresetsDialogResize = _T("");
     this->szPresetsListColumns = _T("");
-    this->bShowGridLines = true;
     this->bUpdate = false;
     this->nSelectedFormat = 0;
 }
@@ -80,7 +79,7 @@ BOOL CPresetsDlg::OnInitDialog()
 
     // update list style
     DWORD dwExStyle = m_LstPresets.GetExtendedStyle();
-    dwExStyle |= LVS_EX_FULLROWSELECT | LVS_EX_DOUBLEBUFFER;
+    dwExStyle |= LVS_EX_FULLROWSELECT | LVS_EX_DOUBLEBUFFER | LVS_EX_GRIDLINES;
     m_LstPresets.SetExtendedStyle(dwExStyle);
 
     // insert listView columns
@@ -120,9 +119,6 @@ BOOL CPresetsDlg::OnInitDialog()
     AddAnchor(IDCANCEL, BOTTOM_RIGHT);
 
     this->LoadWindowSettings();
-
-    if (this->bShowGridLines == true)
-        this->ShowGridlines(true);
 
     return TRUE;
 }
@@ -184,24 +180,6 @@ void CPresetsDlg::SaveWindowSettings()
     szPresetsListColumns.Format(_T("%d %d"),
         nColWidth[0],
         nColWidth[1]);
-}
-
-void CPresetsDlg::ShowGridlines(bool bShow)
-{
-    DWORD dwExStyle = m_LstPresets.GetExtendedStyle();
-    if (bShow == true)
-    {
-        dwExStyle |= LVS_EX_GRIDLINES;
-        m_LstPresets.SetExtendedStyle(dwExStyle);
-    }
-    else
-    {
-        if (dwExStyle & LVS_EX_GRIDLINES)
-        {
-            dwExStyle = dwExStyle ^ LVS_EX_GRIDLINES;
-            m_LstPresets.SetExtendedStyle(dwExStyle);
-        }
-    }
 }
 
 void CPresetsDlg::AddToList(CPreset &preset, int nItem)

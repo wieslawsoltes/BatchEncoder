@@ -152,18 +152,6 @@ public:
             m_Options.szFileListColumns = ToCString(tmpBuff);
         }
 
-        // option: ShowGridLines
-        pOptionElem = pOptionsElem->FirstChildElement("ShowGridLines");
-        if (pOptionElem)
-        {
-            const char *tmpBuff = pOptionElem->GetText();
-            m_Options.bShowGridLines = ToCString(tmpBuff).Compare(_T("true")) == 0;
-        }
-        else
-        {
-            m_Options.bShowGridLines = false;
-        }
-
         // option: ShowTrayIcon
         pOptionElem = pOptionsElem->FirstChildElement("ShowTrayIcon");
         if (pOptionElem)
@@ -363,12 +351,6 @@ public:
         // option: FileListColumns
         pOptionElem = this->NewElement("FileListColumns");
         pOptionElem->LinkEndChild(this->NewText(szBuffUtf8.Create(m_Options.szFileListColumns)));
-        pOptionsElem->LinkEndChild(pOptionElem);
-        szBuffUtf8.Clear();
-
-        // option: ShowGridLines
-        pOptionElem = this->NewElement("ShowGridLines");
-        pOptionElem->LinkEndChild(this->NewText(szBuffUtf8.Create(m_Options.bShowGridLines ? _T("true") : _T("false"))));
         pOptionsElem->LinkEndChild(pOptionElem);
         szBuffUtf8.Clear();
 

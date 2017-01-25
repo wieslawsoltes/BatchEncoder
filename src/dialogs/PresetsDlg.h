@@ -28,7 +28,6 @@ public:
 public:
     CString szPresetsDialogResize;
     CString szPresetsListColumns;
-    bool bShowGridLines;
     volatile bool bUpdate;
     int nSelectedFormat;
     CFormatsList m_Formats;
@@ -52,7 +51,6 @@ public:
 public:
     void LoadWindowSettings();
     void SaveWindowSettings();
-    void ShowGridlines(bool bShow);
     void AddToList(CPreset &preset, int nItem);
     void InsertPresetsToListCtrl();
     void UpdateFields(CPreset &preset);

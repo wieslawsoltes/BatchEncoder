@@ -229,7 +229,6 @@ BEGIN_MESSAGE_MAP(CBatchEncoderDlg, CResizeDialog)
     ON_NOTIFY(LVN_ITEMCHANGING, IDC_LIST_ITEMS, OnLvnItemchangingListInputItems)
     ON_NOTIFY(LVN_ITEMCHANGED, IDC_LIST_ITEMS, OnLvnItemchangedListInputItems)
     ON_NOTIFY(NM_RCLICK, IDC_LIST_ITEMS, OnNMRclickListInputItems)
-    ON_NOTIFY(NM_DBLCLK, IDC_LIST_ITEMS, OnNMDblclkListInputItems)
     ON_CBN_SELCHANGE(IDC_COMBO_PRESETS, OnCbnSelchangeComboPresets)
     ON_CBN_SELCHANGE(IDC_COMBO_FORMAT, OnCbnSelchangeComboFormat)
     ON_BN_CLICKED(IDC_BUTTON_RUN, OnBnClickedButtonConvert)
@@ -259,7 +258,6 @@ BEGIN_MESSAGE_MAP(CBatchEncoderDlg, CResizeDialog)
     ON_COMMAND(ID_EDIT_RESETOUTPUT, OnEditResetOutput)
     ON_COMMAND(ID_EDIT_RESETTIME, OnEditResetTime)
     ON_COMMAND(ID_EDIT_ADDDIR, OnEditAddDir)
-    ON_COMMAND(ID_VIEW_SHOWGRIDLINES, OnViewShowGridLines)
     ON_COMMAND(ID_ACTION_CONVERT, OnActionConvert)
     ON_COMMAND(ID_OPTIONS_STAYONTOP, OnOptionsStayOnTop)
     ON_COMMAND(ID_OPTIONS_SHOWTRAYICON, OnOptionsShowTrayIcon)
@@ -295,7 +293,6 @@ BEGIN_MESSAGE_MAP(CBatchEncoderDlg, CResizeDialog)
     ON_COMMAND(ID_ACCELERATOR_SHIFT_MINUS, OnEditUncheckSelected)
     ON_COMMAND(ID_ACCELERATOR_CTRL_PLUS, OnEditRemoveChecked)
     ON_COMMAND(ID_ACCELERATOR_CTRL_MINUS, OnEditRemoveUnchecked)
-    ON_COMMAND(ID_ACCELERATOR_CTRL_G, OnViewShowGridLines)
     ON_COMMAND(ID_ACCELERATOR_F9, OnBnClickedButtonConvert)
     ON_COMMAND(ID_ACCELERATOR_F10, OnOptionsStayOnTop)
     ON_COMMAND(ID_ACCELERATOR_CTRL_X, OnOptionsDoNotSave)
@@ -347,7 +344,7 @@ BOOL CBatchEncoderDlg::OnInitDialog()
 
     // list style
     DWORD dwExStyle = m_LstInputItems.GetExtendedStyle();
-    dwExStyle |= LVS_EX_FULLROWSELECT | LVS_EX_CHECKBOXES | LVS_EX_DOUBLEBUFFER;
+    dwExStyle |= LVS_EX_FULLROWSELECT | LVS_EX_CHECKBOXES | LVS_EX_DOUBLEBUFFER | LVS_EX_GRIDLINES;
     m_LstInputItems.SetExtendedStyle(dwExStyle);
 
     // list columns
@@ -655,35 +652,6 @@ void CBatchEncoderDlg::UpdatePresetComboBox()
     }
 }
 
-bool CBatchEncoderDlg::GridlinesVisible()
-{
-    DWORD dwExStyle = m_LstInputItems.GetExtendedStyle();
-    if (dwExStyle & LVS_EX_GRIDLINES)
-        return true;
-    else
-        return false;
-}
-
-void CBatchEncoderDlg::ShowGridlines(bool bShow)
-{
-    DWORD dwExStyle = m_LstInputItems.GetExtendedStyle();
-    if (bShow == true)
-    {
-        dwExStyle |= LVS_EX_GRIDLINES;
-        m_LstInputItems.SetExtendedStyle(dwExStyle);
-        this->GetMenu()->CheckMenuItem(ID_VIEW_SHOWGRIDLINES, MF_CHECKED);
-    }
-    else
-    {
-        if (dwExStyle & LVS_EX_GRIDLINES)
-        {
-            dwExStyle = dwExStyle ^ LVS_EX_GRIDLINES;
-            m_LstInputItems.SetExtendedStyle(dwExStyle);
-            this->GetMenu()->CheckMenuItem(ID_VIEW_SHOWGRIDLINES, MF_UNCHECKED);
-        }
-    }
-}
-
 void CBatchEncoderDlg::GetItems()
 {
     int nItems = this->m_LstInputItems.GetItemCount();
@@ -745,9 +713,6 @@ void CBatchEncoderDlg::GetOptions()
         nColWidth[4],
         nColWidth[5],
         nColWidth[6]);
-
-    // option: ShowGridLines
-    m_Config.m_Options.bShowGridLines = this->GetMenu()->GetMenuState(ID_VIEW_SHOWGRIDLINES, MF_BYCOMMAND) == MF_CHECKED;
 
     // option: ShowTrayIcon
     m_Config.m_Options.bShowTrayIcon = this->GetMenu()->GetMenuState(ID_OPTIONS_SHOWTRAYICON, MF_BYCOMMAND) == MF_CHECKED;
@@ -846,9 +811,6 @@ void CBatchEncoderDlg::SetOptions()
                 m_LstInputItems.SetColumnWidth(i, nColWidth[i]);
         }
     }
-
-    // option: ShowGridLines
-    ShowGridlines(m_Config.m_Options.bShowGridLines);
 
     // option: ShowTrayIcon
     EnableTrayIcon(m_Config.m_Options.bShowTrayIcon);
@@ -1451,25 +1413,6 @@ void CBatchEncoderDlg::OnNMRclickListInputItems(NMHDR *pNMHDR, LRESULT *pResult)
         CMenu *subMenu = this->GetMenu()->GetSubMenu(1);
         subMenu->TrackPopupMenu(0, point.x, point.y, this, NULL);
     }
-    *pResult = 0;
-}
-
-void CBatchEncoderDlg::OnViewShowGridLines()
-{
-    if (this->GetMenu()->GetMenuState(ID_VIEW_SHOWGRIDLINES, MF_BYCOMMAND) == MF_CHECKED)
-        ShowGridlines(false);
-    else
-        ShowGridlines(true);
-}
-
-void CBatchEncoderDlg::OnNMDblclkListInputItems(NMHDR *pNMHDR, LRESULT *pResult)
-{
-    POSITION pos = m_LstInputItems.GetFirstSelectedItemPosition();
-    if (pos != NULL)
-    {
-        // TODO:
-    }
-
     *pResult = 0;
 }
 
@@ -2325,7 +2268,6 @@ void CBatchEncoderDlg::OnOptionsConfigurePresets()
     if (this->pWorkerContext->bRunning == false)
     {
         CPresetsDlg dlg;
-        dlg.bShowGridLines = this->GridlinesVisible();
         dlg.nSelectedFormat = this->m_CmbFormat.GetCurSel();
         dlg.m_Formats = m_Config.m_Formats;
         dlg.szPresetsDialogResize = m_Config.m_Options.szPresetsDialogResize;
@@ -2350,7 +2292,6 @@ void CBatchEncoderDlg::OnOptionsConfigureFormat()
     if (this->pWorkerContext->bRunning == false)
     {
         CFormatsDlg dlg;
-        dlg.bShowGridLines = this->GridlinesVisible();
         dlg.nSelectedFormat = this->m_CmbFormat.GetCurSel();
         dlg.m_Formats = m_Config.m_Formats;
         dlg.szFormatsDialogResize = m_Config.m_Options.szFormatsDialogResize;

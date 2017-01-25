@@ -28,7 +28,6 @@ public:
 public:
     CString szFormatsDialogResize;
     CString szFormatsListColumns;
-    bool bShowGridLines;
     volatile bool bUpdate;
     int nSelectedFormat;
     CFormatsList m_Formats;
@@ -66,7 +65,6 @@ public:
 public:
     void LoadWindowSettings();
     void SaveWindowSettings();
-    void ShowGridlines(bool bShow);
     void AddToList(CFormat &format, int nItem);
     void InsertFormatsToListCtrl();
     void UpdateFields(CFormat &format);
