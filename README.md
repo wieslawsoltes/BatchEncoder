@@ -171,7 +171,7 @@ Files extensions:
 
 * .xml - Any onfiguration file
 * .config - Program configuration
-* .list - File-list items
+* .items - Input file items
 * .presets - Predefined format presets
 * .formats - Encoder and decoder formats
 * .progress - Compiled progress function into windows DLL

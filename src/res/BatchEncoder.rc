@@ -244,10 +244,10 @@ IDR_MENU_BATCHENCODER MENU
 BEGIN
     POPUP "&File"
     BEGIN
-        MENUITEM "&Load list...\tCtrl+L",       ID_FILE_LOADLIST
-        MENUITEM "&Save list...\tCtrl+S",       ID_FILE_SAVELIST
+        MENUITEM "&Load items...\tCtrl+L",     ID_FILE_LOADLIST
+        MENUITEM "&Save items...\tCtrl+S",     ID_FILE_SAVELIST
         MENUITEM SEPARATOR
-        MENUITEM "Cl&ear list\tCtrl+E",         ID_FILE_CLEARLIST
+        MENUITEM "Cl&ear items\tCtrl+E",       ID_FILE_CLEARLIST
         MENUITEM SEPARATOR
         MENUITEM "E&xit",                       ID_FILE_EXIT
     END

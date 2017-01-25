@@ -1679,9 +1679,9 @@ void CBatchEncoderDlg::OnFileLoadList()
 {
     if (this->pWorkerContext->bRunning == false)
     {
-        CFileDialog fd(TRUE, _T("list"), _T(""),
+        CFileDialog fd(TRUE, _T("items"), _T(""),
             OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER,
-            _T("List Items (*.list)|*.list|Xml Files (*.xml)|*.xml|All Files|*.*||"), this);
+            _T("Items Files (*.items)|*.items|Xml Files (*.xml)|*.xml|All Files|*.*||"), this);
 
         if (fd.DoModal() == IDOK)
         {
@@ -1704,9 +1704,9 @@ void CBatchEncoderDlg::OnFileSaveList()
 {
     if (this->pWorkerContext->bRunning == false)
     {
-        CFileDialog fd(FALSE, _T("list"), _T("items"),
+        CFileDialog fd(FALSE, _T("items"), _T("items"),
             OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER | OFN_OVERWRITEPROMPT,
-            _T("List Items (*.list)|*.list|Xml Files (*.xml)|*.xml|All Files|*.*||"), this);
+            _T("Items Files (*.items)|*.items|Xml Files (*.xml)|*.xml|All Files|*.*||"), this);
 
         if (fd.DoModal() == IDOK)
         {
