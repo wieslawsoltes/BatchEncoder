@@ -440,7 +440,7 @@ bool ConvertFile(CFileContext* pContext)
             CFile fp;
             bool bHaveLogFile = false;
 
-            if (pContext->pWorkerContext->pConfig->m_Options.bLogConsoleOutput == true)
+            if (pContext->pWorkerContext->pConfig->m_Options.bLogConsoleOutput == true && pContext->pWorkerContext->nThreadCount == 1)
             {
                 ::UpdatePath();
 
@@ -567,7 +567,7 @@ bool ConvertFile(CFileContext* pContext)
                             }
 
                             // log all console output for error checking
-                            if (pContext->pWorkerContext->pConfig->m_Options.bLogConsoleOutput == true)
+                            if (pContext->pWorkerContext->pConfig->m_Options.bLogConsoleOutput == true && pContext->pWorkerContext->nThreadCount == 1)
                             {
                                 if ((bHaveLogFile == true)
                                     && (fp.m_hFile != NULL)
@@ -638,7 +638,7 @@ bool ConvertFile(CFileContext* pContext)
                 ::FreeLibrary(hDll);
 
             // close log file
-            if ((pContext->pWorkerContext->pConfig->m_Options.bLogConsoleOutput == true) && (bHaveLogFile = true))
+            if (pContext->pWorkerContext->pConfig->m_Options.bLogConsoleOutput == true && bHaveLogFile == true && pContext->pWorkerContext->nThreadCount == 1)
             {
                 fp.Close();
                 bHaveLogFile = false;
