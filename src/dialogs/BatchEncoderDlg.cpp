@@ -634,6 +634,9 @@ void CBatchEncoderDlg::UpdatePresetComboBox()
 
         int nPreset = -1;
 
+        if (m_Config.m_Options.nSelectedFormat > m_Config.m_Formats.GetSize() - 1)
+            m_Config.m_Options.nSelectedFormat = 0;
+
         if (m_Config.m_Options.nSelectedFormat >= 0 && m_Config.m_Formats.GetSize() > 0)
         {
             CFormat& format = m_Config.m_Formats.GetData(m_Config.m_Options.nSelectedFormat);
@@ -1216,8 +1219,8 @@ void CBatchEncoderDlg::OnBnClickedButtonBrowsePath()
         pMalloc->Free(pidlDesktop);
         pMalloc->Free(lpBuffer);
         pMalloc->Release();
+        }
     }
-}
 
 void CBatchEncoderDlg::OnBnClickedCheckOutPath()
 {
@@ -1917,8 +1920,8 @@ void CBatchEncoderDlg::OnEditAddDir()
         pMalloc->Free(pidlDesktop);
         pMalloc->Free(lpBuffer);
         pMalloc->Release();
+        }
     }
-}
 
 void CBatchEncoderDlg::OnEditClear()
 {
