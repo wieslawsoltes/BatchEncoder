@@ -82,7 +82,7 @@ bool ConvertItem(CItemContext* pContext)
     // decode before encoding
     if (nProcessingMode == Mode::Transcode)
     {
-        int nDecoder = pContext->pWorkerContext->pConfig->m_Formats.GetDecoderFormatByExt(pContext->item->szExtension);
+        int nDecoder = pContext->pWorkerContext->pConfig->m_Formats.GetFormatByExt(pContext->item->szExtension, 1);
         if (nDecoder == -1)
         {
             pContext->pWorkerContext->Status(pContext->item->nId, _T("--:--"), _T("Error"));

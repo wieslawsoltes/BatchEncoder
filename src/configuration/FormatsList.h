@@ -107,26 +107,14 @@ public:
         }
         return -1;
     }
-    int GetEncoderFormatByExt(CString szExt)
+    int GetFormatByExt(CString szExt, int nType)
     {
         szExt.MakeUpper();
         int nFormats = this->GetSize();
         for (int i = 0; i < nFormats; i++)
         {
             CFormat& format = this->GetData(i);
-            if (format.nType == 0 && szExt.Compare(format.szOutputExtension.MakeUpper()) == 0)
-                return i;
-        }
-        return -1;
-    }
-    int GetDecoderFormatByExt(CString szExt)
-    {
-        szExt.MakeUpper();
-        int nFormats = this->GetSize();
-        for (int i = 0; i < nFormats; i++)
-        {
-            CFormat& format = this->GetData(i);
-            if (format.nType == 1 && format.IsValidInputExtension(szExt))
+            if (format.nType == nType && szExt.Compare(format.szOutputExtension.MakeUpper()) == 0)
                 return i;
         }
         return -1;
