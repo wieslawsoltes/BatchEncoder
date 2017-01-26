@@ -378,8 +378,8 @@ BOOL CBatchEncoderDlg::OnInitDialog()
 
     try
     {
-        this->LoadOptions(this->szOptionsFile);
         this->LoadFormats(this->szFormatsFile);
+        this->LoadOptions(this->szOptionsFile);
         this->LoadItems(this->szItemsFile);
     }
     catch (...) { }
@@ -1009,8 +1009,8 @@ void CBatchEncoderDlg::FinishConvert()
         {
             try
             {
-                this->SaveOptions(this->szOptionsFile);
                 this->SaveFormats(this->szFormatsFile);
+                this->SaveOptions(this->szOptionsFile);
                 this->SaveItems(this->szItemsFile);
             }
             catch (...) { }
@@ -1052,8 +1052,8 @@ void CBatchEncoderDlg::OnClose()
     {
         try
         {
-            this->SaveOptions(this->szOptionsFile);
             this->SaveFormats(this->szFormatsFile);
+            this->SaveOptions(this->szOptionsFile);
             this->SaveItems(this->szItemsFile);
         }
         catch (...) { }
