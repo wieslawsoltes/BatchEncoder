@@ -2119,7 +2119,7 @@ void CBatchEncoderDlg::OnEditResetTime()
 
 void CBatchEncoderDlg::OnActionConvert()
 {
-    this->OnBnClickedButtonConvert();
+    this->StartConvert();
 }
 
 void CBatchEncoderDlg::OnOptionsStayOnTop()
