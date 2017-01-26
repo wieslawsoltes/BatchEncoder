@@ -34,7 +34,9 @@ protected:
     HACCEL m_hAccel;
     BOOL PreTranslateMessage(MSG* pMsg);
 public:
-    CString szConfigFile;
+    CString szOptionsFile;
+    CString szFormatsFile;
+    CString szItemsFile;
     CConfiguration m_Config;
     CWorkerContext* pWorkerContext;
     bool bSameAsSourceEdit;
@@ -65,10 +67,12 @@ public:
     void SetItems();
     void GetOptions();
     void SetOptions();
+    bool LoadOptions(CString szFileXml);
+    bool SaveOptions(CString szFileXml);
+    bool LoadFormats(CString szFileXml);
+    bool SaveFormats(CString szFileXml);
     bool LoadItems(CString szFileXml);
     bool SaveItems(CString szFileXml);
-    bool LoadConfiguration(CString szFileXml);
-    bool SaveConfiguration(CString szFileXml);
     void UpdateFormatComboBox();
     void UpdatePresetComboBox();
     void EnableUserInterface(BOOL bEnable = TRUE);
@@ -97,8 +101,6 @@ public:
     afx_msg void OnNMRclickListInputItems(NMHDR *pNMHDR, LRESULT *pResult);
     afx_msg void OnEnSetFocusEditOutPath();
     afx_msg void OnEnKillFocusEditOutPath();
-    afx_msg void LoadConfiguration();
-    afx_msg void SaveConfiguration();
     afx_msg void OnFileLoadList();
     afx_msg void OnFileSaveList();
     afx_msg void OnFileClearList();
