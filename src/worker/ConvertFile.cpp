@@ -81,41 +81,37 @@ bool ConvertFile(CFileContext* pContext)
     }
 
     // this pipes are not inherited by child process
-    // Windows XP or later
-    if (true)
+    if (pContext->bUseReadPipes == true)
     {
-        if (pContext->bUseReadPipes == true)
+        BOOL bRet = FALSE;
+        bRet = ::SetHandleInformation(wInPipe, HANDLE_FLAG_INHERIT, 0);
+        if (bRet == FALSE)
         {
-            BOOL bRet = FALSE;
-            bRet = ::SetHandleInformation(wInPipe, HANDLE_FLAG_INHERIT, 0);
-            if (bRet == FALSE)
+            ::CloseHandle(rInPipe);
+            ::CloseHandle(wInPipe);
+
+            pContext->pWorkerContext->Callback(pContext->nIndex, -1, true, true, 0.0);
+            return false;
+        }
+    }
+
+    if (pContext->bUseWritePipes == true)
+    {
+        BOOL bRet = FALSE;
+        bRet = ::SetHandleInformation(rOutPipe, HANDLE_FLAG_INHERIT, 0);
+        if (bRet == FALSE)
+        {
+            if (pContext->bUseWritePipes == true)
             {
                 ::CloseHandle(rInPipe);
                 ::CloseHandle(wInPipe);
-
-                pContext->pWorkerContext->Callback(pContext->nIndex, -1, true, true, 0.0);
-                return false;
             }
-        }
 
-        if (pContext->bUseWritePipes == true)
-        {
-            BOOL bRet = FALSE;
-            bRet = ::SetHandleInformation(rOutPipe, HANDLE_FLAG_INHERIT, 0);
-            if (bRet == FALSE)
-            {
-                if (pContext->bUseWritePipes == true)
-                {
-                    ::CloseHandle(rInPipe);
-                    ::CloseHandle(wInPipe);
-                }
+            ::CloseHandle(rOutPipe);
+            ::CloseHandle(wOutPipe);
 
-                ::CloseHandle(rOutPipe);
-                ::CloseHandle(wOutPipe);
-
-                pContext->pWorkerContext->Callback(pContext->nIndex, -1, true, true, 0.0);
-                return false;
-            }
+            pContext->pWorkerContext->Callback(pContext->nIndex, -1, true, true, 0.0);
+            return false;
         }
     }
 
@@ -532,7 +528,7 @@ bool ConvertFile(CFileContext* pContext)
                             bLineEnd = true;
                             bLineStart = false;
                             szLineBuff[nLineLen] = '\0';
-                        } 
+                        }
                     }
                     else if (bLineEnd == false)
                     {
