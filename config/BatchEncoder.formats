@@ -1,0 +1,539 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<Formats>
+    <Format id="SSRC_WAV" name="WAV (Standard)" template="$EXE $OPTIONS $INFILE $OUTFILE" input="false" output="false" function="GetProgress_SsrcEnc.progress" path="ssrc.exe" type="0" formats="WAV" extension="WAV" default="0">
+        <Presets>
+            <Preset name="No Resampling" options="" />
+            <Preset name="8 Bit 8000 Hz" options="--rate 8000 --bits 8 --normalize" />
+            <Preset name="8 Bit 8000 Hz (2 Pass)" options="--rate 8000 --bits 8 --twopass" />
+            <Preset name="8 Bit 11025 Hz" options="--rate 11025 --bits 8 --normalize" />
+            <Preset name="8 Bit 11025 Hz (2 Pass)" options="--rate 11025 --bits 8 --twopass" />
+            <Preset name="8 Bit 16000 Hz" options="--rate 16000 --bits 8 --normalize" />
+            <Preset name="8 Bit 16000 Hz (2 Pass)" options="--rate 16000 --bits 8 --twopass" />
+            <Preset name="8 Bit 22050 Hz" options="--rate 22050 --bits 8 --normalize" />
+            <Preset name="8 Bit 22050 Hz (2 Pass)" options="--rate 22050 --bits 8 --twopass" />
+            <Preset name="8 Bit 24000 Hz" options="--rate 24000 --bits 8 --normalize" />
+            <Preset name="8 Bit 24000 Hz (2 Pass)" options="--rate 24000 --bits 8 --twopass" />
+            <Preset name="8 Bit 32000 Hz" options="--rate 32000 --bits 8 --normalize" />
+            <Preset name="8 Bit 32000 Hz (2 Pass)" options="--rate 32000 --bits 8 --twopass" />
+            <Preset name="8 Bit 44100 Hz" options="--rate 44100 --bits 8 --normalize" />
+            <Preset name="8 Bit 44100 Hz (2 Pass)" options="--rate 44100 --bits 8 --twopass" />
+            <Preset name="8 Bit 48000 Hz" options="--rate 48000 --bits 8 --normalize" />
+            <Preset name="8 Bit 48000 Hz (2 Pass)" options="--rate 48000 --bits 8 --twopass" />
+            <Preset name="8 Bit 64000 Hz" options="--rate 64000 --bits 8 --normalize" />
+            <Preset name="8 Bit 64000 Hz (2 Pass)" options="--rate 64000 --bits 8 --twopass" />
+            <Preset name="8 Bit 88200 Hz" options="--rate 88200 --bits 8 --normalize" />
+            <Preset name="8 Bit 88200 Hz (2 Pass)" options="--rate 88200 --bits 8 --twopass" />
+            <Preset name="8 Bit 96000 Hz" options="--rate 96000 --bits 8 --normalize" />
+            <Preset name="8 Bit 96000 Hz (2 Pass)" options="--rate 96000 --bits 8 --twopass" />
+            <Preset name="16 Bit 8000 Hz" options="--rate 8000 --bits 16 --normalize" />
+            <Preset name="16 Bit 8000 Hz (2 Pass)" options="--rate 8000 --bits 16 --twopass" />
+            <Preset name="16 Bit 11025 Hz" options="--rate 11025 --bits 16 --normalize" />
+            <Preset name="16 Bit 11025 Hz (2 Pass)" options="--rate 11025 --bits 16 --twopass" />
+            <Preset name="16 Bit 16000 Hz" options="--rate 16000 --bits 16 --normalize" />
+            <Preset name="16 Bit 16000 Hz (2 Pass)" options="--rate 16000 --bits 16 --twopass" />
+            <Preset name="16 Bit 22050 Hz" options="--rate 22050 --bits 16 --normalize" />
+            <Preset name="16 Bit 22050 Hz (2 Pass)" options="--rate 22050 --bits 16 --twopass" />
+            <Preset name="16 Bit 24000 Hz" options="--rate 24000 --bits 16 --normalize" />
+            <Preset name="16 Bit 24000 Hz (2 Pass)" options="--rate 24000 --bits 16 --twopass" />
+            <Preset name="16 Bit 32000 Hz" options="--rate 32000 --bits 16 --normalize" />
+            <Preset name="16 Bit 32000 Hz (2 Pass)" options="--rate 32000 --bits 16 --twopass" />
+            <Preset name="16 Bit 44100 Hz" options="--rate 44100 --bits 16 --normalize" />
+            <Preset name="16 Bit 44100 Hz (2 Pass)" options="--rate 44100 --bits 16 --twopass" />
+            <Preset name="16 Bit 48000 Hz" options="--rate 48000 --bits 16 --normalize" />
+            <Preset name="16 Bit 48000 Hz (2 Pass)" options="--rate 48000 --bits 16 --twopass" />
+            <Preset name="16 Bit 64000 Hz" options="--rate 64000 --bits 16 --normalize" />
+            <Preset name="16 Bit 64000 Hz (2 Pass)" options="--rate 64000 --bits 16 --twopass" />
+            <Preset name="16 Bit 88200 Hz" options="--rate 88200 --bits 16 --normalize" />
+            <Preset name="16 Bit 88200 Hz (2 Pass)" options="--rate 88200 --bits 16 --twopass" />
+            <Preset name="16 Bit 96000 Hz" options="--rate 96000 --bits 16 --normalize" />
+            <Preset name="16 Bit 96000 Hz (2 Pass)" options="--rate 96000 --bits 16 --twopass" />
+            <Preset name="24 Bit 8000 Hz" options="--rate 8000 --bits 24 --normalize" />
+            <Preset name="24 Bit 8000 Hz (2 Pass)" options="--rate 8000 --bits 24 --twopass" />
+            <Preset name="24 Bit 11025 Hz" options="--rate 11025 --bits 24 --normalize" />
+            <Preset name="24 Bit 11025 Hz (2 Pass)" options="--rate 11025 --bits 24 --twopass" />
+            <Preset name="24 Bit 16000 Hz" options="--rate 16000 --bits 24 --normalize" />
+            <Preset name="24 Bit 16000 Hz (2 Pass)" options="--rate 16000 --bits 24 --twopass" />
+            <Preset name="24 Bit 22050 Hz" options="--rate 22050 --bits 24 --normalize" />
+            <Preset name="24 Bit 22050 Hz (2 Pass)" options="--rate 22050 --bits 24 --twopass" />
+            <Preset name="24 Bit 24000 Hz" options="--rate 24000 --bits 24 --normalize" />
+            <Preset name="24 Bit 24000 Hz (2 Pass)" options="--rate 24000 --bits 24 --twopass" />
+            <Preset name="24 Bit 32000 Hz" options="--rate 32000 --bits 24 --normalize" />
+            <Preset name="24 Bit 32000 Hz (2 Pass)" options="--rate 32000 --bits 24 --twopass" />
+            <Preset name="24 Bit 44100 Hz" options="--rate 44100 --bits 24 --normalize" />
+            <Preset name="24 Bit 44100 Hz (2 Pass)" options="--rate 44100 --bits 24 --twopass" />
+            <Preset name="24 Bit 48000 Hz" options="--rate 48000 --bits 24 --normalize" />
+            <Preset name="24 Bit 48000 Hz (2 Pass)" options="--rate 48000 --bits 24 --twopass" />
+            <Preset name="24 Bit 64000 Hz" options="--rate 64000 --bits 24 --normalize" />
+            <Preset name="24 Bit 64000 Hz (2 Pass)" options="--rate 64000 --bits 24 --twopass" />
+            <Preset name="24 Bit 88200 Hz" options="--rate 88200 --bits 24 --normalize" />
+            <Preset name="24 Bit 88200 Hz (2 Pass)" options="--rate 88200 --bits 24 --twopass" />
+            <Preset name="24 Bit 96000 Hz" options="--rate 96000 --bits 24 --normalize" />
+            <Preset name="24 Bit 96000 Hz (2 Pass)" options="--rate 96000 --bits 24 --twopass" />
+        </Presets>
+    </Format>
+    <Format id="LAME_MP3" name="MP3 (MPEG Layer-3)" template="$EXE $OPTIONS $INFILE $OUTFILE" input="false" output="false" function="GetProgress_LameEnc.progress" path="lame.exe" type="0" formats="WAV" extension="MP3" default="8">
+        <Presets>
+            <Preset name="ABR 56 kbit/s Mono" options="--abr 56 -mm" />
+            <Preset name="VBR ~65 kbit/s (V9)" options="-V 9 --vbr-new" />
+            <Preset name="VBR ~85 kbit/s (V8)" options="-V 8 --vbr-new" />
+            <Preset name="VBR ~100 kbit/s (V7)" options="-V 7 --vbr-new" />
+            <Preset name="VBR ~115 kbit/s (V6)" options="-V 6 --vbr-new" />
+            <Preset name="VBR ~130 kbit/s (V5)" options="-V 5 --vbr-new" />
+            <Preset name="VBR ~165 kbit/s (V4)" options="-V 4 --vbr-new" />
+            <Preset name="VBR ~175 kbit/s (V3)" options="-V 3 --vbr-new" />
+            <Preset name="VBR ~190 kbit/s (V2)" options="-V 2 --vbr-new" />
+            <Preset name="VBR ~225 kbit/s (V1)" options="-V 1 --vbr-new" />
+            <Preset name="VBR ~245 kbit/s (V0)" options="-V 0 --vbr-new" />
+            <Preset name="CBR 56 kbit/s" options="-b 56" />
+            <Preset name="CBR 64 kbit/s" options="-b 64" />
+            <Preset name="CBR 80 kbit/s" options="-b 80" />
+            <Preset name="CBR 96 kbit/s" options="-b 96" />
+            <Preset name="CBR 112 kbit/s" options="-b 112" />
+            <Preset name="CBR 128 kbit/s" options="-b 128" />
+            <Preset name="CBR 160 kbit/s" options="-b 160" />
+            <Preset name="CBR 192 kbit/s" options="-b 192" />
+            <Preset name="CBR 224 kbit/s" options="-b 224" />
+            <Preset name="CBR 256 kbit/s" options="-b 256" />
+            <Preset name="CBR 320 kbit/s" options="-b 320" />
+        </Presets>
+    </Format>
+    <Format id="MPCENC_MPC" name="MPC (Musepack)" template="$EXE $OPTIONS --overwrite $INFILE $OUTFILE" input="true" output="false" function="GetProgress_MppEnc.progress" path="mpcenc.exe" type="0" formats="WAV" extension="MPC" default="3">
+        <Presets>
+            <Preset name="Telephone (32...48 kbps)" options="--telephone" />
+            <Preset name="Thumb (58...86 kbps)" options="--thumb" />
+            <Preset name="Radio (112...152 kbps)" options="--radio" />
+            <Preset name="Standard (142...184 kbps)" options="--standard" />
+            <Preset name="Xtreme (168...212 kbps)" options="--xtreme" />
+            <Preset name="Insane (232...268 kbps)" options="--insane" />
+            <Preset name="Braindead (232...278 kbps)" options="--braindead" />
+        </Presets>
+    </Format>
+    <Format id="FAAC_AAC" name="AAC (MPEG-2/AAC)" template="$EXE $OPTIONS -o $OUTFILE $INFILE" input="true" output="false" function="GetProgress_FaacEnc.progress" path="faac.exe" type="0" formats="WAV" extension="AAC" default="10">
+        <Presets>
+            <Preset name="VBR Quality 10" options="-q 10" />
+            <Preset name="VBR Quality 25" options="-q 25" />
+            <Preset name="VBR Quality 50" options="-q 50" />
+            <Preset name="VBR Quality 75" options="-q 75" />
+            <Preset name="VBR Quality 100" options="-q 100" />
+            <Preset name="VBR Quality 125" options="-q 125" />
+            <Preset name="VBR Quality 150" options="-q 150" />
+            <Preset name="VBR Quality 175" options="-q 175" />
+            <Preset name="VBR Quality 200" options="-q 200" />
+            <Preset name="VBR Quality 225" options="-q 225" />
+            <Preset name="VBR Quality 250" options="-q 250" />
+            <Preset name="VBR Quality 275" options="-q 275" />
+            <Preset name="VBR Quality 300" options="-q 300" />
+            <Preset name="VBR Quality 325" options="-q 325" />
+            <Preset name="VBR Quality 350" options="-q 350" />
+            <Preset name="VBR Quality 375" options="-q 375" />
+            <Preset name="VBR Quality 400" options="-q 400" />
+            <Preset name="VBR Quality 425" options="-q 425" />
+            <Preset name="VBR Quality 450" options="-q 450" />
+            <Preset name="VBR Quality 475" options="-q 475" />
+            <Preset name="VBR Quality 500" options="-q 500" />
+            <Preset name="ABR 96 kbit/s" options="-b 96" />
+            <Preset name="ABR 128 kbit/s" options="-b 128" />
+            <Preset name="ABR 192 kbit/s" options="-q 400 -c 20000 -b 192" />
+            <Preset name="ABR 256 kbit/s" options="-q 450 -c 22050 -b 256" />
+            <Preset name="ABR 320 kbit/s" options="-q 500 -c 22050 -b 320" />
+        </Presets>
+    </Format>
+    <Format id="NERO_M4A" name="M4A (MPEG-4/AAC)" template="$EXE $OPTIONS -ignorelength -if $INFILE -of $OUTFILE" input="true" output="false" function="- none -" path="neroAacEnc.exe" type="0" formats="WAV" extension="M4A" default="10">
+        <Presets>
+            <Preset name="VBR Quality 0.00" options="-q 0.00" />
+            <Preset name="VBR Quality 0.05" options="-q 0.05" />
+            <Preset name="VBR Quality 0.10" options="-q 0.10" />
+            <Preset name="VBR Quality 0.15" options="-q 0.15" />
+            <Preset name="VBR Quality 0.20" options="-q 0.20" />
+            <Preset name="VBR Quality 0.25" options="-q 0.25" />
+            <Preset name="VBR Quality 0.30" options="-q 0.30" />
+            <Preset name="VBR Quality 0.35" options="-q 0.35" />
+            <Preset name="VBR Quality 0.40" options="-q 0.40" />
+            <Preset name="VBR Quality 0.45" options="-q 0.45" />
+            <Preset name="VBR Quality 0.50" options="-q 0.50" />
+            <Preset name="VBR Quality 0.55" options="-q 0.55" />
+            <Preset name="VBR Quality 0.60" options="-q 0.60" />
+            <Preset name="VBR Quality 0.65" options="-q 0.65" />
+            <Preset name="VBR Quality 0.70" options="-q 0.70" />
+            <Preset name="VBR Quality 0.75" options="-q 0.75" />
+            <Preset name="VBR Quality 0.80" options="-q 0.80" />
+            <Preset name="VBR Quality 0.85" options="-q 0.85" />
+            <Preset name="VBR Quality 0.90" options="-q 0.90" />
+            <Preset name="VBR Quality 0.95" options="-q 0.95" />
+            <Preset name="VBR Quality 1.00" options="-q 1.00" />
+            <Preset name="ABR 32 kbit/s" options="-br 32000" />
+            <Preset name="ABR 48 kbit/s" options="-br 48000" />
+            <Preset name="ABR 64 kbit/s" options="-br 64000" />
+            <Preset name="ABR 96 kbit/s" options="-br 96000" />
+            <Preset name="ABR 128 kbit/s" options="-br 128000" />
+            <Preset name="ABR 160 kbit/s" options="-br 160000" />
+            <Preset name="ABR 192 kbit/s" options="-br 192000" />
+            <Preset name="ABR 224 kbit/s" options="-br 224000" />
+            <Preset name="ABR 256 kbit/s" options="-br 256000" />
+            <Preset name="ABR 320 kbit/s" options="-br 320000" />
+            <Preset name="ABR 400 kbit/s" options="-br 400000" />
+            <Preset name="ABR 465 kbit/s" options="-br 465000" />
+            <Preset name="CBR 32 kbit/s" options="-cbr 32000" />
+            <Preset name="CBR 48 kbit/s" options="-cbr 48000" />
+            <Preset name="CBR 64 kbit/s" options="-cbr 64000" />
+            <Preset name="CBR 96 kbit/s" options="-cbr 96000" />
+            <Preset name="CBR 128 kbit/s" options="-cbr 128000" />
+            <Preset name="CBR 160 kbit/s" options="-cbr 160000" />
+            <Preset name="CBR 192 kbit/s" options="-cbr 192000" />
+            <Preset name="CBR 224 kbit/s" options="-cbr 224000" />
+            <Preset name="CBR 256 kbit/s" options="-cbr 256000" />
+            <Preset name="CBR 320 kbit/s" options="-cbr 320000" />
+            <Preset name="CBR 400 kbit/s" options="-cbr 400000" />
+            <Preset name="CBR 465 kbit/s" options="-cbr 465000" />
+        </Presets>
+    </Format>
+    <Format id="NERO_MP4" name="MP4 (MPEG-4/AAC)" template="$EXE $OPTIONS -ignorelength -if $INFILE -of $OUTFILE" input="true" output="false" function="- none -" path="neroAacEnc.exe" type="0" formats="WAV" extension="MP4" default="10">
+        <Presets>
+            <Preset name="VBR Quality 0.00" options="-q 0.00" />
+            <Preset name="VBR Quality 0.05" options="-q 0.05" />
+            <Preset name="VBR Quality 0.10" options="-q 0.10" />
+            <Preset name="VBR Quality 0.15" options="-q 0.15" />
+            <Preset name="VBR Quality 0.20" options="-q 0.20" />
+            <Preset name="VBR Quality 0.25" options="-q 0.25" />
+            <Preset name="VBR Quality 0.30" options="-q 0.30" />
+            <Preset name="VBR Quality 0.35" options="-q 0.35" />
+            <Preset name="VBR Quality 0.40" options="-q 0.40" />
+            <Preset name="VBR Quality 0.45" options="-q 0.45" />
+            <Preset name="VBR Quality 0.50" options="-q 0.50" />
+            <Preset name="VBR Quality 0.55" options="-q 0.55" />
+            <Preset name="VBR Quality 0.60" options="-q 0.60" />
+            <Preset name="VBR Quality 0.65" options="-q 0.65" />
+            <Preset name="VBR Quality 0.70" options="-q 0.70" />
+            <Preset name="VBR Quality 0.75" options="-q 0.75" />
+            <Preset name="VBR Quality 0.80" options="-q 0.80" />
+            <Preset name="VBR Quality 0.85" options="-q 0.85" />
+            <Preset name="VBR Quality 0.90" options="-q 0.90" />
+            <Preset name="VBR Quality 0.95" options="-q 0.95" />
+            <Preset name="VBR Quality 1.00" options="-q 1.00" />
+            <Preset name="ABR 32 kbit/s" options="-br 32000" />
+            <Preset name="ABR 48 kbit/s" options="-br 48000" />
+            <Preset name="ABR 64 kbit/s" options="-br 64000" />
+            <Preset name="ABR 96 kbit/s" options="-br 96000" />
+            <Preset name="ABR 128 kbit/s" options="-br 128000" />
+            <Preset name="ABR 160 kbit/s" options="-br 160000" />
+            <Preset name="ABR 192 kbit/s" options="-br 192000" />
+            <Preset name="ABR 224 kbit/s" options="-br 224000" />
+            <Preset name="ABR 256 kbit/s" options="-br 256000" />
+            <Preset name="ABR 320 kbit/s" options="-br 320000" />
+            <Preset name="ABR 400 kbit/s" options="-br 400000" />
+            <Preset name="ABR 465 kbit/s" options="-br 465000" />
+            <Preset name="CBR 32 kbit/s" options="-cbr 32000" />
+            <Preset name="CBR 48 kbit/s" options="-cbr 48000" />
+            <Preset name="CBR 64 kbit/s" options="-cbr 64000" />
+            <Preset name="CBR 96 kbit/s" options="-cbr 96000" />
+            <Preset name="CBR 128 kbit/s" options="-cbr 128000" />
+            <Preset name="CBR 160 kbit/s" options="-cbr 160000" />
+            <Preset name="CBR 192 kbit/s" options="-cbr 192000" />
+            <Preset name="CBR 224 kbit/s" options="-cbr 224000" />
+            <Preset name="CBR 256 kbit/s" options="-cbr 256000" />
+            <Preset name="CBR 320 kbit/s" options="-cbr 320000" />
+            <Preset name="CBR 400 kbit/s" options="-cbr 400000" />
+            <Preset name="CBR 465 kbit/s" options="-cbr 465000" />
+        </Presets>
+    </Format>
+    <Format id="OPUSENC_OPUS" name="OPUS (Opus Audio Codec)" template="$EXE $OPTIONS $INFILE $OUTFILE" input="true" output="false" function="- none -" path="opusenc.exe" type="0" formats="WAV" extension="OPUS" default="12">
+        <Presets>
+            <Preset name="VBR 6 kbit/sec" options="--vbr --comp 10 --bitrate 6" />
+            <Preset name="VBR 8 kbit/sec" options="--vbr --comp 10 --bitrate 8" />
+            <Preset name="VBR 12 kbit/sec" options="--vbr --comp 10 --bitrate 12" />
+            <Preset name="VBR 16 kbit/sec" options="--vbr --comp 10 --bitrate 16" />
+            <Preset name="VBR 24 kbit/sec" options="--vbr --comp 10 --bitrate 24" />
+            <Preset name="VBR 32 kbit/sec" options="--vbr --comp 10 --bitrate 32" />
+            <Preset name="VBR 40 kbit/sec" options="--vbr --comp 10 --bitrate 40" />
+            <Preset name="VBR 48 kbit/sec" options="--vbr --comp 10 --bitrate 48" />
+            <Preset name="VBR 64 kbit/sec" options="--vbr --comp 10 --bitrate 64" />
+            <Preset name="VBR 96 kbit/sec" options="--vbr --comp 10 --bitrate 96" />
+            <Preset name="VBR 112 kbit/sec" options="--vbr --comp 10 --bitrate 112" />
+            <Preset name="VBR 128 kbit/sec" options="--vbr --comp 10 --bitrate 128" />
+            <Preset name="VBR 192 kbit/sec" options="--vbr --comp 10 --bitrate 192" />
+            <Preset name="VBR 224 kbit/sec" options="--vbr --comp 10 --bitrate 224" />
+            <Preset name="VBR 256 kbit/sec" options="--vbr --comp 10 --bitrate 256" />
+            <Preset name="VBR 320 kbit/sec" options="--vbr --comp 10 --bitrate 320" />
+            <Preset name="VBR 400 kbit/sec" options="--vbr --comp 10 --bitrate 400" />
+            <Preset name="VBR 465 kbit/sec" options="--vbr --comp 10 --bitrate 465" />
+            <Preset name="VBR 510 kbit/sec" options="--vbr --comp 10 --bitrate 510" />
+            <Preset name="CVBR 6 kbit/sec" options="--cvbr --comp 10 --bitrate 6" />
+            <Preset name="CVBR 8 kbit/sec" options="--cvbr --comp 10 --bitrate 8" />
+            <Preset name="CVBR 12 kbit/sec" options="--cvbr --comp 10 --bitrate 12" />
+            <Preset name="CVBR 16 kbit/sec" options="--cvbr --comp 10 --bitrate 16" />
+            <Preset name="CVBR 24 kbit/sec" options="--cvbr --comp 10 --bitrate 24" />
+            <Preset name="CVBR 32 kbit/sec" options="--cvbr --comp 10 --bitrate 32" />
+            <Preset name="CVBR 40 kbit/sec" options="--cvbr --comp 10 --bitrate 40" />
+            <Preset name="CVBR 48 kbit/sec" options="--cvbr --comp 10 --bitrate 48" />
+            <Preset name="CVBR 64 kbit/sec" options="--cvbr --comp 10 --bitrate 64" />
+            <Preset name="CVBR 96 kbit/sec" options="--cvbr --comp 10 --bitrate 96" />
+            <Preset name="CVBR 112 kbit/sec" options="--cvbr --comp 10 --bitrate 112" />
+            <Preset name="CVBR 128 kbit/sec" options="--cvbr --comp 10 --bitrate 128" />
+            <Preset name="CVBR 192 kbit/sec" options="--cvbr --comp 10 --bitrate 192" />
+            <Preset name="CVBR 224 kbit/sec" options="--cvbr --comp 10 --bitrate 224" />
+            <Preset name="CVBR 256 kbit/sec" options="--cvbr --comp 10 --bitrate 256" />
+            <Preset name="CVBR 320 kbit/sec" options="--cvbr --comp 10 --bitrate 320" />
+            <Preset name="CVBR 400 kbit/sec" options="--cvbr --comp 10 --bitrate 400" />
+            <Preset name="CVBR 465 kbit/sec" options="--cvbr --comp 10 --bitrate 465" />
+            <Preset name="CVBR 510 kbit/sec" options="--cvbr --comp 10 --bitrate 510" />
+            <Preset name="CBR 6 kbit/sec" options="--hard-cbr --comp 10 --bitrate 6" />
+            <Preset name="CBR 8 kbit/sec" options="--hard-cbr --comp 10 --bitrate 8" />
+            <Preset name="CBR 12 kbit/sec" options="--hard-cbr --comp 10 --bitrate 12" />
+            <Preset name="CBR 16 kbit/sec" options="--hard-cbr --comp 10 --bitrate 16" />
+            <Preset name="CBR 24 kbit/sec" options="--hard-cbr --comp 10 --bitrate 24" />
+            <Preset name="CBR 32 kbit/sec" options="--hard-cbr --comp 10 --bitrate 32" />
+            <Preset name="CBR 40 kbit/sec" options="--hard-cbr --comp 10 --bitrate 40" />
+            <Preset name="CBR 48 kbit/sec" options="--hard-cbr --comp 10 --bitrate 48" />
+            <Preset name="CBR 64 kbit/sec" options="--hard-cbr --comp 10 --bitrate 64" />
+            <Preset name="CBR 96 kbit/sec" options="--hard-cbr --comp 10 --bitrate 96" />
+            <Preset name="CBR 112 kbit/sec" options="--hard-cbr --comp 10 --bitrate 112" />
+            <Preset name="CBR 128 kbit/sec" options="--hard-cbr --comp 10 --bitrate 128" />
+            <Preset name="CBR 192 kbit/sec" options="--hard-cbr --comp 10 --bitrate 192" />
+            <Preset name="CBR 224 kbit/sec" options="--hard-cbr --comp 10 --bitrate 224" />
+            <Preset name="CBR 256 kbit/sec" options="--hard-cbr --comp 10 --bitrate 256" />
+            <Preset name="CBR 320 kbit/sec" options="--hard-cbr --comp 10 --bitrate 320" />
+            <Preset name="CBR 400 kbit/sec" options="--hard-cbr --comp 10 --bitrate 400" />
+            <Preset name="CBR 465 kbit/sec" options="--hard-cbr --comp 10 --bitrate 465" />
+            <Preset name="CBR 510 kbit/sec" options="--hard-cbr --comp 10 --bitrate 510" />
+        </Presets>
+    </Format>
+    <Format id="OGGENC2_OGG" name="OGG (Ogg Vorbis)" template="$EXE $OPTIONS $INFILE -o $OUTFILE" input="true" output="false" function="GetProgress_OggEnc.progress" path="oggenc2.exe" type="0" formats="WAV" extension="OGG" default="8">
+        <Presets>
+            <Preset name="VBR Quality -2 (32 kbps)" options="-q -2" />
+            <Preset name="VBR Quality -1 (32...48 kbps)" options="-q -1" />
+            <Preset name="VBR Quality 0 (64 kbps)" options="-q 0" />
+            <Preset name="VBR Quality 1 (80 kbps)" options="-q 1" />
+            <Preset name="VBR Quality 2 (96 kbps)" options="-q 2" />
+            <Preset name="VBR Quality 3 (112 kbps)" options="-q 3" />
+            <Preset name="VBR Quality 4 (128 kbps)" options="-q 4" />
+            <Preset name="VBR Quality 5 (160 kbps)" options="-q 5" />
+            <Preset name="VBR Quality 6 (192 kbps)" options="-q 6" />
+            <Preset name="VBR Quality 7 (224 kbps)" options="-q 7" />
+            <Preset name="VBR Quality 8 (256 kbps)" options="-q 8" />
+            <Preset name="VBR Quality 9 (320 kbps)" options="-q 9" />
+            <Preset name="VBR Quality 10 (320...500 kbps)" options="-q 10" />
+            <Preset name="CBR 32 kbps" options="-m 32 -M 32 --managed" />
+            <Preset name="CBR 48 kbps" options="-m 48 -M 48 --managed" />
+            <Preset name="CBR 64 kbps" options="-m 64 -M 64 --managed" />
+            <Preset name="CBR 80 kbps" options="-m 80 -M 80 --managed" />
+            <Preset name="CBR 96 kbps" options="-m 96 -M 96 --managed" />
+            <Preset name="CBR 112 kbps" options="-m 112 -M 112 --managed" />
+            <Preset name="CBR 128 kbps" options="-m 128 -M 128 --managed" />
+            <Preset name="CBR 160 kbps" options="-m 160 -M 160 --managed" />
+            <Preset name="CBR 192 kbps" options="-m 192 -M 192 --managed" />
+            <Preset name="CBR 224 kbps" options="-m 224 -M 224 --managed" />
+            <Preset name="CBR 256 kbps" options="-m 256 -M 256 --managed" />
+            <Preset name="CBR 320 kbps" options="-m 320 -M 320 --managed" />
+            <Preset name="CBR 400 kbps" options="-m 400 -M 400 --managed" />
+            <Preset name="CBR 500 kbps" options="-m 500 -M 500 --managed" />
+            <Preset name="ABR 32 kbps" options="-b 32" />
+            <Preset name="ABR 48 kbps" options="-b 48" />
+            <Preset name="ABR 64 kbps" options="-b 64" />
+            <Preset name="ABR 80 kbps" options="-b 80" />
+            <Preset name="ABR 96 kbps" options="-b 96" />
+            <Preset name="ABR 112 kbps" options="-b 112" />
+            <Preset name="ABR 128 kbps" options="-b 128" />
+            <Preset name="ABR 160 kbps" options="-b 160" />
+            <Preset name="ABR 192 kbps" options="-b 192" />
+            <Preset name="ABR 224 kbps" options="-b 224" />
+            <Preset name="ABR 256 kbps" options="-b 256" />
+            <Preset name="ABR 320 kbps" options="-b 320" />
+            <Preset name="ABR 400 kbps" options="-b 400" />
+            <Preset name="ABR 500 kbps" options="-b 500" />
+        </Presets>
+    </Format>
+    <Format id="AFTEN_AC3" name="AC3 (ATSC A/52)" template="$EXE $OPTIONS $INFILE $OUTFILE" input="true" output="false" function="- none -" path="aften.exe" type="0" formats="WAV" extension="AC3" default="15">
+        <Presets>
+            <Preset name="CBR 32 kbit/s" options="-b 32" />
+            <Preset name="CBR 40 kbit/s" options="-b 40" />
+            <Preset name="CBR 48 kbit/s" options="-b 48" />
+            <Preset name="CBR 56 kbit/s" options="-b 56" />
+            <Preset name="CBR 64 kbit/s" options="-b 64" />
+            <Preset name="CBR 80 kbit/s" options="-b 80" />
+            <Preset name="CBR 96 kbit/s" options="-b 96" />
+            <Preset name="CBR 112 kbit/s" options="-b 112" />
+            <Preset name="CBR 128 kbit/s" options="-b 128" />
+            <Preset name="CBR 160 kbit/s" options="-b 160" />
+            <Preset name="CBR 192 kbit/s" options="-b 192" />
+            <Preset name="CBR 224 kbit/s" options="-b 224" />
+            <Preset name="CBR 256 kbit/s" options="-b 256" />
+            <Preset name="CBR 320 kbit/s" options="-b 320" />
+            <Preset name="CBR 384 kbit/s" options="-b 384" />
+            <Preset name="CBR 448 kbit/s" options="-b 448" />
+            <Preset name="CBR 512 kbit/s" options="-b 512" />
+            <Preset name="CBR 576 kbit/s" options="-b 576" />
+            <Preset name="CBR 640 kbit/s" options="-b 640" />
+            <Preset name="VBR Quality 0 (min)" options="-q 0" />
+            <Preset name="VBR Quality 240 (default)" options="-q 240" />
+            <Preset name="VBR Quality 1023 (max)" options="-q 1023" />
+        </Presets>
+    </Format>
+    <Format id="FLAC_FLAC" name="FLAC (Free Lossless Audio Codec)" template="$EXE $OPTIONS -f -o $OUTFILE $INFILE" input="true" output="false" function="GetProgress_FlacEnc.progress" path="flac.exe" type="0" formats="WAV" extension="FLAC" default="5">
+        <Presets>
+            <Preset name="Compression Level 0 (Fast)" options="-0" />
+            <Preset name="Compression Level 1" options="-1" />
+            <Preset name="Compression Level 2" options="-2" />
+            <Preset name="Compression Level 3" options="-3" />
+            <Preset name="Compression Level 4" options="-4" />
+            <Preset name="Compression Level 5" options="-5" />
+            <Preset name="Compression Level 6" options="-6" />
+            <Preset name="Compression Level 7" options="-7" />
+            <Preset name="Compression Level 8 (Best)" options="-8" />
+        </Presets>
+    </Format>
+    <Format id="WAVPACK_WV" name="WV (WavPack)" template="$EXE $OPTIONS -y $INFILE $OUTFILE" input="false" output="false" function="GetProgress_WavPackEnc.progress" path="wavpack.exe" type="0" formats="WAV,WV,CAF,W64,DFF,DSF" extension="WV" default="1">
+        <Presets>
+            <Preset name="Lossless (Fast compression)" options="-f" />
+            <Preset name="Lossless (Normal compression)" options="" />
+            <Preset name="Lossless (Best compression)" options="-h" />
+        </Presets>
+    </Format>
+    <Format id="QAAC_ALAC" name="ALAC (Apple Lossless)" template="$EXE $OPTIONS --ignorelength $INFILE -o $OUTFILE" input="true" output="false" function="- none -" path="qaac.exe" type="0" formats="WAV" extension="M4A" default="0">
+        <Presets>
+            <Preset name="ALAC encoding mode" options="--alac" />
+        </Presets>
+    </Format>
+    <Format id="MAC_APE" name="APE (Monkey&apos;s Audio)" template="$EXE $INFILE $OUTFILE $OPTIONS" input="false" output="false" function="GetProgress_MacEnc.progress" path="mac.exe" type="0" formats="WAV" extension="APE" default="1">
+        <Presets>
+            <Preset name="Fast Compression Level" options="-c1000" />
+            <Preset name="Normal Compression Level" options="-c2000" />
+            <Preset name="High Compression Level" options="-c3000" />
+            <Preset name="Extra High Compression Level" options="-c4000" />
+            <Preset name="Insane Compression Level" options="-c5000" />
+        </Presets>
+    </Format>
+    <Format id="OFR_OFR" name="OFR (OptimFROG Lossless Audio)" template="$EXE $OPTIONS --overwrite $INFILE --output $OUTFILE" input="true" output="false" function="GetProgress_OfrEnc.progress" path="ofr.exe" type="0" formats="WAV" extension="OFR" default="1">
+        <Presets>
+            <Preset name="Fast Compression Mode" options="--encode --mode fast" />
+            <Preset name="Normal Compression Mode" options="--encode --mode normal" />
+            <Preset name="High Compression Mode" options="--encode --mode high" />
+            <Preset name="High Compression Mode (New)" options="--encode --mode highnew" />
+            <Preset name="Extra Compression Mode" options="--encode --mode extra" />
+            <Preset name="Extra Compression Mode (New)" options="--encode --mode extranew" />
+            <Preset name="Best Compression Mode" options="--encode --mode best" />
+            <Preset name="Best Compression Mode (New)" options="--encode --mode bestnew" />
+        </Presets>
+    </Format>
+    <Format id="TTA_TTA" name="TTA (TTAv1 Lossless Audio)" template="$EXE -e $OPTIONS $INFILE  $OUTFILE" input="true" output="false" function="GetProgress_TtaEnc.progress" path="tta.exe" type="0" formats="WAV" extension="TTA" default="0">
+        <Presets>
+            <Preset name="Standard Compression" options="" />
+        </Presets>
+    </Format>
+    <Format id="TAKC_TAK" name="TAK (Tom&apos;s Lossless Audio Kompressor)" template="$EXE -e -overwrite $OPTIONS $INFILE $OUTFILE" input="true" output="false" function="- none -" path="takc.exe" type="0" formats="WAV" extension="TAK" default="6">
+        <Presets>
+            <Preset name="Turbo" options="-p0" />
+            <Preset name="Turbo Extra" options="-p0e" />
+            <Preset name="Turbo Max" options="-p0m" />
+            <Preset name="Fast" options="-p1" />
+            <Preset name="Fast Extra" options="-p1e" />
+            <Preset name="Fast Max" options="-p1m" />
+            <Preset name="Normal" options="-p2" />
+            <Preset name="Normal Extra" options="-p2e" />
+            <Preset name="Normal Max" options="-p2m" />
+            <Preset name="High" options="-p3" />
+            <Preset name="High Extra" options="-p3e" />
+            <Preset name="High Max" options="-p3m" />
+            <Preset name="Extra" options="-p4" />
+            <Preset name="Extra Extra" options="-p4e" />
+            <Preset name="Extra Max" options="-p4m" />
+            <Preset name="Insane" options="-p5" />
+            <Preset name="Insane Extra" options="-p5e" />
+            <Preset name="Insane Max" options="-p5m" />
+        </Presets>
+    </Format>
+    <Format id="LAME_MP1_WAV" name="Decode MP1 to WAV" template="$EXE --decode --mp1input $INFILE $OUTFILE" input="false" output="false" function="GetProgress_LameDec.progress" path="lame.exe" type="1" formats="MP1" extension="WAV" default="0">
+        <Presets>
+            <Preset name="Default" options="" />
+        </Presets>
+    </Format>
+    <Format id="LAME_MP2_WAV" name="Decode MP2 to WAV" template="$EXE --decode --mp2input $INFILE $OUTFILE" input="false" output="false" function="GetProgress_LameDec.progress" path="lame.exe" type="1" formats="MP2" extension="WAV" default="0">
+        <Presets>
+            <Preset name="Default" options="" />
+        </Presets>
+    </Format>
+    <Format id="LAME_MP3_WAV" name="Decode MP3 to WAV" template="$EXE --decode --mp3input $INFILE $OUTFILE" input="false" output="false" function="GetProgress_LameDec.progress" path="lame.exe" type="1" formats="MP3" extension="WAV" default="0">
+        <Presets>
+            <Preset name="Default" options="" />
+        </Presets>
+    </Format>
+    <Format id="MPCDEC_MPC_WAV" name="Decode MPC to WAV" template="$EXE $INFILE $OUTFILE" input="true" output="false" function="GetProgress_MppDec.progress" path="mpcdec.exe" type="1" formats="MPC" extension="WAV" default="0">
+        <Presets>
+            <Preset name="Default" options="" />
+        </Presets>
+    </Format>
+    <Format id="MPCDEC_MPP_WAV" name="Decode MPP to WAV" template="$EXE $INFILE $OUTFILE" input="true" output="false" function="GetProgress_MppDec.progress" path="mpcdec.exe" type="1" formats="MPP" extension="WAV" default="0">
+        <Presets>
+            <Preset name="Default" options="" />
+        </Presets>
+    </Format>
+    <Format id="MPCDEC_MP+_WAV" name="Decode MP+ to WAV" template="$EXE $INFILE $OUTFILE" input="true" output="false" function="GetProgress_MppDec.progress" path="mpcdec.exe" type="1" formats="MP+" extension="WAV" default="0">
+        <Presets>
+            <Preset name="Default" options="" />
+        </Presets>
+    </Format>
+    <Format id="FAAD_MP4_WAV" name="Decode MP4 to WAV" template="$EXE -o $OUTFILE $INFILE" input="false" output="false" function="GetProgress_FaadDec.progress" path="faad.exe" type="1" formats="MP4" extension="WAV" default="0">
+        <Presets>
+            <Preset name="Default" options="" />
+        </Presets>
+    </Format>
+    <Format id="FAAD_M4A_WAV" name="Decode M4A to WAV" template="$EXE -o $OUTFILE $INFILE" input="false" output="false" function="GetProgress_FaadDec.progress" path="faad.exe" type="1" formats="M4A" extension="WAV" default="0">
+        <Presets>
+            <Preset name="Default" options="" />
+        </Presets>
+    </Format>
+    <Format id="FAAD_AAC_WAV" name="Decode AAC to WAV" template="$EXE -o $OUTFILE $INFILE" input="false" output="false" function="GetProgress_FaadDec.progress" path="faad.exe" type="1" formats="AAC" extension="WAV" default="0">
+        <Presets>
+            <Preset name="Default" options="" />
+        </Presets>
+    </Format>
+    <Format id="OPUSDEC_OPUS_WAV" name="Decode OPUS to WAV" template="$EXE $OPTIONS $INFILE $OUTFILE" input="true" output="false" function="- none -" path="opusdec.exe" type="1" formats="OPUS" extension="WAV" default="0">
+        <Presets>
+            <Preset name="Default" options="--force-wav" />
+        </Presets>
+    </Format>
+    <Format id="OGGDEC_OGG_WAV" name="Decode OGG to WAV" template="$EXE -o $OUTFILE $INFILE" input="false" output="false" function="GetProgress_OggDec.progress" path="oggdec.exe" type="1" formats="OGG" extension="WAV" default="0">
+        <Presets>
+            <Preset name="Default" options="" />
+        </Presets>
+    </Format>
+    <Format id="NONE_AC3_WAV" name="Decode AC3 to WAV" template="$EXE $OPTIONS $INFILE $OUTFILE" input="true" output="false" function="- none -" path="" type="1" formats="AC3" extension="WAV" default="0">
+        <Presets>
+            <Preset name="Default" options="" />
+        </Presets>
+    </Format>
+    <Format id="FLAC_FLAC_WAV" name="Decode FLAC to WAV" template="$EXE -d -f -o $OUTFILE $INFILE" input="true" output="false" function="GetProgress_FlacDec.progress" path="flac.exe" type="1" formats="FLAC" extension="WAV" default="0">
+        <Presets>
+            <Preset name="Default" options="" />
+        </Presets>
+    </Format>
+    <Format id="WVUNPACK_WV_WAV" name="Decode WV to WAV" template="$EXE -y $INFILE $OUTFILE" input="false" output="false" function="GetProgress_WvUnpackDec.progress" path="wvunpack.exe" type="1" formats="WV" extension="WAV" default="0">
+        <Presets>
+            <Preset name="Default" options="" />
+        </Presets>
+    </Format>
+    <Format id="MACV_APE_WA" name="Decode APE to WAV" template="$EXE $INFILE $OUTFILE -d" input="false" output="false" function="GetProgress_MacDec.progress" path="mac.exe" type="1" formats="APE" extension="WAV" default="0">
+        <Presets>
+            <Preset name="Default" options="" />
+        </Presets>
+    </Format>
+    <Format id="MAC_MAC_WAV" name="Decode MAC to WAV" template="$EXE $INFILE $OUTFILE -d" input="false" output="false" function="GetProgress_MacDec.progress" path="mac.exe" type="1" formats="MAC" extension="WAV" default="0">
+        <Presets>
+            <Preset name="Default" options="" />
+        </Presets>
+    </Format>
+    <Format id="OFR_OFR_WAV" name="Decode OFR to WAV" template="$EXE --decode --overwrite $INFILE --output $OUTFILE" input="true" output="false" function="GetProgress_OfrDec.progress" path="ofr.exe" type="1" formats="OFR" extension="WAV" default="0">
+        <Presets>
+            <Preset name="Default" options="" />
+        </Presets>
+    </Format>
+    <Format id="TTA_TTA_WAV" name="Decode TTA to WAV" template="$EXE -d $OPTIONS $INFILE  $OUTFILE" input="true" output="false" function="GetProgress_TtaDec.progress" path="tta.exe" type="1" formats="TTA" extension="WAV" default="0">
+        <Presets>
+            <Preset name="Default" options="" />
+        </Presets>
+    </Format>
+    <Format id="TAKC_TAK_WAV" name="Decode TAK to WAV" template="$EXE -d -overwrite $INFILE $OUTFILE" input="true" output="false" function="- none -" path="takc.exe" type="1" formats="TAK" extension="WAV" default="0">
+        <Presets>
+            <Preset name="Default" options="" />
+        </Presets>
+    </Format>
+</Formats>
