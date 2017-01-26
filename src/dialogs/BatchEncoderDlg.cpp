@@ -382,7 +382,7 @@ BOOL CBatchEncoderDlg::OnInitDialog()
         this->LoadOptions(this->szOptionsFile);
         this->LoadItems(this->szItemsFile);
     }
-    catch (...) { }
+    catch (...) {}
 
     return TRUE;
 }
@@ -579,7 +579,7 @@ void CBatchEncoderDlg::OnPaint()
         int x = (rect.Width() - cxIcon + 1) / 2;
         int y = (rect.Height() - cyIcon + 1) / 2;
         dc.DrawIcon(x, y, m_hIcon);
-}
+    }
     else
     {
         CResizeDialog::OnPaint();
@@ -607,7 +607,7 @@ void CBatchEncoderDlg::UpdateFormatComboBox()
         static bool bResizeFormatsComboBox = false;
         if (bResizeFormatsComboBox == false)
         {
-            ::SetComboBoxHeight(this->GetSafeHwnd(), IDC_COMBO_FORMAT);
+            ::SetComboBoxHeight(this->GetSafeHwnd(), IDC_COMBO_FORMAT, 15);
             bResizeFormatsComboBox = true;
         }
 
@@ -642,7 +642,7 @@ void CBatchEncoderDlg::UpdatePresetComboBox()
         static bool bResizePresetsComboBox = false;
         if (bResizePresetsComboBox == false)
         {
-            ::SetComboBoxHeight(this->GetSafeHwnd(), IDC_COMBO_PRESETS);
+            ::SetComboBoxHeight(this->GetSafeHwnd(), IDC_COMBO_PRESETS, 15);
             bResizePresetsComboBox = true;
         }
 
@@ -900,7 +900,7 @@ bool CBatchEncoderDlg::LoadItems(CString szFileXml)
     XmlConfiguration doc;
     if (doc.Open(szFileXml) == false)
         return false;
-    
+
     this->m_LstInputItems.DeleteAllItems();
     this->m_Config.m_Items.RemoveAllNodes();
 
@@ -908,7 +908,7 @@ bool CBatchEncoderDlg::LoadItems(CString szFileXml)
 
     this->SetItems();
     this->UpdateStatusBar();
-    
+
     return true;
 }
 
@@ -1013,12 +1013,12 @@ void CBatchEncoderDlg::FinishConvert()
                 this->SaveOptions(this->szOptionsFile);
                 this->SaveItems(this->szItemsFile);
             }
-            catch (...) { }
+            catch (...) {}
         }
 
         this->EnableTrayIcon(false);
 
-        ::DoTheShutdown();
+        ::ShutdownWindows();
     }
 }
 
@@ -1056,7 +1056,7 @@ void CBatchEncoderDlg::OnClose()
             this->SaveOptions(this->szOptionsFile);
             this->SaveItems(this->szItemsFile);
         }
-        catch (...) { }
+        catch (...) {}
     }
 
     this->EnableTrayIcon(false);
@@ -1237,7 +1237,7 @@ void CBatchEncoderDlg::OnBnClickedCheckOutPath()
     }
 }
 
-int CBatchEncoderDlg::InsertToMemoryList(CString szPath)
+int CBatchEncoderDlg::AddToItems(CString szPath)
 {
     int nFormat = this->m_CmbFormat.GetCurSel();
     int nPreset = this->m_CmbPresets.GetCurSel();
@@ -1246,7 +1246,36 @@ int CBatchEncoderDlg::InsertToMemoryList(CString szPath)
     if (m_Config.m_Formats.GetSize() > 0)
         szFormatId = m_Config.m_Formats.GetData(nFormat).szId;
 
-    return m_Config.m_Items.InsertNode(szPath, szFormatId, nPreset);
+    WIN32_FIND_DATA lpFindFileData;
+    HANDLE hFind;
+    ULARGE_INTEGER ulSize;
+    ULONGLONG nFileSize;
+
+    hFind = ::FindFirstFile(szPath, &lpFindFileData);
+    if (hFind == INVALID_HANDLE_VALUE)
+        return -1;
+
+    ::FindClose(hFind);
+
+    ulSize.HighPart = lpFindFileData.nFileSizeHigh;
+    ulSize.LowPart = lpFindFileData.nFileSizeLow;
+    nFileSize = ulSize.QuadPart;
+
+    CString szFileSize;
+    szFileSize.Format(_T("%I64d"), nFileSize);
+
+    CItem item;
+    item.szPath = szPath;
+    item.szSize = szFileSize;
+    item.szName = ::GetOnlyFileName(szPath);
+    item.szExtension = ::GetFileExtensionUpperCase(szPath);
+    item.szFormatId = szFormatId;
+    item.nPreset = nPreset;
+    item.bChecked = true;
+
+    m_Config.m_Items.InsertNode(item);
+
+    return (int)m_Config.m_Items.GetSize() - 1;
 }
 
 void CBatchEncoderDlg::AddToList(CItem &item, int nItem)
@@ -1304,7 +1333,7 @@ void CBatchEncoderDlg::AddToList(CItem &item, int nItem)
 
 bool CBatchEncoderDlg::AddToList(CString szPath)
 {
-    int nItem = this->InsertToMemoryList(szPath);
+    int nItem = this->AddToItems(szPath);
     if (nItem == -1)
         return false;
 

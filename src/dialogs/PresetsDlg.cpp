@@ -94,7 +94,7 @@ BOOL CPresetsDlg::OnInitDialog()
         m_CmbFormat.InsertString(i, format.szName);
     }
 
-    ::SetComboBoxHeight(this->GetSafeHwnd(), IDC_COMBO_PRESET_FORMAT);
+    ::SetComboBoxHeight(this->GetSafeHwnd(), IDC_COMBO_PRESET_FORMAT, 15);
 
     m_CmbFormat.SetCurSel(nSelectedFormat);
 

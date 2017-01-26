@@ -134,33 +134,27 @@ int GetLogicalProcessorInformation(LogicalProcessorInformation* info)
     return (0);
 }
 
-void DoTheShutdown()
+void ShutdownWindows()
 {
-    // Windows XP or later
-    if (true)
+    HANDLE m_hToken;
+    if (::OpenProcessToken(GetCurrentProcess(), TOKEN_ADJUST_PRIVILEGES | TOKEN_QUERY, &m_hToken))
     {
-        HANDLE m_hToken;
-
-        if (::OpenProcessToken(GetCurrentProcess(), TOKEN_ADJUST_PRIVILEGES | TOKEN_QUERY, &m_hToken))
+        LUID m_Luid;
+        if (::LookupPrivilegeValue(NULL, _T("SeShutdownPrivilege"), &m_Luid))
         {
-            LUID m_Luid;
-            if (::LookupPrivilegeValue(NULL, _T("SeShutdownPrivilege"), &m_Luid))
-            {
-                TOKEN_PRIVILEGES tp;
+            TOKEN_PRIVILEGES tp;
 
-                tp.PrivilegeCount = 1;
-                tp.Privileges[0].Luid = m_Luid;
-                tp.Privileges[0].Attributes = SE_PRIVILEGE_ENABLED;
+            tp.PrivilegeCount = 1;
+            tp.Privileges[0].Luid = m_Luid;
+            tp.Privileges[0].Attributes = SE_PRIVILEGE_ENABLED;
 
-                ::AdjustTokenPrivileges(m_hToken, FALSE, &tp, 0, NULL, NULL);
-            }
-
-            ::CloseHandle(m_hToken);
+            ::AdjustTokenPrivileges(m_hToken, FALSE, &tp, 0, NULL, NULL);
         }
+
+        ::CloseHandle(m_hToken);
     }
 
     ::ExitWindowsEx(EWX_SHUTDOWN | EWX_POWEROFF | EWX_FORCEIFHUNG, 0);
-
     ::PostQuitMessage(0);
 }
 
@@ -186,53 +180,18 @@ void LaunchAndWait(LPCTSTR file, LPCTSTR params, BOOL bWait)
     ::CloseHandle(sei.hProcess);
 }
 
-void SetComboBoxHeight(HWND hDlg, int nComboBoxID)
+void SetComboBoxHeight(HWND hDlg, int nComboBoxID, int nSizeLimit)
 {
-    // limit the size default to: 8 to 30, system default is 30
-    const int nSizeLimit = 15;
-
     HWND hComboxBox = ::GetDlgItem(hDlg, nComboBoxID);
-
-    // NOTE: on WinXP standard method does not work so we are using CB_SETMINVISIBLE message
-    // Windows XP or later
-    if (true)
-    {
-        // well we using right now 5.0 NT define, but we need this for XP
-#if !defined(CBM_FIRST) | !defined(CB_SETMINVISIBLE)
-#define CBM_FIRST 0x1700
-#define	CB_SETMINVISIBLE (CBM_FIRST + 1)
-#endif
-
+    if (hComboxBox != NULL)
         ::SendMessage(hComboxBox, CB_SETMINVISIBLE, (WPARAM)nSizeLimit, 0);
-        return;
-    }
-
-    int nCount = (int) ::SendDlgItemMessage(hDlg, nComboBoxID, CB_GETCOUNT, 0, 0);
-    int nHeight = (int) ::SendDlgItemMessage(hDlg, nComboBoxID, CB_GETITEMHEIGHT, 0, 0);
-    RECT rcCB;
-    int nCY = 0;
-
-    ::GetWindowRect(hComboxBox, &rcCB);
-    if (nCount > nSizeLimit)
-        nCY = nHeight * nSizeLimit;
-    else
-        nCY = 2 * nHeight * nCount;
-
-    ::SetWindowPos(hComboxBox,
-        NULL,
-        0,
-        0,
-        rcCB.right - rcCB.left,
-        nCY,
-        SWP_NOZORDER | SWP_NOMOVE | SWP_SHOWWINDOW);
 }
 
-UINT MyGetFileName(LPCTSTR lpszPathName, LPTSTR lpszTitle, UINT nMax)
+UINT GetFileNameInternal(LPCTSTR lpszPathName, LPTSTR lpszTitle, UINT nMax)
 {
     LPTSTR lpszTemp = ::PathFindFileName(lpszPathName);
     if (lpszTitle == NULL)
         return lstrlen(lpszTemp) + 1;
-
     lstrcpyn(lpszTitle, lpszTemp, nMax);
     return(0);
 }
@@ -240,14 +199,37 @@ UINT MyGetFileName(LPCTSTR lpszPathName, LPTSTR lpszTitle, UINT nMax)
 CString GetFileName(CString szFilePath)
 {
     CString strResult;
-    MyGetFileName(szFilePath, strResult.GetBuffer(_MAX_FNAME), _MAX_FNAME);
+    ::GetFileNameInternal(szFilePath, strResult.GetBuffer(_MAX_FNAME), _MAX_FNAME);
     strResult.ReleaseBuffer();
     return strResult;
+}
+
+CString GetOnlyFileName(CString szFilePath)
+{
+    CString szFileName = ::GetFileName(szFilePath);
+    szFileName.TrimRight(::GetFileExtension(szFilePath));
+    szFileName.TrimRight(_T("."));
+    return szFileName;
 }
 
 CString GetFileExtension(CString szFilePath)
 {
     CString szExt = ::PathFindExtension(szFilePath);
+    szExt.Remove('.');
+    return szExt;
+}
+
+CString GetFileExtensionUpperCase(CString szFilePath)
+{
+    CString szExt = ::PathFindExtension(szFilePath);
+    szExt.MakeUpper();
+    szExt.Remove('.');
+    return szExt;
+}
+CString GetFileExtensionLowerCase(CString szFilePath)
+{
+    CString szExt = ::PathFindExtension(szFilePath);
+    szExt.MakeLower();
     szExt.Remove('.');
     return szExt;
 }

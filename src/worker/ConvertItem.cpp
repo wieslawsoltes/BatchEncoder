@@ -3,6 +3,7 @@
 
 #include "StdAfx.h"
 #include "..\BatchEncoder.h"
+#include "..\utilities\Utilities.h"
 #include "WorkThread.h"
 
 enum Mode { None = -1, Encode = 0, Transcode = 1 };
@@ -21,7 +22,7 @@ bool ConvertItem(CItemContext* pContext)
     if (pContext->pWorkerContext->pConfig->m_Options.bOutputPathChecked == false)
     {
         szOutPath = szInputFile;
-        CString szToRemove = pContext->pWorkerContext->pConfig->m_Items.GetFileName(szInputFile);
+        CString szToRemove = ::GetFileName(szInputFile);
         int nNewLenght = szOutPath.GetLength() - szToRemove.GetLength();
         szOutPath.Truncate(nNewLenght);
     }

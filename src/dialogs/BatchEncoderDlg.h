@@ -54,7 +54,7 @@ public:
     CMyStatusBarCtrl m_StatusBar;
 public:
     void UpdateStatusBar();
-    int InsertToMemoryList(CString szPath);
+    int AddToItems(CString szPath);
     bool AddToList(CString szPath);
     void AddToList(CItem &item, int nItem);
     void HandleDropFiles(HDROP hDropInfo);

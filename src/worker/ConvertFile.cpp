@@ -6,6 +6,7 @@
 #include "..\utilities\TimeCount.h"
 #include "..\utilities\UnicodeUtf8.h"
 #include "..\utilities\Utf8String.h"
+#include "..\utilities\Utilities.h"
 #include "WorkThread.h"
 
 bool ConvertFile(CFileContext* pContext)

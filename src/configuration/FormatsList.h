@@ -107,7 +107,6 @@ public:
         }
         return -1;
     }
-public:
     int GetEncoderFormatByExt(CString szExt)
     {
         szExt.MakeUpper();

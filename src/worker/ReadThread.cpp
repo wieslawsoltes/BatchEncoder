@@ -3,6 +3,7 @@
 
 #include "StdAfx.h"
 #include "..\BatchEncoder.h"
+#include "..\utilities\Utilities.h"
 #include "WorkThread.h"
 
 DWORD WINAPI ReadThread(LPVOID lpParam)

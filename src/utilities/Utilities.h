@@ -18,15 +18,23 @@ typedef struct tagLogicalProcessorInformation
 
 int GetLogicalProcessorInformation(LogicalProcessorInformation* info);
 
-void DoTheShutdown();
+void ShutdownWindows();
 
 void LaunchAndWait(LPCTSTR file, LPCTSTR params, BOOL bWait);
 
-void SetComboBoxHeight(HWND hDlg, int nComboBoxID);
+void SetComboBoxHeight(HWND hDlg, int nComboBoxID, int nSizeLimit);
 
 CString GetFileName(CString szFilePath);
 
+CString GetOnlyFileName(CString szFilePath);
+
 CString GetFileExtension(CString szFilePath);
+
+CString GetFileExtension(CString szFilePath);
+
+CString GetFileExtensionUpperCase(CString szFilePath);
+
+CString GetFileExtensionLowerCase(CString szFilePath);
 
 ULONGLONG GetFileSize64(HANDLE hFile);
 
