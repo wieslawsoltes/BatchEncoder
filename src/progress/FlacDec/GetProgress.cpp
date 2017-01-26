@@ -10,8 +10,6 @@
 
 int GetProgress(char *szLineBuff, int nLineLen)
 {
-    // NOTE: this is same code as FlacEnc
-
     int j;
     int nPos = 0;
     char szPercentage[32];

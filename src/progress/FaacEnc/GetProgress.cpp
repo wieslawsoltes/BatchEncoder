@@ -10,8 +10,6 @@
 
 int GetProgress(char *szLineBuff, int nLineLen)
 {
-    // NOTE: this is same code as LameEnc
-
     int nStart;
     int nEnd;
     char szPercentage[32];

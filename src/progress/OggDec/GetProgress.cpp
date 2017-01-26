@@ -10,8 +10,6 @@
 
 int GetProgress(char *szLineBuff, int nLineLen)
 {
-    // NOTE: using VorbisTools decoder
-
     char szPercentage[32];
     int nProgress = -1;
     int nStart;

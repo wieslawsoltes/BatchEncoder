@@ -10,10 +10,6 @@
 
 int GetProgress(char *szLineBuff, int nLineLen)
 {
-    //
-    //  LameEnc
-    //
-
     int nStart;
     int nEnd;
     char szPercentage[32];

@@ -10,14 +10,6 @@
 
 int GetProgress(char *szLineBuff, int nLineLen)
 {
-    // NOTE:
-    // using my patched console encoder/decoder ttaenc.exe 3.3
-    // added fflush(...) after Encode/Decode fprintf(...) calls in ttaenc project
-    // because of delayed output from original console encoder/decoder
-    // and added UnicoWS support to ttaenc for Win9x compatibility
-
-    // NOTE: this is same code as FlacEnc and TtaEnc
-
     // search for:
     // 'Decode:  wrote 28201004 bytes, 81% complete, ratio: 1,34, time: 4'
     // 'Decode:  wrote 34435676 bytes, done, ratio: 1,38, time: 4'

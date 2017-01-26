@@ -10,10 +10,6 @@
 
 int GetProgress(char *szLineBuff, int nLineLen)
 {
-    // NOTE: 
-    // progress output for ofr.exe encoder/decoder mode is same
-    // only messages Compressing and Decompression are different
-
     int nStart;
     int nEnd;
     char szPercentage[32];

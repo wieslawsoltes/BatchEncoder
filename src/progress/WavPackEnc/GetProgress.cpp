@@ -10,11 +10,6 @@
 
 int GetProgress(char *szLineBuff, int nLineLen)
 {
-    // NOTE:
-    // using my patched console encoder wavpack.exe 4.31
-    // added fflush(...) after all fprintf(...) calls in WavPack project
-    // because of delayed output from original console encoder
-
     int j;
     int nPos = 0;
     char szPercentage[32];

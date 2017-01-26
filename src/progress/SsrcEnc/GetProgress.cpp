@@ -10,7 +10,7 @@
 
 int GetProgress(char *szLineBuff, int nLineLen)
 {
-    // TODO: handle twopass processing
+    // TODO: Handle two-pass processing.
 
     int j;
     int nPos = 0;

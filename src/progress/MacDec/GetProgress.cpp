@@ -10,13 +10,6 @@
 
 int GetProgress(char *szLineBuff, int nLineLen)
 {
-    // NOTE:
-    // using my patched console encoder/decoder mac.exe 3.99
-    // added fflush(...) after all fprintf(...) calls in Console project
-    // because of delayed output from original console encoder/decoder
-
-    // NOTE: progress output for mac.exe encoder/decoder mode is same
-
     // search for:
     // 'Progress: 21.4% (4.8 seconds remaining, 1.3 seconds total)'
 
