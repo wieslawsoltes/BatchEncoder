@@ -441,6 +441,25 @@ public:
         pOptionsElem->LinkEndChild(pOptionElem);
     }
 public:
+    void GetOptions(COptions &m_Options)
+    {
+        tinyxml2::XMLElement *pOptionsElem = this->FirstChildElement("Options");
+        if (pOptionsElem != NULL)
+        {
+            this->GetOptions(pOptionsElem, m_Options);
+        }
+    }
+    void SetOptions(COptions &m_Options)
+    {
+        tinyxml2::XMLDeclaration* decl = this->NewDeclaration(UTF8_DOCUMENT_DECLARATION);
+        this->LinkEndChild(decl);
+
+        tinyxml2::XMLElement *pOptionsElem = this->NewElement("Options");
+        this->LinkEndChild(pOptionsElem);
+
+        this->SetOptions(pOptionsElem, m_Options);
+    }
+public:
     void GetPresets(tinyxml2::XMLElement *pPresetsElem, CPresetsList &m_Presets)
     {
         tinyxml2::XMLElement *pPresetElem = pPresetsElem->FirstChildElement("Preset");
@@ -792,58 +811,6 @@ public:
         this->LinkEndChild(pItemsElem);
 
         this->SetItems(pItemsElem, m_Items);
-    }
-public:
-    void GetConfiguration(CConfiguration &m_Config)
-    {
-        tinyxml2::XMLElement *pRootElem = this->FirstChildElement();
-        if (pRootElem != NULL)
-        {
-            // root: "Configuration"
-            const char *szRoot = pRootElem->Value();
-            const char *szRootName = "Configuration";
-            if (strcmp(szRootName, szRoot) == 0)
-            {
-                // root: Options
-                tinyxml2::XMLElement *pOptionsElem = pRootElem->FirstChildElement("Options");
-                if (pOptionsElem != NULL)
-                    this->GetOptions(pOptionsElem, m_Config.m_Options);
-
-                // root: Formats
-                tinyxml2::XMLElement *pFormatsElem = pRootElem->FirstChildElement("Formats");
-                if (pFormatsElem != NULL)
-                    this->GetFormats(pFormatsElem, m_Config.m_Formats);
-
-                // root: Items
-                tinyxml2::XMLElement *pItemsElem = pRootElem->FirstChildElement("Items");
-                if (pItemsElem != NULL)
-                    this->GetItems(pItemsElem, m_Config.m_Items);
-            }
-        }
-    }
-    void SetConfiguration(CConfiguration &m_Config)
-    {
-        tinyxml2::XMLDeclaration* decl = this->NewDeclaration(UTF8_DOCUMENT_DECLARATION);
-        this->LinkEndChild(decl);
-
-        // root: Configuration
-        tinyxml2::XMLElement *pRootElem = this->NewElement("Configuration");
-        this->LinkEndChild(pRootElem);
-
-        // root: Options
-        tinyxml2::XMLElement *pOptionsElem = this->NewElement("Options");
-        pRootElem->LinkEndChild(pOptionsElem);
-        this->SetOptions(pOptionsElem, m_Config.m_Options);
-
-        // root: Formats
-        tinyxml2::XMLElement *pFormatsElem = this->NewElement("Formats");
-        pRootElem->LinkEndChild(pFormatsElem);
-        this->SetFormats(pFormatsElem, m_Config.m_Formats);
-
-        // root: Items
-        tinyxml2::XMLElement *pItemsElem = this->NewElement("Items");
-        pRootElem->LinkEndChild(pItemsElem);
-        this->SetItems(pItemsElem, m_Config.m_Items);
     }
 public:
     bool Open(CString szFileName)
