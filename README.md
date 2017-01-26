@@ -169,11 +169,11 @@ Command-line tools have each different hardware and software requirements. All t
 
 Files extensions:
 
-* .xml - Any onfiguration file
-* .config - Program configuration
-* .items - Input file items
-* .presets - Predefined format presets
+* .xml - Any configuration file
+* .options - Program options
 * .formats - Encoder and decoder formats
+* .presets - Predefined format presets
+* .items - Input file items
 * .progress - Compiled progress function into windows DLL
 
 Use only UTF-8 compatible text editors (e.g. Notepad) to edit xml configuration files.
