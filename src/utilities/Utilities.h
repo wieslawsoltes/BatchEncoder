@@ -32,10 +32,6 @@ CString GetFileExtension(CString szFilePath);
 
 CString GetFileExtension(CString szFilePath);
 
-CString GetFileExtensionUpperCase(CString szFilePath);
-
-CString GetFileExtensionLowerCase(CString szFilePath);
-
 ULONGLONG GetFileSize64(HANDLE hFile);
 
 CString GetExeFilePath();

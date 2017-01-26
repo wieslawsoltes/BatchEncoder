@@ -49,7 +49,9 @@ bool ConvertItem(CItemContext* pContext)
     bool bCanDecodeInput = encoderFormat.IsValidInputExtension(szInputFileExt);
 
     // output path
-    CString szName = pContext->item->szName + _T(".") + encoderFormat.szOutputExtension.MakeLower();
+
+    CString szEncoderExtension = encoderFormat.szOutputExtension;
+    CString szName = pContext->item->szName + _T(".") + szEncoderExtension.MakeLower();
     CString szOutputFile;
     if (szOutPath.GetLength() >= 1)
     {
@@ -111,7 +113,10 @@ bool ConvertItem(CItemContext* pContext)
 
         // TODO: bUseOutPipes == true than handle szOutputFile same as input file
         if (nProcessingMode == Mode::Transcode)
-            szOutputFile = szOutputFile + +_T(".") + decoderFormat.szOutputExtension.MakeLower();
+        {
+            CString szDecoderExtension = decoderFormat.szOutputExtension;
+            szOutputFile = szOutputFile + +_T(".") + szDecoderExtension.MakeLower();
+        }
 
         // build full command line for decoder (DECODER-EXE + OPTIONS + INFILE + OUTFILE) 
         // this is basic model, some of encoder may have different command-line structure

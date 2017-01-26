@@ -102,8 +102,8 @@ public:
         for (int i = 0; i < nFormats; i++)
         {
             CFormat& format = this->GetData(i);
-            CString id = format.szId.MakeUpper();
-            if (szFormatId.Compare(id) == 0)
+            CString id = format.szId;
+            if (szFormatId.Compare(id.MakeUpper()) == 0)
                 return i;
         }
         return -1;
@@ -115,7 +115,8 @@ public:
         for (int i = 0; i < nFormats; i++)
         {
             CFormat& format = this->GetData(i);
-            if (format.nType == nType && szExt.Compare(format.szOutputExtension.MakeUpper()) == 0)
+            CString extension = format.szOutputExtension;
+            if (format.nType == nType && szExt.Compare(extension.MakeUpper()) == 0)
                 return i;
         }
         return -1;

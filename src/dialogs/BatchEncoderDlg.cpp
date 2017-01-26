@@ -1268,7 +1268,7 @@ int CBatchEncoderDlg::AddToItems(CString szPath)
     item.szPath = szPath;
     item.szSize = szFileSize;
     item.szName = ::GetOnlyFileName(szPath);
-    item.szExtension = ::GetFileExtensionUpperCase(szPath);
+    item.szExtension = ::GetFileExtension(szPath).MakeUpper();
     item.szFormatId = szFormatId;
     item.nPreset = nPreset;
     item.bChecked = true;

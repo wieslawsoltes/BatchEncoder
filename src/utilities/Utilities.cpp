@@ -219,21 +219,6 @@ CString GetFileExtension(CString szFilePath)
     return szExt;
 }
 
-CString GetFileExtensionUpperCase(CString szFilePath)
-{
-    CString szExt = ::PathFindExtension(szFilePath);
-    szExt.MakeUpper();
-    szExt.Remove('.');
-    return szExt;
-}
-CString GetFileExtensionLowerCase(CString szFilePath)
-{
-    CString szExt = ::PathFindExtension(szFilePath);
-    szExt.MakeLower();
-    szExt.Remove('.');
-    return szExt;
-}
-
 ULONGLONG GetFileSize64(HANDLE hFile)
 {
     ULARGE_INTEGER liSize;
