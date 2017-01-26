@@ -59,7 +59,9 @@ Name: quicklaunchicon; Description: {cm:CreateQuickLaunchIcon}; GroupDescription
 Source: {#BasePath}\src\bin\{#ProgramConfiguration}\{#ProgramBuild}\BatchEncoder.exe; DestDir: {app}; Flags: ignoreversion; Components: main
 Source: {#BasePath}\*.txt; DestDir: {app}; Flags: ignoreversion; Components: docs
 Source: {#BasePath}\*.md; DestDir: {app}; Flags: ignoreversion; Components: docs
-Source: {#BasePath}\config\*.config; DestDir: {app}; Flags: ignoreversion; Components: config
+Source: {#BasePath}\config\*.options; DestDir: {app}; Flags: ignoreversion; Components: config
+Source: {#BasePath}\config\*.formats; DestDir: {app}; Flags: ignoreversion; Components: config
+Source: {#BasePath}\config\*.items; DestDir: {app}; Flags: ignoreversion; Components: config
 Source: {#BasePath}\src\bin\{#ProgramConfiguration}\{#ProgramBuild}\*.progress; DestDir: {app}; Flags: ignoreversion; Components: progress
 Source: {#BasePath}\scripts\*.ps1; DestDir: {app}; Flags: ignoreversion; Components: scripts
 
