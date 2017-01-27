@@ -114,6 +114,9 @@
     <ClCompile Include="worker\ConvertItem.cpp">
       <Filter>Source Files\Worker</Filter>
     </ClCompile>
+    <ClCompile Include="worker\XmlConfiguration.cpp">
+      <Filter>Source Files\Worker</Filter>
+    </ClCompile>
     <ClCompile Include="controls\MyListCtrl.cpp">
       <Filter>Source Files\Controls</Filter>
     </ClCompile>
