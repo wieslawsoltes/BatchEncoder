@@ -4,6 +4,7 @@
 #include "StdAfx.h"
 #include "..\BatchEncoder.h"
 #include "..\utilities\Utilities.h"
+#include "..\XmlConfiguration.h"
 #include "BatchEncoderDlg.h"
 #include "PresetsDlg.h"
 #include "AboutDlg.h"
