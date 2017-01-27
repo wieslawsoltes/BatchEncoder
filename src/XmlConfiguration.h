@@ -10,7 +10,7 @@
 
 #define UTF8_DOCUMENT_DECLARATION "xml version=\"1.0\" encoding=\"UTF-8\""
 
-class XmlConfiguration : public tinyxml2::XMLDocument
+class XmlConfiguration : private tinyxml2::XMLDocument
 {
 public:
     XmlConfiguration();
