@@ -24,6 +24,10 @@ public:
     void SetPresets(tinyxml2::XMLElement *pPresetsElem, CPresetsList &m_Presets);
     void GetPresets(CPresetsList &m_Presets);
     void SetPresets(CPresetsList &m_Presets);
+    void GetFormat(tinyxml2::XMLElement *pFormatElem, CFormat &m_Format);
+    void SetFormat(tinyxml2::XMLElement *pFormatElem, CFormat &m_Format);
+    void GetFormat(CFormat &m_Format);
+    void SetFormat(CFormat &m_Format);
     void GetFormats(tinyxml2::XMLElement *pFormatsElem, CFormatsList &m_Formats);
     void SetFormats(tinyxml2::XMLElement *pFormatsElem, CFormatsList &m_Formats);
     void GetFormats(CFormatsList &m_Formats);
