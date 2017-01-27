@@ -522,39 +522,34 @@ void XmlConfiguration::SetPresets(CPresetsList &m_Presets)
     this->SetPresets(pPresetsElem, m_Presets);
 }
 
-void XmlConfiguration::GetFormats(tinyxml2::XMLElement *pFormatsElem, CFormatsList &m_Formats)
+void XmlConfiguration::GetFormat(tinyxml2::XMLElement *pFormatElem, CFormat &m_Format)
 {
-    tinyxml2::XMLElement *pFormatElem = pFormatsElem->FirstChildElement("Format");
-    for (pFormatElem; pFormatElem; pFormatElem = pFormatElem->NextSiblingElement())
+    const char *pszId = pFormatElem->Attribute("id");
+    if (pszId != NULL)
     {
-        CFormat format;
+        format.szId = ToCString(pszId);
+    }
 
-        const char *pszId = pFormatElem->Attribute("id");
-        if (pszId != NULL)
-        {
-            format.szId = ToCString(pszId);
-        }
+    const char *pszName = pFormatElem->Attribute("name");
+    if (pszName != NULL)
+    {
+        format.szName = ToCString(pszName);
+    }
 
-        const char *pszName = pFormatElem->Attribute("name");
-        if (pszName != NULL)
-        {
-            format.szName = ToCString(pszName);
-        }
+    const char *pszTemplate = pFormatElem->Attribute("template");
+    if (pszTemplate != NULL)
+    {
+        format.szTemplate = ToCString(pszTemplate);
+    }
 
-        const char *pszTemplate = pFormatElem->Attribute("template");
-        if (pszTemplate != NULL)
-        {
-            format.szTemplate = ToCString(pszTemplate);
-        }
+    const char *pszPipesInput = pFormatElem->Attribute("input");
+    if (pszPipesInput != NULL)
+    {
+        format.bInput = ToCString(pszPipesInput).CompareNoCase(_T("true")) == 0;
+    }
 
-        const char *pszPipesInput = pFormatElem->Attribute("input");
-        if (pszPipesInput != NULL)
-        {
-            format.bInput = ToCString(pszPipesInput).CompareNoCase(_T("true")) == 0;
-        }
-
-        const char *pszPipesOutput = pFormatElem->Attribute("output");
-        if (pszPipesOutput != NULL)
+    const char *pszPipesOutput = pFormatElem->Attribute("output");
+    if (pszPipesOutput != NULL)
         {
             format.bOutput = ToCString(pszPipesOutput).CompareNoCase(_T("true")) == 0;
         }
@@ -597,61 +592,90 @@ void XmlConfiguration::GetFormats(tinyxml2::XMLElement *pFormatsElem, CFormatsLi
 
         tinyxml2::XMLElement *pPresetsElem = pFormatElem->FirstChildElement("Presets");
         this->GetPresets(pPresetsElem, format.m_Presets);
+}
 
+void XmlConfiguration::SetFormat(tinyxml2::XMLElement *pFormatElem, CFormat &m_Format)
+{
+    CUtf8String szBuffUtf8;
+    
+    pFormatElem->SetAttribute("id", szBuffUtf8.Create(format.szId));
+    szBuffUtf8.Clear();
+
+    pFormatElem->SetAttribute("name", szBuffUtf8.Create(format.szName));
+    szBuffUtf8.Clear();
+
+    pFormatElem->SetAttribute("template", szBuffUtf8.Create(format.szTemplate));
+    szBuffUtf8.Clear();
+
+    pFormatElem->SetAttribute("input", (format.bInput) ? "true" : "false");
+    pFormatElem->SetAttribute("output", (format.bOutput) ? "true" : "false");
+
+    pFormatElem->SetAttribute("function", szBuffUtf8.Create(format.szFunction));
+    szBuffUtf8.Clear();
+
+    pFormatElem->SetAttribute("path", szBuffUtf8.Create(format.szPath));
+    szBuffUtf8.Clear();
+
+    CString szType;
+    szType.Format(_T("%d\0"), format.nType);
+    pFormatElem->SetAttribute("type", szBuffUtf8.Create(szType));
+    szBuffUtf8.Clear();
+
+    pFormatElem->SetAttribute("formats", szBuffUtf8.Create(format.szInputExtensions));
+    szBuffUtf8.Clear();
+
+    pFormatElem->SetAttribute("extension", szBuffUtf8.Create(format.szOutputExtension));
+    szBuffUtf8.Clear();
+
+    CString szDefaultPreset;
+    szDefaultPreset.Format(_T("%d\0"), format.nDefaultPreset);
+    pFormatElem->SetAttribute("default", szBuffUtf8.Create(szDefaultPreset));
+    szBuffUtf8.Clear();
+
+    tinyxml2::XMLElement *pPresetsElem = this->NewElement("Presets");
+    pFormatElem->LinkEndChild(pPresetsElem);
+    this->SetPresets(pPresetsElem, format.m_Presets);
+}
+
+void XmlConfiguration::GetFormat(CFormat &m_Format)
+{
+    tinyxml2::XMLElement *pFormatElem = this->FirstChildElement("Format");
+    if (pFormatElem != NULL)
+    {
+        this->GetFormat(pFormatElem, m_Format);
+    }
+}
+
+void XmlConfiguration::SetFormat(CFormat &m_Format)
+{
+    tinyxml2::XMLDeclaration* decl = this->NewDeclaration(UTF8_DOCUMENT_DECLARATION);
+    this->LinkEndChild(decl);
+
+    tinyxml2::XMLElement *pFormatElem = this->NewElement("Format");
+    this->LinkEndChild(pFormatElem);
+
+    this->SetFormat(pFormatElem, m_Format);
+}
+
+void XmlConfiguration::GetFormats(tinyxml2::XMLElement *pFormatsElem, CFormatsList &m_Formats)
+{
+    tinyxml2::XMLElement *pFormatElem = pFormatsElem->FirstChildElement("Format");
+    for (pFormatElem; pFormatElem; pFormatElem = pFormatElem->NextSiblingElement())
+    {
+        CFormat format;
+        this->GetFormat(pFormatElem, format);
         m_Formats.InsertNode(format);
     }
 }
 
 void XmlConfiguration::SetFormats(tinyxml2::XMLElement *pFormatsElem, CFormatsList &m_Formats)
 {
-    CUtf8String szBuffUtf8;
-    tinyxml2::XMLElement *pFormatElem;
-
     int nFormats = m_Formats.GetSize();
     for (int i = 0; i < nFormats; i++)
     {
         CFormat& format = m_Formats.GetData(i);
-
-        pFormatElem = this->NewElement("Format");
-
-        pFormatElem->SetAttribute("id", szBuffUtf8.Create(format.szId));
-        szBuffUtf8.Clear();
-
-        pFormatElem->SetAttribute("name", szBuffUtf8.Create(format.szName));
-        szBuffUtf8.Clear();
-
-        pFormatElem->SetAttribute("template", szBuffUtf8.Create(format.szTemplate));
-        szBuffUtf8.Clear();
-
-        pFormatElem->SetAttribute("input", (format.bInput) ? "true" : "false");
-        pFormatElem->SetAttribute("output", (format.bOutput) ? "true" : "false");
-
-        pFormatElem->SetAttribute("function", szBuffUtf8.Create(format.szFunction));
-        szBuffUtf8.Clear();
-
-        pFormatElem->SetAttribute("path", szBuffUtf8.Create(format.szPath));
-        szBuffUtf8.Clear();
-
-        CString szType;
-        szType.Format(_T("%d\0"), format.nType);
-        pFormatElem->SetAttribute("type", szBuffUtf8.Create(szType));
-        szBuffUtf8.Clear();
-
-        pFormatElem->SetAttribute("formats", szBuffUtf8.Create(format.szInputExtensions));
-        szBuffUtf8.Clear();
-
-        pFormatElem->SetAttribute("extension", szBuffUtf8.Create(format.szOutputExtension));
-        szBuffUtf8.Clear();
-
-        CString szDefaultPreset;
-        szDefaultPreset.Format(_T("%d\0"), format.nDefaultPreset);
-        pFormatElem->SetAttribute("default", szBuffUtf8.Create(szDefaultPreset));
-        szBuffUtf8.Clear();
-
-        tinyxml2::XMLElement *pPresetsElem = this->NewElement("Presets");
-        pFormatElem->LinkEndChild(pPresetsElem);
-        this->SetPresets(pPresetsElem, format.m_Presets);
-
+        tinyxml2::XMLElement *pFormatElem = this->NewElement("Format");
+        this->SetFormat(pFormatElem, format);
         pFormatsElem->LinkEndChild(pFormatElem);
     }
 }
