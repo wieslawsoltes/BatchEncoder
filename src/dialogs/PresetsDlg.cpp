@@ -3,10 +3,10 @@
 
 #include "StdAfx.h"
 #include "..\BatchEncoder.h"
-#include "..\XmlConfiguration.h"
 #include "..\utilities\Utilities.h"
 #include "..\utilities\UnicodeUtf8.h"
 #include "..\utilities\Utf8String.h"
+#include "..\XmlConfiguration.h"
 #include "PresetsDlg.h"
 
 #define PRESET_COLUMN_NAME      0

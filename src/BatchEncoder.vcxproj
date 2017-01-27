@@ -260,7 +260,7 @@ copy /-Y ..\config\*.items $(OutDir)</Command>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="BatchEncoder.cpp" />
-    <ClInclude Include="XmlConfiguration.cpp" />
+    <ClCompile Include="XmlConfiguration.cpp" />
     <ClCompile Include="dialogs\AboutDlg.cpp" />
     <ClCompile Include="dialogs\AdvancedDlg.cpp" />
     <ClCompile Include="dialogs\BatchEncoderDlg.cpp" />

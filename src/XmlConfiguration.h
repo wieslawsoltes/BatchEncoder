@@ -3,6 +3,8 @@
 
 #pragma once
 
+#include <afxstr.h>
+#include <afxtempl.h>
 #include "xml\tinyxml2.h" // https://github.com/leethomason/tinyxml2
 #include "Configuration.h"
 

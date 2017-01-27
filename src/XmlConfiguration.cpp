@@ -2,8 +2,6 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 #include "StdAfx.h"
-#include "BatchEncoder.h"
-#include "utilities\Utilities.h"
 #include "utilities\UnicodeUtf8.h"
 #include "utilities\Utf8String.h"
 #include "XmlConfiguration.h"
@@ -25,7 +23,7 @@ CString XmlConfiguration::ToCString(const char *pszUtf8)
 
     if (strlen(pszUtf8) == 0)
         return _T("");
-        
+
     CString szBuff;
 #ifdef _UNICODE
     // UTF-8 to UNICODE
@@ -437,26 +435,6 @@ void XmlConfiguration::SetOptions(tinyxml2::XMLElement *pOptionsElem, COptions &
     pOptionsElem->LinkEndChild(pOptionElem);
 }
 
-void XmlConfiguration::GetOptions(COptions &m_Options)
-{
-    tinyxml2::XMLElement *pOptionsElem = this->FirstChildElement("Options");
-    if (pOptionsElem != NULL)
-    {
-        this->GetOptions(pOptionsElem, m_Options);
-    }
-}
-
-void XmlConfiguration::SetOptions(COptions &m_Options)
-{
-    tinyxml2::XMLDeclaration* decl = this->NewDeclaration(UTF8_DOCUMENT_DECLARATION);
-    this->LinkEndChild(decl);
-
-    tinyxml2::XMLElement *pOptionsElem = this->NewElement("Options");
-    this->LinkEndChild(pOptionsElem);
-
-    this->SetOptions(pOptionsElem, m_Options);
-}
-
 void XmlConfiguration::GetPresets(tinyxml2::XMLElement *pPresetsElem, CPresetsList &m_Presets)
 {
     tinyxml2::XMLElement *pPresetElem = pPresetsElem->FirstChildElement("Preset");
@@ -502,159 +480,119 @@ void XmlConfiguration::SetPresets(tinyxml2::XMLElement *pPresetsElem, CPresetsLi
     }
 }
 
-void XmlConfiguration::GetPresets(CPresetsList &m_Presets)
-{
-    tinyxml2::XMLElement *pPresetsElem = this->FirstChildElement("Presets");
-    if (pPresetsElem != NULL)
-    {
-        this->GetPresets(pPresetsElem, m_Presets);
-    }
-}
-
-void XmlConfiguration::SetPresets(CPresetsList &m_Presets)
-{
-    tinyxml2::XMLDeclaration* decl = this->NewDeclaration(UTF8_DOCUMENT_DECLARATION);
-    this->LinkEndChild(decl);
-
-    tinyxml2::XMLElement *pPresetsElem = this->NewElement("Presets");
-    this->LinkEndChild(pPresetsElem);
-
-    this->SetPresets(pPresetsElem, m_Presets);
-}
-
 void XmlConfiguration::GetFormat(tinyxml2::XMLElement *pFormatElem, CFormat &m_Format)
 {
     const char *pszId = pFormatElem->Attribute("id");
     if (pszId != NULL)
     {
-        format.szId = ToCString(pszId);
+        m_Format.szId = ToCString(pszId);
     }
 
     const char *pszName = pFormatElem->Attribute("name");
     if (pszName != NULL)
     {
-        format.szName = ToCString(pszName);
+        m_Format.szName = ToCString(pszName);
     }
 
     const char *pszTemplate = pFormatElem->Attribute("template");
     if (pszTemplate != NULL)
     {
-        format.szTemplate = ToCString(pszTemplate);
+        m_Format.szTemplate = ToCString(pszTemplate);
     }
 
     const char *pszPipesInput = pFormatElem->Attribute("input");
     if (pszPipesInput != NULL)
     {
-        format.bInput = ToCString(pszPipesInput).CompareNoCase(_T("true")) == 0;
+        m_Format.bInput = ToCString(pszPipesInput).CompareNoCase(_T("true")) == 0;
     }
 
     const char *pszPipesOutput = pFormatElem->Attribute("output");
     if (pszPipesOutput != NULL)
-        {
-            format.bOutput = ToCString(pszPipesOutput).CompareNoCase(_T("true")) == 0;
-        }
+    {
+        m_Format.bOutput = ToCString(pszPipesOutput).CompareNoCase(_T("true")) == 0;
+    }
 
-        const char *pszFunction = pFormatElem->Attribute("function");
-        if (pszFunction != NULL)
-        {
-            format.szFunction = ToCString(pszFunction);
-        }
+    const char *pszFunction = pFormatElem->Attribute("function");
+    if (pszFunction != NULL)
+    {
+        m_Format.szFunction = ToCString(pszFunction);
+    }
 
-        const char *pszPath = pFormatElem->Attribute("path");
-        if (pszPath != NULL)
-        {
-            format.szPath = ToCString(pszPath);
-        }
+    const char *pszPath = pFormatElem->Attribute("path");
+    if (pszPath != NULL)
+    {
+        m_Format.szPath = ToCString(pszPath);
+    }
 
-        const char *pszType = pFormatElem->Attribute("type");
-        if (pszType != NULL)
-        {
-            format.nType = _tstoi(ToCString(pszType));
-        }
+    const char *pszType = pFormatElem->Attribute("type");
+    if (pszType != NULL)
+    {
+        m_Format.nType = _tstoi(ToCString(pszType));
+    }
 
-        const char *pszFormats = pFormatElem->Attribute("formats");
-        if (pszFormats != NULL)
-        {
-            format.szInputExtensions = ToCString(pszFormats);
-        }
+    const char *pszFormats = pFormatElem->Attribute("formats");
+    if (pszFormats != NULL)
+    {
+        m_Format.szInputExtensions = ToCString(pszFormats);
+    }
 
-        const char *pszExtension = pFormatElem->Attribute("extension");
-        if (pszExtension != NULL)
-        {
-            format.szOutputExtension = ToCString(pszExtension);
-        }
+    const char *pszExtension = pFormatElem->Attribute("extension");
+    if (pszExtension != NULL)
+    {
+        m_Format.szOutputExtension = ToCString(pszExtension);
+    }
 
-        const char *pszDefaultPreset = pFormatElem->Attribute("default");
-        if (pszDefaultPreset != NULL)
-        {
-            format.nDefaultPreset = _tstoi(ToCString(pszDefaultPreset));
-        }
+    const char *pszDefaultPreset = pFormatElem->Attribute("default");
+    if (pszDefaultPreset != NULL)
+    {
+        m_Format.nDefaultPreset = _tstoi(ToCString(pszDefaultPreset));
+    }
 
-        tinyxml2::XMLElement *pPresetsElem = pFormatElem->FirstChildElement("Presets");
-        this->GetPresets(pPresetsElem, format.m_Presets);
+    tinyxml2::XMLElement *pPresetsElem = pFormatElem->FirstChildElement("Presets");
+    this->GetPresets(pPresetsElem, m_Format.m_Presets);
 }
 
 void XmlConfiguration::SetFormat(tinyxml2::XMLElement *pFormatElem, CFormat &m_Format)
 {
     CUtf8String szBuffUtf8;
-    
-    pFormatElem->SetAttribute("id", szBuffUtf8.Create(format.szId));
+
+    pFormatElem->SetAttribute("id", szBuffUtf8.Create(m_Format.szId));
     szBuffUtf8.Clear();
 
-    pFormatElem->SetAttribute("name", szBuffUtf8.Create(format.szName));
+    pFormatElem->SetAttribute("name", szBuffUtf8.Create(m_Format.szName));
     szBuffUtf8.Clear();
 
-    pFormatElem->SetAttribute("template", szBuffUtf8.Create(format.szTemplate));
+    pFormatElem->SetAttribute("template", szBuffUtf8.Create(m_Format.szTemplate));
     szBuffUtf8.Clear();
 
-    pFormatElem->SetAttribute("input", (format.bInput) ? "true" : "false");
-    pFormatElem->SetAttribute("output", (format.bOutput) ? "true" : "false");
+    pFormatElem->SetAttribute("input", (m_Format.bInput) ? "true" : "false");
+    pFormatElem->SetAttribute("output", (m_Format.bOutput) ? "true" : "false");
 
-    pFormatElem->SetAttribute("function", szBuffUtf8.Create(format.szFunction));
+    pFormatElem->SetAttribute("function", szBuffUtf8.Create(m_Format.szFunction));
     szBuffUtf8.Clear();
 
-    pFormatElem->SetAttribute("path", szBuffUtf8.Create(format.szPath));
+    pFormatElem->SetAttribute("path", szBuffUtf8.Create(m_Format.szPath));
     szBuffUtf8.Clear();
 
     CString szType;
-    szType.Format(_T("%d\0"), format.nType);
+    szType.Format(_T("%d\0"), m_Format.nType);
     pFormatElem->SetAttribute("type", szBuffUtf8.Create(szType));
     szBuffUtf8.Clear();
 
-    pFormatElem->SetAttribute("formats", szBuffUtf8.Create(format.szInputExtensions));
+    pFormatElem->SetAttribute("formats", szBuffUtf8.Create(m_Format.szInputExtensions));
     szBuffUtf8.Clear();
 
-    pFormatElem->SetAttribute("extension", szBuffUtf8.Create(format.szOutputExtension));
+    pFormatElem->SetAttribute("extension", szBuffUtf8.Create(m_Format.szOutputExtension));
     szBuffUtf8.Clear();
 
     CString szDefaultPreset;
-    szDefaultPreset.Format(_T("%d\0"), format.nDefaultPreset);
+    szDefaultPreset.Format(_T("%d\0"), m_Format.nDefaultPreset);
     pFormatElem->SetAttribute("default", szBuffUtf8.Create(szDefaultPreset));
     szBuffUtf8.Clear();
 
     tinyxml2::XMLElement *pPresetsElem = this->NewElement("Presets");
     pFormatElem->LinkEndChild(pPresetsElem);
-    this->SetPresets(pPresetsElem, format.m_Presets);
-}
-
-void XmlConfiguration::GetFormat(CFormat &m_Format)
-{
-    tinyxml2::XMLElement *pFormatElem = this->FirstChildElement("Format");
-    if (pFormatElem != NULL)
-    {
-        this->GetFormat(pFormatElem, m_Format);
-    }
-}
-
-void XmlConfiguration::SetFormat(CFormat &m_Format)
-{
-    tinyxml2::XMLDeclaration* decl = this->NewDeclaration(UTF8_DOCUMENT_DECLARATION);
-    this->LinkEndChild(decl);
-
-    tinyxml2::XMLElement *pFormatElem = this->NewElement("Format");
-    this->LinkEndChild(pFormatElem);
-
-    this->SetFormat(pFormatElem, m_Format);
+    this->SetPresets(pPresetsElem, m_Format.m_Presets);
 }
 
 void XmlConfiguration::GetFormats(tinyxml2::XMLElement *pFormatsElem, CFormatsList &m_Formats)
@@ -678,26 +616,6 @@ void XmlConfiguration::SetFormats(tinyxml2::XMLElement *pFormatsElem, CFormatsLi
         this->SetFormat(pFormatElem, format);
         pFormatsElem->LinkEndChild(pFormatElem);
     }
-}
-
-void XmlConfiguration::GetFormats(CFormatsList &m_Formats)
-{
-    tinyxml2::XMLElement *pFormatsElem = this->FirstChildElement("Formats");
-    if (pFormatsElem != NULL)
-    {
-        this->GetFormats(pFormatsElem, m_Formats);
-    }
-}
-
-void XmlConfiguration::SetFormats(CFormatsList &m_Formats)
-{
-    tinyxml2::XMLDeclaration* decl = this->NewDeclaration(UTF8_DOCUMENT_DECLARATION);
-    this->LinkEndChild(decl);
-
-    tinyxml2::XMLElement *pFormatsElem = this->NewElement("Formats");
-    this->LinkEndChild(pFormatsElem);
-
-    this->SetFormats(pFormatsElem, m_Formats);
 }
 
 void XmlConfiguration::GetItems(tinyxml2::XMLElement *pItemsElem, CItemsList &m_Items)
@@ -818,6 +736,86 @@ void XmlConfiguration::SetItems(tinyxml2::XMLElement *pItemsElem, CItemsList &m_
 
         pItemsElem->LinkEndChild(pItemElem);
     }
+}
+
+void XmlConfiguration::GetOptions(COptions &m_Options)
+{
+    tinyxml2::XMLElement *pOptionsElem = this->FirstChildElement("Options");
+    if (pOptionsElem != NULL)
+    {
+        this->GetOptions(pOptionsElem, m_Options);
+    }
+}
+
+void XmlConfiguration::SetOptions(COptions &m_Options)
+{
+    tinyxml2::XMLDeclaration* decl = this->NewDeclaration(UTF8_DOCUMENT_DECLARATION);
+    this->LinkEndChild(decl);
+
+    tinyxml2::XMLElement *pOptionsElem = this->NewElement("Options");
+    this->LinkEndChild(pOptionsElem);
+
+    this->SetOptions(pOptionsElem, m_Options);
+}
+
+void XmlConfiguration::GetPresets(CPresetsList &m_Presets)
+{
+    tinyxml2::XMLElement *pPresetsElem = this->FirstChildElement("Presets");
+    if (pPresetsElem != NULL)
+    {
+        this->GetPresets(pPresetsElem, m_Presets);
+    }
+}
+
+void XmlConfiguration::SetPresets(CPresetsList &m_Presets)
+{
+    tinyxml2::XMLDeclaration* decl = this->NewDeclaration(UTF8_DOCUMENT_DECLARATION);
+    this->LinkEndChild(decl);
+
+    tinyxml2::XMLElement *pPresetsElem = this->NewElement("Presets");
+    this->LinkEndChild(pPresetsElem);
+
+    this->SetPresets(pPresetsElem, m_Presets);
+}
+
+void XmlConfiguration::GetFormat(CFormat &m_Format)
+{
+    tinyxml2::XMLElement *pFormatElem = this->FirstChildElement("Format");
+    if (pFormatElem != NULL)
+    {
+        this->GetFormat(pFormatElem, m_Format);
+    }
+}
+
+void XmlConfiguration::SetFormat(CFormat &m_Format)
+{
+    tinyxml2::XMLDeclaration* decl = this->NewDeclaration(UTF8_DOCUMENT_DECLARATION);
+    this->LinkEndChild(decl);
+
+    tinyxml2::XMLElement *pFormatElem = this->NewElement("Format");
+    this->LinkEndChild(pFormatElem);
+
+    this->SetFormat(pFormatElem, m_Format);
+}
+
+void XmlConfiguration::GetFormats(CFormatsList &m_Formats)
+{
+    tinyxml2::XMLElement *pFormatsElem = this->FirstChildElement("Formats");
+    if (pFormatsElem != NULL)
+    {
+        this->GetFormats(pFormatsElem, m_Formats);
+    }
+}
+
+void XmlConfiguration::SetFormats(CFormatsList &m_Formats)
+{
+    tinyxml2::XMLDeclaration* decl = this->NewDeclaration(UTF8_DOCUMENT_DECLARATION);
+    this->LinkEndChild(decl);
+
+    tinyxml2::XMLElement *pFormatsElem = this->NewElement("Formats");
+    this->LinkEndChild(pFormatsElem);
+
+    this->SetFormats(pFormatsElem, m_Formats);
 }
 
 void XmlConfiguration::GetItems(CItemsList &m_Items)

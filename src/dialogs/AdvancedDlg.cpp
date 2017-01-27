@@ -4,6 +4,7 @@
 #include "StdAfx.h"
 #include "..\BatchEncoder.h"
 #include "..\utilities\Utilities.h"
+#include "..\XmlConfiguration.h"
 #include "AdvancedDlg.h"
 
 IMPLEMENT_DYNAMIC(CAdvancedDlg, CDialog)

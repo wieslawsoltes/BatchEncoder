@@ -7,7 +7,6 @@
 #include <afxcmn.h>
 #include "..\controls\Controls.h"
 #include "..\Configuration.h"
-#include "..\XmlConfiguration.h"
 
 class CAdvancedDlg : public CDialog
 {
