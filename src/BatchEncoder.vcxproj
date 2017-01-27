@@ -282,6 +282,7 @@ copy /-Y ..\config\*.items $(OutDir)</Command>
     <ClCompile Include="worker\ReadThread.cpp" />
     <ClCompile Include="worker\WorkThread.cpp" />
     <ClCompile Include="worker\WriteThread.cpp" />
+    <ClInclude Include="XmlConfiguration.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="configuration\Format.h" />
