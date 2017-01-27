@@ -8,7 +8,6 @@
 #include "..\controls\Controls.h"
 #include "..\utilities\TimeCount.h"
 #include "..\Configuration.h"
-#include "..\XmlConfiguration.h"
 #include "..\worker\WorkThread.h"
 
 class CBatchEncoderDlg : public CResizeDialog
