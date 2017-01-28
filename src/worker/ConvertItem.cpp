@@ -182,13 +182,9 @@ bool ConvertItem(CItemContext* pContext)
             if (pContext->pWorkerContext->pConfig->m_Options.bDeleteOnError == true)
                 ::DeleteFile(szOutputFile);
 
-            if (pContext->pWorkerContext->bRunning == false)
-                return bSuccess;
-
             if (pContext->pWorkerContext->pConfig->m_Options.bStopOnErrors == true)
                 return bSuccess;
 
-            // when transcoding we are skipping to next file no encoding can be done when decoding failed
             return bSuccess;
         }
     }
