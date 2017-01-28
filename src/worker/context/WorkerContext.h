@@ -34,6 +34,6 @@ public:
     virtual void Init() = 0;
     virtual void Next(int nIndex) = 0;
     virtual void Done() = 0;
-    virtual bool Callback(int nIndex, int nProgress, bool bFinished, bool bError = false, double fTime = 0.0) = 0;
+    virtual bool Callback(int nIndex, int nProgress, bool bFinished, bool bError = false) = 0;
     virtual void Status(int nIndex, CString szTime, CString szStatus) = 0;
 };

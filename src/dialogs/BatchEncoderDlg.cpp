@@ -2361,33 +2361,20 @@ void CBatchEncoderWorkerContext::Done()
     pDlg->FinishConvert();
 }
 
-bool CBatchEncoderWorkerContext::Callback(int nIndex, int nProgress, bool bFinished, bool bError, double fTime)
+bool CBatchEncoderWorkerContext::Callback(int nIndex, int nProgress, bool bFinished, bool bError)
 {
     if (bError == true)
     {
-        pDlg->m_LstInputItems.SetItemText(nIndex, ITEM_COLUMN_TIME, _T("--:--")); // Time
-        pDlg->m_LstInputItems.SetItemText(nIndex, ITEM_COLUMN_STATUS, _T("Error")); // Status
-        pDlg->m_Progress.SetPos(0);
-        this->bRunning = false;
+        if (pDlg->pWorkerContext->pConfig->m_Options.bStopOnErrors == true)
+        {
+            pDlg->m_Progress.SetPos(0);
+            this->bRunning = false;
+        }
+
         return this->bRunning;
     }
 
-    if (bFinished == true)
-    {
-        if (nProgress != 100)
-        {
-            pDlg->m_LstInputItems.SetItemText(nIndex, ITEM_COLUMN_TIME, _T("--:--")); // Time
-            pDlg->m_LstInputItems.SetItemText(nIndex, ITEM_COLUMN_STATUS, _T("Error")); // Status
-            pDlg->m_Progress.SetPos(0);
-        }
-        else
-        {
-            CString szTime = ::FormatTime(fTime, 1);
-            pDlg->m_LstInputItems.SetItemText(nIndex, ITEM_COLUMN_TIME, szTime); // Time
-            pDlg->m_LstInputItems.SetItemText(nIndex, ITEM_COLUMN_STATUS, _T("Done")); // Status
-        }
-    }
-    else
+    if (bFinished == false)
     {
         if (this->nThreadCount == 1)
         {

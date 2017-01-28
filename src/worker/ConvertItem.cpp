@@ -171,8 +171,6 @@ bool ConvertItem(CItemContext* pContext)
         }
         else
         {
-            pContext->pWorkerContext->Status(pContext->item->nId, _T("--:--"), _T("Error: error while decoding input file."));
-
             if (pContext->pWorkerContext->pConfig->m_Options.bDeleteOnError == true)
                 ::DeleteFile(szOutputFile);
 
@@ -275,8 +273,6 @@ bool ConvertItem(CItemContext* pContext)
         }
         else
         {
-            pContext->pWorkerContext->Status(pContext->item->nId, _T("--:--"), _T("Error: error while encoding input file."));
-
             if (pContext->pWorkerContext->pConfig->m_Options.bDeleteOnError == true)
                 ::DeleteFile(szOutputFile);
         }

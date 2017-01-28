@@ -151,6 +151,6 @@ public:
     void Init();
     void Next(int nIndex);
     void Done();
-    bool Callback(int nIndex, int nProgress, bool bFinished, bool bError = false, double fTime = 0.0);
+    bool Callback(int nIndex, int nProgress, bool bFinished, bool bError = false);
     void Status(int nIndex, CString szTime, CString szStatus);
 };
