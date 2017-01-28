@@ -116,7 +116,6 @@ adds input and output file paths. For specific options for each format use help 
 | NEROAACDEC      | Decoder     | M4A             | 1.5.1           | neroAacDec.exe                   | - none -                                  |
 | OPUSDEC         | Decoder     | OPUS            | 1.2-alpha       | opusdec.exe                      | - none -                                  |
 | OGGDEC          | Decoder     | OGG             | 1.10.1          | oggdec.exe                       | GetProgress_OggDec.progress               |
-| FFMPEG          | Decoder     | AC3             | 3.2.2           | ffmpeg.exe                       | - none -                                  |
 | FLAC            | Decoder     | FLAC            | 1.3.2           | flac.exe                         | GetProgress_FlacDec.progress              |
 | WVUNPACK        | Decoder     | WV              | 5.0.0           | wvunpack.exe                     | GetProgress_WvUnpackDec.progress          |
 | MAC             | Decoder     | APE             | 4.18            | mac.exe                          | GetProgress_MacDec.progress               |
@@ -124,6 +123,11 @@ adds input and output file paths. For specific options for each format use help 
 | OFR             | Decoder     | OFR             | 5.100           | ofr.exe                          | GetProgress_OfrDec.progress               |
 | TTA             | Decoder     | TTA             | 2.3             | tta.exe                          | GetProgress_TtaDec.progress               |
 | TAKC            | Decoder     | TAK             | 2.3.0           | takc.exe                         | - none -                                  |
+| FFMPEG          | Decoder     | AC3             | 3.2.2           | ffmpeg.exe                       | - none -                                  |
+| FFMPEG          | Decoder     | EAC3            | 3.2.2           | ffmpeg.exe                       | - none -                                  |
+| FFMPEG          | Decoder     | DTS             | 3.2.2           | ffmpeg.exe                       | - none -                                  |
+| FFMPEG          | Decoder     | DTSHD           | 3.2.2           | ffmpeg.exe                       | - none -                                  |
+| FFMPEG          | Decoder     | TRUEHD          | 3.2.2           | ffmpeg.exe                       | - none -                                  |
 
 ### Tool downloads
 

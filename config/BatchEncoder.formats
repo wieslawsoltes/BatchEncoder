@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="UTF-8" ?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <Formats>
     <Format id="SSRC_WAV" name="WAV (Standard)" template="$EXE $OPTIONS $INFILE $OUTFILE" input="false" output="false" function="GetProgress_SsrcEnc.progress" path="ssrc.exe" type="0" formats="WAV" extension="WAV" default="0">
         <Presets>
@@ -496,11 +496,6 @@
             <Preset name="Default" options=""/>
         </Presets>
     </Format>
-    <Format id="FFMPEG_AC3_WAV" name="Decode AC3 to WAV" template="$EXE -i $INFILE $OPTIONS $OUTFILE" input="true" output="false" function="- none -" path="ffmpeg.exe" type="1" formats="AC3" extension="WAV" default="0">
-        <Presets>
-            <Preset name="Default" options=""/>
-        </Presets>
-    </Format>
     <Format id="FLAC_FLAC_WAV" name="Decode FLAC to WAV" template="$EXE -d -f -o $OUTFILE $INFILE" input="true" output="false" function="GetProgress_FlacDec.progress" path="flac.exe" type="1" formats="FLAC" extension="WAV" default="0">
         <Presets>
             <Preset name="Default" options=""/>
@@ -532,6 +527,31 @@
         </Presets>
     </Format>
     <Format id="TAKC_TAK_WAV" name="Decode TAK to WAV" template="$EXE -d -overwrite $INFILE $OUTFILE" input="false" output="true" function="- none -" path="takc.exe" type="1" formats="TAK" extension="WAV" default="0">
+        <Presets>
+            <Preset name="Default" options=""/>
+        </Presets>
+    </Format>
+    <Format id="FFMPEG_AC3_WAV" name="Decode AC3 to WAV" template="$EXE -i $INFILE $OPTIONS $OUTFILE" input="true" output="false" function="- none -" path="ffmpeg.exe" type="1" formats="AC3" extension="WAV" default="0">
+        <Presets>
+            <Preset name="Default" options=""/>
+        </Presets>
+    </Format>
+    <Format id="FFMPEG_EAC3_WAV" name="Decode EAC3 to WAV" template="$EXE -i $INFILE $OPTIONS $OUTFILE" input="true" output="false" function="- none -" path="ffmpeg.exe" type="1" formats="EAC3" extension="WAV" default="0">
+        <Presets>
+            <Preset name="Default" options=""/>
+        </Presets>
+    </Format>
+    <Format id="FFMPEG_DTS_WAV" name="Decode DTS to WAV" template="$EXE -i $INFILE $OPTIONS $OUTFILE" input="true" output="false" function="- none -" path="ffmpeg.exe" type="1" formats="DTS" extension="WAV" default="0">
+        <Presets>
+            <Preset name="Default" options=""/>
+        </Presets>
+    </Format>
+    <Format id="FFMPEG_DTSHD_WAV" name="Decode DTSHD to WAV" template="$EXE -i $INFILE $OPTIONS $OUTFILE" input="true" output="false" function="- none -" path="ffmpeg.exe" type="1" formats="DTSHD" extension="WAV" default="0">
+        <Presets>
+            <Preset name="Default" options=""/>
+        </Presets>
+    </Format>
+    <Format id="FFMPEG_TRUEHD_WAV" name="Decode TRUEHD to WAV" template="$EXE -i $INFILE $OPTIONS $OUTFILE" input="true" output="false" function="- none -" path="ffmpeg.exe" type="1" formats="TRUEHD" extension="WAV" default="0">
         <Presets>
             <Preset name="Default" options=""/>
         </Presets>
