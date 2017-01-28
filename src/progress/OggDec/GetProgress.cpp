@@ -10,63 +10,49 @@
 
 int GetProgress(char *szLineBuff, int nLineLen)
 {
+    int j;
+    int nPos = 0;
     char szPercentage[32];
     int nProgress = -1;
-    int nStart;
-    int nEnd;
-    int j;
 
     memset(szPercentage, 0x00, sizeof(szPercentage));
 
-    if (nLineLen >= 4)
+    // find % (percentage) char
+    for (j = 0; j < (int)nLineLen; j++)
     {
-        nStart = 0;
-        nEnd = 0;
-
-        // find: [  3,2%]
-        for (j = 0; j < (int)nLineLen; j++)
+        if (szLineBuff[j] == '%')
         {
-            if (szLineBuff[j] == '[')
+            nPos = j;
+            break;
+        }
+    }
+
+    if (nPos >= 3)
+    {
+        if (szLineBuff[nPos - 3] == ' ') // not a 100.0 %
+        {
+            if (szLineBuff[nPos - 2] == ' ') // 0 to 9 %
             {
-                nStart = j;
+                szPercentage[0] = szLineBuff[nPos - 1];
+                szPercentage[1] = '\0';
+
+                nProgress = atoi(szPercentage);
+                return nProgress;
             }
-            if (szLineBuff[j] == ']')
+            else if (szLineBuff[nPos - 2] >= '0' && szLineBuff[nPos - 2] <= '9') // 10 to 99 %
             {
-                nEnd = j;
-                break;
+                szPercentage[0] = szLineBuff[nPos - 2];
+                szPercentage[1] = szLineBuff[nPos - 1];
+                szPercentage[2] = '\0';
+
+                nProgress = atoi(szPercentage);
+                return nProgress;
             }
         }
-
-        if (nEnd > 0)
+        else if (szLineBuff[nPos - 3] == '1') // 100.0 %
         {
-            if (szLineBuff[nStart + 4] == '.')
-            {
-                if (szLineBuff[nStart + 1] == ' ') // not a 100.0 %
-                {
-                    if (szLineBuff[nStart + 2] == ' ') // 0 to 9 %
-                    {
-                        szPercentage[0] = szLineBuff[nStart + 3];
-                        szPercentage[1] = '\0';
-
-                        nProgress = atoi(szPercentage);
-                        return nProgress;
-                    }
-                    else if (szLineBuff[nStart + 2] >= '0' && szLineBuff[nStart + 2] <= '9') // 10 to 99 %
-                    {
-                        szPercentage[0] = szLineBuff[nStart + 2];
-                        szPercentage[1] = szLineBuff[nStart + 3];
-                        szPercentage[2] = '\0';
-
-                        nProgress = atoi(szPercentage);
-                        return nProgress;
-                    }
-                }
-                else if (szLineBuff[nStart + 1] == '1') // 100.0 %
-                {
-                    nProgress = 100;
-                    return nProgress;
-                }
-            }
+            nProgress = 100;
+            return nProgress;
         }
     }
 

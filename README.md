@@ -117,7 +117,7 @@ adds input and output file paths. For specific options for each format use help 
 | NEROAACDEC      | Decoder     | MP4             | -.-           | neroAacDec.exe                   | - none -                                  |
 | NEROAACDEC      | Decoder     | M4A             | -.-           | neroAacDec.exe                   | - none -                                  |
 | OPUSDEC         | Decoder     | OPUS            |  -.-          | opusdec.exe                      | - none -                                  |
-| OGGDEC          | Decoder     | OGG             | -.-           | oggdec.exe                       | GetProgress_OggDec.progress               |
+| OGGDEC          | Decoder     | OGG             | 1.10.1        | oggdec.exe                       | GetProgress_OggDec.progress               |
 | FLAC            | Decoder     | FLAC            | -.-           | flac.exe                         | GetProgress_FlacDec.progress              |
 | WVUNPACK        | Decoder     | WV              | -.-           | wvunpack.exe                     | GetProgress_WvUnpackDec.progress          |
 | MAC             | Decoder     | APE             | -.-           | mac.exe                          | GetProgress_MacDec.progress               |
