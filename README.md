@@ -105,26 +105,25 @@ adds input and output file paths. For specific options for each format use help 
 
 | Name            | Type        | File extension  | Version         | Executable                       | Progress function                         |
 |-----------------|-------------|-----------------|-----------------|----------------------------------|-------------------------------------------|
-| LAME            | Decoder     | MP1             | -.-             | lame.exe                         | GetProgress_LameDec.progress              |
-| LAME            | Decoder     | MP2             | -.-             | lame.exe                         | GetProgress_LameDec.progress              |
-| LAME            | Decoder     | MP3             | -.-             | lame.exe                         | GetProgress_LameDec.progress              |
-| MPPDEC          | Decoder     | MPC             | -.-             | mppdec.exe                       | GetProgress_MppDec.progress               |
-| MPPDEC          | Decoder     | MPP             | -.-             | mppdec.exe                       | GetProgress_MppDec.progress               |
-| MPPDEC          | Decoder     | MP+             | -.-             | mppdec.exe                       | GetProgress_MppDec.progress               |
-| FAAD            | Decoder     | MP4             | -.-             | faad.exe                         | GetProgress_FaadDec.progress              |
-| FAAD            | Decoder     | M4A             | -.-             | faad.exe                         | GetProgress_FaadDec.progress              |
+| LAME            | Decoder     | MP1             | 3.99.5          | lame.exe                         | GetProgress_LameDec.progress              |
+| LAME            | Decoder     | MP2             | 3.99.5          | lame.exe                         | GetProgress_LameDec.progress              |
+| LAME            | Decoder     | MP3             | 3.99.5          | lame.exe                         | GetProgress_LameDec.progress              |
+| MPCDEC          | Decoder     | MPC             | 1.0             | mpcdec.exe                       | GetProgress_MppDec.progress               |
+| MPCDEC          | Decoder     | MPP             | 1.0             | mpcdec.exe                       | GetProgress_MppDec.progress               |
+| MPCDEC          | Decoder     | MP+             | 1.0             | mpcdec.exe                       | GetProgress_MppDec.progress               |
 | FAAD            | Decoder     | AAC             | faad2-20100614  | faad.exe                         | GetProgress_FaadDec.progress              |
-| NEROAACDEC      | Decoder     | MP4             | -.-             | neroAacDec.exe                   | - none -                                  |
-| NEROAACDEC      | Decoder     | M4A             | -.-             | neroAacDec.exe                   | - none -                                  |
-| OPUSDEC         | Decoder     | OPUS            |  -.-            | opusdec.exe                      | - none -                                  |
+| NEROAACDEC      | Decoder     | MP4             | 1.5.1           | neroAacDec.exe                   | - none -                                  |
+| NEROAACDEC      | Decoder     | M4A             | 1.5.1           | neroAacDec.exe                   | - none -                                  |
+| OPUSDEC         | Decoder     | OPUS            | 1.2-alpha       | opusdec.exe                      | - none -                                  |
 | OGGDEC          | Decoder     | OGG             | 1.10.1          | oggdec.exe                       | GetProgress_OggDec.progress               |
-| FLAC            | Decoder     | FLAC            | -.-             | flac.exe                         | GetProgress_FlacDec.progress              |
-| WVUNPACK        | Decoder     | WV              | -.-             | wvunpack.exe                     | GetProgress_WvUnpackDec.progress          |
+| FFMPEG          | Decoder     | AC3             | 3.2.2           | ffmpeg.exe                       | - none -                                  |
+| FLAC            | Decoder     | FLAC            | 1.3.2           | flac.exe                         | GetProgress_FlacDec.progress              |
+| WVUNPACK        | Decoder     | WV              | 5.0.0           | wvunpack.exe                     | GetProgress_WvUnpackDec.progress          |
 | MAC             | Decoder     | APE             | 4.18            | mac.exe                          | GetProgress_MacDec.progress               |
 | MAC             | Decoder     | MAC             | 4.18            | mac.exe                          | GetProgress_MacDec.progress               |
-| OFR             | Decoder     | OFR             | -.-             | ofr.exe                          | GetProgress_OfrDec.progress               |
+| OFR             | Decoder     | OFR             | 5.100           | ofr.exe                          | GetProgress_OfrDec.progress               |
 | TTA             | Decoder     | TTA             | 2.3             | tta.exe                          | GetProgress_TtaDec.progress               |
-| TAKC            | Decoder     | TAK             | -.-             | takc.exe                         | - none -                                  |
+| TAKC            | Decoder     | TAK             | 2.3.0           | takc.exe                         | - none -                                  |
 
 ### Tool downloads
 
@@ -137,7 +136,7 @@ There is also available PowerShell [download script](https://github.com/wieslaws
 | SSRC            | http://shibatch.sourceforge.net/                                                                   |
 | LAME            | http://rarewares.org/mp3-lame-bundle.php                                                           |
 | MPPENC          | https://musepack.net/index.php?pg=win                                                              |
-| MPPDEC          | https://musepack.net/index.php?pg=win                                                              |
+| MPCDEC          | https://musepack.net/index.php?pg=win                                                              |
 | FAAC            | http://rarewares.org/aac-encoders.php                                                              |
 | FAAD            | http://rarewares.org/aac-decoders.php                                                              |
 | OPUSENC         | https://sourceforge.net/projects/muldersoft/files/Opus%20Tools/                                    |
