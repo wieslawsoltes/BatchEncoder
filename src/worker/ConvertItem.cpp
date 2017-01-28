@@ -35,7 +35,7 @@ bool ConvertItem(CItemContext* pContext)
     int nEncoder = pContext->pWorkerContext->pConfig->m_Formats.GetFormatById(pContext->item->szFormatId);
     if (nEncoder == -1)
     {
-        pContext->pWorkerContext->Status(pContext->item->nId, _T("--:--"), _T("Error"));
+        pContext->pWorkerContext->Status(pContext->item->nId, _T("--:--"), _T("Error: can not find valid encoder by id."));
         return bSuccess;
     }
 
@@ -87,7 +87,7 @@ bool ConvertItem(CItemContext* pContext)
         int nDecoder = pContext->pWorkerContext->pConfig->m_Formats.GetDecoderByExtension(pContext->item->szExtension);
         if (nDecoder == -1)
         {
-            pContext->pWorkerContext->Status(pContext->item->nId, _T("--:--"), _T("Error"));
+            pContext->pWorkerContext->Status(pContext->item->nId, _T("--:--"), _T("Error: can not find valid decoder by extension."));
             return bSuccess;
         }
 
@@ -99,7 +99,7 @@ bool ConvertItem(CItemContext* pContext)
         bIsValidEncoderInput = encoderFormat.IsValidInputExtension(decoderFormat.szOutputExtension);
         if (bIsValidEncoderInput == false)
         {
-            pContext->pWorkerContext->Status(pContext->item->nId, _T("--:--"), _T("Error"));
+            pContext->pWorkerContext->Status(pContext->item->nId, _T("--:--"), _T("Error: decoder output not supported by encoder."));
             return bSuccess;
         }
 
@@ -171,7 +171,7 @@ bool ConvertItem(CItemContext* pContext)
         }
         else
         {
-            pContext->pWorkerContext->Status(pContext->item->nId, _T("--:--"), _T("Error"));
+            pContext->pWorkerContext->Status(pContext->item->nId, _T("--:--"), _T("Error: error while decoding input file."));
 
             if (pContext->pWorkerContext->pConfig->m_Options.bDeleteOnError == true)
                 ::DeleteFile(szOutputFile);
@@ -275,7 +275,7 @@ bool ConvertItem(CItemContext* pContext)
         }
         else
         {
-            pContext->pWorkerContext->Status(pContext->item->nId, _T("--:--"), _T("Error"));
+            pContext->pWorkerContext->Status(pContext->item->nId, _T("--:--"), _T("Error: error while encoding input file."));
 
             if (pContext->pWorkerContext->pConfig->m_Options.bDeleteOnError == true)
                 ::DeleteFile(szOutputFile);
