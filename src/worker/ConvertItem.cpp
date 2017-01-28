@@ -139,6 +139,11 @@ bool ConvertItem(CItemContext* pContext)
 
         bDecode = true;
         nTool = pContext->pWorkerContext->pConfig->m_Formats.GetFormatById(decoderFormat.szId);
+        if (nTool == -1)
+        {
+            pContext->pWorkerContext->Status(pContext->item->nId, _T("--:--"), _T("Error: failed to get decoder by format id."));
+            return bSuccess;
+        }
 
         lstrcpy(szCommandLine, szExecute.GetBuffer(szExecute.GetLength()));
 
@@ -241,6 +246,11 @@ bool ConvertItem(CItemContext* pContext)
 
         bDecode = false;
         nTool = pContext->pWorkerContext->pConfig->m_Formats.GetFormatById(encoderFormat.szId);
+        if (nTool == -1)
+        {
+            pContext->pWorkerContext->Status(pContext->item->nId, _T("--:--"), _T("Error: failed to get encoder by format id."));
+            return bSuccess;
+        }
 
         lstrcpy(szCommandLine, szExecute.GetBuffer(szExecute.GetLength()));
 
