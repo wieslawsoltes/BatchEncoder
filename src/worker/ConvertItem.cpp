@@ -46,7 +46,7 @@ bool ConvertItem(CItemContext* pContext)
 
     // check input extensions
     CString szInputFileExt = ::GetFileExtension(szInputFile).MakeUpper();
-    bool bCanDecodeInput = encoderFormat.IsValidInputExtension(szInputFileExt);
+    bool bIsValidEncoderInput = encoderFormat.IsValidInputExtension(szInputFileExt);
 
     // output path
 
@@ -67,7 +67,7 @@ bool ConvertItem(CItemContext* pContext)
 
     // processing mode
     Mode nProcessingMode = Mode::None;
-    if (bCanDecodeInput)
+    if (bIsValidEncoderInput)
         nProcessingMode = Mode::Encode;
     else
         nProcessingMode = Mode::Transcode;
@@ -84,7 +84,7 @@ bool ConvertItem(CItemContext* pContext)
     // decode before encoding
     if (nProcessingMode == Mode::Transcode)
     {
-        int nDecoder = pContext->pWorkerContext->pConfig->m_Formats.GetFormatByExt(pContext->item->szExtension, 1);
+        int nDecoder = pContext->pWorkerContext->pConfig->m_Formats.GetDecoderByExtension(pContext->item->szExtension);
         if (nDecoder == -1)
         {
             pContext->pWorkerContext->Status(pContext->item->nId, _T("--:--"), _T("Error"));
@@ -95,6 +95,13 @@ bool ConvertItem(CItemContext* pContext)
         CPreset& decoderPreset = decoderFormat.m_Presets.GetData(decoderFormat.nDefaultPreset);
         CString szDecoderExePath = decoderFormat.szPath;
         CString szDecoderOptions = decoderPreset.szOptions;
+
+        bIsValidEncoderInput = encoderFormat.IsValidInputExtension(decoderFormat.szOutputExtension);
+        if (bIsValidEncoderInput == false)
+        {
+            pContext->pWorkerContext->Status(pContext->item->nId, _T("--:--"), _T("Error"));
+            return bSuccess;
+        }
 
         if (pContext->pWorkerContext->pConfig->m_Options.bForceConsoleWindow == false)
         {

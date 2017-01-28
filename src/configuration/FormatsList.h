@@ -108,15 +108,14 @@ public:
         }
         return -1;
     }
-    int GetFormatByExt(CString szExt, int nType)
+    int GetDecoderByExtension(CString szExt)
     {
         szExt.MakeUpper();
         int nFormats = this->GetSize();
         for (int i = 0; i < nFormats; i++)
         {
             CFormat& format = this->GetData(i);
-            CString extension = format.szOutputExtension;
-            if (format.nType == nType && szExt.Compare(extension.MakeUpper()) == 0)
+            if (format.nType == 1 && format.IsValidInputExtension(szExt) == true)
                 return i;
         }
         return -1;
