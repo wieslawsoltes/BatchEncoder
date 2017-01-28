@@ -127,20 +127,20 @@ bool ConvertItem(CItemContext* pContext)
 
         // build full command line for decoder (DECODER-EXE + OPTIONS + INFILE + OUTFILE) 
         // this is basic model, some of encoder may have different command-line structure
-        CString csExecute;
-        csExecute = decoderFormat.szTemplate;
-        csExecute.Replace(_T("$EXE"), _T("\"$EXE\""));
-        csExecute.Replace(_T("$EXE"), szDecoderExePath);
-        csExecute.Replace(_T("$OPTIONS"), szDecoderOptions);
-        csExecute.Replace(_T("$INFILE"), _T("\"$INFILE\""));
-        csExecute.Replace(_T("$INFILE"), szInputFile);
-        csExecute.Replace(_T("$OUTFILE"), _T("\"$OUTFILE\""));
-        csExecute.Replace(_T("$OUTFILE"), szOutputFile);
+        CString szExecute;
+        szExecute = decoderFormat.szTemplate;
+        szExecute.Replace(_T("$EXE"), _T("\"$EXE\""));
+        szExecute.Replace(_T("$EXE"), szDecoderExePath);
+        szExecute.Replace(_T("$OPTIONS"), szDecoderOptions);
+        szExecute.Replace(_T("$INFILE"), _T("\"$INFILE\""));
+        szExecute.Replace(_T("$INFILE"), szInputFile);
+        szExecute.Replace(_T("$OUTFILE"), _T("\"$OUTFILE\""));
+        szExecute.Replace(_T("$OUTFILE"), szOutputFile);
 
         bDecode = true;
         nTool = pContext->pWorkerContext->pConfig->m_Formats.GetFormatById(decoderFormat.szId);
 
-        lstrcpy(szCommandLine, csExecute.GetBuffer(csExecute.GetLength()));
+        lstrcpy(szCommandLine, szExecute.GetBuffer(szExecute.GetLength()));
 
         pContext->pWorkerContext->Status(pContext->item->nId, _T("--:--"), _T("Decoding..."));
 
@@ -229,20 +229,20 @@ bool ConvertItem(CItemContext* pContext)
     {
         // build full command line for encoder (ENCODER-EXE + OPTIONS + INFILE + OUTFILE)
         // this is basic model, some of encoder may have different command-line structure
-        CString csExecute;
-        csExecute = encoderFormat.szTemplate;
-        csExecute.Replace(_T("$EXE"), _T("\"$EXE\""));
-        csExecute.Replace(_T("$EXE"), szEncoderExePath);
-        csExecute.Replace(_T("$OPTIONS"), szEncoderOptions);
-        csExecute.Replace(_T("$INFILE"), _T("\"$INFILE\""));
-        csExecute.Replace(_T("$INFILE"), szInputFile);
-        csExecute.Replace(_T("$OUTFILE"), _T("\"$OUTFILE\""));
-        csExecute.Replace(_T("$OUTFILE"), szOutputFile);
+        CString szExecute;
+        szExecute = encoderFormat.szTemplate;
+        szExecute.Replace(_T("$EXE"), _T("\"$EXE\""));
+        szExecute.Replace(_T("$EXE"), szEncoderExePath);
+        szExecute.Replace(_T("$OPTIONS"), szEncoderOptions);
+        szExecute.Replace(_T("$INFILE"), _T("\"$INFILE\""));
+        szExecute.Replace(_T("$INFILE"), szInputFile);
+        szExecute.Replace(_T("$OUTFILE"), _T("\"$OUTFILE\""));
+        szExecute.Replace(_T("$OUTFILE"), szOutputFile);
 
         bDecode = false;
         nTool = pContext->pWorkerContext->pConfig->m_Formats.GetFormatById(encoderFormat.szId);
 
-        lstrcpy(szCommandLine, csExecute.GetBuffer(csExecute.GetLength()));
+        lstrcpy(szCommandLine, szExecute.GetBuffer(szExecute.GetLength()));
 
         pContext->pWorkerContext->Status(pContext->item->nId, _T("--:--"), _T("Encoding..."));
 
