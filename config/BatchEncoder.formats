@@ -491,7 +491,7 @@
             <Preset name="Default" options="--force-wav" />
         </Presets>
     </Format>
-    <Format id="OGGDEC_OGG_WAV" name="Decode OGG to WAV" template="$EXE -o $OUTFILE $INFILE" input="false" output="false" function="GetProgress_OggDec.progress" path="oggdec.exe" type="1" formats="OGG" extension="WAV" default="0">
+    <Format id="OGGDEC_OGG_WAV" name="Decode OGG to WAV" template="$EXE $INFILE -w $OUTFILE" input="false" output="false" function="GetProgress_OggDec.progress" path="oggdec.exe" type="1" formats="OGG" extension="WAV" default="0">
         <Presets>
             <Preset name="Default" options="" />
         </Presets>
