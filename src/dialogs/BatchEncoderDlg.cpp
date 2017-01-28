@@ -973,6 +973,9 @@ void CBatchEncoderDlg::StartConvert()
         m_BtnConvert.SetWindowText(_T("S&top"));
         this->GetMenu()->ModifyMenu(ID_ACTION_CONVERT, MF_BYCOMMAND, ID_ACTION_CONVERT, _T("S&top\tF9"));
 
+        this->ResetConvertionTime();
+        this->ResetConvertionStatus();
+
         this->pWorkerContext->bRunning = true;
 
         ::ResumeThread(this->pWorkerContext->hThread);
