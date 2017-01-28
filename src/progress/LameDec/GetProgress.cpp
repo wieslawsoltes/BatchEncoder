@@ -68,7 +68,10 @@ int GetProgress(char *szLineBuff, int nLineLen)
         szBuff[(nEnd - nPos) - 1] = '\0';
         nTotalFrames = atoi(szBuff);
 
-        nProgress = (100 * nCurFrame) / nTotalFrames;
+        if (nCurFrame == 0 || nTotalFrames == 0)
+            nProgress = 0;
+        else
+            nProgress = (100 * nCurFrame) / nTotalFrames;
 
         return nProgress;
     }
