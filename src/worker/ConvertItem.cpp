@@ -162,12 +162,15 @@ bool ConvertItem(CItemContext* pContext)
 
         // TODO: when transcoding don't show time stats
         bool bResult = false;
-
         try
         {
             bResult = ::ConvertFile(&context);
         }
-        catch (...) {}
+        catch (...)
+        {
+            pContext->pWorkerContext->Status(pContext->item->nId, _T("--:--"), _T("Error: exception thrown while decoding."));
+            pContext->pWorkerContext->Callback(pContext->item->nId, -1, true, true);
+        }
 
         if (bResult == true)
         {
@@ -272,7 +275,11 @@ bool ConvertItem(CItemContext* pContext)
         {
             bResult = ::ConvertFile(&context);
         }
-        catch (...) {}
+        catch (...)
+        {
+            pContext->pWorkerContext->Status(pContext->item->nId, _T("--:--"), _T("Error: exception thrown while encoding."));
+            pContext->pWorkerContext->Callback(pContext->item->nId, -1, true, true);
+        }
 
         if (bResult == true)
         {
