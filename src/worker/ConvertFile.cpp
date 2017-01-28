@@ -425,8 +425,9 @@ bool ConvertFile(CFileContext* pContext)
             // NOTE: 
             // do we need to check console output code-page?
             // all tools should be using system code-page or they are using UNICODE output?
-            char szReadBuff[4096];
-            char szLineBuff[4096];
+            const int nBuffSize = 4096;
+            char szReadBuff[nBuffSize];
+            char szLineBuff[nBuffSize];
             DWORD dwReadBytes = 0L;
             BOOL bRes = FALSE;
             bool bLineStart;
@@ -552,7 +553,15 @@ bool ConvertFile(CFileContext* pContext)
                     else if (bLineEnd == false)
                     {
                         bLineStart = true; // we have start
+
                         nLineLen++;
+                        if (nLineLen > nBuffSize)
+                        {
+                            pContext->pWorkerContext->Status(pContext->nIndex, _T("--:--"), _T("Error: console line is too large for read buffer."));
+                            pContext->pWorkerContext->Callback(pContext->nIndex, -1, true, true);
+                            return false;
+                        }
+
                         szLineBuff[nLineLen - 1] = szReadBuff[i];
                     }
 
