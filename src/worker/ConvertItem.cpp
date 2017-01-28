@@ -267,7 +267,6 @@ bool ConvertItem(CItemContext* pContext)
         if (bResult == true)
         {
             bSuccess = true;
-
             if (pContext->pWorkerContext->pConfig->m_Options.bDeleteSourceFiles == true)
                 ::DeleteFile(szOrgInputFile);
         }
