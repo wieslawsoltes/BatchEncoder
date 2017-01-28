@@ -225,9 +225,7 @@ BEGIN_MESSAGE_MAP(CBatchEncoderDlg, CResizeDialog)
     ON_WM_DROPFILES()
     ON_WM_HELPINFO()
     ON_WM_SIZE()
-    ON_MESSAGE(WM_TRAY, OnTrayIconMsg)
     ON_MESSAGE(WM_ITEMCHANGED, OnListItemChaged)
-    ON_COMMAND(ID_TRAYMENU_EXIT, OnTrayMenuExit)
     ON_NOTIFY(LVN_KEYDOWN, IDC_LIST_ITEMS, OnLvnKeydownListInputItems)
     ON_NOTIFY(LVN_ITEMCHANGING, IDC_LIST_ITEMS, OnLvnItemchangingListInputItems)
     ON_NOTIFY(LVN_ITEMCHANGED, IDC_LIST_ITEMS, OnLvnItemchangedListInputItems)
@@ -261,15 +259,9 @@ BEGIN_MESSAGE_MAP(CBatchEncoderDlg, CResizeDialog)
     ON_COMMAND(ID_EDIT_RESETTIME, OnEditResetTime)
     ON_COMMAND(ID_EDIT_ADDDIR, OnEditAddDir)
     ON_COMMAND(ID_ACTION_CONVERT, OnActionConvert)
-    ON_COMMAND(ID_OPTIONS_STAYONTOP, OnOptionsStayOnTop)
-    ON_COMMAND(ID_OPTIONS_SHOWTRAYICON, OnOptionsShowTrayIcon)
-    ON_COMMAND(ID_OPTIONS_LOGCONSOLEOUTPUT, OnOptionsLogConsoleOutput)
-    ON_COMMAND(ID_OPTIONS_SHOWLOGLIST, OnOptionsShowLog)
-    ON_COMMAND(ID_OPTIONS_DELETELOG, OnOptionsDeleteLog)
     ON_COMMAND(ID_OPTIONS_DELETESOURCEFILEWHENDONE, OnOptionsDeleteSourceFileWhenDone)
     ON_COMMAND(ID_OPTIONS_SHUTDOWN_WHEN_FINISHED, OnOptionsShutdownWhenFinished)
     ON_COMMAND(ID_OPTIONS_DO_NOT_SAVE, OnOptionsDoNotSave)
-    ON_COMMAND(ID_OPTIONS_FORCECONSOLEWINDOW, OnOptionsForceConsoleWindow)
     ON_COMMAND(ID_OPTIONS_ADVANCED, OnOptionsAdvanced)
     ON_COMMAND(ID_OPTIONS_CONFIGUREPRESETS, OnOptionsConfigurePresets)
     ON_COMMAND(ID_OPTIONS_CONFIGUREFORMAT, OnOptionsConfigureFormat)
@@ -294,16 +286,10 @@ BEGIN_MESSAGE_MAP(CBatchEncoderDlg, CResizeDialog)
     ON_COMMAND(ID_ACCELERATOR_CTRL_PLUS, OnEditRemoveChecked)
     ON_COMMAND(ID_ACCELERATOR_CTRL_MINUS, OnEditRemoveUnchecked)
     ON_COMMAND(ID_ACCELERATOR_F9, OnBnClickedButtonConvert)
-    ON_COMMAND(ID_ACCELERATOR_F10, OnOptionsStayOnTop)
     ON_COMMAND(ID_ACCELERATOR_CTRL_X, OnOptionsDoNotSave)
     ON_COMMAND(ID_ACCELERATOR_F7, OnOptionsConfigurePresets)
     ON_COMMAND(ID_ACCELERATOR_F8, OnOptionsConfigureFormat)
     ON_COMMAND(ID_ACCELERATOR_CTRL_Q, OnOptionsShutdownWhenFinished)
-    ON_COMMAND(ID_ACCELERATOR_F12, OnOptionsLogConsoleOutput)
-    ON_COMMAND(ID_ACCELERATOR_CTRL_F12, OnOptionsShowLog)
-    ON_COMMAND(ID_ACCELERATOR_SHIFT_F12, OnOptionsDeleteLog)
-    ON_COMMAND(ID_ACCELERATOR_F11, OnOptionsShowTrayIcon)
-    ON_COMMAND(ID_ACCELERATOR_CTRL_SHIFT_F, OnOptionsForceConsoleWindow)
     ON_COMMAND(ID_ACCELERATOR_CTRL_SHIFT_A, OnOptionsAdvanced)
     ON_COMMAND(ID_ACCELERATOR_CTRL_D, OnOptionsDeleteSourceFileWhenDone)
 END_MESSAGE_MAP()
@@ -414,129 +400,6 @@ void CBatchEncoderDlg::UpdateStatusBar()
     }
 }
 
-void CBatchEncoderDlg::EnableTrayIcon(bool bEnable, bool bModify)
-{
-    NOTIFYICONDATA tnd;
-    HICON hIconExit = LoadIcon(GetModuleHandle(NULL), MAKEINTRESOURCE(IDI_TRAYICON));
-
-    tnd.cbSize = sizeof(NOTIFYICONDATA);
-    tnd.hWnd = this->GetSafeHwnd();
-    tnd.uID = 0x1000;
-    tnd.hIcon = hIconExit;
-    tnd.uFlags = NIF_MESSAGE | NIF_ICON | NIF_TIP;
-    tnd.uCallbackMessage = WM_TRAY;
-
-    lstrcpy(tnd.szTip, _T("BatchEncoder"));
-
-    if ((bEnable == true) && (bModify == false))
-    {
-        Shell_NotifyIcon(NIM_ADD, &tnd);
-        m_Config.m_Options.bShowTrayIcon = true;
-        this->GetMenu()->CheckMenuItem(ID_OPTIONS_SHOWTRAYICON, MF_CHECKED);
-    }
-    else if ((bEnable == true) && (bModify == true))
-    {
-        Shell_NotifyIcon(NIM_MODIFY, &tnd);
-    }
-    else
-    {
-        if (m_Config.m_Options.bShowTrayIcon == true)
-        {
-            Shell_NotifyIcon(NIM_DELETE, &tnd);
-            m_Config.m_Options.bShowTrayIcon = false;
-            this->GetMenu()->CheckMenuItem(ID_OPTIONS_SHOWTRAYICON, MF_UNCHECKED);
-        }
-    }
-}
-
-void CBatchEncoderDlg::ShowProgressTrayIcon(int nProgress)
-{
-    static const int nIconsIdCount = 12;
-    static const int nIconId[nIconsIdCount] =
-    {
-        IDI_ICON_PROGRESS_01, IDI_ICON_PROGRESS_02, IDI_ICON_PROGRESS_03,
-        IDI_ICON_PROGRESS_04, IDI_ICON_PROGRESS_05, IDI_ICON_PROGRESS_06,
-        IDI_ICON_PROGRESS_07, IDI_ICON_PROGRESS_08, IDI_ICON_PROGRESS_09,
-        IDI_ICON_PROGRESS_10, IDI_ICON_PROGRESS_11, IDI_ICON_PROGRESS_12
-    };
-
-    if (m_Config.m_Options.bShowTrayIcon == true)
-    {
-        int nIndex = (nIconsIdCount * nProgress) / 100;
-        HICON hIconProgress = LoadIcon(GetModuleHandle(NULL), MAKEINTRESOURCE(nIconId[nIndex]));
-
-        NOTIFYICONDATA tnd;
-        tnd.cbSize = sizeof(NOTIFYICONDATA);
-        tnd.hWnd = this->GetSafeHwnd();
-        tnd.uID = 0x1000;
-        tnd.hIcon = hIconProgress;
-        tnd.uFlags = NIF_MESSAGE | NIF_ICON | NIF_TIP;
-        tnd.uCallbackMessage = WM_TRAY;
-
-        TCHAR szText[64];
-        wsprintf(szText, _T("%d%%"), nProgress);
-        _tcscpy(tnd.szTip, szText);
-
-        Shell_NotifyIcon(NIM_MODIFY, &tnd);
-    }
-}
-
-void CBatchEncoderDlg::OnSize(UINT nType, int cx, int cy)
-{
-    CResizeDialog::OnSize(nType, cx, cy);
-
-    if ((m_Config.m_Options.bShowTrayIcon == true) && (nType == SIZE_MINIMIZED))
-    {
-        ShowWindow(SW_HIDE);
-        InvalidateRect(NULL, FALSE);
-    }
-}
-
-LRESULT CBatchEncoderDlg::OnTrayIconMsg(WPARAM wParam, LPARAM lParam)
-{
-    UINT uID = (UINT)wParam;
-    UINT uMouseMsg = (UINT)lParam;
-    if (m_Config.m_Options.bShowTrayIcon == true)
-    {
-        if (uMouseMsg == WM_RBUTTONDOWN)
-        {
-            if (this->pWorkerContext->bRunning == true)
-                return(0);
-
-            CMenu menu;
-            if (!menu.LoadMenu(IDR_MENU_TRAY))
-                return(0);
-
-            CMenu* pSubMenu = menu.GetSubMenu(0);
-            if (!pSubMenu)
-                return(0);
-
-            ::SetMenuDefaultItem(pSubMenu->m_hMenu, 0, TRUE);
-
-            CPoint mouse;
-            GetCursorPos(&mouse);
-            ::SetForegroundWindow(this->GetSafeHwnd());
-            ::TrackPopupMenu(pSubMenu->m_hMenu, 0, mouse.x, mouse.y, 0, this->GetSafeHwnd(), NULL);
-            ::PostMessage(this->GetSafeHwnd(), WM_NULL, 0, 0);
-        }
-        else if (uMouseMsg == WM_LBUTTONDOWN)
-        {
-            if (this->IsWindowVisible() == FALSE)
-            {
-                ShowWindow(SW_SHOW);
-                ShowWindow(SW_RESTORE);
-                SetFocus();
-                SetActiveWindow();
-            }
-            else
-            {
-                ShowWindow(SW_MINIMIZE);
-            }
-        }
-    }
-    return(0);
-}
-
 LRESULT CBatchEncoderDlg::OnListItemChaged(WPARAM wParam, LPARAM lParam)
 {
     if (this->pWorkerContext->bRunning == false)
@@ -550,12 +413,6 @@ LRESULT CBatchEncoderDlg::OnListItemChaged(WPARAM wParam, LPARAM lParam)
         }
     }
     return(0);
-}
-
-void CBatchEncoderDlg::OnTrayMenuExit()
-{
-    if (m_Config.m_Options.bShowTrayIcon == true)
-        this->OnClose();
 }
 
 LRESULT CBatchEncoderDlg::OnNotifyFormat(WPARAM wParam, LPARAM lParam)
@@ -685,17 +542,17 @@ void CBatchEncoderDlg::GetOptions()
     // option: OutputPathChecked
     m_Config.m_Options.bOutputPathChecked = this->m_ChkOutPath.GetCheck() == BST_CHECKED;
 
-    // option: LogConsoleOutput
-    m_Config.m_Options.bLogConsoleOutput = this->GetMenu()->GetMenuState(ID_OPTIONS_LOGCONSOLEOUTPUT, MF_BYCOMMAND) == MF_CHECKED;
-
     // option: DeleteSourceFiles
     m_Config.m_Options.bDeleteSourceFiles = this->GetMenu()->GetMenuState(ID_OPTIONS_DELETESOURCEFILEWHENDONE, MF_BYCOMMAND) == MF_CHECKED;
 
-    // option: StayOnTop
-    m_Config.m_Options.bStayOnTop = this->GetMenu()->GetMenuState(ID_OPTIONS_STAYONTOP, MF_BYCOMMAND) == MF_CHECKED;
-
     // option: RecurseChecked
     m_Config.m_Options.bRecurseChecked = ::bRecurseChecked;
+
+    // option: ShutdownWhenFinished
+    m_Config.m_Options.bShutdownWhenFinished = this->GetMenu()->GetMenuState(ID_OPTIONS_SHUTDOWN_WHEN_FINISHED, MF_BYCOMMAND) == MF_CHECKED;
+
+    // option: DoNotSaveConfiguration
+    m_Config.m_Options.bDoNotSaveConfiguration = this->GetMenu()->GetMenuState(ID_OPTIONS_DO_NOT_SAVE, MF_BYCOMMAND) == MF_CHECKED;
 
     // option: MainWindowResize
     m_Config.m_Options.szMainWindowResize = this->GetWindowRectStr();
@@ -712,18 +569,6 @@ void CBatchEncoderDlg::GetOptions()
         nColWidth[4],
         nColWidth[5],
         nColWidth[6]);
-
-    // option: ShowTrayIcon
-    m_Config.m_Options.bShowTrayIcon = this->GetMenu()->GetMenuState(ID_OPTIONS_SHOWTRAYICON, MF_BYCOMMAND) == MF_CHECKED;
-
-    // option: ShutdownWhenFinished
-    m_Config.m_Options.bShutdownWhenFinished = this->GetMenu()->GetMenuState(ID_OPTIONS_SHUTDOWN_WHEN_FINISHED, MF_BYCOMMAND) == MF_CHECKED;
-
-    // option: DoNotSaveConfiguration
-    m_Config.m_Options.bDoNotSaveConfiguration = this->GetMenu()->GetMenuState(ID_OPTIONS_DO_NOT_SAVE, MF_BYCOMMAND) == MF_CHECKED;
-
-    // option: ForceConsoleWindow
-    m_Config.m_Options.bForceConsoleWindow = this->GetMenu()->GetMenuState(ID_OPTIONS_FORCECONSOLEWINDOW, MF_BYCOMMAND) == MF_CHECKED;
 }
 
 void CBatchEncoderDlg::SetOptions()
@@ -757,35 +602,41 @@ void CBatchEncoderDlg::SetOptions()
         m_EdtOutPath.EnableWindow(FALSE);
     }
 
-    // option: LogConsoleOutput
-    if (m_Config.m_Options.bLogConsoleOutput)
-        this->GetMenu()->CheckMenuItem(ID_OPTIONS_LOGCONSOLEOUTPUT, MF_CHECKED);
-    else
-        this->GetMenu()->CheckMenuItem(ID_OPTIONS_LOGCONSOLEOUTPUT, MF_UNCHECKED);
-
     // option: DeleteSourceFiles
     if (m_Config.m_Options.bDeleteSourceFiles)
         this->GetMenu()->CheckMenuItem(ID_OPTIONS_DELETESOURCEFILEWHENDONE, MF_CHECKED);
     else
         this->GetMenu()->CheckMenuItem(ID_OPTIONS_DELETESOURCEFILEWHENDONE, MF_UNCHECKED);
 
-    // option: StayOnTop
-    if (m_Config.m_Options.bStayOnTop)
-    {
-        this->SetWindowPos(CWnd::FromHandle(HWND_TOPMOST), 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
-        this->GetMenu()->CheckMenuItem(ID_OPTIONS_STAYONTOP, MF_CHECKED);
-    }
-    else
-    {
-        this->SetWindowPos(CWnd::FromHandle(HWND_NOTOPMOST), 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
-        this->GetMenu()->CheckMenuItem(ID_OPTIONS_STAYONTOP, MF_UNCHECKED);
-    }
-
     // option: RecurseChecked
     if (m_Config.m_Options.bRecurseChecked)
         ::bRecurseChecked = true;
     else
         ::bRecurseChecked = false;
+
+    // option: ShutdownWhenFinished
+    if (m_Config.m_Options.bShutdownWhenFinished)
+        this->GetMenu()->CheckMenuItem(ID_OPTIONS_SHUTDOWN_WHEN_FINISHED, MF_CHECKED);
+    else
+        this->GetMenu()->CheckMenuItem(ID_OPTIONS_SHUTDOWN_WHEN_FINISHED, MF_UNCHECKED);
+
+    // option: DoNotSaveConfiguration
+    if (m_Config.m_Options.bDoNotSaveConfiguration)
+        this->GetMenu()->CheckMenuItem(ID_OPTIONS_DO_NOT_SAVE, MF_CHECKED);
+    else
+        this->GetMenu()->CheckMenuItem(ID_OPTIONS_DO_NOT_SAVE, MF_UNCHECKED);
+
+    // option: DeleteOnError
+
+    // option: StopOnErrors
+
+    // option: PresetsDialogResize
+
+    // option: PresetsListColumns
+
+    // option: FormatsDialogResize
+
+    // option: FormatsListColumns
 
     // option: MainWindowResize
     if (m_Config.m_Options.szMainWindowResize.Compare(_T("")) != 0)
@@ -810,43 +661,6 @@ void CBatchEncoderDlg::SetOptions()
                 m_LstInputItems.SetColumnWidth(i, nColWidth[i]);
         }
     }
-
-    // option: ShowTrayIcon
-    EnableTrayIcon(m_Config.m_Options.bShowTrayIcon);
-
-    // option: ShutdownWhenFinished
-    if (m_Config.m_Options.bShutdownWhenFinished)
-        this->GetMenu()->CheckMenuItem(ID_OPTIONS_SHUTDOWN_WHEN_FINISHED, MF_CHECKED);
-    else
-        this->GetMenu()->CheckMenuItem(ID_OPTIONS_SHUTDOWN_WHEN_FINISHED, MF_UNCHECKED);
-
-    // option: DoNotSaveConfiguration
-    if (m_Config.m_Options.bDoNotSaveConfiguration)
-        this->GetMenu()->CheckMenuItem(ID_OPTIONS_DO_NOT_SAVE, MF_CHECKED);
-    else
-        this->GetMenu()->CheckMenuItem(ID_OPTIONS_DO_NOT_SAVE, MF_UNCHECKED);
-
-    // option: PresetsDialogResize
-
-    // option: PresetsListColumns
-
-    // option: FormatsDialogResize
-
-    // option: FormatsListColumns
-
-    // option: DeleteOnError
-
-    // option: StopOnErrors
-
-    // option: LogFileName
-
-    // option: LogFileEncoding
-
-    // option: ForceConsoleWindow
-    if (m_Config.m_Options.bForceConsoleWindow)
-        this->GetMenu()->CheckMenuItem(ID_OPTIONS_FORCECONSOLEWINDOW, MF_CHECKED);
-    else
-        this->GetMenu()->CheckMenuItem(ID_OPTIONS_FORCECONSOLEWINDOW, MF_UNCHECKED);
 }
 
 bool CBatchEncoderDlg::LoadOptions(CString szFileXml)
@@ -997,9 +811,6 @@ void CBatchEncoderDlg::StartConvert()
 
 void CBatchEncoderDlg::FinishConvert()
 {
-    if (this->m_Config.m_Options.bShowTrayIcon == true)
-        this->EnableTrayIcon(true, true);
-
     this->m_BtnConvert.SetWindowText(_T("Conve&rt"));
     this->GetMenu()->ModifyMenu(ID_ACTION_CONVERT, MF_BYCOMMAND, ID_ACTION_CONVERT, _T("Conve&rt\tF9"));
     this->EnableUserInterface(TRUE);
@@ -1019,8 +830,6 @@ void CBatchEncoderDlg::FinishConvert()
             }
             catch (...) {}
         }
-
-        this->EnableTrayIcon(false);
 
         ::ShutdownWindows();
     }
@@ -1062,8 +871,6 @@ void CBatchEncoderDlg::OnClose()
         }
         catch (...) {}
     }
-
-    this->EnableTrayIcon(false);
 
     CResizeDialog::OnOK();
 }
@@ -1592,24 +1399,18 @@ void CBatchEncoderDlg::EnableUserInterface(BOOL bEnable)
 {
     if (bEnable == FALSE)
     {
-        if (m_Config.m_Options.bForceConsoleWindow == false)
-        {
-            this->m_ChkOutPath.ShowWindow(SW_HIDE);
-            this->m_EdtOutPath.ShowWindow(SW_HIDE);
-            this->m_BtnBrowse.ShowWindow(SW_HIDE);
-            this->m_Progress.ShowWindow(SW_SHOW);
-        }
+        this->m_ChkOutPath.ShowWindow(SW_HIDE);
+        this->m_EdtOutPath.ShowWindow(SW_HIDE);
+        this->m_BtnBrowse.ShowWindow(SW_HIDE);
+        this->m_Progress.ShowWindow(SW_SHOW);
     }
     else
     {
-        if (m_Config.m_Options.bForceConsoleWindow == false)
-        {
-            this->m_Progress.ShowWindow(SW_HIDE);
-            this->m_ChkOutPath.ShowWindow(SW_SHOW);
-            this->m_EdtOutPath.ShowWindow(SW_SHOW);
-            this->m_BtnBrowse.ShowWindow(SW_SHOW);
-            this->m_LstInputItems.ShowWindow(SW_SHOW);
-        }
+        this->m_Progress.ShowWindow(SW_HIDE);
+        this->m_ChkOutPath.ShowWindow(SW_SHOW);
+        this->m_EdtOutPath.ShowWindow(SW_SHOW);
+        this->m_BtnBrowse.ShowWindow(SW_SHOW);
+        this->m_LstInputItems.ShowWindow(SW_SHOW);
     }
 
     CMenu* pSysMenu = GetSystemMenu(FALSE);
@@ -2126,67 +1927,6 @@ void CBatchEncoderDlg::OnActionConvert()
     this->StartConvert();
 }
 
-void CBatchEncoderDlg::OnOptionsStayOnTop()
-{
-    if (this->pWorkerContext->bRunning == false)
-    {
-        if (this->GetMenu()->GetMenuState(ID_OPTIONS_STAYONTOP, MF_BYCOMMAND) == MF_CHECKED)
-        {
-            this->SetWindowPos(CWnd::FromHandle(HWND_NOTOPMOST), 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
-            this->GetMenu()->CheckMenuItem(ID_OPTIONS_STAYONTOP, MF_UNCHECKED);
-        }
-        else
-        {
-            this->SetWindowPos(CWnd::FromHandle(HWND_TOPMOST), 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
-            this->GetMenu()->CheckMenuItem(ID_OPTIONS_STAYONTOP, MF_CHECKED);
-        }
-    }
-}
-
-void CBatchEncoderDlg::OnOptionsShowTrayIcon()
-{
-    if (this->GetMenu()->GetMenuState(ID_OPTIONS_SHOWTRAYICON, MF_BYCOMMAND) == MF_CHECKED)
-        this->EnableTrayIcon(false);
-    else
-        this->EnableTrayIcon(true);
-}
-
-void CBatchEncoderDlg::OnOptionsLogConsoleOutput()
-{
-    if (this->pWorkerContext->bRunning == false)
-    {
-        if (this->GetMenu()->GetMenuState(ID_OPTIONS_LOGCONSOLEOUTPUT, MF_BYCOMMAND) == MF_CHECKED)
-            this->GetMenu()->CheckMenuItem(ID_OPTIONS_LOGCONSOLEOUTPUT, MF_UNCHECKED);
-        else
-            this->GetMenu()->CheckMenuItem(ID_OPTIONS_LOGCONSOLEOUTPUT, MF_CHECKED);
-    }
-}
-
-void CBatchEncoderDlg::OnOptionsShowLog()
-{
-    if (this->pWorkerContext->bRunning == false)
-    {
-        CFileStatus rStatus;
-        if (CFile::GetStatus(m_Config.m_Options.szLogFileName, rStatus) == TRUE)
-        {
-            ::LaunchAndWait(m_Config.m_Options.szLogFileName, _T(""), FALSE);
-        }
-    }
-}
-
-void CBatchEncoderDlg::OnOptionsDeleteLog()
-{
-    if (this->pWorkerContext->bRunning == false)
-    {
-        CFileStatus rStatus;
-        if (CFile::GetStatus(m_Config.m_Options.szLogFileName, rStatus) == TRUE)
-        {
-            if (::DeleteFile(m_Config.m_Options.szLogFileName) == FALSE)
-                this->MessageBox(_T("Failed to delete log file!"), _T("ERROR"), MB_OK | MB_ICONERROR);
-        }
-    }
-}
-
 void CBatchEncoderDlg::OnOptionsDeleteSourceFileWhenDone()
 {
     if (this->pWorkerContext->bRunning == false)
@@ -2217,23 +1957,6 @@ void CBatchEncoderDlg::OnOptionsDoNotSave()
             this->GetMenu()->CheckMenuItem(ID_OPTIONS_DO_NOT_SAVE, MF_UNCHECKED);
         else
             this->GetMenu()->CheckMenuItem(ID_OPTIONS_DO_NOT_SAVE, MF_CHECKED);
-    }
-}
-
-void CBatchEncoderDlg::OnOptionsForceConsoleWindow()
-{
-    if (this->pWorkerContext->bRunning == false)
-    {
-        if (this->GetMenu()->GetMenuState(ID_OPTIONS_FORCECONSOLEWINDOW, MF_BYCOMMAND) == MF_CHECKED)
-        {
-            this->GetMenu()->CheckMenuItem(ID_OPTIONS_FORCECONSOLEWINDOW, MF_UNCHECKED);
-            m_Config.m_Options.bForceConsoleWindow = false;
-        }
-        else
-        {
-            this->GetMenu()->CheckMenuItem(ID_OPTIONS_FORCECONSOLEWINDOW, MF_CHECKED);
-            m_Config.m_Options.bForceConsoleWindow = true;
-        }
     }
 }
 
@@ -2382,7 +2105,6 @@ bool CBatchEncoderWorkerContext::Callback(int nIndex, int nProgress, bool bFinis
         if (this->nThreadCount == 1)
         {
             pDlg->m_Progress.SetPos(nProgress);
-            pDlg->ShowProgressTrayIcon(nProgress);
         }
         else if (this->nThreadCount > 1)
         {
@@ -2407,7 +2129,6 @@ bool CBatchEncoderWorkerContext::Callback(int nIndex, int nProgress, bool bFinis
                 if (pDlg->m_Progress.GetPos() != nPos)
                 {
                     pDlg->m_Progress.SetPos(nPos);
-                    pDlg->ShowProgressTrayIcon(nPos);
                 }
 
                 bSafeCheck = false;

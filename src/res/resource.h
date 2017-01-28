@@ -9,21 +9,8 @@
 #define IDD_DIALOG_ABOUT                105
 #define IDD_DIALOG_ADVANCED             106
 #define IDR_MENU_BATCHENCODER           107
-#define IDR_MENU_TRAY                   108
 #define IDR_MENU_STATUS                 109
 #define IDR_ACCELERATOR_BATCHENCODER    110
-#define IDI_ICON_PROGRESS_01            111
-#define IDI_ICON_PROGRESS_02            112
-#define IDI_ICON_PROGRESS_03            113
-#define IDI_ICON_PROGRESS_04            114
-#define IDI_ICON_PROGRESS_05            115
-#define IDI_ICON_PROGRESS_06            116
-#define IDI_ICON_PROGRESS_07            117
-#define IDI_ICON_PROGRESS_08            118
-#define IDI_ICON_PROGRESS_09            119
-#define IDI_ICON_PROGRESS_10            120
-#define IDI_ICON_PROGRESS_11            121
-#define IDI_ICON_PROGRESS_12            122
 #define IDC_BUTTON_FORMAT_LOAD          1001
 #define IDC_BUTTON_FORMAT_SAVE          1002
 #define IDC_BUTTON_RUN                  1004
@@ -61,11 +48,6 @@
 #define IDC_STATIC_PRESET_OPTIONS       1038
 #define IDC_CHECK_OPTION_DELETE         1041
 #define IDC_CHECK_OPTION_ERROR          1042
-#define IDC_EDIT_CONSOLE_LOG_FILE       1043
-#define IDC_BUTTON_BROWSE_LOG           1044
-#define IDC_RADIO_ENCODING_ANSI         1045
-#define IDC_RADIO_ENCODING_UNICODE      1046
-#define IDC_RADIO_ENCODING_UTF8         1047
 #define IDC_CHECK_FORMAT_PIPES_INPUT    1048
 #define IDC_LIST_FORMATS                1049
 #define IDC_CHECK_FORMAT_PIPES_OUTPUT   1050
@@ -95,8 +77,6 @@
 #define IDC_EDIT_FORMAT_FORMATS         1074
 #define IDC_EDIT_FORMAT_DEFAULT         1075
 #define IDC_STATIC_GROUP_MISC           1076
-#define IDC_STATIC_GROUP_LOG            1077
-#define IDC_STATIC_LOG_ENCODING         1078
 #define IDC_STATIC_THREAD_COUNT         1079
 #define ID_HELP_ABOUT                   32771
 #define ID_FILE_EXIT                    32772
@@ -110,10 +90,7 @@
 #define ID_EDIT_CHECKSELECTED           32780
 #define ID_EDIT_UNCHECKSELECTED         32781
 #define ID_EDIT_ADDFILES                32782
-#define ID_OPTIONS_STAYONTOP            32783
 #define ID_OPTIONS_DELETESOURCEFILEWHENDONE 32784
-#define ID_OPTIONS_LOGCONSOLEOUTPUT     32785
-#define ID_OPTIONS_SHOWLOGLIST          32786
 #define ID_EDIT_RESETOUTPUT             32787
 #define ID_OPTIONS_ADVANCED             32788
 #define ID_OPTIONS_DO_NOT_SAVE          32789
@@ -125,7 +102,6 @@
 #define ID_OPTIONS_CONFIGUREFORMAT      32795
 #define ID_FILE_CLEARLIST               32796
 #define ID_ACTION_CONVERT               32797
-#define ID_OPTIONS_SHOWTRAYICON         32798
 #define ID_EDIT_SELECTNONE              32799
 #define ID_EDIT_INVERTSELECTION         32800
 #define ID_ACCELERATOR_CTRL_S           32801
@@ -142,11 +118,9 @@
 #define ID_ACCELERATOR_CTRL_O           32812
 #define ID_ACCELERATOR_CTRL_D           32813
 #define ID_ACCELERATOR_F9               32814
-#define ID_ACCELERATOR_F10              32815
 #define ID_ACCELERATOR_F7               32816
 #define ID_ACCELERATOR_F8               32817
 #define ID_ACCELERATOR_CTRL_SHIFT_A     32818
-#define ID_TRAYMENU_EXIT                32819
 #define ID_OPTIONS_SHUTDOWN_WHEN_FINISHED 32821
 #define ID_ACCELERATOR_CTRL_Q           32822
 #define ID_ACCELERATOR_ALT_F4           32823
@@ -154,25 +128,18 @@
 #define ID_ACCELERATOR_CTRL_MINUS       32827
 #define ID_ACCELERATOR_SHIFT_PLUS       32828
 #define ID_ACCELERATOR_SHIFT_MINUS      32829
-#define ID_ACCELERATOR_F12              32832
-#define ID_ACCELERATOR_CTRL_F12         32833
 #define ID_ACCELERATOR_CTRL_SHIFT_O     32834
-#define ID_ACCELERATOR_F11              32835
 #define ID_ACCELERATOR_CTRL_X           32836
 #define ID_STATUSMENU_RESET             32837
-#define ID_OPTIONS_DELETELOG            32838
-#define ID_ACCELERATOR_SHIFT_F12        32839
 #define ID_EDIT_REMOVECHECKED           32840
 #define ID_EDIT_REMOVEUNCHECKED         32841
-#define ID_OPTIONS_FORCECONSOLEWINDOW   32842
-#define ID_ACCELERATOR_CTRL_SHIFT_F     32843
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        123
-#define _APS_NEXT_COMMAND_VALUE         32844
+#define _APS_NEXT_COMMAND_VALUE         32843
 #define _APS_NEXT_CONTROL_VALUE         1080
 #define _APS_NEXT_SYMED_VALUE           101
 #endif

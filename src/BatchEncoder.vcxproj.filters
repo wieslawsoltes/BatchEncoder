@@ -43,9 +43,6 @@
     <Filter Include="Header Files\Worker\Context">
       <UniqueIdentifier>{146a33e9-1cdb-4223-ac8e-9bad62481487}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource Files\Progress">
-      <UniqueIdentifier>{d58a3d9b-ddbc-4753-b373-9760f3d4fc2c}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="StdAfx.cpp">
@@ -243,42 +240,6 @@
   <ItemGroup>
     <Image Include="res\TrayIcon.ico">
       <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\ProgressIcon01.ico">
-      <Filter>Resource Files\Progress</Filter>
-    </Image>
-    <Image Include="res\ProgressIcon02.ico">
-      <Filter>Resource Files\Progress</Filter>
-    </Image>
-    <Image Include="res\ProgressIcon03.ico">
-      <Filter>Resource Files\Progress</Filter>
-    </Image>
-    <Image Include="res\ProgressIcon04.ico">
-      <Filter>Resource Files\Progress</Filter>
-    </Image>
-    <Image Include="res\ProgressIcon05.ico">
-      <Filter>Resource Files\Progress</Filter>
-    </Image>
-    <Image Include="res\ProgressIcon06.ico">
-      <Filter>Resource Files\Progress</Filter>
-    </Image>
-    <Image Include="res\ProgressIcon07.ico">
-      <Filter>Resource Files\Progress</Filter>
-    </Image>
-    <Image Include="res\ProgressIcon08.ico">
-      <Filter>Resource Files\Progress</Filter>
-    </Image>
-    <Image Include="res\ProgressIcon09.ico">
-      <Filter>Resource Files\Progress</Filter>
-    </Image>
-    <Image Include="res\ProgressIcon10.ico">
-      <Filter>Resource Files\Progress</Filter>
-    </Image>
-    <Image Include="res\ProgressIcon11.ico">
-      <Filter>Resource Files\Progress</Filter>
-    </Image>
-    <Image Include="res\ProgressIcon12.ico">
-      <Filter>Resource Files\Progress</Filter>
     </Image>
   </ItemGroup>
   <ItemGroup>

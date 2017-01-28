@@ -326,18 +326,6 @@ copy /-Y ..\config\*.items $(OutDir)</Command>
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\TrayIcon.ico" />
-    <Image Include="res\ProgressIcon01.ico" />
-    <Image Include="res\ProgressIcon02.ico" />
-    <Image Include="res\ProgressIcon03.ico" />
-    <Image Include="res\ProgressIcon04.ico" />
-    <Image Include="res\ProgressIcon05.ico" />
-    <Image Include="res\ProgressIcon06.ico" />
-    <Image Include="res\ProgressIcon07.ico" />
-    <Image Include="res\ProgressIcon08.ico" />
-    <Image Include="res\ProgressIcon09.ico" />
-    <Image Include="res\ProgressIcon10.ico" />
-    <Image Include="res\ProgressIcon11.ico" />
-    <Image Include="res\ProgressIcon12.ico" />
   </ItemGroup>
   <ItemGroup>
     <None Include="res\BatchEncoder.rc2" />

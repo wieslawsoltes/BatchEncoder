@@ -27,13 +27,9 @@ public:
     COptions m_Options;
 public:
     CMyStatic m_GrpMisc;
-    CMyStatic m_GrpLog;
-    CMyStatic m_StcEncoding;
     CMyStatic m_StcThreads;
     CMyButton m_BtnOK;
     CMyButton m_BtnCancel;
-    CMyEdit m_EdtLog;
-    CButton m_BtnBrowse;
     CMyEdit m_EdtThreads;
 public:
     void GetAdvancedOptions();
@@ -41,5 +37,4 @@ public:
 public:
     afx_msg void OnClose();
     afx_msg void OnDestroy();
-    afx_msg void OnBnClickedButtonBrowseLog();
 };

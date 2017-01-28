@@ -81,18 +81,6 @@ void XmlConfiguration::GetOptions(tinyxml2::XMLElement *pOptionsElem, COptions &
         m_Options.bOutputPathChecked = false;
     }
 
-    // option: LogConsoleOutput
-    pOptionElem = pOptionsElem->FirstChildElement("LogConsoleOutput");
-    if (pOptionElem)
-    {
-        const char *tmpBuff = pOptionElem->GetText();
-        m_Options.bLogConsoleOutput = ToCString(tmpBuff).Compare(_T("true")) == 0;
-    }
-    else
-    {
-        m_Options.bLogConsoleOutput = false;
-    }
-
     // option: DeleteSourceFiles
     pOptionElem = pOptionsElem->FirstChildElement("DeleteSourceFiles");
     if (pOptionElem)
@@ -105,18 +93,6 @@ void XmlConfiguration::GetOptions(tinyxml2::XMLElement *pOptionsElem, COptions &
         m_Options.bDeleteSourceFiles = false;
     }
 
-    // option: StayOnTop
-    pOptionElem = pOptionsElem->FirstChildElement("StayOnTop");
-    if (pOptionElem)
-    {
-        const char *tmpBuff = pOptionElem->GetText();
-        m_Options.bStayOnTop = ToCString(tmpBuff).Compare(_T("true")) == 0;
-    }
-    else
-    {
-        m_Options.bStayOnTop = false;
-    }
-
     // option: RecurseChecked
     pOptionElem = pOptionsElem->FirstChildElement("RecurseChecked");
     if (pOptionElem)
@@ -127,34 +103,6 @@ void XmlConfiguration::GetOptions(tinyxml2::XMLElement *pOptionsElem, COptions &
     else
     {
         m_Options.bRecurseChecked = false;
-    }
-
-    // option: MainWindowResize
-    pOptionElem = pOptionsElem->FirstChildElement("MainWindowResize");
-    if (pOptionElem)
-    {
-        const char *tmpBuff = pOptionElem->GetText();
-        m_Options.szMainWindowResize = ToCString(tmpBuff);
-    }
-
-    // option: FileListColumns
-    pOptionElem = pOptionsElem->FirstChildElement("FileListColumns");
-    if (pOptionElem)
-    {
-        const char *tmpBuff = pOptionElem->GetText();
-        m_Options.szFileListColumns = ToCString(tmpBuff);
-    }
-
-    // option: ShowTrayIcon
-    pOptionElem = pOptionsElem->FirstChildElement("ShowTrayIcon");
-    if (pOptionElem)
-    {
-        const char *tmpBuff = pOptionElem->GetText();
-        m_Options.bShowTrayIcon = ToCString(tmpBuff).Compare(_T("true")) == 0;
-    }
-    else
-    {
-        m_Options.bShowTrayIcon = false;
     }
 
     // option: ShutdownWhenFinished
@@ -179,6 +127,22 @@ void XmlConfiguration::GetOptions(tinyxml2::XMLElement *pOptionsElem, COptions &
     else
     {
         m_Options.bDoNotSaveConfiguration = false;
+    }
+
+    // option: MainWindowResize
+    pOptionElem = pOptionsElem->FirstChildElement("MainWindowResize");
+    if (pOptionElem)
+    {
+        const char *tmpBuff = pOptionElem->GetText();
+        m_Options.szMainWindowResize = ToCString(tmpBuff);
+    }
+
+    // option: FileListColumns
+    pOptionElem = pOptionsElem->FirstChildElement("FileListColumns");
+    if (pOptionElem)
+    {
+        const char *tmpBuff = pOptionElem->GetText();
+        m_Options.szFileListColumns = ToCString(tmpBuff);
     }
 
     // option: PresetsDialogResize
@@ -237,42 +201,6 @@ void XmlConfiguration::GetOptions(tinyxml2::XMLElement *pOptionsElem, COptions &
         m_Options.bStopOnErrors = false;
     }
 
-    // option: LogFileName
-    pOptionElem = pOptionsElem->FirstChildElement("LogFileName");
-    if (pOptionElem)
-    {
-        const char *tmpBuff = pOptionElem->GetText();
-        m_Options.szLogFileName = ToCString(tmpBuff);
-    }
-    else
-    {
-        m_Options.szLogFileName = _T("BatchEncoder.log");
-    }
-
-    // option: LogFileEncoding
-    pOptionElem = pOptionsElem->FirstChildElement("LogFileEncoding");
-    if (pOptionElem)
-    {
-        const char *tmpBuff = pOptionElem->GetText();
-        m_Options.nLogEncoding = _tstoi(ToCString(tmpBuff));
-    }
-    else
-    {
-        m_Options.nLogEncoding = 2;
-    }
-
-    // option: ForceConsoleWindow
-    pOptionElem = pOptionsElem->FirstChildElement("ForceConsoleWindow");
-    if (pOptionElem)
-    {
-        const char *tmpBuff = pOptionElem->GetText();
-        m_Options.bForceConsoleWindow = ToCString(tmpBuff).Compare(_T("true")) == 0;
-    }
-    else
-    {
-        m_Options.bForceConsoleWindow = false;
-    }
-
     // option: ThreadCount
     pOptionElem = pOptionsElem->FirstChildElement("ThreadCount");
     if (pOptionElem)
@@ -312,45 +240,15 @@ void XmlConfiguration::SetOptions(tinyxml2::XMLElement *pOptionsElem, COptions &
     pOptionsElem->LinkEndChild(pOptionElem);
     szBuffUtf8.Clear();
 
-    // option: LogConsoleOutput
-    pOptionElem = this->NewElement("LogConsoleOutput");
-    pOptionElem->LinkEndChild(this->NewText(szBuffUtf8.Create(m_Options.bLogConsoleOutput ? _T("true") : _T("false"))));
-    pOptionsElem->LinkEndChild(pOptionElem);
-    szBuffUtf8.Clear();
-
     // option: DeleteSourceFiles
     pOptionElem = this->NewElement("DeleteSourceFiles");
     pOptionElem->LinkEndChild(this->NewText(szBuffUtf8.Create(m_Options.bDeleteSourceFiles ? _T("true") : _T("false"))));
     pOptionsElem->LinkEndChild(pOptionElem);
     szBuffUtf8.Clear();
 
-    // option: StayOnTop
-    pOptionElem = this->NewElement("StayOnTop");
-    pOptionElem->LinkEndChild(this->NewText(szBuffUtf8.Create(m_Options.bStayOnTop ? _T("true") : _T("false"))));
-    pOptionsElem->LinkEndChild(pOptionElem);
-    szBuffUtf8.Clear();
-
     // option: RecurseChecked
     pOptionElem = this->NewElement("RecurseChecked");
     pOptionElem->LinkEndChild(this->NewText(szBuffUtf8.Create(m_Options.bRecurseChecked ? _T("true") : _T("false"))));
-    pOptionsElem->LinkEndChild(pOptionElem);
-    szBuffUtf8.Clear();
-
-    // option: MainWindowResize
-    pOptionElem = this->NewElement("MainWindowResize");
-    pOptionElem->LinkEndChild(this->NewText(szBuffUtf8.Create(m_Options.szMainWindowResize)));
-    pOptionsElem->LinkEndChild(pOptionElem);
-    szBuffUtf8.Clear();
-
-    // option: FileListColumns
-    pOptionElem = this->NewElement("FileListColumns");
-    pOptionElem->LinkEndChild(this->NewText(szBuffUtf8.Create(m_Options.szFileListColumns)));
-    pOptionsElem->LinkEndChild(pOptionElem);
-    szBuffUtf8.Clear();
-
-    // option: ShowTrayIcon
-    pOptionElem = this->NewElement("ShowTrayIcon");
-    pOptionElem->LinkEndChild(this->NewText(szBuffUtf8.Create(m_Options.bShowTrayIcon ? _T("true") : _T("false"))));
     pOptionsElem->LinkEndChild(pOptionElem);
     szBuffUtf8.Clear();
 
@@ -363,6 +261,18 @@ void XmlConfiguration::SetOptions(tinyxml2::XMLElement *pOptionsElem, COptions &
     // option: DoNotSaveConfiguration
     pOptionElem = this->NewElement("DoNotSaveConfiguration");
     pOptionElem->LinkEndChild(this->NewText(szBuffUtf8.Create(m_Options.bDoNotSaveConfiguration ? _T("true") : _T("false"))));
+    pOptionsElem->LinkEndChild(pOptionElem);
+    szBuffUtf8.Clear();
+
+    // option: MainWindowResize
+    pOptionElem = this->NewElement("MainWindowResize");
+    pOptionElem->LinkEndChild(this->NewText(szBuffUtf8.Create(m_Options.szMainWindowResize)));
+    pOptionsElem->LinkEndChild(pOptionElem);
+    szBuffUtf8.Clear();
+
+    // option: FileListColumns
+    pOptionElem = this->NewElement("FileListColumns");
+    pOptionElem->LinkEndChild(this->NewText(szBuffUtf8.Create(m_Options.szFileListColumns)));
     pOptionsElem->LinkEndChild(pOptionElem);
     szBuffUtf8.Clear();
 
@@ -399,27 +309,6 @@ void XmlConfiguration::SetOptions(tinyxml2::XMLElement *pOptionsElem, COptions &
     // option: StopOnErrors
     pOptionElem = this->NewElement("StopOnErrors");
     pOptionElem->LinkEndChild(this->NewText(szBuffUtf8.Create(m_Options.bStopOnErrors ? _T("true") : _T("false"))));
-    pOptionsElem->LinkEndChild(pOptionElem);
-    szBuffUtf8.Clear();
-
-    // option: LogFileName
-    pOptionElem = this->NewElement("LogFileName");
-    pOptionElem->LinkEndChild(this->NewText(szBuffUtf8.Create(m_Options.szLogFileName)));
-    pOptionsElem->LinkEndChild(pOptionElem);
-    szBuffUtf8.Clear();
-
-    // option: LogFileEncoding
-    CString szLogEncoding;
-    szLogEncoding.Format(_T("%d\0"), m_Options.nLogEncoding);
-
-    pOptionElem = this->NewElement("LogFileEncoding");
-    pOptionElem->LinkEndChild(this->NewText(szBuffUtf8.Create(szLogEncoding)));
-    pOptionsElem->LinkEndChild(pOptionElem);
-    szBuffUtf8.Clear();
-
-    // option: ForceConsoleWindow
-    pOptionElem = this->NewElement("ForceConsoleWindow");
-    pOptionElem->LinkEndChild(this->NewText(szBuffUtf8.Create(m_Options.bForceConsoleWindow ? _T("true") : _T("false"))));
     pOptionsElem->LinkEndChild(pOptionElem);
     szBuffUtf8.Clear();
 

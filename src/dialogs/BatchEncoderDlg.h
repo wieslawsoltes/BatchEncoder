@@ -75,14 +75,9 @@ public:
     void UpdateFormatComboBox();
     void UpdatePresetComboBox();
     void EnableUserInterface(BOOL bEnable = TRUE);
-    void EnableTrayIcon(bool bEnable = true, bool bModify = false);
-    void ShowProgressTrayIcon(int nProgress);
     void StartConvert();
     void FinishConvert();
 public:
-    afx_msg void OnSize(UINT nType, int cx, int cy);
-    afx_msg LRESULT OnTrayIconMsg(WPARAM wParam, LPARAM lParam);
-    afx_msg void OnTrayMenuExit();
     afx_msg LRESULT OnListItemChaged(WPARAM wParam, LPARAM lParam);
     afx_msg LRESULT OnNotifyFormat(WPARAM wParam, LPARAM lParam);
     afx_msg BOOL OnHelpInfo(HELPINFO* pHelpInfo);
@@ -122,15 +117,9 @@ public:
     afx_msg void OnEditResetOutput();
     afx_msg void OnEditResetTime();
     afx_msg void OnActionConvert();
-    afx_msg void OnOptionsStayOnTop();
-    afx_msg void OnOptionsShowTrayIcon();
-    afx_msg void OnOptionsLogConsoleOutput();
-    afx_msg void OnOptionsShowLog();
-    afx_msg void OnOptionsDeleteLog();
     afx_msg void OnOptionsDeleteSourceFileWhenDone();
     afx_msg void OnOptionsShutdownWhenFinished();
     afx_msg void OnOptionsDoNotSave();
-    afx_msg void OnOptionsForceConsoleWindow();
     afx_msg void OnOptionsAdvanced();
     afx_msg void OnOptionsConfigurePresets();
     afx_msg void OnOptionsConfigureFormat();

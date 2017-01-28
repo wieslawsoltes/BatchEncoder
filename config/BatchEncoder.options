@@ -2,17 +2,11 @@
 <Options>
     <SelectedFormat>5</SelectedFormat>
     <OutputPathChecked>false</OutputPathChecked>
-    <LogConsoleOutput>false</LogConsoleOutput>
     <DeleteSourceFiles>false</DeleteSourceFiles>
-    <StayOnTop>false</StayOnTop>
     <RecurseChecked>true</RecurseChecked>
-    <ShowTrayIcon>false</ShowTrayIcon>
     <ShutdownWhenFinished>false</ShutdownWhenFinished>
     <DoNotSaveConfiguration>false</DoNotSaveConfiguration>
     <DeleteOnError>true</DeleteOnError>
     <StopOnErrors>false</StopOnErrors>
-    <LogFileName>console.log</LogFileName>
-    <LogFileEncoding>2</LogFileEncoding>
-    <ForceConsoleWindow>false</ForceConsoleWindow>
     <ThreadCount>0</ThreadCount>
 </Options>

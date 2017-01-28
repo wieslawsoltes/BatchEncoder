@@ -82,30 +82,6 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 // remains consistent on all systems.
 IDI_TRAYICON            ICON                    "TrayIcon.ico"
 
-IDI_ICON_PROGRESS_01    ICON                    "progress\\ProgressIcon01.ico"
-
-IDI_ICON_PROGRESS_02    ICON                    "progress\\ProgressIcon02.ico"
-
-IDI_ICON_PROGRESS_03    ICON                    "progress\\ProgressIcon03.ico"
-
-IDI_ICON_PROGRESS_04    ICON                    "progress\\ProgressIcon04.ico"
-
-IDI_ICON_PROGRESS_05    ICON                    "progress\\ProgressIcon05.ico"
-
-IDI_ICON_PROGRESS_06    ICON                    "progress\\ProgressIcon06.ico"
-
-IDI_ICON_PROGRESS_07    ICON                    "progress\\ProgressIcon07.ico"
-
-IDI_ICON_PROGRESS_08    ICON                    "progress\\ProgressIcon08.ico"
-
-IDI_ICON_PROGRESS_09    ICON                    "progress\\ProgressIcon09.ico"
-
-IDI_ICON_PROGRESS_10    ICON                    "progress\\ProgressIcon10.ico"
-
-IDI_ICON_PROGRESS_11    ICON                    "progress\\ProgressIcon11.ico"
-
-IDI_ICON_PROGRESS_12    ICON                    "progress\\ProgressIcon12.ico"
-
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -211,27 +187,20 @@ BEGIN
     ICON            IDI_TRAYICON,IDC_STATIC,7,7,21,20
 END
 
-IDD_DIALOG_ADVANCED DIALOGEX 0, 0, 181, 145
+IDD_DIALOG_ADVANCED DIALOGEX 0, 0, 181, 93
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Advanced Options"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    PUSHBUTTON      "&Cancel",IDCANCEL,124,126,50,12
+    PUSHBUTTON      "&Cancel",IDCANCEL,124,74,50,12
     GROUPBOX        "Miscellaneous",IDC_STATIC_GROUP_MISC,7,7,165,44
     CONTROL         "&Delete output file on error.",IDC_CHECK_OPTION_DELETE,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,13,18,153,11
     CONTROL         "&Stop conversion process when error occurs.",IDC_CHECK_OPTION_ERROR,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,13,33,153,12
-    GROUPBOX        "Console log file path:",IDC_STATIC_GROUP_LOG,7,55,165,45
-    EDITTEXT        IDC_EDIT_CONSOLE_LOG_FILE,13,66,119,12,ES_AUTOHSCROLL | NOT WS_BORDER,WS_EX_CLIENTEDGE
-    PUSHBUTTON      "&...",IDC_BUTTON_BROWSE_LOG,136,66,30,12
-    LTEXT           "Encoding:",IDC_STATIC_LOG_ENCODING,13,82,36,12,SS_CENTERIMAGE
-    CONTROL         "&ANSI",IDC_RADIO_ENCODING_ANSI,"Button",BS_AUTORADIOBUTTON,53,82,30,12
-    CONTROL         "&Unicode",IDC_RADIO_ENCODING_UNICODE,"Button",BS_AUTORADIOBUTTON,89,82,38,12
-    CONTROL         "U&TF-8",IDC_RADIO_ENCODING_UTF8,"Button",BS_AUTORADIOBUTTON,134,82,32,12
-    LTEXT           "Thread count (0 = autodetect):",IDC_STATIC_THREAD_COUNT,7,107,113,12,SS_CENTERIMAGE
-    EDITTEXT        IDC_EDIT_THREADCOUNT,124,107,50,12,ES_AUTOHSCROLL | NOT WS_BORDER,WS_EX_CLIENTEDGE
-    PUSHBUTTON      "&OK",IDOK,70,126,50,12
+    LTEXT           "Thread count (0 = autodetect):",IDC_STATIC_THREAD_COUNT,7,55,113,12,SS_CENTERIMAGE
+    EDITTEXT        IDC_EDIT_THREADCOUNT,124,55,50,12,ES_AUTOHSCROLL | NOT WS_BORDER,WS_EX_CLIENTEDGE
+    PUSHBUTTON      "&OK",IDOK,70,74,50,12
 END
 
 
@@ -244,10 +213,10 @@ IDR_MENU_BATCHENCODER MENU
 BEGIN
     POPUP "&File"
     BEGIN
-        MENUITEM "&Load items...\tCtrl+L",     ID_FILE_LOADLIST
-        MENUITEM "&Save items...\tCtrl+S",     ID_FILE_SAVELIST
+        MENUITEM "&Load items...\tCtrl+L",      ID_FILE_LOADLIST
+        MENUITEM "&Save items...\tCtrl+S",      ID_FILE_SAVELIST
         MENUITEM SEPARATOR
-        MENUITEM "Cl&ear items\tCtrl+E",       ID_FILE_CLEARLIST
+        MENUITEM "Cl&ear items\tCtrl+E",        ID_FILE_CLEARLIST
         MENUITEM SEPARATOR
         MENUITEM "E&xit",                       ID_FILE_EXIT
     END
@@ -283,26 +252,16 @@ BEGIN
     END
     POPUP "&Options"
     BEGIN
-        MENUITEM "Stay on &top\tF10",           ID_OPTIONS_STAYONTOP
+        MENUITEM "Configure &presets...\tF7",   ID_OPTIONS_CONFIGUREPRESETS
+        MENUITEM "Configure &formats...\tF8",   ID_OPTIONS_CONFIGUREFORMAT
         MENUITEM SEPARATOR
-        MENUITEM "Show tray &icon\tF11",        ID_OPTIONS_SHOWTRAYICON
-        MENUITEM SEPARATOR
-        MENUITEM "&Log console output\tF12",    ID_OPTIONS_LOGCONSOLEOUTPUT
-        MENUITEM "Sho&w console log\tCtrl+F12", ID_OPTIONS_SHOWLOGLIST
-        MENUITEM "Delete console lo&g\tShift+F12", ID_OPTIONS_DELETELOG
+        MENUITEM "&Advanced...\tCtrl+Shift+A",  ID_OPTIONS_ADVANCED
         MENUITEM SEPARATOR
         MENUITEM "&Delete source file when done\tCtrl+D", ID_OPTIONS_DELETESOURCEFILEWHENDONE
         MENUITEM SEPARATOR
         MENUITEM "&Shutdown when finished\tCtrl+Q", ID_OPTIONS_SHUTDOWN_WHEN_FINISHED
         MENUITEM SEPARATOR
         MENUITEM "Don't save configuration on e&xit\tCtrl+X", ID_OPTIONS_DO_NOT_SAVE
-        MENUITEM SEPARATOR
-        MENUITEM "For&ce console window\tCtrl+Shift+F", ID_OPTIONS_FORCECONSOLEWINDOW
-        MENUITEM SEPARATOR
-        MENUITEM "&Advanced...\tCtrl+Shift+A",  ID_OPTIONS_ADVANCED
-        MENUITEM SEPARATOR
-        MENUITEM "Configure &presets...\tF7",   ID_OPTIONS_CONFIGUREPRESETS
-        MENUITEM "Configure &formats...\tF8",   ID_OPTIONS_CONFIGUREFORMAT
     END
     POPUP "&Help"
     BEGIN
@@ -312,19 +271,11 @@ BEGIN
     END
 END
 
-IDR_MENU_TRAY MENU
-BEGIN
-    POPUP "&Tray Menu"
-    BEGIN
-        MENUITEM "E&xit",                       ID_TRAYMENU_EXIT
-    END
-END
-
 IDR_MENU_STATUS MENU
 BEGIN
     POPUP "&Status Menu"
     BEGIN
-        MENUITEM "&Reset status",    ID_STATUSMENU_RESET
+        MENUITEM "&Reset status",               ID_STATUSMENU_RESET
     END
 END
 
@@ -340,7 +291,6 @@ BEGIN
     "A",            ID_ACCELERATOR_CTRL_A,  VIRTKEY, CONTROL, NOINVERT
     "D",            ID_ACCELERATOR_CTRL_D,  VIRTKEY, CONTROL, NOINVERT
     "E",            ID_ACCELERATOR_CTRL_E,  VIRTKEY, CONTROL, NOINVERT
-    VK_F12,         ID_ACCELERATOR_CTRL_F12, VIRTKEY, CONTROL, NOINVERT
     "I",            ID_ACCELERATOR_CTRL_I,  VIRTKEY, CONTROL, NOINVERT
     "L",            ID_ACCELERATOR_CTRL_L,  VIRTKEY, CONTROL, NOINVERT
     VK_SUBTRACT,    ID_ACCELERATOR_CTRL_MINUS, VIRTKEY, CONTROL, NOINVERT
@@ -350,12 +300,8 @@ BEGIN
     "Q",            ID_ACCELERATOR_CTRL_Q,  VIRTKEY, CONTROL, NOINVERT
     "S",            ID_ACCELERATOR_CTRL_S,  VIRTKEY, CONTROL, NOINVERT
     "A",            ID_ACCELERATOR_CTRL_SHIFT_A, VIRTKEY, SHIFT, CONTROL, NOINVERT
-    "F",            ID_ACCELERATOR_CTRL_SHIFT_F, VIRTKEY, SHIFT, CONTROL, NOINVERT
     "O",            ID_ACCELERATOR_CTRL_SHIFT_O, VIRTKEY, SHIFT, CONTROL, NOINVERT
     "X",            ID_ACCELERATOR_CTRL_X,  VIRTKEY, CONTROL, NOINVERT
-    VK_F10,         ID_ACCELERATOR_F10,     VIRTKEY, NOINVERT
-    VK_F11,         ID_ACCELERATOR_F11,     VIRTKEY, NOINVERT
-    VK_F12,         ID_ACCELERATOR_F12,     VIRTKEY, NOINVERT
     VK_F2,          ID_ACCELERATOR_F2,      VIRTKEY, NOINVERT
     VK_F3,          ID_ACCELERATOR_F3,      VIRTKEY, NOINVERT
     VK_F4,          ID_ACCELERATOR_F4,      VIRTKEY, NOINVERT
@@ -364,7 +310,6 @@ BEGIN
     VK_F7,          ID_ACCELERATOR_F7,      VIRTKEY, NOINVERT
     VK_F8,          ID_ACCELERATOR_F8,      VIRTKEY, NOINVERT
     VK_F9,          ID_ACCELERATOR_F9,      VIRTKEY, NOINVERT
-    VK_F12,         ID_ACCELERATOR_SHIFT_F12, VIRTKEY, SHIFT, NOINVERT
     VK_SUBTRACT,    ID_ACCELERATOR_SHIFT_MINUS, VIRTKEY, SHIFT, NOINVERT
     VK_ADD,         ID_ACCELERATOR_SHIFT_PLUS, VIRTKEY, SHIFT, NOINVERT
 END
@@ -416,7 +361,7 @@ BEGIN
         VERTGUIDE, 7
         VERTGUIDE, 174
         HORZGUIDE, 7
-        HORZGUIDE, 138
+        HORZGUIDE, 86
     END
 END
 #endif    // APSTUDIO_INVOKED

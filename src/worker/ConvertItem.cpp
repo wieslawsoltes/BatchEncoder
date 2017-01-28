@@ -103,12 +103,9 @@ bool ConvertItem(CItemContext* pContext)
             return bSuccess;
         }
 
-        if (pContext->pWorkerContext->pConfig->m_Options.bForceConsoleWindow == false)
-        {
-            // configure decoder input and output pipes
-            bUseInPipesDec = decoderFormat.bInput;
-            bUseOutPipesDec = decoderFormat.bOutput;
-        }
+        // configure decoder input and output pipes
+        bUseInPipesDec = decoderFormat.bInput;
+        bUseOutPipesDec = decoderFormat.bOutput;
 
         // input file is stdin
         if (bUseInPipesDec == true)
@@ -192,12 +189,9 @@ bool ConvertItem(CItemContext* pContext)
     if (pContext->pWorkerContext->bRunning == false)
         return bSuccess;
 
-    if (pContext->pWorkerContext->pConfig->m_Options.bForceConsoleWindow == false)
-    {
-        // configure encoder input and output pipes
-        bUseInPipesEnc = encoderFormat.bInput;
-        bUseOutPipesEnc = encoderFormat.bOutput;
-    }
+    // configure encoder input and output pipes
+    bUseInPipesEnc = encoderFormat.bInput;
+    bUseOutPipesEnc = encoderFormat.bOutput;
 
     if (nProcessingMode == Mode::Encode)
     {
