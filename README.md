@@ -84,7 +84,7 @@ adds input and output file paths. For specific options for each format use help 
 
 | Name            | Type        | File extension  | Version         | Executable                       | Progress function                         |
 |-----------------|-------------|-----------------|-----------------|----------------------------------|-------------------------------------------|
-| SSRC            | Encoder     | WAV             | -.-             | ssrc.exe                         | GetProgress_SsrcEnc.progress              |
+| SSRC            | Encoder     | WAV             | 1.33            | ssrc.exe                         | GetProgress_SsrcEnc.progress              |
 | LAME            | Encoder     | MP3             | 3.99.5          | lame.exe                         | GetProgress_LameEnc.progress              |
 | MPPENC          | Encoder     | MPC             | 1.30.0          | mppenc.exe                       | GetProgress_MppEnc.progress               |
 | FAAC            | Encoder     | AAC             | 1.28-mod        | faac.exe                         | GetProgress_FaacEnc.progress              |
