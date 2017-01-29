@@ -392,13 +392,13 @@ void XmlConfiguration::GetFormat(tinyxml2::XMLElement *pFormatElem, CFormat &m_F
     const char *pszPipesInput = pFormatElem->Attribute("input");
     if (pszPipesInput != NULL)
     {
-        m_Format.bInput = ToCString(pszPipesInput).CompareNoCase(_T("true")) == 0;
+        m_Format.bPipeInput = ToCString(pszPipesInput).CompareNoCase(_T("true")) == 0;
     }
 
     const char *pszPipesOutput = pFormatElem->Attribute("output");
     if (pszPipesOutput != NULL)
     {
-        m_Format.bOutput = ToCString(pszPipesOutput).CompareNoCase(_T("true")) == 0;
+        m_Format.bPipeOutput = ToCString(pszPipesOutput).CompareNoCase(_T("true")) == 0;
     }
 
     const char *pszFunction = pFormatElem->Attribute("function");
@@ -454,8 +454,8 @@ void XmlConfiguration::SetFormat(tinyxml2::XMLElement *pFormatElem, CFormat &m_F
     pFormatElem->SetAttribute("template", szBuffUtf8.Create(m_Format.szTemplate));
     szBuffUtf8.Clear();
 
-    pFormatElem->SetAttribute("input", (m_Format.bInput) ? "true" : "false");
-    pFormatElem->SetAttribute("output", (m_Format.bOutput) ? "true" : "false");
+    pFormatElem->SetAttribute("input", (m_Format.bPipeInput) ? "true" : "false");
+    pFormatElem->SetAttribute("output", (m_Format.bPipeOutput) ? "true" : "false");
 
     pFormatElem->SetAttribute("function", szBuffUtf8.Create(m_Format.szFunction));
     szBuffUtf8.Clear();

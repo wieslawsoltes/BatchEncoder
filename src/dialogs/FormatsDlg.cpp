@@ -261,8 +261,8 @@ void CFormatsDlg::OnBnClickedButtonAddFormat()
     format.szId = _T("ID");
     format.szName = _T("Format");
     format.szTemplate = _T("$EXE $OPTIONS $INFILE $OUTFILE");
-    format.bInput = true;
-    format.bOutput = false;
+    format.bPipeInput = true;
+    format.bPipeOutput = false;
     format.szFunction = _T("- none -");
     format.szPath = _T("program.exe");
     format.nType = 0;
@@ -407,8 +407,8 @@ void CFormatsDlg::OnBnClickedButtonUpdateFormat()
         format.nDefaultPreset = _tstoi(szDefault);
         format.szTemplate = szTemplate;
         format.nType = nType;
-        format.bInput = bInput;
-        format.bOutput = bOutput;
+        format.bPipeInput = bInput;
+        format.bPipeOutput = bOutput;
         format.szPath = szPath;
         format.szFunction = szFunction;
 
@@ -683,12 +683,12 @@ void CFormatsDlg::UpdateFields(CFormat &format)
         break;
     };
 
-    if (format.bInput)
+    if (format.bPipeInput)
         CheckDlgButton(IDC_CHECK_FORMAT_PIPES_INPUT, BST_CHECKED);
     else
         CheckDlgButton(IDC_CHECK_FORMAT_PIPES_INPUT, BST_UNCHECKED);
 
-    if (format.bOutput)
+    if (format.bPipeOutput)
         CheckDlgButton(IDC_CHECK_FORMAT_PIPES_OUTPUT, BST_CHECKED);
     else
         CheckDlgButton(IDC_CHECK_FORMAT_PIPES_OUTPUT, BST_UNCHECKED);

@@ -14,8 +14,8 @@ public:
     CString szId;
     CString szName;
     CString szTemplate;
-    bool bInput;
-    bool bOutput;
+    bool bPipeInput;
+    bool bPipeOutput;
     CString szFunction;
     CString szPath;
     int nType; // 0 - Encoder, 1 - Decoder
@@ -45,8 +45,8 @@ public:
         this->szId = other.szId;
         this->szName = other.szName;
         this->szTemplate = other.szTemplate;
-        this->bInput = other.bInput;
-        this->bOutput = other.bOutput;
+        this->bPipeInput = other.bPipeInput;
+        this->bPipeOutput = other.bPipeOutput;
         this->szFunction = other.szFunction;
         this->szPath = other.szPath;
         this->nType = other.nType;
