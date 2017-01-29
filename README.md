@@ -162,11 +162,13 @@ There is also available PowerShell [download script](https://github.com/wieslaws
 
 ## System requirements
 
-Minimum supported version is Windows 7 SP1 or above, recommended is Windows 10 Anniversary Update.
+Minimum supported Windows version is Windows 7 SP1 or above, recommended is Windows 10 Anniversary Update.
 
 Provided binaries should work under Windows XP Service Pack 3 (SP3) for x86, Windows XP Service Pack 2 (SP2) for x64.
 
-Command-line tools have each different hardware and software requirements. All tools have been tested under Windows 10 Anniversary Update.
+Minimum supported Linux version is Ubutnu 16.10 (using Wine 2.0).
+
+Command-line tools may have different hardware and software requirements. All tools have been tested under Windows 10 Anniversary Update.
 
 ## Configuration files
 
