@@ -128,14 +128,18 @@ bool ConvertFile(CFileContext* pContext)
         }
     }
 
-    STARTUPINFO sInfo;
-    ZeroMemory(&sInfo, sizeof(sInfo));
+    int nProgress = 0;
+    int nPreviousProgress = 0;
+    CTimeCount timeCount;
 
     PROCESS_INFORMATION pInfo;
     ZeroMemory(&pInfo, sizeof(pInfo));
 
+    STARTUPINFO sInfo;
+    ZeroMemory(&sInfo, sizeof(sInfo));
+
     sInfo.cb = sizeof(sInfo);
-    sInfo.dwFlags = STARTF_USESHOWWINDOW | STARTF_USESTDHANDLES;
+    sInfo.dwFlags = STARTF_USESTDHANDLES /*| STARTF_USESHOWWINDOW*/;
 
     // TODO: 
     // when read pipes are disabled and write pipes enabled
@@ -166,21 +170,16 @@ bool ConvertFile(CFileContext* pContext)
         sInfo.hStdError = NULL;
     }
 
-    int nProgress = 0;
-    int nPreviousProgress = 0;
-    CTimeCount timeCount;
-
     timeCount.Start();
 
-    BOOL bRet = FALSE;
-    bRet = ::CreateProcess(0,
+    BOOL bRet = ::CreateProcess(NULL,
         pContext->szCommandLine,
-        0,
-        0,
+        NULL,
+        NULL,
         TRUE,
         NORMAL_PRIORITY_CLASS | CREATE_NO_WINDOW /* | CREATE_SUSPENDED */,
-        0,
-        0,
+        NULL,
+        NULL,
         &sInfo,
         &pInfo);
     if (bRet == FALSE)
@@ -205,7 +204,10 @@ bool ConvertFile(CFileContext* pContext)
             ::CloseHandle(hWritePipeStdout);
         }
 
-        pContext->pWorkerContext->Status(pContext->nItemId, _T("--:--"), _T("Error: can not create command-line process."));
+        CString szStatus;
+        szStatus.Format(_T("Error: can not create command-line process (%d)."), ::GetLastError());
+
+        pContext->pWorkerContext->Status(pContext->nItemId, _T("--:--"), szStatus);
         pContext->pWorkerContext->Callback(pContext->nItemId, -1, true, true);
         return false;
     }
