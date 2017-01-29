@@ -50,6 +50,7 @@ public:
     CMyButton m_BtnBrowse;
     CMyEdit m_EdtOutPath;
     CMyEdit m_EdtThreads;
+    CSpinButtonCtrl m_SpinThreads;
     CProgressCtrl m_Progress;
     CMyButton m_BtnConvert;
     CMyStatusBarCtrl m_StatusBar;

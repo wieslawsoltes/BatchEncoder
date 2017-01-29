@@ -21,8 +21,9 @@
 #define IDC_BUTTON_BROWSE_OUTPUT        1009
 #define IDC_STATIC_THREAD_COUNT         1010
 #define IDC_EDIT_THREADCOUNT            1011
-#define IDC_BUTTON_CONVERT              1012
-#define IDC_PROGRESS_CONVERT            1013
+#define IDC_SPIN_THREADCOUNT            1012
+#define IDC_BUTTON_CONVERT              1013
+#define IDC_PROGRESS_CONVERT            1014
 #define IDC_COMBO_PRESET_FORMAT         1020
 #define IDC_LIST_PRESETS                1021
 #define IDC_STATIC_PRESET_NAME          1022
@@ -125,14 +126,13 @@
 #define ID_ACCELERATOR_F7               32857
 #define ID_ACCELERATOR_F8               32858
 
-
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        109
 #define _APS_NEXT_COMMAND_VALUE         32859
-#define _APS_NEXT_CONTROL_VALUE         1090
+#define _APS_NEXT_CONTROL_VALUE         1091
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

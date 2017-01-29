@@ -211,6 +211,7 @@ void CBatchEncoderDlg::DoDataExchange(CDataExchange* pDX)
     DDX_Control(pDX, IDC_CHECK_OUTPUT, m_ChkOutPath);
     DDX_Control(pDX, IDC_EDIT_OUTPUT, m_EdtOutPath);
     DDX_Control(pDX, IDC_EDIT_THREADCOUNT, m_EdtThreads);
+    DDX_Control(pDX, IDC_SPIN_THREADCOUNT, m_SpinThreads);
     DDX_Control(pDX, IDC_STATIC_TEXT_PRESET, m_StcPreset);
     DDX_Control(pDX, IDC_STATIC_TEXT_FORMAT, m_StcFormat);
     DDX_Control(pDX, IDC_STATIC_THREAD_COUNT, m_StcThreads);
@@ -318,6 +319,9 @@ BOOL CBatchEncoderDlg::OnInitDialog()
     // dialog title
     this->SetWindowText(_T(VER_PRODUCTNAME_STR));
 
+    // threads count spin
+    m_SpinThreads.SetRange32(0, 1024);
+
     // progress
     m_Progress.SetRange(0, 100);
     m_Progress.SetPos(0);
@@ -357,6 +361,7 @@ BOOL CBatchEncoderDlg::OnInitDialog()
     AddAnchor(IDC_PROGRESS_CONVERT, BOTTOM_LEFT, BOTTOM_RIGHT);
     AddAnchor(IDC_STATIC_THREAD_COUNT, BOTTOM_RIGHT);
     AddAnchor(IDC_EDIT_THREADCOUNT, BOTTOM_RIGHT);
+    AddAnchor(IDC_SPIN_THREADCOUNT, BOTTOM_RIGHT);
     AddAnchor(IDC_BUTTON_CONVERT, BOTTOM_RIGHT);
     AddAnchor(IDC_STATUSBAR, BOTTOM_LEFT, BOTTOM_RIGHT);
 
@@ -1927,6 +1932,7 @@ void CBatchEncoderDlg::EnableUserInterface(BOOL bEnable)
         this->m_BtnBrowse.ShowWindow(SW_HIDE);
         this->m_StcThreads.ShowWindow(SW_HIDE);
         this->m_EdtThreads.ShowWindow(SW_HIDE);
+        this->m_SpinThreads.ShowWindow(SW_HIDE);
         this->m_Progress.ShowWindow(SW_SHOW);
     }
     else
@@ -1937,6 +1943,7 @@ void CBatchEncoderDlg::EnableUserInterface(BOOL bEnable)
         this->m_BtnBrowse.ShowWindow(SW_SHOW);
         this->m_StcThreads.ShowWindow(SW_SHOW);
         this->m_EdtThreads.ShowWindow(SW_SHOW);
+        this->m_SpinThreads.ShowWindow(SW_SHOW);
         this->m_LstInputItems.ShowWindow(SW_SHOW);
     }
 
