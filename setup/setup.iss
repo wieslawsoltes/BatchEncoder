@@ -2,6 +2,7 @@
 #define ProgramConfiguration CONFIGURATION
 #define ProgramBuild BUILD
 #define ProgramVersion VERSION
+#define ProgramVersionSuffix SUFFIX
 #define ProgramCopyright "Copyright (c) Wieslaw Soltes. All rights reserved."
 #define ProgramWebsite "https://github.com/wieslawsoltes/BatchEncoder"
 #define BasePath ".."
@@ -10,7 +11,7 @@
 
 AppId               ={#ProgramName}-{#ProgramBuild}
 AppName             ={#ProgramName}
-AppVerName          ={#ProgramName} {#ProgramVersion}
+AppVerName          ={#ProgramName} {#ProgramVersion}{#ProgramVersionSuffix}
 AppCopyright        ={#ProgramCopyright}
 DefaultDirName      ={pf}\{#ProgramName} ({#ProgramBuild})
 OutputDir           ={#BasePath}\artifacts
@@ -18,7 +19,7 @@ VersionInfoVersion  ={#ProgramVersion}
 DefaultGroupName    ={#ProgramName} ({#ProgramBuild})
 AppPublisher        ={#ProgramWebsite}
 AppPublisherURL     ={#ProgramWebsite}
-AppVersion          ={#ProgramVersion}
+AppVersion          ={#ProgramVersion}{#ProgramVersionSuffix}
 UsePreviousAppDir   =yes
 AllowNoIcons        =yes
 Compression         =lzma/max
@@ -32,9 +33,9 @@ BackSolid           =no
 UserInfoPage        =no
 
 #if "Release" == ProgramConfiguration
-    OutputBaseFilename ={#ProgramName}-{#ProgramVersion}-{#ProgramBuild}
+    OutputBaseFilename ={#ProgramName}-{#ProgramVersion}{#ProgramVersionSuffix}-{#ProgramBuild}
 #else
-    OutputBaseFilename ={#ProgramName}-{#ProgramVersion}-{#ProgramBuild}-({#ProgramConfiguration})
+    OutputBaseFilename ={#ProgramName}-{#ProgramVersion}{#ProgramVersionSuffix}-{#ProgramBuild}-({#ProgramConfiguration})
 #endif
 
 #if "x64" == ProgramBuild

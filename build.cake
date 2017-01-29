@@ -30,6 +30,30 @@ var binDir = (DirectoryPath)Directory("./src/bin");
 var objDir = (DirectoryPath)Directory("./src/obj");
 
 ///////////////////////////////////////////////////////////////////////////////
+// VERSION
+///////////////////////////////////////////////////////////////////////////////
+
+var isLocalBuild = BuildSystem.IsLocalBuild;
+var isPullRequest = BuildSystem.AppVeyor.Environment.PullRequest.IsPullRequest;
+var isMainRepo = StringComparer.OrdinalIgnoreCase.Equals("wieslawsoltes/BatchEncoder", BuildSystem.AppVeyor.Environment.Repository.Name);
+var isMasterBranch = StringComparer.OrdinalIgnoreCase.Equals("master", BuildSystem.AppVeyor.Environment.Repository.Branch);
+var isTagged = BuildSystem.AppVeyor.Environment.Repository.Tag.IsTag 
+               && !string.IsNullOrWhiteSpace(BuildSystem.AppVeyor.Environment.Repository.Tag.Name);
+var isRelease =  !isLocalBuild && !isPullRequest && isMainRepo && isMasterBranch && isTagged;
+
+var text = System.IO.File.ReadAllText(versionHeaderPath.FullPath);
+var split = text.Split(new char [] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+var major = split[0].Split(new char [] { ' ' }, StringSplitOptions.RemoveEmptyEntries)[2];
+var minor = split[1].Split(new char [] { ' ' }, StringSplitOptions.RemoveEmptyEntries)[2];
+var revision = split[2].Split(new char [] { ' ' }, StringSplitOptions.RemoveEmptyEntries)[2];
+var build = split[3].Split(new char [] { ' ' }, StringSplitOptions.RemoveEmptyEntries)[2];
+var version = major + "." + minor;
+var suffix = isRelease ? "" : "-alpha";
+
+Information("Defined Version: {0}.{1}.{2}.{3}", major, minor, revision, build);
+Information("Release Version: {0}", version + suffix);
+
+///////////////////////////////////////////////////////////////////////////////
 // ACTIONS
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -45,7 +69,7 @@ var buildSolutionAction = new Action<string,string> ((configuration, platform) =
 var packageBinariesAction = new Action<string,string> ((configuration, platform) => 
 {
     var path = "./src/bin/" + configuration + "/" + platform + "/";
-    var output = "BatchEncoder-" + version + "-" + platform + (configuration == "Release" ? "" : ("-(" + configuration + ")"));
+    var output = "BatchEncoder-" + version + suffix + "-" + platform + (configuration == "Release" ? "" : ("-(" + configuration + ")"));
     var outputDir = artifactsDir.Combine(output);
     var outputZip = artifactsDir.CombineWithFilePath(output + ".zip");
     var exeFile = File(path + "BatchEncoder.exe");
@@ -68,32 +92,10 @@ var packageInstallersAction = new Action<string,string> ((configuration, platfor
             "\"" + installerScript.FullPath + "\""
             + " /DCONFIGURATION=" + configuration
             + " /DBUILD=" + platform
-            + " /DVERSION=" + version, 
+            + " /DVERSION=" + version
+            + " /DSUFFIX=" + suffix, 
         WorkingDirectory = MakeAbsolute(artifactsDir) });
 });
-
-///////////////////////////////////////////////////////////////////////////////
-// VERSION
-///////////////////////////////////////////////////////////////////////////////
-
-var isLocalBuild = BuildSystem.IsLocalBuild;
-var isPullRequest = BuildSystem.AppVeyor.Environment.PullRequest.IsPullRequest;
-var isMainRepo = StringComparer.OrdinalIgnoreCase.Equals("wieslawsoltes/BatchEncoder", BuildSystem.AppVeyor.Environment.Repository.Name);
-var isMasterBranch = StringComparer.OrdinalIgnoreCase.Equals("master", BuildSystem.AppVeyor.Environment.Repository.Branch);
-var isTagged = BuildSystem.AppVeyor.Environment.Repository.Tag.IsTag 
-               && !string.IsNullOrWhiteSpace(BuildSystem.AppVeyor.Environment.Repository.Tag.Name);
-var isRelease =  !isLocalBuild && !isPullRequest && isMainRepo && isMasterBranch && isTagged;
-
-var text = System.IO.File.ReadAllText(versionHeaderPath.FullPath);
-var split = text.Split(new char [] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
-var major = split[0].Split(new char [] { ' ' }, StringSplitOptions.RemoveEmptyEntries)[2];
-var minor = split[1].Split(new char [] { ' ' }, StringSplitOptions.RemoveEmptyEntries)[2];
-var revision = split[2].Split(new char [] { ' ' }, StringSplitOptions.RemoveEmptyEntries)[2];
-var build = split[3].Split(new char [] { ' ' }, StringSplitOptions.RemoveEmptyEntries)[2];
-var version = major + "." + minor + (isRelease ? "" : "-alpha");
-
-Information("Defined Version: {0}.{1}.{2}.{3}", major, minor, revision, build);
-Information("Release Version: {0}", version);
 
 ///////////////////////////////////////////////////////////////////////////////
 // TASKS
