@@ -11,14 +11,6 @@
 
 bool ConvertFile(CFileContext* pContext)
 {
-    // TODO:
-    // if there is no input pipe and output pipe enabled
-    // we can not get progress status for the ProgressBars
-    // so for encoder/decoder mode treat this as an error
-    // and for trans-coding treat this as decoder to encoder piping
-
-    // TODO: handle bUseWritePipes flag like bUseReadPipes
-
     // NOTE:
     // if bUseReadPipes = true use pipes to read source file and send the data to console stdin
     // if bUseReadPipes = false create full command-line and read from stdout/stderr conversion progress
