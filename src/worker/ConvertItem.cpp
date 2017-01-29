@@ -19,16 +19,15 @@ bool ConvertItem(CItemContext* pContext)
 
     // output path
     CString szOutPath;
-    if (pContext->pWorkerContext->pConfig->m_Options.bOutputPathChecked == false)
+    if (pContext->pWorkerContext->pConfig->m_Options.bOutputPathChecked == true)
     {
-        szOutPath = szInputFile;
-        CString szToRemove = ::GetFileName(szInputFile);
-        int nNewLenght = szOutPath.GetLength() - szToRemove.GetLength();
-        szOutPath.Truncate(nNewLenght);
+        szOutPath = pContext->pWorkerContext->pConfig->m_Options.szOutputPath;
     }
     else
     {
-        szOutPath = pContext->pWorkerContext->pConfig->m_Options.szOutputPath;
+        CString szInputFileName = ::GetFileName(szInputFile);
+        szOutPath = szInputFile;
+        szOutPath.Truncate(szOutPath.GetLength() - szInputFileName.GetLength());
     }
 
     // output format
@@ -40,6 +39,13 @@ bool ConvertItem(CItemContext* pContext)
     }
 
     CFormat& encoderFormat = pContext->pWorkerContext->pConfig->m_Formats.GetData(nEncoder);
+
+    if (pContext->item->nPreset >= encoderFormat.m_Presets.GetSize())
+    {
+        pContext->pWorkerContext->Status(pContext->item->nId, _T("--:--"), _T("Error: can not find encoder preset."));
+        return bSuccess;
+    }
+
     CPreset& encoderPreset = encoderFormat.m_Presets.GetData(pContext->item->nPreset);
     CString szEncoderExePath = encoderFormat.szPath;
     CString szEncoderOptions = encoderPreset.szOptions;
@@ -86,6 +92,13 @@ bool ConvertItem(CItemContext* pContext)
         }
 
         CFormat& decoderFormat = pContext->pWorkerContext->pConfig->m_Formats.GetData(nDecoder);
+
+        if (decoderFormat.nDefaultPreset >= decoderFormat.m_Presets.GetSize())
+        {
+            pContext->pWorkerContext->Status(pContext->item->nId, _T("--:--"), _T("Error: can not find decoder preset."));
+            return bSuccess;
+        }
+
         CPreset& decoderPreset = decoderFormat.m_Presets.GetData(decoderFormat.nDefaultPreset);
         CString szDecoderExePath = decoderFormat.szPath;
         CString szDecoderOptions = decoderPreset.szOptions;
