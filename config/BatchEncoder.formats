@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Formats>
-    <Format id="SSRC_WAV" name="WAV (Standard)" template="$EXE $OPTIONS $INFILE $OUTFILE" input="false" output="false" function="GetProgress_SsrcEnc.progress" path="ssrc.exe" type="0" formats="WAV" extension="WAV" default="0">
+    <Format id="SSRC_WAV" name="WAV (Standard)" template="$EXE $OPTIONS --tmpfile $OUTFILE.tmp $INFILE $OUTFILE" input="false" output="false" function="GetProgress_SsrcEnc.progress" path="ssrc.exe" type="0" formats="WAV" extension="WAV" default="0">
         <Presets>
             <Preset name="No Resampling" options=""/>
             <Preset name="8 Bit 8000 Hz" options="--rate 8000 --bits 8 --normalize"/>
