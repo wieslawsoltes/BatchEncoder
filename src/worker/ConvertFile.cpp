@@ -392,7 +392,7 @@ bool ConvertFile(CFileContext* pContext)
         typedef int(*lpfnGetProgress)(char *szLineBuff, int nLineLen);
 
         lpfnGetProgress pProgressProc;
-        HMODULE hDll = ::LoadLibrary(pContext->pWorkerContext->pConfig->m_Formats.GetData(pContext->nTool).szFunction);
+        HMODULE hDll = ::LoadLibrary(pContext->szFunction);
         if (hDll != NULL)
         {
             // TODO: when failed to load dll we need to do more clean-up
@@ -480,18 +480,9 @@ bool ConvertFile(CFileContext* pContext)
                     // don't include empty lines
                     if (strlen(szLineBuff) > 0)
                     {
-                        if (pContext->bDecode == false)
-                        {
-                            int nRet = (pProgressProc)(szLineBuff, nLineLen);
-                            if (nRet != -1)
-                                nProgress = nRet;
-                        }
-                        else
-                        {
-                            int nRet = (pProgressProc)(szLineBuff, nLineLen);
-                            if (nRet != -1)
-                                nProgress = nRet;
-                        }
+                        int nRet = (pProgressProc)(szLineBuff, nLineLen);
+                        if (nRet != -1)
+                            nProgress = nRet;
 
                         ZeroMemory(szLineBuff, sizeof(szLineBuff));
 

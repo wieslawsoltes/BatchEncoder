@@ -48,8 +48,14 @@ bool ConvertItem(CItemContext* pContext)
     CString szInputFileExt = ::GetFileExtension(szInputFile).MakeUpper();
     bool bIsValidEncoderInput = encoderFormat.IsValidInputExtension(szInputFileExt);
 
-    // output path
+    // processing mode
+    Mode nProcessingMode = Mode::None;
+    if (bIsValidEncoderInput)
+        nProcessingMode = Mode::Encode;
+    else
+        nProcessingMode = Mode::Transcode;
 
+    // output path
     CString szEncoderExtension = encoderFormat.szOutputExtension;
     CString szName = pContext->item->szName + _T(".") + szEncoderExtension.MakeLower();
     CString szOutputFile;
@@ -65,19 +71,7 @@ bool ConvertItem(CItemContext* pContext)
         szOutputFile = szName;
     }
 
-    // processing mode
-    Mode nProcessingMode = Mode::None;
-    if (bIsValidEncoderInput)
-        nProcessingMode = Mode::Encode;
-    else
-        nProcessingMode = Mode::Transcode;
-
-    bool bDecode = false;
-    int nTool = -1;
-    bool bUseInPipesEnc = false;
-    bool bUseOutPipesEnc = false;
-    bool bUseInPipesDec = false;
-    bool bUseOutPipesDec = false;
+    // original input and output file
     CString szOrgInputFile = szInputFile;
     CString szOrgOutputFile = szOutputFile;
 
@@ -103,24 +97,19 @@ bool ConvertItem(CItemContext* pContext)
             return bSuccess;
         }
 
-        // configure decoder input and output pipes
-        bUseInPipesDec = decoderFormat.bInput;
-        bUseOutPipesDec = decoderFormat.bOutput;
-
-        // input file is stdin
-        if (bUseInPipesDec == true)
-            szInputFile = _T("-");
-
-        // output file is stdout
-        if (bUseOutPipesDec == true)
-            szOutputFile = _T("-");
-
-        // TODO: bUseOutPipes == true than handle szOutputFile same as input file
-        if (nProcessingMode == Mode::Transcode)
+        if (decoderFormat.bOutput == false)
         {
             CString szDecoderExtension = decoderFormat.szOutputExtension;
             szOutputFile = szOutputFile + +_T(".") + szDecoderExtension.MakeLower();
         }
+
+        // input file is stdin
+        if (decoderFormat.bInput == true)
+            szInputFile = _T("-");
+
+        // output file is stdout
+        if (decoderFormat.bOutput == true)
+            szOutputFile = _T("-");
 
         // build full command line for decoder (DECODER-EXE + OPTIONS + INFILE + OUTFILE) 
         // this is basic model, some of encoder may have different command-line structure
@@ -134,8 +123,7 @@ bool ConvertItem(CItemContext* pContext)
         szExecute.Replace(_T("$OUTFILE"), _T("\"$OUTFILE\""));
         szExecute.Replace(_T("$OUTFILE"), szOutputFile);
 
-        bDecode = true;
-        nTool = pContext->pWorkerContext->pConfig->m_Formats.GetFormatById(decoderFormat.szId);
+        int nTool = pContext->pWorkerContext->pConfig->m_Formats.GetFormatById(decoderFormat.szId);
         if (nTool == -1)
         {
             pContext->pWorkerContext->Status(pContext->item->nId, _T("--:--"), _T("Error: failed to get decoder by format id."));
@@ -152,12 +140,11 @@ bool ConvertItem(CItemContext* pContext)
         context.szOutputFile = szOrgOutputFile;
         context.szCommandLine = szCommandLine;
         context.nIndex = pContext->item->nId;
-        context.bDecode = bDecode;
-        context.nTool = nTool;
-        context.bUseReadPipes = bUseInPipesDec;
-        context.bUseWritePipes = bUseOutPipesDec;
+        context.szFunction = pContext->pWorkerContext->pConfig->m_Formats.GetData(nTool).szFunction;
+        context.bUseReadPipes = decoderFormat.bInput;
+        context.bUseWritePipes = decoderFormat.bOutput;
 
-        // TODO: when transcoding don't show time stats
+        // TODO: when transcoding do not show time stats
         bool bResult = false;
         try
         {
@@ -189,21 +176,6 @@ bool ConvertItem(CItemContext* pContext)
     if (pContext->pWorkerContext->bRunning == false)
         return bSuccess;
 
-    // configure encoder input and output pipes
-    bUseInPipesEnc = encoderFormat.bInput;
-    bUseOutPipesEnc = encoderFormat.bOutput;
-
-    if (nProcessingMode == Mode::Encode)
-    {
-        // input file is stdin
-        if (bUseInPipesEnc == true)
-            szInputFile = _T("-");
-
-        // output file is stdout
-        if (bUseOutPipesEnc == true)
-            szOutputFile = _T("-");
-    }
-
     if (nProcessingMode == Mode::Transcode)
     {
         // input filename is decoded output filename
@@ -212,19 +184,19 @@ bool ConvertItem(CItemContext* pContext)
 
         // restore output filename
         szOutputFile = szOrgOutputFile;
-
-        // input file is stdin
-        if (bUseInPipesEnc == true)
-            szInputFile = _T("-");
-
-        // output file is stdout
-        if (bUseOutPipesEnc == true)
-            szOutputFile = _T("-");
     }
 
     // encode
     if ((nProcessingMode == Mode::Encode) || (nProcessingMode == Mode::Transcode))
     {
+        // input file is stdin
+        if (encoderFormat.bInput == true)
+            szInputFile = _T("-");
+
+        // output file is stdout
+        if (encoderFormat.bOutput == true)
+            szOutputFile = _T("-");
+
         // build full command line for encoder (ENCODER-EXE + OPTIONS + INFILE + OUTFILE)
         // this is basic model, some of encoder may have different command-line structure
         CString szExecute;
@@ -237,8 +209,7 @@ bool ConvertItem(CItemContext* pContext)
         szExecute.Replace(_T("$OUTFILE"), _T("\"$OUTFILE\""));
         szExecute.Replace(_T("$OUTFILE"), szOutputFile);
 
-        bDecode = false;
-        nTool = pContext->pWorkerContext->pConfig->m_Formats.GetFormatById(encoderFormat.szId);
+        int nTool = pContext->pWorkerContext->pConfig->m_Formats.GetFormatById(encoderFormat.szId);
         if (nTool == -1)
         {
             pContext->pWorkerContext->Status(pContext->item->nId, _T("--:--"), _T("Error: failed to get encoder by format id."));
@@ -255,10 +226,9 @@ bool ConvertItem(CItemContext* pContext)
         context.szOutputFile = szOrgOutputFile;
         context.szCommandLine = szCommandLine;
         context.nIndex = pContext->item->nId;
-        context.bDecode = bDecode;
-        context.nTool = nTool;
-        context.bUseReadPipes = bUseInPipesEnc;
-        context.bUseWritePipes = bUseOutPipesEnc;
+        context.szFunction = pContext->pWorkerContext->pConfig->m_Formats.GetData(nTool).szFunction;
+        context.bUseReadPipes = encoderFormat.bInput;
+        context.bUseWritePipes = encoderFormat.bOutput;
 
         bool bResult = false;
         try

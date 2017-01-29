@@ -11,8 +11,7 @@ public:
     CString szOutputFile;
     TCHAR *szCommandLine;
     int nIndex;
-    bool bDecode;
-    int nTool;
+    CString szFunction;
     bool bUseReadPipes;
     bool bUseWritePipes;
 };
