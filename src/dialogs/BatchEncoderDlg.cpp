@@ -2101,7 +2101,6 @@ void CBatchEncoderWorkerContext::Next(int nItemId)
             ((this->nErrors == 0) || (this->nErrors > 1)) ? _T("Errors") : _T("Error"));
         pDlg->m_StatusBar.SetText(szText, 1, 0);
 
-        pDlg->m_Progress.SetPos(0);
         pDlg->m_LstInputItems.EnsureVisible(nItemId, FALSE);
     }
 }
@@ -2143,34 +2142,28 @@ bool CBatchEncoderWorkerContext::Callback(int nItemId, int nProgress, bool bFini
         szProgress.Format(_T("%d%%\0"), nProgress);
         pDlg->m_LstInputItems.SetItemText(nItemId, ITEM_COLUMN_STATUS, szProgress); // Status
 
-        if (this->nThreadCount == 1)
-        {
-            pDlg->m_Progress.SetPos(nProgress);
-        }
-        else if (this->nThreadCount > 1)
-        {
-            pDlg->pWorkerContext->nProgess[nItemId] = nProgress;
+        pDlg->pWorkerContext->nProgess[nItemId] = nProgress;
 
-            static volatile bool bSafeCheck = false;
-            if (bSafeCheck == false)
+        static volatile bool bSafeCheck = false;
+        if (bSafeCheck == false)
+        {
+            bSafeCheck = true;
+
+            int nTotalProgress = 0;
+            int nItems = pDlg->pWorkerContext->pConfig->m_Items.GetSize();
+            for (int i = 0; i < nItems; i++)
             {
-                bSafeCheck = true;
-
-                int nTotalProgress = 0;
-                int nItems = pDlg->pWorkerContext->pConfig->m_Items.GetSize();
-                for (int i = 0; i < nItems; i++)
-                {
+                if (pDlg->pWorkerContext->pConfig->m_Items.GetData(i).bChecked == TRUE)
                     nTotalProgress += pDlg->pWorkerContext->nProgess[i];
-                }
-
-                int nPos = nTotalProgress / nItems;
-                if (pDlg->m_Progress.GetPos() != nPos)
-                {
-                    pDlg->m_Progress.SetPos(nPos);
-                }
-
-                bSafeCheck = false;
             }
+
+            int nPos = nTotalProgress / pDlg->pWorkerContext->nTotalFiles;
+            if (pDlg->m_Progress.GetPos() != nPos)
+            {
+                pDlg->m_Progress.SetPos(nPos);
+            }
+
+            bSafeCheck = false;
         }
     }
 
