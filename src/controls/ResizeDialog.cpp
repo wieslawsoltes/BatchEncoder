@@ -43,7 +43,6 @@ END_MESSAGE_MAP()
 void CResizeDialog::InitVars()
 {
     m_bInitDone = FALSE;
-
     m_bUseMinTrack = TRUE;
     m_bUseMaxTrack = FALSE;
     m_bUseMaxRect = FALSE;
