@@ -36,19 +36,19 @@ You can also download bleeding edge builds from the CI server:
 
 | Platform              | Type        | Download                                                                                                                                                          |
 |-----------------------|-------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Windows 32-bit        | Installer   | [BatchEncoder-0.1-Win32-(Debug).exe](https://ci.appveyor.com/api/projects/wieslawsoltes/batchencoder/artifacts/artifacts/BatchEncoder-0.1-Win32-(Debug).exe)      |
-| Windows 64-bit        | Installer   | [BatchEncoder-0.1-x64-(Debug).exe](https://ci.appveyor.com/api/projects/wieslawsoltes/batchencoder-3gv5t/artifacts/artifacts/BatchEncoder-0.1-x64-(Debug).exe)    |
-| Windows 32-bit        | Portable    | [BatchEncoder-0.1-Win32-(Debug).zip](https://ci.appveyor.com/api/projects/wieslawsoltes/BatchEncoder/artifacts/artifacts/BatchEncoder-0.1-Win32-(Debug).zip)      |
-| Windows 64-bit        | Portable    | [BatchEncoder-0.1-x64-(Debug).zip](https://ci.appveyor.com/api/projects/wieslawsoltes/batchencoder-3gv5t/artifacts/artifacts/BatchEncoder-0.1-x64-(Debug).zip)    |
+| Windows 32-bit        | Installer   | [BatchEncoder-1.0-alpha-Win32-(Debug).exe](https://ci.appveyor.com/api/projects/wieslawsoltes/batchencoder/artifacts/artifacts/BatchEncoder-1.0-alpha-Win32-(Debug).exe)      |
+| Windows 64-bit        | Installer   | [BatchEncoder-1.0-alpha-x64-(Debug).exe](https://ci.appveyor.com/api/projects/wieslawsoltes/batchencoder-3gv5t/artifacts/artifacts/BatchEncoder-1.0-alpha-x64-(Debug).exe)    |
+| Windows 32-bit        | Portable    | [BatchEncoder-1.0-alpha-Win32-(Debug).zip](https://ci.appveyor.com/api/projects/wieslawsoltes/BatchEncoder/artifacts/artifacts/BatchEncoder-1.0-alpha-Win32-(Debug).zip)      |
+| Windows 64-bit        | Portable    | [BatchEncoder-1.0-alpha-x64-(Debug).zip](https://ci.appveyor.com/api/projects/wieslawsoltes/batchencoder-3gv5t/artifacts/artifacts/BatchEncoder-1.0-alpha-x64-(Debug).zip)    |
 
 #### Release Builds
 
 | Platform              | Type        | Download                                                                                                                                                          |
 |-----------------------|-------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Windows 32-bit        | Installer   | [BatchEncoder-0.1-Win32.exe](https://ci.appveyor.com/api/projects/wieslawsoltes/batchencoder-y606d/artifacts/artifacts/BatchEncoder-0.1-Win32.exe)                |
-| Windows 64-bit        | Installer   | [BatchEncoder-0.1-x64.exe](https://ci.appveyor.com/api/projects/wieslawsoltes/batchencoder-1fq40/artifacts/artifacts/BatchEncoder-0.1-x64.exe)                    |
-| Windows 64-bit        | Portable    | [BatchEncoder-0.1-x64.zip](https://ci.appveyor.com/api/projects/wieslawsoltes/batchencoder-1fq40/artifacts/artifacts/BatchEncoder-0.1-x64.zip)                    |
-| Windows 32-bit        | Portable    | [BatchEncoder-0.1-Win32.zip](https://ci.appveyor.com/api/projects/wieslawsoltes/batchencoder-y606d/artifacts/artifacts/BatchEncoder-0.1-Win32.zip)                |
+| Windows 32-bit        | Installer   | [BatchEncoder-1.0-alpha-Win32.exe](https://ci.appveyor.com/api/projects/wieslawsoltes/batchencoder-y606d/artifacts/artifacts/BatchEncoder-1.0-alpha-Win32.exe)                |
+| Windows 64-bit        | Installer   | [BatchEncoder-1.0-alpha-x64.exe](https://ci.appveyor.com/api/projects/wieslawsoltes/batchencoder-1fq40/artifacts/artifacts/BatchEncoder-1.0-alpha-x64.exe)                    |
+| Windows 64-bit        | Portable    | [BatchEncoder-1.0-alpha-x64.zip](https://ci.appveyor.com/api/projects/wieslawsoltes/batchencoder-1fq40/artifacts/artifacts/BatchEncoder-1.0-alpha-x64.zip)                    |
+| Windows 32-bit        | Portable    | [BatchEncoder-1.0-alpha-Win32.zip](https://ci.appveyor.com/api/projects/wieslawsoltes/batchencoder-y606d/artifacts/artifacts/BatchEncoder-1.0-alpha-Win32.zip)                |
 
 ## About
 

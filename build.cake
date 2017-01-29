@@ -76,13 +76,21 @@ var packageInstallersAction = new Action<string,string> ((configuration, platfor
 // VERSION
 ///////////////////////////////////////////////////////////////////////////////
 
+var isLocalBuild = BuildSystem.IsLocalBuild;
+var isPullRequest = BuildSystem.AppVeyor.Environment.PullRequest.IsPullRequest;
+var isMainRepo = StringComparer.OrdinalIgnoreCase.Equals("wieslawsoltes/BatchEncoder", BuildSystem.AppVeyor.Environment.Repository.Name);
+var isMasterBranch = StringComparer.OrdinalIgnoreCase.Equals("master", BuildSystem.AppVeyor.Environment.Repository.Branch);
+var isTagged = BuildSystem.AppVeyor.Environment.Repository.Tag.IsTag 
+               && !string.IsNullOrWhiteSpace(BuildSystem.AppVeyor.Environment.Repository.Tag.Name);
+var isRelease =  !isLocalBuild && !isPullRequest && isMainRepo && isMasterBranch && isTagged;
+
 var text = System.IO.File.ReadAllText(versionHeaderPath.FullPath);
 var split = text.Split(new char [] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
 var major = split[0].Split(new char [] { ' ' }, StringSplitOptions.RemoveEmptyEntries)[2];
 var minor = split[1].Split(new char [] { ' ' }, StringSplitOptions.RemoveEmptyEntries)[2];
 var revision = split[2].Split(new char [] { ' ' }, StringSplitOptions.RemoveEmptyEntries)[2];
 var build = split[3].Split(new char [] { ' ' }, StringSplitOptions.RemoveEmptyEntries)[2];
-var version = major + "." + minor;
+var version = major + "." + minor + (isRelease ? "" : "-alpha");
 
 Information("Defined Version: {0}.{1}.{2}.{3}", major, minor, revision, build);
 Information("Release Version: {0}", version);
