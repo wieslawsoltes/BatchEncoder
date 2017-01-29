@@ -262,7 +262,6 @@ copy /-Y ..\config\*.items $(OutDir)</Command>
     <ClCompile Include="BatchEncoder.cpp" />
     <ClCompile Include="XmlConfiguration.cpp" />
     <ClCompile Include="dialogs\AboutDlg.cpp" />
-    <ClCompile Include="dialogs\AdvancedDlg.cpp" />
     <ClCompile Include="dialogs\BatchEncoderDlg.cpp" />
     <ClCompile Include="dialogs\FormatsDlg.cpp" />
     <ClCompile Include="dialogs\PresetsDlg.cpp" />
@@ -313,7 +312,6 @@ copy /-Y ..\config\*.items $(OutDir)</Command>
     <ClInclude Include="controls\MyStatusBarCtrl.h" />
     <ClInclude Include="controls\ResizeDialog.h" />
     <ClInclude Include="dialogs\AboutDlg.h" />
-    <ClInclude Include="dialogs\AdvancedDlg.h" />
     <ClInclude Include="dialogs\BatchEncoderDlg.h" />
     <ClInclude Include="dialogs\FormatsDlg.h" />
     <ClInclude Include="dialogs\PresetsDlg.h" />

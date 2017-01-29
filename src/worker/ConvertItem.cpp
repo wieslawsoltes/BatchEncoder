@@ -176,7 +176,7 @@ bool ConvertItem(CItemContext* pContext)
         }
         else
         {
-            if (pContext->pWorkerContext->pConfig->m_Options.bDeleteOnError == true)
+            if (pContext->pWorkerContext->pConfig->m_Options.bDeleteOnErrors == true)
                 ::DeleteFile(szOutputFile);
 
             if (pContext->pWorkerContext->pConfig->m_Options.bStopOnErrors == true)
@@ -279,7 +279,7 @@ bool ConvertItem(CItemContext* pContext)
         }
         else
         {
-            if (pContext->pWorkerContext->pConfig->m_Options.bDeleteOnError == true)
+            if (pContext->pWorkerContext->pConfig->m_Options.bDeleteOnErrors == true)
                 ::DeleteFile(szOutputFile);
         }
 

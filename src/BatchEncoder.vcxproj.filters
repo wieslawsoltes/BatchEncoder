@@ -81,9 +81,6 @@
     <ClCompile Include="dialogs\AboutDlg.cpp">
       <Filter>Source Files\Dialogs</Filter>
     </ClCompile>
-    <ClCompile Include="dialogs\AdvancedDlg.cpp">
-      <Filter>Source Files\Dialogs</Filter>
-    </ClCompile>
     <ClCompile Include="dialogs\BatchEncoderDlg.cpp">
       <Filter>Source Files\Dialogs</Filter>
     </ClCompile>
@@ -192,9 +189,6 @@
       <Filter>Header Files\Controls</Filter>
     </ClInclude>
     <ClInclude Include="dialogs\AboutDlg.h">
-      <Filter>Header Files\Dialogs</Filter>
-    </ClInclude>
-    <ClInclude Include="dialogs\AdvancedDlg.h">
       <Filter>Header Files\Dialogs</Filter>
     </ClInclude>
     <ClInclude Include="dialogs\BatchEncoderDlg.h">

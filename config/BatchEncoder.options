@@ -6,7 +6,7 @@
     <RecurseChecked>true</RecurseChecked>
     <ShutdownWhenFinished>false</ShutdownWhenFinished>
     <DoNotSaveConfiguration>false</DoNotSaveConfiguration>
-    <DeleteOnError>true</DeleteOnError>
+    <DeleteOnErrors>true</DeleteOnErrors>
     <StopOnErrors>false</StopOnErrors>
     <ThreadCount>0</ThreadCount>
 </Options>

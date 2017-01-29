@@ -15,7 +15,7 @@ public:
     bool bRecurseChecked;
     bool bShutdownWhenFinished;
     bool bDoNotSaveConfiguration;
-    bool bDeleteOnError;
+    bool bDeleteOnErrors;
     bool bStopOnErrors;
     int nThreadCount;
     CString szMainWindowResize;
@@ -50,7 +50,7 @@ public:
         this->bRecurseChecked = other.bRecurseChecked;
         this->bShutdownWhenFinished = other.bShutdownWhenFinished;
         this->bDoNotSaveConfiguration = other.bDoNotSaveConfiguration;
-        this->bDeleteOnError = other.bDeleteOnError;
+        this->bDeleteOnErrors = other.bDeleteOnErrors;
         this->bStopOnErrors = other.bStopOnErrors;
         this->nThreadCount = other.nThreadCount;
         this->szMainWindowResize = other.szMainWindowResize;
@@ -71,7 +71,7 @@ public:
         this->bRecurseChecked = true;
         this->bShutdownWhenFinished = false;
         this->bDoNotSaveConfiguration = false;
-        this->bDeleteOnError = true;
+        this->bDeleteOnErrors = true;
         this->bStopOnErrors = false;
         this->nThreadCount = 1;
         this->szMainWindowResize = _T("");

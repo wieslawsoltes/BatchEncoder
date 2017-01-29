@@ -177,16 +177,16 @@ void XmlConfiguration::GetOptions(tinyxml2::XMLElement *pOptionsElem, COptions &
         m_Options.szFormatsListColumns = ToCString(tmpBuff);
     }
 
-    // option: DeleteOnError
-    pOptionElem = pOptionsElem->FirstChildElement("DeleteOnError");
+    // option: DeleteOnErrors
+    pOptionElem = pOptionsElem->FirstChildElement("DeleteOnErrors");
     if (pOptionElem)
     {
         const char *tmpBuff = pOptionElem->GetText();
-        m_Options.bDeleteOnError = ToCString(tmpBuff).Compare(_T("true")) == 0;
+        m_Options.bDeleteOnErrors = ToCString(tmpBuff).Compare(_T("true")) == 0;
     }
     else
     {
-        m_Options.bDeleteOnError = false;
+        m_Options.bDeleteOnErrors = false;
     }
 
     // option: StopOnErrors
@@ -300,9 +300,9 @@ void XmlConfiguration::SetOptions(tinyxml2::XMLElement *pOptionsElem, COptions &
     pOptionsElem->LinkEndChild(pOptionElem);
     szBuffUtf8.Clear();
 
-    // option: DeleteOnError
-    pOptionElem = this->NewElement("DeleteOnError");
-    pOptionElem->LinkEndChild(this->NewText(szBuffUtf8.Create(m_Options.bDeleteOnError ? _T("true") : _T("false"))));
+    // option: DeleteOnErrors
+    pOptionElem = this->NewElement("DeleteOnErrors");
+    pOptionElem->LinkEndChild(this->NewText(szBuffUtf8.Create(m_Options.bDeleteOnErrors ? _T("true") : _T("false"))));
     pOptionsElem->LinkEndChild(pOptionElem);
     szBuffUtf8.Clear();
 

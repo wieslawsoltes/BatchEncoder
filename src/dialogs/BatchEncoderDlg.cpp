@@ -9,7 +9,6 @@
 #include "PresetsDlg.h"
 #include "AboutDlg.h"
 #include "FormatsDlg.h"
-#include "AdvancedDlg.h"
 
 #define ITEM_COLUMN_NAME    0
 #define ITEM_COLUMN_INPUT   1
@@ -205,14 +204,16 @@ CBatchEncoderDlg::~CBatchEncoderDlg()
 void CBatchEncoderDlg::DoDataExchange(CDataExchange* pDX)
 {
     CResizeDialog::DoDataExchange(pDX);
-    DDX_Control(pDX, IDC_PROGRESS_WORK, m_Progress);
+    DDX_Control(pDX, IDC_PROGRESS_CONVERT, m_Progress);
     DDX_Control(pDX, IDC_COMBO_PRESETS, m_CmbPresets);
     DDX_Control(pDX, IDC_COMBO_FORMAT, m_CmbFormat);
     DDX_Control(pDX, IDC_LIST_ITEMS, m_LstInputItems);
     DDX_Control(pDX, IDC_CHECK_OUTPUT, m_ChkOutPath);
     DDX_Control(pDX, IDC_EDIT_OUTPUT, m_EdtOutPath);
+    DDX_Control(pDX, IDC_EDIT_THREADCOUNT, m_EdtThreads);
     DDX_Control(pDX, IDC_STATIC_TEXT_PRESET, m_StcPreset);
     DDX_Control(pDX, IDC_STATIC_TEXT_FORMAT, m_StcFormat);
+    DDX_Control(pDX, IDC_STATIC_THREAD_COUNT, m_StcThreads);
     DDX_Control(pDX, IDC_BUTTON_RUN, m_BtnConvert);
     DDX_Control(pDX, IDC_BUTTON_BROWSE_OUTPUT, m_BtnBrowse);
 }
@@ -238,60 +239,55 @@ BEGIN_MESSAGE_MAP(CBatchEncoderDlg, CResizeDialog)
     ON_EN_SETFOCUS(IDC_EDIT_OUTPUT, OnEnSetFocusEditOutPath)
     ON_EN_KILLFOCUS(IDC_EDIT_OUTPUT, OnEnKillFocusEditOutPath)
     ON_MESSAGE(WM_NOTIFYFORMAT, OnNotifyFormat)
+    ON_COMMAND(ID_FILE_ADDFILES, OnFileAddFiles)
+    ON_COMMAND(ID_FILE_ADDDIR, OnFileAddDir)
     ON_COMMAND(ID_FILE_LOADLIST, OnFileLoadList)
     ON_COMMAND(ID_FILE_SAVELIST, OnFileSaveList)
     ON_COMMAND(ID_FILE_CLEARLIST, OnFileClearList)
     ON_COMMAND(ID_FILE_EXIT, OnFileExit)
-    ON_COMMAND(ID_EDIT_ADDFILES, OnEditAddFiles)
+    ON_COMMAND(ID_EDIT_RENAME, OnEditRename)
+    ON_COMMAND(ID_EDIT_RESETTIME, OnEditResetTime)
+    ON_COMMAND(ID_EDIT_RESETOUTPUT, OnEditResetOutput)
+    ON_COMMAND(ID_EDIT_REMOVE, OnEditRemove)
+    ON_COMMAND(ID_EDIT_CROP, OnEditCrop)
     ON_COMMAND(ID_EDIT_REMOVECHECKED, OnEditRemoveChecked)
     ON_COMMAND(ID_EDIT_REMOVEUNCHECKED, OnEditRemoveUnchecked)
     ON_COMMAND(ID_EDIT_CHECKSELECTED, OnEditCheckSelected)
     ON_COMMAND(ID_EDIT_UNCHECKSELECTED, OnEditUncheckSelected)
-    ON_COMMAND(ID_EDIT_RENAME, OnEditRename)
-    ON_COMMAND(ID_EDIT_OPEN, OnEditOpen)
-    ON_COMMAND(ID_EDIT_EXPLORE, OnEditExplore)
-    ON_COMMAND(ID_EDIT_CROP, OnEditCrop)
+    ON_COMMAND(ID_EDIT_SELECTALL, OnEditSelectAll)
     ON_COMMAND(ID_EDIT_SELECTNONE, OnEditSelectNone)
     ON_COMMAND(ID_EDIT_INVERTSELECTION, OnEditInvertSelection)
-    ON_COMMAND(ID_EDIT_REMOVE, OnEditRemove)
-    ON_COMMAND(ID_EDIT_SELECTALL, OnEditSelectAll)
-    ON_COMMAND(ID_EDIT_RESETOUTPUT, OnEditResetOutput)
-    ON_COMMAND(ID_EDIT_RESETTIME, OnEditResetTime)
-    ON_COMMAND(ID_EDIT_ADDDIR, OnEditAddDir)
+    ON_COMMAND(ID_EDIT_OPEN, OnEditOpen)
+    ON_COMMAND(ID_EDIT_EXPLORE, OnEditExplore)
     ON_COMMAND(ID_ACTION_CONVERT, OnActionConvert)
-    ON_COMMAND(ID_OPTIONS_DELETESOURCEFILEWHENDONE, OnOptionsDeleteSourceFileWhenDone)
-    ON_COMMAND(ID_OPTIONS_SHUTDOWN_WHEN_FINISHED, OnOptionsShutdownWhenFinished)
-    ON_COMMAND(ID_OPTIONS_DO_NOT_SAVE, OnOptionsDoNotSave)
-    ON_COMMAND(ID_OPTIONS_ADVANCED, OnOptionsAdvanced)
     ON_COMMAND(ID_OPTIONS_CONFIGUREPRESETS, OnOptionsConfigurePresets)
     ON_COMMAND(ID_OPTIONS_CONFIGUREFORMAT, OnOptionsConfigureFormat)
+    ON_COMMAND(ID_OPTIONS_DELETE_SOURCE, OnOptionsDeleteSource)
+    ON_COMMAND(ID_OPTIONS_SHUTDOWN_WINDOWS, OnOptionsShutdownWindows)
+    ON_COMMAND(ID_OPTIONS_DO_NOT_SAVE, OnOptionsDoNotSave)
+    ON_COMMAND(ID_OPTIONS_DELETE_ON_ERRORS, OnOptionsDeleteOnErrors)
+    ON_COMMAND(ID_OPTIONS_STOP_ON_ERRORS, OnOptionsStopOnErrors)
     ON_COMMAND(ID_HELP_WEBSITE, OnHelpWebsite)
     ON_COMMAND(ID_HELP_ABOUT, OnHelpAbout)
+    ON_COMMAND(ID_ACCELERATOR_F5, OnFileAddFiles)
+    ON_COMMAND(ID_ACCELERATOR_F6, OnFileAddDir)
     ON_COMMAND(ID_ACCELERATOR_CTRL_L, OnFileLoadList)
     ON_COMMAND(ID_ACCELERATOR_CTRL_S, OnFileSaveList)
     ON_COMMAND(ID_ACCELERATOR_CTRL_E, OnFileClearList)
+    ON_COMMAND(ID_ACCELERATOR_ALT_F4, OnFileExit)
+    ON_COMMAND(ID_ACCELERATOR_F2, OnEditRename)
     ON_COMMAND(ID_ACCELERATOR_F3, OnEditResetTime)
     ON_COMMAND(ID_ACCELERATOR_F4, OnEditResetOutput)
-    ON_COMMAND(ID_ACCELERATOR_ALT_F4, OnFileExit)
-    ON_COMMAND(ID_ACCELERATOR_F5, OnEditAddFiles)
-    ON_COMMAND(ID_ACCELERATOR_F6, OnEditAddDir)
-    ON_COMMAND(ID_ACCELERATOR_F2, OnEditRename)
     ON_COMMAND(ID_ACCELERATOR_CTRL_A, OnEditSelectAll)
     ON_COMMAND(ID_ACCELERATOR_CTRL_N, OnEditSelectNone)
     ON_COMMAND(ID_ACCELERATOR_CTRL_I, OnEditInvertSelection)
-    ON_COMMAND(ID_ACCELERATOR_CTRL_O, OnEditOpen)
-    ON_COMMAND(ID_ACCELERATOR_CTRL_SHIFT_O, OnEditExplore)
     ON_COMMAND(ID_ACCELERATOR_SHIFT_PLUS, OnEditCheckSelected)
     ON_COMMAND(ID_ACCELERATOR_SHIFT_MINUS, OnEditUncheckSelected)
     ON_COMMAND(ID_ACCELERATOR_CTRL_PLUS, OnEditRemoveChecked)
     ON_COMMAND(ID_ACCELERATOR_CTRL_MINUS, OnEditRemoveUnchecked)
     ON_COMMAND(ID_ACCELERATOR_F9, OnBnClickedButtonConvert)
-    ON_COMMAND(ID_ACCELERATOR_CTRL_X, OnOptionsDoNotSave)
     ON_COMMAND(ID_ACCELERATOR_F7, OnOptionsConfigurePresets)
     ON_COMMAND(ID_ACCELERATOR_F8, OnOptionsConfigureFormat)
-    ON_COMMAND(ID_ACCELERATOR_CTRL_Q, OnOptionsShutdownWhenFinished)
-    ON_COMMAND(ID_ACCELERATOR_CTRL_SHIFT_A, OnOptionsAdvanced)
-    ON_COMMAND(ID_ACCELERATOR_CTRL_D, OnOptionsDeleteSourceFileWhenDone)
 END_MESSAGE_MAP()
 
 BOOL CBatchEncoderDlg::OnInitDialog()
@@ -359,7 +355,9 @@ BOOL CBatchEncoderDlg::OnInitDialog()
     AddAnchor(IDC_CHECK_OUTPUT, BOTTOM_LEFT);
     AddAnchor(IDC_EDIT_OUTPUT, BOTTOM_LEFT, BOTTOM_RIGHT);
     AddAnchor(IDC_BUTTON_BROWSE_OUTPUT, BOTTOM_RIGHT);
-    AddAnchor(IDC_PROGRESS_WORK, BOTTOM_LEFT, BOTTOM_RIGHT);
+    AddAnchor(IDC_PROGRESS_CONVERT, BOTTOM_LEFT, BOTTOM_RIGHT);
+    AddAnchor(IDC_STATIC_THREAD_COUNT, BOTTOM_RIGHT);
+    AddAnchor(IDC_EDIT_THREADCOUNT, BOTTOM_RIGHT);
     AddAnchor(IDC_BUTTON_RUN, BOTTOM_RIGHT);
     AddAnchor(IDC_STATUSBAR, BOTTOM_LEFT, BOTTOM_RIGHT);
 
@@ -543,16 +541,27 @@ void CBatchEncoderDlg::GetOptions()
     m_Config.m_Options.bOutputPathChecked = this->m_ChkOutPath.GetCheck() == BST_CHECKED;
 
     // option: DeleteSourceFiles
-    m_Config.m_Options.bDeleteSourceFiles = this->GetMenu()->GetMenuState(ID_OPTIONS_DELETESOURCEFILEWHENDONE, MF_BYCOMMAND) == MF_CHECKED;
+    m_Config.m_Options.bDeleteSourceFiles = this->GetMenu()->GetMenuState(ID_OPTIONS_DELETE_SOURCE, MF_BYCOMMAND) == MF_CHECKED;
 
     // option: RecurseChecked
     m_Config.m_Options.bRecurseChecked = ::bRecurseChecked;
 
     // option: ShutdownWhenFinished
-    m_Config.m_Options.bShutdownWhenFinished = this->GetMenu()->GetMenuState(ID_OPTIONS_SHUTDOWN_WHEN_FINISHED, MF_BYCOMMAND) == MF_CHECKED;
+    m_Config.m_Options.bShutdownWhenFinished = this->GetMenu()->GetMenuState(ID_OPTIONS_SHUTDOWN_WINDOWS, MF_BYCOMMAND) == MF_CHECKED;
 
     // option: DoNotSaveConfiguration
     m_Config.m_Options.bDoNotSaveConfiguration = this->GetMenu()->GetMenuState(ID_OPTIONS_DO_NOT_SAVE, MF_BYCOMMAND) == MF_CHECKED;
+
+    // option: DeleteOnErrors
+    m_Config.m_Options.bDeleteOnErrors = this->GetMenu()->GetMenuState(ID_OPTIONS_DELETE_ON_ERRORS, MF_BYCOMMAND) == MF_CHECKED;
+
+    // option: StopOnErrors
+    m_Config.m_Options.bDeleteOnErrors = this->GetMenu()->GetMenuState(ID_OPTIONS_STOP_ON_ERRORS, MF_BYCOMMAND) == MF_CHECKED;
+
+    // option: ThreadCount
+    CString szThreadCount;
+    m_EdtThreads.GetWindowText(szThreadCount);
+    m_Config.m_Options.nThreadCount = _tstoi(szThreadCount);
 
     // option: MainWindowResize
     m_Config.m_Options.szMainWindowResize = this->GetWindowRectStr();
@@ -604,9 +613,9 @@ void CBatchEncoderDlg::SetOptions()
 
     // option: DeleteSourceFiles
     if (m_Config.m_Options.bDeleteSourceFiles)
-        this->GetMenu()->CheckMenuItem(ID_OPTIONS_DELETESOURCEFILEWHENDONE, MF_CHECKED);
+        this->GetMenu()->CheckMenuItem(ID_OPTIONS_DELETE_SOURCE, MF_CHECKED);
     else
-        this->GetMenu()->CheckMenuItem(ID_OPTIONS_DELETESOURCEFILEWHENDONE, MF_UNCHECKED);
+        this->GetMenu()->CheckMenuItem(ID_OPTIONS_DELETE_SOURCE, MF_UNCHECKED);
 
     // option: RecurseChecked
     if (m_Config.m_Options.bRecurseChecked)
@@ -616,9 +625,9 @@ void CBatchEncoderDlg::SetOptions()
 
     // option: ShutdownWhenFinished
     if (m_Config.m_Options.bShutdownWhenFinished)
-        this->GetMenu()->CheckMenuItem(ID_OPTIONS_SHUTDOWN_WHEN_FINISHED, MF_CHECKED);
+        this->GetMenu()->CheckMenuItem(ID_OPTIONS_SHUTDOWN_WINDOWS, MF_CHECKED);
     else
-        this->GetMenu()->CheckMenuItem(ID_OPTIONS_SHUTDOWN_WHEN_FINISHED, MF_UNCHECKED);
+        this->GetMenu()->CheckMenuItem(ID_OPTIONS_SHUTDOWN_WINDOWS, MF_UNCHECKED);
 
     // option: DoNotSaveConfiguration
     if (m_Config.m_Options.bDoNotSaveConfiguration)
@@ -626,17 +635,22 @@ void CBatchEncoderDlg::SetOptions()
     else
         this->GetMenu()->CheckMenuItem(ID_OPTIONS_DO_NOT_SAVE, MF_UNCHECKED);
 
-    // option: DeleteOnError
+    // option: DeleteOnErrors
+    if (m_Config.m_Options.bDeleteOnErrors)
+        this->GetMenu()->CheckMenuItem(ID_OPTIONS_DELETE_ON_ERRORS, MF_CHECKED);
+    else
+        this->GetMenu()->CheckMenuItem(ID_OPTIONS_DELETE_ON_ERRORS, MF_UNCHECKED);
 
     // option: StopOnErrors
+    if (m_Config.m_Options.bStopOnErrors)
+        this->GetMenu()->CheckMenuItem(ID_OPTIONS_STOP_ON_ERRORS, MF_CHECKED);
+    else
+        this->GetMenu()->CheckMenuItem(ID_OPTIONS_STOP_ON_ERRORS, MF_UNCHECKED);
 
-    // option: PresetsDialogResize
-
-    // option: PresetsListColumns
-
-    // option: FormatsDialogResize
-
-    // option: FormatsListColumns
+    // option: ThreadCount
+    CString szThreadCount;
+    szThreadCount.Format(_T("%d\0"), m_Config.m_Options.nThreadCount);
+    m_EdtThreads.SetWindowText(szThreadCount);
 
     // option: MainWindowResize
     if (m_Config.m_Options.szMainWindowResize.Compare(_T("")) != 0)
@@ -661,6 +675,14 @@ void CBatchEncoderDlg::SetOptions()
                 m_LstInputItems.SetColumnWidth(i, nColWidth[i]);
         }
     }
+
+    // option: PresetsDialogResize
+
+    // option: PresetsListColumns
+
+    // option: FormatsDialogResize
+
+    // option: FormatsListColumns
 }
 
 bool CBatchEncoderDlg::LoadOptions(CString szFileXml)
@@ -1402,6 +1424,8 @@ void CBatchEncoderDlg::EnableUserInterface(BOOL bEnable)
         this->m_ChkOutPath.ShowWindow(SW_HIDE);
         this->m_EdtOutPath.ShowWindow(SW_HIDE);
         this->m_BtnBrowse.ShowWindow(SW_HIDE);
+        this->m_StcThreads.ShowWindow(SW_HIDE);
+        this->m_EdtThreads.ShowWindow(SW_HIDE);
         this->m_Progress.ShowWindow(SW_SHOW);
     }
     else
@@ -1410,6 +1434,8 @@ void CBatchEncoderDlg::EnableUserInterface(BOOL bEnable)
         this->m_ChkOutPath.ShowWindow(SW_SHOW);
         this->m_EdtOutPath.ShowWindow(SW_SHOW);
         this->m_BtnBrowse.ShowWindow(SW_SHOW);
+        this->m_StcThreads.ShowWindow(SW_SHOW);
+        this->m_EdtThreads.ShowWindow(SW_SHOW);
         this->m_LstInputItems.ShowWindow(SW_SHOW);
     }
 
@@ -1517,7 +1543,12 @@ void CBatchEncoderDlg::OnFileClearList()
 {
     if (this->pWorkerContext->bRunning == false)
     {
-        this->OnEditClear();
+        if (this->pWorkerContext->bRunning == false)
+        {
+            m_Config.m_Items.RemoveAllNodes();
+            m_LstInputItems.DeleteAllItems();
+            this->UpdateStatusBar();
+        }
     }
 }
 
@@ -1529,7 +1560,7 @@ void CBatchEncoderDlg::OnFileExit()
     }
 }
 
-void CBatchEncoderDlg::OnEditAddFiles()
+void CBatchEncoderDlg::OnFileAddFiles()
 {
     if (this->pWorkerContext->bRunning == false)
     {
@@ -1594,7 +1625,7 @@ void CBatchEncoderDlg::OnEditAddFiles()
     }
 }
 
-void CBatchEncoderDlg::OnEditAddDir()
+void CBatchEncoderDlg::OnFileAddDir()
 {
     if (this->pWorkerContext->bRunning == false)
     {
@@ -1649,16 +1680,6 @@ void CBatchEncoderDlg::OnEditAddDir()
         pMalloc->Free(pidlDesktop);
         pMalloc->Free(lpBuffer);
         pMalloc->Release();
-    }
-}
-
-void CBatchEncoderDlg::OnEditClear()
-{
-    if (this->pWorkerContext->bRunning == false)
-    {
-        m_Config.m_Items.RemoveAllNodes();
-        m_LstInputItems.DeleteAllItems();
-        this->UpdateStatusBar();
     }
 }
 
@@ -1927,25 +1948,47 @@ void CBatchEncoderDlg::OnActionConvert()
     this->StartConvert();
 }
 
-void CBatchEncoderDlg::OnOptionsDeleteSourceFileWhenDone()
+void CBatchEncoderDlg::OnOptionsDeleteSource()
 {
     if (this->pWorkerContext->bRunning == false)
     {
-        if (this->GetMenu()->GetMenuState(ID_OPTIONS_DELETESOURCEFILEWHENDONE, MF_BYCOMMAND) == MF_CHECKED)
-            this->GetMenu()->CheckMenuItem(ID_OPTIONS_DELETESOURCEFILEWHENDONE, MF_UNCHECKED);
+        if (this->GetMenu()->GetMenuState(ID_OPTIONS_DELETE_SOURCE, MF_BYCOMMAND) == MF_CHECKED)
+            this->GetMenu()->CheckMenuItem(ID_OPTIONS_DELETE_SOURCE, MF_UNCHECKED);
         else
-            this->GetMenu()->CheckMenuItem(ID_OPTIONS_DELETESOURCEFILEWHENDONE, MF_CHECKED);
+            this->GetMenu()->CheckMenuItem(ID_OPTIONS_DELETE_SOURCE, MF_CHECKED);
     }
 }
 
-void CBatchEncoderDlg::OnOptionsShutdownWhenFinished()
+void CBatchEncoderDlg::OnOptionsShutdownWindows()
 {
     if (this->pWorkerContext->bRunning == false)
     {
-        if (this->GetMenu()->GetMenuState(ID_OPTIONS_SHUTDOWN_WHEN_FINISHED, MF_BYCOMMAND) == MF_CHECKED)
-            this->GetMenu()->CheckMenuItem(ID_OPTIONS_SHUTDOWN_WHEN_FINISHED, MF_UNCHECKED);
+        if (this->GetMenu()->GetMenuState(ID_OPTIONS_SHUTDOWN_WINDOWS, MF_BYCOMMAND) == MF_CHECKED)
+            this->GetMenu()->CheckMenuItem(ID_OPTIONS_SHUTDOWN_WINDOWS, MF_UNCHECKED);
         else
-            this->GetMenu()->CheckMenuItem(ID_OPTIONS_SHUTDOWN_WHEN_FINISHED, MF_CHECKED);
+            this->GetMenu()->CheckMenuItem(ID_OPTIONS_SHUTDOWN_WINDOWS, MF_CHECKED);
+    }
+}
+
+void CBatchEncoderDlg::OnOptionsDeleteOnErrors()
+{
+    if (this->pWorkerContext->bRunning == false)
+    {
+        if (this->GetMenu()->GetMenuState(ID_OPTIONS_DELETE_ON_ERRORS, MF_BYCOMMAND) == MF_CHECKED)
+            this->GetMenu()->CheckMenuItem(ID_OPTIONS_DELETE_ON_ERRORS, MF_UNCHECKED);
+        else
+            this->GetMenu()->CheckMenuItem(ID_OPTIONS_DELETE_ON_ERRORS, MF_CHECKED);
+    }
+}
+
+void CBatchEncoderDlg::OnOptionsStopOnErrors()
+{
+    if (this->pWorkerContext->bRunning == false)
+    {
+        if (this->GetMenu()->GetMenuState(ID_OPTIONS_STOP_ON_ERRORS, MF_BYCOMMAND) == MF_CHECKED)
+            this->GetMenu()->CheckMenuItem(ID_OPTIONS_STOP_ON_ERRORS, MF_UNCHECKED);
+        else
+            this->GetMenu()->CheckMenuItem(ID_OPTIONS_STOP_ON_ERRORS, MF_CHECKED);
     }
 }
 
@@ -1957,23 +2000,6 @@ void CBatchEncoderDlg::OnOptionsDoNotSave()
             this->GetMenu()->CheckMenuItem(ID_OPTIONS_DO_NOT_SAVE, MF_UNCHECKED);
         else
             this->GetMenu()->CheckMenuItem(ID_OPTIONS_DO_NOT_SAVE, MF_CHECKED);
-    }
-}
-
-void CBatchEncoderDlg::OnOptionsAdvanced()
-{
-    if (this->pWorkerContext->bRunning == false)
-    {
-        CAdvancedDlg dlg;
-
-        this->GetOptions();
-        dlg.m_Options = m_Config.m_Options;
-
-        if (dlg.DoModal() == IDOK)
-        {
-            m_Config.m_Options = dlg.m_Options;
-            this->SetOptions();
-        }
     }
 }
 
