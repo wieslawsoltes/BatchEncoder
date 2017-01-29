@@ -43,8 +43,8 @@ bool ConvertFile(CFileContext* pContext)
         bRet = ::CreatePipe(&rOutErrPipe, &wOutErrPipe, &secattr, 0);
         if (bRet == FALSE)
         {
-            pContext->pWorkerContext->Status(pContext->nIndex, _T("--:--"), _T("Error: can not create pipes for stdout and stderr."));
-            pContext->pWorkerContext->Callback(pContext->nIndex, -1, true, true);
+            pContext->pWorkerContext->Status(pContext->nItemId, _T("--:--"), _T("Error: can not create pipes for stdout and stderr."));
+            pContext->pWorkerContext->Callback(pContext->nItemId, -1, true, true);
             return false;
         }
     }
@@ -57,8 +57,8 @@ bool ConvertFile(CFileContext* pContext)
             bRet = ::CreatePipe(&rInPipe, &wInPipe, &secattr, 0);
             if (bRet == FALSE)
             {
-                pContext->pWorkerContext->Status(pContext->nIndex, _T("--:--"), _T("Error: can not create pipes for stdin."));
-                pContext->pWorkerContext->Callback(pContext->nIndex, -1, true, true);
+                pContext->pWorkerContext->Status(pContext->nItemId, _T("--:--"), _T("Error: can not create pipes for stdin."));
+                pContext->pWorkerContext->Callback(pContext->nItemId, -1, true, true);
                 return false;
             }
         }
@@ -76,8 +76,8 @@ bool ConvertFile(CFileContext* pContext)
                     ::CloseHandle(wInPipe);
                 }
 
-                pContext->pWorkerContext->Status(pContext->nIndex, _T("--:--"), _T("Error: can not create pipes for stdout."));
-                pContext->pWorkerContext->Callback(pContext->nIndex, -1, true, true);
+                pContext->pWorkerContext->Status(pContext->nItemId, _T("--:--"), _T("Error: can not create pipes for stdout."));
+                pContext->pWorkerContext->Callback(pContext->nItemId, -1, true, true);
                 return false;
             }
         }
@@ -93,8 +93,8 @@ bool ConvertFile(CFileContext* pContext)
             ::CloseHandle(rInPipe);
             ::CloseHandle(wInPipe);
 
-            pContext->pWorkerContext->Status(pContext->nIndex, _T("--:--"), _T("Error: can not set stdin pipe to be inherited by child process."));
-            pContext->pWorkerContext->Callback(pContext->nIndex, -1, true, true);
+            pContext->pWorkerContext->Status(pContext->nItemId, _T("--:--"), _T("Error: can not set stdin pipe to be inherited by child process."));
+            pContext->pWorkerContext->Callback(pContext->nItemId, -1, true, true);
             return false;
         }
     }
@@ -114,8 +114,8 @@ bool ConvertFile(CFileContext* pContext)
             ::CloseHandle(rOutPipe);
             ::CloseHandle(wOutPipe);
 
-            pContext->pWorkerContext->Status(pContext->nIndex, _T("--:--"), _T("Error: can not set stdout pipe to be inherited by child process."));
-            pContext->pWorkerContext->Callback(pContext->nIndex, -1, true, true);
+            pContext->pWorkerContext->Status(pContext->nItemId, _T("--:--"), _T("Error: can not set stdout pipe to be inherited by child process."));
+            pContext->pWorkerContext->Callback(pContext->nItemId, -1, true, true);
             return false;
         }
     }
@@ -134,8 +134,8 @@ bool ConvertFile(CFileContext* pContext)
             ::CloseHandle(rOutErrPipe);
             ::CloseHandle(wOutErrPipe);
 
-            pContext->pWorkerContext->Status(pContext->nIndex, _T("--:--"), _T("Error: can not duplicate stderr pipe to prevent child process from closing the pipe."));
-            pContext->pWorkerContext->Callback(pContext->nIndex, -1, true, true);
+            pContext->pWorkerContext->Status(pContext->nItemId, _T("--:--"), _T("Error: can not duplicate stderr pipe to prevent child process from closing the pipe."));
+            pContext->pWorkerContext->Callback(pContext->nItemId, -1, true, true);
             return false;
         }
     }
@@ -218,8 +218,8 @@ bool ConvertFile(CFileContext* pContext)
             ::CloseHandle(wOutPipe);
         }
 
-        pContext->pWorkerContext->Status(pContext->nIndex, _T("--:--"), _T("Error: can not create command-line process."));
-        pContext->pWorkerContext->Callback(pContext->nIndex, -1, true, true);
+        pContext->pWorkerContext->Status(pContext->nItemId, _T("--:--"), _T("Error: can not create command-line process."));
+        pContext->pWorkerContext->Callback(pContext->nItemId, -1, true, true);
         return false;
     }
 
@@ -256,7 +256,7 @@ bool ConvertFile(CFileContext* pContext)
         rd.pWorkerContext = pContext->pWorkerContext;
         rd.szFileName = pContext->szInputFile;
         rd.hPipe = wInPipe;
-        rd.nIndex = pContext->nIndex;
+        rd.nIndex = pContext->nItemId;
 
         dwReadThreadID = 0L;
         hReadThread = ::CreateThread(NULL, 0, ReadThread, (LPVOID)&rd, /* CREATE_SUSPENDED */ 0, &dwReadThreadID);
@@ -266,8 +266,8 @@ bool ConvertFile(CFileContext* pContext)
 
             ::CloseHandle(wInPipe);
 
-            pContext->pWorkerContext->Status(pContext->nIndex, _T("--:--"), _T("Error: can not create read thread."));
-            pContext->pWorkerContext->Callback(pContext->nIndex, -1, true, true);
+            pContext->pWorkerContext->Status(pContext->nItemId, _T("--:--"), _T("Error: can not create read thread."));
+            pContext->pWorkerContext->Callback(pContext->nItemId, -1, true, true);
             return false;
         }
 
@@ -307,7 +307,7 @@ bool ConvertFile(CFileContext* pContext)
         wd.pWorkerContext = pContext->pWorkerContext;
         wd.szFileName = pContext->szOutputFile;
         wd.hPipe = rOutPipe;
-        wd.nIndex = pContext->nIndex;
+        wd.nIndex = pContext->nItemId;
 
         dwWriteThreadID = 0L;
         hWriteThread = ::CreateThread(NULL, 0, WriteThread, (LPVOID)&wd, /* CREATE_SUSPENDED */ 0, &dwWriteThreadID);
@@ -317,8 +317,8 @@ bool ConvertFile(CFileContext* pContext)
 
             ::CloseHandle(rOutPipe);
 
-            pContext->pWorkerContext->Status(pContext->nIndex, _T("--:--"), _T("Error: can not create write thread."));
-            pContext->pWorkerContext->Callback(pContext->nIndex, -1, true, true);
+            pContext->pWorkerContext->Status(pContext->nItemId, _T("--:--"), _T("Error: can not create write thread."));
+            pContext->pWorkerContext->Callback(pContext->nItemId, -1, true, true);
             return false;
         }
 
@@ -400,15 +400,15 @@ bool ConvertFile(CFileContext* pContext)
             pProgressProc = (lpfnGetProgress) ::GetProcAddress(hDll, "GetProgress");
             if (pProgressProc == NULL)
             {
-                pContext->pWorkerContext->Status(pContext->nIndex, _T("--:--"), _T("Error: can not get GetProgress function address."));
-                pContext->pWorkerContext->Callback(pContext->nIndex, -1, true, true);
+                pContext->pWorkerContext->Status(pContext->nItemId, _T("--:--"), _T("Error: can not get GetProgress function address."));
+                pContext->pWorkerContext->Callback(pContext->nItemId, -1, true, true);
                 return false; // ERROR
             }
         }
         else
         {
-            pContext->pWorkerContext->Status(pContext->nIndex, _T("--:--"), _T("Error: can not load function library dll."));
-            pContext->pWorkerContext->Callback(pContext->nIndex, -1, true, true);
+            pContext->pWorkerContext->Status(pContext->nItemId, _T("--:--"), _T("Error: can not load function library dll."));
+            pContext->pWorkerContext->Callback(pContext->nItemId, -1, true, true);
             return false; // ERROR
         }
 
@@ -466,8 +466,8 @@ bool ConvertFile(CFileContext* pContext)
                     nLineLen++;
                     if (nLineLen > nBuffSize)
                     {
-                        pContext->pWorkerContext->Status(pContext->nIndex, _T("--:--"), _T("Error: console line is too large for read buffer."));
-                        pContext->pWorkerContext->Callback(pContext->nIndex, -1, true, true);
+                        pContext->pWorkerContext->Status(pContext->nItemId, _T("--:--"), _T("Error: console line is too large for read buffer."));
+                        pContext->pWorkerContext->Callback(pContext->nItemId, -1, true, true);
                         return false;
                     }
 
@@ -488,7 +488,7 @@ bool ConvertFile(CFileContext* pContext)
 
                         if (nProgress != nPreviousProgress)
                         {
-                            bRunning = pContext->pWorkerContext->Callback(pContext->nIndex, nProgress, false);
+                            bRunning = pContext->pWorkerContext->Callback(pContext->nItemId, nProgress, false);
                             nPreviousProgress = nProgress;
                         }
 
@@ -569,14 +569,14 @@ bool ConvertFile(CFileContext* pContext)
 
     if (nProgress != 100)
     {
-        pContext->pWorkerContext->Status(pContext->nIndex, _T("--:--"), _T("Error: progress did not reach 100%."));
-        pContext->pWorkerContext->Callback(pContext->nIndex, -1, true, true);
+        pContext->pWorkerContext->Status(pContext->nItemId, _T("--:--"), _T("Error: progress did not reach 100%."));
+        pContext->pWorkerContext->Callback(pContext->nItemId, -1, true, true);
         return false;
     }
     else
     {
-        pContext->pWorkerContext->Status(pContext->nIndex, ::FormatTime(timeCount.ElapsedTime(), 1), _T("Done"));
-        pContext->pWorkerContext->Callback(pContext->nIndex, 100, true, false);
+        pContext->pWorkerContext->Status(pContext->nItemId, ::FormatTime(timeCount.ElapsedTime(), 1), _T("Done"));
+        pContext->pWorkerContext->Callback(pContext->nItemId, 100, true, false);
         return true;
     }
 }

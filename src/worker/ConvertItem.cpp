@@ -8,12 +8,64 @@
 
 enum Mode { None = -1, Encode = 0, Transcode = 1 };
 
-bool ConvertItem(CItemContext* pContext)
+bool ConvertItem(CWorkerContext *pWorkerContext, CFormat &format, int nPreset, int nItemId, CString szInputFile, CString szOutputFile)
 {
-    bool bSuccess = false;
+    if (nPreset >= format.m_Presets.GetSize())
+    {
+        pWorkerContext->Status(nItemId, _T("--:--"), _T("Error: can not find format preset."));
+        return false;
+    }
+
+    CPreset& preset = format.m_Presets.GetData(nPreset);
+
+    CFileContext context;
+    context.pWorkerContext = pWorkerContext;
+    context.szInputFile = szInputFile;
+    context.szOutputFile = szOutputFile;
+
+    CString szExecute;
+    szExecute = format.szTemplate;
+    szExecute.Replace(_T("$EXE"), _T("\"$EXE\""));
+    szExecute.Replace(_T("$EXE"), format.szPath);
+    szExecute.Replace(_T("$OPTIONS"), preset.szOptions);
+
+    szExecute.Replace(_T("$INFILE"), _T("\"$INFILE\""));
+    if (format.bPipeInput == true)
+        szExecute.Replace(_T("$INFILE"), _T("-"));
+    else
+        szExecute.Replace(_T("$INFILE"), szInputFile);
+
+    szExecute.Replace(_T("$OUTFILE"), _T("\"$OUTFILE\""));
+    if (format.bPipeOutput == true)
+        szExecute.Replace(_T("$OUTFILE"), _T("-"));
+    else
+        szExecute.Replace(_T("$OUTFILE"), szOutputFile);
+
     TCHAR szCommandLine[(64 * 1024)];
     ZeroMemory(szCommandLine, sizeof(szCommandLine));
+    lstrcpy(szCommandLine, szExecute.GetBuffer(szExecute.GetLength()));
+    context.szCommandLine = szCommandLine;
 
+    context.nItemId = nItemId;
+    context.szFunction = format.szFunction;
+    context.bUseReadPipes = format.bPipeInput;
+    context.bUseWritePipes = format.bPipeOutput;
+
+    try
+    {
+        return ::ConvertFile(&context);
+    }
+    catch (...)
+    {
+        pWorkerContext->Status(nItemId, _T("--:--"), _T("Error: exception thrown while converting file."));
+        pWorkerContext->Callback(nItemId, -1, true, true);
+    }
+
+    return false;
+}
+
+bool ConvertItem(CItemContext* pContext)
+{
     // input path
     CString szInputFile = pContext->item->szPath;
 
@@ -35,20 +87,10 @@ bool ConvertItem(CItemContext* pContext)
     if (nEncoder == -1)
     {
         pContext->pWorkerContext->Status(pContext->item->nId, _T("--:--"), _T("Error: can not find valid encoder by id."));
-        return bSuccess;
+        return false;
     }
 
     CFormat& encoderFormat = pContext->pWorkerContext->pConfig->m_Formats.GetData(nEncoder);
-
-    if (pContext->item->nPreset >= encoderFormat.m_Presets.GetSize())
-    {
-        pContext->pWorkerContext->Status(pContext->item->nId, _T("--:--"), _T("Error: can not find encoder preset."));
-        return bSuccess;
-    }
-
-    CPreset& encoderPreset = encoderFormat.m_Presets.GetData(pContext->item->nPreset);
-    CString szEncoderExePath = encoderFormat.szPath;
-    CString szEncoderOptions = encoderPreset.szOptions;
 
     // check input extensions
     CString szInputFileExt = ::GetFileExtension(szInputFile).MakeUpper();
@@ -77,195 +119,87 @@ bool ConvertItem(CItemContext* pContext)
         szOutputFile = szName;
     }
 
-    // original input and output file
     CString szOrgInputFile = szInputFile;
     CString szOrgOutputFile = szOutputFile;
 
-    // decode before encoding
     if (nProcessingMode == Mode::Transcode)
     {
         int nDecoder = pContext->pWorkerContext->pConfig->m_Formats.GetDecoderByExtension(pContext->item->szExtension);
         if (nDecoder == -1)
         {
             pContext->pWorkerContext->Status(pContext->item->nId, _T("--:--"), _T("Error: can not find valid decoder by extension."));
-            return bSuccess;
+            return false;
         }
 
         CFormat& decoderFormat = pContext->pWorkerContext->pConfig->m_Formats.GetData(nDecoder);
-
-        if (decoderFormat.nDefaultPreset >= decoderFormat.m_Presets.GetSize())
-        {
-            pContext->pWorkerContext->Status(pContext->item->nId, _T("--:--"), _T("Error: can not find decoder preset."));
-            return bSuccess;
-        }
-
-        CPreset& decoderPreset = decoderFormat.m_Presets.GetData(decoderFormat.nDefaultPreset);
-        CString szDecoderExePath = decoderFormat.szPath;
-        CString szDecoderOptions = decoderPreset.szOptions;
 
         bIsValidEncoderInput = encoderFormat.IsValidInputExtension(decoderFormat.szOutputExtension);
         if (bIsValidEncoderInput == false)
         {
             pContext->pWorkerContext->Status(pContext->item->nId, _T("--:--"), _T("Error: decoder output not supported by encoder."));
-            return bSuccess;
+            return false;
         }
 
-        if (decoderFormat.bPipeOutput == false)
-        {
-            CString szDecoderExtension = decoderFormat.szOutputExtension;
-            szOutputFile = szOutputFile + +_T(".") + szDecoderExtension.MakeLower();
-        }
-
-        // input file is stdin
-        if (decoderFormat.bPipeInput == true)
-            szInputFile = _T("-");
-
-        // output file is stdout
-        if (decoderFormat.bPipeOutput == true)
-            szOutputFile = _T("-");
-
-        // build full command line for decoder (DECODER-EXE + OPTIONS + INFILE + OUTFILE) 
-        // this is basic model, some of encoder may have different command-line structure
-        CString szExecute;
-        szExecute = decoderFormat.szTemplate;
-        szExecute.Replace(_T("$EXE"), _T("\"$EXE\""));
-        szExecute.Replace(_T("$EXE"), szDecoderExePath);
-        szExecute.Replace(_T("$OPTIONS"), szDecoderOptions);
-        szExecute.Replace(_T("$INFILE"), _T("\"$INFILE\""));
-        szExecute.Replace(_T("$INFILE"), szInputFile);
-        szExecute.Replace(_T("$OUTFILE"), _T("\"$OUTFILE\""));
-        szExecute.Replace(_T("$OUTFILE"), szOutputFile);
-
-        int nTool = pContext->pWorkerContext->pConfig->m_Formats.GetFormatById(decoderFormat.szId);
-        if (nTool == -1)
-        {
-            pContext->pWorkerContext->Status(pContext->item->nId, _T("--:--"), _T("Error: failed to get decoder by format id."));
-            return bSuccess;
-        }
-
-        lstrcpy(szCommandLine, szExecute.GetBuffer(szExecute.GetLength()));
+        CString szDecoderExtension = decoderFormat.szOutputExtension;
+        szOutputFile = szOutputFile + +_T(".") + szDecoderExtension.MakeLower();
 
         pContext->pWorkerContext->Status(pContext->item->nId, _T("--:--"), _T("Decoding..."));
 
-        CFileContext context;
-        context.pWorkerContext = pContext->pWorkerContext;
-        context.szInputFile = szOrgInputFile;
-        context.szOutputFile = szOrgOutputFile;
-        context.szCommandLine = szCommandLine;
-        context.nIndex = pContext->item->nId;
-        context.szFunction = pContext->pWorkerContext->pConfig->m_Formats.GetData(nTool).szFunction;
-        context.bUseReadPipes = decoderFormat.bPipeInput;
-        context.bUseWritePipes = decoderFormat.bPipeOutput;
-
-        // TODO: when transcoding do not show time stats
-        bool bResult = false;
-        try
-        {
-            bResult = ::ConvertFile(&context);
-        }
-        catch (...)
-        {
-            pContext->pWorkerContext->Status(pContext->item->nId, _T("--:--"), _T("Error: exception thrown while decoding."));
-            pContext->pWorkerContext->Callback(pContext->item->nId, -1, true, true);
-        }
-
-        if (bResult == true)
-        {
-            if (pContext->pWorkerContext->pConfig->m_Options.bDeleteSourceFiles == true)
-                ::DeleteFile(szOrgInputFile);
-        }
-        else
+        bool bResult = ConvertItem(
+            pContext->pWorkerContext,
+            decoderFormat,
+            decoderFormat.nDefaultPreset,
+            pContext->item->nId,
+            szInputFile,
+            szOutputFile);
+        if (bResult == false)
         {
             if (pContext->pWorkerContext->pConfig->m_Options.bDeleteOnErrors == true)
                 ::DeleteFile(szOutputFile);
 
-            return bSuccess;
+            return false;
         }
     }
 
     if (pContext->pWorkerContext->bRunning == false)
-        return bSuccess;
+        return false;
 
     if (nProcessingMode == Mode::Transcode)
     {
-        // input filename is decoded output filename
         szInputFile = szOutputFile;
-        szOrgInputFile = szOutputFile;
-
-        // restore output filename
         szOutputFile = szOrgOutputFile;
     }
 
-    // encode
     if ((nProcessingMode == Mode::Encode) || (nProcessingMode == Mode::Transcode))
     {
-        // input file is stdin
-        if (encoderFormat.bPipeInput == true)
-            szInputFile = _T("-");
-
-        // output file is stdout
-        if (encoderFormat.bPipeOutput == true)
-            szOutputFile = _T("-");
-
-        // build full command line for encoder (ENCODER-EXE + OPTIONS + INFILE + OUTFILE)
-        // this is basic model, some of encoder may have different command-line structure
-        CString szExecute;
-        szExecute = encoderFormat.szTemplate;
-        szExecute.Replace(_T("$EXE"), _T("\"$EXE\""));
-        szExecute.Replace(_T("$EXE"), szEncoderExePath);
-        szExecute.Replace(_T("$OPTIONS"), szEncoderOptions);
-        szExecute.Replace(_T("$INFILE"), _T("\"$INFILE\""));
-        szExecute.Replace(_T("$INFILE"), szInputFile);
-        szExecute.Replace(_T("$OUTFILE"), _T("\"$OUTFILE\""));
-        szExecute.Replace(_T("$OUTFILE"), szOutputFile);
-
-        int nTool = pContext->pWorkerContext->pConfig->m_Formats.GetFormatById(encoderFormat.szId);
-        if (nTool == -1)
-        {
-            pContext->pWorkerContext->Status(pContext->item->nId, _T("--:--"), _T("Error: failed to get encoder by format id."));
-            return bSuccess;
-        }
-
-        lstrcpy(szCommandLine, szExecute.GetBuffer(szExecute.GetLength()));
-
         pContext->pWorkerContext->Status(pContext->item->nId, _T("--:--"), _T("Encoding..."));
 
-        CFileContext context;
-        context.pWorkerContext = pContext->pWorkerContext;
-        context.szInputFile = szOrgInputFile;
-        context.szOutputFile = szOrgOutputFile;
-        context.szCommandLine = szCommandLine;
-        context.nIndex = pContext->item->nId;
-        context.szFunction = pContext->pWorkerContext->pConfig->m_Formats.GetData(nTool).szFunction;
-        context.bUseReadPipes = encoderFormat.bPipeInput;
-        context.bUseWritePipes = encoderFormat.bPipeOutput;
+        bool bResult = ConvertItem(
+            pContext->pWorkerContext,
+            encoderFormat,
+            pContext->item->nPreset,
+            pContext->item->nId,
+            szInputFile,
+            szOutputFile);
 
-        bool bResult = false;
-        try
-        {
-            bResult = ::ConvertFile(&context);
-        }
-        catch (...)
-        {
-            pContext->pWorkerContext->Status(pContext->item->nId, _T("--:--"), _T("Error: exception thrown while encoding."));
-            pContext->pWorkerContext->Callback(pContext->item->nId, -1, true, true);
-        }
+        if (nProcessingMode == Mode::Transcode)
+            ::DeleteFile(szInputFile);
 
         if (bResult == true)
         {
-            bSuccess = true;
             if (pContext->pWorkerContext->pConfig->m_Options.bDeleteSourceFiles == true)
                 ::DeleteFile(szOrgInputFile);
+
+            return true;
         }
         else
         {
             if (pContext->pWorkerContext->pConfig->m_Options.bDeleteOnErrors == true)
                 ::DeleteFile(szOutputFile);
-        }
 
-        if (nProcessingMode == Mode::Transcode)
-            ::DeleteFile(szOrgInputFile);
+            return false;
+        }
     }
 
-    return bSuccess;
+    return false;
 }

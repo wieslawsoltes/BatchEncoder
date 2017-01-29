@@ -2078,7 +2078,7 @@ void CBatchEncoderWorkerContext::Init()
     pDlg->m_Progress.SetPos(0);
 }
 
-void CBatchEncoderWorkerContext::Next(int nIndex)
+void CBatchEncoderWorkerContext::Next(int nItemId)
 {
     this->nProcessedFiles++;
     this->nErrors = (this->nProcessedFiles - 1) - this->nDoneWithoutError;
@@ -2095,7 +2095,7 @@ void CBatchEncoderWorkerContext::Next(int nIndex)
         pDlg->m_StatusBar.SetText(szText, 1, 0);
 
         pDlg->m_Progress.SetPos(0);
-        pDlg->m_LstInputItems.EnsureVisible(nIndex, FALSE);
+        pDlg->m_LstInputItems.EnsureVisible(nItemId, FALSE);
     }
 }
 
@@ -2112,7 +2112,7 @@ void CBatchEncoderWorkerContext::Done()
     pDlg->FinishConvert();
 }
 
-bool CBatchEncoderWorkerContext::Callback(int nIndex, int nProgress, bool bFinished, bool bError)
+bool CBatchEncoderWorkerContext::Callback(int nItemId, int nProgress, bool bFinished, bool bError)
 {
     if (bError == true)
     {
@@ -2127,16 +2127,17 @@ bool CBatchEncoderWorkerContext::Callback(int nIndex, int nProgress, bool bFinis
 
     if (bFinished == false)
     {
+        CString szProgress;
+        szProgress.Format(_T("%d%%\0"), nProgress);
+        pDlg->m_LstInputItems.SetItemText(nItemId, ITEM_COLUMN_STATUS, szProgress); // Status
+
         if (this->nThreadCount == 1)
         {
             pDlg->m_Progress.SetPos(nProgress);
         }
         else if (this->nThreadCount > 1)
         {
-            CString szProgress;
-            szProgress.Format(_T("%d%%\0"), nProgress);
-            pDlg->m_LstInputItems.SetItemText(nIndex, ITEM_COLUMN_STATUS, szProgress); // Status
-            pDlg->pWorkerContext->nProgess[nIndex] = nProgress;
+            pDlg->pWorkerContext->nProgess[nItemId] = nProgress;
 
             static volatile bool bSafeCheck = false;
             if (bSafeCheck == false)
@@ -2164,8 +2165,8 @@ bool CBatchEncoderWorkerContext::Callback(int nIndex, int nProgress, bool bFinis
     return this->bRunning;
 }
 
-void CBatchEncoderWorkerContext::Status(int nIndex, CString szTime, CString szStatus)
+void CBatchEncoderWorkerContext::Status(int nItemId, CString szTime, CString szStatus)
 {
-    pDlg->m_LstInputItems.SetItemText(nIndex, ITEM_COLUMN_TIME, szTime); // Time
-    pDlg->m_LstInputItems.SetItemText(nIndex, ITEM_COLUMN_STATUS, szStatus); // Status
+    pDlg->m_LstInputItems.SetItemText(nItemId, ITEM_COLUMN_TIME, szTime); // Time
+    pDlg->m_LstInputItems.SetItemText(nItemId, ITEM_COLUMN_STATUS, szStatus); // Status
 };

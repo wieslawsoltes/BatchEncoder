@@ -140,8 +140,8 @@ public:
     }
 public:
     void Init();
-    void Next(int nIndex);
+    void Next(int nItemId);
     void Done();
-    bool Callback(int nIndex, int nProgress, bool bFinished, bool bError = false);
-    void Status(int nIndex, CString szTime, CString szStatus);
+    bool Callback(int nItemId, int nProgress, bool bFinished, bool bError = false);
+    void Status(int nItemId, CString szTime, CString szStatus);
 };

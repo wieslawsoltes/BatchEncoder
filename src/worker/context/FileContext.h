@@ -10,7 +10,7 @@ public:
     CString szInputFile;
     CString szOutputFile;
     TCHAR *szCommandLine;
-    int nIndex;
+    int nItemId;
     CString szFunction;
     bool bUseReadPipes;
     bool bUseWritePipes;
