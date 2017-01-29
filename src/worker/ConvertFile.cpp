@@ -278,7 +278,8 @@ bool ConvertFile(CFileContext* pContext)
         {
             ::WaitForSingleObject(hReadThread, INFINITE);
 
-            ::CloseHandle(wInPipe);
+            // NOTE: Handle is closed in ReadThread.
+            //::CloseHandle(wInPipe);
 
             // check for result from read thread
             if ((rd.bError == false) && (rd.bFinished == true))
@@ -351,7 +352,8 @@ bool ConvertFile(CFileContext* pContext)
     {
         ::WaitForSingleObject(hReadThread, INFINITE);
 
-        ::CloseHandle(wInPipe);
+        // NOTE: Handle is closed in ReadThread.
+        //::CloseHandle(wInPipe);
 
         // check for result from read thread
         if ((rd.bError == false) && (rd.bFinished == true) && (bWriteSuccess == true))

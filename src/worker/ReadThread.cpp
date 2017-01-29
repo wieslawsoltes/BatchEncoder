@@ -80,6 +80,9 @@ DWORD WINAPI ReadThread(LPVOID lpParam)
     // clean up memory
     ::CloseHandle(hFile);
 
+    // close write pipe to allow write thread terminate reading
+    ::CloseHandle(pContext->hPipe);
+
     // check if all data was processed
     if (nTotalBytesRead != nFileSize)
     {
