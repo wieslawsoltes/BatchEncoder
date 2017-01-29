@@ -11,24 +11,37 @@
 
 bool ConvertFile(CFileContext* pContext)
 {
-    HANDLE hReadPipeStderr = INVALID_HANDLE_VALUE;
-    HANDLE hWritePipeStderr = INVALID_HANDLE_VALUE;
-    HANDLE hReadPipeStdin = INVALID_HANDLE_VALUE;
-    HANDLE hWritePipeStdin = INVALID_HANDLE_VALUE;
-    HANDLE hReadPipeStdout = INVALID_HANDLE_VALUE;
-    HANDLE hWritePipeStdout = INVALID_HANDLE_VALUE;
+    CProcessContext processContext;
+    CPipeContext rd;
+    CPipeContext wd;
+    DWORD dwReadThreadID = 0L;
+    DWORD dwWriteThreadID = 0L;
+    HANDLE hReadThread = NULL;
+    HANDLE hWriteThread = NULL;
+    HANDLE hProc = INVALID_HANDLE_VALUE;
     BOOL bResult = FALSE;
+    bool bWriteThreadResult = false;
+    int nProgress = 0;
+    int nPreviousProgress = 0;
+    CTimeCount timer;
 
-    // pipes security attributes
     SECURITY_ATTRIBUTES secattr;
     ZeroMemory(&secattr, sizeof(secattr));
     secattr.nLength = sizeof(secattr);
     secattr.bInheritHandle = TRUE;
 
+    PROCESS_INFORMATION pInfo;
+    ZeroMemory(&pInfo, sizeof(pInfo));
+
+    STARTUPINFO sInfo;
+    ZeroMemory(&sInfo, sizeof(sInfo));
+    sInfo.cb = sizeof(sInfo);
+    sInfo.dwFlags = STARTF_USESTDHANDLES /* | STARTF_USESHOWWINDOW */;
+
     if ((pContext->bUseReadPipes == false) && (pContext->bUseWritePipes == false))
     {
         // create pipes for stderr
-        bResult = ::CreatePipe(&hReadPipeStderr, &hWritePipeStderr, &secattr, 0);
+        bResult = ::CreatePipe(&processContext.hReadPipeStderr, &processContext.hWritePipeStderr, &secattr, 0);
         if (bResult == FALSE)
         {
             pContext->pWorkerContext->Status(pContext->nItemId, _T("--:--"), _T("Error: can not create pipes for stderr."));
@@ -38,16 +51,16 @@ bool ConvertFile(CFileContext* pContext)
 
         // duplicate stderr read pipe handle to prevent child process from closing the pipe
         bResult = ::DuplicateHandle(::GetCurrentProcess(),
-            hReadPipeStderr,
+            processContext.hReadPipeStderr,
             ::GetCurrentProcess(),
-            &hReadPipeStderr,
+            &processContext.hReadPipeStderr,
             0,
             TRUE,
             DUPLICATE_CLOSE_SOURCE | DUPLICATE_SAME_ACCESS);
         if (bResult == FALSE)
         {
-            ::CloseHandle(hReadPipeStderr);
-            ::CloseHandle(hWritePipeStderr);
+            ::CloseHandle(processContext.hReadPipeStderr);
+            ::CloseHandle(processContext.hWritePipeStderr);
 
             pContext->pWorkerContext->Status(pContext->nItemId, _T("--:--"), _T("Error: can not duplicate stderr pipe to prevent child process from closing the pipe."));
             pContext->pWorkerContext->Callback(pContext->nItemId, -1, true, true);
@@ -55,10 +68,10 @@ bool ConvertFile(CFileContext* pContext)
         }
     }
 
-    // create pipes for stdin
     if (pContext->bUseReadPipes == true)
     {
-        bResult = ::CreatePipe(&hReadPipeStdin, &hWritePipeStdin, &secattr, 0);
+        // create pipes for stdin
+        bResult = ::CreatePipe(&processContext.hReadPipeStdin, &processContext.hWritePipeStdin, &secattr, 0);
         if (bResult == FALSE)
         {
             pContext->pWorkerContext->Status(pContext->nItemId, _T("--:--"), _T("Error: can not create pipes for stdin."));
@@ -67,11 +80,11 @@ bool ConvertFile(CFileContext* pContext)
         }
 
         // set stdin write pipe inherit flag
-        bResult = ::SetHandleInformation(hWritePipeStdin, HANDLE_FLAG_INHERIT, 0);
+        bResult = ::SetHandleInformation(processContext.hWritePipeStdin, HANDLE_FLAG_INHERIT, 0);
         if (bResult == FALSE)
         {
-            ::CloseHandle(hReadPipeStdin);
-            ::CloseHandle(hWritePipeStdin);
+            ::CloseHandle(processContext.hReadPipeStdin);
+            ::CloseHandle(processContext.hWritePipeStdin);
 
             pContext->pWorkerContext->Status(pContext->nItemId, _T("--:--"), _T("Error: can not set stdin pipe inherit flag."));
             pContext->pWorkerContext->Callback(pContext->nItemId, -1, true, true);
@@ -82,13 +95,13 @@ bool ConvertFile(CFileContext* pContext)
     if (pContext->bUseWritePipes == true)
     {
         // create pipes for stdout
-        bResult = ::CreatePipe(&hReadPipeStdout, &hWritePipeStdout, &secattr, 0);
+        bResult = ::CreatePipe(&processContext.hReadPipeStdout, &processContext.hWritePipeStdout, &secattr, 0);
         if (bResult == FALSE)
         {
             if (pContext->bUseReadPipes == true)
             {
-                ::CloseHandle(hReadPipeStdin);
-                ::CloseHandle(hWritePipeStdin);
+                ::CloseHandle(processContext.hReadPipeStdin);
+                ::CloseHandle(processContext.hWritePipeStdin);
             }
 
             pContext->pWorkerContext->Status(pContext->nItemId, _T("--:--"), _T("Error: can not create pipes for stdout."));
@@ -97,17 +110,17 @@ bool ConvertFile(CFileContext* pContext)
         }
 
         // set stdout read pipe inherit flag
-        bResult = ::SetHandleInformation(hReadPipeStdout, HANDLE_FLAG_INHERIT, 0);
+        bResult = ::SetHandleInformation(processContext.hReadPipeStdout, HANDLE_FLAG_INHERIT, 0);
         if (bResult == FALSE)
         {
             if (pContext->bUseReadPipes == true)
             {
-                ::CloseHandle(hReadPipeStdin);
-                ::CloseHandle(hWritePipeStdin);
+                ::CloseHandle(processContext.hReadPipeStdin);
+                ::CloseHandle(processContext.hWritePipeStdin);
             }
 
-            ::CloseHandle(hReadPipeStdout);
-            ::CloseHandle(hWritePipeStdout);
+            ::CloseHandle(processContext.hReadPipeStdout);
+            ::CloseHandle(processContext.hWritePipeStdout);
 
             pContext->pWorkerContext->Status(pContext->nItemId, _T("--:--"), _T("Error: can not set stdout pipe inherit flag."));
             pContext->pWorkerContext->Callback(pContext->nItemId, -1, true, true);
@@ -115,49 +128,32 @@ bool ConvertFile(CFileContext* pContext)
         }
     }
 
-    int nProgress = 0;
-    int nPreviousProgress = 0;
-    CTimeCount timeCount;
-
-    PROCESS_INFORMATION pInfo;
-    ZeroMemory(&pInfo, sizeof(pInfo));
-
-    STARTUPINFO sInfo;
-    ZeroMemory(&sInfo, sizeof(sInfo));
-
-    sInfo.cb = sizeof(sInfo);
-    sInfo.dwFlags = STARTF_USESTDHANDLES /*| STARTF_USESHOWWINDOW*/;
-
-    // TODO: 
-    // when read pipes are disabled and write pipes enabled
-    // try to get progress from console using stderr pipe
-
     if ((pContext->bUseReadPipes == false) && (pContext->bUseWritePipes == false))
     {
         sInfo.hStdInput = NULL;
-        sInfo.hStdOutput = hWritePipeStderr;
-        sInfo.hStdError = hWritePipeStderr;
+        sInfo.hStdOutput = processContext.hWritePipeStderr;
+        sInfo.hStdError = processContext.hWritePipeStderr;
     }
     else if ((pContext->bUseReadPipes == true) && (pContext->bUseWritePipes == false))
     {
-        sInfo.hStdInput = hReadPipeStdin;
+        sInfo.hStdInput = processContext.hReadPipeStdin;
         sInfo.hStdOutput = NULL;
         sInfo.hStdError = NULL;
     }
     else if ((pContext->bUseReadPipes == false) && (pContext->bUseWritePipes == true))
     {
         sInfo.hStdInput = NULL;
-        sInfo.hStdOutput = hWritePipeStdout;
+        sInfo.hStdOutput = processContext.hWritePipeStdout;
         sInfo.hStdError = NULL;
     }
     else if ((pContext->bUseReadPipes == true) && (pContext->bUseWritePipes == true))
     {
-        sInfo.hStdInput = hReadPipeStdin;
-        sInfo.hStdOutput = hWritePipeStdout;
+        sInfo.hStdInput = processContext.hReadPipeStdin;
+        sInfo.hStdOutput = processContext.hWritePipeStdout;
         sInfo.hStdError = NULL;
     }
 
-    timeCount.Start();
+    timer.Start();
 
     bResult = ::CreateProcess(NULL,
         pContext->szCommandLine,
@@ -171,24 +167,24 @@ bool ConvertFile(CFileContext* pContext)
         &pInfo);
     if (bResult == FALSE)
     {
-        timeCount.Stop();
+        timer.Stop();
 
         if ((pContext->bUseReadPipes == false) && (pContext->bUseWritePipes == false))
         {
-            ::CloseHandle(hReadPipeStderr);
-            ::CloseHandle(hWritePipeStderr);
+            ::CloseHandle(processContext.hReadPipeStderr);
+            ::CloseHandle(processContext.hWritePipeStderr);
         }
 
         if (pContext->bUseReadPipes == true)
         {
-            ::CloseHandle(hReadPipeStdin);
-            ::CloseHandle(hWritePipeStdin);
+            ::CloseHandle(processContext.hReadPipeStdin);
+            ::CloseHandle(processContext.hWritePipeStdin);
         }
 
         if (pContext->bUseWritePipes == true)
         {
-            ::CloseHandle(hReadPipeStdout);
-            ::CloseHandle(hWritePipeStdout);
+            ::CloseHandle(processContext.hReadPipeStdout);
+            ::CloseHandle(processContext.hWritePipeStdout);
         }
 
         CString szStatus;
@@ -202,22 +198,14 @@ bool ConvertFile(CFileContext* pContext)
     // close unused pipe handles
     if ((pContext->bUseReadPipes == false) && (pContext->bUseWritePipes == false))
     {
-        ::CloseHandle(hWritePipeStderr);
+        ::CloseHandle(processContext.hWritePipeStderr);
     }
 
     if (pContext->bUseReadPipes == true)
-        ::CloseHandle(hReadPipeStdin);
+        ::CloseHandle(processContext.hReadPipeStdin);
 
     if (pContext->bUseWritePipes == true)
-        ::CloseHandle(hWritePipeStdout);
-
-    bool bWriteSuccess = false;
-    CPipeContext rd;
-    CPipeContext wd;
-    DWORD dwReadThreadID = 0L;
-    DWORD dwWriteThreadID = 0L;
-    HANDLE hReadThread = NULL;
-    HANDLE hWriteThread = NULL;
+        ::CloseHandle(processContext.hWritePipeStdout);
 
     // get progress from console output
     if ((pContext->bUseReadPipes == false) && (pContext->bUseWritePipes == false))
@@ -275,7 +263,7 @@ bool ConvertFile(CFileContext* pContext)
             // DWORD dwAvailable;
             // ::PeekNamedPipe(rOutErrPipe, NULL, 0, NULL, &dwAvailable, NULL);
 
-            bRes = ::ReadFile(hReadPipeStderr, szReadBuff, 100, &dwReadBytes, 0);
+            bRes = ::ReadFile(processContext.hReadPipeStderr, szReadBuff, 100, &dwReadBytes, 0);
             if (bRes == FALSE || dwReadBytes == 0)
                 break;
 
@@ -367,7 +355,7 @@ bool ConvertFile(CFileContext* pContext)
         if (hDll != NULL)
             ::FreeLibrary(hDll);
 
-        ::CloseHandle(hReadPipeStderr);
+        ::CloseHandle(processContext.hReadPipeStderr);
     }
 
     // create read thread
@@ -381,16 +369,16 @@ bool ConvertFile(CFileContext* pContext)
         rd.bFinished = false;
         rd.pWorkerContext = pContext->pWorkerContext;
         rd.szFileName = pContext->szInputFile;
-        rd.hPipe = hWritePipeStdin;
+        rd.hPipe = processContext.hWritePipeStdin;
         rd.nIndex = pContext->nItemId;
 
         dwReadThreadID = 0L;
         hReadThread = ::CreateThread(NULL, 0, ReadThread, (LPVOID)&rd, /* CREATE_SUSPENDED */ 0, &dwReadThreadID);
         if (hReadThread == NULL)
         {
-            timeCount.Stop();
+            timer.Stop();
 
-            ::CloseHandle(hWritePipeStdin);
+            ::CloseHandle(processContext.hWritePipeStdin);
 
             pContext->pWorkerContext->Status(pContext->nItemId, _T("--:--"), _T("Error: can not create read thread."));
             pContext->pWorkerContext->Callback(pContext->nItemId, -1, true, true);
@@ -433,16 +421,16 @@ bool ConvertFile(CFileContext* pContext)
         wd.bFinished = false;
         wd.pWorkerContext = pContext->pWorkerContext;
         wd.szFileName = pContext->szOutputFile;
-        wd.hPipe = hReadPipeStdout;
+        wd.hPipe = processContext.hReadPipeStdout;
         wd.nIndex = pContext->nItemId;
 
         dwWriteThreadID = 0L;
         hWriteThread = ::CreateThread(NULL, 0, WriteThread, (LPVOID)&wd, /* CREATE_SUSPENDED */ 0, &dwWriteThreadID);
         if (hWriteThread == NULL)
         {
-            timeCount.Stop();
+            timer.Stop();
 
-            ::CloseHandle(hReadPipeStdout);
+            ::CloseHandle(processContext.hReadPipeStdout);
 
             pContext->pWorkerContext->Status(pContext->nItemId, _T("--:--"), _T("Error: can not create write thread."));
             pContext->pWorkerContext->Callback(pContext->nItemId, -1, true, true);
@@ -455,18 +443,18 @@ bool ConvertFile(CFileContext* pContext)
         // wait for write thread to finish
         ::WaitForSingleObject(hWriteThread, INFINITE);
 
-        ::CloseHandle(hReadPipeStdout);
+        ::CloseHandle(processContext.hReadPipeStdout);
 
         // check for result from read thread
         if ((wd.bError == false) && (wd.bFinished == true))
         {
-            bWriteSuccess = true;
+            bWriteThreadResult = true;
             if (pContext->bUseReadPipes == false)
                 nProgress = 100;
         }
         else
         {
-            bWriteSuccess = false;
+            bWriteThreadResult = false;
             if (pContext->bUseReadPipes == false)
                 nProgress = -1;
         }
@@ -484,7 +472,7 @@ bool ConvertFile(CFileContext* pContext)
         //::CloseHandle(wInPipe);
 
         // check for result from read thread
-        if ((rd.bError == false) && (rd.bFinished == true) && (bWriteSuccess == true))
+        if ((rd.bError == false) && (rd.bFinished == true) && (bWriteThreadResult == true))
             nProgress = 100;
         else
             nProgress = -1;
@@ -493,10 +481,9 @@ bool ConvertFile(CFileContext* pContext)
         ::CloseHandle(hReadThread);
     }
 
-    timeCount.Stop();
+    timer.Stop();
 
     // terminate console process if there was an error
-    HANDLE hProc;
     hProc = ::OpenProcess(PROCESS_ALL_ACCESS, TRUE, pInfo.dwProcessId); // PROCESS_TERMINATE
     if (hProc != NULL)
     {
@@ -552,7 +539,7 @@ bool ConvertFile(CFileContext* pContext)
     }
     else
     {
-        pContext->pWorkerContext->Status(pContext->nItemId, ::FormatTime(timeCount.ElapsedTime(), 1), _T("Done"));
+        pContext->pWorkerContext->Status(pContext->nItemId, ::FormatTime(timer.ElapsedTime(), 1), _T("Done"));
         pContext->pWorkerContext->Callback(pContext->nItemId, 100, true, false);
         return true;
     }

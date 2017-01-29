@@ -224,6 +224,9 @@
     <ClInclude Include="worker\context\PipeContext.h">
       <Filter>Header Files\Worker\Context</Filter>
     </ClInclude>
+    <ClInclude Include="worker\context\ProcessContext.h">
+      <Filter>Header Files\Worker\Context</Filter>
+    </ClInclude>
     <ClInclude Include="worker\context\FileContext.h">
       <Filter>Header Files\Worker\Context</Filter>
     </ClInclude>

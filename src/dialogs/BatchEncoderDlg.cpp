@@ -2080,7 +2080,7 @@ void CBatchEncoderDlg::FinishConvert()
 
 void CBatchEncoderWorkerContext::Init()
 {
-    this->timeCount.Start();
+    this->timer.Start();
 
     pDlg->m_Progress.SetPos(0);
 }
@@ -2108,7 +2108,7 @@ void CBatchEncoderWorkerContext::Next(int nItemId)
 
 void CBatchEncoderWorkerContext::Done()
 {
-    this->timeCount.Stop();
+    this->timer.Stop();
     this->nErrors = this->nProcessedFiles - this->nDoneWithoutError;
 
     CString szText;
@@ -2118,7 +2118,7 @@ void CBatchEncoderWorkerContext::Done()
         this->nDoneWithoutError,
         this->nErrors,
         ((this->nErrors == 0) || (this->nErrors > 1)) ? _T("Errors") : _T("Error"),
-        ::FormatTime(this->timeCount.ElapsedTime(), 3));
+        ::FormatTime(this->timer.ElapsedTime(), 3));
     pDlg->m_StatusBar.SetText(szText, 1, 0);
 
     pDlg->FinishConvert();

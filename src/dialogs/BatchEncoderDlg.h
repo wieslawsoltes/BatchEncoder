@@ -132,7 +132,7 @@ public:
 
 class CBatchEncoderWorkerContext : public CWorkerContext
 {
-    CTimeCount timeCount;
+    CTimeCount timer;
     CBatchEncoderDlg *pDlg;
 public:
     CBatchEncoderWorkerContext(CConfiguration* pConfig, CBatchEncoderDlg* pDlg) : CWorkerContext(pConfig)

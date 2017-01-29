@@ -8,6 +8,7 @@
 #include "context\PipeContext.h"
 #include "context\FileContext.h"
 #include "context\ItemContext.h"
+#include "context\ProcessContext.h"
 
 DWORD WINAPI ReadThread(LPVOID lpParam);
 
