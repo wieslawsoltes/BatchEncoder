@@ -11,46 +11,40 @@
 
 bool ConvertFile(CFileContext* pContext)
 {
-    // NOTE:
-    // if bUseReadPipes = true use pipes to read source file and send the data to console stdin
-    // if bUseReadPipes = false create full command-line and read from stdout/stderr conversion progress
-
-    // set the correct security attributes
-    SECURITY_ATTRIBUTES secattr;
-    ZeroMemory(&secattr, sizeof(secattr));
-    secattr.nLength = sizeof(secattr);
-    secattr.bInheritHandle = TRUE;
-
     HANDLE hReadPipeStderr = INVALID_HANDLE_VALUE;
     HANDLE hWritePipeStderr = INVALID_HANDLE_VALUE;
     HANDLE hReadPipeStdin = INVALID_HANDLE_VALUE;
     HANDLE hWritePipeStdin = INVALID_HANDLE_VALUE;
     HANDLE hReadPipeStdout = INVALID_HANDLE_VALUE;
     HANDLE hWritePipeStdout = INVALID_HANDLE_VALUE;
+    BOOL bResult = FALSE;
 
-    // create pipes for stderr
+    // pipes security attributes
+    SECURITY_ATTRIBUTES secattr;
+    ZeroMemory(&secattr, sizeof(secattr));
+    secattr.nLength = sizeof(secattr);
+    secattr.bInheritHandle = TRUE;
+
     if ((pContext->bUseReadPipes == false) && (pContext->bUseWritePipes == false))
     {
-        BOOL bRet = ::CreatePipe(&hReadPipeStderr, &hWritePipeStderr, &secattr, 0);
-        if (bRet == FALSE)
+        // create pipes for stderr
+        bResult = ::CreatePipe(&hReadPipeStderr, &hWritePipeStderr, &secattr, 0);
+        if (bResult == FALSE)
         {
             pContext->pWorkerContext->Status(pContext->nItemId, _T("--:--"), _T("Error: can not create pipes for stderr."));
             pContext->pWorkerContext->Callback(pContext->nItemId, -1, true, true);
             return false;
         }
-    }
 
-    // duplicate stderr read pipe handle to prevent child process from closing the pipe
-    if ((pContext->bUseReadPipes == false) && (pContext->bUseWritePipes == false))
-    {
-        BOOL bRet = ::DuplicateHandle(::GetCurrentProcess(),
+        // duplicate stderr read pipe handle to prevent child process from closing the pipe
+        bResult = ::DuplicateHandle(::GetCurrentProcess(),
             hReadPipeStderr,
             ::GetCurrentProcess(),
             &hReadPipeStderr,
             0,
             TRUE,
             DUPLICATE_CLOSE_SOURCE | DUPLICATE_SAME_ACCESS);
-        if (bRet == FALSE)
+        if (bResult == FALSE)
         {
             ::CloseHandle(hReadPipeStderr);
             ::CloseHandle(hWritePipeStderr);
@@ -64,21 +58,32 @@ bool ConvertFile(CFileContext* pContext)
     // create pipes for stdin
     if (pContext->bUseReadPipes == true)
     {
-        BOOL bRet = ::CreatePipe(&hReadPipeStdin, &hWritePipeStdin, &secattr, 0);
-        if (bRet == FALSE)
+        bResult = ::CreatePipe(&hReadPipeStdin, &hWritePipeStdin, &secattr, 0);
+        if (bResult == FALSE)
         {
             pContext->pWorkerContext->Status(pContext->nItemId, _T("--:--"), _T("Error: can not create pipes for stdin."));
             pContext->pWorkerContext->Callback(pContext->nItemId, -1, true, true);
             return false;
         }
+
+        // set stdin write pipe inherit flag
+        bResult = ::SetHandleInformation(hWritePipeStdin, HANDLE_FLAG_INHERIT, 0);
+        if (bResult == FALSE)
+        {
+            ::CloseHandle(hReadPipeStdin);
+            ::CloseHandle(hWritePipeStdin);
+
+            pContext->pWorkerContext->Status(pContext->nItemId, _T("--:--"), _T("Error: can not set stdin pipe inherit flag."));
+            pContext->pWorkerContext->Callback(pContext->nItemId, -1, true, true);
+            return false;
+        }
     }
 
-    // create pipes for stdout
     if (pContext->bUseWritePipes == true)
     {
-        ;
-        BOOL bRet = ::CreatePipe(&hReadPipeStdout, &hWritePipeStdout, &secattr, 0);
-        if (bRet == FALSE)
+        // create pipes for stdout
+        bResult = ::CreatePipe(&hReadPipeStdout, &hWritePipeStdout, &secattr, 0);
+        if (bResult == FALSE)
         {
             if (pContext->bUseReadPipes == true)
             {
@@ -90,28 +95,10 @@ bool ConvertFile(CFileContext* pContext)
             pContext->pWorkerContext->Callback(pContext->nItemId, -1, true, true);
             return false;
         }
-    }
 
-    // set stdin write pipe inherit flag
-    if (pContext->bUseReadPipes == true)
-    {
-        BOOL bRet = ::SetHandleInformation(hWritePipeStdin, HANDLE_FLAG_INHERIT, 0);
-        if (bRet == FALSE)
-        {
-            ::CloseHandle(hReadPipeStdin);
-            ::CloseHandle(hWritePipeStdin);
-
-            pContext->pWorkerContext->Status(pContext->nItemId, _T("--:--"), _T("Error: can not set stdin pipe inherit flag."));
-            pContext->pWorkerContext->Callback(pContext->nItemId, -1, true, true);
-            return false;
-        }
-    }
-
-    // set stdout read pipe inherit flag
-    if (pContext->bUseWritePipes == true)
-    {
-        BOOL bRet = ::SetHandleInformation(hReadPipeStdout, HANDLE_FLAG_INHERIT, 0);
-        if (bRet == FALSE)
+        // set stdout read pipe inherit flag
+        bResult = ::SetHandleInformation(hReadPipeStdout, HANDLE_FLAG_INHERIT, 0);
+        if (bResult == FALSE)
         {
             if (pContext->bUseReadPipes == true)
             {
@@ -172,7 +159,7 @@ bool ConvertFile(CFileContext* pContext)
 
     timeCount.Start();
 
-    BOOL bRet = ::CreateProcess(NULL,
+    bResult = ::CreateProcess(NULL,
         pContext->szCommandLine,
         NULL,
         NULL,
@@ -182,7 +169,7 @@ bool ConvertFile(CFileContext* pContext)
         NULL,
         &sInfo,
         &pInfo);
-    if (bRet == FALSE)
+    if (bResult == FALSE)
     {
         timeCount.Stop();
 
@@ -212,7 +199,7 @@ bool ConvertFile(CFileContext* pContext)
         return false;
     }
 
-    // close unused pipes handles
+    // close unused pipe handles
     if ((pContext->bUseReadPipes == false) && (pContext->bUseWritePipes == false))
     {
         ::CloseHandle(hWritePipeStderr);
@@ -232,13 +219,11 @@ bool ConvertFile(CFileContext* pContext)
     HANDLE hReadThread = NULL;
     HANDLE hWriteThread = NULL;
 
+    // get progress from console output
     if ((pContext->bUseReadPipes == false) && (pContext->bUseWritePipes == false))
     {
         // ::ResumeThread(pInfo.hThread);
 
-        // NOTE: 
-        // do we need to check console output code-page?
-        // all tools should be using system code-page or they are using UNICODE output?
         const int nBuffSize = 4096;
         char szReadBuff[nBuffSize];
         char szLineBuff[nBuffSize];
@@ -385,6 +370,7 @@ bool ConvertFile(CFileContext* pContext)
         ::CloseHandle(hReadPipeStderr);
     }
 
+    // create read thread
     if (pContext->bUseReadPipes == true)
     {
         // NOTE: get pipe buffer size
@@ -414,6 +400,7 @@ bool ConvertFile(CFileContext* pContext)
         // ::ResumeThread(pInfo.hThread);
         // ::ResumeThread(hReadThread);
 
+        // wait for read thread to finish
         if (pContext->bUseWritePipes == false)
         {
             ::WaitForSingleObject(hReadThread, INFINITE);
@@ -432,6 +419,7 @@ bool ConvertFile(CFileContext* pContext)
         }
     }
 
+    // create write thread
     if (pContext->bUseWritePipes == true)
     {
         // NOTE:
@@ -464,6 +452,7 @@ bool ConvertFile(CFileContext* pContext)
         // ::ResumeThread(pInfo.hThread);
         // ::ResumeThread(hWriteThread);
 
+        // wait for write thread to finish
         ::WaitForSingleObject(hWriteThread, INFINITE);
 
         ::CloseHandle(hReadPipeStdout);
@@ -486,6 +475,7 @@ bool ConvertFile(CFileContext* pContext)
         ::CloseHandle(hWriteThread);
     }
 
+    // wait for read thread to finish after write thread finished
     if ((pContext->bUseReadPipes == true) && (pContext->bUseWritePipes == true))
     {
         ::WaitForSingleObject(hReadThread, INFINITE);
