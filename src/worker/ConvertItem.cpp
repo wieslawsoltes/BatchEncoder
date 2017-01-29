@@ -179,9 +179,6 @@ bool ConvertItem(CItemContext* pContext)
             if (pContext->pWorkerContext->pConfig->m_Options.bDeleteOnErrors == true)
                 ::DeleteFile(szOutputFile);
 
-            if (pContext->pWorkerContext->pConfig->m_Options.bStopOnErrors == true)
-                return bSuccess;
-
             return bSuccess;
         }
     }
