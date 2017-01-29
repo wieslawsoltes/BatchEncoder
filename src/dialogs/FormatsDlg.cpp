@@ -184,215 +184,6 @@ HCURSOR CFormatsDlg::OnQueryDragIcon()
     return static_cast<HCURSOR>(m_hIcon);
 }
 
-void CFormatsDlg::LoadWindowSettings()
-{
-    // set window rectangle and position
-    if (szFormatsDialogResize.Compare(_T("")) != 0)
-        this->SetWindowRectStr(szFormatsDialogResize);
-
-    // load columns width for FormatsList
-    if (szFormatsListColumns.Compare(_T("")) != 0)
-    {
-        int nColWidth[2];
-        if (_stscanf(szFormatsListColumns, _T("%d %d"),
-            &nColWidth[0],
-            &nColWidth[1]) == 2)
-        {
-            for (int i = 0; i < 2; i++)
-                m_LstFormats.SetColumnWidth(i, nColWidth[i]);
-        }
-    }
-}
-
-void CFormatsDlg::SaveWindowSettings()
-{
-    // save window rectangle and position
-    this->szFormatsDialogResize = this->GetWindowRectStr();
-
-    // save columns width from FormatsList
-    int nColWidth[11];
-    for (int i = 0; i < 2; i++)
-        nColWidth[i] = m_LstFormats.GetColumnWidth(i);
-    szFormatsListColumns.Format(_T("%d %d"),
-        nColWidth[0],
-        nColWidth[1]);
-}
-
-void CFormatsDlg::AddToList(CFormat &format, int nItem)
-{
-    LVITEM lvi;
-
-    ZeroMemory(&lvi, sizeof(LVITEM));
-
-    lvi.mask = LVIF_TEXT | LVIF_STATE;
-    lvi.state = 0;
-    lvi.stateMask = 0;
-    lvi.iItem = nItem;
-
-    lvi.iSubItem = FORMAT_COLUMN_NAME;
-    lvi.pszText = (LPTSTR)(LPCTSTR)(format.szName);
-    m_LstFormats.InsertItem(&lvi);
-
-    lvi.iSubItem = FORMAT_COLUMN_TEMPLATE;
-    lvi.pszText = (LPTSTR)(LPCTSTR)(format.szTemplate);
-    m_LstFormats.SetItemText(lvi.iItem, FORMAT_COLUMN_TEMPLATE, lvi.pszText);
-}
-
-void CFormatsDlg::InsertFormatsToListCtrl()
-{
-    int nFormats = m_Formats.GetSize();
-    for (int i = 0; i < nFormats; i++)
-    {
-        CFormat& format = m_Formats.GetData(i);
-        this->AddToList(format, i);
-    }
-}
-
-void CFormatsDlg::UpdateFields(CFormat &format)
-{
-    this->m_EdtId.SetWindowText(format.szId);
-    this->m_EdtName.SetWindowText(format.szName);
-    this->m_EdtExtension.SetWindowText(format.szOutputExtension);
-    this->m_EdtFormats.SetWindowText(format.szInputExtensions);
-
-    CString szDefaultPreset;
-    szDefaultPreset.Format(_T("%d\0"), format.nDefaultPreset);
-    this->m_EdtDefault.SetWindowText(szDefaultPreset);
-
-    this->m_EdtTemplate.SetWindowText(format.szTemplate);
-    this->m_EdtPath.SetWindowText(format.szPath);
-
-    switch (format.nType)
-    {
-    case 0:
-        this->CheckRadioButton(IDC_RADIO_TYPE_ENCODER,
-            IDC_RADIO_TYPE_DECODER,
-            IDC_RADIO_TYPE_ENCODER);
-        break;
-    case 1:
-        this->CheckRadioButton(IDC_RADIO_TYPE_ENCODER,
-            IDC_RADIO_TYPE_DECODER,
-            IDC_RADIO_TYPE_DECODER);
-        break;
-    default:
-        this->CheckRadioButton(IDC_RADIO_TYPE_ENCODER,
-            IDC_RADIO_TYPE_DECODER,
-            IDC_RADIO_TYPE_ENCODER);
-        break;
-    };
-
-    if (format.bInput)
-        CheckDlgButton(IDC_CHECK_FORMAT_PIPES_INPUT, BST_CHECKED);
-    else
-        CheckDlgButton(IDC_CHECK_FORMAT_PIPES_INPUT, BST_UNCHECKED);
-
-    if (format.bOutput)
-        CheckDlgButton(IDC_CHECK_FORMAT_PIPES_OUTPUT, BST_CHECKED);
-    else
-        CheckDlgButton(IDC_CHECK_FORMAT_PIPES_OUTPUT, BST_UNCHECKED);
-
-    this->m_EdtFunction.SetWindowText(format.szFunction);
-}
-
-void CFormatsDlg::ListSelectionChange()
-{
-    if (bUpdate == true)
-        return;
-
-    bUpdate = true;
-
-    POSITION pos = m_LstFormats.GetFirstSelectedItemPosition();
-    if (pos != NULL)
-    {
-        int nItem = m_LstFormats.GetNextSelectedItem(pos);
-
-        CFormat& format = this->m_Formats.GetData(nItem);
-
-        this->UpdateFields(format);
-    }
-    else
-    {
-        this->m_EdtId.SetWindowText(_T(""));
-        this->m_EdtName.SetWindowText(_T(""));
-        this->m_EdtExtension.SetWindowText(_T(""));
-        this->m_EdtFormats.SetWindowText(_T(""));
-        this->m_EdtDefault.SetWindowText(_T(""));
-        this->m_EdtTemplate.SetWindowText(_T(""));
-        this->m_EdtPath.SetWindowText(_T(""));
-        this->CheckRadioButton(IDC_RADIO_TYPE_ENCODER,
-            IDC_RADIO_TYPE_DECODER,
-            IDC_RADIO_TYPE_ENCODER);
-        CheckDlgButton(IDC_CHECK_FORMAT_PIPES_INPUT, BST_UNCHECKED);
-        CheckDlgButton(IDC_CHECK_FORMAT_PIPES_OUTPUT, BST_UNCHECKED);
-        this->m_EdtFunction.SetWindowText(_T(""));
-    }
-
-    bUpdate = false;
-}
-
-void CFormatsDlg::LoadFormats(CString szFileXml)
-{
-    XmlConfiguration doc;
-    if (doc.Open(szFileXml) == true)
-    {
-        this->m_Formats.RemoveAllNodes();
-        this->m_LstFormats.DeleteAllItems();
-
-        doc.GetFormats(this->m_Formats);
-
-        if (this->m_Formats.GetSize() > 0)
-            nSelectedFormat = 0;
-
-        this->InsertFormatsToListCtrl();
-        this->ListSelectionChange();
-    }
-    else
-    {
-        MessageBox(_T("Failed to load file!"), _T("ERROR"), MB_OK | MB_ICONERROR);
-    }
-}
-
-void CFormatsDlg::SaveFormats(CString szFileXml)
-{
-    XmlConfiguration doc;
-    doc.SetFormats(this->m_Formats);
-    if (doc.Save(szFileXml) != true)
-    {
-        MessageBox(_T("Failed to save file!"), _T("ERROR"), MB_OK | MB_ICONERROR);
-    }
-}
-
-bool CFormatsDlg::BrowseForPath(CString szDefaultFName, CEdit *pEdit, int nID)
-{
-    CFileDialog fd(TRUE, _T("exe"), szDefaultFName,
-        OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER,
-        _T("Exe Files (*.exe)|*.exe|All Files|*.*||"), this);
-
-    if (fd.DoModal() == IDOK)
-    {
-        CString szPath = fd.GetPathName();
-        pEdit->SetWindowText(szPath);
-        return true;
-    }
-    return false;
-}
-
-bool CFormatsDlg::BrowseForFunction(CString szDefaultFName, CEdit *pEdit, int nID)
-{
-    CFileDialog fd(TRUE, _T("progress"), szDefaultFName,
-        OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER,
-        _T("Progress Files (*.progress)|*.progress|All Files|*.*||"), this);
-
-    if (fd.DoModal() == IDOK)
-    {
-        CString szPath;
-        szPath = fd.GetPathName();
-        pEdit->SetWindowText(szPath);
-        return true;
-    }
-    return false;
-}
-
 void CFormatsDlg::OnBnClickedOk()
 {
     POSITION pos = m_LstFormats.GetFirstSelectedItemPosition();
@@ -793,4 +584,213 @@ void CFormatsDlg::OnClose()
     this->SaveWindowSettings();
 
     CResizeDialog::OnClose();
+}
+
+void CFormatsDlg::LoadWindowSettings()
+{
+    // set window rectangle and position
+    if (szFormatsDialogResize.Compare(_T("")) != 0)
+        this->SetWindowRectStr(szFormatsDialogResize);
+
+    // load columns width for FormatsList
+    if (szFormatsListColumns.Compare(_T("")) != 0)
+    {
+        int nColWidth[2];
+        if (_stscanf(szFormatsListColumns, _T("%d %d"),
+            &nColWidth[0],
+            &nColWidth[1]) == 2)
+        {
+            for (int i = 0; i < 2; i++)
+                m_LstFormats.SetColumnWidth(i, nColWidth[i]);
+        }
+    }
+}
+
+void CFormatsDlg::SaveWindowSettings()
+{
+    // save window rectangle and position
+    this->szFormatsDialogResize = this->GetWindowRectStr();
+
+    // save columns width from FormatsList
+    int nColWidth[11];
+    for (int i = 0; i < 2; i++)
+        nColWidth[i] = m_LstFormats.GetColumnWidth(i);
+    szFormatsListColumns.Format(_T("%d %d"),
+        nColWidth[0],
+        nColWidth[1]);
+}
+
+void CFormatsDlg::AddToList(CFormat &format, int nItem)
+{
+    LVITEM lvi;
+
+    ZeroMemory(&lvi, sizeof(LVITEM));
+
+    lvi.mask = LVIF_TEXT | LVIF_STATE;
+    lvi.state = 0;
+    lvi.stateMask = 0;
+    lvi.iItem = nItem;
+
+    lvi.iSubItem = FORMAT_COLUMN_NAME;
+    lvi.pszText = (LPTSTR)(LPCTSTR)(format.szName);
+    m_LstFormats.InsertItem(&lvi);
+
+    lvi.iSubItem = FORMAT_COLUMN_TEMPLATE;
+    lvi.pszText = (LPTSTR)(LPCTSTR)(format.szTemplate);
+    m_LstFormats.SetItemText(lvi.iItem, FORMAT_COLUMN_TEMPLATE, lvi.pszText);
+}
+
+void CFormatsDlg::InsertFormatsToListCtrl()
+{
+    int nFormats = m_Formats.GetSize();
+    for (int i = 0; i < nFormats; i++)
+    {
+        CFormat& format = m_Formats.GetData(i);
+        this->AddToList(format, i);
+    }
+}
+
+void CFormatsDlg::UpdateFields(CFormat &format)
+{
+    this->m_EdtId.SetWindowText(format.szId);
+    this->m_EdtName.SetWindowText(format.szName);
+    this->m_EdtExtension.SetWindowText(format.szOutputExtension);
+    this->m_EdtFormats.SetWindowText(format.szInputExtensions);
+
+    CString szDefaultPreset;
+    szDefaultPreset.Format(_T("%d\0"), format.nDefaultPreset);
+    this->m_EdtDefault.SetWindowText(szDefaultPreset);
+
+    this->m_EdtTemplate.SetWindowText(format.szTemplate);
+    this->m_EdtPath.SetWindowText(format.szPath);
+
+    switch (format.nType)
+    {
+    case 0:
+        this->CheckRadioButton(IDC_RADIO_TYPE_ENCODER,
+            IDC_RADIO_TYPE_DECODER,
+            IDC_RADIO_TYPE_ENCODER);
+        break;
+    case 1:
+        this->CheckRadioButton(IDC_RADIO_TYPE_ENCODER,
+            IDC_RADIO_TYPE_DECODER,
+            IDC_RADIO_TYPE_DECODER);
+        break;
+    default:
+        this->CheckRadioButton(IDC_RADIO_TYPE_ENCODER,
+            IDC_RADIO_TYPE_DECODER,
+            IDC_RADIO_TYPE_ENCODER);
+        break;
+    };
+
+    if (format.bInput)
+        CheckDlgButton(IDC_CHECK_FORMAT_PIPES_INPUT, BST_CHECKED);
+    else
+        CheckDlgButton(IDC_CHECK_FORMAT_PIPES_INPUT, BST_UNCHECKED);
+
+    if (format.bOutput)
+        CheckDlgButton(IDC_CHECK_FORMAT_PIPES_OUTPUT, BST_CHECKED);
+    else
+        CheckDlgButton(IDC_CHECK_FORMAT_PIPES_OUTPUT, BST_UNCHECKED);
+
+    this->m_EdtFunction.SetWindowText(format.szFunction);
+}
+
+void CFormatsDlg::ListSelectionChange()
+{
+    if (bUpdate == true)
+        return;
+
+    bUpdate = true;
+
+    POSITION pos = m_LstFormats.GetFirstSelectedItemPosition();
+    if (pos != NULL)
+    {
+        int nItem = m_LstFormats.GetNextSelectedItem(pos);
+
+        CFormat& format = this->m_Formats.GetData(nItem);
+
+        this->UpdateFields(format);
+    }
+    else
+    {
+        this->m_EdtId.SetWindowText(_T(""));
+        this->m_EdtName.SetWindowText(_T(""));
+        this->m_EdtExtension.SetWindowText(_T(""));
+        this->m_EdtFormats.SetWindowText(_T(""));
+        this->m_EdtDefault.SetWindowText(_T(""));
+        this->m_EdtTemplate.SetWindowText(_T(""));
+        this->m_EdtPath.SetWindowText(_T(""));
+        this->CheckRadioButton(IDC_RADIO_TYPE_ENCODER,
+            IDC_RADIO_TYPE_DECODER,
+            IDC_RADIO_TYPE_ENCODER);
+        CheckDlgButton(IDC_CHECK_FORMAT_PIPES_INPUT, BST_UNCHECKED);
+        CheckDlgButton(IDC_CHECK_FORMAT_PIPES_OUTPUT, BST_UNCHECKED);
+        this->m_EdtFunction.SetWindowText(_T(""));
+    }
+
+    bUpdate = false;
+}
+
+void CFormatsDlg::LoadFormats(CString szFileXml)
+{
+    XmlConfiguration doc;
+    if (doc.Open(szFileXml) == true)
+    {
+        this->m_Formats.RemoveAllNodes();
+        this->m_LstFormats.DeleteAllItems();
+
+        doc.GetFormats(this->m_Formats);
+
+        if (this->m_Formats.GetSize() > 0)
+            nSelectedFormat = 0;
+
+        this->InsertFormatsToListCtrl();
+        this->ListSelectionChange();
+    }
+    else
+    {
+        MessageBox(_T("Failed to load file!"), _T("ERROR"), MB_OK | MB_ICONERROR);
+    }
+}
+
+void CFormatsDlg::SaveFormats(CString szFileXml)
+{
+    XmlConfiguration doc;
+    doc.SetFormats(this->m_Formats);
+    if (doc.Save(szFileXml) != true)
+    {
+        MessageBox(_T("Failed to save file!"), _T("ERROR"), MB_OK | MB_ICONERROR);
+    }
+}
+
+bool CFormatsDlg::BrowseForPath(CString szDefaultFName, CEdit *pEdit, int nID)
+{
+    CFileDialog fd(TRUE, _T("exe"), szDefaultFName,
+        OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER,
+        _T("Exe Files (*.exe)|*.exe|All Files|*.*||"), this);
+
+    if (fd.DoModal() == IDOK)
+    {
+        CString szPath = fd.GetPathName();
+        pEdit->SetWindowText(szPath);
+        return true;
+    }
+    return false;
+}
+
+bool CFormatsDlg::BrowseForFunction(CString szDefaultFName, CEdit *pEdit, int nID)
+{
+    CFileDialog fd(TRUE, _T("progress"), szDefaultFName,
+        OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER,
+        _T("Progress Files (*.progress)|*.progress|All Files|*.*||"), this);
+
+    if (fd.DoModal() == IDOK)
+    {
+        CString szPath;
+        szPath = fd.GetPathName();
+        pEdit->SetWindowText(szPath);
+        return true;
+    }
+    return false;
 }

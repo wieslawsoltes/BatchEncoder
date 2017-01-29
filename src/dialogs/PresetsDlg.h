@@ -20,8 +20,8 @@ protected:
     DECLARE_MESSAGE_MAP()
 protected:
     HICON m_hIcon;
-    afx_msg HCURSOR OnQueryDragIcon();
     afx_msg void OnPaint();
+    afx_msg HCURSOR OnQueryDragIcon();
 public:
     virtual BOOL OnInitDialog();
 public:
@@ -48,15 +48,6 @@ public:
     CMyButton m_BtnLoad;
     CMyButton m_BtnSave;
 public:
-    void LoadWindowSettings();
-    void SaveWindowSettings();
-    void AddToList(CPreset &preset, int nItem);
-    void InsertPresetsToListCtrl();
-    void UpdateFields(CPreset &preset);
-    void ListSelectionChange();
-    void LoadPresets(CString szFileXml);
-    void SavePresets(CString szFileXml);
-public:
     afx_msg void OnBnClickedOk();
     afx_msg void OnBnClickedCancel();
     afx_msg void OnLvnItemchangedListPresets(NMHDR *pNMHDR, LRESULT *pResult);
@@ -72,4 +63,13 @@ public:
     afx_msg void OnBnClickedButtonLoadPresets();
     afx_msg void OnBnClickedButtonSavePresets();
     afx_msg void OnClose();
+public:
+    void LoadWindowSettings();
+    void SaveWindowSettings();
+    void AddToList(CPreset &preset, int nItem);
+    void InsertPresetsToListCtrl();
+    void UpdateFields(CPreset &preset);
+    void ListSelectionChange();
+    void LoadPresets(CString szFileXml);
+    void SavePresets(CString szFileXml);
 };

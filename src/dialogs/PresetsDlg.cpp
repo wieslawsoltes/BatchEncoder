@@ -149,139 +149,6 @@ HCURSOR CPresetsDlg::OnQueryDragIcon()
     return static_cast<HCURSOR>(m_hIcon);
 }
 
-void CPresetsDlg::LoadWindowSettings()
-{
-    // set window rectangle and position
-    if (szPresetsDialogResize.Compare(_T("")) != 0)
-        this->SetWindowRectStr(szPresetsDialogResize);
-
-    // load columns width for PresetsList
-    if (szPresetsListColumns.Compare(_T("")) != 0)
-    {
-        int nColWidth[2];
-        if (_stscanf(szPresetsListColumns, _T("%d %d"),
-            &nColWidth[0],
-            &nColWidth[1]) == 2)
-        {
-            for (int i = 0; i < 2; i++)
-                m_LstPresets.SetColumnWidth(i, nColWidth[i]);
-        }
-    }
-}
-
-void CPresetsDlg::SaveWindowSettings()
-{
-    // save window rectangle and position
-    this->szPresetsDialogResize = this->GetWindowRectStr();
-
-    // save columns width from PresetsList
-    int nColWidth[2];
-    for (int i = 0; i < 2; i++)
-        nColWidth[i] = m_LstPresets.GetColumnWidth(i);
-    szPresetsListColumns.Format(_T("%d %d"),
-        nColWidth[0],
-        nColWidth[1]);
-}
-
-void CPresetsDlg::AddToList(CPreset &preset, int nItem)
-{
-    LVITEM lvi;
-
-    ZeroMemory(&lvi, sizeof(LVITEM));
-
-    lvi.mask = LVIF_TEXT | LVIF_STATE;
-    lvi.state = 0;
-    lvi.stateMask = 0;
-    lvi.iItem = nItem;
-
-    lvi.iSubItem = PRESET_COLUMN_NAME;
-    lvi.pszText = (LPTSTR)(LPCTSTR)(preset.szName);
-    m_LstPresets.InsertItem(&lvi);
-
-    lvi.iSubItem = PRESET_COLUMN_OPTIONS;
-    lvi.pszText = (LPTSTR)(LPCTSTR)(preset.szOptions);
-    m_LstPresets.SetItemText(lvi.iItem, PRESET_COLUMN_OPTIONS, lvi.pszText);
-}
-
-void CPresetsDlg::InsertPresetsToListCtrl()
-{
-    if (this->m_Formats.GetSize() > 0)
-    {
-        CFormat& format = this->m_Formats.GetData(this->nSelectedFormat);
-        int nPresets = format.m_Presets.GetSize();
-        for (int i = 0; i < nPresets; i++)
-        {
-            CPreset& preset = format.m_Presets.GetData(i);
-            this->AddToList(preset, i);
-        }
-    }
-}
-
-void CPresetsDlg::UpdateFields(CPreset& preset)
-{
-    this->m_EdtName.SetWindowText(preset.szName);
-    this->m_EdtOptions.SetWindowText(preset.szOptions);
-}
-
-void CPresetsDlg::ListSelectionChange()
-{
-    if (bUpdate == true)
-        return;
-
-    bUpdate = true;
-
-    POSITION pos = m_LstPresets.GetFirstSelectedItemPosition();
-    if (pos != NULL)
-    {
-        int nItem = m_LstPresets.GetNextSelectedItem(pos);
-
-        CFormat& format = m_Formats.GetData(nSelectedFormat);
-        CPreset& preset = format.m_Presets.GetData(nItem);
-        format.nDefaultPreset = nItem;
-
-        this->UpdateFields(preset);
-    }
-    else
-    {
-        this->m_EdtName.SetWindowText(_T(""));
-        this->m_EdtOptions.SetWindowText(_T(""));
-    }
-
-    bUpdate = false;
-}
-
-void CPresetsDlg::LoadPresets(CString szFileXml)
-{
-    XmlConfiguration doc;
-    if (doc.Open(szFileXml) == true)
-    {
-        this->m_LstPresets.DeleteAllItems();
-
-        CFormat& format = this->m_Formats.GetData(this->nSelectedFormat);
-        format.m_Presets.RemoveAllNodes();
-
-        doc.GetPresets(format.m_Presets);
-
-        this->InsertPresetsToListCtrl();
-    }
-    else
-    {
-        MessageBox(_T("Failed to load file!"), _T("ERROR"), MB_OK | MB_ICONERROR);
-    }
-}
-
-void CPresetsDlg::SavePresets(CString szFileXml)
-{
-    CFormat& format = this->m_Formats.GetData(this->nSelectedFormat);
-
-    XmlConfiguration doc;
-    doc.SetPresets(format.m_Presets);
-    if (doc.Save(szFileXml) != true)
-    {
-        MessageBox(_T("Failed to save file!"), _T("ERROR"), MB_OK | MB_ICONERROR);
-    }
-}
-
 void CPresetsDlg::OnBnClickedOk()
 {
     this->SaveWindowSettings();
@@ -539,4 +406,137 @@ void CPresetsDlg::OnClose()
     this->SaveWindowSettings();
 
     CResizeDialog::OnClose();
+}
+
+void CPresetsDlg::LoadWindowSettings()
+{
+    // set window rectangle and position
+    if (szPresetsDialogResize.Compare(_T("")) != 0)
+        this->SetWindowRectStr(szPresetsDialogResize);
+
+    // load columns width for PresetsList
+    if (szPresetsListColumns.Compare(_T("")) != 0)
+    {
+        int nColWidth[2];
+        if (_stscanf(szPresetsListColumns, _T("%d %d"),
+            &nColWidth[0],
+            &nColWidth[1]) == 2)
+        {
+            for (int i = 0; i < 2; i++)
+                m_LstPresets.SetColumnWidth(i, nColWidth[i]);
+        }
+    }
+}
+
+void CPresetsDlg::SaveWindowSettings()
+{
+    // save window rectangle and position
+    this->szPresetsDialogResize = this->GetWindowRectStr();
+
+    // save columns width from PresetsList
+    int nColWidth[2];
+    for (int i = 0; i < 2; i++)
+        nColWidth[i] = m_LstPresets.GetColumnWidth(i);
+    szPresetsListColumns.Format(_T("%d %d"),
+        nColWidth[0],
+        nColWidth[1]);
+}
+
+void CPresetsDlg::AddToList(CPreset &preset, int nItem)
+{
+    LVITEM lvi;
+
+    ZeroMemory(&lvi, sizeof(LVITEM));
+
+    lvi.mask = LVIF_TEXT | LVIF_STATE;
+    lvi.state = 0;
+    lvi.stateMask = 0;
+    lvi.iItem = nItem;
+
+    lvi.iSubItem = PRESET_COLUMN_NAME;
+    lvi.pszText = (LPTSTR)(LPCTSTR)(preset.szName);
+    m_LstPresets.InsertItem(&lvi);
+
+    lvi.iSubItem = PRESET_COLUMN_OPTIONS;
+    lvi.pszText = (LPTSTR)(LPCTSTR)(preset.szOptions);
+    m_LstPresets.SetItemText(lvi.iItem, PRESET_COLUMN_OPTIONS, lvi.pszText);
+}
+
+void CPresetsDlg::InsertPresetsToListCtrl()
+{
+    if (this->m_Formats.GetSize() > 0)
+    {
+        CFormat& format = this->m_Formats.GetData(this->nSelectedFormat);
+        int nPresets = format.m_Presets.GetSize();
+        for (int i = 0; i < nPresets; i++)
+        {
+            CPreset& preset = format.m_Presets.GetData(i);
+            this->AddToList(preset, i);
+        }
+    }
+}
+
+void CPresetsDlg::UpdateFields(CPreset& preset)
+{
+    this->m_EdtName.SetWindowText(preset.szName);
+    this->m_EdtOptions.SetWindowText(preset.szOptions);
+}
+
+void CPresetsDlg::ListSelectionChange()
+{
+    if (bUpdate == true)
+        return;
+
+    bUpdate = true;
+
+    POSITION pos = m_LstPresets.GetFirstSelectedItemPosition();
+    if (pos != NULL)
+    {
+        int nItem = m_LstPresets.GetNextSelectedItem(pos);
+
+        CFormat& format = m_Formats.GetData(nSelectedFormat);
+        CPreset& preset = format.m_Presets.GetData(nItem);
+        format.nDefaultPreset = nItem;
+
+        this->UpdateFields(preset);
+    }
+    else
+    {
+        this->m_EdtName.SetWindowText(_T(""));
+        this->m_EdtOptions.SetWindowText(_T(""));
+    }
+
+    bUpdate = false;
+}
+
+void CPresetsDlg::LoadPresets(CString szFileXml)
+{
+    XmlConfiguration doc;
+    if (doc.Open(szFileXml) == true)
+    {
+        this->m_LstPresets.DeleteAllItems();
+
+        CFormat& format = this->m_Formats.GetData(this->nSelectedFormat);
+        format.m_Presets.RemoveAllNodes();
+
+        doc.GetPresets(format.m_Presets);
+
+        this->InsertPresetsToListCtrl();
+    }
+    else
+    {
+        MessageBox(_T("Failed to load file!"), _T("ERROR"), MB_OK | MB_ICONERROR);
+    }
+}
+
+void CPresetsDlg::SavePresets(CString szFileXml)
+{
+    CFormat& format = this->m_Formats.GetData(this->nSelectedFormat);
+
+    XmlConfiguration doc;
+    doc.SetPresets(format.m_Presets);
+    if (doc.Save(szFileXml) != true)
+    {
+        MessageBox(_T("Failed to save file!"), _T("ERROR"), MB_OK | MB_ICONERROR);
+    }
 }

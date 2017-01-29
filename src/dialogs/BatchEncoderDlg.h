@@ -22,8 +22,8 @@ protected:
     DECLARE_MESSAGE_MAP()
 protected:
     HICON m_hIcon;
-    afx_msg HCURSOR OnQueryDragIcon();
     afx_msg void OnPaint();
+    afx_msg HCURSOR OnQueryDragIcon();
 public:
     virtual BOOL OnInitDialog();
 protected:
@@ -54,55 +54,29 @@ public:
     CMyButton m_BtnConvert;
     CMyStatusBarCtrl m_StatusBar;
 public:
-    void UpdateStatusBar();
-    int AddToItems(CString szPath);
-    bool AddToList(CString szPath);
-    void AddToList(CItem &item, int nItem);
-    void HandleDropFiles(HDROP hDropInfo);
-    void UpdateFormatAndPreset();
-    void ResetOutput();
-    void ResetConvertionTime();
-    void ResetConvertionStatus();
-    void SearchFolderForFiles(CString szFile, const bool bRecurse);
-    void GetItems();
-    void SetItems();
-    void GetOptions();
-    void SetOptions();
-    bool LoadOptions(CString szFileXml);
-    bool SaveOptions(CString szFileXml);
-    bool LoadFormats(CString szFileXml);
-    bool SaveFormats(CString szFileXml);
-    bool LoadItems(CString szFileXml);
-    bool SaveItems(CString szFileXml);
-    void UpdateFormatComboBox();
-    void UpdatePresetComboBox();
-    void EnableUserInterface(BOOL bEnable = TRUE);
-    void StartConvert();
-    void FinishConvert();
-public:
-    afx_msg LRESULT OnListItemChaged(WPARAM wParam, LPARAM lParam);
-    afx_msg LRESULT OnNotifyFormat(WPARAM wParam, LPARAM lParam);
-    afx_msg BOOL OnHelpInfo(HELPINFO* pHelpInfo);
     afx_msg void OnClose();
     afx_msg void OnDestroy();
     afx_msg void OnDropFiles(HDROP hDropInfo);
-    afx_msg void OnBnClickedCheckOutPath();
-    afx_msg void OnBnClickedButtonConvert();
-    afx_msg void OnBnClickedButtonBrowsePath();
-    afx_msg void OnCbnSelchangeComboPresets();
-    afx_msg void OnCbnSelchangeComboFormat();
+    afx_msg BOOL OnHelpInfo(HELPINFO* pHelpInfo);
+    afx_msg LRESULT OnListItemChaged(WPARAM wParam, LPARAM lParam);
+    afx_msg LRESULT OnNotifyFormat(WPARAM wParam, LPARAM lParam);
     afx_msg void OnLvnKeydownListInputItems(NMHDR *pNMHDR, LRESULT *pResult);
+    afx_msg void OnNMRclickListInputItems(NMHDR *pNMHDR, LRESULT *pResult);
     afx_msg void OnLvnItemchangingListInputItems(NMHDR* pNMHDR, LRESULT* pResult);
     afx_msg void OnLvnItemchangedListInputItems(NMHDR *pNMHDR, LRESULT *pResult);
-    afx_msg void OnNMRclickListInputItems(NMHDR *pNMHDR, LRESULT *pResult);
+    afx_msg void OnCbnSelchangeComboPresets();
+    afx_msg void OnCbnSelchangeComboFormat();
+    afx_msg void OnBnClickedCheckOutPath();
     afx_msg void OnEnSetFocusEditOutPath();
     afx_msg void OnEnKillFocusEditOutPath();
-    afx_msg void OnFileAddFiles();
-    afx_msg void OnFileAddDir();
+    afx_msg void OnBnClickedButtonBrowsePath();
+    afx_msg void OnBnClickedButtonConvert();
     afx_msg void OnFileLoadList();
     afx_msg void OnFileSaveList();
     afx_msg void OnFileClearList();
     afx_msg void OnFileExit();
+    afx_msg void OnEditAddFiles();
+    afx_msg void OnEditAddDir();
     afx_msg void OnEditRename();
     afx_msg void OnEditResetTime();
     afx_msg void OnEditResetOutput();
@@ -127,6 +101,32 @@ public:
     afx_msg void OnOptionsStopOnErrors();
     afx_msg void OnHelpWebsite();
     afx_msg void OnHelpAbout();
+public:
+    void GetItems();
+    void SetItems();
+    void GetOptions();
+    void SetOptions();
+    bool LoadOptions(CString szFileXml);
+    bool SaveOptions(CString szFileXml);
+    bool LoadFormats(CString szFileXml);
+    bool SaveFormats(CString szFileXml);
+    bool LoadItems(CString szFileXml);
+    bool SaveItems(CString szFileXml);
+    int AddToItems(CString szPath);
+    bool AddToList(CString szPath);
+    void AddToList(CItem &item, int nItem);
+    void HandleDropFiles(HDROP hDropInfo);
+    void SearchFolderForFiles(CString szFile, const bool bRecurse);
+    void UpdateFormatComboBox();
+    void UpdatePresetComboBox();
+    void UpdateFormatAndPreset();
+    void ResetOutput();
+    void ResetConvertionTime();
+    void ResetConvertionStatus();
+    void UpdateStatusBar();
+    void EnableUserInterface(BOOL bEnable = TRUE);
+    void StartConvert();
+    void FinishConvert();
 };
 
 class CBatchEncoderWorkerContext : public CWorkerContext

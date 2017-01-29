@@ -20,8 +20,8 @@ protected:
     DECLARE_MESSAGE_MAP()
 protected:
     HICON m_hIcon;
-    afx_msg HCURSOR OnQueryDragIcon();
     afx_msg void OnPaint();
+    afx_msg HCURSOR OnQueryDragIcon();
 public:
     virtual BOOL OnInitDialog();
 public:
@@ -62,17 +62,6 @@ public:
     CMyButton m_BtnSave;
     CMyButton m_BtnBrowse;
 public:
-    void LoadWindowSettings();
-    void SaveWindowSettings();
-    void AddToList(CFormat &format, int nItem);
-    void InsertFormatsToListCtrl();
-    void UpdateFields(CFormat &format);
-    void ListSelectionChange();
-    void LoadFormats(CString szFileXml);
-    void SaveFormats(CString szFileXml);
-    bool BrowseForPath(CString szDefaultFName, CEdit *pEdit, int nID);
-    bool BrowseForFunction(CString szDefaultFName, CEdit *pEdit, int nID);
-public:
     afx_msg void OnBnClickedOk();
     afx_msg void OnBnClickedCancel();
     afx_msg void OnLvnItemchangedListFormats(NMHDR *pNMHDR, LRESULT *pResult);
@@ -99,4 +88,15 @@ public:
     afx_msg void OnBnClickedButtonBrowsePath();
     afx_msg void OnBnClickedButtonBrowseProgress();
     afx_msg void OnClose();
+public:
+    void LoadWindowSettings();
+    void SaveWindowSettings();
+    void AddToList(CFormat &format, int nItem);
+    void InsertFormatsToListCtrl();
+    void UpdateFields(CFormat &format);
+    void ListSelectionChange();
+    void LoadFormats(CString szFileXml);
+    void SaveFormats(CString szFileXml);
+    bool BrowseForPath(CString szDefaultFName, CEdit *pEdit, int nID);
+    bool BrowseForFunction(CString szDefaultFName, CEdit *pEdit, int nID);
 };
