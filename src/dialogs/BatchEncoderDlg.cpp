@@ -2102,11 +2102,16 @@ void CBatchEncoderWorkerContext::Next(int nItemId)
 void CBatchEncoderWorkerContext::Done()
 {
     this->timeCount.Stop();
+    this->nErrors = this->nProcessedFiles - this->nDoneWithoutError;
 
-    CString szText = _T("");
-    if (this->nProcessedFiles > 0)
-        szText.Format(_T("Done in %s"), ::FormatTime(this->timeCount.ElapsedTime(), 3));
-
+    CString szText;
+    szText.Format(_T("Converted %d of %d (%d Done, %d %s) in %s"),
+        this->nProcessedFiles,
+        this->nTotalFiles,
+        this->nDoneWithoutError,
+        this->nErrors,
+        ((this->nErrors == 0) || (this->nErrors > 1)) ? _T("Errors") : _T("Error"),
+        ::FormatTime(this->timeCount.ElapsedTime(), 3));
     pDlg->m_StatusBar.SetText(szText, 1, 0);
 
     pDlg->FinishConvert();
