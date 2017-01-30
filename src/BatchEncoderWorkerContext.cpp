@@ -6,6 +6,17 @@
 #include "utilities\Utilities.h"
 #include "BatchEncoderWorkerContext.h"
 
+CBatchEncoderWorkerContext::CBatchEncoderWorkerContext(CConfiguration* pConfig, CBatchEncoderDlg* pDlg) 
+    : CWorkerContext(pConfig)
+{
+    this->pDlg = pDlg;
+}
+
+CBatchEncoderWorkerContext::~CBatchEncoderWorkerContext()
+{
+
+}
+
 void CBatchEncoderWorkerContext::Init()
 {
     this->timer.Start();
