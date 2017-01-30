@@ -9,9 +9,9 @@
 | Windows 64-bit        | Debug          | [![Build status](https://ci.appveyor.com/api/projects/status/mg4yfh8vs7y8v7hk/branch/master?svg=true)](https://ci.appveyor.com/project/wieslawsoltes/batchencoder-3gv5t/branch/master)    |
 | Windows 64-bit        | Release        | [![Build status](https://ci.appveyor.com/api/projects/status/kcfeuspoto5xmgsi/branch/master?svg=true)](https://ci.appveyor.com/project/wieslawsoltes/batchencoder-1fq40/branch/master)    |
 
-[![Github All Releases](https://img.shields.io/github/downloads/wieslawsoltes/batchencoder/total.svg)](https://github.com/wieslawsoltes/batchencoder)
-[![GitHub release](https://img.shields.io/github/release/wieslawsoltes/batchencoder.svg)](https://github.com/wieslawsoltes/batchencoder)
-[![Github Releases](https://img.shields.io/github/downloads/wieslawsoltes/batchencoder/latest/total.svg)](https://github.com/wieslawsoltes/batchencoder)
+[![Github All Releases](https://img.shields.io/github/downloads/wieslawsoltes/batchencoder/total.svg)](https://github.com/wieslawsoltes/BatchEncoder/releases)
+[![GitHub Release](https://img.shields.io/github/release/wieslawsoltes/batchencoder.svg)](https://github.com/wieslawsoltes/batchencoder/releases/latest)
+[![Github Releases](https://img.shields.io/github/downloads/wieslawsoltes/batchencoder/latest/total.svg)](https://github.com/wieslawsoltes/BatchEncoder/releases)
 
 BatchEncoder is an audio files conversion software.
 
