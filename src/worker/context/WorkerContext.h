@@ -24,6 +24,7 @@ public:
     DWORD* dwConvertThreadID;
     CObList* pQueue;
     int* nProgess;
+    volatile int nLastItemId;
 public:
     CWorkerContext(CConfiguration* pConfig)
     {
