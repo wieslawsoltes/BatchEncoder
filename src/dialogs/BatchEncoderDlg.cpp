@@ -2101,6 +2101,7 @@ void CBatchEncoderWorkerContext::Next(int nItemId)
             ((this->nErrors == 0) || (this->nErrors > 1)) ? _T("Errors") : _T("Error"));
         pDlg->m_StatusBar.SetText(szText, 1, 0);
 
+        this->nLastItemId = nItemId;
         pDlg->m_LstInputItems.EnsureVisible(nItemId, FALSE);
     }
 }
@@ -2148,6 +2149,12 @@ bool CBatchEncoderWorkerContext::Callback(int nItemId, int nProgress, bool bFini
         if (bSafeCheck == false)
         {
             bSafeCheck = true;
+
+            if (nItemId > this->nLastItemId)
+            {
+                this->nLastItemId = nItemId;
+                pDlg->m_LstInputItems.EnsureVisible(nItemId, FALSE);
+            }
 
             int nTotalProgress = 0;
             int nItems = pDlg->pWorkerContext->pConfig->m_Items.GetSize();
