@@ -40,6 +40,7 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
     int nItems = pWorkerContext->pConfig->m_Items.GetSize();
 
     pWorkerContext->nProgess = new int[nItems];
+    pWorkerContext->nPreviousProgess = new int[nItems];
 
     for (int i = 0; i < nItems; i++)
     {
@@ -47,10 +48,12 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
         {
             pWorkerContext->nTotalFiles++;
             pWorkerContext->nProgess[i] = 0;
+            pWorkerContext->nPreviousProgess[i] = 0;
         }
         else
         {
             pWorkerContext->nProgess[i] = 100;
+            pWorkerContext->nPreviousProgess[i] = 100;
         }
     }
     
@@ -115,6 +118,7 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
         delete pWorkerContext->dwConvertThreadID;
         delete pWorkerContext->pQueue;
         delete pWorkerContext->nProgess;
+        delete pWorkerContext->nPreviousProgess;
     }
 
     pWorkerContext->Done();
