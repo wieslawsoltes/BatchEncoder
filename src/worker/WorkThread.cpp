@@ -15,6 +15,8 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
     if (pWorkerContext == NULL)
         return (DWORD)(-1);
 
+    pWorkerContext->hMutex = ::CreateMutex(NULL, FALSE, NULL);
+
     pWorkerContext->nTotalFiles = 0;
     pWorkerContext->nProcessedFiles = 0;
     pWorkerContext->nDoneWithoutError = 0;
@@ -122,6 +124,10 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
     }
 
     pWorkerContext->Done();
+
+    ::CloseHandle(pWorkerContext->hMutex);
+
+    pWorkerContext->bDone = true;
 
     return ::CloseHandle(pWorkerContext->hThread);
 }

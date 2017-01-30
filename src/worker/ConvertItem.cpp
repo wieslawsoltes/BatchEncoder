@@ -177,7 +177,13 @@ bool ConvertItem(CItemContext* pContext)
 
     if ((nProcessingMode == Mode::Encode) || (nProcessingMode == Mode::Transcode))
     {
-        pContext->pWorkerContext->Status(pContext->item->nId, _T("--:--"), _T("Encoding..."));
+        if (encoderFormat.nType == 0)
+            pContext->pWorkerContext->Status(pContext->item->nId, _T("--:--"), _T("Encoding..."));
+        else if (encoderFormat.nType == 1)
+            pContext->pWorkerContext->Status(pContext->item->nId, _T("--:--"), _T("Decoding..."));
+        else
+            pContext->pWorkerContext->Status(pContext->item->nId, _T("--:--"), _T("Processing..."));
+
         try
         {
             CFileContext context(pContext->pWorkerContext, encoderFormat, pContext->item->nPreset, pContext->item->nId, szInputFile, szOutputFile);

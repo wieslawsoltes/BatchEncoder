@@ -1979,17 +1979,17 @@ void CBatchEncoderDlg::StartConvert()
     if (bSafeCheck == true)
         return;
 
-    if (this->pWorkerContext->bRunning == false)
+    if (this->pWorkerContext->bRunning == false && this->pWorkerContext->bDone == true)
     {
         bSafeCheck = true;
+        this->pWorkerContext->bDone = false;
 
         this->GetOptions();
         this->GetItems();
 
         this->pWorkerContext->pConfig = &this->m_Config;
 
-        int nItems = this->m_Config.m_Items.GetSize();
-        if (nItems <= 0)
+        if (this->m_Config.m_Items.GetSize() <= 0)
         {
             bSafeCheck = false;
             return;

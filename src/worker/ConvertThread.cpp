@@ -13,7 +13,20 @@ DWORD WINAPI ConvertThread(LPVOID lpParam)
         CItemContext* pContext = NULL;
         try
         {
-            pContext = (CItemContext*)pWorkerContext->pQueue->RemoveHead();
+            DWORD dwWaitResult = ::WaitForSingleObject(pWorkerContext->hMutex, INFINITE);
+            switch (dwWaitResult)
+            {
+            case WAIT_OBJECT_0:
+                {
+                    pContext = (CItemContext*)pWorkerContext->pQueue->RemoveHead();
+                    if (!::ReleaseMutex(pWorkerContext->hMutex))
+                        return(0);
+                }
+                break;
+            case WAIT_ABANDONED:
+                return(0);
+            }
+
             if (pContext != NULL)
             {
                 if (pContext->pWorkerContext->nThreadCount > 1)
@@ -29,7 +42,7 @@ DWORD WINAPI ConvertThread(LPVOID lpParam)
                     if (pContext->pWorkerContext->pConfig->m_Options.bStopOnErrors == true)
                     {
                         delete pContext;
-                        return(1);
+                        return(0);
                     }
                 }
 

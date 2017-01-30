@@ -9,6 +9,7 @@
 CBatchEncoderWorkerContext::CBatchEncoderWorkerContext(CConfiguration* pConfig, CBatchEncoderDlg* pDlg)
     : CWorkerContext(pConfig)
 {
+    this->bDone = true;
     this->pDlg = pDlg;
 }
 
@@ -76,7 +77,7 @@ bool CBatchEncoderWorkerContext::Callback(int nItemId, int nProgress, bool bFini
         return this->bRunning;
     }
 
-    if (bFinished == false)
+    if (bFinished == false && this->bRunning == true)
     {
         pDlg->pWorkerContext->nProgess[nItemId] = nProgress;
 

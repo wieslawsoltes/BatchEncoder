@@ -9,10 +9,12 @@ class CWorkerContext
 {
 public:
     volatile bool bRunning;
+    volatile bool bDone;
     CConfiguration* pConfig;
 public:
     HANDLE hThread;
     DWORD dwThreadID;
+    HANDLE hMutex;
 public:
     volatile int nTotalFiles;
     volatile int nProcessedFiles;
