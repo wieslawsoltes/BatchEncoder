@@ -8,17 +8,10 @@
 
 enum Mode { None = -1, Encode = 0, Transcode = 1 };
 
-bool ConvertItem(CWorkerContext *pWorkerContext, CFormat &format, int nPreset, int nItemId, CString szInputFile, CString szOutputFile)
+void ToFileContext(CFileContext &context, CWorkerContext *pWorkerContext, CFormat &format, int nPreset, int nItemId, CString szInputFile, CString szOutputFile)
 {
-    if (nPreset >= format.m_Presets.GetSize())
-    {
-        pWorkerContext->Status(nItemId, _T("--:--"), _T("Error: can not find format preset."));
-        return false;
-    }
-
     CPreset& preset = format.m_Presets.GetData(nPreset);
 
-    CFileContext context;
     context.pWorkerContext = pWorkerContext;
     context.szInputFile = szInputFile;
     context.szOutputFile = szOutputFile;
@@ -50,18 +43,6 @@ bool ConvertItem(CWorkerContext *pWorkerContext, CFormat &format, int nPreset, i
     context.szFunction = format.szFunction;
     context.bUseReadPipes = format.bPipeInput;
     context.bUseWritePipes = format.bPipeOutput;
-
-    try
-    {
-        return ::ConvertFile(&context);
-    }
-    catch (...)
-    {
-        pWorkerContext->Status(nItemId, _T("--:--"), _T("Error: exception thrown while converting file."));
-        pWorkerContext->Callback(nItemId, -1, true, true);
-    }
-
-    return false;
 }
 
 bool ConvertItem(CItemContext* pContext)
@@ -145,19 +126,33 @@ bool ConvertItem(CItemContext* pContext)
 
         pContext->pWorkerContext->Status(pContext->item->nId, _T("--:--"), _T("Decoding..."));
 
-        bool bResult = ConvertItem(
-            pContext->pWorkerContext,
-            decoderFormat,
-            decoderFormat.nDefaultPreset,
-            pContext->item->nId,
-            szInputFile,
-            szOutputFile);
-        if (bResult == false)
+        if (decoderFormat.nDefaultPreset >= decoderFormat.m_Presets.GetSize())
+        {
+            pContext->pWorkerContext->Status(pContext->item->nId, _T("--:--"), _T("Error: can not find format preset."));
+            return false;
+        }
+
+        try
+        {
+            CFileContext context;
+            ToFileContext(context, pContext->pWorkerContext, decoderFormat, decoderFormat.nDefaultPreset, pContext->item->nId, szInputFile, szOutputFile);
+
+            bool bResult = ::ConvertFile(&context);
+            if (bResult == false)
+            {
+                if (pContext->pWorkerContext->pConfig->m_Options.bDeleteOnErrors == true)
+                    ::DeleteFile(szOutputFile);
+
+                return false;
+            }
+        }
+        catch (...)
         {
             if (pContext->pWorkerContext->pConfig->m_Options.bDeleteOnErrors == true)
                 ::DeleteFile(szOutputFile);
-
-            return false;
+            
+            pWorkerContext->Status(pContext->item->nId, _T("--:--"), _T("Error: exception thrown while converting file."));
+            pWorkerContext->Callback(pContext->item->nId, -1, true, true);
         }
     }
 
@@ -174,30 +169,47 @@ bool ConvertItem(CItemContext* pContext)
     {
         pContext->pWorkerContext->Status(pContext->item->nId, _T("--:--"), _T("Encoding..."));
 
-        bool bResult = ConvertItem(
-            pContext->pWorkerContext,
-            encoderFormat,
-            pContext->item->nPreset,
-            pContext->item->nId,
-            szInputFile,
-            szOutputFile);
-
-        if (nProcessingMode == Mode::Transcode)
-            ::DeleteFile(szInputFile);
-
-        if (bResult == true)
+        if (pContext->item->nPreset >= encoderFormat.m_Presets.GetSize())
         {
-            if (pContext->pWorkerContext->pConfig->m_Options.bDeleteSourceFiles == true)
-                ::DeleteFile(szOrgInputFile);
-
-            return true;
+            pContext->pWorkerContext->Status(pContext->item->nId, _T("--:--"), _T("Error: can not find format preset."));
+            return false;
         }
-        else
+
+        try
         {
+            CFileContext context;
+            ToFileContext(context, pContext->pWorkerContext, encoderFormat, pContext->item->nPreset, pContext->item->nId, szInputFile, szOutputFile);
+
+            bool bResult = ::ConvertFile(&context);
+
+            if (nProcessingMode == Mode::Transcode)
+                ::DeleteFile(szInputFile);
+
+            if (bResult == true)
+            {
+                if (pContext->pWorkerContext->pConfig->m_Options.bDeleteSourceFiles == true)
+                    ::DeleteFile(szOrgInputFile);
+
+                return true;
+            }
+            else
+            {
+                if (pContext->pWorkerContext->pConfig->m_Options.bDeleteOnErrors == true)
+                    ::DeleteFile(szOutputFile);
+
+                return false;
+            }
+        }
+        catch (...)
+        {
+            if (nProcessingMode == Mode::Transcode)
+                ::DeleteFile(szInputFile);
+            
             if (pContext->pWorkerContext->pConfig->m_Options.bDeleteOnErrors == true)
                 ::DeleteFile(szOutputFile);
-
-            return false;
+            
+            pWorkerContext->Status(pContext->item->nId, _T("--:--"), _T("Error: exception thrown while converting file."));
+            pWorkerContext->Callback(pContext->item->nId, -1, true, true);
         }
     }
 
