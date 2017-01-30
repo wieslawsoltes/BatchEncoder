@@ -9,9 +9,6 @@
 #include "..\XmlConfiguration.h"
 #include "FormatsDlg.h"
 
-#define FORMAT_COLUMN_NAME      0
-#define FORMAT_COLUMN_TEMPLATE  1
-
 IMPLEMENT_DYNAMIC(CFormatsDlg, CDialog)
 CFormatsDlg::CFormatsDlg(CWnd* pParent /*=NULL*/)
     : CResizeDialog(CFormatsDlg::IDD, pParent)
