@@ -8,43 +8,6 @@
 
 enum Mode { None = -1, Encode = 0, Transcode = 1 };
 
-void ToFileContext(CFileContext &context, CWorkerContext *pWorkerContext, CFormat &format, int nPreset, int nItemId, CString szInputFile, CString szOutputFile)
-{
-    CPreset& preset = format.m_Presets.GetData(nPreset);
-
-    context.pWorkerContext = pWorkerContext;
-    context.szInputFile = szInputFile;
-    context.szOutputFile = szOutputFile;
-
-    CString szExecute;
-    szExecute = format.szTemplate;
-    szExecute.Replace(_T("$EXE"), _T("\"$EXE\""));
-    szExecute.Replace(_T("$EXE"), format.szPath);
-    szExecute.Replace(_T("$OPTIONS"), preset.szOptions);
-
-    szExecute.Replace(_T("$INFILE"), _T("\"$INFILE\""));
-    if (format.bPipeInput == true)
-        szExecute.Replace(_T("$INFILE"), _T("-"));
-    else
-        szExecute.Replace(_T("$INFILE"), szInputFile);
-
-    szExecute.Replace(_T("$OUTFILE"), _T("\"$OUTFILE\""));
-    if (format.bPipeOutput == true)
-        szExecute.Replace(_T("$OUTFILE"), _T("-"));
-    else
-        szExecute.Replace(_T("$OUTFILE"), szOutputFile);
-
-    TCHAR szCommandLine[(64 * 1024)];
-    ZeroMemory(szCommandLine, sizeof(szCommandLine));
-    lstrcpy(szCommandLine, szExecute.GetBuffer(szExecute.GetLength()));
-    context.szCommandLine = szCommandLine;
-
-    context.nItemId = nItemId;
-    context.szFunction = format.szFunction;
-    context.bUseReadPipes = format.bPipeInput;
-    context.bUseWritePipes = format.bPipeOutput;
-}
-
 bool ConvertItem(CItemContext* pContext)
 {
     // input path
@@ -154,9 +117,7 @@ bool ConvertItem(CItemContext* pContext)
         pContext->pWorkerContext->Status(pContext->item->nId, _T("--:--"), _T("Decoding..."));
         try
         {
-            CFileContext context;
-            ToFileContext(context, pContext->pWorkerContext, decoderFormat, decoderFormat.nDefaultPreset, pContext->item->nId, szInputFile, szOutputFile);
-
+            CFileContext context(pContext->pWorkerContext, decoderFormat, decoderFormat.nDefaultPreset, pContext->item->nId, szInputFile, szOutputFile);
             if (::ConvertFile(&context) == false)
             {
                 if (pContext->pWorkerContext->pConfig->m_Options.bDeleteOnErrors == true)
@@ -189,9 +150,7 @@ bool ConvertItem(CItemContext* pContext)
         pContext->pWorkerContext->Status(pContext->item->nId, _T("--:--"), _T("Encoding..."));
         try
         {
-            CFileContext context;
-            ToFileContext(context, pContext->pWorkerContext, encoderFormat, pContext->item->nPreset, pContext->item->nId, szInputFile, szOutputFile);
-
+            CFileContext context(pContext->pWorkerContext, encoderFormat, pContext->item->nPreset, pContext->item->nId, szInputFile, szOutputFile);
             if (::ConvertFile(&context) == true)
             {
                 if (nProcessingMode == Mode::Transcode)
