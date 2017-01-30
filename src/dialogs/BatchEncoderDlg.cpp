@@ -11,14 +11,6 @@
 #include "FormatsDlg.h"
 #include "..\BatchEncoderWorkerContext.h"
 
-#define ITEM_COLUMN_NAME    0
-#define ITEM_COLUMN_INPUT   1
-#define ITEM_COLUMN_SIZE    2
-#define ITEM_COLUMN_OUTPUT  3
-#define ITEM_COLUMN_PRESET  4
-#define ITEM_COLUMN_TIME    5
-#define ITEM_COLUMN_STATUS  6
-
 #define WM_TRAY (WM_USER + 0x10)
 #define IDC_STATUSBAR 1500
 
