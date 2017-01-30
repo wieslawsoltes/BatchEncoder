@@ -51,6 +51,9 @@
     <ClCompile Include="BatchEncoder.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="BatchEncoderWorkerContext.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="XmlConfiguration.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -123,6 +126,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="BatchEncoder.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BatchEncoderWorkerContext.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="XmlConfiguration.h">
