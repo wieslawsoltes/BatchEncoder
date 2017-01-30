@@ -51,7 +51,7 @@ void CBatchEncoderWorkerContext::Done()
     this->nErrors = this->nProcessedFiles - this->nDoneWithoutError;
 
     CString szText;
-    szText.Format(_T("Converted %d of %d (%d Done, %d %s) in %s"),
+    szText.Format(_T("Processed %d of %d (%d Done, %d %s) in %s"),
         this->nProcessedFiles,
         this->nTotalFiles,
         this->nDoneWithoutError,
