@@ -3,6 +3,7 @@
 
 #include "StdAfx.h"
 #include "BatchEncoder.h"
+#include "utilities\Utilities.h"
 #include "BatchEncoderWorkerContext.h"
 
 void CBatchEncoderWorkerContext::Init()
