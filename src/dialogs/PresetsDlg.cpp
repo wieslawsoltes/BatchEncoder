@@ -9,9 +9,6 @@
 #include "..\XmlConfiguration.h"
 #include "PresetsDlg.h"
 
-#define PRESET_COLUMN_NAME      0
-#define PRESET_COLUMN_OPTIONS   1
-
 IMPLEMENT_DYNAMIC(CPresetsDlg, CDialog)
 CPresetsDlg::CPresetsDlg(CWnd* pParent /*=NULL*/)
     : CResizeDialog(CPresetsDlg::IDD, pParent)
