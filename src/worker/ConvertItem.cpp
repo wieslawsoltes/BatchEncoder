@@ -144,6 +144,13 @@ bool ConvertItem(CItemContext* pContext)
 
                 return false;
             }
+
+            // validate decoded file
+            if (FileExists(szOutputFile) == false)
+            {
+                pContext->pWorkerContext->Status(pContext->item->nId, _T("--:--"), _T("Error: can not find decoded file."));
+                return false;
+            }
         }
         catch (...)
         {
@@ -160,13 +167,6 @@ bool ConvertItem(CItemContext* pContext)
 
     if (nProcessingMode == Mode::Transcode)
     {
-        // validate decoded file
-        if (FileExists(szOutputFile) == false)
-        {
-            pContext->pWorkerContext->Status(pContext->item->nId, _T("--:--"), _T("Error: can not find decoded file."));
-            return false;
-        }
-
         // decoder output file as encoder input file
         szInputFile = szOutputFile;
 
@@ -182,6 +182,19 @@ bool ConvertItem(CItemContext* pContext)
             CFileContext context(pContext->pWorkerContext, encoderFormat, pContext->item->nPreset, pContext->item->nId, szInputFile, szOutputFile);
             if (::ConvertFile(&context) == true)
             {
+                // validate encoded file
+                if (FileExists(szOutputFile) == false)
+                {
+                    if (nProcessingMode == Mode::Transcode)
+                    {
+                        if (pContext->pWorkerContext->pConfig->m_Options.bDeleteOnErrors == true)
+                            ::DeleteFile(szInputFile);
+                    }
+
+                    pContext->pWorkerContext->Status(pContext->item->nId, _T("--:--"), _T("Error: can not find encoded file."));
+                    return false;
+                }
+                
                 if (nProcessingMode == Mode::Transcode)
                     ::DeleteFile(szInputFile);
 
