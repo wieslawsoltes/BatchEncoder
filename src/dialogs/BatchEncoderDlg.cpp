@@ -1992,6 +1992,7 @@ void CBatchEncoderDlg::StartConvert()
         if (this->m_Config.m_Items.GetSize() <= 0)
         {
             bSafeCheck = false;
+            this->pWorkerContext->bDone = false;
             return;
         }
 
@@ -2004,6 +2005,7 @@ void CBatchEncoderDlg::StartConvert()
                 {
                     MessageBox(_T("Unable to Create Output Path"), _T("ERROR"), MB_OK | MB_ICONERROR);
                     bSafeCheck = false;
+                    this->pWorkerContext->bDone = false;
                     return;
                 }
             }
@@ -2014,6 +2016,7 @@ void CBatchEncoderDlg::StartConvert()
         if (this->pWorkerContext->hThread == NULL)
         {
             MessageBox(_T("Fatal Error when Creating Thread"), _T("ERROR"), MB_OK | MB_ICONERROR);
+            this->pWorkerContext->bDone = false;
             bSafeCheck = false;
             return;
         }
