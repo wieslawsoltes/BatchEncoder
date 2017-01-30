@@ -58,7 +58,7 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
             pWorkerContext->nPreviousProgess[i] = 100;
         }
     }
-    
+
     pWorkerContext->nLastItemId = -1;
 
     for (int i = 0; i < nItems; i++)

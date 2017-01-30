@@ -17,12 +17,12 @@ DWORD WINAPI ConvertThread(LPVOID lpParam)
             switch (dwWaitResult)
             {
             case WAIT_OBJECT_0:
-                {
-                    pContext = (CItemContext*)pWorkerContext->pQueue->RemoveHead();
-                    if (!::ReleaseMutex(pWorkerContext->hMutex))
-                        return FALSE;
-                }
-                break;
+            {
+                pContext = (CItemContext*)pWorkerContext->pQueue->RemoveHead();
+                if (!::ReleaseMutex(pWorkerContext->hMutex))
+                    return FALSE;
+            }
+            break;
             case WAIT_ABANDONED:
                 return FALSE;
             }

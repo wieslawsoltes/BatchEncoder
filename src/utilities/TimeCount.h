@@ -8,11 +8,11 @@ class CTimeCount
 private:
     LARGE_INTEGER f[3];
 public:
-    CTimeCount(void) 
-    { 
+    CTimeCount(void)
+    {
     };
-    virtual ~CTimeCount(void) 
-    { 
+    virtual ~CTimeCount(void)
+    {
     };
 public:
     void Start(void)
