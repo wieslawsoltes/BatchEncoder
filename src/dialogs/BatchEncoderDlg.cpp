@@ -2024,8 +2024,18 @@ void CBatchEncoderDlg::StartConvert()
         m_BtnConvert.SetWindowText(_T("S&top"));
         this->GetMenu()->ModifyMenu(ID_ACTION_CONVERT, MF_BYCOMMAND, ID_ACTION_CONVERT, _T("S&top\tF9"));
 
-        this->ResetConvertionTime();
-        this->ResetConvertionStatus();
+        int nItems = m_LstInputItems.GetItemCount();
+        if (nItems > 0)
+        {
+            for (int i = 0; i < nItems; i++)
+            {
+                if (this->m_LstInputItems.GetCheck(i) == TRUE)
+                {
+                    this->m_LstInputItems.SetItemText(i, ITEM_COLUMN_TIME, _T("--:--"));
+                    this->m_LstInputItems.SetItemText(i, ITEM_COLUMN_STATUS, _T("Not Done"));
+                }
+            }
+        }
 
         this->pWorkerContext->bRunning = true;
 
