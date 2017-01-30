@@ -78,10 +78,6 @@ bool CBatchEncoderWorkerContext::Callback(int nItemId, int nProgress, bool bFini
 
     if (bFinished == false)
     {
-        CString szProgress;
-        szProgress.Format(_T("%d%%\0"), nProgress);
-        pDlg->m_LstInputItems.SetItemText(nItemId, ITEM_COLUMN_STATUS, szProgress); // Status
-
         pDlg->pWorkerContext->nProgess[nItemId] = nProgress;
 
         static volatile bool bSafeCheck = false;
@@ -100,7 +96,21 @@ bool CBatchEncoderWorkerContext::Callback(int nItemId, int nProgress, bool bFini
             for (int i = 0; i < nItems; i++)
             {
                 if (pDlg->pWorkerContext->pConfig->m_Items.GetData(i).bChecked == TRUE)
-                    nTotalProgress += pDlg->pWorkerContext->nProgess[i];
+                {
+                    int nItemProgress = pDlg->pWorkerContext->nProgess[i];
+                    int nItemPreviousProgress = pDlg->pWorkerContext->nPreviousProgess[i];
+
+                    nTotalProgress += nItemProgress;
+
+                    if (nItemProgress > 0 && nItemProgress < 100 && nItemProgress > nItemPreviousProgress)
+                    {
+                        CString szProgress;
+                        szProgress.Format(_T("%d%%\0"), nItemProgress);
+                        pDlg->m_LstInputItems.SetItemText(i, ITEM_COLUMN_STATUS, szProgress); // Status
+
+                        pDlg->pWorkerContext->nPreviousProgess[i] = nItemProgress;
+                    }
+                }
             }
 
             int nPos = nTotalProgress / pDlg->pWorkerContext->nTotalFiles;
