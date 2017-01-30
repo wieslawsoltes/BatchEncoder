@@ -6,7 +6,7 @@
 #include "utilities\Utilities.h"
 #include "BatchEncoderWorkerContext.h"
 
-CBatchEncoderWorkerContext::CBatchEncoderWorkerContext(CConfiguration* pConfig, CBatchEncoderDlg* pDlg) 
+CBatchEncoderWorkerContext::CBatchEncoderWorkerContext(CConfiguration* pConfig, CBatchEncoderDlg* pDlg)
     : CWorkerContext(pConfig)
 {
     this->pDlg = pDlg;

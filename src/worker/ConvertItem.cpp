@@ -66,7 +66,7 @@ bool ConvertItem(CItemContext* pContext)
         pContext->pWorkerContext->Status(pContext->item->nId, _T("--:--"), _T("Error: can not find encoder format preset."));
         return false;
     }
-    
+
     // validate input extension
     CString szInputFileExt = ::GetFileExtension(szInputFile).MakeUpper();
     bool bIsValidEncoderInput = encoderFormat.IsValidInputExtension(szInputFileExt);
@@ -157,7 +157,7 @@ bool ConvertItem(CItemContext* pContext)
         {
             if (pContext->pWorkerContext->pConfig->m_Options.bDeleteOnErrors == true)
                 ::DeleteFile(szOutputFile);
-            
+
             pContext->pWorkerContext->Status(pContext->item->nId, _T("--:--"), _T("Error: exception thrown while converting file."));
             pContext->pWorkerContext->Callback(pContext->item->nId, -1, true, true);
         }
@@ -195,7 +195,7 @@ bool ConvertItem(CItemContext* pContext)
                     pContext->pWorkerContext->Status(pContext->item->nId, _T("--:--"), _T("Error: can not find encoded file."));
                     return false;
                 }
-                
+
                 if (nProcessingMode == Mode::Transcode)
                     ::DeleteFile(szInputFile);
 
@@ -219,10 +219,10 @@ bool ConvertItem(CItemContext* pContext)
         {
             if (nProcessingMode == Mode::Transcode)
                 ::DeleteFile(szInputFile);
-            
+
             if (pContext->pWorkerContext->pConfig->m_Options.bDeleteOnErrors == true)
                 ::DeleteFile(szOutputFile);
-            
+
             pContext->pWorkerContext->Status(pContext->item->nId, _T("--:--"), _T("Error: exception thrown while converting file."));
             pContext->pWorkerContext->Callback(pContext->item->nId, -1, true, true);
         }
