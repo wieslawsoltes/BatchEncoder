@@ -12,13 +12,12 @@
 
 class CBatchEncoderWorkerContext : public CWorkerContext
 {
+private:
     CTimeCount timer;
     CBatchEncoderDlg *pDlg;
 public:
-    CBatchEncoderWorkerContext(CConfiguration* pConfig, CBatchEncoderDlg* pDlg) : CWorkerContext(pConfig)
-    {
-        this->pDlg = pDlg;
-    }
+    CBatchEncoderWorkerContext(CConfiguration* pConfig, CBatchEncoderDlg* pDlg);
+    virtual ~CBatchEncoderWorkerContext();
 public:
     void Init();
     void Next(int nItemId);
