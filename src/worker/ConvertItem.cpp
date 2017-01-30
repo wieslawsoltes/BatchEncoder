@@ -50,6 +50,17 @@ bool ConvertItem(CItemContext* pContext)
     // input path
     CString szInputFile = pContext->item->szPath;
 
+    // validate input path
+    WIN32_FIND_DATA lpFindFileData;
+    HANDLE hFind = ::FindFirstFile(szInputFile, &lpFindFileData);
+    if (hFind == INVALID_HANDLE_VALUE)
+    {
+        pContext->pWorkerContext->Status(pContext->item->nId, _T("--:--"), _T("Error: can not find input file."));
+        ::FindClose(hFind);
+        return false;
+    }
+    ::FindClose(hFind);
+
     // output path
     CString szOutPath;
     if (pContext->pWorkerContext->pConfig->m_Options.bOutputPathChecked == true)
@@ -63,7 +74,7 @@ bool ConvertItem(CItemContext* pContext)
         szOutPath.Truncate(szOutPath.GetLength() - szInputFileName.GetLength());
     }
 
-    // output format
+    // find encoder
     int nEncoder = pContext->pWorkerContext->pConfig->m_Formats.GetFormatById(pContext->item->szFormatId);
     if (nEncoder == -1)
     {
@@ -73,7 +84,14 @@ bool ConvertItem(CItemContext* pContext)
 
     CFormat& encoderFormat = pContext->pWorkerContext->pConfig->m_Formats.GetData(nEncoder);
 
-    // check input extensions
+    // validate encoder preset
+    if (pContext->item->nPreset >= encoderFormat.m_Presets.GetSize())
+    {
+        pContext->pWorkerContext->Status(pContext->item->nId, _T("--:--"), _T("Error: can not find encoder format preset."));
+        return false;
+    }
+    
+    // validate input extension
     CString szInputFileExt = ::GetFileExtension(szInputFile).MakeUpper();
     bool bIsValidEncoderInput = encoderFormat.IsValidInputExtension(szInputFileExt);
 
@@ -105,6 +123,7 @@ bool ConvertItem(CItemContext* pContext)
 
     if (nProcessingMode == Mode::Transcode)
     {
+        // find decoder
         int nDecoder = pContext->pWorkerContext->pConfig->m_Formats.GetDecoderByExtension(pContext->item->szExtension);
         if (nDecoder == -1)
         {
@@ -114,6 +133,14 @@ bool ConvertItem(CItemContext* pContext)
 
         CFormat& decoderFormat = pContext->pWorkerContext->pConfig->m_Formats.GetData(nDecoder);
 
+        // validate decoder preset
+        if (decoderFormat.nDefaultPreset >= decoderFormat.m_Presets.GetSize())
+        {
+            pContext->pWorkerContext->Status(pContext->item->nId, _T("--:--"), _T("Error: can not find decoder format preset."));
+            return false;
+        }
+
+        // validate decoder output extension
         bIsValidEncoderInput = encoderFormat.IsValidInputExtension(decoderFormat.szOutputExtension);
         if (bIsValidEncoderInput == false)
         {
@@ -125,20 +152,12 @@ bool ConvertItem(CItemContext* pContext)
         szOutputFile = szOutputFile + +_T(".") + szDecoderExtension.MakeLower();
 
         pContext->pWorkerContext->Status(pContext->item->nId, _T("--:--"), _T("Decoding..."));
-
-        if (decoderFormat.nDefaultPreset >= decoderFormat.m_Presets.GetSize())
-        {
-            pContext->pWorkerContext->Status(pContext->item->nId, _T("--:--"), _T("Error: can not find format preset."));
-            return false;
-        }
-
         try
         {
             CFileContext context;
             ToFileContext(context, pContext->pWorkerContext, decoderFormat, decoderFormat.nDefaultPreset, pContext->item->nId, szInputFile, szOutputFile);
 
-            bool bResult = ::ConvertFile(&context);
-            if (bResult == false)
+            if (::ConvertFile(&context) == false)
             {
                 if (pContext->pWorkerContext->pConfig->m_Options.bDeleteOnErrors == true)
                     ::DeleteFile(szOutputFile);
@@ -168,25 +187,16 @@ bool ConvertItem(CItemContext* pContext)
     if ((nProcessingMode == Mode::Encode) || (nProcessingMode == Mode::Transcode))
     {
         pContext->pWorkerContext->Status(pContext->item->nId, _T("--:--"), _T("Encoding..."));
-
-        if (pContext->item->nPreset >= encoderFormat.m_Presets.GetSize())
-        {
-            pContext->pWorkerContext->Status(pContext->item->nId, _T("--:--"), _T("Error: can not find format preset."));
-            return false;
-        }
-
         try
         {
             CFileContext context;
             ToFileContext(context, pContext->pWorkerContext, encoderFormat, pContext->item->nPreset, pContext->item->nId, szInputFile, szOutputFile);
 
-            bool bResult = ::ConvertFile(&context);
-
-            if (nProcessingMode == Mode::Transcode)
-                ::DeleteFile(szInputFile);
-
-            if (bResult == true)
+            if (::ConvertFile(&context) == true)
             {
+                if (nProcessingMode == Mode::Transcode)
+                    ::DeleteFile(szInputFile);
+
                 if (pContext->pWorkerContext->pConfig->m_Options.bDeleteSourceFiles == true)
                     ::DeleteFile(szOrgInputFile);
 
@@ -194,6 +204,9 @@ bool ConvertItem(CItemContext* pContext)
             }
             else
             {
+                if (nProcessingMode == Mode::Transcode)
+                    ::DeleteFile(szInputFile);
+
                 if (pContext->pWorkerContext->pConfig->m_Options.bDeleteOnErrors == true)
                     ::DeleteFile(szOutputFile);
 
