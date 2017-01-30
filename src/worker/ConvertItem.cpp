@@ -8,21 +8,26 @@
 
 enum Mode { None = -1, Encode = 0, Transcode = 1 };
 
+bool FileExists(CString szPath)
+{
+    WIN32_FIND_DATA lpFindFileData;
+    HANDLE hFind = ::FindFirstFile(szPath, &lpFindFileData);
+    bool bInvalidHandle = hFind == INVALID_HANDLE_VALUE;
+    ::FindClose(hFind);
+    return bInvalidHandle == false;
+}
+
 bool ConvertItem(CItemContext* pContext)
 {
-    // input path
+    // input file
     CString szInputFile = pContext->item->szPath;
 
-    // validate input path
-    WIN32_FIND_DATA lpFindFileData;
-    HANDLE hFind = ::FindFirstFile(szInputFile, &lpFindFileData);
-    if (hFind == INVALID_HANDLE_VALUE)
+    // validate input file
+    if (FileExists(szInputFile) == false)
     {
         pContext->pWorkerContext->Status(pContext->item->nId, _T("--:--"), _T("Error: can not find input file."));
-        ::FindClose(hFind);
         return false;
     }
-    ::FindClose(hFind);
 
     // output path
     CString szOutPath;
@@ -46,6 +51,13 @@ bool ConvertItem(CItemContext* pContext)
     }
 
     CFormat& encoderFormat = pContext->pWorkerContext->pConfig->m_Formats.GetData(nEncoder);
+
+    // validate encoder executable
+    if (FileExists(encoderFormat.szPath) == false)
+    {
+        pContext->pWorkerContext->Status(pContext->item->nId, _T("--:--"), _T("Error: can not find encoder executable."));
+        return false;
+    }
 
     // validate encoder preset
     if (pContext->item->nPreset >= encoderFormat.m_Presets.GetSize())
@@ -96,6 +108,13 @@ bool ConvertItem(CItemContext* pContext)
 
         CFormat& decoderFormat = pContext->pWorkerContext->pConfig->m_Formats.GetData(nDecoder);
 
+        // validate decoder executable
+        if (FileExists(decoderFormat.szPath) == false)
+        {
+            pContext->pWorkerContext->Status(pContext->item->nId, _T("--:--"), _T("Error: can not find decoder executable."));
+            return false;
+        }
+
         // validate decoder preset
         if (decoderFormat.nDefaultPreset >= decoderFormat.m_Presets.GetSize())
         {
@@ -141,7 +160,17 @@ bool ConvertItem(CItemContext* pContext)
 
     if (nProcessingMode == Mode::Transcode)
     {
+        // validate decoded file
+        if (FileExists(szOutputFile) == false)
+        {
+            pContext->pWorkerContext->Status(pContext->item->nId, _T("--:--"), _T("Error: can not find decoded file."));
+            return false;
+        }
+
+        // decoder output file as encoder input file
         szInputFile = szOutputFile;
+
+        // original encoder output file
         szOutputFile = szOrgOutputFile;
     }
 
