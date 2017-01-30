@@ -8,6 +8,9 @@
 #include "..\controls\Controls.h"
 #include "..\Configuration.h"
 
+#define FORMAT_COLUMN_NAME      0
+#define FORMAT_COLUMN_TEMPLATE  1
+
 class CFormatsDlg : public CResizeDialog
 {
     DECLARE_DYNAMIC(CFormatsDlg)
