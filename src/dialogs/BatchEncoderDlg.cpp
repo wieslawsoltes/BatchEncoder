@@ -1561,19 +1561,20 @@ int CBatchEncoderDlg::AddToItems(CString szPath)
     if (m_Config.m_Formats.GetSize() > 0)
         szFormatId = m_Config.m_Formats.GetData(nFormat).szId;
 
-    WIN32_FIND_DATA lpFindFileData;
+    WIN32_FIND_DATA w32FileData;
     HANDLE hFind;
     ULARGE_INTEGER ulSize;
     ULONGLONG nFileSize;
 
-    hFind = ::FindFirstFile(szPath, &lpFindFileData);
+    ZeroMemory(&w32FileData, sizeof(WIN32_FIND_DATA));
+    hFind = ::FindFirstFile(szPath, &w32FileData);
     if (hFind == INVALID_HANDLE_VALUE)
         return -1;
 
     ::FindClose(hFind);
 
-    ulSize.HighPart = lpFindFileData.nFileSizeHigh;
-    ulSize.LowPart = lpFindFileData.nFileSizeLow;
+    ulSize.HighPart = w32FileData.nFileSizeHigh;
+    ulSize.LowPart = w32FileData.nFileSizeLow;
     nFileSize = ulSize.QuadPart;
 
     CString szFileSize;

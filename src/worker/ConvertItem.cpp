@@ -10,8 +10,9 @@ enum Mode { None = -1, Encode = 0, Transcode = 1 };
 
 bool FileExists(CString szPath)
 {
-    WIN32_FIND_DATA lpFindFileData;
-    HANDLE hFind = ::FindFirstFile(szPath, &lpFindFileData);
+    WIN32_FIND_DATA w32FileData;
+    ZeroMemory(&w32FileData, sizeof(WIN32_FIND_DATA));
+    HANDLE hFind = ::FindFirstFile(szPath, &w32FileData);
     bool bInvalidHandle = hFind == INVALID_HANDLE_VALUE;
     ::FindClose(hFind);
     return bInvalidHandle == false;
