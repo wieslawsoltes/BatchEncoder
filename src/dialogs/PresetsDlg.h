@@ -8,6 +8,9 @@
 #include "..\controls\Controls.h"
 #include "..\Configuration.h"
 
+#define PRESET_COLUMN_NAME      0
+#define PRESET_COLUMN_OPTIONS   1
+
 class CPresetsDlg : public CResizeDialog
 {
     DECLARE_DYNAMIC(CPresetsDlg)
