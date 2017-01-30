@@ -151,8 +151,8 @@ bool ConvertItem(CItemContext* pContext)
             if (pContext->pWorkerContext->pConfig->m_Options.bDeleteOnErrors == true)
                 ::DeleteFile(szOutputFile);
             
-            pWorkerContext->Status(pContext->item->nId, _T("--:--"), _T("Error: exception thrown while converting file."));
-            pWorkerContext->Callback(pContext->item->nId, -1, true, true);
+            pContext->pWorkerContext->Status(pContext->item->nId, _T("--:--"), _T("Error: exception thrown while converting file."));
+            pContext->pWorkerContext->Callback(pContext->item->nId, -1, true, true);
         }
     }
 
@@ -208,8 +208,8 @@ bool ConvertItem(CItemContext* pContext)
             if (pContext->pWorkerContext->pConfig->m_Options.bDeleteOnErrors == true)
                 ::DeleteFile(szOutputFile);
             
-            pWorkerContext->Status(pContext->item->nId, _T("--:--"), _T("Error: exception thrown while converting file."));
-            pWorkerContext->Callback(pContext->item->nId, -1, true, true);
+            pContext->pWorkerContext->Status(pContext->item->nId, _T("--:--"), _T("Error: exception thrown while converting file."));
+            pContext->pWorkerContext->Callback(pContext->item->nId, -1, true, true);
         }
     }
 
