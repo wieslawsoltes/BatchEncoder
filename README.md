@@ -21,34 +21,12 @@ BatchEncoder is an audio files conversion software.
 
 ### Download BatchEncoder
 
-NOTE: Version 1.0 is in the works, please download latest CI server builds.
-
 | Platforn              | Type        | Version       | Download                                                                                                                               |
 |-----------------------|-------------|---------------|----------------------------------------------------------------------------------------------------------------------------------------|
 | Windows 32-bit        | Installer   | 1.0           | [BatchEncoder-1.0-Win32.exe](https://github.com/wieslawsoltes/BatchEncoder/releases/download/1.0/BatchEncoder-1.0-Win32.exe)           |
 | Windows 64-bit        | Installer   | 1.0           | [BatchEncoder-1.0-x64.exe](https://github.com/wieslawsoltes/BatchEncoder/releases/download/1.0/BatchEncoder-1.0-x64.exe)               |
 | Windows 32-bit        | Portable    | 1.0           | [BatchEncoder-1.0-Win32.zip](https://github.com/wieslawsoltes/BatchEncoder/releases/download/1.0/BatchEncoder-1.0-Win32.zip)           |
 | Windows 64-bit        | Portable    | 1.0           | [BatchEncoder-1.0-x64.zip](https://github.com/wieslawsoltes/BatchEncoder/releases/download/1.0/BatchEncoder-1.0-x64.zip)               |
-
-You can also download bleeding edge builds from the CI server:
-
-#### Debug Builds
-
-| Platform              | Type        | Download                                                                                                                                                          |
-|-----------------------|-------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Windows 32-bit        | Installer   | [BatchEncoder-1.0-alpha-Win32-(Debug).exe](https://ci.appveyor.com/api/projects/wieslawsoltes/batchencoder/artifacts/artifacts/BatchEncoder-1.0-alpha-Win32-(Debug).exe)      |
-| Windows 64-bit        | Installer   | [BatchEncoder-1.0-alpha-x64-(Debug).exe](https://ci.appveyor.com/api/projects/wieslawsoltes/batchencoder-3gv5t/artifacts/artifacts/BatchEncoder-1.0-alpha-x64-(Debug).exe)    |
-| Windows 32-bit        | Portable    | [BatchEncoder-1.0-alpha-Win32-(Debug).zip](https://ci.appveyor.com/api/projects/wieslawsoltes/BatchEncoder/artifacts/artifacts/BatchEncoder-1.0-alpha-Win32-(Debug).zip)      |
-| Windows 64-bit        | Portable    | [BatchEncoder-1.0-alpha-x64-(Debug).zip](https://ci.appveyor.com/api/projects/wieslawsoltes/batchencoder-3gv5t/artifacts/artifacts/BatchEncoder-1.0-alpha-x64-(Debug).zip)    |
-
-#### Release Builds
-
-| Platform              | Type        | Download                                                                                                                                                          |
-|-----------------------|-------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Windows 32-bit        | Installer   | [BatchEncoder-1.0-alpha-Win32.exe](https://ci.appveyor.com/api/projects/wieslawsoltes/batchencoder-y606d/artifacts/artifacts/BatchEncoder-1.0-alpha-Win32.exe)                |
-| Windows 64-bit        | Installer   | [BatchEncoder-1.0-alpha-x64.exe](https://ci.appveyor.com/api/projects/wieslawsoltes/batchencoder-1fq40/artifacts/artifacts/BatchEncoder-1.0-alpha-x64.exe)                    |
-| Windows 64-bit        | Portable    | [BatchEncoder-1.0-alpha-x64.zip](https://ci.appveyor.com/api/projects/wieslawsoltes/batchencoder-1fq40/artifacts/artifacts/BatchEncoder-1.0-alpha-x64.zip)                    |
-| Windows 32-bit        | Portable    | [BatchEncoder-1.0-alpha-Win32.zip](https://ci.appveyor.com/api/projects/wieslawsoltes/batchencoder-y606d/artifacts/artifacts/BatchEncoder-1.0-alpha-Win32.zip)                |
 
 ## About
 
@@ -60,10 +38,10 @@ adds input and output file paths. For specific options for each format use help 
 
 ## Features
 
-* Graphical user interface for command-line tools.
-* Supported are most popular audio formats.
-* Supported file transcoding between audio formats.
-* Support for multi-threaded conversion.
+* Front-end for command-line tools.
+* Supports popular audio formats.
+* File transcoding between audio formats.
+* Multi-threaded conversion.
 * Out of the box configuration for new users.
 * Advanced options for experienced users.
 * Open-source, fast and simple.
