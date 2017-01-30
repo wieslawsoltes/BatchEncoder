@@ -35,7 +35,7 @@ DWORD WINAPI ReadThread(LPVOID lpParam)
     {
         pContext->bError = true;
         pContext->bFinished = true;
-        return(1);
+        return FALSE;
     }
 
     nFileSize = ::GetFileSize64(hFile);
@@ -44,7 +44,7 @@ DWORD WINAPI ReadThread(LPVOID lpParam)
         pContext->bError = true;
         pContext->bFinished = true;
         ::CloseHandle(hFile);
-        return(1);
+        return FALSE;
     }
 
     // read/write loop
@@ -93,5 +93,5 @@ DWORD WINAPI ReadThread(LPVOID lpParam)
 
     pContext->bError = false;
     pContext->bFinished = true;
-    return(0);
+    return TRUE;
 }

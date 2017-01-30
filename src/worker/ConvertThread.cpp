@@ -20,11 +20,11 @@ DWORD WINAPI ConvertThread(LPVOID lpParam)
                 {
                     pContext = (CItemContext*)pWorkerContext->pQueue->RemoveHead();
                     if (!::ReleaseMutex(pWorkerContext->hMutex))
-                        return(0);
+                        return FALSE;
                 }
                 break;
             case WAIT_ABANDONED:
-                return(0);
+                return FALSE;
             }
 
             if (pContext != NULL)
@@ -42,14 +42,14 @@ DWORD WINAPI ConvertThread(LPVOID lpParam)
                     if (pContext->pWorkerContext->pConfig->m_Options.bStopOnErrors == true)
                     {
                         delete pContext;
-                        return(0);
+                        return FALSE;
                     }
                 }
 
                 if (pContext->pWorkerContext->bRunning == false)
                 {
                     delete pContext;
-                    return(0);
+                    return FALSE;
                 }
 
                 delete pContext;
@@ -61,5 +61,5 @@ DWORD WINAPI ConvertThread(LPVOID lpParam)
                 delete pContext;
         }
     }
-    return(0);
+    return TRUE;
 }
