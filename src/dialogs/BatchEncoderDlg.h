@@ -108,9 +108,15 @@ public:
     afx_msg void OnOptionsDoNotSave();
     afx_msg void OnOptionsDeleteOnErrors();
     afx_msg void OnOptionsStopOnErrors();
+    afx_msg void OnLanguageDefault();
+    afx_msg void OnLanguageChange(UINT nID);
     afx_msg void OnHelpWebsite();
     afx_msg void OnHelpAbout();
 public:
+    void SetColumnText(CListCtrl& listCtrl, int nCol, CString& text);
+    void SetLanguage();
+    bool LoadLanguages(CString szPath);
+    void LoadLanguages();
     void GetItems();
     void SetItems();
     void GetOptions();
