@@ -53,13 +53,6 @@ bool ConvertItem(CItemContext* pContext)
 
     CFormat& encoderFormat = pContext->pWorkerContext->pConfig->m_Formats.GetData(nEncoder);
 
-    // validate encoder executable
-    if (FileExists(encoderFormat.szPath) == false)
-    {
-        pContext->pWorkerContext->Status(pContext->item->nId, _T("--:--"), _T("Error: can not find encoder executable."));
-        return false;
-    }
-
     // validate encoder preset
     if (pContext->item->nPreset >= encoderFormat.m_Presets.GetSize())
     {
@@ -108,13 +101,6 @@ bool ConvertItem(CItemContext* pContext)
         }
 
         CFormat& decoderFormat = pContext->pWorkerContext->pConfig->m_Formats.GetData(nDecoder);
-
-        // validate decoder executable
-        if (FileExists(decoderFormat.szPath) == false)
-        {
-            pContext->pWorkerContext->Status(pContext->item->nId, _T("--:--"), _T("Error: can not find decoder executable."));
-            return false;
-        }
 
         // validate decoder preset
         if (decoderFormat.nDefaultPreset >= decoderFormat.m_Presets.GetSize())
