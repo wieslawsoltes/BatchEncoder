@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<Language id="en-US" original="English" translated="English">
+
+    <!-- File Menu -->
+
+    <String key="0x00010001" value="&amp;File"/>
+    <String key="0x00010002" value="&amp;Load List...&#09;Ctrl+L"/>
+    <String key="0x00010003" value="&amp;Save List...&#09;Ctrl+S"/>
+
+    <!-- Edit Menu -->
+
+    <String key="0x00020001" value="&amp;Edit"/>
+    <String key="0x00020002" value="&amp;Add Files...&#09;F5"/>
+    <String key="0x00020003" value="Add Dire&amp;ctory...&#09;F6"/>
+
+    <!-- Action Menu -->
+
+    <!-- Options Menu -->
+
+    <!-- Language Menu -->
+
+    <!-- Help Menu -->
+
+    <!-- Status Menu -->
+
+    <!-- Main Dialog -->
+
+    <!-- Presets Dialog -->
+
+    <!-- Formats Dialog -->
+
+    <!-- Error Messages -->
+
+</Language>
+

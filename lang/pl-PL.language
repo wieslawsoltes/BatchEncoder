@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<Language id="pl-PL" original="Polish" translated="Polski">
+
+    <!-- File Menu -->
+
+    <String key="0x00010001" value="&amp;Plik"/>
+    <String key="0x00010002" value="O&amp;twórz Listę...&#09;Ctrl+L"/>
+    <String key="0x00010003" value="Z&amp;apisz Listę...&#09;Ctrl+S"/>
+
+    <!-- Edit Menu -->
+
+    <String key="0x00020001" value="&amp;Edycja"/>
+    <String key="0x00020002" value="&amp;Dodaj Pliki...&#09;F5"/>
+    <String key="0x00020003" value="Dodaj &amp;Folder...&#09;F6"/>
+
+    <!-- Action Menu -->
+
+    <!-- Options Menu -->
+
+    <!-- Language Menu -->
+
+    <!-- Help Menu -->
+
+    <!-- Status Menu -->
+
+    <!-- Main Dialog -->
+
+    <!-- Presets Dialog -->
+
+    <!-- Formats Dialog -->
+
+    <!-- Error Messages -->
+
+</Language>
