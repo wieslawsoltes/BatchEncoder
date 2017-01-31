@@ -37,4 +37,3 @@ public:
         this->m_Items = other.m_Items;
     }
 };
-
