@@ -108,7 +108,6 @@ public:
     }
     int GetDecoderByExtension(CString szExt)
     {
-        szExt.MakeUpper();
         int nFormats = this->GetSize();
         for (int i = 0; i < nFormats; i++)
         {
