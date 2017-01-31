@@ -15,9 +15,11 @@ public:
     CFormatsList m_Formats;
     CItemsList m_Items;
     CLanguagesList m_Languages;
+    CLanguage* pLanguage;
 public:
     CConfiguration()
     {
+        this->pLanguage = NULL;
     }
     CConfiguration(const CConfiguration &other)
     {
@@ -38,5 +40,16 @@ public:
         this->m_Formats = other.m_Formats;
         this->m_Items = other.m_Items;
         this->m_Languages = other.m_Languages;
+        this->pLanguage = NULL;
+    }
+public:
+    bool LookupLanguageString(int nKey, CString &rValue)
+    {
+        if (this->pLanguage != NULL)
+        {
+            if (this->pLanguage->m_Strings.m_Map.Lookup(nKey, rValue) == TRUE)
+                return true;
+        }
+        return false;
     }
 };
