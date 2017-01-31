@@ -74,7 +74,7 @@ void XmlConfiguration::GetOptions(tinyxml2::XMLElement *pOptionsElem, COptions &
     if (pOptionElem)
     {
         const char *tmpBuff = pOptionElem->GetText();
-        m_Options.bOutputPathChecked = ToCString(tmpBuff).Compare(_T("true")) == 0;
+        m_Options.bOutputPathChecked = ToCString(tmpBuff).CompareNoCase(_T("true")) == 0;
     }
     else
     {
@@ -86,7 +86,7 @@ void XmlConfiguration::GetOptions(tinyxml2::XMLElement *pOptionsElem, COptions &
     if (pOptionElem)
     {
         const char *tmpBuff = pOptionElem->GetText();
-        m_Options.bDeleteSourceFiles = ToCString(tmpBuff).Compare(_T("true")) == 0;
+        m_Options.bDeleteSourceFiles = ToCString(tmpBuff).CompareNoCase(_T("true")) == 0;
     }
     else
     {
@@ -98,7 +98,7 @@ void XmlConfiguration::GetOptions(tinyxml2::XMLElement *pOptionsElem, COptions &
     if (pOptionElem)
     {
         const char *tmpBuff = pOptionElem->GetText();
-        m_Options.bRecurseChecked = ToCString(tmpBuff).Compare(_T("true")) == 0;
+        m_Options.bRecurseChecked = ToCString(tmpBuff).CompareNoCase(_T("true")) == 0;
     }
     else
     {
@@ -110,7 +110,7 @@ void XmlConfiguration::GetOptions(tinyxml2::XMLElement *pOptionsElem, COptions &
     if (pOptionElem)
     {
         const char *tmpBuff = pOptionElem->GetText();
-        m_Options.bShutdownWhenFinished = ToCString(tmpBuff).Compare(_T("true")) == 0;
+        m_Options.bShutdownWhenFinished = ToCString(tmpBuff).CompareNoCase(_T("true")) == 0;
     }
     else
     {
@@ -122,7 +122,7 @@ void XmlConfiguration::GetOptions(tinyxml2::XMLElement *pOptionsElem, COptions &
     if (pOptionElem)
     {
         const char *tmpBuff = pOptionElem->GetText();
-        m_Options.bDoNotSaveConfiguration = ToCString(tmpBuff).Compare(_T("true")) == 0;
+        m_Options.bDoNotSaveConfiguration = ToCString(tmpBuff).CompareNoCase(_T("true")) == 0;
     }
     else
     {
@@ -182,7 +182,7 @@ void XmlConfiguration::GetOptions(tinyxml2::XMLElement *pOptionsElem, COptions &
     if (pOptionElem)
     {
         const char *tmpBuff = pOptionElem->GetText();
-        m_Options.bDeleteOnErrors = ToCString(tmpBuff).Compare(_T("true")) == 0;
+        m_Options.bDeleteOnErrors = ToCString(tmpBuff).CompareNoCase(_T("true")) == 0;
     }
     else
     {
@@ -194,7 +194,7 @@ void XmlConfiguration::GetOptions(tinyxml2::XMLElement *pOptionsElem, COptions &
     if (pOptionElem)
     {
         const char *tmpBuff = pOptionElem->GetText();
-        m_Options.bStopOnErrors = ToCString(tmpBuff).Compare(_T("true")) == 0;
+        m_Options.bStopOnErrors = ToCString(tmpBuff).CompareNoCase(_T("true")) == 0;
     }
     else
     {

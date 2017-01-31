@@ -586,11 +586,11 @@ void CFormatsDlg::OnClose()
 void CFormatsDlg::LoadWindowSettings()
 {
     // set window rectangle and position
-    if (szFormatsDialogResize.Compare(_T("")) != 0)
+    if (szFormatsDialogResize.CompareNoCase(_T("")) != 0)
         this->SetWindowRectStr(szFormatsDialogResize);
 
     // load columns width for FormatsList
-    if (szFormatsListColumns.Compare(_T("")) != 0)
+    if (szFormatsListColumns.CompareNoCase(_T("")) != 0)
     {
         int nColWidth[2];
         if (_stscanf(szFormatsListColumns, _T("%d %d"),

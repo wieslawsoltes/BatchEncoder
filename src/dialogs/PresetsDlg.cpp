@@ -408,11 +408,11 @@ void CPresetsDlg::OnClose()
 void CPresetsDlg::LoadWindowSettings()
 {
     // set window rectangle and position
-    if (szPresetsDialogResize.Compare(_T("")) != 0)
+    if (szPresetsDialogResize.CompareNoCase(_T("")) != 0)
         this->SetWindowRectStr(szPresetsDialogResize);
 
     // load columns width for PresetsList
-    if (szPresetsListColumns.Compare(_T("")) != 0)
+    if (szPresetsListColumns.CompareNoCase(_T("")) != 0)
     {
         int nColWidth[2];
         if (_stscanf(szPresetsListColumns, _T("%d %d"),

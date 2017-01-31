@@ -97,13 +97,11 @@ public:
 public:
     int GetFormatById(CString szFormatId)
     {
-        szFormatId.MakeUpper();
         int nFormats = this->GetSize();
         for (int i = 0; i < nFormats; i++)
         {
             CFormat& format = this->GetData(i);
-            CString id = format.szId;
-            if (szFormatId.Compare(id.MakeUpper()) == 0)
+            if (szFormatId.CompareNoCase(format.szId) == 0)
                 return i;
         }
         return -1;

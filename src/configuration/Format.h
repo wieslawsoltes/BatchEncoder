@@ -58,13 +58,11 @@ public:
 public:
     bool IsValidInputExtension(CString szExt)
     {
-        szExt.MakeUpper();
-
         int nTokenPos = 0;
         CString strToken = this->szInputExtensions.Tokenize(szExtensionsTokens, nTokenPos);
         while (!strToken.IsEmpty())
         {
-            if (strToken.MakeUpper().Compare(szExt) == 0)
+            if (strToken.CompareNoCase(szExt) == 0)
                 return true;
 
             strToken = this->szInputExtensions.Tokenize(szExtensionsTokens, nTokenPos);

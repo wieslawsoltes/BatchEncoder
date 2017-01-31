@@ -547,7 +547,7 @@ void CBatchEncoderDlg::OnLvnItemchangedListInputItems(NMHDR *pNMHDR, LRESULT *pR
                     if (m_Config.m_Formats.GetSize() > 0)
                     {
                         CFormat& format = m_Config.m_Formats.GetData(this->m_CmbFormat.GetCurSel());
-                        if (item.szFormatId.Compare(format.szId) == 0)
+                        if (item.szFormatId.CompareNoCase(format.szId) == 0)
                         {
                             format.nDefaultPreset = item.nPreset;
                             this->m_CmbPresets.SetCurSel(item.nPreset);
@@ -1379,7 +1379,7 @@ void CBatchEncoderDlg::SetOptions()
     // option: SelectedFormat
 
     // option: OutputPath
-    if (m_Config.m_Options.szOutputPath.Compare(_T("")) != 0)
+    if (m_Config.m_Options.szOutputPath.CompareNoCase(_T("")) != 0)
     {
         this->m_EdtOutPath.SetWindowText(m_Config.m_Options.szOutputPath);
         szLastBrowse = m_Config.m_Options.szOutputPath;
@@ -1447,13 +1447,13 @@ void CBatchEncoderDlg::SetOptions()
     m_EdtThreads.SetWindowText(szThreadCount);
 
     // option: MainWindowResize
-    if (m_Config.m_Options.szMainWindowResize.Compare(_T("")) != 0)
+    if (m_Config.m_Options.szMainWindowResize.CompareNoCase(_T("")) != 0)
     {
         this->SetWindowRectStr(m_Config.m_Options.szMainWindowResize);
     }
 
     // option: FileListColumns
-    if (m_Config.m_Options.szFileListColumns.Compare(_T("")) != 0)
+    if (m_Config.m_Options.szFileListColumns.CompareNoCase(_T("")) != 0)
     {
         int nColWidth[7];
         if (_stscanf(m_Config.m_Options.szFileListColumns, _T("%d %d %d %d %d %d %d"),
@@ -1632,13 +1632,13 @@ void CBatchEncoderDlg::AddToList(CItem &item, int nItem)
     m_LstInputItems.SetItemText(lvi.iItem, ITEM_COLUMN_PRESET, lvi.pszText);
 
     // [Time] : encoder/decoder conversion time
-    tmpBuf.Format(_T("%s"), (item.szTime.Compare(_T("")) == 0) ? _T("--:--") : item.szTime);
+    tmpBuf.Format(_T("%s"), (item.szTime.CompareNoCase(_T("")) == 0) ? _T("--:--") : item.szTime);
     lvi.iSubItem = ITEM_COLUMN_TIME;
     lvi.pszText = (LPTSTR)(LPCTSTR)(tmpBuf);
     m_LstInputItems.SetItemText(lvi.iItem, ITEM_COLUMN_TIME, lvi.pszText);
 
     // [Status] : encoder/decoder progress status
-    tmpBuf.Format(_T("%s"), (item.szStatus.Compare(_T("")) == 0) ? _T("Not Done") : item.szStatus);
+    tmpBuf.Format(_T("%s"), (item.szStatus.CompareNoCase(_T("")) == 0) ? _T("Not Done") : item.szStatus);
     lvi.iSubItem = ITEM_COLUMN_STATUS;
     lvi.pszText = (LPTSTR)(LPCTSTR)(tmpBuf);
     m_LstInputItems.SetItemText(lvi.iItem, ITEM_COLUMN_STATUS, lvi.pszText);
