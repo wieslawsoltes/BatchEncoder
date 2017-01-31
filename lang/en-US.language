@@ -1,6 +1,8 @@
 ﻿<?xml version="1.0" encoding="UTF-8" ?>
 <Language id="en-US" original="English" translated="English">
 
+    <!-- Miscellaneous 0x00000001-->
+
     <!-- File Menu -->
 
     <String key="0x00010001" value="&amp;File"/>
@@ -15,21 +17,30 @@
 
     <!-- Action Menu -->
 
+    <String key="0x00030001" value="&amp;Action"/>
+
     <!-- Options Menu -->
+
+    <String key="0x00040001" value="&amp;Options"/>
 
     <!-- Language Menu -->
 
+    <String key="0x00050001" value="&amp;Language"/>
+
     <!-- Help Menu -->
 
-    <!-- Status Menu -->
+    <String key="0x00060001" value="&amp;Help"/>
 
-    <!-- Main Dialog -->
+    <!-- Status Menu 0x00070001 -->
 
-    <!-- Presets Dialog -->
+    <!-- Main Dialog 0x000A0001 -->
 
-    <!-- Formats Dialog -->
+    <!-- Presets Dialog 0x000B0001 -->
 
-    <!-- Error Messages -->
+    <!-- Formats Dialog 0x000C0001 -->
+
+    <!-- About Dialog 0x000D0001 -->
+
+    <!-- Error Messages 0x000F0001 -->
 
 </Language>
-

@@ -1372,6 +1372,28 @@ void CBatchEncoderDlg::SetLanguage()
     if (m_Config.LookupLanguageString(0x00020003, rValue))
         m_hMenu->ModifyMenuW(ID_EDIT_ADDDIR, 0, ID_EDIT_ADDDIR, rValue);
 
+    // TODO:
+
+    // Action
+    if (m_Config.LookupLanguageString(0x00030001, rValue))
+        m_hMenu->ModifyMenuW(2, MF_STRING | MF_BYPOSITION, 2, rValue);
+
+    // Options
+    if (m_Config.LookupLanguageString(0x00040001, rValue))
+        m_hMenu->ModifyMenuW(3, MF_STRING | MF_BYPOSITION, 3, rValue);
+
+    // TODO:
+
+    // Language
+    if (m_Config.LookupLanguageString(0x00050001, rValue))
+        m_hMenu->ModifyMenuW(4, MF_STRING | MF_BYPOSITION, 4, rValue);
+
+    // TODO:
+
+    // Help
+    if (m_Config.LookupLanguageString(0x00060001, rValue))
+        m_hMenu->ModifyMenuW(5, MF_STRING | MF_BYPOSITION, 5, rValue);
+
     // TODO: 
 
     this->DrawMenuBar();

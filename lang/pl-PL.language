@@ -1,6 +1,8 @@
 ﻿<?xml version="1.0" encoding="UTF-8" ?>
 <Language id="pl-PL" original="Polish" translated="Polski">
 
+    <!-- Miscellaneous -->
+
     <!-- File Menu -->
 
     <String key="0x00010001" value="&amp;Plik"/>
@@ -15,11 +17,19 @@
 
     <!-- Action Menu -->
 
+    <String key="0x00030001" value="&amp;Akcja"/>
+
     <!-- Options Menu -->
+
+    <String key="0x00040001" value="&amp;Opcje"/>
 
     <!-- Language Menu -->
 
+    <String key="0x00050001" value="&amp;Język"/>
+
     <!-- Help Menu -->
+
+    <String key="0x00060001" value="Pomo&amp;c"/>
 
     <!-- Status Menu -->
 
@@ -28,6 +38,8 @@
     <!-- Presets Dialog -->
 
     <!-- Formats Dialog -->
+
+    <!-- About Dialog -->
 
     <!-- Error Messages -->
 
