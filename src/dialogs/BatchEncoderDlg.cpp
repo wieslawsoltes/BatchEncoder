@@ -367,8 +367,8 @@ BOOL CBatchEncoderDlg::OnInitDialog()
     {
         this->LoadFormats(this->szFormatsFile);
         this->LoadOptions(this->szOptionsFile);
-        this->LoadLanguages(::GetExeFilePath());
-        this->LoadLanguages();
+        this->SearchFolderForLanguages(::GetExeFilePath());
+        this->SetLanguageMenu();
         this->SetLanguage();
         this->LoadItems(this->szItemsFile);
     }
@@ -1335,6 +1335,109 @@ void CBatchEncoderDlg::OnHelpAbout()
     }
 }
 
+bool CBatchEncoderDlg::SearchFolderForLanguages(CString szFile)
+{
+    try
+    {
+        WIN32_FIND_DATA w32FileData;
+        HANDLE hSearch = NULL;
+        BOOL fFinished = FALSE;
+        TCHAR cTempBuf[(MAX_PATH * 2) + 1];
+
+        ZeroMemory(&w32FileData, sizeof(WIN32_FIND_DATA));
+        ZeroMemory(cTempBuf, MAX_PATH * 2);
+
+        szFile.TrimRight(_T("\\"));
+        szFile.TrimRight(_T("/"));
+        wsprintf(cTempBuf, _T("%s\\*.language\0"), szFile);
+
+        hSearch = FindFirstFile(cTempBuf, &w32FileData);
+        if (hSearch == INVALID_HANDLE_VALUE)
+            return false;
+
+        while (fFinished == FALSE)
+        {
+            if (w32FileData.cFileName[0] != '.' &&
+                !(w32FileData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) != 0)
+            {
+                CString szFileXml;
+                szFileXml.Format(_T("%s\\%s\0"), szFile, w32FileData.cFileName);
+
+                XmlConfiguration doc;
+                if (doc.Open(szFileXml) == true)
+                {
+                    CLanguage language;
+                    doc.GetLanguage(language);
+                    this->m_Config.m_Languages.InsertNode(language);
+                }
+            }
+
+            if (FindNextFile(hSearch, &w32FileData) == FALSE)
+            {
+                if (GetLastError() == ERROR_NO_MORE_FILES)
+                    fFinished = TRUE;
+                else
+                    return false;
+            }
+        }
+
+        if (FindClose(hSearch) == FALSE)
+            return false;
+    }
+    catch (...)
+    {
+        MessageBox(_T("Error while searching for language files!"), _T("ERROR"), MB_OK | MB_ICONERROR);
+    }
+
+    return true;
+}
+
+void CBatchEncoderDlg::SetLanguageMenu()
+{
+    CMenu *m_hMenu = this->GetMenu();
+    CMenu *m_hLangMenu = m_hMenu->GetSubMenu(4);
+
+    int nLanguages = m_Config.m_Languages.GetSize();
+    if (nLanguages > 0 && nLanguages <= (ID_LANGUAGE_MAX - ID_LANGUAGE_MIN))
+    {
+        m_hLangMenu->DeleteMenu(ID_LANGUAGE_DEFAULT, 0);
+
+        for (int i = 0; i < nLanguages; i++)
+        {
+            CLanguage language = m_Config.m_Languages.GetData(i);
+
+            CString szBuff;
+            szBuff.Format(_T("%s (%s)"), language.szOriginalName, language.szTranslatedName);
+
+            UINT nLangID = ID_LANGUAGE_MIN + i;
+            m_hLangMenu->AppendMenu(MF_STRING, nLangID, szBuff);
+            m_hLangMenu->CheckMenuItem(nLangID, MF_UNCHECKED);
+        }
+
+        int nSelectedLanguage = m_Config.m_Languages.GetLanguageById(m_Config.m_Options.szSelectedLanguage);
+        if (nSelectedLanguage >= 0)
+        {
+            m_hLangMenu->CheckMenuItem(ID_LANGUAGE_MIN + nSelectedLanguage, MF_CHECKED);
+
+            CLanguage& language = m_Config.m_Languages.GetData(nSelectedLanguage);
+            m_Config.pLanguage = &language;
+        }
+        else
+        {
+            m_hLangMenu->CheckMenuItem(ID_LANGUAGE_MIN, MF_CHECKED);
+
+            CLanguage& language = m_Config.m_Languages.GetData(0);
+            m_Config.m_Options.szSelectedLanguage = language.szId;
+            m_Config.pLanguage = &language;
+        }
+    }
+    else
+    {
+        m_hLangMenu->CheckMenuItem(ID_LANGUAGE_DEFAULT, MF_CHECKED);
+        m_hLangMenu->EnableMenuItem(ID_LANGUAGE_DEFAULT, MF_DISABLED);
+    }
+}
+
 void CBatchEncoderDlg::SetColumnText(CListCtrl& listCtrl, int nCol, CString& text)
 {
     LVCOLUMN lvCol;
@@ -1397,110 +1500,6 @@ void CBatchEncoderDlg::SetLanguage()
     // TODO: 
 
     this->DrawMenuBar();
-}
-
-bool CBatchEncoderDlg::LoadLanguages(CString szFile)
-{
-    try
-    {
-        WIN32_FIND_DATA w32FileData;
-        HANDLE hSearch = NULL;
-        BOOL fFinished = FALSE;
-        TCHAR cTempBuf[(MAX_PATH * 2) + 1];
-
-        ZeroMemory(&w32FileData, sizeof(WIN32_FIND_DATA));
-        ZeroMemory(cTempBuf, MAX_PATH * 2);
-
-        szFile.TrimRight(_T("\\"));
-        szFile.TrimRight(_T("/"));
-        wsprintf(cTempBuf, _T("%s\\*.language\0"), szFile);
-
-        hSearch = FindFirstFile(cTempBuf, &w32FileData);
-        if (hSearch == INVALID_HANDLE_VALUE)
-            return false;
-
-        while (fFinished == FALSE)
-        {
-            if (w32FileData.cFileName[0] != '.' &&
-                !(w32FileData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) != 0)
-            {
-                CString szFileXml;
-                szFileXml.Format(_T("%s\\%s\0"), szFile, w32FileData.cFileName);
-
-                XmlConfiguration doc;
-                if (doc.Open(szFileXml) == true)
-                {
-                    CLanguage language;
-                    doc.GetLanguage(language);
-                    this->m_Config.m_Languages.InsertNode(language);
-                }
-            }
-
-            if (FindNextFile(hSearch, &w32FileData) == FALSE)
-            {
-                if (GetLastError() == ERROR_NO_MORE_FILES)
-                    fFinished = TRUE;
-                else
-                    return false;
-            }
-        }
-
-        if (FindClose(hSearch) == FALSE)
-            return false;
-    }
-    catch (...)
-    {
-        MessageBox(_T("Error while searching for language files!"), _T("ERROR"), MB_OK | MB_ICONERROR);
-    }
-
-    return true;
-}
-
-void CBatchEncoderDlg::LoadLanguages()
-{
-    CMenu *m_hMenu = this->GetMenu();
-    CMenu *m_hLangMenu = m_hMenu->GetSubMenu(4);
-
-    int nLanguages = m_Config.m_Languages.GetSize();
-    if (nLanguages > 0 && nLanguages <= (ID_LANGUAGE_MAX - ID_LANGUAGE_MIN))
-    {
-        m_hLangMenu->DeleteMenu(ID_LANGUAGE_DEFAULT, 0);
-
-        for (int i = 0; i < nLanguages; i++)
-        {
-            CLanguage language = m_Config.m_Languages.GetData(i);
-
-            CString szBuff;
-            szBuff.Format(_T("%s (%s)"), language.szOriginalName, language.szTranslatedName);
-
-            UINT nLangID = ID_LANGUAGE_MIN + i;
-            m_hLangMenu->AppendMenu(MF_STRING, nLangID, szBuff);
-            m_hLangMenu->CheckMenuItem(nLangID, MF_UNCHECKED);
-        }
-
-        int nSelectedLanguage = m_Config.m_Languages.GetLanguageById(m_Config.m_Options.szSelectedLanguage);
-        if (nSelectedLanguage >= 0)
-        {
-            m_hLangMenu->CheckMenuItem(ID_LANGUAGE_MIN + nSelectedLanguage, MF_CHECKED);
-
-            CLanguage& language = m_Config.m_Languages.GetData(nSelectedLanguage);
-            m_Config.pLanguage = &language;
-        }
-        else
-        {
-            nSelectedLanguage = 0;
-            m_hLangMenu->CheckMenuItem(ID_LANGUAGE_MIN, MF_CHECKED);
-
-            CLanguage& language = m_Config.m_Languages.GetData(nSelectedLanguage);
-            m_Config.m_Options.szSelectedLanguage = language.szId;
-            m_Config.pLanguage = &language;
-        }
-    }
-    else
-    {
-        m_hLangMenu->CheckMenuItem(ID_LANGUAGE_DEFAULT, MF_CHECKED);
-        m_hLangMenu->EnableMenuItem(ID_LANGUAGE_DEFAULT, MF_DISABLED);
-    }
 }
 
 void CBatchEncoderDlg::GetItems()

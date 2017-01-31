@@ -113,10 +113,10 @@ public:
     afx_msg void OnHelpWebsite();
     afx_msg void OnHelpAbout();
 public:
+    bool SearchFolderForLanguages(CString szPath);
+    void SetLanguageMenu();
     void SetColumnText(CListCtrl& listCtrl, int nCol, CString& text);
     void SetLanguage();
-    bool LoadLanguages(CString szPath);
-    void LoadLanguages();
     void GetItems();
     void SetItems();
     void GetOptions();
