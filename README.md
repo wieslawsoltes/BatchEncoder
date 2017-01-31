@@ -46,6 +46,8 @@ adds input and output file paths. For specific options for each format use help 
 * Supports popular audio formats.
 * File transcoding between audio formats.
 * Multi-threaded conversion.
+* Full UNICODE support.
+* Multi-language user interface.
 * Out of the box configuration for new users.
 * Advanced options for experienced users.
 * Open-source, fast and simple.
