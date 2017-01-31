@@ -200,17 +200,17 @@ IDR_MENU_BATCHENCODER MENU
 BEGIN
     POPUP "&File"
     BEGIN
-        MENUITEM "&Load items...\tCtrl+L",      ID_FILE_LOADLIST
-        MENUITEM "&Save items...\tCtrl+S",      ID_FILE_SAVELIST
+        MENUITEM "&Load List...\tCtrl+L",      ID_FILE_LOADLIST
+        MENUITEM "&Save List...\tCtrl+S",      ID_FILE_SAVELIST
         MENUITEM SEPARATOR
-        MENUITEM "Cl&ear items\tCtrl+E",        ID_FILE_CLEARLIST
+        MENUITEM "Cl&ear Items\tCtrl+E",        ID_FILE_CLEARLIST
         MENUITEM SEPARATOR
         MENUITEM "E&xit\tAlt+F4",               ID_FILE_EXIT
     END
     POPUP "&Edit"
     BEGIN
-        MENUITEM "&Add Files\tF5",              ID_EDIT_ADDFILES
-        MENUITEM "Add Dire&ctory\tF6",          ID_EDIT_ADDDIR
+        MENUITEM "&Add Files...\tF5",           ID_EDIT_ADDFILES
+        MENUITEM "Add Dire&ctory...\tF6",       ID_EDIT_ADDDIR
         MENUITEM SEPARATOR
         MENUITEM "Rena&me\tF2",                 ID_EDIT_RENAME
         MENUITEM SEPARATOR
@@ -230,8 +230,8 @@ BEGIN
         MENUITEM "Select &None\tCtrl+N",        ID_EDIT_SELECTNONE
         MENUITEM "&Invert Selection\tCtrl+I",   ID_EDIT_INVERTSELECTION
         MENUITEM SEPARATOR
-        MENUITEM "&Open File",                  ID_EDIT_OPEN
-        MENUITEM "Open &Directory",             ID_EDIT_EXPLORE
+        MENUITEM "&Open File...",               ID_EDIT_OPEN
+        MENUITEM "Open &Directory...",          ID_EDIT_EXPLORE
     END
     POPUP "&Action"
     BEGIN
@@ -239,22 +239,26 @@ BEGIN
     END
     POPUP "&Options"
     BEGIN
-        MENUITEM "Configure &presets...\tF7",   ID_OPTIONS_CONFIGUREPRESETS
-        MENUITEM "Configure &formats...\tF8",   ID_OPTIONS_CONFIGUREFORMAT
+        MENUITEM "Configure &Presets...\tF7",   ID_OPTIONS_CONFIGUREPRESETS
+        MENUITEM "Configure &Formats...\tF8",   ID_OPTIONS_CONFIGUREFORMAT
         MENUITEM SEPARATOR
-        MENUITEM "&Delete source file when done", ID_OPTIONS_DELETE_SOURCE
+        MENUITEM "&Delete Source File When Done", ID_OPTIONS_DELETE_SOURCE
         MENUITEM SEPARATOR
-        MENUITEM "&Shutdown when finished",     ID_OPTIONS_SHUTDOWN_WINDOWS
+        MENUITEM "&Shutdown When Finished",     ID_OPTIONS_SHUTDOWN_WINDOWS
         MENUITEM SEPARATOR
-        MENUITEM "Do not save configuration on e&xit", ID_OPTIONS_DO_NOT_SAVE
+        MENUITEM "Do Not Save Configuration On E&xit", ID_OPTIONS_DO_NOT_SAVE
         MENUITEM SEPARATOR
-        MENUITEM "Delete &output file on error", ID_OPTIONS_DELETE_ON_ERRORS
+        MENUITEM "Delete &Output File On Error", ID_OPTIONS_DELETE_ON_ERRORS
         MENUITEM SEPARATOR
-        MENUITEM "Stop &conversion on error",   ID_OPTIONS_STOP_ON_ERRORS
+        MENUITEM "Stop &Conversion On Error",   ID_OPTIONS_STOP_ON_ERRORS
+    END
+    POPUP "&Language"
+    BEGIN
+        MENUITEM "&Default (English)",          ID_LANGUAGE_DEFAULT, CHECKED
     END
     POPUP "&Help"
     BEGIN
-        MENUITEM "&Website",                    ID_HELP_WEBSITE
+        MENUITEM "&Website...",                    ID_HELP_WEBSITE
         MENUITEM SEPARATOR
         MENUITEM "&About...",                   ID_HELP_ABOUT
     END

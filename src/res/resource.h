@@ -125,13 +125,14 @@
 #define ID_ACCELERATOR_F9               32856
 #define ID_ACCELERATOR_F7               32857
 #define ID_ACCELERATOR_F8               32858
+#define ID_LANGUAGE_DEFAULT             32860
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        109
-#define _APS_NEXT_COMMAND_VALUE         32859
+#define _APS_NEXT_COMMAND_VALUE         32870
 #define _APS_NEXT_CONTROL_VALUE         1091
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
