@@ -216,6 +216,14 @@ Default template format order is `$EXE $OPTIONS $INFILE $OUTFILE`.
 
 You can also add custom options (additional command-line parameters) and text inside the `template` string.
 
+### Type, input and output extensions
+
+BatchEncoder does support file trans-coding. To enable this you have to configure proper `Decoder` formats.
+
+BatchEncoder will chech input file extensions and if `Encoder` format `Input extensions` (multiple extension are supported,
+separated by comma `,` e.g.: WAV,WV,CAF,W64,DFF,DSF, but only one `Output extension` e.g. WV) does not match the input file extension 
+than BatchEncoder will search for `Decoder` that does support this input file extension. 
+
 ### Pipes configuration
 
 Pipes configuration provides information to BatchEncoder whether the command-line tool has support 
