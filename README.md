@@ -192,6 +192,35 @@ Default template format order is `$EXE $OPTIONS $INFILE $OUTFILE`.
 
 You can also add custom options (additional command-line parameters) and text inside the `template` string.
 
+### Pipes configuration
+
+Pipes configuration provides information to BatchEncoder whether the command-line tool has support 
+to read/write data from/to stdin/stdout pipes.
+
+* The input pipe means that encoder/decoder can directly read dat  from stdin and does not need input file name.
+* The output pipe means that encoder/decoder can directly write data to stdout and does not need output file name.
+* When encoder/decoder supports input pipe BatchEncoder reads file data and streams this data into encoder/decoder input pipe (stdin).
+* When encoder/decoder supports output pipe BatchEncoder writes data to a file using encoder/decoder output pipe stream (stdout).
+* Usually you can specify pipe support in command-line options by using "-" instead of input/output file name.
+
+The input pipes support allows BatchEncoder to get current progress status by counting read bytes, 
+instead of relying on console text output (this is done by reading encoder/decoder stderr pipe output). 
+
+To get console output BatchEncoder is parsing text read from stderr pipe and uses provided GetProgress function
+for specific tool. The are cases when stderr output is delayed by tool (stderr pipe buffer is not flushed).
+
+Also when you want to do more complicated operations like transscoding you can for example connect pipes 
+between one encoder output (stdout) and others decoder input (stdin). 
+
+The best case scenario is when encoder/decoder tool does support both input and output pipes, this gives BatchEncoder more 
+control over encoding/decoding and trans-coding processes, also in case of trans-coding you do not need temporary files 
+as data can be streamed between tools directly without temporary storage and in result you can get much better performance.
+
+Unfortunately not all command-line tools support pipes, some only support stdin pipes (mainly encoders) 
+and some support only stdout pipes (mainly decoders). In this cases BatchEncoder depending on pipes 
+input/output and progress function configuration selects best possible option to do conversion process. 
+Sometimes you will not get nice progress during conversion, nonetheless you will successfully convert files.
+
 ### Default configuration files
 
 https://github.com/wieslawsoltes/BatchEncoder/tree/master/config
