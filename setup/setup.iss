@@ -48,6 +48,7 @@ Name: main; Description: Main Program; Types: full compact custom
 Name: docs; Description: Documents; Types: full
 Name: config; Description: Configuration; Types: full compact
 Name: progress; Description: Progress Functions; Types: full compact
+Name: lang; Description: Languages; Types: full compact
 Name: scripts; Description: Scripts; Types: full
 
 [Tasks]
@@ -64,6 +65,7 @@ Source: {#BasePath}\config\*.options; DestDir: {app}; Flags: ignoreversion; Comp
 Source: {#BasePath}\config\*.formats; DestDir: {app}; Flags: ignoreversion; Components: config
 Source: {#BasePath}\config\*.items; DestDir: {app}; Flags: ignoreversion; Components: config
 Source: {#BasePath}\src\bin\{#ProgramConfiguration}\{#ProgramBuild}\*.progress; DestDir: {app}; Flags: ignoreversion; Components: progress
+Source: {#BasePath}\lang\*.language; DestDir: {app}; Flags: ignoreversion; Components: lang
 Source: {#BasePath}\scripts\*.ps1; DestDir: {app}; Flags: ignoreversion; Components: scripts
 
 [INI]

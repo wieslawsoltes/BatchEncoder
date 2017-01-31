@@ -10,4 +10,7 @@
 #include "configuration\FormatsList.h"
 #include "configuration\Item.h"
 #include "configuration\ItemsList.h"
+#include "configuration\StringsMap.h"
+#include "configuration\Language.h"
+#include "configuration\LanguagesList.h"
 #include "configuration\Configuration.h"

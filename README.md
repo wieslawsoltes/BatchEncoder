@@ -174,12 +174,17 @@ Files extensions:
 * .presets - Predefined format presets
 * .items - Input file items
 * .progress - Compiled progress function into windows DLL
+* .language - Language translation strings
 
 Use only UTF-8 compatible text editors (e.g. Notepad) to edit xml configuration files.
 
 ### Default configuration files
 
 https://github.com/wieslawsoltes/BatchEncoder/tree/master/config
+
+### Default language files
+
+https://github.com/wieslawsoltes/BatchEncoder/tree/master/lang
 
 ## Format specification
 

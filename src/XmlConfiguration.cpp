@@ -45,6 +45,18 @@ void XmlConfiguration::GetOptions(tinyxml2::XMLElement *pOptionsElem, COptions &
 {
     tinyxml2::XMLElement *pOptionElem;
 
+    // option: SelectedLanguage
+    pOptionElem = pOptionsElem->FirstChildElement("SelectedLanguage");
+    if (pOptionElem)
+    {
+        const char *tmpBuff = pOptionElem->GetText();
+        m_Options.szSelectedLanguage = ToCString(tmpBuff);
+    }
+    else
+    {
+        m_Options.szSelectedLanguage = _T("");
+    }
+
     // option: SelectedFormat
     pOptionElem = pOptionsElem->FirstChildElement("SelectedFormat");
     if (pOptionElem)
@@ -218,6 +230,12 @@ void XmlConfiguration::SetOptions(tinyxml2::XMLElement *pOptionsElem, COptions &
 {
     tinyxml2::XMLElement *pOptionElem;
     CUtf8String szBuffUtf8;
+
+    // option: SelectedLanguage
+    pOptionElem = this->NewElement("SelectedLanguage");
+    pOptionElem->LinkEndChild(this->NewText(szBuffUtf8.Create(m_Options.szSelectedLanguage)));
+    pOptionsElem->LinkEndChild(pOptionElem);
+    szBuffUtf8.Clear();
 
     // option: SelectedFormat
     CString szSelectedFormat;
@@ -627,6 +645,107 @@ void XmlConfiguration::SetItems(tinyxml2::XMLElement *pItemsElem, CItemsList &m_
     }
 }
 
+void XmlConfiguration::GetLanguage(tinyxml2::XMLElement *pLanguageElem, CLanguage &m_Language)
+{
+    const char *pszId = pLanguageElem->Attribute("id");
+    if (pszId != NULL)
+    {
+        m_Language.szId = ToCString(pszId);
+    }
+
+    const char *pszOriginal = pLanguageElem->Attribute("original");
+    if (pszOriginal != NULL)
+    {
+        m_Language.szOriginalName = ToCString(pszOriginal);
+    }
+
+    const char *pszTranslated = pLanguageElem->Attribute("translated");
+    if (pszTranslated != NULL)
+    {
+        m_Language.szTranslatedName = ToCString(pszTranslated);
+    }
+
+    tinyxml2::XMLElement *pStringElem = pLanguageElem->FirstChildElement("String");
+    for (pStringElem; pStringElem; pStringElem = pStringElem->NextSiblingElement())
+    {
+        int nKey;
+        CString szValue;
+
+        const char *pszKey = pStringElem->Attribute("key");
+        if (pszKey != NULL)
+        {
+            _stscanf(ToCString(pszKey), _T("%x"), &nKey);
+        }
+
+        const char *pszValue = pStringElem->Attribute("value");
+        if (pszValue != NULL)
+        {
+            szValue = ToCString(pszValue);
+        }
+
+        m_Language.m_Strings.InsertNode(nKey, szValue);
+    }
+}
+
+void XmlConfiguration::SetLanguage(tinyxml2::XMLElement *pLanguageElem, CLanguage &m_Language)
+{
+    CUtf8String szBuffUtf8;
+
+    pLanguageElem->SetAttribute("id", szBuffUtf8.Create(m_Language.szId));
+    szBuffUtf8.Clear();
+
+    pLanguageElem->SetAttribute("original", szBuffUtf8.Create(m_Language.szOriginalName));
+    szBuffUtf8.Clear();
+
+    pLanguageElem->SetAttribute("translated", szBuffUtf8.Create(m_Language.szTranslatedName));
+    szBuffUtf8.Clear();
+
+    tinyxml2::XMLElement *pStringElem;
+    POSITION pos = m_Language.m_Strings.m_Map.GetStartPosition();
+    int nKey;
+    while (pos != NULL)
+    {
+        CString rValue;
+        m_Language.m_Strings.m_Map.GetNextAssoc(pos, nKey, rValue);
+
+        CString szKey;
+        szKey.Format(_T("%X"), nKey);
+
+        pStringElem = this->NewElement("String");
+
+        pStringElem->SetAttribute("key", szBuffUtf8.Create(szKey));
+        szBuffUtf8.Clear();
+
+        pStringElem->SetAttribute("value", szBuffUtf8.Create(rValue));
+        szBuffUtf8.Clear();
+
+        pLanguageElem->LinkEndChild(pStringElem);
+    }
+}
+
+void XmlConfiguration::GetLanguages(tinyxml2::XMLElement *pLanguagesElem, CLanguagesList &m_Languages)
+{
+    tinyxml2::XMLElement *pLanguageElem = pLanguagesElem->FirstChildElement("Language");
+    for (pLanguageElem; pLanguageElem; pLanguageElem = pLanguageElem->NextSiblingElement())
+    {
+        CLanguage language;
+        this->GetLanguage(pLanguageElem, language);
+        m_Languages.InsertNode(language);
+    }
+}
+
+void XmlConfiguration::SetLanguages(tinyxml2::XMLElement *pLanguagesElem, CLanguagesList &m_Languages)
+{
+    int nLanguages = m_Languages.GetSize();
+    for (int i = 0; i < nLanguages; i++)
+    {
+        CLanguage& language = m_Languages.GetData(i);
+        tinyxml2::XMLElement *pLanguageElem = this->NewElement("Language");
+        this->SetLanguage(pLanguageElem, language);
+        pLanguagesElem->LinkEndChild(pLanguageElem);
+    }
+}
+
 void XmlConfiguration::GetOptions(COptions &m_Options)
 {
     tinyxml2::XMLElement *pOptionsElem = this->FirstChildElement("Options");
@@ -725,6 +844,46 @@ void XmlConfiguration::SetItems(CItemsList &m_Items)
     this->LinkEndChild(pItemsElem);
 
     this->SetItems(pItemsElem, m_Items);
+}
+
+void XmlConfiguration::GetLanguage(CLanguage &m_Language)
+{
+    tinyxml2::XMLElement *pLanguageElem = this->FirstChildElement("Language");
+    if (pLanguageElem != NULL)
+    {
+        this->GetLanguage(pLanguageElem, m_Language);
+    }
+}
+
+void XmlConfiguration::SetLanguage(CLanguage &m_Language)
+{
+    tinyxml2::XMLDeclaration* decl = this->NewDeclaration(UTF8_DOCUMENT_DECLARATION);
+    this->LinkEndChild(decl);
+
+    tinyxml2::XMLElement *pLanguageElem = this->NewElement("Language");
+    this->LinkEndChild(pLanguageElem);
+
+    this->SetLanguage(pLanguageElem, m_Language);
+}
+
+void XmlConfiguration::GetLanguages(CLanguagesList &m_Languages)
+{
+    tinyxml2::XMLElement *pLanguagesElem = this->FirstChildElement("Languages");
+    if (pLanguagesElem != NULL)
+    {
+        this->GetLanguages(pLanguagesElem, m_Languages);
+    }
+}
+
+void XmlConfiguration::SetLanguages(CLanguagesList &m_Languages)
+{
+    tinyxml2::XMLDeclaration* decl = this->NewDeclaration(UTF8_DOCUMENT_DECLARATION);
+    this->LinkEndChild(decl);
+
+    tinyxml2::XMLElement *pLanguagesElem = this->NewElement("Languages");
+    this->LinkEndChild(pLanguagesElem);
+
+    this->SetLanguages(pLanguagesElem, m_Languages);
 }
 
 bool XmlConfiguration::Open(CString szFileName)

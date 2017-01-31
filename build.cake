@@ -81,6 +81,7 @@ var packageBinariesAction = new Action<string,string> ((configuration, platform)
     CopyFiles("./config/*.options", outputDir);
     CopyFiles("./config/*.formats", outputDir);
     CopyFiles("./config/*.items", outputDir);
+    CopyFiles("./lang/*.language", outputDir);
     CopyFiles("./scripts/*.ps1", outputDir);
     Zip(outputDir, outputZip);
 });

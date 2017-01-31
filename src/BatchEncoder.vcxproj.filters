@@ -158,6 +158,15 @@
     <ClInclude Include="configuration\PresetsList.h">
       <Filter>Header Files\Configuration</Filter>
     </ClInclude>
+    <ClInclude Include="configuration\Language.h">
+      <Filter>Header Files\Configuration</Filter>
+    </ClInclude>
+    <ClInclude Include="configuration\LanguagesList.h">
+      <Filter>Header Files\Configuration</Filter>
+    </ClInclude>
+    <ClInclude Include="configuration\StringsMap.h">
+      <Filter>Header Files\Configuration</Filter>
+    </ClInclude>
     <ClInclude Include="Configuration.h">
       <Filter>Header Files</Filter>
     </ClInclude>

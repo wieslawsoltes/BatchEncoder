@@ -132,7 +132,8 @@
     <PostBuildEvent>
       <Command>copy /-Y ..\config\*.options $(OutDir)
 copy /-Y ..\config\*.formats $(OutDir)
-copy /-Y ..\config\*.items $(OutDir)</Command>
+copy /-Y ..\config\*.items $(OutDir)
+copy /-Y ..\lang\*.language $(OutDir)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -170,7 +171,8 @@ copy /-Y ..\config\*.items $(OutDir)</Command>
     <PostBuildEvent>
       <Command>copy /-Y ..\config\*.options $(OutDir)
 copy /-Y ..\config\*.formats $(OutDir)
-copy /-Y ..\config\*.items $(OutDir)</Command>
+copy /-Y ..\config\*.items $(OutDir)
+copy /-Y ..\lang\*.language $(OutDir)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -209,7 +211,8 @@ copy /-Y ..\config\*.items $(OutDir)</Command>
     <PostBuildEvent>
       <Command>copy /-Y ..\config\*.options $(OutDir)
 copy /-Y ..\config\*.formats $(OutDir)
-copy /-Y ..\config\*.items $(OutDir)</Command>
+copy /-Y ..\config\*.items $(OutDir)
+copy /-Y ..\lang\*.language $(OutDir)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -249,7 +252,8 @@ copy /-Y ..\config\*.items $(OutDir)</Command>
     <PostBuildEvent>
       <Command>copy /-Y ..\config\*.options $(OutDir)
 copy /-Y ..\config\*.formats $(OutDir)
-copy /-Y ..\config\*.items $(OutDir)</Command>
+copy /-Y ..\config\*.items $(OutDir)
+copy /-Y ..\lang\*.language $(OutDir)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -298,6 +302,9 @@ copy /-Y ..\config\*.items $(OutDir)</Command>
     <ClInclude Include="configuration\Options.h" />
     <ClInclude Include="configuration\Preset.h" />
     <ClInclude Include="configuration\PresetsList.h" />
+    <ClInclude Include="configuration\Language.h" />
+    <ClInclude Include="configuration\LanguagesList.h" />
+    <ClInclude Include="configuration\StringsMap.h" />
     <ClInclude Include="Configuration.h" />
     <ClInclude Include="XmlConfiguration.h" />
     <ClInclude Include="worker\context\FileContext.h" />

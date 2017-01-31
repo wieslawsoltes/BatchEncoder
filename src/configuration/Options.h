@@ -8,6 +8,7 @@
 class COptions
 {
 public:
+    CString szSelectedLanguage;
     int nSelectedFormat;
     CString szOutputPath;
     bool bOutputPathChecked;
@@ -43,6 +44,7 @@ public:
 public:
     void Copy(const COptions &other)
     {
+        this->szSelectedLanguage = other.szSelectedLanguage;
         this->nSelectedFormat = other.nSelectedFormat;
         this->szOutputPath = other.szOutputPath;
         this->bOutputPathChecked = other.bOutputPathChecked;

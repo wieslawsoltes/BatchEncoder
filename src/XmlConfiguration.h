@@ -27,6 +27,10 @@ private:
     void SetFormats(tinyxml2::XMLElement *pFormatsElem, CFormatsList &m_Formats);
     void GetItems(tinyxml2::XMLElement *pItemsElem, CItemsList &m_Items);
     void SetItems(tinyxml2::XMLElement *pItemsElem, CItemsList &m_Items);
+    void GetLanguage(tinyxml2::XMLElement *pLanguageElem, CLanguage &m_Language);
+    void SetLanguage(tinyxml2::XMLElement *pLanguageElem, CLanguage &m_Language);
+    void GetLanguages(tinyxml2::XMLElement *pLanguagesElem, CLanguagesList &m_Languages);
+    void SetLanguages(tinyxml2::XMLElement *pLanguagesElem, CLanguagesList &m_Languages);
 public:
     void GetOptions(COptions &m_Options);
     void SetOptions(COptions &m_Options);
@@ -38,6 +42,10 @@ public:
     void SetFormats(CFormatsList &m_Formats);
     void GetItems(CItemsList &m_Items);
     void SetItems(CItemsList &m_Items);
+    void GetLanguage(CLanguage &m_Language);
+    void SetLanguage(CLanguage &m_Language);
+    void GetLanguages(CLanguagesList &m_Languages);
+    void SetLanguages(CLanguagesList &m_Languages);
     bool Open(CString szFileName);
     bool Save(CString szFileName);
 };

@@ -6,6 +6,7 @@
 #include "Options.h"
 #include "FormatsList.h"
 #include "ItemsList.h"
+#include "LanguagesList.h"
 
 class CConfiguration
 {
@@ -13,6 +14,7 @@ public:
     COptions m_Options;
     CFormatsList m_Formats;
     CItemsList m_Items;
+    CLanguagesList m_Languages;
 public:
     CConfiguration()
     {
@@ -35,5 +37,6 @@ public:
         this->m_Options = other.m_Options;
         this->m_Formats = other.m_Formats;
         this->m_Items = other.m_Items;
+        this->m_Languages = other.m_Languages;
     }
 };
