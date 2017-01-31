@@ -93,10 +93,10 @@ public:
 public:
     void SwapItems(int idx1, int idx2)
     {
-        CPreset preset1 = this->GetData(idx1);
-        CPreset preset2 = this->GetData(idx2);
         if ((idx1 < 0) || (idx2 < 0) || (idx1 >= GetSize()) || (idx2 >= GetSize()))
             return;
+        CPreset preset1 = this->GetData(idx1);
+        CPreset preset2 = this->GetData(idx2);
         this->SetData(preset1, idx2);
         this->SetData(preset2, idx1);
     }
