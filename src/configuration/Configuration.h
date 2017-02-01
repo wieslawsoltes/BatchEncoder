@@ -43,13 +43,14 @@ public:
         this->pLanguage = NULL;
     }
 public:
-    bool LookupLanguageString(int nKey, CString &rValue)
+    CString GetString(const int nKey, const TCHAR* szDefault)
     {
         if (this->pLanguage != NULL)
         {
+            CString rValue;
             if (this->pLanguage->m_Strings.m_Map.Lookup(nKey, rValue) == TRUE)
-                return true;
+                return rValue;
         }
-        return false;
+        return szDefault;
     }
 };
