@@ -200,8 +200,8 @@ IDR_MENU_BATCHENCODER MENU
 BEGIN
     POPUP "&File"
     BEGIN
-        MENUITEM "&Load List...\tCtrl+L",      ID_FILE_LOADLIST
-        MENUITEM "&Save List...\tCtrl+S",      ID_FILE_SAVELIST
+        MENUITEM "&Load List...\tCtrl+L",       ID_FILE_LOADLIST
+        MENUITEM "&Save List...\tCtrl+S",       ID_FILE_SAVELIST
         MENUITEM SEPARATOR
         MENUITEM "Cl&ear List\tCtrl+E",         ID_FILE_CLEARLIST
         MENUITEM SEPARATOR
@@ -215,7 +215,7 @@ BEGIN
         MENUITEM "Rena&me\tF2",                 ID_EDIT_RENAME
         MENUITEM SEPARATOR
         MENUITEM "Rese&t Time/Status\tF3",      ID_EDIT_RESETTIME
-        MENUITEM "Reset Output&/Preset\tF4",     ID_EDIT_RESETOUTPUT
+        MENUITEM "Reset Output&/Preset\tF4",    ID_EDIT_RESETOUTPUT
         MENUITEM SEPARATOR
         MENUITEM "&Remove\tDEL",                ID_EDIT_REMOVE
         MENUITEM "Cro&p\tINS",                  ID_EDIT_CROP
@@ -258,7 +258,7 @@ BEGIN
     END
     POPUP "&Help"
     BEGIN
-        MENUITEM "&Website...",                    ID_HELP_WEBSITE
+        MENUITEM "&Website...",                 ID_HELP_WEBSITE
         MENUITEM SEPARATOR
         MENUITEM "&About...",                   ID_HELP_ABOUT
     END
