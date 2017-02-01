@@ -85,7 +85,25 @@
     <String key="0x000A0017" value="Conve&amp;rt"/>
     <String key="0x000A0018" value="S&amp;top"/>
 
-    <!-- Presets Dialog 0x000B0001 -->
+    <!-- Presets Dialog Items -->
+
+    <String key="0x000B0001" value="Name"/>
+    <String key="0x000B0002" value="Options"/>
+
+    <!-- Presets Dialog -->
+
+    <String key="0x000B0011" value="&amp;Cancel"/>
+    <String key="0x000B0012" value="Name:"/>
+    <String key="0x000B0013" value="Command-line options:"/>
+    <String key="0x000B0014" value="move &amp;Up"/>
+    <String key="0x000B0015" value="move Dow&amp;n"/>
+    <String key="0x000B0016" value="Dele&te All"/>
+    <String key="0x000B0017" value="&amp;Delete"/>
+    <String key="0x000B0018" value="&amp;Add"/>
+    <String key="0x000B0019" value="&amp;Load"/>
+    <String key="0x000B001A" value="Sa&amp;ve As"/>
+    <String key="0x000B001B" value="C&amp;hange"/>
+    <String key="0x000B001C" value="&amp;OK"/>
 
     <!-- Formats Dialog 0x000C0001 -->
 
