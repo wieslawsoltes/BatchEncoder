@@ -167,6 +167,9 @@
     <ClInclude Include="configuration\StringsMap.h">
       <Filter>Header Files\Configuration</Filter>
     </ClInclude>
+    <ClInclude Include="configuration\LanguageHelper.h">
+      <Filter>Header Files\Configuration</Filter>
+    </ClInclude>
     <ClInclude Include="Configuration.h">
       <Filter>Header Files</Filter>
     </ClInclude>

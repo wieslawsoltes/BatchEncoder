@@ -305,6 +305,7 @@ copy /-Y ..\lang\*.language $(OutDir)</Command>
     <ClInclude Include="configuration\Language.h" />
     <ClInclude Include="configuration\LanguagesList.h" />
     <ClInclude Include="configuration\StringsMap.h" />
+    <ClInclude Include="configuration\LanguageHelper.h" />
     <ClInclude Include="Configuration.h" />
     <ClInclude Include="XmlConfiguration.h" />
     <ClInclude Include="worker\context\FileContext.h" />
