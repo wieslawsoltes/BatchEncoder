@@ -48,7 +48,7 @@ var minor = split[1].Split(new char [] { ' ' }, StringSplitOptions.RemoveEmptyEn
 var revision = split[2].Split(new char [] { ' ' }, StringSplitOptions.RemoveEmptyEntries)[2];
 var build = split[3].Split(new char [] { ' ' }, StringSplitOptions.RemoveEmptyEntries)[2];
 var version = major + "." + minor;
-var suffix = isRelease ? "" : "-alpha";
+var suffix = (isRelease || !isAppVeyorBuild) ? "" : "-build" + EnvironmentVariable("APPVEYOR_BUILD_NUMBER") + "-alpha";
 
 Information("Defined Version: {0}.{1}.{2}.{3}", major, minor, revision, build);
 Information("Release Version: {0}", version + suffix);
