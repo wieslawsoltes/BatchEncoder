@@ -14,26 +14,26 @@
     <String key="0x00020001" value="&amp;Edit"/>
     <String key="0x00020002" value="&amp;Add Files...&#09;F5"/>
     <String key="0x00020003" value="Add Dire&amp;ctory...&#09;F6"/>
-    <String key="0x00020001" value="Rena&amp;me&#09;F2"/>
-    <String key="0x00020002" value="Rese&amp;t Time/Status&#09;F3"/>
-    <String key="0x00020003" value="Reset Output&amp;/Preset&#09;F4"/>
-    <String key="0x00020004" value="&amp;Remove&#09;DEL"/>
-    <String key="0x00020005" value="Cro&amp;p&#09;INS"/>
-    <String key="0x00020006" value="Remove Chec&amp;ked&#09;Ctrl++"/>
-    <String key="0x00020007" value="Remove Unc&amp;hecked&#09;Ctrl+-"/>
-    <String key="0x00020008" value="Check S&amp;elected&#09;Shift++"/>
-    <String key="0x00020009" value="&amp;Uncheck Selected&#09;Shift+-"/>
-    <String key="0x0002000A" value="&amp;Select All&#09;Ctrl+A"/>
-    <String key="0x0002000B" value="Select &amp;None&#09;Ctrl+N"/>
-    <String key="0x0002000C" value="&amp;Invert Selection&#09;Ctrl+I"/>
-    <String key="0x0002000D" value="&amp;Open File..."/>
-    <String key="0x0002000E" value="Open &amp;Directory..."/>
+    <String key="0x00020004" value="Rena&amp;me&#09;F2"/>
+    <String key="0x00020005" value="Rese&amp;t Time/Status&#09;F3"/>
+    <String key="0x00020006" value="Reset Output&amp;/Preset&#09;F4"/>
+    <String key="0x00020007" value="&amp;Remove&#09;DEL"/>
+    <String key="0x00020008" value="Cro&amp;p&#09;INS"/>
+    <String key="0x00020009" value="Remove Chec&amp;ked&#09;Ctrl++"/>
+    <String key="0x0002000A" value="Remove Unc&amp;hecked&#09;Ctrl+-"/>
+    <String key="0x0002000B" value="Check S&amp;elected&#09;Shift++"/>
+    <String key="0x0002000C" value="&amp;Uncheck Selected&#09;Shift+-"/>
+    <String key="0x0002000D" value="&amp;Select All&#09;Ctrl+A"/>
+    <String key="0x0002000E" value="Select &amp;None&#09;Ctrl+N"/>
+    <String key="0x0002000F" value="&amp;Invert Selection&#09;Ctrl+I"/>
+    <String key="0x00020010" value="&amp;Open File..."/>
+    <String key="0x00020011" value="Open &amp;Directory..."/>
 
     <!-- Action Menu -->
 
     <String key="0x00030001" value="&amp;Action"/>
     <String key="0x00030002" value="Conve&amp;rt&#09;F9"/>
-    <String key="0x00030003" value=""S&amp;top&#09;F9""/>
+    <String key="0x00030003" value="S&amp;top&#09;F9"/>
 
     <!-- Options Menu -->
 
@@ -93,7 +93,7 @@
     <String key="0x000B0013" value="Command-line options&#58;"/>
     <String key="0x000B0014" value="move &amp;Up"/>
     <String key="0x000B0015" value="move Dow&amp;n"/>
-    <String key="0x000B0016" value="Dele&te All"/>
+    <String key="0x000B0016" value="Dele&amp;te All"/>
     <String key="0x000B0017" value="&amp;Delete"/>
     <String key="0x000B0018" value="&amp;Add"/>
     <String key="0x000B0019" value="&amp;Load"/>
@@ -221,12 +221,12 @@
 
     <!-- File Dialogs -->
 
-    <String key="0x00310001" value=All Files"/>
-    <String key="0x00310002" value=Xml Files"/>
-    <String key="0x00310003" value=Items Files"/>
-    <String key="0x00310004" value=Presets Files"/>
-    <String key="0x00310005" value=Formats Files"/>
-    <String key="0x00310006" value=Exe Files"/>
-    <String key="0x00310007" value=Progress Files"/>
+    <String key="0x00310001" value="All Files"/>
+    <String key="0x00310002" value="Xml Files"/>
+    <String key="0x00310003" value="Items Files"/>
+    <String key="0x00310004" value="Presets Files"/>
+    <String key="0x00310005" value="Formats Files"/>
+    <String key="0x00310006" value="Exe Files"/>
+    <String key="0x00310007" value="Progress Files"/>
 
 </Language>
