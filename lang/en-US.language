@@ -211,10 +211,16 @@
 
     <!-- Messages Presets Dialog -->
 
-    <String key="0x00220001" value=""/>
+    <String key="0x00220001" value="ERROR"/>
+    <String key="0x00220002" value="Failed to load file&#33;"/>
+    <String key="0x00220003" value="Failed to save file&#33;"/>
 
     <!-- Messages Formats Dialog -->
 
-    <String key="0x00230001" value=""/>
+    <String key="0x00230001" value="ERROR"/>
+    <String key="0x00230002" value="INFO"/>
+    <String key="0x00230003" value="Please select item in the list."/>
+    <String key="0x00230004" value="Failed to load file&#33;"/>
+    <String key="0x00230005" value="Failed to save file&#33;"/>
 
 </Language>
