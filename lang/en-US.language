@@ -8,30 +8,60 @@
     <String key="0x00010001" value="&amp;File"/>
     <String key="0x00010002" value="&amp;Load List...&#09;Ctrl+L"/>
     <String key="0x00010003" value="&amp;Save List...&#09;Ctrl+S"/>
+    <String key="0x00010004" value="Cl&amp;ear Items&#09;Ctrl+E"/>
+    <String key="0x00010005" value="E&amp;xit&#09;Alt+F4"/>
 
     <!-- Edit Menu -->
 
     <String key="0x00020001" value="&amp;Edit"/>
     <String key="0x00020002" value="&amp;Add Files...&#09;F5"/>
     <String key="0x00020003" value="Add Dire&amp;ctory...&#09;F6"/>
+    <String key="0x00020001" value="Rena&amp;me&#09;F2"/>
+    <String key="0x00020002" value="Rese&amp;t Time/Status&#09;F3"/>
+    <String key="0x00020003" value="Reset Output&amp;/Preset&#09;F4"/>
+    <String key="0x00020004" value="&amp;Remove&#09;DEL"/>
+    <String key="0x00020005" value="Cro&amp;p&#09;INS"/>
+    <String key="0x00020006" value="Remove Chec&amp;ked&#09;Ctrl++"/>
+    <String key="0x00020007" value="Remove Unc&amp;hecked&#09;Ctrl+-"/>
+    <String key="0x00020008" value="Check S&amp;elected&#09;Shift++"/>
+    <String key="0x00020009" value="&amp;Uncheck Selected&#09;Shift+-"/>
+    <String key="0x0002000A" value="&amp;Select All&#09;Ctrl+A"/>
+    <String key="0x0002000B" value="Select &amp;None&#09;Ctrl+N"/>
+    <String key="0x0002000C" value="&amp;Invert Selection&#09;Ctrl+I"/>
+    <String key="0x0002000D" value="&amp;Open File..."/>
+    <String key="0x0002000E" value="Open &amp;Directory..."/>
 
     <!-- Action Menu -->
 
     <String key="0x00030001" value="&amp;Action"/>
+    <String key="0x00030002" value="Conve&amp;rt&#09;F9"/>
 
     <!-- Options Menu -->
 
     <String key="0x00040001" value="&amp;Options"/>
+    <String key="0x00040002" value="Configure &amp;Presets...&#09;F7"/>
+    <String key="0x00040003" value="Configure &amp;Formats...&#09;F8"/>
+    <String key="0x00040004" value="&amp;Delete Source File When Done"/>
+    <String key="0x00040005" value="&amp;Shutdown When Finished"/>
+    <String key="0x00040006" value="Do Not Save Configuration On E&amp;xit"/>
+    <String key="0x00040007" value="Delete &amp;Output File On Error"/>
+    <String key="0x00040008" value="Stop &amp;Conversion On Error"/>
 
     <!-- Language Menu -->
 
     <String key="0x00050001" value="&amp;Language"/>
+    <String key="0x00050002" value="&amp;Default (English)"/>
 
     <!-- Help Menu -->
 
     <String key="0x00060001" value="&amp;Help"/>
+    <String key="0x00060002" value="&amp;Website..."/>
+    <String key="0x00060003" value="&amp;About..."/>
 
-    <!-- Status Menu 0x00070001 -->
+    <!-- Status Menu -->
+
+    <String key="0x00070001" value="&amp;Status Menu"/>
+    <String key="0x00070002" value="&amp;Reset status"/>
 
     <!-- Main Dialog 0x000A0001 -->
 
