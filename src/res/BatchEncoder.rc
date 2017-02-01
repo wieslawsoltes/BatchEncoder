@@ -215,7 +215,7 @@ BEGIN
         MENUITEM "Rena&me\tF2",                 ID_EDIT_RENAME
         MENUITEM SEPARATOR
         MENUITEM "Rese&t Time/Status\tF3",      ID_EDIT_RESETTIME
-        MENUITEM "Reset Output/Preset\tF4",     ID_EDIT_RESETOUTPUT
+        MENUITEM "Reset Output&/Preset\tF4",     ID_EDIT_RESETOUTPUT
         MENUITEM SEPARATOR
         MENUITEM "&Remove\tDEL",                ID_EDIT_REMOVE
         MENUITEM "Cro&p\tINS",                  ID_EDIT_CROP
