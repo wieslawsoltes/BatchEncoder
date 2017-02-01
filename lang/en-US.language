@@ -72,17 +72,17 @@
     <String key="0x000A0002" value="Input"/>
     <String key="0x000A0003" value="Size (bytes)"/>
     <String key="0x000A0004" value="Output"/>
-    <String key="0x000A0005" value="Preset#"/>
+    <String key="0x000A0005" value="Preset&#35;"/>
     <String key="0x000A0006" value="Time"/>
     <String key="0x000A0007" value="Status"/>
 
     <String key="0x000A0010" value="BatchEncoder"/>
     <String key="0x000A0011" value="Output"/>
-    <String key="0x000A0012" value="format:"/>
-    <String key="0x000A0013" value="preset:"/>
-    <String key="0x000A0014" value="O&amp;utput path:"/>
+    <String key="0x000A0012" value="format&#58;"/>
+    <String key="0x000A0013" value="preset&#58;"/>
+    <String key="0x000A0014" value="O&amp;utput path&#58;"/>
     <String key="0x000A0015" value="&amp;..."/>
-    <String key="0x000A0016" value="threads (0=auto):"/>
+    <String key="0x000A0016" value="threads (0=auto)&#58;"/>
     <String key="0x000A0017" value="Conve&amp;rt"/>
     <String key="0x000A0018" value="S&amp;top"/>
 
@@ -93,8 +93,8 @@
 
     <String key="0x000B0010" value="Configure Presets"/>
     <String key="0x000B0011" value="&amp;Cancel"/>
-    <String key="0x000B0012" value="Name:"/>
-    <String key="0x000B0013" value="Command-line options:"/>
+    <String key="0x000B0012" value="Name&#58;"/>
+    <String key="0x000B0013" value="Command-line options&#58;"/>
     <String key="0x000B0014" value="move &amp;Up"/>
     <String key="0x000B0015" value="move Dow&amp;n"/>
     <String key="0x000B0016" value="Dele&te All"/>
@@ -114,19 +114,19 @@
     <String key="0x000C0011" value="&amp;Cancel"/>
     <String key="0x000C0012" value="&amp;Encoder"/>
     <String key="0x000C0013" value="&amp;Decoder"/>
-    <String key="0x000C0014" value="Type:"/>
+    <String key="0x000C0014" value="Type&#58;"/>
     <String key="0x000C0015" value="Input"/>
     <String key="0x000C0016" value="Output"/>
-    <String key="0x000C0017" value="Pipes:"/>
-    <String key="0x000C0018" value="Id:"/>
-    <String key="0x000C0019" value="Name:"/>
-    <String key="0x000C001A" value="Output extension:"/>
-    <String key="0x000C001B" value="Input extensions:"/>
-    <String key="0x000C001C" value="Default preset:"/>
-    <String key="0x000C001D" value="Command-line executable path:"/>
+    <String key="0x000C0017" value="Pipes&#58;"/>
+    <String key="0x000C0018" value="Id&#58;"/>
+    <String key="0x000C0019" value="Name&#58;"/>
+    <String key="0x000C001A" value="Output extension&#58;"/>
+    <String key="0x000C001B" value="Input extensions&#58;"/>
+    <String key="0x000C001C" value="Default preset&#58;"/>
+    <String key="0x000C001D" value="Command-line executable path&#58;"/>
     <String key="0x000C001E" value="&amp;..."/>
-    <String key="0x000C001F" value="Command-line template:"/>
-    <String key="0x000C0020" value="Progress function:"/>
+    <String key="0x000C001F" value="Command-line template&#58;"/>
+    <String key="0x000C0020" value="Progress function&#58;"/>
     <String key="0x000C0021" value="&amp;..."/>
     <String key="0x000C0022" value="move &amp;Up"/>
     <String key="0x000C0023" value="move Dow&amp;n"/>
@@ -149,11 +149,39 @@
 
     <!-- Messages Convert Item -->
 
-    <String key="0x00110000" value=""/>
+    <String key="0x00110001" value="Encoding..."/>
+    <String key="0x00110002" value="Decoding..."/>
+    <String key="0x00110003" value="Processing..."/>
+    <String key="0x00110004" value="Error&#58; can not find input file."/>
+    <String key="0x00110005" value="Error&#58; can not find valid encoder by id."/>
+    <String key="0x00110006" value="Error&#58; can not find encoder format preset."/>
+    <String key="0x00110007" value="Error&#58; can not find valid decoder by extension."/>
+    <String key="0x00110008" value="Error&#58; can not find decoder format preset."/>
+    <String key="0x00110009" value="Error&#58; decoder output not supported by encoder."/>
+    <String key="0x0011000A" value="Error&#58; can not find decoded file."/>
+    <String key="0x0011000B" value="Error&#58; exception thrown while converting file."/>
+    <String key="0x0011000C" value="Error&#58; can not find encoded file."/>
+    <String key="0x0011000D" value="Error&#58; exception thrown while converting file."/>
 
     <!-- Messages Convert File -->
 
-    <String key="0x00120000" value=""/>
+    <String key="0x00120001" value="Done"/>
+    <String key="0x00120002" value="Error&#58; progress did not reach 100&#37;."/>
+    <String key="0x00120003" value="Error&#58; invalid format pipe configuration."/>
+    <String key="0x00120004" value="Error&#58; can not create pipes for stderr."/>
+    <String key="0x00120005" value="Error&#58; can not duplicate stderr pipe to prevent child process from closing the pipe."/>
+    <String key="0x00120006" value="Error&#58; can not create command-line process (&#37;d)."/>
+    <String key="0x00120007" value="Error&#58; can not get GetProgress function address."/>
+    <String key="0x00120008" value="Error&#58; can not load GetProgress function library dll."/>
+    <String key="0x00120009" value="Error&#58; console line is too large for read buffer."/>
+    <String key="0x0012000A" value="Error&#58; invalid format pipe configuration."/>
+    <String key="0x0012000B" value="Error&#58; can not create pipes for stdin."/>
+    <String key="0x0012000C" value="Error&#58; can not set stdin pipe inherit flag."/>
+    <String key="0x0012000D" value="Error&#58; can not create pipes for stdout."/>
+    <String key="0x0012000E" value="Error&#58; can not set stdout pipe inherit flag."/>
+    <String key="0x0012000F" value="Error&#58; can not create command-line process (&#37;d)."/>
+    <String key="0x00120010" value="Error&#58; can not create read thread."/>
+    <String key="0x00120011" value="Error&#58; can not create write thread."/>
 
     <!-- Messages Main Dialog -->
 
