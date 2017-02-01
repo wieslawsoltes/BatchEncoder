@@ -1,7 +1,9 @@
 ﻿<?xml version="1.0" encoding="UTF-8" ?>
 <Language id="en-US" original="English" translated="English">
 
-    <!-- Miscellaneous 0x00000001-->
+    <!-- Miscellaneous -->
+
+    <String key="0x00000001" value=""/>
 
     <!-- File Menu -->
 
@@ -76,6 +78,7 @@
 
     <!-- Main Dialog -->
 
+    <String key="0x000A0010" value="BatchEncoder"/>
     <String key="0x000A0011" value="Output"/>
     <String key="0x000A0012" value="format:"/>
     <String key="0x000A0013" value="preset:"/>
@@ -92,6 +95,7 @@
 
     <!-- Presets Dialog -->
 
+    <String key="0x000B0010" value="Configure Presets"/>
     <String key="0x000B0011" value="&amp;Cancel"/>
     <String key="0x000B0012" value="Name:"/>
     <String key="0x000B0013" value="Command-line options:"/>
@@ -110,8 +114,9 @@
     <String key="0x000C0001" value="Name"/>
     <String key="0x000C0002" value="Template"/>
 
-    <!-- Formats Dialog 0x000C0011 -->
+    <!-- Formats Dialog -->
 
+    <String key="0x000C0010" value="Configure Formats"/>
     <String key="0x000C0011" value="&amp;Cancel"/>
     <String key="0x000C0012" value="&amp;Encoder"/>
     <String key="0x000C0013" value="&amp;Decoder"/>
@@ -139,8 +144,17 @@
     <String key="0x000C0029" value="C&amp;hange"/>
     <String key="0x000C002A" value="&amp;OK"/>
 
-    <!-- About Dialog 0x000D0001 -->
+    <!-- About Dialog -->
 
-    <!-- Error Messages 0x000F0001 -->
+    <String key="0x000D0010" value="About BatchEncoder"/>
+    <String key="0x000D0011" value="OK"/>
+    <String key="0x000D0012" value="Application Name"/>
+    <String key="0x000D0013" value="Website"/>
+    <String key="0x000D0014" value="E-mail"/>
+    <String key="0x000D0015" value="Licensed under the MIT license. See LICENSE file in the application root for full license information."/>
+
+    <!-- Error Messages -->
+
+    <String key="0x000F0001" value=""/>
 
 </Language>
