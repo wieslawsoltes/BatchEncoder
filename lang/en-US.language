@@ -35,6 +35,7 @@
 
     <String key="0x00030001" value="&amp;Action"/>
     <String key="0x00030002" value="Conve&amp;rt&#09;F9"/>
+    <String key="0x00030003" value=""S&amp;top&#09;F9""/>
 
     <!-- Options Menu -->
 
@@ -63,7 +64,26 @@
     <String key="0x00070001" value="&amp;Status Menu"/>
     <String key="0x00070002" value="&amp;Reset status"/>
 
-    <!-- Main Dialog 0x000A0001 -->
+    <!-- Main Dialog Items -->
+
+    <String key="0x000A0001" value="Name"/>
+    <String key="0x000A0002" value="Input"/>
+    <String key="0x000A0003" value="Size (bytes)"/>
+    <String key="0x000A0004" value="Output"/>
+    <String key="0x000A0005" value="Preset#"/>
+    <String key="0x000A0006" value="Time"/>
+    <String key="0x000A0007" value="Status"/>
+
+    <!-- Main Dialog -->
+
+    <String key="0x000A0011" value="Output"/>
+    <String key="0x000A0012" value="format:"/>
+    <String key="0x000A0013" value="preset:"/>
+    <String key="0x000A0014" value="O&amp;utput path:"/>
+    <String key="0x000A0015" value="&amp;..."/>
+    <String key="0x000A0016" value="threads (0=auto):"/>
+    <String key="0x000A0017" value="Conve&amp;rt"/>
+    <String key="0x000A0018" value="S&amp;top"/>
 
     <!-- Presets Dialog 0x000B0001 -->
 
