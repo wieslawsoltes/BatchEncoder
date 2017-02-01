@@ -105,7 +105,39 @@
     <String key="0x000B001B" value="C&amp;hange"/>
     <String key="0x000B001C" value="&amp;OK"/>
 
-    <!-- Formats Dialog 0x000C0001 -->
+    <!-- Formats Dialog Items -->
+
+    <String key="0x000C0001" value="Name"/>
+    <String key="0x000C0002" value="Template"/>
+
+    <!-- Formats Dialog 0x000C0011 -->
+
+    <String key="0x000C0011" value="&amp;Cancel"/>
+    <String key="0x000C0012" value="&amp;Encoder"/>
+    <String key="0x000C0013" value="&amp;Decoder"/>
+    <String key="0x000C0014" value="Type:"/>
+    <String key="0x000C0015" value="Input"/>
+    <String key="0x000C0016" value="Output"/>
+    <String key="0x000C0017" value="Pipes:"/>
+    <String key="0x000C0018" value="Id:"/>
+    <String key="0x000C0019" value="Name:"/>
+    <String key="0x000C001A" value="Output extension:"/>
+    <String key="0x000C001B" value="Input extensions:"/>
+    <String key="0x000C001C" value="Default preset:"/>
+    <String key="0x000C001D" value="Command-line executable path:"/>
+    <String key="0x000C001E" value="&amp;..."/>
+    <String key="0x000C001F" value="Command-line template:"/>
+    <String key="0x000C0020" value="Progress function:"/>
+    <String key="0x000C0021" value="&amp;..."/>
+    <String key="0x000C0022" value="move &amp;Up"/>
+    <String key="0x000C0023" value="move Dow&amp;n"/>
+    <String key="0x000C0024" value="Dele&amp;te All"/>
+    <String key="0x000C0025" value="&amp;Delete"/>
+    <String key="0x000C0026" value="&amp;Add"/>
+    <String key="0x000C0027" value="&amp;Load"/>
+    <String key="0x000C0028" value="&amp;Save As"/>
+    <String key="0x000C0029" value="C&amp;hange"/>
+    <String key="0x000C002A" value="&amp;OK"/>
 
     <!-- About Dialog 0x000D0001 -->
 
