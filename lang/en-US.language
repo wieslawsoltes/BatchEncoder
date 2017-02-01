@@ -1,10 +1,6 @@
 ﻿<?xml version="1.0" encoding="UTF-8" ?>
 <Language id="en-US" original="English" translated="English">
 
-    <!-- Miscellaneous -->
-
-    <String key="0x00000001" value=""/>
-
     <!-- File Menu -->
 
     <String key="0x00010001" value="&amp;File"/>
@@ -222,5 +218,15 @@
     <String key="0x00230003" value="Please select item in the list."/>
     <String key="0x00230004" value="Failed to load file&#33;"/>
     <String key="0x00230005" value="Failed to save file&#33;"/>
+
+    <!-- File Dialogs -->
+
+    <String key="0x00310001" value=All Files"/>
+    <String key="0x00310002" value=Xml Files"/>
+    <String key="0x00310003" value=Items Files"/>
+    <String key="0x00310004" value=Presets Files"/>
+    <String key="0x00310005" value=Formats Files"/>
+    <String key="0x00310006" value=Exe Files"/>
+    <String key="0x00310007" value=Progress Files"/>
 
 </Language>
