@@ -201,6 +201,7 @@ void CBatchEncoderDlg::DoDataExchange(CDataExchange* pDX)
 {
     CResizeDialog::DoDataExchange(pDX);
     DDX_Control(pDX, IDC_PROGRESS_CONVERT, m_Progress);
+    DDX_Control(pDX, IDC_STATIC_GROUP_OUTPUT, m_GrpOutput);
     DDX_Control(pDX, IDC_COMBO_PRESETS, m_CmbPresets);
     DDX_Control(pDX, IDC_COMBO_FORMAT, m_CmbFormat);
     DDX_Control(pDX, IDC_LIST_ITEMS, m_LstInputItems);

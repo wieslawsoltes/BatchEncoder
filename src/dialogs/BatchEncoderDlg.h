@@ -48,6 +48,7 @@ public:
     CWorkerContext* pWorkerContext;
     bool bSameAsSourceEdit;
 public:
+    CMyStatic m_GrpOutput;
     CMyStatic m_StcPreset;
     CMyStatic m_StcFormat;
     CMyStatic m_StcThreads;
