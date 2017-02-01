@@ -183,6 +183,13 @@
     <String key="0x00120010" value="Error&#58; can not create read thread."/>
     <String key="0x00120011" value="Error&#58; can not create write thread."/>
 
+    <!-- Messages Worker Context -->
+
+    <String key="0x00130001" value="Error"/>
+    <String key="0x00130002" value="Errors"/>
+    <String key="0x00130003" value="Processing item &#37;d of &#37;d (&#37;d Done, &#37;d &#37;s)"/>
+    <String key="0x00130004" value="Processed %&#37;d of &#37;d (&#37;d Done, &#37;d &#37;s) in &#37;s"/>
+
     <!-- Messages Main Dialog -->
 
     <String key="0x00210000" value=""/>
