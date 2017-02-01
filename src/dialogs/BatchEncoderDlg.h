@@ -116,7 +116,10 @@ public:
 public:
     bool SearchFolderForLanguages(CString szPath);
     void SetLanguageMenu();
-    void SetColumnText(CListCtrl& listCtrl, int nCol, CString& text);
+    void SetColumnText(CListCtrl& listCtrl, int nCol, int nKey);
+    void SetMenuPopupText(CMenu *hMenu, UINT nPosition, int nKey);
+    void SetMenuItemText(CMenu *hMenu, UINT nID, int nKey);
+    void SetWndText(CWnd *hWnd, int nKey);
     void SetLanguage();
     void GetItems();
     void SetItems();

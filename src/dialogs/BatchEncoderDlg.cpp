@@ -1439,68 +1439,121 @@ void CBatchEncoderDlg::SetLanguageMenu()
     }
 }
 
-void CBatchEncoderDlg::SetColumnText(CListCtrl& listCtrl, int nCol, CString& text)
+void CBatchEncoderDlg::SetColumnText(CListCtrl& listCtrl, int nCol, int nKey)
 {
-    LVCOLUMN lvCol;
-    ::ZeroMemory((void *)&lvCol, sizeof(LVCOLUMN));
-    lvCol.mask = LVCF_TEXT;
-    listCtrl.GetColumn(nCol, &lvCol);
-    lvCol.pszText = (LPTSTR)(LPCTSTR)text;
-    listCtrl.SetColumn(nCol, &lvCol);
+    CString rValue;
+    if (m_Config.LookupString(nKey, rValue))
+    {
+        LVCOLUMN lvCol;
+        ::ZeroMemory((void *)&lvCol, sizeof(LVCOLUMN));
+
+        lvCol.mask = LVCF_TEXT;
+        listCtrl.GetColumn(nCol, &lvCol);
+
+        lvCol.pszText = (LPTSTR)(LPCTSTR)rValue;
+        listCtrl.SetColumn(nCol, &lvCol);
+    }
+}
+
+void CBatchEncoderDlg::SetMenuPopupText(CMenu *hMenu, UINT nPosition, int nKey)
+{
+    CString rValue;
+    if (m_Config.LookupString(nKey, rValue))
+    {
+        hMenu->ModifyMenu(nPosition, MF_STRING | MF_BYPOSITION, nPosition, rValue);
+    }
+}
+
+void CBatchEncoderDlg::SetMenuItemText(CMenu *hMenu, UINT nID, int nKey)
+{
+    CString rValue;
+    if (m_Config.LookupString(nKey, rValue))
+    {
+        hMenu->ModifyMenu(nID, 0, nID, rValue);
+    }
+}
+
+void CBatchEncoderDlg::SetWndText(CWnd *hWnd, int nKey)
+{
+    CString rValue;
+    if (m_Config.LookupString(nKey, rValue))
+    {
+        hWnd->SetWindowText(rValue);
+    }
 }
 
 void CBatchEncoderDlg::SetLanguage()
 {
-    CString rValue;
     CMenu *m_hMenu = this->GetMenu();
 
-    // File
-    if (m_Config.LookupLanguageString(0x00010001, rValue))
-        m_hMenu->ModifyMenuW(0, MF_STRING | MF_BYPOSITION, 0, rValue);
+    // File Menu
+    this->SetMenuPopupText(m_hMenu, 0, 0x00010001);
+    this->SetMenuItemText(m_hMenu, ID_FILE_LOADLIST, 0x00010002);
+    this->SetMenuItemText(m_hMenu, ID_FILE_SAVELIST, 0x00010003);
+    this->SetMenuItemText(m_hMenu, ID_FILE_CLEARLIST, 0x00010004);
+    this->SetMenuItemText(m_hMenu, ID_FILE_EXIT, 0x00010005);
 
-    if (m_Config.LookupLanguageString(0x00010002, rValue))
-        m_hMenu->ModifyMenuW(ID_FILE_LOADLIST, 0, ID_FILE_LOADLIST, rValue);
+    // Edit Menu
+    this->SetMenuPopupText(m_hMenu, 1, 0x00020001);
+    this->SetMenuItemText(m_hMenu, ID_EDIT_ADDFILES, 0x00020002);
+    this->SetMenuItemText(m_hMenu, ID_EDIT_ADDDIR, 0x00020003);
+    this->SetMenuItemText(m_hMenu, ID_EDIT_RENAME, 0x00020004);
+    this->SetMenuItemText(m_hMenu, ID_EDIT_RESETTIME, 0x00020005);
+    this->SetMenuItemText(m_hMenu, ID_EDIT_RESETOUTPUT, 0x00020006);
+    this->SetMenuItemText(m_hMenu, ID_EDIT_REMOVE, 0x00020007);
+    this->SetMenuItemText(m_hMenu, ID_EDIT_CROP, 0x00020008);
+    this->SetMenuItemText(m_hMenu, ID_EDIT_REMOVECHECKED, 0x00020009);
+    this->SetMenuItemText(m_hMenu, ID_EDIT_REMOVEUNCHECKED, 0x0002000A);
+    this->SetMenuItemText(m_hMenu, ID_EDIT_CHECKSELECTED, 0x0002000B);
+    this->SetMenuItemText(m_hMenu, ID_EDIT_UNCHECKSELECTED, 0x0002000C);
+    this->SetMenuItemText(m_hMenu, ID_EDIT_SELECTALL, 0x0002000D);
+    this->SetMenuItemText(m_hMenu, ID_EDIT_SELECTNONE, 0x0002000E);
+    this->SetMenuItemText(m_hMenu, ID_EDIT_INVERTSELECTION, 0x0002000F);
+    this->SetMenuItemText(m_hMenu, ID_EDIT_OPEN, 0x00020010);
+    this->SetMenuItemText(m_hMenu, ID_EDIT_EXPLORE, 0x00020011);
 
-    if (m_Config.LookupLanguageString(0x00010003, rValue))
-        m_hMenu->ModifyMenuW(ID_FILE_SAVELIST, 0, ID_FILE_SAVELIST, rValue);
+    // Action Menu
+    this->SetMenuPopupText(m_hMenu, 2, 0x00030001);
+    this->SetMenuItemText(m_hMenu, ID_ACTION_CONVERT, 0x00030002);
 
-    // TODO: 
+    // Options Menu
+    this->SetMenuPopupText(m_hMenu, 3, 0x00040001);
+    this->SetMenuItemText(m_hMenu, ID_OPTIONS_CONFIGUREPRESETS, 0x00040002);
+    this->SetMenuItemText(m_hMenu, ID_OPTIONS_CONFIGUREFORMAT, 0x00040003);
+    this->SetMenuItemText(m_hMenu, ID_OPTIONS_DELETE_SOURCE, 0x00040004);
+    this->SetMenuItemText(m_hMenu, ID_OPTIONS_SHUTDOWN_WINDOWS, 0x00040005);
+    this->SetMenuItemText(m_hMenu, ID_OPTIONS_DO_NOT_SAVE, 0x00040006);
+    this->SetMenuItemText(m_hMenu, ID_OPTIONS_DELETE_ON_ERRORS, 0x00040007);
+    this->SetMenuItemText(m_hMenu, ID_OPTIONS_STOP_ON_ERRORS, 0x00040008);
 
-    // Edit
-    if (m_Config.LookupLanguageString(0x00020001, rValue))
-        m_hMenu->ModifyMenuW(1, MF_STRING | MF_BYPOSITION, 1, rValue);
+    // Language Menu
+    this->SetMenuPopupText(m_hMenu, 4, 0x00050001);
+    this->SetMenuItemText(m_hMenu, ID_LANGUAGE_DEFAULT, 0x00050002);
 
-    if (m_Config.LookupLanguageString(0x00020002, rValue))
-        m_hMenu->ModifyMenuW(ID_EDIT_ADDFILES, 0, ID_EDIT_ADDFILES, rValue);
-
-    if (m_Config.LookupLanguageString(0x00020003, rValue))
-        m_hMenu->ModifyMenuW(ID_EDIT_ADDDIR, 0, ID_EDIT_ADDDIR, rValue);
-
-    // TODO:
-
-    // Action
-    if (m_Config.LookupLanguageString(0x00030001, rValue))
-        m_hMenu->ModifyMenuW(2, MF_STRING | MF_BYPOSITION, 2, rValue);
-
-    // Options
-    if (m_Config.LookupLanguageString(0x00040001, rValue))
-        m_hMenu->ModifyMenuW(3, MF_STRING | MF_BYPOSITION, 3, rValue);
-
-    // TODO:
-
-    // Language
-    if (m_Config.LookupLanguageString(0x00050001, rValue))
-        m_hMenu->ModifyMenuW(4, MF_STRING | MF_BYPOSITION, 4, rValue);
-
-    // TODO:
-
-    // Help
-    if (m_Config.LookupLanguageString(0x00060001, rValue))
-        m_hMenu->ModifyMenuW(5, MF_STRING | MF_BYPOSITION, 5, rValue);
-
-    // TODO: 
+    // Help Menu
+    this->SetMenuPopupText(m_hMenu, 5, 0x00060001);
+    this->SetMenuItemText(m_hMenu, ID_HELP_WEBSITE, 0x00060002);
+    this->SetMenuItemText(m_hMenu, ID_HELP_ABOUT, 0x00060003);
 
     this->DrawMenuBar();
+
+    // Main Dialog
+    this->SetColumnText(m_LstInputItems, ITEM_COLUMN_NAME, 0x000A0001);
+    this->SetColumnText(m_LstInputItems, ITEM_COLUMN_INPUT, 0x000A0002);
+    this->SetColumnText(m_LstInputItems, ITEM_COLUMN_SIZE, 0x000A0003);
+    this->SetColumnText(m_LstInputItems, ITEM_COLUMN_OUTPUT, 0x000A0004);
+    this->SetColumnText(m_LstInputItems, ITEM_COLUMN_PRESET, 0x000A0005);
+    this->SetColumnText(m_LstInputItems, ITEM_COLUMN_TIME, 0x000A0006);
+    this->SetColumnText(m_LstInputItems, ITEM_COLUMN_STATUS, 0x000A0007);
+
+    this->SetWndText(this, 0x000A0010);
+    this->SetWndText(&m_GrpOutput, 0x000A0011);
+    this->SetWndText(&m_StcFormat, 0x000A0012);
+    this->SetWndText(&m_StcPreset, 0x000A0013);
+    this->SetWndText(&m_ChkOutPath, 0x000A0014);
+    this->SetWndText(&m_BtnBrowse, 0x000A0015);
+    this->SetWndText(&m_StcThreads, 0x000A0016);
+    this->SetWndText(&m_BtnConvert, 0x000A0017);
 }
 
 void CBatchEncoderDlg::GetItems()
