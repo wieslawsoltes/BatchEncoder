@@ -6,7 +6,7 @@
     <String key="0x00010001" value="&amp;File"/>
     <String key="0x00010002" value="&amp;Load List...&#09;Ctrl+L"/>
     <String key="0x00010003" value="&amp;Save List...&#09;Ctrl+S"/>
-    <String key="0x00010004" value="Cl&amp;ear Items&#09;Ctrl+E"/>
+    <String key="0x00010004" value="Cl&amp;ear List&#09;Ctrl+E"/>
     <String key="0x00010005" value="E&amp;xit&#09;Alt+F4"/>
 
     <!-- Edit Menu -->
