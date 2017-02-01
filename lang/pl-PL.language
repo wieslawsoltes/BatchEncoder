@@ -1,8 +1,6 @@
 ﻿<?xml version="1.0" encoding="UTF-8" ?>
 <Language id="pl-PL" original="Polish" translated="Polski">
 
-    <!-- Miscellaneous -->
-
     <!-- File Menu -->
 
     <String key="0x00010001" value="&amp;Plik"/>
@@ -52,5 +50,7 @@
     <!-- Messages Presets Dialog -->
 
     <!-- Messages Formats Dialog -->
+
+    <!-- File Dialogs -->
 
 </Language>
