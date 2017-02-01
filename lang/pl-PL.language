@@ -31,26 +31,7 @@
 
     <!-- Status Menu -->
 
-    <!-- Main Dialog -->
-
-    <!-- Presets Dialog -->
-
-    <!-- Formats Dialog -->
-
-    <!-- About Dialog -->
-
-    <!-- Messages Convert Item -->
-
-    <!-- Messages Convert File -->
-
-    <!-- Messages Worker Context -->
-
-    <!-- Messages Main Dialog -->
-
-    <!-- Messages Presets Dialog -->
-
-    <!-- Messages Formats Dialog -->
-
-    <!-- File Dialogs -->
+    <String key="0x00070001" value="&amp;Status"/>
+    <String key="0x00070002" value="&amp;Resetuj"/>
 
 </Language>

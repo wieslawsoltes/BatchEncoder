@@ -59,8 +59,8 @@
 
     <!-- Status Menu -->
 
-    <String key="0x00070001" value="&amp;Status Menu"/>
-    <String key="0x00070002" value="&amp;Reset status"/>
+    <String key="0x00070001" value="&amp;Status"/>
+    <String key="0x00070002" value="&amp;Reset"/>
 
     <!-- Main Dialog -->
 
