@@ -18,12 +18,10 @@ XmlConfiguration::~XmlConfiguration()
 
 CString XmlConfiguration::ToCString(const char *pszUtf8)
 {
-    if (pszUtf8 == NULL)
+    if (pszUtf8 == NULL) 
         return _T("");
-
-    if (strlen(pszUtf8) == 0)
+    if (strlen(pszUtf8) == 0) 
         return _T("");
-
     CString szBuff;
 #ifdef _UNICODE
     // UTF-8 to UNICODE
@@ -45,185 +43,75 @@ void XmlConfiguration::GetOptions(tinyxml2::XMLElement *pOptionsElem, COptions &
 {
     tinyxml2::XMLElement *pOptionElem;
 
-    // option: SelectedLanguage
+    m_Options.Defaults();
+ 
     pOptionElem = pOptionsElem->FirstChildElement("SelectedLanguage");
     if (pOptionElem)
-    {
-        const char *tmpBuff = pOptionElem->GetText();
-        m_Options.szSelectedLanguage = ToCString(tmpBuff);
-    }
-    else
-    {
-        m_Options.szSelectedLanguage = _T("");
-    }
+        m_Options.szSelectedLanguage = ToCString(pOptionElem->GetText());
 
-    // option: SelectedFormat
     pOptionElem = pOptionsElem->FirstChildElement("SelectedFormat");
     if (pOptionElem)
-    {
-        const char *tmpBuff = pOptionElem->GetText();
-        m_Options.nSelectedFormat = _tstoi(ToCString(tmpBuff));
-    }
-    else
-    {
-        m_Options.nSelectedFormat = 0;
-    }
+        m_Options.nSelectedFormat = _tstoi(ToCString(pOptionElem->GetText()));
 
-    // option: OutputPath
     pOptionElem = pOptionsElem->FirstChildElement("OutputPath");
     if (pOptionElem)
-    {
-        const char *tmpBuff = pOptionElem->GetText();
-        m_Options.szOutputPath = ToCString(tmpBuff);
-    }
-    else
-    {
-        m_Options.szOutputPath = _T("");
-    }
+        m_Options.szOutputPath = ToCString(pOptionElem->GetText());
 
-    // option: OutputPathChecked
     pOptionElem = pOptionsElem->FirstChildElement("OutputPathChecked");
     if (pOptionElem)
-    {
-        const char *tmpBuff = pOptionElem->GetText();
-        m_Options.bOutputPathChecked = ToCString(tmpBuff).CompareNoCase(_T("true")) == 0;
-    }
-    else
-    {
-        m_Options.bOutputPathChecked = false;
-    }
+        m_Options.bOutputPathChecked = ToCString(pOptionElem->GetText()).CompareNoCase(_T("true")) == 0;
 
-    // option: DeleteSourceFiles
     pOptionElem = pOptionsElem->FirstChildElement("DeleteSourceFiles");
     if (pOptionElem)
-    {
-        const char *tmpBuff = pOptionElem->GetText();
-        m_Options.bDeleteSourceFiles = ToCString(tmpBuff).CompareNoCase(_T("true")) == 0;
-    }
-    else
-    {
-        m_Options.bDeleteSourceFiles = false;
-    }
+        m_Options.bDeleteSourceFiles = ToCString(pOptionElem->GetText()).CompareNoCase(_T("true")) == 0;
 
-    // option: RecurseChecked
     pOptionElem = pOptionsElem->FirstChildElement("RecurseChecked");
     if (pOptionElem)
-    {
-        const char *tmpBuff = pOptionElem->GetText();
-        m_Options.bRecurseChecked = ToCString(tmpBuff).CompareNoCase(_T("true")) == 0;
-    }
-    else
-    {
-        m_Options.bRecurseChecked = false;
-    }
+        m_Options.bRecurseChecked = ToCString(pOptionElem->GetText()).CompareNoCase(_T("true")) == 0;
 
-    // option: ShutdownWhenFinished
     pOptionElem = pOptionsElem->FirstChildElement("ShutdownWhenFinished");
     if (pOptionElem)
-    {
-        const char *tmpBuff = pOptionElem->GetText();
-        m_Options.bShutdownWhenFinished = ToCString(tmpBuff).CompareNoCase(_T("true")) == 0;
-    }
-    else
-    {
-        m_Options.bShutdownWhenFinished = false;
-    }
+        m_Options.bShutdownWhenFinished = ToCString(pOptionElem->GetText()).CompareNoCase(_T("true")) == 0;
 
-    // option: DoNotSaveConfiguration
     pOptionElem = pOptionsElem->FirstChildElement("DoNotSaveConfiguration");
     if (pOptionElem)
-    {
-        const char *tmpBuff = pOptionElem->GetText();
-        m_Options.bDoNotSaveConfiguration = ToCString(tmpBuff).CompareNoCase(_T("true")) == 0;
-    }
-    else
-    {
-        m_Options.bDoNotSaveConfiguration = false;
-    }
+        m_Options.bDoNotSaveConfiguration = ToCString(pOptionElem->GetText()).CompareNoCase(_T("true")) == 0;
 
-    // option: MainWindowResize
-    pOptionElem = pOptionsElem->FirstChildElement("MainWindowResize");
-    if (pOptionElem)
-    {
-        const char *tmpBuff = pOptionElem->GetText();
-        m_Options.szMainWindowResize = ToCString(tmpBuff);
-    }
-
-    // option: FileListColumns
-    pOptionElem = pOptionsElem->FirstChildElement("FileListColumns");
-    if (pOptionElem)
-    {
-        const char *tmpBuff = pOptionElem->GetText();
-        m_Options.szFileListColumns = ToCString(tmpBuff);
-    }
-
-    // option: PresetsDialogResize
-    pOptionElem = pOptionsElem->FirstChildElement("PresetsDialogResize");
-    if (pOptionElem)
-    {
-        const char *tmpBuff = pOptionElem->GetText();
-        m_Options.szPresetsDialogResize = ToCString(tmpBuff);
-    }
-
-    // option: PresetsListColumns
-    pOptionElem = pOptionsElem->FirstChildElement("PresetsListColumns");
-    if (pOptionElem)
-    {
-        const char *tmpBuff = pOptionElem->GetText();
-        m_Options.szPresetsListColumns = ToCString(tmpBuff);
-    }
-
-    // option: FormatsDialogResize
-    pOptionElem = pOptionsElem->FirstChildElement("FormatsDialogResize");
-    if (pOptionElem)
-    {
-        const char *tmpBuff = pOptionElem->GetText();
-        m_Options.szFormatsDialogResize = ToCString(tmpBuff);
-    }
-
-    // option: FormatsListColumns
-    pOptionElem = pOptionsElem->FirstChildElement("FormatsListColumns");
-    if (pOptionElem)
-    {
-        const char *tmpBuff = pOptionElem->GetText();
-        m_Options.szFormatsListColumns = ToCString(tmpBuff);
-    }
-
-    // option: DeleteOnErrors
     pOptionElem = pOptionsElem->FirstChildElement("DeleteOnErrors");
     if (pOptionElem)
-    {
-        const char *tmpBuff = pOptionElem->GetText();
-        m_Options.bDeleteOnErrors = ToCString(tmpBuff).CompareNoCase(_T("true")) == 0;
-    }
-    else
-    {
-        m_Options.bDeleteOnErrors = false;
-    }
+        m_Options.bDeleteOnErrors = ToCString(pOptionElem->GetText()).CompareNoCase(_T("true")) == 0;
 
-    // option: StopOnErrors
     pOptionElem = pOptionsElem->FirstChildElement("StopOnErrors");
     if (pOptionElem)
-    {
-        const char *tmpBuff = pOptionElem->GetText();
-        m_Options.bStopOnErrors = ToCString(tmpBuff).CompareNoCase(_T("true")) == 0;
-    }
-    else
-    {
-        m_Options.bStopOnErrors = false;
-    }
+        m_Options.bStopOnErrors = ToCString(pOptionElem->GetText()).CompareNoCase(_T("true")) == 0;
 
-    // option: ThreadCount
     pOptionElem = pOptionsElem->FirstChildElement("ThreadCount");
     if (pOptionElem)
-    {
-        const char *tmpBuff = pOptionElem->GetText();
-        m_Options.nThreadCount = _tstoi(ToCString(tmpBuff));
-    }
-    else
-    {
-        m_Options.nThreadCount = 1;
-    }
+        m_Options.nThreadCount = _tstoi(ToCString(pOptionElem->GetText()));
+
+    pOptionElem = pOptionsElem->FirstChildElement("MainWindowResize");
+    if (pOptionElem)
+        m_Options.szMainWindowResize = ToCString(pOptionElem->GetText());
+
+    pOptionElem = pOptionsElem->FirstChildElement("FileListColumns");
+    if (pOptionElem)
+        m_Options.szFileListColumns = ToCString(pOptionElem->GetText());
+
+    pOptionElem = pOptionsElem->FirstChildElement("PresetsDialogResize");
+    if (pOptionElem)
+        m_Options.szPresetsDialogResize = ToCString(pOptionElem->GetText());
+
+    pOptionElem = pOptionsElem->FirstChildElement("PresetsListColumns");
+    if (pOptionElem)
+        m_Options.szPresetsListColumns = ToCString(pOptionElem->GetText());
+
+    pOptionElem = pOptionsElem->FirstChildElement("FormatsDialogResize");
+    if (pOptionElem)
+        m_Options.szFormatsDialogResize = ToCString(pOptionElem->GetText());
+
+    pOptionElem = pOptionsElem->FirstChildElement("FormatsListColumns");
+    if (pOptionElem)
+        m_Options.szFormatsListColumns = ToCString(pOptionElem->GetText());
 }
 
 void XmlConfiguration::SetOptions(tinyxml2::XMLElement *pOptionsElem, COptions &m_Options)
@@ -231,115 +119,94 @@ void XmlConfiguration::SetOptions(tinyxml2::XMLElement *pOptionsElem, COptions &
     tinyxml2::XMLElement *pOptionElem;
     CUtf8String szBuffUtf8;
 
-    // option: SelectedLanguage
     pOptionElem = this->NewElement("SelectedLanguage");
     pOptionElem->LinkEndChild(this->NewText(szBuffUtf8.Create(m_Options.szSelectedLanguage)));
     pOptionsElem->LinkEndChild(pOptionElem);
     szBuffUtf8.Clear();
 
-    // option: SelectedFormat
     CString szSelectedFormat;
     szSelectedFormat.Format(_T("%d\0"), m_Options.nSelectedFormat);
-
     pOptionElem = this->NewElement("SelectedFormat");
     pOptionElem->LinkEndChild(this->NewText(szBuffUtf8.Create(szSelectedFormat)));
     pOptionsElem->LinkEndChild(pOptionElem);
     szBuffUtf8.Clear();
 
-    // option: OutputPath
     pOptionElem = this->NewElement("OutputPath");
     pOptionElem->LinkEndChild(this->NewText(szBuffUtf8.Create(m_Options.szOutputPath)));
     pOptionsElem->LinkEndChild(pOptionElem);
     szBuffUtf8.Clear();
 
-    // option: OutputPathChecked
     pOptionElem = this->NewElement("OutputPathChecked");
     pOptionElem->LinkEndChild(this->NewText(szBuffUtf8.Create(m_Options.bOutputPathChecked ? _T("true") : _T("false"))));
     pOptionsElem->LinkEndChild(pOptionElem);
     szBuffUtf8.Clear();
 
-    // option: DeleteSourceFiles
     pOptionElem = this->NewElement("DeleteSourceFiles");
     pOptionElem->LinkEndChild(this->NewText(szBuffUtf8.Create(m_Options.bDeleteSourceFiles ? _T("true") : _T("false"))));
     pOptionsElem->LinkEndChild(pOptionElem);
     szBuffUtf8.Clear();
 
-    // option: RecurseChecked
     pOptionElem = this->NewElement("RecurseChecked");
     pOptionElem->LinkEndChild(this->NewText(szBuffUtf8.Create(m_Options.bRecurseChecked ? _T("true") : _T("false"))));
     pOptionsElem->LinkEndChild(pOptionElem);
     szBuffUtf8.Clear();
 
-    // option: ShutdownWhenFinished
     pOptionElem = this->NewElement("ShutdownWhenFinished");
     pOptionElem->LinkEndChild(this->NewText(szBuffUtf8.Create(m_Options.bShutdownWhenFinished ? _T("true") : _T("false"))));
     pOptionsElem->LinkEndChild(pOptionElem);
     szBuffUtf8.Clear();
 
-    // option: DoNotSaveConfiguration
     pOptionElem = this->NewElement("DoNotSaveConfiguration");
     pOptionElem->LinkEndChild(this->NewText(szBuffUtf8.Create(m_Options.bDoNotSaveConfiguration ? _T("true") : _T("false"))));
     pOptionsElem->LinkEndChild(pOptionElem);
     szBuffUtf8.Clear();
 
-    // option: MainWindowResize
-    pOptionElem = this->NewElement("MainWindowResize");
-    pOptionElem->LinkEndChild(this->NewText(szBuffUtf8.Create(m_Options.szMainWindowResize)));
-    pOptionsElem->LinkEndChild(pOptionElem);
-    szBuffUtf8.Clear();
-
-    // option: FileListColumns
-    pOptionElem = this->NewElement("FileListColumns");
-    pOptionElem->LinkEndChild(this->NewText(szBuffUtf8.Create(m_Options.szFileListColumns)));
-    pOptionsElem->LinkEndChild(pOptionElem);
-    szBuffUtf8.Clear();
-
-    // option: PresetsDialogResize
-    pOptionElem = this->NewElement("PresetsDialogResize");
-    pOptionElem->LinkEndChild(this->NewText(szBuffUtf8.Create(m_Options.szPresetsDialogResize)));
-    pOptionsElem->LinkEndChild(pOptionElem);
-    szBuffUtf8.Clear();
-
-    // option: PresetsListColumns
-    pOptionElem = this->NewElement("PresetsListColumns");
-    pOptionElem->LinkEndChild(this->NewText(szBuffUtf8.Create(m_Options.szPresetsListColumns)));
-    pOptionsElem->LinkEndChild(pOptionElem);
-    szBuffUtf8.Clear();
-
-    // option: FormatsDialogResize
-    pOptionElem = this->NewElement("FormatsDialogResize");
-    pOptionElem->LinkEndChild(this->NewText(szBuffUtf8.Create(m_Options.szFormatsDialogResize)));
-    pOptionsElem->LinkEndChild(pOptionElem);
-    szBuffUtf8.Clear();
-
-    // option: FormatsListColumns
-    pOptionElem = this->NewElement("FormatsListColumns");
-    pOptionElem->LinkEndChild(this->NewText(szBuffUtf8.Create(m_Options.szFormatsListColumns)));
-    pOptionsElem->LinkEndChild(pOptionElem);
-    szBuffUtf8.Clear();
-
-    // option: DeleteOnErrors
     pOptionElem = this->NewElement("DeleteOnErrors");
     pOptionElem->LinkEndChild(this->NewText(szBuffUtf8.Create(m_Options.bDeleteOnErrors ? _T("true") : _T("false"))));
     pOptionsElem->LinkEndChild(pOptionElem);
     szBuffUtf8.Clear();
 
-    // option: StopOnErrors
     pOptionElem = this->NewElement("StopOnErrors");
     pOptionElem->LinkEndChild(this->NewText(szBuffUtf8.Create(m_Options.bStopOnErrors ? _T("true") : _T("false"))));
     pOptionsElem->LinkEndChild(pOptionElem);
     szBuffUtf8.Clear();
 
-    // option: nThreadCount
     CString szThreadCount;
     szThreadCount.Format(_T("%d\0"), m_Options.nThreadCount);
-
     pOptionElem = this->NewElement("ThreadCount");
     pOptionElem->LinkEndChild(this->NewText(szBuffUtf8.Create(szThreadCount)));
     pOptionsElem->LinkEndChild(pOptionElem);
     szBuffUtf8.Clear();
 
+    pOptionElem = this->NewElement("MainWindowResize");
+    pOptionElem->LinkEndChild(this->NewText(szBuffUtf8.Create(m_Options.szMainWindowResize)));
     pOptionsElem->LinkEndChild(pOptionElem);
+    szBuffUtf8.Clear();
+
+    pOptionElem = this->NewElement("FileListColumns");
+    pOptionElem->LinkEndChild(this->NewText(szBuffUtf8.Create(m_Options.szFileListColumns)));
+    pOptionsElem->LinkEndChild(pOptionElem);
+    szBuffUtf8.Clear();
+
+    pOptionElem = this->NewElement("PresetsDialogResize");
+    pOptionElem->LinkEndChild(this->NewText(szBuffUtf8.Create(m_Options.szPresetsDialogResize)));
+    pOptionsElem->LinkEndChild(pOptionElem);
+    szBuffUtf8.Clear();
+
+    pOptionElem = this->NewElement("PresetsListColumns");
+    pOptionElem->LinkEndChild(this->NewText(szBuffUtf8.Create(m_Options.szPresetsListColumns)));
+    pOptionsElem->LinkEndChild(pOptionElem);
+    szBuffUtf8.Clear();
+
+    pOptionElem = this->NewElement("FormatsDialogResize");
+    pOptionElem->LinkEndChild(this->NewText(szBuffUtf8.Create(m_Options.szFormatsDialogResize)));
+    pOptionsElem->LinkEndChild(pOptionElem);
+    szBuffUtf8.Clear();
+
+    pOptionElem = this->NewElement("FormatsListColumns");
+    pOptionElem->LinkEndChild(this->NewText(szBuffUtf8.Create(m_Options.szFormatsListColumns)));
+    pOptionsElem->LinkEndChild(pOptionElem);
+    szBuffUtf8.Clear();
 }
 
 void XmlConfiguration::GetPresets(tinyxml2::XMLElement *pPresetsElem, CPresetsList &m_Presets)
@@ -347,21 +214,15 @@ void XmlConfiguration::GetPresets(tinyxml2::XMLElement *pPresetsElem, CPresetsLi
     tinyxml2::XMLElement *pPresetElem = pPresetsElem->FirstChildElement("Preset");
     for (pPresetElem; pPresetElem; pPresetElem = pPresetElem->NextSiblingElement())
     {
-        CPreset preset;
-
         const char *pszName = pPresetElem->Attribute("name");
-        if (pszName != NULL)
-        {
-            preset.szName = ToCString(pszName);
-        }
-
         const char *pszOptions = pPresetElem->Attribute("options");
-        if (pszOptions != NULL)
+        if (pszName != NULL && pszOptions != NULL)
         {
+            CPreset preset;
+            preset.szName = ToCString(pszName);
             preset.szOptions = ToCString(pszOptions);
+             m_Presets.InsertNode(preset);
         }
-
-        m_Presets.InsertNode(preset);
     }
 }
 
@@ -391,69 +252,47 @@ void XmlConfiguration::GetFormat(tinyxml2::XMLElement *pFormatElem, CFormat &m_F
 {
     const char *pszId = pFormatElem->Attribute("id");
     if (pszId != NULL)
-    {
         m_Format.szId = ToCString(pszId);
-    }
 
     const char *pszName = pFormatElem->Attribute("name");
-    if (pszName != NULL)
-    {
+    if (pszName != NULL){
         m_Format.szName = ToCString(pszName);
-    }
 
     const char *pszTemplate = pFormatElem->Attribute("template");
     if (pszTemplate != NULL)
-    {
         m_Format.szTemplate = ToCString(pszTemplate);
-    }
 
     const char *pszPipesInput = pFormatElem->Attribute("input");
     if (pszPipesInput != NULL)
-    {
         m_Format.bPipeInput = ToCString(pszPipesInput).CompareNoCase(_T("true")) == 0;
-    }
 
     const char *pszPipesOutput = pFormatElem->Attribute("output");
     if (pszPipesOutput != NULL)
-    {
         m_Format.bPipeOutput = ToCString(pszPipesOutput).CompareNoCase(_T("true")) == 0;
-    }
 
     const char *pszFunction = pFormatElem->Attribute("function");
     if (pszFunction != NULL)
-    {
         m_Format.szFunction = ToCString(pszFunction);
-    }
 
     const char *pszPath = pFormatElem->Attribute("path");
     if (pszPath != NULL)
-    {
         m_Format.szPath = ToCString(pszPath);
-    }
 
     const char *pszType = pFormatElem->Attribute("type");
     if (pszType != NULL)
-    {
         m_Format.nType = _tstoi(ToCString(pszType));
-    }
 
     const char *pszFormats = pFormatElem->Attribute("formats");
     if (pszFormats != NULL)
-    {
         m_Format.szInputExtensions = ToCString(pszFormats);
-    }
 
     const char *pszExtension = pFormatElem->Attribute("extension");
     if (pszExtension != NULL)
-    {
         m_Format.szOutputExtension = ToCString(pszExtension);
-    }
 
     const char *pszDefaultPreset = pFormatElem->Attribute("default");
     if (pszDefaultPreset != NULL)
-    {
         m_Format.nDefaultPreset = _tstoi(ToCString(pszDefaultPreset));
-    }
 
     tinyxml2::XMLElement *pPresetsElem = pFormatElem->FirstChildElement("Presets");
     this->GetPresets(pPresetsElem, m_Format.m_Presets);
@@ -534,63 +373,43 @@ void XmlConfiguration::GetItems(tinyxml2::XMLElement *pItemsElem, CItemsList &m_
 
         const char *pszId = pItemElem->Attribute("id");
         if (pszId != NULL)
-        {
             item.nId = _tstoi(ToCString(pszId));
-        }
 
         const char *pszPath = pItemElem->Attribute("path");
         if (pszPath != NULL)
-        {
             item.szPath = ToCString(pszPath);
-        }
 
         const char *pszSize = pItemElem->Attribute("size");
         if (pszSize != NULL)
-        {
             item.szSize = ToCString(pszSize);
-        }
 
         const char *pszName = pItemElem->Attribute("name");
         if (pszName != NULL)
-        {
             item.szName = ToCString(pszName);
-        }
 
         const char *pszExtension = pItemElem->Attribute("extension");
         if (pszExtension != NULL)
-        {
             item.szExtension = ToCString(pszExtension);
-        }
 
         const char *pszFormatId = pItemElem->Attribute("format");
         if (pszFormatId != NULL)
-        {
             item.szFormatId = ToCString(pszFormatId);
-        }
 
         const char *pszPreset = pItemElem->Attribute("preset");
         if (pszPreset != NULL)
-        {
             item.nPreset = _tstoi(ToCString(pszPreset));
-        }
 
         const char *pszChecked = pItemElem->Attribute("checked");
         if (pszChecked != NULL)
-        {
             item.bChecked = ToCString(pszChecked).CompareNoCase(_T("true")) == 0;
-        }
 
         const char *pszTime = pItemElem->Attribute("time");
         if (pszTime != NULL)
-        {
             item.szTime = ToCString(pszTime);
-        }
 
         const char *pszStatus = pItemElem->Attribute("status");
         if (pszStatus != NULL)
-        {
             item.szStatus = ToCString(pszStatus);
-        }
 
         m_Items.InsertNode(item);
     }
@@ -649,41 +468,29 @@ void XmlConfiguration::GetLanguage(tinyxml2::XMLElement *pLanguageElem, CLanguag
 {
     const char *pszId = pLanguageElem->Attribute("id");
     if (pszId != NULL)
-    {
         m_Language.szId = ToCString(pszId);
-    }
 
     const char *pszOriginal = pLanguageElem->Attribute("original");
     if (pszOriginal != NULL)
-    {
         m_Language.szOriginalName = ToCString(pszOriginal);
-    }
 
     const char *pszTranslated = pLanguageElem->Attribute("translated");
     if (pszTranslated != NULL)
-    {
         m_Language.szTranslatedName = ToCString(pszTranslated);
-    }
 
     tinyxml2::XMLElement *pStringElem = pLanguageElem->FirstChildElement("String");
     for (pStringElem; pStringElem; pStringElem = pStringElem->NextSiblingElement())
     {
-        int nKey;
-        CString szValue;
-
         const char *pszKey = pStringElem->Attribute("key");
-        if (pszKey != NULL)
-        {
-            _stscanf(ToCString(pszKey), _T("%x"), &nKey);
-        }
-
         const char *pszValue = pStringElem->Attribute("value");
-        if (pszValue != NULL)
+        if (pszKey != NULL && pszValue != NULL)
         {
+            int nKey;
+            CString szValue;
+            _stscanf(ToCString(pszKey), _T("%x"), &nKey);
             szValue = ToCString(pszValue);
+            m_Language.m_Strings.InsertNode(nKey, szValue);
         }
-
-        m_Language.m_Strings.InsertNode(nKey, szValue);
     }
 }
 
@@ -750,9 +557,7 @@ void XmlConfiguration::GetOptions(COptions &m_Options)
 {
     tinyxml2::XMLElement *pOptionsElem = this->FirstChildElement("Options");
     if (pOptionsElem != NULL)
-    {
         this->GetOptions(pOptionsElem, m_Options);
-    }
 }
 
 void XmlConfiguration::SetOptions(COptions &m_Options)
@@ -770,9 +575,7 @@ void XmlConfiguration::GetPresets(CPresetsList &m_Presets)
 {
     tinyxml2::XMLElement *pPresetsElem = this->FirstChildElement("Presets");
     if (pPresetsElem != NULL)
-    {
         this->GetPresets(pPresetsElem, m_Presets);
-    }
 }
 
 void XmlConfiguration::SetPresets(CPresetsList &m_Presets)
@@ -790,9 +593,7 @@ void XmlConfiguration::GetFormat(CFormat &m_Format)
 {
     tinyxml2::XMLElement *pFormatElem = this->FirstChildElement("Format");
     if (pFormatElem != NULL)
-    {
         this->GetFormat(pFormatElem, m_Format);
-    }
 }
 
 void XmlConfiguration::SetFormat(CFormat &m_Format)
@@ -810,9 +611,7 @@ void XmlConfiguration::GetFormats(CFormatsList &m_Formats)
 {
     tinyxml2::XMLElement *pFormatsElem = this->FirstChildElement("Formats");
     if (pFormatsElem != NULL)
-    {
         this->GetFormats(pFormatsElem, m_Formats);
-    }
 }
 
 void XmlConfiguration::SetFormats(CFormatsList &m_Formats)
@@ -830,9 +629,7 @@ void XmlConfiguration::GetItems(CItemsList &m_Items)
 {
     tinyxml2::XMLElement *pItemsElem = this->FirstChildElement("Items");
     if (pItemsElem != NULL)
-    {
         this->GetItems(pItemsElem, m_Items);
-    }
 }
 
 void XmlConfiguration::SetItems(CItemsList &m_Items)
@@ -850,9 +647,7 @@ void XmlConfiguration::GetLanguage(CLanguage &m_Language)
 {
     tinyxml2::XMLElement *pLanguageElem = this->FirstChildElement("Language");
     if (pLanguageElem != NULL)
-    {
         this->GetLanguage(pLanguageElem, m_Language);
-    }
 }
 
 void XmlConfiguration::SetLanguage(CLanguage &m_Language)
@@ -870,9 +665,7 @@ void XmlConfiguration::GetLanguages(CLanguagesList &m_Languages)
 {
     tinyxml2::XMLElement *pLanguagesElem = this->FirstChildElement("Languages");
     if (pLanguagesElem != NULL)
-    {
         this->GetLanguages(pLanguagesElem, m_Languages);
-    }
 }
 
 void XmlConfiguration::SetLanguages(CLanguagesList &m_Languages)
@@ -906,14 +699,11 @@ bool XmlConfiguration::Save(CString szFileName)
         const unsigned char TIXML_UTF_LEAD_0 = 0xefU;
         const unsigned char TIXML_UTF_LEAD_1 = 0xbbU;
         const unsigned char TIXML_UTF_LEAD_2 = 0xbfU;
-
         fputc(TIXML_UTF_LEAD_0, fp.m_pStream);
         fputc(TIXML_UTF_LEAD_1, fp.m_pStream);
         fputc(TIXML_UTF_LEAD_2, fp.m_pStream);
-
         tinyxml2::XMLPrinter printer(fp.m_pStream);
         this->Print(&printer);
-
         fp.Close();
         return true;
     }
