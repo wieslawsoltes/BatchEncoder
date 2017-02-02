@@ -19,9 +19,9 @@ XmlConfiguration::~XmlConfiguration()
 #ifdef _UNICODE
 CString XmlConfiguration::ToCString(const char *pszUtf8)
 {
-    if (pszUtf8 == NULL) 
+    if (pszUtf8 == NULL)
         return _T("");
-    if (strlen(pszUtf8) == 0) 
+    if (strlen(pszUtf8) == 0)
         return _T("");
     wchar_t *pszUnicode = MakeUnicodeString((unsigned char *)pszUtf8);
     CString szBuff = pszUnicode;
@@ -31,9 +31,9 @@ CString XmlConfiguration::ToCString(const char *pszUtf8)
 #else
 CString XmlConfiguration::ToCString(const char *pszUtf8)
 {
-    if (pszUtf8 == NULL) 
+    if (pszUtf8 == NULL)
         return _T("");
-    if (strlen(pszUtf8) == 0) 
+    if (strlen(pszUtf8) == 0)
         return _T("");
     char *pszAnsi;
     Utf8Decode(pszUtf8, &pszAnsi);
@@ -48,7 +48,7 @@ void XmlConfiguration::GetOptions(tinyxml2::XMLElement *pOptionsElem, COptions &
     tinyxml2::XMLElement *pOptionElem;
 
     m_Options.Defaults();
- 
+
     pOptionElem = pOptionsElem->FirstChildElement("SelectedLanguage");
     if (pOptionElem)
         m_Options.szSelectedLanguage = ToCString(pOptionElem->GetText());
@@ -225,7 +225,7 @@ void XmlConfiguration::GetPresets(tinyxml2::XMLElement *pPresetsElem, CPresetsLi
             CPreset preset;
             preset.szName = ToCString(pszName);
             preset.szOptions = ToCString(pszOptions);
-             m_Presets.InsertNode(preset);
+            m_Presets.InsertNode(preset);
         }
     }
 }
