@@ -16,7 +16,15 @@ public:
     XmlConfiguration();
     virtual ~XmlConfiguration();
 private:
+    const LPCTSTR m_True = _T("true");
+    const LPCTSTR m_False = _T("false");
+private:
     CString ToCString(const char *pszUtf8);
+    bool ToBool(const char *pszUtf8);
+    int ToInt(const char *pszUtf8);
+    CString ToCString(const int nValue);
+    CString ToCString(const bool bValue);
+private:
     void GetOptions(tinyxml2::XMLElement *pOptionsElem, COptions &m_Options);
     void SetOptions(tinyxml2::XMLElement *pOptionsElem, COptions &m_Options);
     void GetPresets(tinyxml2::XMLElement *pPresetsElem, CPresetsList &m_Presets);

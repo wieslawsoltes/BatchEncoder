@@ -43,6 +43,30 @@ CString XmlConfiguration::ToCString(const char *pszUtf8)
 }
 #endif
 
+bool XmlConfiguration::ToBool(const char *pszUtf8)
+{
+    return ToCString(pszUtf8).CompareNoCase(m_True) == 0;
+}
+
+int XmlConfiguration::ToInt(const char *pszUtf8)
+{
+    return _tstoi(ToCString(pszUtf8));
+}
+
+CString XmlConfiguration::ToCString(const int nValue)
+{
+    CString rValue;
+    rValue.Format(_T("%d\0"), nValue);
+    return rValue;
+}
+
+CString XmlConfiguration::ToCString(const bool bValue)
+{
+    CString rValue;
+    rValue.Format(_T("%s\0"), bValue ? m_True : m_False);
+    return rValue;
+}
+
 void XmlConfiguration::GetOptions(tinyxml2::XMLElement *pOptionsElem, COptions &m_Options)
 {
     tinyxml2::XMLElement *pOptionElem;
