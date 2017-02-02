@@ -81,6 +81,10 @@ bool CBatchEncoderWorkerContext::Callback(int nItemId, int nProgress, bool bFini
     {
         pDlg->pWorkerContext->nProgess[nItemId] = nProgress;
 
+        // check previous progress if two or more passes are used to for item processing
+        if (pDlg->pWorkerContext->nPreviousProgess[nItemId] > nProgress)
+            pDlg->pWorkerContext->nPreviousProgess[nItemId] = nProgress;
+
         static volatile bool bSafeCheck = false;
         if (bSafeCheck == false)
         {
