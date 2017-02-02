@@ -50,7 +50,12 @@ public:
         CString rValue;
         if (this->pConfig->LookupString(nKey, rValue))
         {
-            hMenu->ModifyMenu(nID, 0, nID, rValue);
+            UINT nState = hMenu->GetMenuState(nID, MF_BYCOMMAND);
+            hMenu->ModifyMenu(nID, MF_BYCOMMAND, nID, rValue);
+            if (nState & MF_CHECKED)
+                hMenu->CheckMenuItem(nID, MF_CHECKED | MF_BYCOMMAND);
+            else
+                hMenu->CheckMenuItem(nID, MF_UNCHECKED | MF_BYCOMMAND);
         }
     }
     void SetWndText(CWnd *hWnd, int nKey)
