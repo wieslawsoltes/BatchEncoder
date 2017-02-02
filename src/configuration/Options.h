@@ -66,6 +66,7 @@ public:
 public:
     void Defaults()
     {
+        this->szSelectedLanguage = _T("en-US");
         this->nSelectedFormat = 0;
         this->szOutputPath = _T("");
         this->bOutputPathChecked = false;
@@ -75,7 +76,7 @@ public:
         this->bDoNotSaveConfiguration = false;
         this->bDeleteOnErrors = true;
         this->bStopOnErrors = false;
-        this->nThreadCount = 1;
+        this->nThreadCount = 0;
         this->szMainWindowResize = _T("");
         this->szFileListColumns = _T("");
         this->szPresetsDialogResize = _T("");
