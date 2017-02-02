@@ -1700,6 +1700,7 @@ bool CBatchEncoderDlg::LoadOptions(CString szFileXml)
     if (doc.Open(szFileXml) == false)
         return false;
 
+    this->m_Config.m_Options.Defaults();
     doc.GetOptions(this->m_Config.m_Options);
 
     this->SetOptions();

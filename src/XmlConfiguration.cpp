@@ -71,8 +71,6 @@ void XmlConfiguration::GetOptions(tinyxml2::XMLElement *pOptionsElem, COptions &
 {
     tinyxml2::XMLElement *pOptionElem;
 
-    m_Options.Defaults();
-
     pOptionElem = pOptionsElem->FirstChildElement("SelectedLanguage");
     if (pOptionElem)
         m_Options.szSelectedLanguage = ToCString(pOptionElem->GetText());
@@ -145,92 +143,74 @@ void XmlConfiguration::GetOptions(tinyxml2::XMLElement *pOptionsElem, COptions &
 void XmlConfiguration::SetOptions(tinyxml2::XMLElement *pOptionsElem, COptions &m_Options)
 {
     tinyxml2::XMLElement *pOptionElem;
-    CUtf8String szBuffUtf8;
 
     pOptionElem = this->NewElement("SelectedLanguage");
-    pOptionElem->LinkEndChild(this->NewText(szBuffUtf8.Create(m_Options.szSelectedLanguage)));
+    pOptionElem->LinkEndChild(this->NewText(CUtf8String(m_Options.szSelectedLanguage).m_Result));
     pOptionsElem->LinkEndChild(pOptionElem);
-    szBuffUtf8.Free();
 
     pOptionElem = this->NewElement("SelectedFormat");
-    pOptionElem->LinkEndChild(this->NewText(szBuffUtf8.Create(ToCString(m_Options.nSelectedFormat))));
+    pOptionElem->LinkEndChild(this->NewText(CUtf8String(ToCString(m_Options.nSelectedFormat)).m_Result));
     pOptionsElem->LinkEndChild(pOptionElem);
-    szBuffUtf8.Free();
 
     pOptionElem = this->NewElement("OutputPath");
-    pOptionElem->LinkEndChild(this->NewText(szBuffUtf8.Create(m_Options.szOutputPath)));
+    pOptionElem->LinkEndChild(this->NewText(CUtf8String(m_Options.szOutputPath).m_Result));
     pOptionsElem->LinkEndChild(pOptionElem);
-    szBuffUtf8.Free();
 
     pOptionElem = this->NewElement("OutputPathChecked");
-    pOptionElem->LinkEndChild(this->NewText(szBuffUtf8.Create(ToCString(m_Options.bOutputPathChecked))));
+    pOptionElem->LinkEndChild(this->NewText(CUtf8String(ToCString(m_Options.bOutputPathChecked)).m_Result));
     pOptionsElem->LinkEndChild(pOptionElem);
-    szBuffUtf8.Free();
 
     pOptionElem = this->NewElement("DeleteSourceFiles");
-    pOptionElem->LinkEndChild(this->NewText(szBuffUtf8.Create(ToCString(m_Options.bDeleteSourceFiles))));
+    pOptionElem->LinkEndChild(this->NewText(CUtf8String(ToCString(m_Options.bDeleteSourceFiles)).m_Result));
     pOptionsElem->LinkEndChild(pOptionElem);
-    szBuffUtf8.Free();
 
     pOptionElem = this->NewElement("RecurseChecked");
-    pOptionElem->LinkEndChild(this->NewText(szBuffUtf8.Create(ToCString(m_Options.bRecurseChecked))));
+    pOptionElem->LinkEndChild(this->NewText(CUtf8String(ToCString(m_Options.bRecurseChecked)).m_Result));
     pOptionsElem->LinkEndChild(pOptionElem);
-    szBuffUtf8.Free();
 
     pOptionElem = this->NewElement("ShutdownWhenFinished");
-    pOptionElem->LinkEndChild(this->NewText(szBuffUtf8.Create(ToCString(m_Options.bShutdownWhenFinished))));
+    pOptionElem->LinkEndChild(this->NewText(CUtf8String(ToCString(m_Options.bShutdownWhenFinished)).m_Result));
     pOptionsElem->LinkEndChild(pOptionElem);
-    szBuffUtf8.Free();
 
     pOptionElem = this->NewElement("DoNotSaveConfiguration");
-    pOptionElem->LinkEndChild(this->NewText(szBuffUtf8.Create(ToCString(m_Options.bDoNotSaveConfiguration))));
+    pOptionElem->LinkEndChild(this->NewText(CUtf8String(ToCString(m_Options.bDoNotSaveConfiguration)).m_Result));
     pOptionsElem->LinkEndChild(pOptionElem);
-    szBuffUtf8.Free();
 
     pOptionElem = this->NewElement("DeleteOnErrors");
-    pOptionElem->LinkEndChild(this->NewText(szBuffUtf8.Create(ToCString(m_Options.bDeleteOnErrors))));
+    pOptionElem->LinkEndChild(this->NewText(CUtf8String(ToCString(m_Options.bDeleteOnErrors)).m_Result));
     pOptionsElem->LinkEndChild(pOptionElem);
-    szBuffUtf8.Free();
 
     pOptionElem = this->NewElement("StopOnErrors");
-    pOptionElem->LinkEndChild(this->NewText(szBuffUtf8.Create(ToCString(m_Options.bStopOnErrors))));
+    pOptionElem->LinkEndChild(this->NewText(CUtf8String(ToCString(m_Options.bStopOnErrors)).m_Result));
     pOptionsElem->LinkEndChild(pOptionElem);
-    szBuffUtf8.Free();
 
     pOptionElem = this->NewElement("ThreadCount");
-    pOptionElem->LinkEndChild(this->NewText(szBuffUtf8.Create(ToCString(m_Options.nThreadCount))));
+    pOptionElem->LinkEndChild(this->NewText(CUtf8String(ToCString(m_Options.nThreadCount)).m_Result));
     pOptionsElem->LinkEndChild(pOptionElem);
-    szBuffUtf8.Free();
 
     pOptionElem = this->NewElement("MainWindowResize");
-    pOptionElem->LinkEndChild(this->NewText(szBuffUtf8.Create(m_Options.szMainWindowResize)));
+    pOptionElem->LinkEndChild(this->NewText(CUtf8String(m_Options.szMainWindowResize).m_Result));
     pOptionsElem->LinkEndChild(pOptionElem);
-    szBuffUtf8.Free();
 
     pOptionElem = this->NewElement("FileListColumns");
-    pOptionElem->LinkEndChild(this->NewText(szBuffUtf8.Create(m_Options.szFileListColumns)));
+    pOptionElem->LinkEndChild(this->NewText(CUtf8String(m_Options.szFileListColumns).m_Result));
     pOptionsElem->LinkEndChild(pOptionElem);
-    szBuffUtf8.Free();
 
     pOptionElem = this->NewElement("PresetsDialogResize");
-    pOptionElem->LinkEndChild(this->NewText(szBuffUtf8.Create(m_Options.szPresetsDialogResize)));
+    pOptionElem->LinkEndChild(this->NewText(CUtf8String(m_Options.szPresetsDialogResize).m_Result));
     pOptionsElem->LinkEndChild(pOptionElem);
-    szBuffUtf8.Free();
 
     pOptionElem = this->NewElement("PresetsListColumns");
-    pOptionElem->LinkEndChild(this->NewText(szBuffUtf8.Create(m_Options.szPresetsListColumns)));
+    pOptionElem->LinkEndChild(this->NewText(CUtf8String(m_Options.szPresetsListColumns).m_Result));
     pOptionsElem->LinkEndChild(pOptionElem);
-    szBuffUtf8.Free();
 
     pOptionElem = this->NewElement("FormatsDialogResize");
-    pOptionElem->LinkEndChild(this->NewText(szBuffUtf8.Create(m_Options.szFormatsDialogResize)));
+    pOptionElem->LinkEndChild(this->NewText(CUtf8String(m_Options.szFormatsDialogResize).m_Result));
     pOptionsElem->LinkEndChild(pOptionElem);
-    szBuffUtf8.Free();
 
     pOptionElem = this->NewElement("FormatsListColumns");
-    pOptionElem->LinkEndChild(this->NewText(szBuffUtf8.Create(m_Options.szFormatsListColumns)));
+    pOptionElem->LinkEndChild(this->NewText(CUtf8String(m_Options.szFormatsListColumns).m_Result));
     pOptionsElem->LinkEndChild(pOptionElem);
-    szBuffUtf8.Free();
 }
 
 void XmlConfiguration::GetPresets(tinyxml2::XMLElement *pPresetsElem, CPresetsList &m_Presets)
@@ -252,22 +232,15 @@ void XmlConfiguration::GetPresets(tinyxml2::XMLElement *pPresetsElem, CPresetsLi
 
 void XmlConfiguration::SetPresets(tinyxml2::XMLElement *pPresetsElem, CPresetsList &m_Presets)
 {
-    CUtf8String szBuffUtf8;
     tinyxml2::XMLElement *pPresetElem;
 
     int nPresets = m_Presets.GetSize();
     for (int i = 0; i < nPresets; i++)
     {
         CPreset& preset = m_Presets.GetData(i);
-
         pPresetElem = this->NewElement("Preset");
-
-        pPresetElem->SetAttribute("name", szBuffUtf8.Create(preset.szName));
-        szBuffUtf8.Free();
-
-        pPresetElem->SetAttribute("options", szBuffUtf8.Create(preset.szOptions));
-        szBuffUtf8.Free();
-
+        pPresetElem->SetAttribute("name", CUtf8String(preset.szName).m_Result);
+        pPresetElem->SetAttribute("options", CUtf8String(preset.szOptions).m_Result);
         pPresetsElem->LinkEndChild(pPresetElem);
     }
 }
@@ -324,40 +297,17 @@ void XmlConfiguration::GetFormat(tinyxml2::XMLElement *pFormatElem, CFormat &m_F
 
 void XmlConfiguration::SetFormat(tinyxml2::XMLElement *pFormatElem, CFormat &m_Format)
 {
-    CUtf8String szBuffUtf8;
-
-    pFormatElem->SetAttribute("id", szBuffUtf8.Create(m_Format.szId));
-    szBuffUtf8.Free();
-
-    pFormatElem->SetAttribute("name", szBuffUtf8.Create(m_Format.szName));
-    szBuffUtf8.Free();
-
-    pFormatElem->SetAttribute("template", szBuffUtf8.Create(m_Format.szTemplate));
-    szBuffUtf8.Free();
-
-    pFormatElem->SetAttribute("input", szBuffUtf8.Create(ToCString(m_Format.bPipeInput)));
-    szBuffUtf8.Free();
-
-    pFormatElem->SetAttribute("output", szBuffUtf8.Create(ToCString(m_Format.bPipeOutput)));
-    szBuffUtf8.Free();
-
-    pFormatElem->SetAttribute("function", szBuffUtf8.Create(m_Format.szFunction));
-    szBuffUtf8.Free();
-
-    pFormatElem->SetAttribute("path", szBuffUtf8.Create(m_Format.szPath));
-    szBuffUtf8.Free();
-
-    pFormatElem->SetAttribute("type", szBuffUtf8.Create(ToCString(m_Format.nType)));
-    szBuffUtf8.Free();
-
-    pFormatElem->SetAttribute("formats", szBuffUtf8.Create(m_Format.szInputExtensions));
-    szBuffUtf8.Free();
-
-    pFormatElem->SetAttribute("extension", szBuffUtf8.Create(m_Format.szOutputExtension));
-    szBuffUtf8.Free();
-
-    pFormatElem->SetAttribute("default", szBuffUtf8.Create(ToCString(m_Format.nDefaultPreset)));
-    szBuffUtf8.Free();
+    pFormatElem->SetAttribute("id", CUtf8String(m_Format.szId).m_Result);
+    pFormatElem->SetAttribute("name", CUtf8String(m_Format.szName).m_Result);
+    pFormatElem->SetAttribute("template", CUtf8String(m_Format.szTemplate).m_Result);
+    pFormatElem->SetAttribute("input", CUtf8String(ToCString(m_Format.bPipeInput)).m_Result);
+    pFormatElem->SetAttribute("output", CUtf8String(ToCString(m_Format.bPipeOutput)).m_Result);
+    pFormatElem->SetAttribute("function", CUtf8String(m_Format.szFunction).m_Result);
+    pFormatElem->SetAttribute("path", CUtf8String(m_Format.szPath).m_Result);
+    pFormatElem->SetAttribute("type", CUtf8String(ToCString(m_Format.nType)).m_Result);
+    pFormatElem->SetAttribute("formats", CUtf8String(m_Format.szInputExtensions).m_Result);
+    pFormatElem->SetAttribute("extension", CUtf8String(m_Format.szOutputExtension).m_Result);
+    pFormatElem->SetAttribute("default", CUtf8String(ToCString(m_Format.nDefaultPreset)).m_Result);
 
     tinyxml2::XMLElement *pPresetsElem = this->NewElement("Presets");
     pFormatElem->LinkEndChild(pPresetsElem);
@@ -440,46 +390,22 @@ void XmlConfiguration::GetItems(tinyxml2::XMLElement *pItemsElem, CItemsList &m_
 
 void XmlConfiguration::SetItems(tinyxml2::XMLElement *pItemsElem, CItemsList &m_Items)
 {
-    CUtf8String szBuffUtf8;
     tinyxml2::XMLElement *pItemElem;
-
     int nItems = m_Items.GetSize();
     for (int i = 0; i < nItems; i++)
     {
         CItem& item = m_Items.GetData(i);
-
         pItemElem = this->NewElement("Item");
-
-        pItemElem->SetAttribute("id", szBuffUtf8.Create(ToCString(i)));
-        szBuffUtf8.Free();
-
-        pItemElem->SetAttribute("path", szBuffUtf8.Create(item.szPath));
-        szBuffUtf8.Free();
-
-        pItemElem->SetAttribute("size", szBuffUtf8.Create(item.szSize));
-        szBuffUtf8.Free();
-
-        pItemElem->SetAttribute("name", szBuffUtf8.Create(item.szName));
-        szBuffUtf8.Free();
-
-        pItemElem->SetAttribute("extension", szBuffUtf8.Create(item.szExtension));
-        szBuffUtf8.Free();
-
-        pItemElem->SetAttribute("format", szBuffUtf8.Create(item.szFormatId));
-        szBuffUtf8.Free();
-
-        pItemElem->SetAttribute("preset", szBuffUtf8.Create(ToCString(item.nPreset)));
-        szBuffUtf8.Free();
-
-        pItemElem->SetAttribute("checked", szBuffUtf8.Create(ToCString(item.bChecked)));
-        szBuffUtf8.Free();
-
-        pItemElem->SetAttribute("time", szBuffUtf8.Create(item.szTime));
-        szBuffUtf8.Free();
-
-        pItemElem->SetAttribute("status", szBuffUtf8.Create(item.szStatus));
-        szBuffUtf8.Free();
-
+        pItemElem->SetAttribute("id", CUtf8String(ToCString(i)).m_Result);
+        pItemElem->SetAttribute("path", CUtf8String(item.szPath).m_Result);
+        pItemElem->SetAttribute("size", CUtf8String(item.szSize).m_Result);
+        pItemElem->SetAttribute("name", CUtf8String(item.szName).m_Result);
+        pItemElem->SetAttribute("extension", CUtf8String(item.szExtension).m_Result);
+        pItemElem->SetAttribute("format", CUtf8String(item.szFormatId).m_Result);
+        pItemElem->SetAttribute("preset", CUtf8String(ToCString(item.nPreset)).m_Result);
+        pItemElem->SetAttribute("checked", CUtf8String(ToCString(item.bChecked)).m_Result);
+        pItemElem->SetAttribute("time", CUtf8String(item.szTime).m_Result);
+        pItemElem->SetAttribute("status", CUtf8String(item.szStatus).m_Result);
         pItemsElem->LinkEndChild(pItemElem);
     }
 }
@@ -516,36 +442,22 @@ void XmlConfiguration::GetLanguage(tinyxml2::XMLElement *pLanguageElem, CLanguag
 
 void XmlConfiguration::SetLanguage(tinyxml2::XMLElement *pLanguageElem, CLanguage &m_Language)
 {
-    CUtf8String szBuffUtf8;
-
-    pLanguageElem->SetAttribute("id", szBuffUtf8.Create(m_Language.szId));
-    szBuffUtf8.Free();
-
-    pLanguageElem->SetAttribute("original", szBuffUtf8.Create(m_Language.szOriginalName));
-    szBuffUtf8.Free();
-
-    pLanguageElem->SetAttribute("translated", szBuffUtf8.Create(m_Language.szTranslatedName));
-    szBuffUtf8.Free();
+    pLanguageElem->SetAttribute("id", CUtf8String(m_Language.szId).m_Result);
+    pLanguageElem->SetAttribute("original", CUtf8String(m_Language.szOriginalName).m_Result);
+    pLanguageElem->SetAttribute("translated", CUtf8String(m_Language.szTranslatedName).m_Result);
 
     tinyxml2::XMLElement *pStringElem;
     POSITION pos = m_Language.m_Strings.m_Map.GetStartPosition();
-    int nKey;
     while (pos != NULL)
     {
         CString rValue;
-        m_Language.m_Strings.m_Map.GetNextAssoc(pos, nKey, rValue);
-
         CString szKey;
+        int nKey;
+        m_Language.m_Strings.m_Map.GetNextAssoc(pos, nKey, rValue);
         szKey.Format(_T("%X"), nKey);
-
         pStringElem = this->NewElement("String");
-
-        pStringElem->SetAttribute("key", szBuffUtf8.Create(szKey));
-        szBuffUtf8.Free();
-
-        pStringElem->SetAttribute("value", szBuffUtf8.Create(rValue));
-        szBuffUtf8.Free();
-
+        pStringElem->SetAttribute("key", CUtf8String(szKey).m_Result);
+        pStringElem->SetAttribute("value", CUtf8String(rValue).m_Result);
         pLanguageElem->LinkEndChild(pStringElem);
     }
 }
@@ -582,7 +494,7 @@ void XmlConfiguration::GetOptions(COptions &m_Options)
 
 void XmlConfiguration::SetOptions(COptions &m_Options)
 {
-    tinyxml2::XMLDeclaration* decl = this->NewDeclaration(UTF8_DOCUMENT_DECLARATION);
+    tinyxml2::XMLDeclaration* decl = this->NewDeclaration(m_Utf8DocumentDeclaration);
     this->LinkEndChild(decl);
 
     tinyxml2::XMLElement *pOptionsElem = this->NewElement("Options");
@@ -600,7 +512,7 @@ void XmlConfiguration::GetPresets(CPresetsList &m_Presets)
 
 void XmlConfiguration::SetPresets(CPresetsList &m_Presets)
 {
-    tinyxml2::XMLDeclaration* decl = this->NewDeclaration(UTF8_DOCUMENT_DECLARATION);
+    tinyxml2::XMLDeclaration* decl = this->NewDeclaration(m_Utf8DocumentDeclaration);
     this->LinkEndChild(decl);
 
     tinyxml2::XMLElement *pPresetsElem = this->NewElement("Presets");
@@ -618,7 +530,7 @@ void XmlConfiguration::GetFormat(CFormat &m_Format)
 
 void XmlConfiguration::SetFormat(CFormat &m_Format)
 {
-    tinyxml2::XMLDeclaration* decl = this->NewDeclaration(UTF8_DOCUMENT_DECLARATION);
+    tinyxml2::XMLDeclaration* decl = this->NewDeclaration(m_Utf8DocumentDeclaration);
     this->LinkEndChild(decl);
 
     tinyxml2::XMLElement *pFormatElem = this->NewElement("Format");
@@ -636,7 +548,7 @@ void XmlConfiguration::GetFormats(CFormatsList &m_Formats)
 
 void XmlConfiguration::SetFormats(CFormatsList &m_Formats)
 {
-    tinyxml2::XMLDeclaration* decl = this->NewDeclaration(UTF8_DOCUMENT_DECLARATION);
+    tinyxml2::XMLDeclaration* decl = this->NewDeclaration(m_Utf8DocumentDeclaration);
     this->LinkEndChild(decl);
 
     tinyxml2::XMLElement *pFormatsElem = this->NewElement("Formats");
@@ -654,7 +566,7 @@ void XmlConfiguration::GetItems(CItemsList &m_Items)
 
 void XmlConfiguration::SetItems(CItemsList &m_Items)
 {
-    tinyxml2::XMLDeclaration* decl = this->NewDeclaration(UTF8_DOCUMENT_DECLARATION);
+    tinyxml2::XMLDeclaration* decl = this->NewDeclaration(m_Utf8DocumentDeclaration);
     this->LinkEndChild(decl);
 
     tinyxml2::XMLElement *pItemsElem = this->NewElement("Items");
@@ -672,7 +584,7 @@ void XmlConfiguration::GetLanguage(CLanguage &m_Language)
 
 void XmlConfiguration::SetLanguage(CLanguage &m_Language)
 {
-    tinyxml2::XMLDeclaration* decl = this->NewDeclaration(UTF8_DOCUMENT_DECLARATION);
+    tinyxml2::XMLDeclaration* decl = this->NewDeclaration(m_Utf8DocumentDeclaration);
     this->LinkEndChild(decl);
 
     tinyxml2::XMLElement *pLanguageElem = this->NewElement("Language");
@@ -690,7 +602,7 @@ void XmlConfiguration::GetLanguages(CLanguagesList &m_Languages)
 
 void XmlConfiguration::SetLanguages(CLanguagesList &m_Languages)
 {
-    tinyxml2::XMLDeclaration* decl = this->NewDeclaration(UTF8_DOCUMENT_DECLARATION);
+    tinyxml2::XMLDeclaration* decl = this->NewDeclaration(m_Utf8DocumentDeclaration);
     this->LinkEndChild(decl);
 
     tinyxml2::XMLElement *pLanguagesElem = this->NewElement("Languages");

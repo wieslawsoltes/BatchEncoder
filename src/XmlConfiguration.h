@@ -8,10 +8,10 @@
 #include "xml\tinyxml2.h" // https://github.com/leethomason/tinyxml2
 #include "Configuration.h"
 
-#define UTF8_DOCUMENT_DECLARATION "xml version=\"1.0\" encoding=\"UTF-8\""
-
 class XmlConfiguration : private tinyxml2::XMLDocument
 {
+public:
+    const char *m_Utf8DocumentDeclaration = "xml version=\"1.0\" encoding=\"UTF-8\"";
 public:
     XmlConfiguration();
     virtual ~XmlConfiguration();

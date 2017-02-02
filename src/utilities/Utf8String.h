@@ -6,11 +6,12 @@
 class CUtf8String
 {
 public:
-    char *szBuffUtf8;
+    char *m_Result;
 public:
     CUtf8String();
+    CUtf8String(CString szText);
     virtual ~CUtf8String();
 public:
-    char *Create(CString szData);
+    char *Convert(CString szText);
     void Free();
 };

@@ -8,7 +8,12 @@
 
 CUtf8String::CUtf8String()
 {
-    szBuffUtf8 = NULL;
+    m_Result = NULL;
+}
+
+CUtf8String::CUtf8String(CString szText)
+{
+    Convert(szText);
 }
 
 CUtf8String::~CUtf8String()
@@ -16,42 +21,41 @@ CUtf8String::~CUtf8String()
     Free();
 }
 
-char *CUtf8String::Create(CString szData)
-{
 #ifdef _UNICODE
-    // UNICODE to UTF-8
-    if (szData.GetLength() > 0)
+char *CUtf8String::Convert(CString szText)
+{
+    if (szText.GetLength() > 0)
     {
-        szBuffUtf8 = (char *)MakeUtf8String(szData);
+        m_Result = (char *)MakeUtf8String(szText);
     }
     else
     {
-        szBuffUtf8 = (char *)malloc(1);
-        szBuffUtf8[0] = '\0';
+        m_Result = (char *)malloc(1);
+        m_Result[0] = '\0';
     }
-
-    return szBuffUtf8;
-#else
-    // ANSI to UTF-8
-    if (szData.GetLength() > 0)
-    {
-        Utf8Encode(szData, &szBuffUtf8);
-    }
-    else
-    {
-        szBuffUtf8 = (char *)malloc(1);
-        szBuffUtf8[0] = '\0';
-    }
-
-    return szBuffUtf8;
-#endif
+    return m_Result;
 }
+#else
+char *CUtf8String::Convert(CString szText)
+{
+    if (szText.GetLength() > 0)
+    {
+        Utf8Encode(szText, &m_Result);
+    }
+    else
+    {
+        m_Result = (char *)malloc(1);
+        m_Result[0] = '\0';
+    }
+    return m_Result;
+}
+#endif
 
 void CUtf8String::Free()
 {
-    if (szBuffUtf8 != NULL)
+    if (m_Result != NULL)
     {
-        free(szBuffUtf8);
-        szBuffUtf8 = NULL;
+        free(m_Result);
+        m_Result = NULL;
     }
 }
