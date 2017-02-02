@@ -16,28 +16,32 @@ XmlConfiguration::~XmlConfiguration()
 
 }
 
+#ifdef _UNICODE
 CString XmlConfiguration::ToCString(const char *pszUtf8)
 {
     if (pszUtf8 == NULL) 
         return _T("");
     if (strlen(pszUtf8) == 0) 
         return _T("");
-    CString szBuff;
-#ifdef _UNICODE
-    // UTF-8 to UNICODE
-    wchar_t *pszUnicode;
-    pszUnicode = MakeUnicodeString((unsigned char *)pszUtf8);
-    szBuff = pszUnicode;
+    wchar_t *pszUnicode = MakeUnicodeString((unsigned char *)pszUtf8);
+    CString szBuff = pszUnicode;
     free(pszUnicode);
-#else
-    // UTF-8 to ANSI
-    char *pszAnsi;
-    Utf8Decode(pszUtf8, &pszAnsi);
-    szBuff = pszAnsi;
-    free(pszAnsi);
-#endif
     return szBuff;
 }
+#else
+CString XmlConfiguration::ToCString(const char *pszUtf8)
+{
+    if (pszUtf8 == NULL) 
+        return _T("");
+    if (strlen(pszUtf8) == 0) 
+        return _T("");
+    char *pszAnsi;
+    Utf8Decode(pszUtf8, &pszAnsi);
+    CString szBuff = pszAnsi;
+    free(pszAnsi);
+    return szBuff;
+}
+#endif
 
 void XmlConfiguration::GetOptions(tinyxml2::XMLElement *pOptionsElem, COptions &m_Options)
 {
