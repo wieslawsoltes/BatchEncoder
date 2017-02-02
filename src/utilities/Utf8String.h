@@ -12,5 +12,5 @@ public:
     virtual ~CUtf8String();
 public:
     char *Create(CString szData);
-    void Clear();
+    void Free();
 };

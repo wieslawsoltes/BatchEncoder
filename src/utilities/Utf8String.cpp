@@ -13,7 +13,7 @@ CUtf8String::CUtf8String()
 
 CUtf8String::~CUtf8String()
 {
-    Clear();
+    Free();
 }
 
 char *CUtf8String::Create(CString szData)
@@ -47,7 +47,7 @@ char *CUtf8String::Create(CString szData)
 #endif
 }
 
-void CUtf8String::Clear()
+void CUtf8String::Free()
 {
     if (szBuffUtf8 != NULL)
     {
