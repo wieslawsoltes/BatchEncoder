@@ -255,7 +255,7 @@ void XmlConfiguration::GetFormat(tinyxml2::XMLElement *pFormatElem, CFormat &m_F
         m_Format.szId = ToCString(pszId);
 
     const char *pszName = pFormatElem->Attribute("name");
-    if (pszName != NULL){
+    if (pszName != NULL)
         m_Format.szName = ToCString(pszName);
 
     const char *pszTemplate = pFormatElem->Attribute("template");
