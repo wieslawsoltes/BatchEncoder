@@ -449,7 +449,7 @@
             <Preset name="ABR 500 kbps" options="-b 500"/>
         </Presets>
     </Format>
-    <Format id="AFTEN_AC3" name="AC3 (ATSC A/52)" template="$EXE $OPTIONS $INFILE $OUTFILE" input="true" output="false" function="- none -" path="aften.exe" type="0" formats="WAV" extension="AC3" default="15">
+    <Format id="AFTEN_AC3" name="AC3 (ATSC A/52) - aften" template="$EXE $OPTIONS $INFILE $OUTFILE" input="true" output="false" function="- none -" path="aften.exe" type="0" formats="WAV" extension="AC3" default="15">
         <Presets>
             <Preset name="CBR 32 kbit/s" options="-b 32"/>
             <Preset name="CBR 40 kbit/s" options="-b 40"/>
@@ -473,6 +473,29 @@
             <Preset name="VBR Quality 0 (min)" options="-q 0"/>
             <Preset name="VBR Quality 240 (default)" options="-q 240"/>
             <Preset name="VBR Quality 1023 (max)" options="-q 1023"/>
+        </Presets>
+    </Format>
+    <Format id="FFMPEG_AC3" name="AC3 (ATSC A/52) - ffmpeg" template="$EXE -ignore_length true -y -i $INFILE -acodec ac3 $OPTIONS $OUTFILE" input="true" output="false" function="- none -" path="ffmpeg.exe" type="0" formats="WAV" extension="AC3" default="21">
+        <Presets>
+            <Preset name="CBR 32 kbit/s" options="-ab 32k"/>
+            <Preset name="CBR 40 kbit/s" options="-ab 40k"/>
+            <Preset name="CBR 48 kbit/s" options="-ab 48k"/>
+            <Preset name="CBR 56 kbit/s" options="-ab 56k"/>
+            <Preset name="CBR 64 kbit/s" options="-ab 64k"/>
+            <Preset name="CBR 80 kbit/s" options="-ab 80k"/>
+            <Preset name="CBR 96 kbit/s" options="-ab 96k"/>
+            <Preset name="CBR 112 kbit/s" options="-ab 112k"/>
+            <Preset name="CBR 128 kbit/s" options="-ab 128k"/>
+            <Preset name="CBR 160 kbit/s" options="-ab 160k"/>
+            <Preset name="CBR 192 kbit/s" options="-ab 192k"/>
+            <Preset name="CBR 224 kbit/s" options="-ab 224k"/>
+            <Preset name="CBR 256 kbit/s" options="-ab 256k"/>
+            <Preset name="CBR 320 kbit/s" options="-ab 320k"/>
+            <Preset name="CBR 384 kbit/s" options="-ab 384k"/>
+            <Preset name="CBR 448 kbit/s" options="-ab 448k"/>
+            <Preset name="CBR 512 kbit/s" options="-ab 512k"/>
+            <Preset name="CBR 576 kbit/s" options="-ab 576k"/>
+            <Preset name="CBR 640 kbit/s" options="-ab 640k"/>
         </Presets>
     </Format>
     <Format id="FLAC_FLAC" name="FLAC (Free Lossless Audio Codec)" template="$EXE $OPTIONS -f -o $OUTFILE $INFILE" input="true" output="false" function="GetProgress_FlacEnc.progress" path="flac.exe" type="0" formats="WAV" extension="FLAC" default="5">
