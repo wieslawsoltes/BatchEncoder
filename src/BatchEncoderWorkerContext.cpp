@@ -58,7 +58,7 @@ void CBatchEncoderWorkerContext::Done()
         this->nDoneWithoutError,
         this->nErrors,
         ((this->nErrors == 0) || (this->nErrors > 1)) ? _T("Errors") : _T("Error"),
-        ::FormatTime(this->timer.ElapsedTime(), 3));
+        this->timer.Format(this->timer.ElapsedTime(), 3));
     pDlg->m_StatusBar.SetText(szText, 1, 0);
 
     pDlg->FinishConvert();

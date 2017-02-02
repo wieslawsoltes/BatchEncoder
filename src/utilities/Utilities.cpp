@@ -143,40 +143,30 @@ void ShutdownWindows()
         if (::LookupPrivilegeValue(NULL, _T("SeShutdownPrivilege"), &m_Luid))
         {
             TOKEN_PRIVILEGES tp;
-
             tp.PrivilegeCount = 1;
             tp.Privileges[0].Luid = m_Luid;
             tp.Privileges[0].Attributes = SE_PRIVILEGE_ENABLED;
-
             ::AdjustTokenPrivileges(m_hToken, FALSE, &tp, 0, NULL, NULL);
         }
-
         ::CloseHandle(m_hToken);
     }
-
     ::ExitWindowsEx(EWX_SHUTDOWN | EWX_POWEROFF | EWX_FORCEIFHUNG, 0);
     ::PostQuitMessage(0);
 }
 
 void LaunchAndWait(LPCTSTR file, LPCTSTR params, BOOL bWait)
 {
+    // leave sei.lpVerb uninitialized for default action
     SHELLEXECUTEINFO sei;
     ::ZeroMemory(&sei, sizeof(SHELLEXECUTEINFO));
-
     sei.cbSize = sizeof(SHELLEXECUTEINFO);
     sei.fMask = SEE_MASK_NOCLOSEPROCESS;
-    // sei.lpVerb is uninitialized, so that default action will be taken
     sei.nShow = SW_SHOWNORMAL;
     sei.lpFile = file;
     sei.lpParameters = params;
-
-    // check the return value
     ::ShellExecuteEx(&sei);
-
-    // wait till the child terminates
     if (bWait == TRUE)
         ::WaitForSingleObject(sei.hProcess, INFINITE);
-
     ::CloseHandle(sei.hProcess);
 }
 
@@ -222,14 +212,12 @@ CString GetFileExtension(CString szFilePath)
 ULONGLONG GetFileSize64(HANDLE hFile)
 {
     ULARGE_INTEGER liSize;
-
     liSize.LowPart = ::GetFileSize(hFile, &liSize.HighPart);
     if (liSize.LowPart == (DWORD)-1)
     {
         if (::GetLastError() != NO_ERROR)
             return(0);
     }
-
     return liSize.QuadPart;
 }
 
@@ -241,11 +229,9 @@ CString GetExeFilePath()
     {
         CString szTempBuff1;
         CString szTempBuff2;
-
         szTempBuff1.Format(_T("%s"), szExeFilePath);
         szTempBuff2 = ::GetFileName(szTempBuff1);
         szTempBuff1.TrimRight(szTempBuff2);
-
         return szTempBuff1;
     }
     return NULL;
@@ -257,11 +243,6 @@ void GetFullPathName(CString &szFilePath)
     LPTSTR pszFilePos = NULL;
     ::GetFullPathName(szFilePath, MAX_PATH + 1, szFullPath, &pszFilePos);
     szFilePath = szFullPath;
-}
-
-void UpdatePath()
-{
-    ::SetCurrentDirectory(::GetExeFilePath());
 }
 
 BOOL MakeFullPath(CString szPath)
@@ -293,81 +274,4 @@ BOOL MakeFullPath(CString szPath)
         nStart = nEnd + 1;
     }
     return FALSE;
-}
-
-CString FormatTime(double fTime, int nFormat)
-{
-    CString szTime = _T("");
-    DWORD dwTime[5] = { 0, 0, 0, 0, 0 }; // DD HH MM SS MS
-
-    dwTime[0] = (DWORD)fTime / (24 * 60 * 60); // DD -> [days]
-    dwTime[1] = ((DWORD)fTime - (dwTime[0] * (24 * 60 * 60))) / (60 * 60); // HH -> [h]
-    dwTime[2] = ((DWORD)fTime - ((dwTime[0] * (24 * 60 * 60)) + (dwTime[1] * (60 * 60)))) / 60; // MM -> [m]
-    dwTime[3] = ((DWORD)fTime - ((dwTime[0] * (24 * 60 * 60)) + (dwTime[1] * (60 * 60)) + (dwTime[2] * 60))); // SS -> [s]
-    dwTime[4] = (DWORD)(((double)fTime - (DWORD)fTime) * (double) 1000.1); // MS -> [ms]
-
-    if (nFormat == 0)
-    {
-        // display simple time
-        szTime.Format(_T("%0.3f"), fTime);
-    }
-    else if (nFormat == 1)
-    {
-        // exclude days if not used
-        if (dwTime[0] != 0)
-        {
-            szTime.Format(_T("(%02ld:%02ld:%02ld:%02ld.%03ld"),
-                dwTime[0], dwTime[1], dwTime[2], dwTime[3], dwTime[4]);
-        }
-        else
-        {
-            szTime.Format(_T("%02ld:%02ld:%02ld.%03ld"),
-                dwTime[1], dwTime[2], dwTime[3], dwTime[4]);
-        }
-    }
-    else if (nFormat == 2)
-    {
-        // exclude unused values from time display
-        if (dwTime[0] != 0)
-        {
-            szTime.Format(_T("(%02ld:%02ld:%02ld:%02ld.%03ld"),
-                dwTime[0], dwTime[1], dwTime[2], dwTime[3], dwTime[4]);
-        }
-        else if ((dwTime[0] == 0) && (dwTime[1] != 0))
-        {
-            szTime.Format(_T("%02ld:%02ld:%02ld.%03ld"),
-                dwTime[1], dwTime[2], dwTime[3], dwTime[4]);
-        }
-        else if ((dwTime[0] == 0) && (dwTime[1] == 0) && (dwTime[2] != 0))
-        {
-            szTime.Format(_T("%02ld:%02ld.%03ld"),
-                dwTime[2], dwTime[3], dwTime[4]);
-        }
-        else if ((dwTime[0] == 0) && (dwTime[1] == 0) && (dwTime[2] == 0) && (dwTime[3] != 0))
-        {
-            szTime.Format(_T("%02ld.%03ld"),
-                dwTime[3], dwTime[4]);
-        }
-        else
-        {
-            szTime.Format(_T("%03ld"),
-                dwTime[4]);
-        }
-    }
-    else if (nFormat == 3)
-    {
-        // exclude days if not used and don't show milliseconds
-        if (dwTime[0] != 0)
-        {
-            szTime.Format(_T("(%02ld:%02ld:%02ld:%02ld"),
-                dwTime[0], dwTime[1], dwTime[2], dwTime[3]);
-        }
-        else
-        {
-            szTime.Format(_T("%02ld:%02ld:%02ld"),
-                dwTime[1], dwTime[2], dwTime[3]);
-        }
-    }
-
-    return szTime;
 }

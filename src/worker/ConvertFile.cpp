@@ -222,7 +222,7 @@ bool ConvertFileUsingConsole(CFileContext* pContext)
     }
     else
     {
-        pContext->pWorkerContext->Status(pContext->nItemId, ::FormatTime(timer.ElapsedTime(), 1), _T("Done"));
+        pContext->pWorkerContext->Status(pContext->nItemId, timer.Format(timer.ElapsedTime(), 1), _T("Done"));
         pContext->pWorkerContext->Callback(pContext->nItemId, 100, true, false);
         return true;
     }
@@ -477,7 +477,7 @@ bool ConvertFileUsingPipes(CFileContext* pContext)
     }
     else
     {
-        pContext->pWorkerContext->Status(pContext->nItemId, ::FormatTime(timer.ElapsedTime(), 1), _T("Done"));
+        pContext->pWorkerContext->Status(pContext->nItemId, timer.Format(timer.ElapsedTime(), 1), _T("Done"));
         pContext->pWorkerContext->Callback(pContext->nItemId, 100, true, false);
         return true;
     }

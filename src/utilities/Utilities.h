@@ -38,8 +38,4 @@ CString GetExeFilePath();
 
 void GetFullPathName(CString &szFilePath);
 
-void UpdatePath();
-
 BOOL MakeFullPath(CString szPath);
-
-CString FormatTime(double fTime, int nFormat);

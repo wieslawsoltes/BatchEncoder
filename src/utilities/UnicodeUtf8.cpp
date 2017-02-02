@@ -5,13 +5,7 @@
 #include "..\BatchEncoder.h"
 #include "UnicodeUtf8.h"
 
-// UNICODE to UTF8
-
-//
-// use free(...) to release memory (returned buffer pointer) and avoid memory leaks
-//
-// WideCharToMultiByte()
-//
+// UNICODE to UTF8. WideCharToMultiByte(). Use free(...) to release memory.
 unsigned char *MakeUtf8String(const wchar_t *unicode)
 {
     int size = 0, index = 0, out_index = 0;
@@ -61,13 +55,7 @@ unsigned char *MakeUtf8String(const wchar_t *unicode)
     return out;
 }
 
-// UTF8 to UNICODE
-
-//
-// use free(...) to release memory (returned buffer pointer) and avoid memory leaks
-//
-// MultiByteToWideChar(CP_UTF8)
-//
+// UTF8 to UNICODE. MultiByteToWideChar(CP_UTF8). Use free() to release memory.
 wchar_t *MakeUnicodeString(const unsigned char *utf8)
 {
     int size = 0, index = 0, out_index = 0;
@@ -121,11 +109,7 @@ wchar_t *MakeUnicodeString(const unsigned char *utf8)
     return out;
 }
 
-// ANSI (char) to UNICODE
-
-//
-// use free(...) to release 'to' buffer after using it
-//
+// ANSI (char) to UNICODE. Use free() to release 'to' buffer.
 int UnicodeEncode(const char *from, wchar_t **to)
 {
     wchar_t *unicode;
@@ -151,11 +135,7 @@ int UnicodeEncode(const char *from, wchar_t **to)
     return 0;
 }
 
-// UNICODE to ANSI (char)
-
-//
-// use free(...) to release 'to' buffer after using it
-//
+// UNICODE to ANSI (char). Use free() to release 'to' buffer.
 int UnicodeDecode(const wchar_t *from, char **to)
 {
     int chars, err;
@@ -179,9 +159,7 @@ int UnicodeDecode(const wchar_t *from, char **to)
     return 0;
 }
 
-//
-// use free(...) to release 'to' buffer after using it
-//
+// Use free() to release 'to' buffer.
 int Utf8Encode(const char *from, char **to)
 {
     wchar_t *unicode;
@@ -207,9 +185,7 @@ int Utf8Encode(const char *from, char **to)
     return 0;
 }
 
-//
-// use free(...) to release 'to' buffer after using it
-//
+// Use free() to release 'to' buffer.
 int Utf8Decode(const char *from, char **to)
 {
     wchar_t *unicode;

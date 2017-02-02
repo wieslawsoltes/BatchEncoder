@@ -9,7 +9,7 @@
 
 DWORD WINAPI WorkThread(LPVOID lpParam)
 {
-    ::UpdatePath();
+    ::SetCurrentDirectory(::GetExeFilePath());
 
     CWorkerContext* pWorkerContext = (CWorkerContext*)lpParam;
     if (pWorkerContext == NULL)
