@@ -102,12 +102,6 @@
     <ClCompile Include="utilities\Utilities.cpp">
       <Filter>Source Files\Utilities</Filter>
     </ClCompile>
-    <ClCompile Include="worker\ConvertFile.cpp">
-      <Filter>Source Files\Worker</Filter>
-    </ClCompile>
-    <ClCompile Include="worker\ConvertItem.cpp">
-      <Filter>Source Files\Worker</Filter>
-    </ClCompile>
     <ClCompile Include="worker\WorkThread.cpp">
       <Filter>Source Files\Worker</Filter>
     </ClCompile>
