@@ -16,9 +16,6 @@ var target = Argument("target", "Default");
 // SETTINGS
 ///////////////////////////////////////////////////////////////////////////////
 
-var isAppVeyorBuild = AppVeyor.IsRunningOnAppVeyor;
-var appveyorPlatform = EnvironmentVariable("AppveyorPlatform") ?? "";
-var appveyorConfiguration = EnvironmentVariable("AppveyorConfiguration") ?? "";
 var platforms = new [] { "Win32", "x64" }.ToList();
 var configurations = new [] { "Debug", "Release" }.ToList();
 var solution = "./BatchEncoder.sln";
@@ -30,9 +27,10 @@ var binDir = (DirectoryPath)Directory("./src/bin");
 var objDir = (DirectoryPath)Directory("./src/obj");
 
 ///////////////////////////////////////////////////////////////////////////////
-// VERSION
+// RELEASE
 ///////////////////////////////////////////////////////////////////////////////
 
+var isAppVeyorBuild = AppVeyor.IsRunningOnAppVeyor;
 var isLocalBuild = BuildSystem.IsLocalBuild;
 var isPullRequest = BuildSystem.AppVeyor.Environment.PullRequest.IsPullRequest;
 var isMainRepo = StringComparer.OrdinalIgnoreCase.Equals("wieslawsoltes/BatchEncoder", BuildSystem.AppVeyor.Environment.Repository.Name);
@@ -40,6 +38,10 @@ var isMasterBranch = StringComparer.OrdinalIgnoreCase.Equals("master", BuildSyst
 var isTagged = BuildSystem.AppVeyor.Environment.Repository.Tag.IsTag 
                && !string.IsNullOrWhiteSpace(BuildSystem.AppVeyor.Environment.Repository.Tag.Name);
 var isRelease =  !isLocalBuild && !isPullRequest && isMainRepo && isMasterBranch && isTagged;
+
+///////////////////////////////////////////////////////////////////////////////
+// VERSION
+///////////////////////////////////////////////////////////////////////////////
 
 var text = System.IO.File.ReadAllText(versionHeaderPath.FullPath);
 var split = text.Split(new char [] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
@@ -114,30 +116,21 @@ Task("Build")
     .IsDependentOn("Clean")
     .Does(() =>
 {
-    if (isAppVeyorBuild)
-        buildSolutionAction(appveyorConfiguration, appveyorPlatform);
-    else
-        configurations.ForEach(configuration => platforms.ForEach(platform => buildSolutionAction(configuration, platform)));
+    configurations.ForEach(configuration => platforms.ForEach(platform => buildSolutionAction(configuration, platform)));
 });
 
 Task("Package-Binaries")
     .IsDependentOn("Build")
     .Does(() =>
 {
-    if (isAppVeyorBuild)
-        packageBinariesAction(appveyorConfiguration, appveyorPlatform);
-    else
-        configurations.ForEach(configuration => platforms.ForEach(platform => packageBinariesAction(configuration, platform)));
+    configurations.ForEach(configuration => platforms.ForEach(platform => packageBinariesAction(configuration, platform)));
 });
 
 Task("Package-Installers")
     .IsDependentOn("Build")
     .Does(() =>
 {
-    if (isAppVeyorBuild)
-        packageInstallersAction(appveyorConfiguration, appveyorPlatform);
-    else
-        configurations.ForEach(configuration => platforms.ForEach(platform => packageInstallersAction(configuration, platform)));
+    configurations.ForEach(configuration => platforms.ForEach(platform => packageInstallersAction(configuration, platform)));
 });
 
 ///////////////////////////////////////////////////////////////////////////////
