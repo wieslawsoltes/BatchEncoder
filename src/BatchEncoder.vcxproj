@@ -323,11 +323,11 @@ copy /-Y ..\lang\*.language $(OutDir)</Command>
     <ClInclude Include="utilities\UnicodeUtf8.h" />
     <ClInclude Include="utilities\Utf8String.h" />
     <ClInclude Include="utilities\Utilities.h" />
-    <ClInclude Include="worker\context\FileContext.h" />
-    <ClInclude Include="worker\context\ItemContext.h" />
-    <ClInclude Include="worker\context\PipeContext.h" />
-    <ClInclude Include="worker\context\ProcessContext.h" />
-    <ClInclude Include="worker\context\WorkerContext.h" />
+    <ClInclude Include="worker\FileContext.h" />
+    <ClInclude Include="worker\ItemContext.h" />
+    <ClInclude Include="worker\PipeContext.h" />
+    <ClInclude Include="worker\ProcessContext.h" />
+    <ClInclude Include="worker\WorkerContext.h" />
     <ClInclude Include="worker\WorkThread.h" />
   </ItemGroup>
   <ItemGroup>
