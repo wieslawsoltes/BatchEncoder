@@ -11,6 +11,7 @@
 #include "AboutDlg.h"
 #include "FormatsDlg.h"
 #include "..\BatchEncoderWorkerContext.h"
+#include "..\worker\WorkThread.h"
 
 #define WM_TRAY (WM_USER + 0x10)
 #define IDC_STATUSBAR 1500
