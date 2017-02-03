@@ -65,7 +65,7 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
         return (DWORD)(-1);
 
     int nItems = pWorkerContext->pConfig->m_Items.GetSize();
-    CItemContext context[nItems];
+    CItemContext *context = new CItemContext[nItems];
 
     pWorkerContext->nThreadCount = pWorkerContext->pConfig->m_Options.nThreadCount;
     if (pWorkerContext->nThreadCount < 1)
@@ -98,8 +98,9 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
             pWorkerContext->nTotalFiles++;
             pWorkerContext->nProgess[i] = 0;
             pWorkerContext->nPreviousProgess[i] = 0;
-
-            context[i] = new CItemContext(pWorkerContext, &item);
+            
+            context[i].pWorkerContext = pWorkerContext;
+            context[i].item = &item;
             pWorkerContext->pQueue->AddTail(context[i]);
         }
         else
@@ -172,13 +173,7 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
     delete pWorkerContext->pQueue;
     delete pWorkerContext->nProgess;
     delete pWorkerContext->nPreviousProgess;
-    
-    for (int i = 0; i < nItems; i++)
-    {
-        CItem& item = pWorkerContext->pConfig->m_Items.GetData(i);
-        if (item.bChecked == true)
-            delete context[i];
-    }
+    delete context;
 
     ::CloseHandle(pWorkerContext->hMutex);
 
