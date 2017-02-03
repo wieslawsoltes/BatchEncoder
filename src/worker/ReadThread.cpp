@@ -88,7 +88,7 @@ DWORD WINAPI ReadThread(LPVOID lpParam)
     {
         pContext->bError = true;
         pContext->bFinished = true;
-        return(1);
+        return FALSE;
     }
 
     pContext->bError = false;
