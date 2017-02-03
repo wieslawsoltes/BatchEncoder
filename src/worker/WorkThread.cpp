@@ -12,9 +12,9 @@ DWORD WINAPI ConvertThread(LPVOID lpParam)
     CWorkerContext* pWorkerContext = (CWorkerContext*)lpParam;
     while (!pWorkerContext->pQueue->IsEmpty())
     {
-        CItemContext* pContext = NULL;
         try
         {
+            CItemContext* pContext = NULL;
             DWORD dwWaitResult = ::WaitForSingleObject(pWorkerContext->hMutex, INFINITE);
             switch (dwWaitResult)
             {
@@ -34,33 +34,23 @@ DWORD WINAPI ConvertThread(LPVOID lpParam)
                 if (pContext->pWorkerContext->nThreadCount > 1)
                     pContext->pWorkerContext->Next(pContext->item->nId);
 
-                bool bSuccess = ConvertItem(pContext);
-                if (bSuccess == true)
+                if (ConvertItem(pContext) == true)
                 {
                     pContext->pWorkerContext->nDoneWithoutError++;
                 }
                 else
                 {
                     if (pContext->pWorkerContext->pConfig->m_Options.bStopOnErrors == true)
-                    {
-                        delete pContext;
                         return FALSE;
-                    }
                 }
 
                 if (pContext->pWorkerContext->bRunning == false)
-                {
-                    delete pContext;
                     return FALSE;
-                }
-
-                delete pContext;
             }
         }
-        catch (...)
+        catch (...) 
         {
-            if (pContext != NULL)
-                delete pContext;
+            return FALSE;
         }
     }
     return TRUE;
@@ -74,12 +64,8 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
     if (pWorkerContext == NULL)
         return (DWORD)(-1);
 
-    pWorkerContext->hMutex = ::CreateMutex(NULL, FALSE, NULL);
-
-    pWorkerContext->nTotalFiles = 0;
-    pWorkerContext->nProcessedFiles = 0;
-    pWorkerContext->nDoneWithoutError = 0;
-    pWorkerContext->nErrors = 0;
+    int nItems = pWorkerContext->pConfig->m_Items.GetSize();
+    CItemContext *context = new CItemContext[nItems];
 
     pWorkerContext->nThreadCount = pWorkerContext->pConfig->m_Options.nThreadCount;
     if (pWorkerContext->nThreadCount < 1)
@@ -91,25 +77,30 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
         else
             pWorkerContext->nThreadCount = 1;
     }
-
+    
+    pWorkerContext->hMutex = ::CreateMutex(NULL, FALSE, NULL);
+    pWorkerContext->nTotalFiles = 0;
+    pWorkerContext->nProcessedFiles = 0;
+    pWorkerContext->nDoneWithoutError = 0;
+    pWorkerContext->nErrors = 0;
     pWorkerContext->hConvertThread = new HANDLE[pWorkerContext->nThreadCount];
     pWorkerContext->dwConvertThreadID = new DWORD[pWorkerContext->nThreadCount];
     pWorkerContext->pQueue = new CObList();
-
-    pWorkerContext->Init();
-
-    int nItems = pWorkerContext->pConfig->m_Items.GetSize();
-
     pWorkerContext->nProgess = new int[nItems];
     pWorkerContext->nPreviousProgess = new int[nItems];
+    pWorkerContext->nLastItemId = -1;
 
     for (int i = 0; i < nItems; i++)
     {
-        if (pWorkerContext->pConfig->m_Items.GetData(i).bChecked == TRUE)
+        CItem& item = pWorkerContext->pConfig->m_Items.GetData(i);
+        if (item.bChecked == true)
         {
             pWorkerContext->nTotalFiles++;
             pWorkerContext->nProgess[i] = 0;
             pWorkerContext->nPreviousProgess[i] = 0;
+            
+            context[i] = new CItemContext(pWorkerContext, &item);
+            pWorkerContext->pQueue->AddTail(context[i]);
         }
         else
         {
@@ -118,42 +109,42 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
         }
     }
 
-    pWorkerContext->nLastItemId = -1;
-
-    for (int i = 0; i < nItems; i++)
+    pWorkerContext->Init();
+    
+    // single-threaded
+    if (pWorkerContext->nThreadCount == 1)
     {
-        // get next file name and check if we need to encode/decode/trans-code
-        CItem& item = pWorkerContext->pConfig->m_Items.GetData(i);
-        if (item.bChecked == true)
+        while (!pWorkerContext->pQueue->IsEmpty())
         {
-            if (pWorkerContext->nThreadCount > 1)
+            try
             {
-                // insert work item to queue
-                CItemContext* context = new CItemContext(pWorkerContext, &item);
-                pWorkerContext->pQueue->AddTail(context);
+                CItemContext *pContext = (CItemContext*)pWorkerContext->pQueue->RemoveHead();
+                if (pContext != NULL)
+                {
+                    pWorkerContext->Next(pContext->item->nId);
+                    if (ConvertItem(pContext) == true)
+                    {
+                        pWorkerContext->nDoneWithoutError++;
+                    }
+                    else
+                    {
+                        if (pWorkerContext->pConfig->m_Options.bStopOnErrors == true)
+                            break;
+                    }
+                }
             }
-            else
+            catch (...) 
             {
-                pWorkerContext->Next(i);
-
-                CItemContext context(pWorkerContext, &item);
-                bool bSuccess = ConvertItem(&context);
-                if (bSuccess == true)
-                {
-                    pWorkerContext->nDoneWithoutError++;
-                }
-                else
-                {
-                    if (pWorkerContext->pConfig->m_Options.bStopOnErrors == true)
-                        break;
-                }
-
-                if (pWorkerContext->bRunning == false)
+                if (pWorkerContext->pConfig->m_Options.bStopOnErrors == true)
                     break;
             }
+
+            if (pWorkerContext->bRunning == false)
+                break;  
         }
     }
-
+    
+    // multi-threaded
     if (pWorkerContext->nThreadCount > 1)
     {
         // create worker threads
@@ -174,18 +165,25 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
         // close convert thread handles
         for (int i = 0; i < pWorkerContext->nThreadCount; i++)
             ::CloseHandle(pWorkerContext->hConvertThread[i]);
-
-        delete pWorkerContext->hConvertThread;
-        delete pWorkerContext->dwConvertThreadID;
-        delete pWorkerContext->pQueue;
-        delete pWorkerContext->nProgess;
-        delete pWorkerContext->nPreviousProgess;
     }
 
-    pWorkerContext->Done();
+    delete pWorkerContext->hConvertThread;
+    delete pWorkerContext->dwConvertThreadID;
+    delete pWorkerContext->pQueue;
+    delete pWorkerContext->nProgess;
+    delete pWorkerContext->nPreviousProgess;
+    
+    for (int i = 0; i < nItems; i++)
+    {
+        CItem& item = pWorkerContext->pConfig->m_Items.GetData(i);
+        if (item.bChecked == true)
+            delete context[i];
+    }
+    delete context;
 
     ::CloseHandle(pWorkerContext->hMutex);
 
+    pWorkerContext->Done();
     pWorkerContext->bDone = true;
 
     return ::CloseHandle(pWorkerContext->hThread);
