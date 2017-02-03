@@ -28,7 +28,7 @@ BatchEncoder is an audio files conversion software.
 
 ### CI Builds
 
-You can also [download artifacts](https://ci.appveyor.com/project/wieslawsoltes/batchencoder/build/artifacts) bleeding edge builds from the CI server.
+[Download](https://ci.appveyor.com/project/wieslawsoltes/batchencoder/build/artifacts) bleeding edge builds from the CI server.
 
 ## About
 
