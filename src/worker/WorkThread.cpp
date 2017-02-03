@@ -1011,7 +1011,7 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
     delete pWorkerContext->pQueue;
     delete pWorkerContext->nProgess;
     delete pWorkerContext->nPreviousProgess;
-    delete pItemsContext;
+    delete[] pItemsContext;
 
     ::CloseHandle(pWorkerContext->hMutex);
 
