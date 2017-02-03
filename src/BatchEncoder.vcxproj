@@ -281,8 +281,6 @@ copy /-Y ..\lang\*.language $(OutDir)</Command>
     <ClCompile Include="utilities\UnicodeUtf8.cpp" />
     <ClCompile Include="utilities\Utf8String.cpp" />
     <ClCompile Include="utilities\Utilities.cpp" />
-    <ClCompile Include="worker\ConvertFile.cpp" />
-    <ClCompile Include="worker\ConvertItem.cpp" />
     <ClCompile Include="worker\WorkThread.cpp" />
   </ItemGroup>
   <ItemGroup>
