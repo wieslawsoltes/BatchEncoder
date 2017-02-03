@@ -14,6 +14,4 @@ bool ConvertFile(CFileContext* pContext);
 
 bool ConvertItem(CItemContext* pContext);
 
-DWORD WINAPI ConvertThread(LPVOID lpParam);
-
 DWORD WINAPI WorkThread(LPVOID lpParam);
