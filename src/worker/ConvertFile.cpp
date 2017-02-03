@@ -218,6 +218,175 @@ bool ConvertFileUsingConsole(CFileContext* pContext)
     }
 }
 
+bool ReadLoop(CPipeContext* pContext)
+{
+    HANDLE hFile = INVALID_HANDLE_VALUE;
+    BYTE pReadBuff[4096];
+    BOOL bRes = FALSE;
+    DWORD dwReadBytes = 0;
+    DWORD dwWriteBytes = 0;
+    ULONGLONG nTotalBytesRead = 0;
+    ULONGLONG nFileSize = 0;
+    int nProgress = -1;
+    int nPreviousProgress = -1;
+    bool bRunning = true;
+
+    pContext->bError = false;
+    pContext->bFinished = false;
+
+    // open existing source file with read-only flag
+    hFile = ::CreateFile(pContext->szFileName,
+        GENERIC_READ,
+        FILE_SHARE_READ,
+        NULL,
+        OPEN_EXISTING,
+        0,
+        NULL);
+    if (hFile == INVALID_HANDLE_VALUE)
+    {
+        pContext->bError = true;
+        pContext->bFinished = true;
+        return false;
+    }
+
+    nFileSize = ::GetFileSize64(hFile);
+    if (nFileSize == 0)
+    {
+        pContext->bError = true;
+        pContext->bFinished = true;
+        ::CloseHandle(hFile);
+        return false;
+    }
+
+    // read/write loop
+    do
+    {
+        // read data from source file
+        bRes = ::ReadFile(hFile, pReadBuff, 4096, &dwReadBytes, 0);
+        if ((bRes == FALSE) || (dwReadBytes == 0))
+            break;
+
+        // NOTE: Sleep(0) solves problem writing to pipe errors
+        ::Sleep(0);
+
+        // write data to write pipe
+        bRes = ::WriteFile(pContext->hPipe, pReadBuff, dwReadBytes, &dwWriteBytes, 0);
+        if ((bRes == FALSE) || (dwWriteBytes == 0) || (dwReadBytes != dwWriteBytes))
+            break;
+
+        // count read/write bytes
+        nTotalBytesRead += dwReadBytes;
+        nProgress = (int)((nTotalBytesRead * 100) / nFileSize);
+
+        if (nProgress != nPreviousProgress)
+        {
+            bRunning = pContext->pWorkerContext->Callback(pContext->nIndex, nProgress, false);
+            nPreviousProgress = nProgress;
+        }
+
+        if (bRunning == false)
+            break;
+    } while (bRes != FALSE);
+
+    // clean up memory
+    ::CloseHandle(hFile);
+
+    // close write pipe to allow write thread terminate reading
+    ::CloseHandle(pContext->hPipe);
+
+    // check if all data was processed
+    if (nTotalBytesRead != nFileSize)
+    {
+        pContext->bError = true;
+        pContext->bFinished = true;
+        return false;
+    }
+
+    pContext->bError = false;
+    pContext->bFinished = true;
+    return true;
+}
+
+bool WriteLoop(CPipeContext* pContext)
+{
+    HANDLE hFile = INVALID_HANDLE_VALUE;
+    BYTE pReadBuff[4096];
+    BOOL bRes = FALSE;
+    DWORD dwReadBytes = 0;
+    DWORD dwWriteBytes = 0;
+    ULONGLONG nTotalBytesWrite = 0;
+    ULONGLONG nFileSize = 0;
+    int nProgress = -1;
+
+    pContext->bError = false;
+    pContext->bFinished = false;
+
+    // open existing source file with read-only flag
+    hFile = ::CreateFile(pContext->szFileName,
+        GENERIC_READ | GENERIC_WRITE,
+        0,
+        NULL,
+        CREATE_ALWAYS,
+        0,
+        NULL);
+    if (hFile == INVALID_HANDLE_VALUE)
+    {
+        pContext->bError = true;
+        pContext->bFinished = true;
+        return false;
+    }
+
+    // read/write loop
+    do
+    {
+        // read data from source pipe
+        bRes = ::ReadFile(pContext->hPipe, pReadBuff, 4096, &dwReadBytes, 0);
+        if ((bRes == FALSE) || (dwReadBytes == 0))
+            break;
+
+        // write data to file
+        bRes = ::WriteFile(hFile, pReadBuff, dwReadBytes, &dwWriteBytes, 0);
+        if ((bRes == FALSE) || (dwWriteBytes == 0) || (dwReadBytes != dwWriteBytes))
+            break;
+
+        // count read/write bytes
+        nTotalBytesWrite += dwReadBytes;
+
+        // handle user Stop
+        if (pContext->pWorkerContext->bRunning == false)
+            break;
+    } while (bRes != FALSE);
+
+    // clean up memory
+    ::CloseHandle(hFile);
+
+    pContext->bError = false;
+    pContext->bFinished = true;
+    return true;
+}
+
+DWORD WINAPI ReadThread(LPVOID lpParam)
+{
+    CPipeContext* pContext = (CPipeContext*)lpParam;
+    if (pContext != NULL)
+    {
+        if (ReadLoop(pContext) == true)
+            return TRUE;
+    }
+    return FALSE;
+}
+
+DWORD WINAPI WriteThread(LPVOID lpParam)
+{
+    CPipeContext* pContext = (CPipeContext*)lpParam;
+    if (pContext != NULL)
+    {
+        if (WriteLoop(pContext) == true)
+            return TRUE;
+    }
+    return FALSE;
+}
+
 bool ConvertFileUsingPipes(CFileContext* pContext)
 {
     if ((pContext->bUseReadPipes == false) && (pContext->bUseWritePipes == false))
