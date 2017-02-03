@@ -925,8 +925,6 @@ DWORD WINAPI ConvertThread(LPVOID lpParam)
 
 DWORD WINAPI WorkThread(LPVOID lpParam)
 {
-    ::SetCurrentDirectory(::GetExeFilePath());
-
     CWorkerContext* pWorkerContext = (CWorkerContext*)lpParam;
     if (pWorkerContext == NULL)
         return (DWORD)(-1);

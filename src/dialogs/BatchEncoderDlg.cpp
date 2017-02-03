@@ -2201,6 +2201,8 @@ void CBatchEncoderDlg::StartConvert()
         bSafeCheck = true;
         this->pWorkerContext->bDone = false;
 
+        ::SetCurrentDirectory(::GetExeFilePath());
+
         this->GetOptions();
         this->GetItems();
 
