@@ -10,10 +10,6 @@
 #include "context\ItemContext.h"
 #include "context\ProcessContext.h"
 
-DWORD WINAPI ReadThread(LPVOID lpParam);
-
-DWORD WINAPI WriteThread(LPVOID lpParam);
-
 bool ConvertFile(CFileContext* pContext);
 
 bool ConvertItem(CItemContext* pContext);
