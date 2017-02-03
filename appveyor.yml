@@ -1,15 +1,15 @@
 image: Visual Studio 2015
 install:
-  - choco install -y InnoSetup
-  - set PATH="C:\Program Files\7-Zip";"C:\Program Files (x86)\Inno Setup 5";%PATH%
+- choco install -y InnoSetup
+- set PATH="C:\Program Files\7-Zip";"C:\Program Files (x86)\Inno Setup 5";%PATH%
 before_build:
 - git submodule update --init
 build_script:
 - ps: .\build.ps1 -Target "Package"
 test: off
 artifacts:
-  - path: artifacts\*.zip
-  - path: artifacts\*.exe
+- path: artifacts\*.zip
+- path: artifacts\*.exe
 notifications:
 - provider: Webhook
   url: https://webhooks.gitter.im/e/f2ddd523fe04ad255028
