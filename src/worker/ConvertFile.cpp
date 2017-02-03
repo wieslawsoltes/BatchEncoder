@@ -9,9 +9,8 @@
 #include "..\utilities\Utilities.h"
 #include "WorkThread.h"
 
-bool ProgresssLoop(CFileContext* pContext, CProcessContext &processContext, int nProgress)
+bool ProgresssLoop(CFileContext* pContext, CProcessContext &processContext, int &nProgress)
 {
-    GetProgress *pGetProgress;
     const int nBuffSize = 4096;
     char szReadBuff[nBuffSize];
     char szLineBuff[nBuffSize];
@@ -22,30 +21,27 @@ bool ProgresssLoop(CFileContext* pContext, CProcessContext &processContext, int 
     bool bRunning = true;
     int nLineLen = 0;
     int nPreviousProgress = 0;
-    
-    // initialize buffers
-    ZeroMemory(szReadBuff, sizeof(szReadBuff));
-    ZeroMemory(szLineBuff, sizeof(szLineBuff));
-    
+
     // load progress function
     HMODULE hDll = ::LoadLibrary(pContext->szFunction);
-    if (hDll != NULL)
-    {
-        // the GetProcAddress function has only ANSI version
-        pGetProgress = (GetProgress*) ::GetProcAddress(hDll, "GetProgress");
-        if (pGetProgress == NULL)
-        {
-            pContext->pWorkerContext->Status(pContext->nItemId, _T("--:--"), _T("Error: can not get GetProgress function address."));
-            pContext->pWorkerContext->Callback(pContext->nItemId, -1, true, true);
-            return false; // ERROR
-        }
-    }
-    else
+    if (hDll == NULL)
     {
         pContext->pWorkerContext->Status(pContext->nItemId, _T("--:--"), _T("Error: can not load GetProgress function library dll."));
         pContext->pWorkerContext->Callback(pContext->nItemId, -1, true, true);
         return false; // ERROR
     }
+
+    GetProgress *pGetProgress = (GetProgress*) ::GetProcAddress(hDll, "GetProgress");
+    if (pGetProgress == NULL)
+    {
+        pContext->pWorkerContext->Status(pContext->nItemId, _T("--:--"), _T("Error: can not get GetProgress function address."));
+        pContext->pWorkerContext->Callback(pContext->nItemId, -1, true, true);
+        return false; // ERROR
+    }
+
+    // initialize buffers
+    ZeroMemory(szReadBuff, sizeof(szReadBuff));
+    ZeroMemory(szLineBuff, sizeof(szLineBuff));
 
     do
     {
