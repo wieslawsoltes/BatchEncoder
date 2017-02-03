@@ -4,8 +4,6 @@
 #include "StdAfx.h"
 #include "..\BatchEncoder.h"
 #include "..\utilities\TimeCount.h"
-#include "..\utilities\UnicodeUtf8.h"
-#include "..\utilities\Utf8String.h"
 #include "..\utilities\Utilities.h"
 #include "..\Configuration.h"
 #include "WorkerContext.h"
