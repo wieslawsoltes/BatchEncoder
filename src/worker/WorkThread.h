@@ -4,11 +4,11 @@
 #pragma once
 
 #include "..\Configuration.h"
-#include "context\WorkerContext.h"
-#include "context\PipeContext.h"
-#include "context\FileContext.h"
-#include "context\ItemContext.h"
-#include "context\ProcessContext.h"
+#include "WorkerContext.h"
+#include "PipeContext.h"
+#include "FileContext.h"
+#include "ItemContext.h"
+#include "ProcessContext.h"
 
 bool ConvertFile(CFileContext* pContext);
 
