@@ -283,15 +283,13 @@ copy /-Y ..\lang\*.language $(OutDir)</Command>
     <ClCompile Include="utilities\Utilities.cpp" />
     <ClCompile Include="worker\ConvertFile.cpp" />
     <ClCompile Include="worker\ConvertItem.cpp" />
-    <ClCompile Include="worker\ConvertThread.cpp" />
-    <ClCompile Include="worker\ReadThread.cpp" />
     <ClCompile Include="worker\WorkThread.cpp" />
-    <ClCompile Include="worker\WriteThread.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="StdAfx.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="version.h" />
+    <ClInclude Include="res\resource.h" />
     <ClInclude Include="BatchEncoder.h" />
     <ClInclude Include="BatchEncoderWorkerContext.h" />
     <ClInclude Include="configuration\Format.h" />
@@ -308,11 +306,6 @@ copy /-Y ..\lang\*.language $(OutDir)</Command>
     <ClInclude Include="configuration\LanguageHelper.h" />
     <ClInclude Include="Configuration.h" />
     <ClInclude Include="XmlConfiguration.h" />
-    <ClInclude Include="worker\context\FileContext.h" />
-    <ClInclude Include="worker\context\ItemContext.h" />
-    <ClInclude Include="worker\context\PipeContext.h" />
-    <ClInclude Include="worker\context\ProcessContext.h" />
-    <ClInclude Include="worker\context\WorkerContext.h" />
     <ClInclude Include="controls\Controls.h" />
     <ClInclude Include="controls\MyListCtrl.h" />
     <ClInclude Include="controls\Hyperlink.h" />
@@ -330,8 +323,12 @@ copy /-Y ..\lang\*.language $(OutDir)</Command>
     <ClInclude Include="utilities\UnicodeUtf8.h" />
     <ClInclude Include="utilities\Utf8String.h" />
     <ClInclude Include="utilities\Utilities.h" />
+    <ClInclude Include="worker\context\FileContext.h" />
+    <ClInclude Include="worker\context\ItemContext.h" />
+    <ClInclude Include="worker\context\PipeContext.h" />
+    <ClInclude Include="worker\context\ProcessContext.h" />
+    <ClInclude Include="worker\context\WorkerContext.h" />
     <ClInclude Include="worker\WorkThread.h" />
-    <ClInclude Include="res\resource.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\TrayIcon.ico" />
