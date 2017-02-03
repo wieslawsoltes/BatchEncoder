@@ -7,7 +7,7 @@
 #include <afxcmn.h>
 #include "utilities\TimeCount.h"
 #include "Configuration.h"
-#include "worker\WorkThread.h"
+#include "worker\WorkerContext.h"
 #include "dialogs\BatchEncoderDlg.h"
 
 class CBatchEncoderWorkerContext : public CWorkerContext
