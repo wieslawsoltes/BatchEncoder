@@ -65,7 +65,7 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
         return (DWORD)(-1);
 
     int nItems = pWorkerContext->pConfig->m_Items.GetSize();
-    CItemContext **context = new CItemContext[nItems];
+    CItemContext *context = new CItemContext[nItems];
 
     pWorkerContext->nThreadCount = pWorkerContext->pConfig->m_Options.nThreadCount;
     if (pWorkerContext->nThreadCount < 1)
