@@ -196,7 +196,7 @@ bool ConvertFileUsingConsole(CFileContext* pContext)
     processContext.CloseStderrWritePipe();
 
     // console progresss loop
-    if (ProgresssLoop(pContext, &processContext, &nProgress) == false)
+    if (ProgresssLoop(pContext, processContext, nProgress) == false)
     {
         timer.Stop();
         processContext.CloseStderrReadPipe();
