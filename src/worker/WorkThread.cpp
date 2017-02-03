@@ -866,9 +866,8 @@ bool ConvertItem(CItemContext* pContext)
     return false;
 }
 
-DWORD WINAPI ConvertThread(LPVOID lpParam)
+bool ConvertLoop(CWorkerContext* pWorkerContext)
 {
-    CWorkerContext* pWorkerContext = (CWorkerContext*)lpParam;
     while (!pWorkerContext->pQueue->IsEmpty())
     {
         try
@@ -881,18 +880,16 @@ DWORD WINAPI ConvertThread(LPVOID lpParam)
             {
                 pContext = (CItemContext*)pWorkerContext->pQueue->RemoveHead();
                 if (!::ReleaseMutex(pWorkerContext->hMutex))
-                    return FALSE;
+                    return false;
             }
             break;
             case WAIT_ABANDONED:
-                return FALSE;
+                return false;
             }
 
             if (pContext != NULL)
             {
-                if (pContext->pWorkerContext->nThreadCount > 1)
-                    pContext->pWorkerContext->Next(pContext->item->nId);
-
+                pContext->pWorkerContext->Next(pContext->item->nId);
                 if (ConvertItem(pContext) == true)
                 {
                     pContext->pWorkerContext->nDoneWithoutError++;
@@ -900,19 +897,30 @@ DWORD WINAPI ConvertThread(LPVOID lpParam)
                 else
                 {
                     if (pContext->pWorkerContext->pConfig->m_Options.bStopOnErrors == true)
-                        return FALSE;
+                        return false;
                 }
 
                 if (pContext->pWorkerContext->bRunning == false)
-                    return FALSE;
+                    return false;
             }
         }
         catch (...) 
         {
-            return FALSE;
+            return false;
         }
     }
-    return TRUE;
+    return true;
+}
+
+DWORD WINAPI ConvertThread(LPVOID lpParam)
+{
+    CWorkerContext* pWorkerContext = (CWorkerContext*)lpParam;
+    if (pWorkerContext != NULL)
+    {
+        if (ConvertLoop(pWorkerContext) == true)
+            return TRUE;
+    }
+    return FALSE;
 }
 
 DWORD WINAPI WorkThread(LPVOID lpParam)
@@ -974,36 +982,9 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
     // single-threaded
     if (pWorkerContext->nThreadCount == 1)
     {
-        while (!pWorkerContext->pQueue->IsEmpty())
-        {
-            try
-            {
-                CItemContext *pContext = (CItemContext*)pWorkerContext->pQueue->RemoveHead();
-                if (pContext != NULL)
-                {
-                    pWorkerContext->Next(pContext->item->nId);
-                    if (ConvertItem(pContext) == true)
-                    {
-                        pWorkerContext->nDoneWithoutError++;
-                    }
-                    else
-                    {
-                        if (pWorkerContext->pConfig->m_Options.bStopOnErrors == true)
-                            break;
-                    }
-                }
-            }
-            catch (...) 
-            {
-                if (pWorkerContext->pConfig->m_Options.bStopOnErrors == true)
-                    break;
-            }
-
-            if (pWorkerContext->bRunning == false)
-                break;  
-        }
+        ConvertLoop(pWorkerContext);
     }
-    
+
     // multi-threaded
     if (pWorkerContext->nThreadCount > 1)
     {
@@ -1013,9 +994,7 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
             pWorkerContext->dwConvertThreadID[i] = i;
             pWorkerContext->hConvertThread[i] = ::CreateThread(NULL, 0, ConvertThread, pWorkerContext, CREATE_SUSPENDED, &pWorkerContext->dwConvertThreadID[i]);
             if (pWorkerContext->hConvertThread[i] == NULL)
-            {
                 break;
-            }
             ::ResumeThread(pWorkerContext->hConvertThread[i]);
         }
 
