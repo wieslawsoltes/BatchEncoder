@@ -83,6 +83,7 @@ adds input and output file paths. For specific options for each format use help 
 | OPUSENC         | Encoder     | OPUS            | 1.2-alpha       | opusenc.exe                      | - none -                                  |
 | OGGENC          | Encoder     | OGG             | 2.88            | oggenc2.exe                      | GetProgress_OggEnc.progress               |
 | AFTEN           | Encoder     | AC3             | git-2009122     | aften.exe                        | - none -                                  |
+| FFMPEG          | Encoder     | AC3             | 3.2.2           | ffmpeg.exe                       | - none -                                  |
 | FLAC            | Encoder     | FLAC            | 1.3.2           | flac.exe                         | GetProgress_FlacEnc.progress              |
 | WAVPACK         | Encoder     | WV              | 5.0.0           | wavpack.exe                      | GetProgress_WavPackEnc.progress           |
 | QAAC            | Encoder     | M4A             | 2.62            | qaac.exe                         | - none -                                  |
