@@ -140,7 +140,7 @@ bool ProgresssLoop(CFileContext* pContext, CProcessContext &processContext, int 
 
     if (hDll != NULL)
         ::FreeLibrary(hDll);
-    
+
     return true;
 }
 
@@ -442,7 +442,7 @@ bool ConvertFileUsingPipes(CFileContext* pContext)
                 processContext.CloseStdinReadPipe();
                 processContext.CloseStdinWritePipe();
             }
-            
+
             pContext->pWorkerContext->Status(pContext->nItemId, _T("--:--"), _T("Error: can not create pipes for stdout."));
             pContext->pWorkerContext->Callback(pContext->nItemId, -1, true, true);
             return false;
@@ -477,7 +477,7 @@ bool ConvertFileUsingPipes(CFileContext* pContext)
     {
         processContext.ConnectStdInput(NULL);
         processContext.ConnectStdOutput(processContext.hWritePipeStdout);
-        processContext.ConnectStdError(NULL); 
+        processContext.ConnectStdError(NULL);
     }
     else if ((pContext->bUseReadPipes == true) && (pContext->bUseWritePipes == true))
     {
@@ -904,7 +904,7 @@ bool ConvertLoop(CWorkerContext* pWorkerContext)
                     return false;
             }
         }
-        catch (...) 
+        catch (...)
         {
             return false;
         }
@@ -944,7 +944,7 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
         else
             pWorkerContext->nThreadCount = 1;
     }
-    
+
     pWorkerContext->hMutex = ::CreateMutex(NULL, FALSE, NULL);
     pWorkerContext->nTotalFiles = 0;
     pWorkerContext->nProcessedFiles = 0;
@@ -965,7 +965,7 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
             pWorkerContext->nTotalFiles++;
             pWorkerContext->nProgess[i] = 0;
             pWorkerContext->nPreviousProgess[i] = 0;
-            
+
             pItemsContext[i].pWorkerContext = pWorkerContext;
             pItemsContext[i].item = &item;
             pWorkerContext->pQueue->AddTail(&pItemsContext[i]);
@@ -978,7 +978,7 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
     }
 
     pWorkerContext->Init();
-    
+
     // single-threaded
     if (pWorkerContext->nThreadCount == 1)
     {
