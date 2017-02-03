@@ -3,15 +3,4 @@
 
 #pragma once
 
-#include "..\Configuration.h"
-#include "WorkerContext.h"
-#include "PipeContext.h"
-#include "FileContext.h"
-#include "ItemContext.h"
-#include "ProcessContext.h"
-
-bool ConvertFile(CFileContext* pContext);
-
-bool ConvertItem(CItemContext* pContext);
-
 DWORD WINAPI WorkThread(LPVOID lpParam);
