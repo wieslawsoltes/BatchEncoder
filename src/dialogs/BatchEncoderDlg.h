@@ -8,7 +8,7 @@
 #include "..\controls\Controls.h"
 #include "..\utilities\TimeCount.h"
 #include "..\Configuration.h"
-#include "..\worker\WorkThread.h"
+#include "..\worker\WorkerContext.h"
 
 #define ITEM_COLUMN_NAME    0
 #define ITEM_COLUMN_INPUT   1
