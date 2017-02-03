@@ -101,7 +101,7 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
             
             context[i].pWorkerContext = pWorkerContext;
             context[i].item = &item;
-            pWorkerContext->pQueue->AddTail(context[i]);
+            pWorkerContext->pQueue->AddTail(&context[i]);
         }
         else
         {
