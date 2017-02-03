@@ -9,7 +9,7 @@
 #include "..\utilities\Utilities.h"
 #include "WorkThread.h"
 
-void ProgresssLoop(CFileContext* pContext, CProcessContext &processContext, int nProgress)
+bool ProgresssLoop(CFileContext* pContext, CProcessContext &processContext, int nProgress)
 {
     GetProgress *pGetProgress;
     const int nBuffSize = 4096;
