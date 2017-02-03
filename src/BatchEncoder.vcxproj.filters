@@ -224,20 +224,20 @@
     <ClInclude Include="utilities\Utilities.h">
       <Filter>Header Files\Utilities</Filter>
     </ClInclude>
-    <ClInclude Include="worker\context\WorkerContext.h">
-      <Filter>Header Files\Worker\Context</Filter>
+    <ClInclude Include="worker\WorkerContext.h">
+      <Filter>Header Files\Worker</Filter>
     </ClInclude>
-    <ClInclude Include="worker\context\PipeContext.h">
-      <Filter>Header Files\Worker\Context</Filter>
+    <ClInclude Include="worker\PipeContext.h">
+      <Filter>Header Files\Worker</Filter>
     </ClInclude>
-    <ClInclude Include="worker\context\ProcessContext.h">
-      <Filter>Header Files\Worker\Context</Filter>
+    <ClInclude Include="worker\ProcessContext.h">
+      <Filter>Header Files\Worker</Filter>
     </ClInclude>
-    <ClInclude Include="worker\context\FileContext.h">
-      <Filter>Header Files\Worker\Context</Filter>
+    <ClInclude Include="worker\FileContext.h">
+      <Filter>Header Files\Worker</Filter>
     </ClInclude>
-    <ClInclude Include="worker\context\ItemContext.h">
-      <Filter>Header Files\Worker\Context</Filter>
+    <ClInclude Include="worker\ItemContext.h">
+      <Filter>Header Files\Worker</Filter>
     </ClInclude>
     <ClInclude Include="worker\WorkThread.h">
       <Filter>Header Files\Worker</Filter>
