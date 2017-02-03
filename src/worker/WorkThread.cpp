@@ -65,7 +65,7 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
         return (DWORD)(-1);
 
     int nItems = pWorkerContext->pConfig->m_Items.GetSize();
-    CItemContext *context = new CItemContext[nItems];
+    CItemContext context[nItems];
 
     pWorkerContext->nThreadCount = pWorkerContext->pConfig->m_Options.nThreadCount;
     if (pWorkerContext->nThreadCount < 1)
@@ -179,7 +179,6 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
         if (item.bChecked == true)
             delete context[i];
     }
-    delete context;
 
     ::CloseHandle(pWorkerContext->hMutex);
 
