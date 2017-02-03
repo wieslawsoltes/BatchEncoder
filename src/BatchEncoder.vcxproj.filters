@@ -40,9 +40,6 @@
     <Filter Include="Header Files\Configuration">
       <UniqueIdentifier>{1e005ea3-fc6a-4599-a2d3-a5ba272d5366}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Worker\Context">
-      <UniqueIdentifier>{146a33e9-1cdb-4223-ac8e-9bad62481487}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="StdAfx.cpp">
@@ -166,7 +163,7 @@
     </ClInclude>
     <ClInclude Include="res\resource.h">
       <Filter>Header Files</Filter>
-    </ClInclude>   
+    </ClInclude>
     <ClInclude Include="controls\Controls.h">
       <Filter>Header Files\Controls</Filter>
     </ClInclude>
