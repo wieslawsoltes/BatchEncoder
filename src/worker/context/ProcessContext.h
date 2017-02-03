@@ -47,7 +47,7 @@ public:
         BOOL bResult = ::CreatePipe(&this->hReadPipeStderr, &this->hWritePipeStderr, &this->secattr, 0);
         if (bResult == FALSE)
             return false;
-        reeturn true;
+        return true;
     }
     void CloseStderrReadPipe()
     {
