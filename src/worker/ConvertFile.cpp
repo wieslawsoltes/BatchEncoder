@@ -9,16 +9,8 @@
 #include "..\utilities\Utilities.h"
 #include "WorkThread.h"
 
-bool ConvertFileUsingConsole(CFileContext* pContext)
+void ProgresssLoop(CFileContext* pContext, CProcessContext &processContext, int nProgress)
 {
-    if ((pContext->bUseReadPipes == true) || (pContext->bUseWritePipes == true))
-    {
-        pContext->pWorkerContext->Status(pContext->nItemId, _T("--:--"), _T("Error: invalid format pipe configuration."));
-        pContext->pWorkerContext->Callback(pContext->nItemId, -1, true, true);
-        return false;
-    }
-
-    CProcessContext processContext;
     GetProgress *pGetProgress;
     const int nBuffSize = 4096;
     char szReadBuff[nBuffSize];
@@ -29,54 +21,12 @@ bool ConvertFileUsingConsole(CFileContext* pContext)
     bool bLineEnd = false;
     bool bRunning = true;
     int nLineLen = 0;
-    int nProgress = 0;
     int nPreviousProgress = 0;
-    CTimeCount timer;
-
+    
     // initialize buffers
     ZeroMemory(szReadBuff, sizeof(szReadBuff));
     ZeroMemory(szLineBuff, sizeof(szLineBuff));
-
-    // create pipes for stderr
-    if (processContext.CreateStderrPipe() == false)
-    {
-        pContext->pWorkerContext->Status(pContext->nItemId, _T("--:--"), _T("Error: can not create pipes for stderr."));
-        pContext->pWorkerContext->Callback(pContext->nItemId, -1, true, true);
-        return false;
-    }
-
-    // duplicate stderr read pipe handle to prevent child process from closing the pipe
-    if (processContext.DuplicateStderrReadPipe() == false)
-    {
-        pContext->pWorkerContext->Status(pContext->nItemId, _T("--:--"), _T("Error: can not duplicate stderr pipe to prevent child process from closing the pipe."));
-        pContext->pWorkerContext->Callback(pContext->nItemId, -1, true, true);
-        return false;
-    }
-
-    // connect pipes to process
-    processContext.ConnectStdInput(NULL);
-    processContext.ConnectStdOutput(processContext.hWritePipeStderr);
-    processContext.ConnectStdError(processContext.hWritePipeStderr);
-
-    timer.Start();
-    if (processContext.Start(pContext->szCommandLine) == false)
-    {
-        timer.Stop();
-
-        processContext.CloseStderrReadPipe();
-        processContext.CloseStderrWritePipe();
-
-        CString szStatus;
-        szStatus.Format(_T("Error: can not create command-line process (%d)."), ::GetLastError());
-
-        pContext->pWorkerContext->Status(pContext->nItemId, _T("--:--"), szStatus);
-        pContext->pWorkerContext->Callback(pContext->nItemId, -1, true, true);
-        return false;
-    }
-
-    // close unused pipe handles
-    processContext.CloseStderrWritePipe();
-
+    
     // load progress function
     HMODULE hDll = ::LoadLibrary(pContext->szFunction);
     if (hDll != NULL)
@@ -85,9 +35,6 @@ bool ConvertFileUsingConsole(CFileContext* pContext)
         pGetProgress = (GetProgress*) ::GetProcAddress(hDll, "GetProgress");
         if (pGetProgress == NULL)
         {
-            processContext.CloseStderrReadPipe();
-            processContext.Stop(false);
-
             pContext->pWorkerContext->Status(pContext->nItemId, _T("--:--"), _T("Error: can not get GetProgress function address."));
             pContext->pWorkerContext->Callback(pContext->nItemId, -1, true, true);
             return false; // ERROR
@@ -95,9 +42,6 @@ bool ConvertFileUsingConsole(CFileContext* pContext)
     }
     else
     {
-        processContext.CloseStderrReadPipe();
-        processContext.Stop(false);
-
         pContext->pWorkerContext->Status(pContext->nItemId, _T("--:--"), _T("Error: can not load GetProgress function library dll."));
         pContext->pWorkerContext->Callback(pContext->nItemId, -1, true, true);
         return false; // ERROR
@@ -149,9 +93,6 @@ bool ConvertFileUsingConsole(CFileContext* pContext)
                 nLineLen++;
                 if (nLineLen > nBuffSize)
                 {
-                    processContext.CloseStderrReadPipe();
-                    processContext.Stop(false);
-
                     pContext->pWorkerContext->Status(pContext->nItemId, _T("--:--"), _T("Error: console line is too large for read buffer."));
                     pContext->pWorkerContext->Callback(pContext->nItemId, -1, true, true);
                     return false;
@@ -197,10 +138,74 @@ bool ConvertFileUsingConsole(CFileContext* pContext)
 
     if (hDll != NULL)
         ::FreeLibrary(hDll);
+    
+    return true;
+}
 
-    processContext.CloseStderrReadPipe();
+bool ConvertFileUsingConsole(CFileContext* pContext)
+{
+    if ((pContext->bUseReadPipes == true) || (pContext->bUseWritePipes == true))
+    {
+        pContext->pWorkerContext->Status(pContext->nItemId, _T("--:--"), _T("Error: invalid format pipe configuration."));
+        pContext->pWorkerContext->Callback(pContext->nItemId, -1, true, true);
+        return false;
+    }
+
+    CProcessContext processContext;
+    int nProgress = 0;
+    CTimeCount timer;
+
+    // create pipes for stderr
+    if (processContext.CreateStderrPipe() == false)
+    {
+        pContext->pWorkerContext->Status(pContext->nItemId, _T("--:--"), _T("Error: can not create pipes for stderr."));
+        pContext->pWorkerContext->Callback(pContext->nItemId, -1, true, true);
+        return false;
+    }
+
+    // duplicate stderr read pipe handle to prevent child process from closing the pipe
+    if (processContext.DuplicateStderrReadPipe() == false)
+    {
+        pContext->pWorkerContext->Status(pContext->nItemId, _T("--:--"), _T("Error: can not duplicate stderr pipe to prevent child process from closing the pipe."));
+        pContext->pWorkerContext->Callback(pContext->nItemId, -1, true, true);
+        return false;
+    }
+
+    // connect pipes to process
+    processContext.ConnectStdInput(NULL);
+    processContext.ConnectStdOutput(processContext.hWritePipeStderr);
+    processContext.ConnectStdError(processContext.hWritePipeStderr);
+
+    timer.Start();
+    if (processContext.Start(pContext->szCommandLine) == false)
+    {
+        timer.Stop();
+
+        processContext.CloseStderrReadPipe();
+        processContext.CloseStderrWritePipe();
+
+        CString szStatus;
+        szStatus.Format(_T("Error: can not create command-line process (%d)."), ::GetLastError());
+
+        pContext->pWorkerContext->Status(pContext->nItemId, _T("--:--"), szStatus);
+        pContext->pWorkerContext->Callback(pContext->nItemId, -1, true, true);
+        return false;
+    }
+
+    // close unused pipe handle
+    processContext.CloseStderrWritePipe();
+
+    // console progresss loop
+    if (ProgresssLoop(pContext, &processContext, &nProgress) == false)
+    {
+        timer.Stop();
+        processContext.CloseStderrReadPipe();
+        processContext.Stop(false);
+        return false;
+    }
 
     timer.Stop();
+    processContext.CloseStderrReadPipe();
     processContext.Stop(nProgress == 100);
 
     if (nProgress != 100)
