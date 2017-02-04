@@ -553,12 +553,6 @@ void CFormatsDlg::OnBnClickedButtonBrowsePath()
         this->m_EdtPath.GetWindowText(szPath);
         BrowseForPath(szPath, &m_EdtPath, nItem);
     }
-    else
-    {
-        MessageBox(_T("Please select item in the list."),
-            _T("INFO"),
-            MB_OK | MB_ICONINFORMATION);
-    }
 }
 
 void CFormatsDlg::OnBnClickedButtonBrowseProgress()
@@ -570,12 +564,6 @@ void CFormatsDlg::OnBnClickedButtonBrowseProgress()
         CString szFunction;
         this->m_EdtFunction.GetWindowText(szFunction);
         BrowseForFunction(szFunction, &m_EdtFunction, nItem);
-    }
-    else
-    {
-        MessageBox(_T("Please select item in the list."),
-            _T("INFO"),
-            MB_OK | MB_ICONINFORMATION);
     }
 }
 
