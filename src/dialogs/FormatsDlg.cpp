@@ -624,7 +624,36 @@ void CFormatsDlg::SetLanguage()
 {
     CLanguageHelper helper(pConfig);
 
+    helper.SetColumnText(m_LstFormats, FORMAT_COLUMN_NAME, 0x000C0001);
+    helper.SetColumnText(m_LstFormats, FORMAT_COLUMN_TEMPLATE, 0x000C0002);
 
+    helper.SetWndText(this, 0x000C0010);
+    helper.SetWndText(&m_BtnCancel, 0x000C0011);
+    helper.SetItemText(this, IDC_RADIO_TYPE_ENCODER, 0x000C0012);
+    helper.SetItemText(this, IDC_RADIO_TYPE_ENCODER, 0x000C0013);
+    helper.SetWndText(&m_GrpTypes, 0x000C0014);
+    helper.SetItemText(this, IDC_CHECK_FORMAT_PIPES_INPUT, 0x000C0015);
+    helper.SetItemText(this, IDC_CHECK_FORMAT_PIPES_OUTPUT, 0x000C0016);
+    helper.SetWndText(&m_GrpPipes, 0x000C0017);
+    helper.SetWndText(&m_StcId, 0x000C0018);
+    helper.SetWndText(&m_StcName, 0x000C0019);
+    helper.SetWndText(&m_StcExtension, 0x000C001A);
+    helper.SetWndText(&m_StcFormats, 0x000C001B);
+    helper.SetWndText(&m_StcDefault, 0x000C001C);
+    helper.SetWndText(&m_StcPath, 0x000C001D);
+    helper.SetWndText(&m_BtnBrowsePath, 0x000C001E);
+    helper.SetWndText(&m_StcTemplate, 0x000C001F);
+    helper.SetWndText(&m_StcProgress, 0x000C0020);
+    helper.SetWndText(&m_BtnBrowseFunction, 0x000C0021);
+    helper.SetWndText(&m_BtnMoveUp, 0x000C0022);
+    helper.SetWndText(&m_BtnMoveDown, 0x000C0023);
+    helper.SetWndText(&m_BtnRemoveAll, 0x000C0024);
+    helper.SetWndText(&m_BtnRemove, 0x000C0025);
+    helper.SetWndText(&m_BtnAdd, 0x000C0026);
+    helper.SetWndText(&m_BtnLoad, 0x000C0027);
+    helper.SetWndText(&m_BtnSave, 0x000C0028);
+    helper.SetWndText(&m_BtnUpdate, 0x000C0029);
+    helper.SetWndText(&m_BtnOK, 0x000C002A);
 }
 
 void CFormatsDlg::AddToList(CFormat &format, int nItem)
