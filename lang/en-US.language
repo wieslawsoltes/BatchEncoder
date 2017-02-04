@@ -137,11 +137,8 @@
     <!-- About Dialog -->
 
     <String key="0x000D0010" value="About BatchEncoder"/>
-    <String key="0x000D0011" value="OK"/>
-    <String key="0x000D0012" value="Application Name"/>
-    <String key="0x000D0013" value="Website"/>
-    <String key="0x000D0014" value="E-mail"/>
-    <String key="0x000D0015" value="Licensed under the MIT license. See LICENSE file in the application root for full license information."/>
+    <String key="0x000D0011" value="&amp;OK"/>
+    <String key="0x000D0012" value="Licensed under the MIT license. See LICENSE file in the application root for full license information."/>
 
     <!-- Messages Convert Item -->
 
