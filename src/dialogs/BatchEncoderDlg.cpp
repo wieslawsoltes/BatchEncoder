@@ -2191,6 +2191,8 @@ void CBatchEncoderDlg::StartConvert()
         bSafeCheck = true;
         this->pWorkerContext->bDone = false;
 
+        m_StatusBar.SetText(_T(""), 1, 0);
+
         ::SetCurrentDirectory(::GetExeFilePath());
 
         this->GetOptions();
