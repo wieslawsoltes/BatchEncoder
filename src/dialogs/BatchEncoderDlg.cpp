@@ -2200,10 +2200,31 @@ void CBatchEncoderDlg::StartConvert()
 
         this->pWorkerContext->pConfig = &this->m_Config;
 
-        if (this->m_Config.m_Items.GetSize() <= 0)
+        int nItems = this->m_Config.m_Items.GetSize();
+        int nChecked = 0;
+
+        if (nItems <= 0)
         {
             bSafeCheck = false;
-            this->pWorkerContext->bDone = false;
+            this->pWorkerContext->bDone = true;
+            return;
+        }
+
+        for (int i = 0; i < nItems; i++)
+        {
+            CItem& item = this->m_Config.m_Items.GetData(i);
+            if (item.bChecked == true)
+            {
+                this->m_LstInputItems.SetItemText(i, ITEM_COLUMN_TIME, _T("--:--"));
+                this->m_LstInputItems.SetItemText(i, ITEM_COLUMN_STATUS, _T("Not Done"));
+                nChecked++;
+            }
+        }
+
+        if (nChecked <= 0)
+        {
+            bSafeCheck = false;
+            this->pWorkerContext->bDone = true;
             return;
         }
 
@@ -2214,9 +2235,9 @@ void CBatchEncoderDlg::StartConvert()
             {
                 if (::MakeFullPath(szPath) == FALSE)
                 {
-                    MessageBox(_T("Unable to Create Output Path"), _T("ERROR"), MB_OK | MB_ICONERROR);
+                    m_StatusBar.SetText(_T("Unable to create output path!"), 1, 0);
                     bSafeCheck = false;
-                    this->pWorkerContext->bDone = false;
+                    this->pWorkerContext->bDone = true;
                     return;
                 }
             }
@@ -2226,8 +2247,8 @@ void CBatchEncoderDlg::StartConvert()
         this->pWorkerContext->hThread = ::CreateThread(NULL, 0, WorkThread, this->pWorkerContext, CREATE_SUSPENDED, &this->pWorkerContext->dwThreadID);
         if (this->pWorkerContext->hThread == NULL)
         {
-            MessageBox(_T("Fatal Error when Creating Thread"), _T("ERROR"), MB_OK | MB_ICONERROR);
-            this->pWorkerContext->bDone = false;
+            m_StatusBar.SetText(_T("Fatal error when creating thread!"), 1, 0);
+            this->pWorkerContext->bDone = true;
             bSafeCheck = false;
             return;
         }
@@ -2237,19 +2258,6 @@ void CBatchEncoderDlg::StartConvert()
         m_StatusBar.SetText(_T(""), 1, 0);
         m_BtnConvert.SetWindowText(_T("S&top"));
         this->GetMenu()->ModifyMenu(ID_ACTION_CONVERT, MF_BYCOMMAND, ID_ACTION_CONVERT, _T("S&top\tF9"));
-
-        int nItems = m_LstInputItems.GetItemCount();
-        if (nItems > 0)
-        {
-            for (int i = 0; i < nItems; i++)
-            {
-                if (this->m_LstInputItems.GetCheck(i) == TRUE)
-                {
-                    this->m_LstInputItems.SetItemText(i, ITEM_COLUMN_TIME, _T("--:--"));
-                    this->m_LstInputItems.SetItemText(i, ITEM_COLUMN_STATUS, _T("Not Done"));
-                }
-            }
-        }
 
         this->pWorkerContext->bRunning = true;
 
