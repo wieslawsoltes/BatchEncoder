@@ -3,6 +3,7 @@
 
 #include "StdAfx.h"
 #include "..\BatchEncoder.h"
+#include "..\configuration\LanguageHelper.h"
 #include "..\utilities\Utilities.h"
 #include "AboutDlg.h"
 
@@ -44,6 +45,8 @@ BOOL CAboutDlg::OnInitDialog()
     m_StcEmail.SetWindowText(_T("wieslaw.soltes@gmail.com"));
     m_StcEmail.SetTargetUrl(_T("mailto:wieslaw.soltes@gmail.com"));
 
+    this->SetLanguage();
+
     return TRUE;
 }
 
@@ -65,4 +68,13 @@ void CAboutDlg::OnClose()
 void CAboutDlg::OnBnClickedOk()
 {
     OnOK();
+}
+
+void CAboutDlg::SetLanguage()
+{
+    CLanguageHelper helper(pConfig);
+
+    helper.SetWndText(this, 0x000D0010);
+    helper.SetWndText(&m_BtnOK, 0x000D0011);
+    helper.SetWndText(&m_StcLicense, 0x000D0012);
 }

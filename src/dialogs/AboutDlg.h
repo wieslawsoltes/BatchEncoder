@@ -6,6 +6,7 @@
 #include <afxcmn.h>
 #include <afxwin.h>
 #include "..\controls\Controls.h"
+#include "..\Configuration.h"
 
 class CAboutDlg : public CDialog
 {
@@ -23,6 +24,8 @@ protected:
     virtual void OnOK();
     virtual void OnCancel();
 public:
+    CConfiguration *pConfig;
+public:
     CMyButton m_BtnOK;
     CMyStatic m_StcMainAppName;
     CHyperlink m_StcWebsite;
@@ -31,4 +34,6 @@ public:
 public:
     afx_msg void OnClose();
     afx_msg void OnBnClickedOk();
+public:
+    void SetLanguage();
 };
