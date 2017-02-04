@@ -142,4 +142,7 @@ public:
     void EnableUserInterface(BOOL bEnable = TRUE);
     void StartConvert();
     void FinishConvert();
+#ifdef DEBUG
+    void TraceConvert();
+#endif
 };

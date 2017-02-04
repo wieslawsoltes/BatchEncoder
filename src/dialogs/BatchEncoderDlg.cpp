@@ -11,6 +11,7 @@
 #include "AboutDlg.h"
 #include "FormatsDlg.h"
 #include "..\BatchEncoderWorkerContext.h"
+#include "..\TraceWorkerContext.h"
 #include "..\worker\WorkThread.h"
 
 #define WM_TRAY (WM_USER + 0x10)
@@ -729,7 +730,14 @@ void CBatchEncoderDlg::OnBnClickedButtonBrowsePath()
 
 void CBatchEncoderDlg::OnBnClickedButtonConvert()
 {
+#ifdef DEBUG
+    if (GetKeyState(VK_CONTROL) < 0)
+        this->TraceConvert();
+    else
+        this->StartConvert();
+#else
     this->StartConvert();
+#endif
 }
 
 void CBatchEncoderDlg::OnFileLoadList()
@@ -2303,3 +2311,127 @@ void CBatchEncoderDlg::FinishConvert()
         ::ShutdownWindows();
     }
 }
+
+#ifdef DEBUG
+bool ConvertFileTrace(CFileContext* pContext)
+{
+    CString szOutput;
+    szOutput.Format(_T("[%d] %s\n"), pContext->nItemId, pContext->szCommandLine);
+    OutputDebugString(szOutput);
+    return true;
+}
+#endif
+
+#ifdef DEBUG
+void CBatchEncoderDlg::TraceConvert()
+{
+    CWorkerContext *pTraceWorkerContext = new CTraceWorkerContext(&this->m_Config);
+
+    pTraceWorkerContext->bDone = false;
+
+    ::SetCurrentDirectory(::GetExeFilePath());
+
+    this->GetOptions();
+    this->GetItems();
+
+    pTraceWorkerContext->pConfig = &this->m_Config;
+
+    int nItems = this->m_Config.m_Items.GetSize();
+    int nChecked = 0;
+
+    if (nItems <= 0)
+        return;
+
+    for (int i = 0; i < nItems; i++)
+    {
+        CItem& item = this->m_Config.m_Items.GetData(i);
+        if (item.bChecked == true)
+        {
+            nChecked++;
+        }
+    }
+
+    if (nChecked <= 0)
+        return;
+
+    pTraceWorkerContext->dwThreadID = -1;
+    pTraceWorkerContext->hThread = NULL;
+    pTraceWorkerContext->bRunning = true;
+
+    CItemContext *pItemsContext = new CItemContext[nItems];
+
+    pTraceWorkerContext->nTotalFiles = 0;
+    pTraceWorkerContext->nProcessedFiles = 0;
+    pTraceWorkerContext->nDoneWithoutError = 0;
+    pTraceWorkerContext->nErrors = 0;
+    pTraceWorkerContext->pQueue = new CObList();
+    pTraceWorkerContext->nProgess = new int[nItems];
+    pTraceWorkerContext->nPreviousProgess = new int[nItems];
+    pTraceWorkerContext->nLastItemId = -1;
+
+    for (int i = 0; i < nItems; i++)
+    {
+        CItem& item = pTraceWorkerContext->pConfig->m_Items.GetData(i);
+        if (item.bChecked == true)
+        {
+            pTraceWorkerContext->nTotalFiles++;
+
+            pTraceWorkerContext->nProgess[i] = 0;
+            pTraceWorkerContext->nPreviousProgess[i] = 0;
+
+            pItemsContext[i].pWorkerContext = pTraceWorkerContext;
+            pItemsContext[i].item = &item;
+            pTraceWorkerContext->pQueue->AddTail(&pItemsContext[i]);
+        }
+        else
+        {
+            pTraceWorkerContext->nProgess[i] = 100;
+            pTraceWorkerContext->nPreviousProgess[i] = 100;
+        }
+    }
+
+    pTraceWorkerContext->nThreadCount = 1;
+    pTraceWorkerContext->hMutex = NULL;
+    pTraceWorkerContext->hConvertThread = NULL;
+    pTraceWorkerContext->dwConvertThreadID = NULL;
+
+    pTraceWorkerContext->Init();
+
+    while (!pTraceWorkerContext->pQueue->IsEmpty())
+    {
+        try
+        {
+            CItemContext* pContext = (CItemContext*)pTraceWorkerContext->pQueue->RemoveHead();
+            if (pContext != NULL)
+            {
+                pContext->pWorkerContext->Next(pContext->item->nId);
+                if (ConvertItem(pContext, &ConvertFileTrace) == true)
+                {
+                    pContext->pWorkerContext->nDoneWithoutError++;
+                }
+                else
+                {
+                    if (pContext->pWorkerContext->pConfig->m_Options.bStopOnErrors == true)
+                        break;
+                }
+
+                if (pContext->pWorkerContext->bRunning == false)
+                    break;
+            }
+        }
+        catch (...)
+        {
+            break;
+        }
+    }
+
+
+    delete pTraceWorkerContext->pQueue;
+    delete pTraceWorkerContext->nProgess;
+    delete pTraceWorkerContext->nPreviousProgess;
+    delete[] pItemsContext;
+
+    pTraceWorkerContext->Done();
+    pTraceWorkerContext->bDone = true;
+}
+#endif

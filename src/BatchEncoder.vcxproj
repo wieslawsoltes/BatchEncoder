@@ -286,6 +286,7 @@ copy /-Y ..\lang\*.language $(OutDir)</Command>
   <ItemGroup>
     <ClInclude Include="StdAfx.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="TraceWorkerContext.h" />
     <ClInclude Include="version.h" />
     <ClInclude Include="res\resource.h" />
     <ClInclude Include="BatchEncoder.h" />
