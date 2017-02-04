@@ -445,7 +445,22 @@ void CPresetsDlg::SetLanguage()
 {
     CLanguageHelper helper(pConfig);
 
+    helper.SetColumnText(m_LstPresets, PRESET_COLUMN_NAME, 0x000B0001);
+    helper.SetColumnText(m_LstPresets, PRESET_COLUMN_OPTIONS, 0x000B0002);
 
+    helper.SetWndText(this, 0x000B0010);
+    helper.SetWndText(&m_BtnCancel, 0x000B0011);
+    helper.SetWndText(&m_StcName, 0x000B0012);
+    helper.SetWndText(&m_StcOptions, 0x000B0013);
+    helper.SetWndText(&m_BtnMoveUp, 0x000B0014);
+    helper.SetWndText(&m_BtnMoveDown, 0x000B0015);
+    helper.SetWndText(&m_BtnRemoveAll, 0x000B0016);
+    helper.SetWndText(&m_BtnRemove, 0x000B0017);
+    helper.SetWndText(&m_BtnAdd, 0x000B0018);
+    helper.SetWndText(&m_BtnLoad, 0x000B0019);
+    helper.SetWndText(&m_BtnSave, 0x000B001A);
+    helper.SetWndText(&m_BtnUpdate, 0x000B001B);
+    helper.SetWndText(&m_BtnOK, 0x000B001C);
 }
 
 void CPresetsDlg::AddToList(CPreset &preset, int nItem)
