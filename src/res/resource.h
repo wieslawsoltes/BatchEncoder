@@ -8,8 +8,7 @@
 #define IDD_DIALOG_FORMATS              104
 #define IDD_DIALOG_ABOUT                105
 #define IDR_MENU_BATCHENCODER           106
-#define IDR_MENU_STATUS                 107
-#define IDR_ACCELERATOR_BATCHENCODER    108
+#define IDR_ACCELERATOR_BATCHENCODER    107
 #define IDC_LIST_ITEMS                  1001
 #define IDC_STATIC_GROUP_OUTPUT         1002
 #define IDC_STATIC_TEXT_FORMAT          1003
@@ -105,7 +104,6 @@
 #define ID_OPTIONS_STOP_ON_ERRORS       32816
 #define ID_HELP_ABOUT                   32820
 #define ID_HELP_WEBSITE                 32821
-#define ID_STATUSMENU_RESET             32830
 #define ID_ACCELERATOR_F5               32840
 #define ID_ACCELERATOR_F6               32841
 #define ID_ACCELERATOR_CTRL_L           32842
@@ -131,7 +129,7 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        109
+#define _APS_NEXT_RESOURCE_VALUE        108
 #define _APS_NEXT_COMMAND_VALUE         32870
 #define _APS_NEXT_CONTROL_VALUE         1091
 #define _APS_NEXT_SYMED_VALUE           101

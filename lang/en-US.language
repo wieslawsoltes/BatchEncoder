@@ -57,11 +57,6 @@
     <String key="0x00060002" value="&amp;Website..."/>
     <String key="0x00060003" value="&amp;About..."/>
 
-    <!-- Status Menu -->
-
-    <String key="0x00070001" value="&amp;Status"/>
-    <String key="0x00070002" value="&amp;Reset"/>
-
     <!-- Main Dialog -->
 
     <String key="0x000A0001" value="Name"/>
@@ -211,10 +206,8 @@
     <!-- Messages Formats Dialog -->
 
     <String key="0x00230001" value="ERROR"/>
-    <String key="0x00230002" value="INFO"/>
-    <String key="0x00230003" value="Please select item in the list."/>
-    <String key="0x00230004" value="Failed to load file&#33;"/>
-    <String key="0x00230005" value="Failed to save file&#33;"/>
+    <String key="0x00230002" value="Failed to load file&#33;"/>
+    <String key="0x00230003" value="Failed to save file&#33;"/>
 
     <!-- File Dialogs -->
 

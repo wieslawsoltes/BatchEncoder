@@ -11,7 +11,4 @@ public:
     virtual ~CMyStatusBarCtrl();
 protected:
     DECLARE_MESSAGE_MAP()
-public:
-    afx_msg void OnNMRclick(NMHDR *pNMHDR, LRESULT *pResult);
-    afx_msg void OnStatusMenuReset();
 };

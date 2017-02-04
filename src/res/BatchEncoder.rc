@@ -264,13 +264,6 @@ BEGIN
     END
 END
 
-IDR_MENU_STATUS MENU
-BEGIN
-    POPUP "&Status"
-    BEGIN
-        MENUITEM "&Reset",               ID_STATUSMENU_RESET
-    END
-END
 
 
 /////////////////////////////////////////////////////////////////////////////
