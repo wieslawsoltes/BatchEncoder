@@ -961,6 +961,7 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
         if (item.bChecked == true)
         {
             pWorkerContext->nTotalFiles++;
+
             pWorkerContext->nProgess[i] = 0;
             pWorkerContext->nPreviousProgess[i] = 0;
 
