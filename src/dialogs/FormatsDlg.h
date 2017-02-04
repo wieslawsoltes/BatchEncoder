@@ -28,6 +28,7 @@ protected:
 public:
     virtual BOOL OnInitDialog();
 public:
+    CConfiguration *pConfig;
     CString szFormatsDialogResize;
     CString szFormatsListColumns;
     volatile bool bUpdate;
@@ -94,6 +95,7 @@ public:
 public:
     void LoadWindowSettings();
     void SaveWindowSettings();
+    void SetLanguage();
     void AddToList(CFormat &format, int nItem);
     void InsertFormatsToListCtrl();
     void UpdateFields(CFormat &format);

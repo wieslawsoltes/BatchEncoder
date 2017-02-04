@@ -3,6 +3,7 @@
 
 #include "StdAfx.h"
 #include "..\BatchEncoder.h"
+#include "..\configuration\LanguageHelper.h"
 #include "..\utilities\Utilities.h"
 #include "..\utilities\UnicodeUtf8.h"
 #include "..\utilities\Utf8String.h"
@@ -152,6 +153,7 @@ BOOL CFormatsDlg::OnInitDialog()
     AddAnchor(IDCANCEL, BOTTOM_RIGHT);
 
     this->LoadWindowSettings();
+    this->SetLanguage();
 
     return TRUE;
 }
@@ -615,6 +617,13 @@ void CFormatsDlg::SaveWindowSettings()
     szFormatsListColumns.Format(_T("%d %d"),
         nColWidth[0],
         nColWidth[1]);
+}
+
+void CFormatsDlg::SetLanguage()
+{
+    CLanguageHelper helper(pConfig);
+
+
 }
 
 void CFormatsDlg::AddToList(CFormat &format, int nItem)
