@@ -13,6 +13,7 @@ public:
     HANDLE hThread;
     DWORD dwThreadID;
 public:
+    volatile int nThreadCount;
     HANDLE hMutex;
     HANDLE* hConvertThread;
     DWORD* dwConvertThreadID;
@@ -26,7 +27,6 @@ public:
     int* nProgess;
     int* nPreviousProgess;
     volatile int nLastItemId;
-    volatile int nThreadCount;
 public:
     CWorkerContext(CConfiguration* pConfig)
     {
