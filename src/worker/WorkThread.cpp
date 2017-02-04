@@ -6,18 +6,7 @@
 #include "..\utilities\TimeCount.h"
 #include "..\utilities\Utilities.h"
 #include "..\Configuration.h"
-#include "WorkerContext.h"
-#include "PipeContext.h"
-#include "FileContext.h"
-#include "ItemContext.h"
-#include "ProcessContext.h"
 #include "WorkThread.h"
-
-enum Mode { None = -1, Encode = 0, Transcode = 1 };
-
-typedef int GetProgressFunc(char *szLineBuff, int nLineLen);
-
-typedef bool ConvertFileFunc(CFileContext *pContext);
 
 bool ProgresssLoop(CFileContext* pContext, CProcessContext &processContext, int &nProgress)
 {
@@ -775,7 +764,7 @@ bool ConvertItem(CItemContext* pContext, ConvertFileFunc *pConvertFile)
                 pContext->item->nId,
                 szInputFile,
                 szOutputFile);
-            if (::ConvertFile(&context) == false)
+            if ((pConvertFile)(&context) == false)
             {
                 if (pContext->pWorkerContext->pConfig->m_Options.bDeleteOnErrors == true)
                     ::DeleteFile(szOutputFile);
@@ -830,7 +819,7 @@ bool ConvertItem(CItemContext* pContext, ConvertFileFunc *pConvertFile)
                 pContext->item->nId,
                 szInputFile,
                 szOutputFile);
-            if (::ConvertFile(&context) == true)
+            if ((pConvertFile)(&context) == true)
             {
                 // validate encoded file
                 if (FileExists(szOutputFile) == false)
