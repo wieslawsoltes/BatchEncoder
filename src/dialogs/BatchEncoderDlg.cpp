@@ -1382,7 +1382,6 @@ bool CBatchEncoderDlg::SearchFolderForLanguages(CString szFile)
     {
         m_StatusBar.SetText(_T("Error while searching for language files!"), 1, 0);
     }
-
     return true;
 }
 
