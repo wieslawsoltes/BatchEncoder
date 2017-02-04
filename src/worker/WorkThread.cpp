@@ -953,17 +953,6 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
     pWorkerContext->nPreviousProgess = new int[nItems];
     pWorkerContext->nLastItemId = -1;
 
-    pWorkerContext->nThreadCount = pWorkerContext->pConfig->m_Options.nThreadCount;
-    if (pWorkerContext->nThreadCount < 1)
-    {
-        // auto-detect number of available threads
-        LogicalProcessorInformation info;
-        if (GetLogicalProcessorInformation(&info) == 0)
-            pWorkerContext->nThreadCount = info.processorCoreCount;
-        else
-            pWorkerContext->nThreadCount = 1;
-    }
-
     for (int i = 0; i < nItems; i++)
     {
         CItem& item = pWorkerContext->pConfig->m_Items.GetData(i);
@@ -982,6 +971,17 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
             pWorkerContext->nProgess[i] = 100;
             pWorkerContext->nPreviousProgess[i] = 100;
         }
+    }
+
+    pWorkerContext->nThreadCount = pWorkerContext->pConfig->m_Options.nThreadCount;
+    if (pWorkerContext->nThreadCount < 1)
+    {
+        // auto-detect number of available threads
+        LogicalProcessorInformation info;
+        if (GetLogicalProcessorInformation(&info) == 0)
+            pWorkerContext->nThreadCount = info.processorCoreCount;
+        else
+            pWorkerContext->nThreadCount = 1;
     }
 
     pWorkerContext->hMutex = ::CreateMutex(NULL, FALSE, NULL);
