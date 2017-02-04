@@ -117,7 +117,7 @@
     <String key="0x000C0018" value="Id&#58;"/>
     <String key="0x000C0019" value="Name&#58;"/>
     <String key="0x000C001A" value="Output extension&#58;"/>
-    <String key="0x000C001B" value="Input extensions&#58;"/>
+    <String key="0x000C001B" value="Input extensions (separated by comma)&#58;"/>
     <String key="0x000C001C" value="Default preset&#58;"/>
     <String key="0x000C001D" value="Command-line executable path&#58;"/>
     <String key="0x000C001E" value="&amp;..."/>
