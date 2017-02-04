@@ -13,6 +13,8 @@
 #include "ProcessContext.h"
 #include "WorkThread.h"
 
+enum Mode { None = -1, Encode = 0, Transcode = 1 };
+
 typedef int GetProgressFunc(char *szLineBuff, int nLineLen);
 
 typedef bool ConvertFileFunc(CFileContext *pContext);
@@ -650,8 +652,6 @@ bool ConvertFile(CFileContext* pContext)
     else
         return ConvertFileUsingPipes(pContext);
 }
-
-enum Mode { None = -1, Encode = 0, Transcode = 1 };
 
 bool FileExists(CString szPath)
 {
