@@ -1192,6 +1192,7 @@ void CBatchEncoderDlg::OnOptionsConfigurePresets()
     if (this->pWorkerContext->bRunning == false)
     {
         CPresetsDlg dlg;
+        dlg.pConfig = &m_Config;
         dlg.nSelectedFormat = this->m_CmbFormat.GetCurSel();
         dlg.m_Formats = m_Config.m_Formats;
         dlg.szPresetsDialogResize = m_Config.m_Options.szPresetsDialogResize;
@@ -1216,6 +1217,7 @@ void CBatchEncoderDlg::OnOptionsConfigureFormat()
     if (this->pWorkerContext->bRunning == false)
     {
         CFormatsDlg dlg;
+        dlg.pConfig = &m_Config;
         dlg.nSelectedFormat = this->m_CmbFormat.GetCurSel();
         dlg.m_Formats = m_Config.m_Formats;
         dlg.szFormatsDialogResize = m_Config.m_Options.szFormatsDialogResize;
@@ -1334,6 +1336,7 @@ void CBatchEncoderDlg::OnHelpAbout()
     if (this->pWorkerContext->bRunning == false)
     {
         CAboutDlg dlg;
+        dlg.pConfig = &m_Config;
         dlg.DoModal();
     }
 }
