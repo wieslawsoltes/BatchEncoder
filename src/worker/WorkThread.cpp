@@ -15,6 +15,8 @@
 
 typedef int GetProgressFunc(char *szLineBuff, int nLineLen);
 
+typedef bool ConvertFileFunc(CFileContext *pContext);
+
 bool ProgresssLoop(CFileContext* pContext, CProcessContext &processContext, int &nProgress)
 {
     const int nBuffSize = 4096;
@@ -661,7 +663,7 @@ bool FileExists(CString szPath)
     return bInvalidHandle == false;
 }
 
-bool ConvertItem(CItemContext* pContext)
+bool ConvertItem(CItemContext* pContext, ConvertFileFunc *pConvertFile)
 {
     // input file
     CString szInputFile = pContext->item->szPath;
@@ -878,7 +880,7 @@ bool ConvertItem(CItemContext* pContext)
     return false;
 }
 
-bool ConvertLoop(CWorkerContext* pWorkerContext)
+bool ConvertLoop(CWorkerContext* pWorkerContext, ConvertFileFunc *pConvertFile)
 {
     while (!pWorkerContext->pQueue->IsEmpty())
     {
@@ -902,7 +904,7 @@ bool ConvertLoop(CWorkerContext* pWorkerContext)
             if (pContext != NULL)
             {
                 pContext->pWorkerContext->Next(pContext->item->nId);
-                if (ConvertItem(pContext) == true)
+                if (ConvertItem(pContext, pConvertFile) == true)
                 {
                     pContext->pWorkerContext->nDoneWithoutError++;
                 }
@@ -929,7 +931,7 @@ DWORD WINAPI ConvertThread(LPVOID lpParam)
     CWorkerContext* pWorkerContext = (CWorkerContext*)lpParam;
     if (pWorkerContext != NULL)
     {
-        if (ConvertLoop(pWorkerContext) == true)
+        if (ConvertLoop(pWorkerContext, &ConvertFile) == true)
             return TRUE;
     }
     return FALSE;
@@ -993,7 +995,7 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
     // single-threaded
     if (pWorkerContext->nThreadCount == 1)
     {
-        ConvertLoop(pWorkerContext);
+        ConvertLoop(pWorkerContext, &ConvertFile);
     }
 
     // multi-threaded
