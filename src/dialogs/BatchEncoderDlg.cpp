@@ -744,15 +744,9 @@ void CBatchEncoderDlg::OnFileLoadList()
         {
             CString szFileXml = fd.GetPathName();
             if (this->LoadItems(szFileXml) == false)
-            {
-                MessageBox(_T("Failed to load file!"),
-                    _T("ERROR"),
-                    MB_OK | MB_ICONERROR);
-            }
+                m_StatusBar.SetText(_T("Failed to load file!"), 1, 0);
             else
-            {
                 this->UpdateStatusBar();
-            }
         }
     }
 }
@@ -769,11 +763,7 @@ void CBatchEncoderDlg::OnFileSaveList()
         {
             CString szFileXml = fd.GetPathName();
             if (this->SaveItems(szFileXml) == false)
-            {
-                MessageBox(_T("Failed to save file!"),
-                    _T("ERROR"),
-                    MB_OK | MB_ICONERROR);
-            }
+                m_StatusBar.SetText(_T("Failed to save file!"), 1, 0);
         }
     }
 }
@@ -810,9 +800,7 @@ void CBatchEncoderDlg::OnEditAddFiles()
             pFiles = (TCHAR *)malloc(dwMaxSize);
             if (pFiles == NULL)
             {
-                MessageBox(_T("Failed to allocate memory for filenames buffer!"),
-                    _T("ERROR"),
-                    MB_OK | MB_ICONERROR);
+                m_StatusBar.SetText(_T("Failed to allocate memory for filenames buffer!"), 1, 0);
                 return;
             }
 
@@ -1392,7 +1380,7 @@ bool CBatchEncoderDlg::SearchFolderForLanguages(CString szFile)
     }
     catch (...)
     {
-        MessageBox(_T("Error while searching for language files!"), _T("ERROR"), MB_OK | MB_ICONERROR);
+        m_StatusBar.SetText(_T("Error while searching for language files!"), 1, 0);
     }
 
     return true;
@@ -1961,7 +1949,7 @@ void CBatchEncoderDlg::SearchFolderForFiles(CString szFile, const bool bRecurse)
     }
     catch (...)
     {
-        MessageBox(_T("Error while searching for item files!"), _T("ERROR"), MB_OK | MB_ICONERROR);
+        m_StatusBar.SetText(_T("Error while searching for item files!"), 1, 0);
     }
 }
 
