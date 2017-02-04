@@ -764,7 +764,13 @@ bool ConvertItem(CItemContext* pContext)
         pContext->pWorkerContext->Status(pContext->item->nId, _T("--:--"), _T("Decoding..."));
         try
         {
-            CFileContext context(pContext->pWorkerContext, decoderFormat, decoderFormat.nDefaultPreset, pContext->item->nId, szInputFile, szOutputFile);
+            CFileContext context(
+                pContext->pWorkerContext,
+                decoderFormat,
+                decoderFormat.nDefaultPreset,
+                pContext->item->nId,
+                szInputFile,
+                szOutputFile);
             if (::ConvertFile(&context) == false)
             {
                 if (pContext->pWorkerContext->pConfig->m_Options.bDeleteOnErrors == true)
@@ -813,7 +819,13 @@ bool ConvertItem(CItemContext* pContext)
 
         try
         {
-            CFileContext context(pContext->pWorkerContext, encoderFormat, pContext->item->nPreset, pContext->item->nId, szInputFile, szOutputFile);
+            CFileContext context(
+                pContext->pWorkerContext,
+                encoderFormat,
+                pContext->item->nPreset,
+                pContext->item->nId,
+                szInputFile,
+                szOutputFile);
             if (::ConvertFile(&context) == true)
             {
                 // validate encoded file

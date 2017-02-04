@@ -15,7 +15,13 @@ public:
     bool bUseReadPipes;
     bool bUseWritePipes;
 public:
-    CFileContext(CWorkerContext *pWorkerContext, CFormat &format, int nPreset, int nItemId, CString szInputFile, CString szOutputFile)
+    CFileContext(
+        CWorkerContext *pWorkerContext, 
+        CFormat &format, 
+        int nPreset, 
+        int nItemId, 
+        CString szInputFile, 
+        CString szOutputFile)
     {
         CPreset& preset = format.m_Presets.GetData(nPreset);
 
