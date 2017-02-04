@@ -12,20 +12,21 @@ public:
 public:
     HANDLE hThread;
     DWORD dwThreadID;
+public:
     HANDLE hMutex;
+    HANDLE* hConvertThread;
+    DWORD* dwConvertThreadID;
 public:
     volatile int nTotalFiles;
     volatile int nProcessedFiles;
     volatile int nDoneWithoutError;
     volatile int nErrors;
 public:
-    volatile int nThreadCount;
-    HANDLE* hConvertThread;
-    DWORD* dwConvertThreadID;
     CObList* pQueue;
     int* nProgess;
     int* nPreviousProgess;
     volatile int nLastItemId;
+    volatile int nThreadCount;
 public:
     CWorkerContext(CConfiguration* pConfig)
     {

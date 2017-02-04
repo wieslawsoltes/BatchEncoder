@@ -944,6 +944,15 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
     int nItems = pWorkerContext->pConfig->m_Items.GetSize();
     CItemContext *pItemsContext = new CItemContext[nItems];
 
+    pWorkerContext->nTotalFiles = 0;
+    pWorkerContext->nProcessedFiles = 0;
+    pWorkerContext->nDoneWithoutError = 0;
+    pWorkerContext->nErrors = 0;
+    pWorkerContext->pQueue = new CObList();
+    pWorkerContext->nProgess = new int[nItems];
+    pWorkerContext->nPreviousProgess = new int[nItems];
+    pWorkerContext->nLastItemId = -1;
+
     pWorkerContext->nThreadCount = pWorkerContext->pConfig->m_Options.nThreadCount;
     if (pWorkerContext->nThreadCount < 1)
     {
@@ -954,18 +963,6 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
         else
             pWorkerContext->nThreadCount = 1;
     }
-
-    pWorkerContext->hMutex = ::CreateMutex(NULL, FALSE, NULL);
-    pWorkerContext->nTotalFiles = 0;
-    pWorkerContext->nProcessedFiles = 0;
-    pWorkerContext->nDoneWithoutError = 0;
-    pWorkerContext->nErrors = 0;
-    pWorkerContext->hConvertThread = new HANDLE[pWorkerContext->nThreadCount];
-    pWorkerContext->dwConvertThreadID = new DWORD[pWorkerContext->nThreadCount];
-    pWorkerContext->pQueue = new CObList();
-    pWorkerContext->nProgess = new int[nItems];
-    pWorkerContext->nPreviousProgess = new int[nItems];
-    pWorkerContext->nLastItemId = -1;
 
     for (int i = 0; i < nItems; i++)
     {
@@ -986,6 +983,10 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
             pWorkerContext->nPreviousProgess[i] = 100;
         }
     }
+
+    pWorkerContext->hMutex = ::CreateMutex(NULL, FALSE, NULL);
+    pWorkerContext->hConvertThread = new HANDLE[pWorkerContext->nThreadCount];
+    pWorkerContext->dwConvertThreadID = new DWORD[pWorkerContext->nThreadCount];
 
     pWorkerContext->Init();
 
