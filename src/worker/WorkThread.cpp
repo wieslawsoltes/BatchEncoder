@@ -13,6 +13,8 @@
 #include "ProcessContext.h"
 #include "WorkThread.h"
 
+typedef int GetProgressFunc(char *szLineBuff, int nLineLen);
+
 bool ProgresssLoop(CFileContext* pContext, CProcessContext &processContext, int &nProgress)
 {
     const int nBuffSize = 4096;
@@ -35,7 +37,7 @@ bool ProgresssLoop(CFileContext* pContext, CProcessContext &processContext, int 
         return false; // ERROR
     }
 
-    GetProgress *pGetProgress = (GetProgress*) ::GetProcAddress(hDll, "GetProgress");
+    GetProgressFunc *pGetProgress = (GetProgressFunc*) ::GetProcAddress(hDll, "GetProgress");
     if (pGetProgress == NULL)
     {
         pContext->pWorkerContext->Status(pContext->nItemId, _T("--:--"), _T("Error: can not get GetProgress function address."));

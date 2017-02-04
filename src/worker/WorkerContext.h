@@ -3,8 +3,6 @@
 
 #pragma once
 
-typedef int GetProgress(char *szLineBuff, int nLineLen);
-
 class CWorkerContext
 {
 public:
