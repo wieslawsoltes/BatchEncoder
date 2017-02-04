@@ -66,4 +66,12 @@ public:
             hWnd->SetWindowText(rValue);
         }
     }
+    void SetItemText(CWnd *hWnd, UINT nID, int nKey)
+    {
+        CString rValue;
+        if (this->pConfig->LookupString(nKey, rValue))
+        {
+            hWnd->GetDlgItem(nID)->SetWindowText(rValue);
+        }
+    }
 };
