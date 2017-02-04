@@ -64,7 +64,8 @@ public:
     CMyButton m_BtnUpdate;
     CMyButton m_BtnLoad;
     CMyButton m_BtnSave;
-    CMyButton m_BtnBrowse;
+    CMyButton m_BtnBrowsePath;
+    CMyButton m_BtnBrowseFunction;
 public:
     afx_msg void OnBnClickedOk();
     afx_msg void OnBnClickedCancel();

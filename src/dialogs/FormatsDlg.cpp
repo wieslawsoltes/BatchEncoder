@@ -58,7 +58,8 @@ void CFormatsDlg::DoDataExchange(CDataExchange* pDX)
     DDX_Control(pDX, IDC_BUTTON_FORMAT_UPDATE, m_BtnUpdate);
     DDX_Control(pDX, IDC_BUTTON_FORMAT_LOAD, m_BtnLoad);
     DDX_Control(pDX, IDC_BUTTON_FORMAT_SAVE, m_BtnSave);
-    DDX_Control(pDX, IDC_BUTTON_BROWSE_PATH, m_BtnBrowse);
+    DDX_Control(pDX, IDC_BUTTON_BROWSE_PATH, m_BtnBrowsePath);
+    DDX_Control(pDX, IDC_BUTTON_BROWSE_FUNCTION, m_BtnBrowseFunction);
 }
 
 BEGIN_MESSAGE_MAP(CFormatsDlg, CResizeDialog)
