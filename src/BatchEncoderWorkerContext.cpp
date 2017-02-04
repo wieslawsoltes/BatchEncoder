@@ -68,7 +68,7 @@ bool CBatchEncoderWorkerContext::Callback(int nItemId, int nProgress, bool bFini
 {
     if (bError == true)
     {
-        if (pDlg->pWorkerContext->pConfig->m_Options.bStopOnErrors == true)
+        if (pConfig->m_Options.bStopOnErrors == true)
         {
             pDlg->m_Progress.SetPos(0);
             this->bRunning = false;
@@ -79,11 +79,11 @@ bool CBatchEncoderWorkerContext::Callback(int nItemId, int nProgress, bool bFini
 
     if (bFinished == false && this->bRunning == true)
     {
-        pDlg->pWorkerContext->nProgess[nItemId] = nProgress;
+        nProgess[nItemId] = nProgress;
 
         // check previous progress if two or more passes are used to for item processing
-        if (pDlg->pWorkerContext->nPreviousProgess[nItemId] > nProgress)
-            pDlg->pWorkerContext->nPreviousProgess[nItemId] = nProgress;
+        if (nPreviousProgess[nItemId] > nProgress)
+            nPreviousProgess[nItemId] = nProgress;
 
         static volatile bool bSafeCheck = false;
         if (bSafeCheck == false)
@@ -97,13 +97,13 @@ bool CBatchEncoderWorkerContext::Callback(int nItemId, int nProgress, bool bFini
             }
 
             int nTotalProgress = 0;
-            int nItems = pDlg->pWorkerContext->pConfig->m_Items.GetSize();
+            int nItems = pConfig->m_Items.GetSize();
             for (int i = 0; i < nItems; i++)
             {
-                if (pDlg->pWorkerContext->pConfig->m_Items.GetData(i).bChecked == TRUE)
+                if (pConfig->m_Items.GetData(i).bChecked == TRUE)
                 {
-                    int nItemProgress = pDlg->pWorkerContext->nProgess[i];
-                    int nItemPreviousProgress = pDlg->pWorkerContext->nPreviousProgess[i];
+                    int nItemProgress = nProgess[i];
+                    int nItemPreviousProgress = nPreviousProgess[i];
 
                     nTotalProgress += nItemProgress;
 
@@ -113,12 +113,12 @@ bool CBatchEncoderWorkerContext::Callback(int nItemId, int nProgress, bool bFini
                         szProgress.Format(_T("%d%%\0"), nItemProgress);
                         pDlg->m_LstInputItems.SetItemText(i, ITEM_COLUMN_STATUS, szProgress); // Status
 
-                        pDlg->pWorkerContext->nPreviousProgess[i] = nItemProgress;
+                        nPreviousProgess[i] = nItemProgress;
                     }
                 }
             }
 
-            int nPos = nTotalProgress / pDlg->pWorkerContext->nTotalFiles;
+            int nPos = nTotalProgress / nTotalFiles;
             if (pDlg->m_Progress.GetPos() != nPos)
             {
                 pDlg->m_Progress.SetPos(nPos);
