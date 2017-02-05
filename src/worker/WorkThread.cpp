@@ -10,15 +10,13 @@
 
 const TCHAR* pszDefaulTime = _T("--:--");
 
-const TCHAR* pszProgresssLoop[] =
-{
+const TCHAR* pszProgresssLoop[] = {
     /* 00 */ _T("Error: can not load GetProgress function library dll."),
     /* 01 */ _T("Error: can not get GetProgress function address."),
     /* 02 */ _T("Error: console line is too large for read buffer.")
 };
 
-const TCHAR* pszConvertConsole[] =
-{
+const TCHAR* pszConvertConsole[] = {
     /* 00 */ _T("Error: invalid format pipe configuration."),
     /* 01 */ _T("Error: can not create pipes for stderr."),
     /* 02 */ _T("Error: can not duplicate stderr pipe to prevent child process from closing the pipe."),
@@ -27,8 +25,7 @@ const TCHAR* pszConvertConsole[] =
     /* 05 */ _T("Done")
 };
 
-const TCHAR* pszConvertPipes[] =
-{
+const TCHAR* pszConvertPipes[] = {
     /* 00 */ _T("Error: invalid format pipe configuration."),
     /* 01 */ _T("Error: can not create pipes for stdin."),
     /* 02 */ _T("Error: can not set stdin pipe inherit flag."),
@@ -41,8 +38,7 @@ const TCHAR* pszConvertPipes[] =
     /* 09 */ _T("Done")
 };
 
-const TCHAR* pszConvertItem[] =
-{
+const TCHAR* pszConvertItem[] = {
     /* 00 */ _T("Error: can not find input file."),
     /* 01 */ _T("Error: can not find valid encoder by id."),
     /* 02 */ _T("Error: can not find encoder format preset."),
