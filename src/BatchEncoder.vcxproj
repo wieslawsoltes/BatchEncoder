@@ -307,7 +307,6 @@ copy /-Y ..\lang\*.language $(OutDir)</Command>
     <ClInclude Include="configuration\LanguageHelper.h" />
     <ClInclude Include="Configuration.h" />
     <ClInclude Include="XmlConfiguration.h" />
-    <ClInclude Include="controls\Controls.h" />
     <ClInclude Include="controls\MyListCtrl.h" />
     <ClInclude Include="controls\Hyperlink.h" />
     <ClInclude Include="controls\MyButton.h" />
@@ -316,6 +315,7 @@ copy /-Y ..\lang\*.language $(OutDir)</Command>
     <ClInclude Include="controls\MyStatic.h" />
     <ClInclude Include="controls\MyStatusBarCtrl.h" />
     <ClInclude Include="controls\ResizeDialog.h" />
+    <ClInclude Include="Controls.h" />
     <ClInclude Include="dialogs\AboutDlg.h" />
     <ClInclude Include="dialogs\BatchEncoderDlg.h" />
     <ClInclude Include="dialogs\FormatsDlg.h" />
