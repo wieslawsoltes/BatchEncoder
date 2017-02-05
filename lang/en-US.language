@@ -135,50 +135,53 @@
     <String key="0x000D0011" value="&amp;OK"/>
     <String key="0x000D0012" value="Licensed under the MIT license. See LICENSE file in the application root for full license information."/>
 
-    <!-- Messages Convert Item -->
+    <!-- Strings Work Thread -->
 
-    <String key="0x00110001" value="Encoding..."/>
-    <String key="0x00110002" value="Decoding..."/>
-    <String key="0x00110003" value="Processing..."/>
-    <String key="0x00110004" value="Error&#58; can not find input file."/>
-    <String key="0x00110005" value="Error&#58; can not find valid encoder by id."/>
-    <String key="0x00110006" value="Error&#58; can not find encoder format preset."/>
-    <String key="0x00110007" value="Error&#58; can not find valid decoder by extension."/>
-    <String key="0x00110008" value="Error&#58; can not find decoder format preset."/>
-    <String key="0x00110009" value="Error&#58; decoder output not supported by encoder."/>
-    <String key="0x0011000A" value="Error&#58; can not find decoded file."/>
-    <String key="0x0011000B" value="Error&#58; exception thrown while converting file."/>
-    <String key="0x0011000C" value="Error&#58; can not find encoded file."/>
-    <String key="0x0011000D" value="Error&#58; exception thrown while converting file."/>
+    <String key="0x00110001" value="Error&#58; can not load GetProgress function library dll."/>
+    <String key="0x00110002" value="Error&#58; can not get GetProgress function address."/>
+    <String key="0x00110003" value="Error&#58; console line is too large for read buffer."/>
 
-    <!-- Messages Convert File -->
+    <String key="0x00120001" value="Error&#58; invalid format pipe configuration."/>
+    <String key="0x00120002" value="Error&#58; can not create pipes for stderr."/>
+    <String key="0x00120003" value="Error&#58; can not duplicate stderr pipe to prevent child process from closing the pipe."/>
+    <String key="0x00120004" value="Error&#58; can not create command-line process (&#37;d)."/>
+    <String key="0x00120005" value="Error&#58; progress did not reach 100&#37;."/>
+    <String key="0x00120006" value="Done"/>
 
-    <String key="0x00120001" value="Done"/>
-    <String key="0x00120002" value="Error&#58; progress did not reach 100&#37;."/>
-    <String key="0x00120003" value="Error&#58; invalid format pipe configuration."/>
-    <String key="0x00120004" value="Error&#58; can not create pipes for stderr."/>
-    <String key="0x00120005" value="Error&#58; can not duplicate stderr pipe to prevent child process from closing the pipe."/>
-    <String key="0x00120006" value="Error&#58; can not create command-line process (&#37;d)."/>
-    <String key="0x00120007" value="Error&#58; can not get GetProgress function address."/>
-    <String key="0x00120008" value="Error&#58; can not load GetProgress function library dll."/>
-    <String key="0x00120009" value="Error&#58; console line is too large for read buffer."/>
-    <String key="0x0012000A" value="Error&#58; invalid format pipe configuration."/>
-    <String key="0x0012000B" value="Error&#58; can not create pipes for stdin."/>
-    <String key="0x0012000C" value="Error&#58; can not set stdin pipe inherit flag."/>
-    <String key="0x0012000D" value="Error&#58; can not create pipes for stdout."/>
-    <String key="0x0012000E" value="Error&#58; can not set stdout pipe inherit flag."/>
-    <String key="0x0012000F" value="Error&#58; can not create command-line process (&#37;d)."/>
-    <String key="0x00120010" value="Error&#58; can not create read thread."/>
-    <String key="0x00120011" value="Error&#58; can not create write thread."/>
+    <String key="0x00130001" value="Error&#58; invalid format pipe configuration."/>
+    <String key="0x00130002" value="Error&#58; can not create pipes for stdin."/>
+    <String key="0x00130003" value="Error&#58; can not set stdin pipe inherit flag."/>
+    <String key="0x00130004" value="Error&#58; can not create pipes for stdout."/>
+    <String key="0x00130005" value="Error&#58; can not set stdout pipe inherit flag."/>
+    <String key="0x00130006" value="Error&#58; can not create command-line process (&#37;d)."/>
+    <String key="0x00130007" value="Error&#58; can not create read thread."/>
+    <String key="0x00130008" value="Error&#58; can not create write thread."/>
+    <String key="0x00130009" value="Error&#58; progress did not reach 100&#37;."/>
+    <String key="0x0013000A" value="Done"/>
 
-    <!-- Messages Worker Context -->
+    <String key="0x00140001" value="Error&#58; can not find input file."/>
+    <String key="0x00140002" value="Error&#58; can not find valid encoder by id."/>
+    <String key="0x00140003" value="Error&#58; can not find encoder format preset."/>
+    <String key="0x00140004" value="Error&#58; can not find valid decoder by extension."/>
+    <String key="0x00140005" value="Error&#58; can not find decoder format preset."/>
+    <String key="0x00140006" value="Error&#58; decoder output not supported by encoder."/>
+    <String key="0x00140007" value="Decoding..."/>
+    <String key="0x00140008" value="Error&#58; can not find decoded file."/>
+    <String key="0x00140009" value="Error&#58; exception thrown while converting file."/>
+    <String key="0x0014000A" value="Encoding..."/>
+    <String key="0x0014000B" value="Decoding..."/>
+    <String key="0x0014000C" value="Processing..."/>
+    <String key="0x0014000D" value="Error&#58; can not find encoded file."/>
+    <String key="0x0014000E" value="Error&#58; exception thrown while converting file."/>
 
-    <String key="0x00130001" value="Error"/>
-    <String key="0x00130002" value="Errors"/>
-    <String key="0x00130003" value="Processing item &#37;d of &#37;d (&#37;d Done, &#37;d &#37;s)"/>
-    <String key="0x00130004" value="Processed %&#37;d of &#37;d (&#37;d Done, &#37;d &#37;s) in &#37;s"/>
+    <!-- Strings Worker Context -->
 
-    <!-- Messages Main Dialog -->
+    <String key="0x00190001" value="Error"/>
+    <String key="0x00190002" value="Errors"/>
+    <String key="0x00190003" value="Processing item &#37;d of &#37;d (&#37;d Done, &#37;d &#37;s)"/>
+    <String key="0x00190004" value="Processed %&#37;d of &#37;d (&#37;d Done, &#37;d &#37;s) in &#37;s"/>
+
+    <!-- Strings Main Dialog -->
 
     <String key="0x00210001" value="ERROR"/>
     <String key="0x00210002" value="Not Done"/>
@@ -197,19 +200,19 @@
     <String key="0x0021000F" value="Unable to create output path&#33;"/>
     <String key="0x00210010" value="Fatal error when creating thread&#33;"/>
 
-    <!-- Messages Presets Dialog -->
+    <!-- Strings Presets Dialog -->
 
     <String key="0x00220001" value="ERROR"/>
     <String key="0x00220002" value="Failed to load file&#33;"/>
     <String key="0x00220003" value="Failed to save file&#33;"/>
 
-    <!-- Messages Formats Dialog -->
+    <!-- Strings Formats Dialog -->
 
     <String key="0x00230001" value="ERROR"/>
     <String key="0x00230002" value="Failed to load file&#33;"/>
     <String key="0x00230003" value="Failed to save file&#33;"/>
 
-    <!-- File Dialogs -->
+    <!-- Strings File Dialogs -->
 
     <String key="0x00310001" value="All Files"/>
     <String key="0x00310002" value="Xml Files"/>
