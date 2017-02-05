@@ -258,12 +258,14 @@ Sometimes you will not get nice progress during conversion, nonetheless you will
 Progress function are compiled windows DLL libraries with exported `GetProgress` function as `C` api. The `progress` file extension is used instead of `dll`.
 
 The progress function `C` signature:
-```C
+
+```
 int GetProgress(char *szLineBuff, int nLineLen);
 ```
 
 The example of the progress function export definition:
-```DEF
+
+```
 LIBRARY GetProgress.dll
 EXPORTS
 
