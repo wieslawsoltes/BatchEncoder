@@ -205,7 +205,7 @@
     <String key="0x00220002" value="Failed to load file&#33;"/>
     <String key="0x00220003" value="Failed to save file&#33;"/>
     <String key="0x00220004" value="Default"/>
-    
+
     <!-- Strings Formats Dialog -->
 
     <String key="0x00230001" value="ERROR"/>
@@ -213,7 +213,7 @@
     <String key="0x00230003" value="Failed to save file&#33;"/>
     <String key="0x00230004" value="Format"/>
     <String key="0x00230005" value="Default"/>
-    
+
     <!-- Strings File Dialogs -->
 
     <String key="0x00310001" value="All Files"/>
