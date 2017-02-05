@@ -264,6 +264,7 @@ copy /-Y ..\lang\*.language $(OutDir)</Command>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="BatchEncoder.cpp" />
+    <ClCompile Include="Strings.cpp" />
     <ClCompile Include="BatchEncoderWorkerContext.cpp" />
     <ClCompile Include="XmlConfiguration.cpp" />
     <ClCompile Include="dialogs\AboutDlg.cpp" />
@@ -290,6 +291,7 @@ copy /-Y ..\lang\*.language $(OutDir)</Command>
     <ClInclude Include="version.h" />
     <ClInclude Include="res\resource.h" />
     <ClInclude Include="BatchEncoder.h" />
+    <ClInclude Include="Strings.h" />
     <ClInclude Include="BatchEncoderWorkerContext.h" />
     <ClInclude Include="configuration\Format.h" />
     <ClInclude Include="configuration\FormatsList.h" />
