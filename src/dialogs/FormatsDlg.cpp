@@ -3,6 +3,7 @@
 
 #include "StdAfx.h"
 #include "..\BatchEncoder.h"
+#include "..\Strings.h"
 #include "..\configuration\LanguageHelper.h"
 #include "..\utilities\Utilities.h"
 #include "..\utilities\UnicodeUtf8.h"
@@ -259,7 +260,7 @@ void CFormatsDlg::OnBnClickedButtonAddFormat()
 
     CFormat format;
     format.szId = _T("ID");
-    format.szName = _T("Format");
+    format.szName = pConfig->GetString(0x00230004, pszFormatsDialog[3]);
     format.szTemplate = _T("$EXE $OPTIONS $INFILE $OUTFILE");
     format.bPipeInput = true;
     format.bPipeOutput = false;
@@ -271,7 +272,7 @@ void CFormatsDlg::OnBnClickedButtonAddFormat()
     format.nDefaultPreset = 0;
 
     CPreset preset;
-    preset.szName = _T("Default");
+    preset.szName = pConfig->GetString(0x00230005, pszFormatsDialog[4]);
     preset.szOptions = _T("");
     format.m_Presets.InsertNode(preset);
 
@@ -774,7 +775,10 @@ void CFormatsDlg::LoadFormats(CString szFileXml)
     }
     else
     {
-        MessageBox(_T("Failed to load file!"), _T("ERROR"), MB_OK | MB_ICONERROR);
+        MessageBox(
+            pConfig->GetString(0x00230002, pszFormatsDialog[1]),
+            pConfig->GetString(0x00230001, pszFormatsDialog[0]),
+            MB_OK | MB_ICONERROR);
     }
 }
 
@@ -784,7 +788,10 @@ void CFormatsDlg::SaveFormats(CString szFileXml)
     doc.SetFormats(this->m_Formats);
     if (doc.Save(szFileXml) != true)
     {
-        MessageBox(_T("Failed to save file!"), _T("ERROR"), MB_OK | MB_ICONERROR);
+        MessageBox(
+            pConfig->GetString(0x00230003, pszFormatsDialog[2]),
+            pConfig->GetString(0x00230001, pszFormatsDialog[0]),
+            MB_OK | MB_ICONERROR);
     }
 }
 
