@@ -183,6 +183,16 @@ Use only UTF-8 compatible text editors (e.g. Notepad) to edit xml configuration 
 
 https://github.com/wieslawsoltes/BatchEncoder/tree/master/config
 
+## Translations
+
+* [English (en-US)](https://github.com/wieslawsoltes/BatchEncoder/blob/master/lang/en-US.language) by Wiesław Šoltés
+* [Polish (pl-PL)](https://github.com/wieslawsoltes/BatchEncoder/blob/master/lang/pl-PL.language) by Wiesław Šoltés
+
+Use only UTF-8 compatible text editors (e.g. Notepad or Visual Studio Code) to edit xml language files
+and [use special characters in XML](https://www.dvteclipse.com/documentation/svlinter/How_to_use_special_characters_in_XML.3F.html#gsc.tab=0).
+
+Language files have to be placed in the same directory as the `BatchEncoder.exe` executable to be loaded automatically.
+
 ### Default language files
 
 https://github.com/wieslawsoltes/BatchEncoder/tree/master/lang
@@ -265,6 +275,12 @@ For a quick start use [GetProgress_Null](https://github.com/wieslawsoltes/BatchE
 ### Default progress functions
 
 https://github.com/wieslawsoltes/BatchEncoder/tree/master/src/progress
+
+## BatchEncoder Sources
+
+Source code is available in the Git source code repository.
+
+https://github.com/wieslawsoltes/BatchEncoder
 
 ## Building BatchEncoder
 
