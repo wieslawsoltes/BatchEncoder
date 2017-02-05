@@ -3,6 +3,7 @@
 
 #include "StdAfx.h"
 #include "..\BatchEncoder.h"
+#include "..\Strings.h"
 #include "..\configuration\LanguageHelper.h"
 #include "..\utilities\Utilities.h"
 #include "..\utilities\UnicodeUtf8.h"
@@ -219,7 +220,7 @@ void CPresetsDlg::OnBnClickedButtonAddPreset()
 
         CFormat& format = m_Formats.GetData(nSelectedFormat);
         CPreset preset;
-        preset.szName = _T("Preset");
+        preset.szName = pConfig->GetString(0x00220004, pszPresetsDialog[3]);
         preset.szOptions = _T("");
         format.m_Presets.InsertNode(preset);
 
@@ -546,7 +547,10 @@ void CPresetsDlg::LoadPresets(CString szFileXml)
     }
     else
     {
-        MessageBox(_T("Failed to load file!"), _T("ERROR"), MB_OK | MB_ICONERROR);
+        MessageBox(
+            pConfig->GetString(0x00220002, pszPresetsDialog[1]),
+            pConfig->GetString(0x00220001, pszPresetsDialog[0]),
+            MB_OK | MB_ICONERROR);
     }
 }
 
@@ -558,6 +562,9 @@ void CPresetsDlg::SavePresets(CString szFileXml)
     doc.SetPresets(format.m_Presets);
     if (doc.Save(szFileXml) != true)
     {
-        MessageBox(_T("Failed to save file!"), _T("ERROR"), MB_OK | MB_ICONERROR);
+        MessageBox(
+            pConfig->GetString(0x00220003, pszPresetsDialog[2]),
+            pConfig->GetString(0x00220001, pszPresetsDialog[0]),
+            MB_OK | MB_ICONERROR);
     }
 }
