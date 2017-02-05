@@ -36,6 +36,14 @@ public:
     {
     }
 public:
+    CString GetString(int nKey, const TCHAR* szDefault)
+    {
+        CString rValue;
+        if (this->pConfig->LookupString(nKey, rValue))
+            return rValue;
+        return szDefault;
+    }
+public:
     virtual void Init() = 0;
     virtual void Next(int nItemId) = 0;
     virtual void Done() = 0;
