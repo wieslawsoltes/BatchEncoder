@@ -373,9 +373,15 @@ void CPresetsDlg::OnEnChangeEditPresetOptions()
 
 void CPresetsDlg::OnBnClickedButtonLoadPresets()
 {
+    CString szFilter;
+    szFilter.Format(_T("%s (*.presets)|*.presets|%s (*.xml)|*.xml|%s (*.*)|*.*||"),
+        pConfig->GetString(0x00310004, pszFileDialogs[3]),
+        pConfig->GetString(0x00310002, pszFileDialogs[1]),
+        pConfig->GetString(0x00310001, pszFileDialogs[0]));
+
     CFileDialog fd(TRUE, _T("presets"), _T(""),
         OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER,
-        _T("Presets Files (*.presets)|*.presets|Xml Files (*.xml)|*.xml|All Files|*.*||"), this);
+        szFilter, this);
 
     int nPreset = this->m_CmbFormat.GetCurSel();
 
@@ -388,9 +394,15 @@ void CPresetsDlg::OnBnClickedButtonLoadPresets()
 
 void CPresetsDlg::OnBnClickedButtonSavePresets()
 {
+    CString szFilter;
+    szFilter.Format(_T("%s (*.presets)|*.presets|%s (*.xml)|*.xml|%s (*.*)|*.*||"),
+        pConfig->GetString(0x00310004, pszFileDialogs[3]),
+        pConfig->GetString(0x00310002, pszFileDialogs[1]),
+        pConfig->GetString(0x00310001, pszFileDialogs[0]));
+
     CFileDialog fd(FALSE, _T("presets"), _T("presets"),
         OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER | OFN_OVERWRITEPROMPT,
-        _T("Presets Files (*.presets)|*.presets|Xml Files (*.xml)|*.xml|All Files|*.*||"), this);
+        szFilter, this);
 
     int nPreset = this->m_CmbFormat.GetCurSel();
 

@@ -746,9 +746,15 @@ void CBatchEncoderDlg::OnFileLoadList()
 {
     if (this->pWorkerContext->bRunning == false)
     {
+        CString szFilter;
+        szFilter.Format(_T("%s (*.items)|*.items|%s (*.xml)|*.xml|%s (*.*)|*.*||"),
+            m_Config.GetString(0x00310003, pszFileDialogs[2]),
+            m_Config.GetString(0x00310002, pszFileDialogs[1]),
+            m_Config.GetString(0x00310001, pszFileDialogs[0]));
+
         CFileDialog fd(TRUE, _T("items"), _T(""),
             OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER,
-            _T("Items Files (*.items)|*.items|Xml Files (*.xml)|*.xml|All Files|*.*||"), this);
+            szFilter, this);
 
         if (fd.DoModal() == IDOK)
         {
@@ -765,9 +771,15 @@ void CBatchEncoderDlg::OnFileSaveList()
 {
     if (this->pWorkerContext->bRunning == false)
     {
+        CString szFilter;
+        szFilter.Format(_T("%s (*.items)|*.items|%s (*.xml)|*.xml|%s (*.*)|*.*||"),
+            m_Config.GetString(0x00310003, pszFileDialogs[2]),
+            m_Config.GetString(0x00310002, pszFileDialogs[1]),
+            m_Config.GetString(0x00310001, pszFileDialogs[0]));
+
         CFileDialog fd(FALSE, _T("items"), _T("items"),
             OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER | OFN_OVERWRITEPROMPT,
-            _T("Items Files (*.items)|*.items|Xml Files (*.xml)|*.xml|All Files|*.*||"), this);
+            szFilter, this);
 
         if (fd.DoModal() == IDOK)
         {
@@ -816,12 +828,12 @@ void CBatchEncoderDlg::OnEditAddFiles()
 
             ZeroMemory(pFiles, dwMaxSize);
 
-            // TODO: Get extensions from input formats.
-            CFileDialog fd(TRUE,
-                _T(""),
-                0,
+            CString szFilter;
+            szFilter.Format(_T("%s (*.*)|*.*||"), m_Config.GetString(0x00310001, pszFileDialogs[0]));
+
+            CFileDialog fd(TRUE, _T(""), _T(""),
                 OFN_ALLOWMULTISELECT | OFN_HIDEREADONLY | OFN_ENABLESIZING,
-                _T("All Files (*.*)|*.*||"),
+                szFilter,
                 this);
 
             fd.m_ofn.lpstrFile = pFiles;

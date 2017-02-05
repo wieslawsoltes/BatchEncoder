@@ -520,9 +520,15 @@ void CFormatsDlg::OnEnChangeEditFormatFunction()
 
 void CFormatsDlg::OnBnClickedButtonLoadFormats()
 {
+    CString szFilter;
+    szFilter.Format(_T("%s (*.formats)|*.formats|%s (*.xml)|*.xml|%s (*.*)|*.*||"),
+        pConfig->GetString(0x00310005, pszFileDialogs[4]),
+        pConfig->GetString(0x00310002, pszFileDialogs[1]),
+        pConfig->GetString(0x00310001, pszFileDialogs[0]));
+
     CFileDialog fd(TRUE, _T("formats"), _T(""),
         OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER,
-        _T("Formats Files (*.formats)|*.formats|Xml Files (*.xml)|*.xml|All Files|*.*||"), this);
+        szFilter, this);
 
     if (fd.DoModal() == IDOK)
     {
@@ -533,9 +539,15 @@ void CFormatsDlg::OnBnClickedButtonLoadFormats()
 
 void CFormatsDlg::OnBnClickedButtonSaveFormats()
 {
+    CString szFilter;
+    szFilter.Format(_T("%s (*.formats)|*.formats|%s (*.xml)|*.xml|%s (*.*)|*.*||"),
+        pConfig->GetString(0x00310005, pszFileDialogs[4]),
+        pConfig->GetString(0x00310002, pszFileDialogs[1]),
+        pConfig->GetString(0x00310001, pszFileDialogs[0]));
+
     CFileDialog fd(FALSE, _T("formats"), _T("formats"),
         OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER | OFN_OVERWRITEPROMPT,
-        _T("Formats Files (*.formats)|*.formats|Xml Files (*.xml)|*.xml|All Files|*.*||"), this);
+        szFilter, this);
 
     if (fd.DoModal() == IDOK)
     {
@@ -797,9 +809,14 @@ void CFormatsDlg::SaveFormats(CString szFileXml)
 
 bool CFormatsDlg::BrowseForPath(CString szDefaultFName, CEdit *pEdit, int nID)
 {
+    CString szFilter;
+    szFilter.Format(_T("%s (*.exe)|*.exe|%s (*.*)|*.*||"),
+        pConfig->GetString(0x00310006, pszFileDialogs[5]),
+        pConfig->GetString(0x00310001, pszFileDialogs[0]));
+
     CFileDialog fd(TRUE, _T("exe"), szDefaultFName,
         OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER,
-        _T("Exe Files (*.exe)|*.exe|All Files|*.*||"), this);
+        szFilter, this);
 
     if (fd.DoModal() == IDOK)
     {
@@ -812,9 +829,14 @@ bool CFormatsDlg::BrowseForPath(CString szDefaultFName, CEdit *pEdit, int nID)
 
 bool CFormatsDlg::BrowseForFunction(CString szDefaultFName, CEdit *pEdit, int nID)
 {
+    CString szFilter;
+    szFilter.Format(_T("%s (*.progress)|*.progress|%s (*.*)|*.*||"),
+        pConfig->GetString(0x00310007, pszFileDialogs[6]),
+        pConfig->GetString(0x00310001, pszFileDialogs[0]));
+
     CFileDialog fd(TRUE, _T("progress"), szDefaultFName,
         OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER,
-        _T("Progress Files (*.progress)|*.progress|All Files|*.*||"), this);
+        szFilter, this);
 
     if (fd.DoModal() == IDOK)
     {
