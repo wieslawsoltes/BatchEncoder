@@ -631,7 +631,7 @@ void CFormatsDlg::SetLanguage()
     helper.SetWndText(this, 0x000C0010);
     helper.SetWndText(&m_BtnCancel, 0x000C0011);
     helper.SetItemText(this, IDC_RADIO_TYPE_ENCODER, 0x000C0012);
-    helper.SetItemText(this, IDC_RADIO_TYPE_ENCODER, 0x000C0013);
+    helper.SetItemText(this, IDC_RADIO_TYPE_DECODER, 0x000C0013);
     helper.SetWndText(&m_GrpTypes, 0x000C0014);
     helper.SetItemText(this, IDC_CHECK_FORMAT_PIPES_INPUT, 0x000C0015);
     helper.SetItemText(this, IDC_CHECK_FORMAT_PIPES_OUTPUT, 0x000C0016);
