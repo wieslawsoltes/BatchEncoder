@@ -679,6 +679,8 @@ void CBatchEncoderDlg::OnBnClickedButtonBrowsePath()
         LPITEMIDLIST pidlBrowse;
         TCHAR *lpBuffer;
 
+        CString szTitle = m_Config.GetString(0x00210007, pszMainDialog[6]);
+
         CString szTmp;
         this->m_EdtOutPath.GetWindowText(szTmp);
 
@@ -707,7 +709,7 @@ void CBatchEncoderDlg::OnBnClickedButtonBrowsePath()
         bi.hwndOwner = this->GetSafeHwnd();
         bi.pidlRoot = pidlDesktop;
         bi.pszDisplayName = lpBuffer;
-        bi.lpszTitle = m_Config.GetString(0x00210007, pszMainDialog[6]);
+        bi.lpszTitle = szTitle;
         bi.ulFlags = BIF_STATUSTEXT | BIF_RETURNONLYFSDIRS | BIF_NEWDIALOGSTYLE;
         bi.iImage = 0;
         bi.lpfn = ::BrowseCallbackOutPath;
@@ -884,6 +886,8 @@ void CBatchEncoderDlg::OnEditAddDir()
         LPITEMIDLIST pidlBrowse;
         TCHAR *lpBuffer;
 
+        CString szTitle = m_Config.GetString(0x0021000B, pszMainDialog[10]);
+
         if (SHGetMalloc(&pMalloc) == E_FAIL)
             return;
 
@@ -907,7 +911,7 @@ void CBatchEncoderDlg::OnEditAddDir()
         bi.hwndOwner = this->GetSafeHwnd();
         bi.pidlRoot = pidlDesktop;
         bi.pszDisplayName = lpBuffer;
-        bi.lpszTitle = m_Config.GetString(0x0021000B, pszMainDialog[10]);
+        bi.lpszTitle = szTitle;
         bi.ulFlags = BIF_STATUSTEXT | BIF_RETURNONLYFSDIRS | BIF_NEWDIALOGSTYLE;
         bi.iImage = 0;
         bi.lpfn = ::BrowseCallbackAddDir;
