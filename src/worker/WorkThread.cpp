@@ -8,8 +8,60 @@
 #include "..\Configuration.h"
 #include "WorkThread.h"
 
+const TCHAR* pszDefaulTime = _T("--:--");
+
+const TCHAR* pszProgresssLoop[] =
+{
+    /* 00 */ _T("Error: can not load GetProgress function library dll."),
+    /* 01 */ _T("Error: can not get GetProgress function address."),
+    /* 02 */ _T("Error: console line is too large for read buffer.")
+};
+
+const TCHAR* pszConvertConsole[] =
+{
+    /* 00 */ _T("Error: invalid format pipe configuration."),
+    /* 01 */ _T("Error: can not create pipes for stderr."),
+    /* 02 */ _T("Error: can not duplicate stderr pipe to prevent child process from closing the pipe."),
+    /* 03 */ _T("Error: can not create command-line process (%d)."),
+    /* 04 */ _T("Error: progress did not reach 100%."),
+    /* 05 */ _T("Done")
+};
+
+const TCHAR* pszConvertPipes[] =
+{
+    /* 00 */ _T("Error: invalid format pipe configuration."),
+    /* 01 */ _T("Error: can not create pipes for stdin."),
+    /* 02 */ _T("Error: can not set stdin pipe inherit flag."),
+    /* 03 */ _T("Error: can not create pipes for stdout."),
+    /* 04 */ _T("Error: can not set stdout pipe inherit flag."),
+    /* 05 */ _T("Error: can not create command-line process (%d)."),
+    /* 06 */ _T("Error: can not create read thread."),
+    /* 07 */ _T("Error: can not create write thread."),
+    /* 08 */ _T("Error: progress did not reach 100%."),
+    /* 09 */ _T("Done")
+};
+
+const TCHAR* pszConvertItem[] =
+{
+    /* 00 */ _T("Error: can not find input file."),
+    /* 01 */ _T("Error: can not find valid encoder by id."),
+    /* 02 */ _T("Error: can not find encoder format preset."),
+    /* 03 */ _T("Error: can not find valid decoder by extension."),
+    /* 04 */ _T("Error: can not find decoder format preset."),
+    /* 05 */ _T("Error: decoder output not supported by encoder."),
+    /* 06 */ _T("Decoding..."),
+    /* 07 */ _T("Error: can not find decoded file."),
+    /* 08 */ _T("Error: exception thrown while converting file."),
+    /* 09 */ _T("Encoding..."),
+    /* 10 */ _T("Decoding..."),
+    /* 11 */ _T("Processing..."),
+    /* 12 */ _T("Error: can not find encoded file."),
+    /* 13 */ _T("Error: exception thrown while converting file.")
+};
+
 bool ProgresssLoop(CFileContext* pContext, CProcessContext &processContext, int &nProgress)
 {
+    CWorkerContext *pWorkerContext = pContext->pWorkerContext;
     const int nBuffSize = 4096;
     char szReadBuff[nBuffSize];
     char szLineBuff[nBuffSize];
@@ -25,16 +77,16 @@ bool ProgresssLoop(CFileContext* pContext, CProcessContext &processContext, int 
     HMODULE hDll = ::LoadLibrary(pContext->szFunction);
     if (hDll == NULL)
     {
-        pContext->pWorkerContext->Status(pContext->nItemId, _T("--:--"), _T("Error: can not load GetProgress function library dll."));
-        pContext->pWorkerContext->Callback(pContext->nItemId, -1, true, true);
+        pWorkerContext->Status(pContext->nItemId, pszDefaulTime, pWorkerContext->GetString(0x00110001, pszProgresssLoop[0]));
+        pWorkerContext->Callback(pContext->nItemId, -1, true, true);
         return false; // ERROR
     }
 
     GetProgressFunc *pGetProgress = (GetProgressFunc*) ::GetProcAddress(hDll, "GetProgress");
     if (pGetProgress == NULL)
     {
-        pContext->pWorkerContext->Status(pContext->nItemId, _T("--:--"), _T("Error: can not get GetProgress function address."));
-        pContext->pWorkerContext->Callback(pContext->nItemId, -1, true, true);
+        pWorkerContext->Status(pContext->nItemId, pszDefaulTime, pWorkerContext->GetString(0x00110002, pszProgresssLoop[1]));
+        pWorkerContext->Callback(pContext->nItemId, -1, true, true);
         return false; // ERROR
     }
 
@@ -88,8 +140,8 @@ bool ProgresssLoop(CFileContext* pContext, CProcessContext &processContext, int 
                 nLineLen++;
                 if (nLineLen > nBuffSize)
                 {
-                    pContext->pWorkerContext->Status(pContext->nItemId, _T("--:--"), _T("Error: console line is too large for read buffer."));
-                    pContext->pWorkerContext->Callback(pContext->nItemId, -1, true, true);
+                    pWorkerContext->Status(pContext->nItemId, pszDefaulTime, pWorkerContext->GetString(0x00110003, pszProgresssLoop[2]));
+                    pWorkerContext->Callback(pContext->nItemId, -1, true, true);
                     return false;
                 }
 
@@ -110,7 +162,7 @@ bool ProgresssLoop(CFileContext* pContext, CProcessContext &processContext, int 
 
                     if (nProgress != nPreviousProgress)
                     {
-                        bRunning = pContext->pWorkerContext->Callback(pContext->nItemId, nProgress, false);
+                        bRunning = pWorkerContext->Callback(pContext->nItemId, nProgress, false);
                         nPreviousProgress = nProgress;
                     }
 
@@ -139,10 +191,12 @@ bool ProgresssLoop(CFileContext* pContext, CProcessContext &processContext, int 
 
 bool ConvertFileUsingConsole(CFileContext* pContext)
 {
+    CWorkerContext *pWorkerContext = pContext->pWorkerContext;
+
     if ((pContext->bUseReadPipes == true) || (pContext->bUseWritePipes == true))
     {
-        pContext->pWorkerContext->Status(pContext->nItemId, _T("--:--"), _T("Error: invalid format pipe configuration."));
-        pContext->pWorkerContext->Callback(pContext->nItemId, -1, true, true);
+        pWorkerContext->Status(pContext->nItemId, pszDefaulTime, pWorkerContext->GetString(0x00120001, pszConvertConsole[0]));
+        pWorkerContext->Callback(pContext->nItemId, -1, true, true);
         return false;
     }
 
@@ -153,16 +207,16 @@ bool ConvertFileUsingConsole(CFileContext* pContext)
     // create pipes for stderr
     if (processContext.CreateStderrPipe() == false)
     {
-        pContext->pWorkerContext->Status(pContext->nItemId, _T("--:--"), _T("Error: can not create pipes for stderr."));
-        pContext->pWorkerContext->Callback(pContext->nItemId, -1, true, true);
+        pWorkerContext->Status(pContext->nItemId, pszDefaulTime, pWorkerContext->GetString(0x00120002, pszConvertConsole[1]));
+        pWorkerContext->Callback(pContext->nItemId, -1, true, true);
         return false;
     }
 
     // duplicate stderr read pipe handle to prevent child process from closing the pipe
     if (processContext.DuplicateStderrReadPipe() == false)
     {
-        pContext->pWorkerContext->Status(pContext->nItemId, _T("--:--"), _T("Error: can not duplicate stderr pipe to prevent child process from closing the pipe."));
-        pContext->pWorkerContext->Callback(pContext->nItemId, -1, true, true);
+        pWorkerContext->Status(pContext->nItemId, pszDefaulTime, pWorkerContext->GetString(0x00120003, pszConvertConsole[2]));
+        pWorkerContext->Callback(pContext->nItemId, -1, true, true);
         return false;
     }
 
@@ -180,17 +234,17 @@ bool ConvertFileUsingConsole(CFileContext* pContext)
         processContext.CloseStderrWritePipe();
 
         CString szStatus;
-        szStatus.Format(_T("Error: can not create command-line process (%d)."), ::GetLastError());
+        szStatus.Format(pWorkerContext->GetString(0x00120004, pszConvertConsole[3]), ::GetLastError());
 
-        pContext->pWorkerContext->Status(pContext->nItemId, _T("--:--"), szStatus);
-        pContext->pWorkerContext->Callback(pContext->nItemId, -1, true, true);
+        pWorkerContext->Status(pContext->nItemId, pszDefaulTime, szStatus);
+        pWorkerContext->Callback(pContext->nItemId, -1, true, true);
         return false;
     }
 
     // close unused pipe handle
     processContext.CloseStderrWritePipe();
 
-    // console progresss loop
+    // console progress loop
     if (ProgresssLoop(pContext, processContext, nProgress) == false)
     {
         timer.Stop();
@@ -205,14 +259,14 @@ bool ConvertFileUsingConsole(CFileContext* pContext)
 
     if (nProgress != 100)
     {
-        pContext->pWorkerContext->Status(pContext->nItemId, _T("--:--"), _T("Error: progress did not reach 100%."));
-        pContext->pWorkerContext->Callback(pContext->nItemId, -1, true, true);
+        pWorkerContext->Status(pContext->nItemId, pszDefaulTime, pWorkerContext->GetString(0x00120005, pszConvertConsole[4]));
+        pWorkerContext->Callback(pContext->nItemId, -1, true, true);
         return false;
     }
     else
     {
-        pContext->pWorkerContext->Status(pContext->nItemId, timer.Format(timer.ElapsedTime(), 1), _T("Done"));
-        pContext->pWorkerContext->Callback(pContext->nItemId, 100, true, false);
+        pWorkerContext->Status(pContext->nItemId, timer.Format(timer.ElapsedTime(), 1), pWorkerContext->GetString(0x00120006, pszConvertConsole[5]));
+        pWorkerContext->Callback(pContext->nItemId, 100, true, false);
         return true;
     }
 }
@@ -388,10 +442,12 @@ DWORD WINAPI WriteThread(LPVOID lpParam)
 
 bool ConvertFileUsingPipes(CFileContext* pContext)
 {
+    CWorkerContext *pWorkerContext = pContext->pWorkerContext;
+
     if ((pContext->bUseReadPipes == false) && (pContext->bUseWritePipes == false))
     {
-        pContext->pWorkerContext->Status(pContext->nItemId, _T("--:--"), _T("Error: invalid format pipe configuration."));
-        pContext->pWorkerContext->Callback(pContext->nItemId, -1, true, true);
+        pWorkerContext->Status(pContext->nItemId, pszDefaulTime, pWorkerContext->GetString(0x00130001, pszConvertPipes[0]));
+        pWorkerContext->Callback(pContext->nItemId, -1, true, true);
         return false;
     }
 
@@ -411,16 +467,16 @@ bool ConvertFileUsingPipes(CFileContext* pContext)
         // create pipes for stdin
         if (processContext.CreateStdinPipe() == false)
         {
-            pContext->pWorkerContext->Status(pContext->nItemId, _T("--:--"), _T("Error: can not create pipes for stdin."));
-            pContext->pWorkerContext->Callback(pContext->nItemId, -1, true, true);
+            pWorkerContext->Status(pContext->nItemId, pszDefaulTime, pWorkerContext->GetString(0x00130002, pszConvertPipes[1]));
+            pWorkerContext->Callback(pContext->nItemId, -1, true, true);
             return false;
         }
 
         // set stdin write pipe inherit flag
         if (processContext.InheritStdinWritePipe() == false)
         {
-            pContext->pWorkerContext->Status(pContext->nItemId, _T("--:--"), _T("Error: can not set stdin pipe inherit flag."));
-            pContext->pWorkerContext->Callback(pContext->nItemId, -1, true, true);
+            pWorkerContext->Status(pContext->nItemId, pszDefaulTime, pWorkerContext->GetString(0x00130003, pszConvertPipes[2]));
+            pWorkerContext->Callback(pContext->nItemId, -1, true, true);
             return false;
         }
     }
@@ -436,8 +492,8 @@ bool ConvertFileUsingPipes(CFileContext* pContext)
                 processContext.CloseStdinWritePipe();
             }
 
-            pContext->pWorkerContext->Status(pContext->nItemId, _T("--:--"), _T("Error: can not create pipes for stdout."));
-            pContext->pWorkerContext->Callback(pContext->nItemId, -1, true, true);
+            pWorkerContext->Status(pContext->nItemId, pszDefaulTime, pWorkerContext->GetString(0x00130004, pszConvertPipes[3]));
+            pWorkerContext->Callback(pContext->nItemId, -1, true, true);
             return false;
         }
 
@@ -453,8 +509,8 @@ bool ConvertFileUsingPipes(CFileContext* pContext)
             processContext.CloseStdoutReadPipe();
             processContext.CloseStdoutWritePipe();
 
-            pContext->pWorkerContext->Status(pContext->nItemId, _T("--:--"), _T("Error: can not set stdout pipe inherit flag."));
-            pContext->pWorkerContext->Callback(pContext->nItemId, -1, true, true);
+            pWorkerContext->Status(pContext->nItemId, pszDefaulTime, pWorkerContext->GetString(0x00130005, pszConvertPipes[4]));
+            pWorkerContext->Callback(pContext->nItemId, -1, true, true);
             return false;
         }
     }
@@ -497,10 +553,10 @@ bool ConvertFileUsingPipes(CFileContext* pContext)
         }
 
         CString szStatus;
-        szStatus.Format(_T("Error: can not create command-line process (%d)."), ::GetLastError());
+        szStatus.Format(pWorkerContext->GetString(0x00130006, pszConvertPipes[5]), ::GetLastError());
 
-        pContext->pWorkerContext->Status(pContext->nItemId, _T("--:--"), szStatus);
-        pContext->pWorkerContext->Callback(pContext->nItemId, -1, true, true);
+        pWorkerContext->Status(pContext->nItemId, pszDefaulTime, szStatus);
+        pWorkerContext->Callback(pContext->nItemId, -1, true, true);
         return false;
     }
 
@@ -516,7 +572,7 @@ bool ConvertFileUsingPipes(CFileContext* pContext)
     {
         readContext.bError = false;
         readContext.bFinished = false;
-        readContext.pWorkerContext = pContext->pWorkerContext;
+        readContext.pWorkerContext = pWorkerContext;
         readContext.szFileName = pContext->szInputFile;
         readContext.hPipe = processContext.hWritePipeStdin;
         readContext.nIndex = pContext->nItemId;
@@ -529,8 +585,8 @@ bool ConvertFileUsingPipes(CFileContext* pContext)
 
             processContext.CloseStdinWritePipe();
 
-            pContext->pWorkerContext->Status(pContext->nItemId, _T("--:--"), _T("Error: can not create read thread."));
-            pContext->pWorkerContext->Callback(pContext->nItemId, -1, true, true);
+            pWorkerContext->Status(pContext->nItemId, pszDefaulTime, pWorkerContext->GetString(0x00130007, pszConvertPipes[6]));
+            pWorkerContext->Callback(pContext->nItemId, -1, true, true);
             return false;
         }
 
@@ -558,7 +614,7 @@ bool ConvertFileUsingPipes(CFileContext* pContext)
     {
         writeContext.bError = false;
         writeContext.bFinished = false;
-        writeContext.pWorkerContext = pContext->pWorkerContext;
+        writeContext.pWorkerContext = pWorkerContext;
         writeContext.szFileName = pContext->szOutputFile;
         writeContext.hPipe = processContext.hReadPipeStdout;
         writeContext.nIndex = pContext->nItemId;
@@ -571,8 +627,8 @@ bool ConvertFileUsingPipes(CFileContext* pContext)
 
             processContext.CloseStdoutReadPipe();
 
-            pContext->pWorkerContext->Status(pContext->nItemId, _T("--:--"), _T("Error: can not create write thread."));
-            pContext->pWorkerContext->Callback(pContext->nItemId, -1, true, true);
+            pWorkerContext->Status(pContext->nItemId, pszDefaulTime, pWorkerContext->GetString(0x00130008, pszConvertPipes[7]));
+            pWorkerContext->Callback(pContext->nItemId, -1, true, true);
             return false;
         }
 
@@ -622,14 +678,14 @@ bool ConvertFileUsingPipes(CFileContext* pContext)
 
     if (nProgress != 100)
     {
-        pContext->pWorkerContext->Status(pContext->nItemId, _T("--:--"), _T("Error: progress did not reach 100%."));
-        pContext->pWorkerContext->Callback(pContext->nItemId, -1, true, true);
+        pWorkerContext->Status(pContext->nItemId, pszDefaulTime, pWorkerContext->GetString(0x00130009, pszConvertPipes[8]));
+        pWorkerContext->Callback(pContext->nItemId, -1, true, true);
         return false;
     }
     else
     {
-        pContext->pWorkerContext->Status(pContext->nItemId, timer.Format(timer.ElapsedTime(), 1), _T("Done"));
-        pContext->pWorkerContext->Callback(pContext->nItemId, 100, true, false);
+        pWorkerContext->Status(pContext->nItemId, timer.Format(timer.ElapsedTime(), 1), pWorkerContext->GetString(0x0013000A, pszConvertPipes[9]));
+        pWorkerContext->Callback(pContext->nItemId, 100, true, false);
         return true;
     }
 }
@@ -654,21 +710,23 @@ bool FileExists(CString szPath)
 
 bool ConvertItem(CItemContext* pContext, ConvertFileFunc *pConvertFile)
 {
+    CWorkerContext *pWorkerContext = pContext->pWorkerContext;
+
     // input file
     CString szInputFile = pContext->item->szPath;
 
     // validate input file
     if (FileExists(szInputFile) == false)
     {
-        pContext->pWorkerContext->Status(pContext->item->nId, _T("--:--"), _T("Error: can not find input file."));
+        pWorkerContext->Status(pContext->item->nId, pszDefaulTime, pWorkerContext->GetString(0x00140001, pszConvertItem[0]));
         return false;
     }
 
     // output path
     CString szOutPath;
-    if (pContext->pWorkerContext->pConfig->m_Options.bOutputPathChecked == true)
+    if (pWorkerContext->pConfig->m_Options.bOutputPathChecked == true)
     {
-        szOutPath = pContext->pWorkerContext->pConfig->m_Options.szOutputPath;
+        szOutPath = pWorkerContext->pConfig->m_Options.szOutputPath;
     }
     else
     {
@@ -678,19 +736,19 @@ bool ConvertItem(CItemContext* pContext, ConvertFileFunc *pConvertFile)
     }
 
     // find encoder
-    int nEncoder = pContext->pWorkerContext->pConfig->m_Formats.GetFormatById(pContext->item->szFormatId);
+    int nEncoder = pWorkerContext->pConfig->m_Formats.GetFormatById(pContext->item->szFormatId);
     if (nEncoder == -1)
     {
-        pContext->pWorkerContext->Status(pContext->item->nId, _T("--:--"), _T("Error: can not find valid encoder by id."));
+        pWorkerContext->Status(pContext->item->nId, pszDefaulTime, pWorkerContext->GetString(0x00140002, pszConvertItem[1]));
         return false;
     }
 
-    CFormat& encoderFormat = pContext->pWorkerContext->pConfig->m_Formats.GetData(nEncoder);
+    CFormat& encoderFormat = pWorkerContext->pConfig->m_Formats.GetData(nEncoder);
 
     // validate encoder preset
     if (pContext->item->nPreset >= encoderFormat.m_Presets.GetSize())
     {
-        pContext->pWorkerContext->Status(pContext->item->nId, _T("--:--"), _T("Error: can not find encoder format preset."));
+        pWorkerContext->Status(pContext->item->nId, pszDefaulTime, pWorkerContext->GetString(0x00140003, pszConvertItem[2]));
         return false;
     }
 
@@ -727,19 +785,19 @@ bool ConvertItem(CItemContext* pContext, ConvertFileFunc *pConvertFile)
     if (nProcessingMode == Mode::Transcode)
     {
         // find decoder
-        int nDecoder = pContext->pWorkerContext->pConfig->m_Formats.GetDecoderByExtension(pContext->item->szExtension);
+        int nDecoder = pWorkerContext->pConfig->m_Formats.GetDecoderByExtension(pContext->item->szExtension);
         if (nDecoder == -1)
         {
-            pContext->pWorkerContext->Status(pContext->item->nId, _T("--:--"), _T("Error: can not find valid decoder by extension."));
+            pWorkerContext->Status(pContext->item->nId, pszDefaulTime, pWorkerContext->GetString(0x00140004, pszConvertItem[3]));
             return false;
         }
 
-        CFormat& decoderFormat = pContext->pWorkerContext->pConfig->m_Formats.GetData(nDecoder);
+        CFormat& decoderFormat = pWorkerContext->pConfig->m_Formats.GetData(nDecoder);
 
         // validate decoder preset
         if (decoderFormat.nDefaultPreset >= decoderFormat.m_Presets.GetSize())
         {
-            pContext->pWorkerContext->Status(pContext->item->nId, _T("--:--"), _T("Error: can not find decoder format preset."));
+            pWorkerContext->Status(pContext->item->nId, pszDefaulTime, pWorkerContext->GetString(0x00140005, pszConvertItem[4]));
             return false;
         }
 
@@ -747,18 +805,18 @@ bool ConvertItem(CItemContext* pContext, ConvertFileFunc *pConvertFile)
         bIsValidEncoderInput = encoderFormat.IsValidInputExtension(decoderFormat.szOutputExtension);
         if (bIsValidEncoderInput == false)
         {
-            pContext->pWorkerContext->Status(pContext->item->nId, _T("--:--"), _T("Error: decoder output not supported by encoder."));
+            pWorkerContext->Status(pContext->item->nId, pszDefaulTime, pWorkerContext->GetString(0x00140006, pszConvertItem[5]));
             return false;
         }
 
         CString szDecoderExtension = decoderFormat.szOutputExtension;
         szOutputFile = szOutputFile + +_T(".") + szDecoderExtension.MakeLower();
 
-        pContext->pWorkerContext->Status(pContext->item->nId, _T("--:--"), _T("Decoding..."));
+        pWorkerContext->Status(pContext->item->nId, pszDefaulTime, pWorkerContext->GetString(0x00140007, pszConvertItem[6]));
         try
         {
             CFileContext context(
-                pContext->pWorkerContext,
+                pWorkerContext,
                 decoderFormat,
                 decoderFormat.nDefaultPreset,
                 pContext->item->nId,
@@ -766,7 +824,7 @@ bool ConvertItem(CItemContext* pContext, ConvertFileFunc *pConvertFile)
                 szOutputFile);
             if ((pConvertFile)(&context) == false)
             {
-                if (pContext->pWorkerContext->pConfig->m_Options.bDeleteOnErrors == true)
+                if (pWorkerContext->pConfig->m_Options.bDeleteOnErrors == true)
                     ::DeleteFile(szOutputFile);
 
                 return false;
@@ -775,21 +833,21 @@ bool ConvertItem(CItemContext* pContext, ConvertFileFunc *pConvertFile)
             // validate decoded file
             if (FileExists(szOutputFile) == false)
             {
-                pContext->pWorkerContext->Status(pContext->item->nId, _T("--:--"), _T("Error: can not find decoded file."));
+                pWorkerContext->Status(pContext->item->nId, pszDefaulTime, pWorkerContext->GetString(0x00140008, pszConvertItem[7]));
                 return false;
             }
         }
         catch (...)
         {
-            if (pContext->pWorkerContext->pConfig->m_Options.bDeleteOnErrors == true)
+            if (pWorkerContext->pConfig->m_Options.bDeleteOnErrors == true)
                 ::DeleteFile(szOutputFile);
 
-            pContext->pWorkerContext->Status(pContext->item->nId, _T("--:--"), _T("Error: exception thrown while converting file."));
-            pContext->pWorkerContext->Callback(pContext->item->nId, -1, true, true);
+            pWorkerContext->Status(pContext->item->nId, pszDefaulTime, pWorkerContext->GetString(0x00140009, pszConvertItem[8]));
+            pWorkerContext->Callback(pContext->item->nId, -1, true, true);
         }
     }
 
-    if (pContext->pWorkerContext->bRunning == false)
+    if (pWorkerContext->bRunning == false)
         return false;
 
     if (nProcessingMode == Mode::Transcode)
@@ -804,16 +862,16 @@ bool ConvertItem(CItemContext* pContext, ConvertFileFunc *pConvertFile)
     if ((nProcessingMode == Mode::Encode) || (nProcessingMode == Mode::Transcode))
     {
         if (encoderFormat.nType == 0)
-            pContext->pWorkerContext->Status(pContext->item->nId, _T("--:--"), _T("Encoding..."));
+            pWorkerContext->Status(pContext->item->nId, pszDefaulTime, pWorkerContext->GetString(0x0014000A, pszConvertItem[9]));
         else if (encoderFormat.nType == 1)
-            pContext->pWorkerContext->Status(pContext->item->nId, _T("--:--"), _T("Decoding..."));
+            pWorkerContext->Status(pContext->item->nId, pszDefaulTime, pWorkerContext->GetString(0x0014000B, pszConvertItem[10]));
         else
-            pContext->pWorkerContext->Status(pContext->item->nId, _T("--:--"), _T("Processing..."));
+            pWorkerContext->Status(pContext->item->nId, pszDefaulTime, pWorkerContext->GetString(0x0014000C, pszConvertItem[11]));
 
         try
         {
             CFileContext context(
-                pContext->pWorkerContext,
+                pWorkerContext,
                 encoderFormat,
                 pContext->item->nPreset,
                 pContext->item->nId,
@@ -826,18 +884,18 @@ bool ConvertItem(CItemContext* pContext, ConvertFileFunc *pConvertFile)
                 {
                     if (nProcessingMode == Mode::Transcode)
                     {
-                        if (pContext->pWorkerContext->pConfig->m_Options.bDeleteOnErrors == true)
+                        if (pWorkerContext->pConfig->m_Options.bDeleteOnErrors == true)
                             ::DeleteFile(szInputFile);
                     }
 
-                    pContext->pWorkerContext->Status(pContext->item->nId, _T("--:--"), _T("Error: can not find encoded file."));
+                    pWorkerContext->Status(pContext->item->nId, pszDefaulTime, pWorkerContext->GetString(0x0014000D, pszConvertItem[12]));
                     return false;
                 }
 
                 if (nProcessingMode == Mode::Transcode)
                     ::DeleteFile(szInputFile);
 
-                if (pContext->pWorkerContext->pConfig->m_Options.bDeleteSourceFiles == true)
+                if (pWorkerContext->pConfig->m_Options.bDeleteSourceFiles == true)
                     ::DeleteFile(szOrgInputFile);
 
                 return true;
@@ -847,7 +905,7 @@ bool ConvertItem(CItemContext* pContext, ConvertFileFunc *pConvertFile)
                 if (nProcessingMode == Mode::Transcode)
                     ::DeleteFile(szInputFile);
 
-                if (pContext->pWorkerContext->pConfig->m_Options.bDeleteOnErrors == true)
+                if (pWorkerContext->pConfig->m_Options.bDeleteOnErrors == true)
                     ::DeleteFile(szOutputFile);
 
                 return false;
@@ -858,11 +916,11 @@ bool ConvertItem(CItemContext* pContext, ConvertFileFunc *pConvertFile)
             if (nProcessingMode == Mode::Transcode)
                 ::DeleteFile(szInputFile);
 
-            if (pContext->pWorkerContext->pConfig->m_Options.bDeleteOnErrors == true)
+            if (pWorkerContext->pConfig->m_Options.bDeleteOnErrors == true)
                 ::DeleteFile(szOutputFile);
 
-            pContext->pWorkerContext->Status(pContext->item->nId, _T("--:--"), _T("Error: exception thrown while converting file."));
-            pContext->pWorkerContext->Callback(pContext->item->nId, -1, true, true);
+            pWorkerContext->Status(pContext->item->nId, pszDefaulTime, pWorkerContext->GetString(0x0014000E, pszConvertItem[13]));
+            pWorkerContext->Callback(pContext->item->nId, -1, true, true);
         }
     }
 
