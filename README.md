@@ -126,30 +126,30 @@ For more information about tools please see the [wiki page](https://github.com/w
 
 There is also available PowerShell [download script](https://github.com/wieslawsoltes/BatchEncoder/blob/master/scripts/download.ps1) for all supported tools.
 
-| Name            | Downloads                                                                                          |
-|-----------------|----------------------------------------------------------------------------------------------------|
-| SSRC            | http://shibatch.sourceforge.net/                                                                   |
-| LAME            | http://rarewares.org/mp3-lame-bundle.php                                                           |
-| MPPENC          | https://musepack.net/index.php?pg=win                                                              |
-| MPCDEC          | https://musepack.net/index.php?pg=win                                                              |
-| FAAC            | http://rarewares.org/aac-encoders.php                                                              |
-| FAAD            | http://rarewares.org/aac-decoders.php                                                              |
-| OPUSENC         | https://sourceforge.net/projects/muldersoft/files/Opus%20Tools/                                    |
-| OPUSDEC         | https://sourceforge.net/projects/muldersoft/files/Opus%20Tools/                                    |
-| OGGENC          | http://rarewares.org/ogg-oggenc.php                                                                |
-| OGGDEC          | http://rarewares.org/ogg-oggdec.php                                                                |
-| AFTEN           | https://github.com/wieslawsoltes/wavtoac3encoder/releases                                          |
-| FLAC            | https://xiph.org/flac/download.html                                                                |
-| WAVPACK         | http://www.wavpack.com/downloads.html                                                              |
-| WVUNPACK        | http://www.wavpack.com/downloads.html                                                              |
-| QAAC            | https://sites.google.com/site/qaacpage/cabinet                                                     |
-| MAC             | http://www.monkeysaudio.com/download.html                                                          |
-| OFR             | http://losslessaudio.org/Downloads.php                                                             |
-| TTA             | https://sourceforge.net/projects/tta/files/tta/ttaenc-win/                                         |
-| TAKC            | http://www.thbeck.de/Tak/Tak.html                                                                  |
-| NEROAACENC      | http://www.videohelp.com/software/Nero-AAC-Codec                                                   |
-| NEROAACDEC      | http://www.videohelp.com/software/Nero-AAC-Codec                                                   |
-| FFMPEG          | https://ffmpeg.zeranoe.com/builds/                                                                 |
+| Name            | Downloads                                                                                                                           |
+|-----------------|-------------------------------------------------------------------------------------------------------------------------------------|
+| SSRC            | [http://shibatch.sourceforge.net/](http://shibatch.sourceforge.net/)                                                                |
+| LAME            | [http://rarewares.org/mp3-lame-bundle.php](http://rarewares.org/mp3-lame-bundle.php)                                                |
+| MPPENC          | [https://musepack.net/index.php?pg=win](https://musepack.net/index.php?pg=win)                                                      |
+| MPCDEC          | [https://musepack.net/index.php?pg=win](https://musepack.net/index.php?pg=win)                                                      |
+| FAAC            | [http://rarewares.org/aac-encoders.php](http://rarewares.org/aac-encoders.php)                                                      |
+| FAAD            | [http://rarewares.org/aac-decoders.php](http://rarewares.org/aac-decoders.php)                                                      |
+| OPUSENC         | [https://sourceforge.net/projects/muldersoft/files/Opus%20Tools/](https://sourceforge.net/projects/muldersoft/files/Opus%20Tools/)  |
+| OPUSDEC         | [https://sourceforge.net/projects/muldersoft/files/Opus%20Tools/](https://sourceforge.net/projects/muldersoft/files/Opus%20Tools/)  |
+| OGGENC          | [http://rarewares.org/ogg-oggenc.php](http://rarewares.org/ogg-oggenc.php)                                                          |
+| OGGDEC          | [http://rarewares.org/ogg-oggdec.php](http://rarewares.org/ogg-oggdec.php)                                                          |
+| AFTEN           | [https://github.com/wieslawsoltes/wavtoac3encoder/releases](https://github.com/wieslawsoltes/wavtoac3encoder/releases)              |
+| FLAC            | [https://xiph.org/flac/download.html](https://xiph.org/flac/download.html)                                                          |
+| WAVPACK         | [http://www.wavpack.com/downloads.html](http://www.wavpack.com/downloads.html)                                                      |
+| WVUNPACK        | [http://www.wavpack.com/downloads.html](http://www.wavpack.com/downloads.html)                                                      |
+| QAAC            | [https://sites.google.com/site/qaacpage/cabinet](https://sites.google.com/site/qaacpage/cabinet)                                    |
+| MAC             | [http://www.monkeysaudio.com/download.html](http://www.monkeysaudio.com/download.html)                                              |
+| OFR             | [http://losslessaudio.org/Downloads.php](http://losslessaudio.org/Downloads.php)                                                    |
+| TTA             | [https://sourceforge.net/projects/tta/files/tta/ttaenc-win/](https://sourceforge.net/projects/tta/files/tta/ttaenc-win/)            |
+| TAKC            | [http://www.thbeck.de/Tak/Tak.html](http://www.thbeck.de/Tak/Tak.html)                                                              |
+| NEROAACENC      | [http://www.videohelp.com/software/Nero-AAC-Codec](http://www.videohelp.com/software/Nero-AAC-Codec)                                |
+| NEROAACDEC      | [http://www.videohelp.com/software/Nero-AAC-Codec](http://www.videohelp.com/software/Nero-AAC-Codec)                                |
+| FFMPEG          | [https://ffmpeg.zeranoe.com/builds/](https://ffmpeg.zeranoe.com/builds/)                                                            |
 
 ## System requirements
 
@@ -181,7 +181,7 @@ Use only UTF-8 compatible text editors (e.g. Notepad) to edit xml configuration 
 
 ### Default configuration files
 
-https://github.com/wieslawsoltes/BatchEncoder/tree/master/config
+The default configuration files can be found [here](https://github.com/wieslawsoltes/BatchEncoder/tree/master/config).
 
 ## Translations
 
@@ -195,7 +195,7 @@ Language files have to be placed in the same directory as the `BatchEncoder.exe`
 
 ### Default language files
 
-https://github.com/wieslawsoltes/BatchEncoder/tree/master/lang
+The default language files can be found [here](https://github.com/wieslawsoltes/BatchEncoder/tree/master/lang).
 
 ## Format specification
 
@@ -257,7 +257,7 @@ Sometimes you will not get nice progress during conversion, nonetheless you will
 
 Progress function are compiled windows DLL libraries with exported `GetProgress` function as `C` api. The `progress` file extension is used instead of `dll`.
 
-The progress function `C` signature:
+The progress function C signature:
 
 ```
 int GetProgress(char *szLineBuff, int nLineLen);
@@ -276,13 +276,11 @@ For a quick start use [GetProgress_Null](https://github.com/wieslawsoltes/BatchE
 
 ### Default progress functions
 
-https://github.com/wieslawsoltes/BatchEncoder/tree/master/src/progress
+The default progress functions sources can be found [here](https://github.com/wieslawsoltes/BatchEncoder/tree/master/src/progress).
 
 ## BatchEncoder Sources
 
-Source code is available in the Git source code repository.
-
-https://github.com/wieslawsoltes/BatchEncoder
+Sources are available in the [git source code repository](https://github.com/wieslawsoltes/BatchEncoder.git).
 
 ## Building BatchEncoder
 
@@ -290,7 +288,7 @@ To build program from sources you will need the following components:
 
 ### Microsoft Visual Studio 2015
 
-Build `BatchEncoder.sln` solution with [Visual Studio 2015](https://www.visualstudio.com).
+For building `BatchEncoder.sln` solution use [Visual Studio 2015](https://www.visualstudio.com).
 
 ### Windows 7 SDK
 
