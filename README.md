@@ -263,7 +263,7 @@ int GetProgress(char *szLineBuff, int nLineLen);
 ```
 
 The example of the progress function export definition:
-```
+```DEF
 LIBRARY GetProgress.dll
 EXPORTS
 
