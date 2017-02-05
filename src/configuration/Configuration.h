@@ -52,4 +52,12 @@ public:
         }
         return false;
     }
+public:
+    CString GetString(int nKey, const TCHAR* szDefault)
+    {
+        CString rValue;
+        if (this->LookupString(nKey, rValue))
+            return rValue;
+        return szDefault;
+    }
 };
