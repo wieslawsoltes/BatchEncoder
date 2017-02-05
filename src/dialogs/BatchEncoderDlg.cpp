@@ -3,6 +3,7 @@
 
 #include "StdAfx.h"
 #include "..\BatchEncoder.h"
+#include "..\Strings.h"
 #include "..\configuration\LanguageHelper.h"
 #include "..\utilities\Utilities.h"
 #include "..\XmlConfiguration.h"
@@ -57,6 +58,8 @@ int CALLBACK BrowseCallbackAddDir(HWND hWnd, UINT uMsg, LPARAM lp, LPARAM pData)
 {
     if (uMsg == BFFM_INITIALIZED)
     {
+        CBatchEncoderDlg* pDlg = (CBatchEncoderDlg*)pData;
+
         HWND hWndTitle = NULL;
         HFONT hFont;
         RECT rc, rcTitle, rcTree, rcWnd;
@@ -76,7 +79,7 @@ int CALLBACK BrowseCallbackAddDir(HWND hWnd, UINT uMsg, LPARAM lp, LPARAM pData)
 
         hWndBtnRecurse = ::CreateWindowEx(0,
             _T("BUTTON"),
-            _T("Recurse subdirectories"),
+            pDlg->m_Config.GetString(0x00210005, pszMainDialog[4]),
             BS_CHECKBOX | BS_AUTOCHECKBOX | WS_CHILD | WS_TABSTOP | WS_VISIBLE,
             rc.left, rc.top,
             rc.right - rc.left, rc.bottom - rc.top,
@@ -112,6 +115,8 @@ int CALLBACK BrowseCallbackOutPath(HWND hWnd, UINT uMsg, LPARAM lp, LPARAM pData
 {
     if (uMsg == BFFM_INITIALIZED)
     {
+        CBatchEncoderDlg* pDlg = (CBatchEncoderDlg*)pData;
+
         TCHAR szText[256] = _T("");
         HWND hWndTitle = NULL;
         HFONT hFont;
@@ -430,8 +435,6 @@ void CBatchEncoderDlg::OnClose()
 {
     CResizeDialog::OnClose();
 
-    // TODO: Kill worker thread and running command-line tool.
-
     if (this->GetMenu()->GetMenuState(ID_OPTIONS_DO_NOT_SAVE, MF_BYCOMMAND) != MF_CHECKED)
     {
         try
@@ -650,7 +653,7 @@ void CBatchEncoderDlg::OnEnSetFocusEditOutPath()
     {
         CString szPath;
         m_EdtOutPath.GetWindowText(szPath);
-        if (szPath.CompareNoCase(_T("<< same as source file >>")) == 0)
+        if (szPath.CompareNoCase(m_Config.GetString(0x00210006, pszMainDialog[5])) == 0)
             m_EdtOutPath.SetWindowText(_T(""));
     }
 }
@@ -662,7 +665,7 @@ void CBatchEncoderDlg::OnEnKillFocusEditOutPath()
         CString szPath;
         m_EdtOutPath.GetWindowText(szPath);
         if (szPath.CompareNoCase(_T("")) == 0)
-            m_EdtOutPath.SetWindowText(_T("<< same as source file >>"));
+            m_EdtOutPath.SetWindowText(m_Config.GetString(0x00210006, pszMainDialog[5]));
     }
 }
 
@@ -704,12 +707,11 @@ void CBatchEncoderDlg::OnBnClickedButtonBrowsePath()
         bi.hwndOwner = this->GetSafeHwnd();
         bi.pidlRoot = pidlDesktop;
         bi.pszDisplayName = lpBuffer;
-        bi.lpszTitle = _T("Output path:");
-        bi.lpfn = NULL;
-        bi.lParam = 0;
+        bi.lpszTitle = m_Config.GetString(0x00210007, pszMainDialog[6]);
         bi.ulFlags = BIF_STATUSTEXT | BIF_RETURNONLYFSDIRS | BIF_NEWDIALOGSTYLE;
         bi.iImage = 0;
         bi.lpfn = ::BrowseCallbackOutPath;
+        bi.lParam = reinterpret_cast<LPARAM>(this);
 
         pidlBrowse = ::SHBrowseForFolder(&bi);
         if (pidlBrowse != NULL)
@@ -752,7 +754,7 @@ void CBatchEncoderDlg::OnFileLoadList()
         {
             CString szFileXml = fd.GetPathName();
             if (this->LoadItems(szFileXml) == false)
-                m_StatusBar.SetText(_T("Failed to load file!"), 1, 0);
+                m_StatusBar.SetText(m_Config.GetString(0x00210008, pszMainDialog[7]), 1, 0);
             else
                 this->UpdateStatusBar();
         }
@@ -771,7 +773,7 @@ void CBatchEncoderDlg::OnFileSaveList()
         {
             CString szFileXml = fd.GetPathName();
             if (this->SaveItems(szFileXml) == false)
-                m_StatusBar.SetText(_T("Failed to save file!"), 1, 0);
+                m_StatusBar.SetText(m_Config.GetString(0x00210009, pszMainDialog[8]), 1, 0);
         }
     }
 }
@@ -808,7 +810,7 @@ void CBatchEncoderDlg::OnEditAddFiles()
             pFiles = (TCHAR *)malloc(dwMaxSize);
             if (pFiles == NULL)
             {
-                m_StatusBar.SetText(_T("Failed to allocate memory for filenames buffer!"), 1, 0);
+                m_StatusBar.SetText(m_Config.GetString(0x0021000A, pszMainDialog[9]), 1, 0);
                 return;
             }
 
@@ -893,12 +895,11 @@ void CBatchEncoderDlg::OnEditAddDir()
         bi.hwndOwner = this->GetSafeHwnd();
         bi.pidlRoot = pidlDesktop;
         bi.pszDisplayName = lpBuffer;
-        bi.lpszTitle = _T("Select folder:");
-        bi.lpfn = NULL;
-        bi.lParam = 0;
+        bi.lpszTitle = m_Config.GetString(0x0021000B, pszMainDialog[10]);
         bi.ulFlags = BIF_STATUSTEXT | BIF_RETURNONLYFSDIRS | BIF_NEWDIALOGSTYLE;
         bi.iImage = 0;
         bi.lpfn = ::BrowseCallbackAddDir;
+        bi.lParam = reinterpret_cast<LPARAM>(this);
 
         pidlBrowse = ::SHBrowseForFolder(&bi);
         if (pidlBrowse != NULL)
@@ -1388,7 +1389,7 @@ bool CBatchEncoderDlg::SearchFolderForLanguages(CString szFile)
     }
     catch (...)
     {
-        m_StatusBar.SetText(_T("Error while searching for language files!"), 1, 0);
+        m_StatusBar.SetText(m_Config.GetString(0x0021000C, pszMainDialog[11]), 1, 0);
     }
     return true;
 }
@@ -1847,13 +1848,13 @@ void CBatchEncoderDlg::AddToList(CItem &item, int nItem)
     m_LstInputItems.SetItemText(lvi.iItem, ITEM_COLUMN_PRESET, lvi.pszText);
 
     // [Time] : encoder/decoder conversion time
-    tmpBuf.Format(_T("%s"), (item.szTime.CompareNoCase(_T("")) == 0) ? _T("--:--") : item.szTime);
+    tmpBuf.Format(_T("%s"), (item.szTime.CompareNoCase(_T("")) == 0) ? pszDefaulTime : item.szTime);
     lvi.iSubItem = ITEM_COLUMN_TIME;
     lvi.pszText = (LPTSTR)(LPCTSTR)(tmpBuf);
     m_LstInputItems.SetItemText(lvi.iItem, ITEM_COLUMN_TIME, lvi.pszText);
 
     // [Status] : encoder/decoder progress status
-    tmpBuf.Format(_T("%s"), (item.szStatus.CompareNoCase(_T("")) == 0) ? _T("Not Done") : item.szStatus);
+    tmpBuf.Format(_T("%s"), (item.szStatus.CompareNoCase(_T("")) == 0) ? m_Config.GetString(0x00210001, pszMainDialog[0]) : item.szStatus);
     lvi.iSubItem = ITEM_COLUMN_STATUS;
     lvi.pszText = (LPTSTR)(LPCTSTR)(tmpBuf);
     m_LstInputItems.SetItemText(lvi.iItem, ITEM_COLUMN_STATUS, lvi.pszText);
@@ -1956,7 +1957,7 @@ void CBatchEncoderDlg::SearchFolderForFiles(CString szFile, const bool bRecurse)
     }
     catch (...)
     {
-        m_StatusBar.SetText(_T("Error while searching for item files!"), 1, 0);
+        m_StatusBar.SetText(m_Config.GetString(0x0021000D, pszMainDialog[12]), 1, 0);
     }
 }
 
@@ -2080,7 +2081,7 @@ void CBatchEncoderDlg::ResetConvertionTime()
         {
             if (m_LstInputItems.GetItemState(i, LVIS_SELECTED) == LVIS_SELECTED)
             {
-                this->m_LstInputItems.SetItemText(i, ITEM_COLUMN_TIME, _T("--:--"));
+                this->m_LstInputItems.SetItemText(i, ITEM_COLUMN_TIME, pszDefaulTime);
                 nSelected++;
             }
         }
@@ -2088,7 +2089,7 @@ void CBatchEncoderDlg::ResetConvertionTime()
         if (nSelected == 0)
         {
             for (int i = 0; i < nCount; i++)
-                this->m_LstInputItems.SetItemText(i, ITEM_COLUMN_TIME, _T("--:--"));
+                this->m_LstInputItems.SetItemText(i, ITEM_COLUMN_TIME, pszDefaulTime);
         }
     }
 }
@@ -2103,7 +2104,7 @@ void CBatchEncoderDlg::ResetConvertionStatus()
         {
             if (m_LstInputItems.GetItemState(i, LVIS_SELECTED) == LVIS_SELECTED)
             {
-                this->m_LstInputItems.SetItemText(i, ITEM_COLUMN_STATUS, _T("Not Done"));
+                this->m_LstInputItems.SetItemText(i, ITEM_COLUMN_STATUS, m_Config.GetString(0x00210001, pszMainDialog[0]));
                 nSelected++;
             }
         }
@@ -2111,7 +2112,7 @@ void CBatchEncoderDlg::ResetConvertionStatus()
         if (nSelected == 0)
         {
             for (int i = 0; i < nCount; i++)
-                this->m_LstInputItems.SetItemText(i, ITEM_COLUMN_STATUS, _T("Not Done"));
+                this->m_LstInputItems.SetItemText(i, ITEM_COLUMN_STATUS, m_Config.GetString(0x00210001, pszMainDialog[0]));
         }
     }
 }
@@ -2122,12 +2123,16 @@ void CBatchEncoderDlg::UpdateStatusBar()
     if (nCount > 0)
     {
         CString szText;
-        szText.Format(_T("%d %s"), nCount, (nCount > 1) ? _T("Items") : _T("Item"));
+        szText.Format(_T("%d %s"), 
+            nCount, 
+            (nCount > 1) ? 
+            m_Config.GetString(0x00210003, pszMainDialog[2]) : 
+            m_Config.GetString(0x00210002, pszMainDialog[1]));
         m_StatusBar.SetText(szText, 0, 0);
     }
     else
     {
-        m_StatusBar.SetText(_T("No Items"), 0, 0);
+        m_StatusBar.SetText(m_Config.GetString(0x00210004, pszMainDialog[3]), 0, 0);
         m_StatusBar.SetText(_T(""), 1, 0);
     }
 }
@@ -2223,8 +2228,8 @@ void CBatchEncoderDlg::StartConvert()
             CItem& item = this->m_Config.m_Items.GetData(i);
             if (item.bChecked == true)
             {
-                this->m_LstInputItems.SetItemText(i, ITEM_COLUMN_TIME, _T("--:--"));
-                this->m_LstInputItems.SetItemText(i, ITEM_COLUMN_STATUS, _T("Not Done"));
+                this->m_LstInputItems.SetItemText(i, ITEM_COLUMN_TIME, pszDefaulTime);
+                this->m_LstInputItems.SetItemText(i, ITEM_COLUMN_STATUS, m_Config.GetString(0x00210001, pszMainDialog[0]));
                 nChecked++;
             }
         }
@@ -2243,7 +2248,7 @@ void CBatchEncoderDlg::StartConvert()
             {
                 if (::MakeFullPath(szPath) == FALSE)
                 {
-                    m_StatusBar.SetText(_T("Unable to create output path!"), 1, 0);
+                    m_StatusBar.SetText(m_Config.GetString(0x0021000E, pszMainDialog[13]), 1, 0);
                     bSafeCheck = false;
                     this->pWorkerContext->bDone = true;
                     return;
@@ -2255,7 +2260,7 @@ void CBatchEncoderDlg::StartConvert()
         this->pWorkerContext->hThread = ::CreateThread(NULL, 0, WorkThread, this->pWorkerContext, CREATE_SUSPENDED, &this->pWorkerContext->dwThreadID);
         if (this->pWorkerContext->hThread == NULL)
         {
-            m_StatusBar.SetText(_T("Fatal error when creating thread!"), 1, 0);
+            m_StatusBar.SetText(m_Config.GetString(0x0021000F, pszMainDialog[14]), 1, 0);
             this->pWorkerContext->bDone = true;
             bSafeCheck = false;
             return;
@@ -2264,8 +2269,8 @@ void CBatchEncoderDlg::StartConvert()
         this->EnableUserInterface(FALSE);
 
         m_StatusBar.SetText(_T(""), 1, 0);
-        m_BtnConvert.SetWindowText(_T("S&top"));
-        this->GetMenu()->ModifyMenu(ID_ACTION_CONVERT, MF_BYCOMMAND, ID_ACTION_CONVERT, _T("S&top\tF9"));
+        m_BtnConvert.SetWindowText(m_Config.GetString(0x000A0018, _T("S&top")));
+        this->GetMenu()->ModifyMenu(ID_ACTION_CONVERT, MF_BYCOMMAND, ID_ACTION_CONVERT, m_Config.GetString(0x00030003, _T("S&top\tF9")));
 
         this->pWorkerContext->bRunning = true;
 
@@ -2277,8 +2282,8 @@ void CBatchEncoderDlg::StartConvert()
     {
         bSafeCheck = true;
 
-        m_BtnConvert.SetWindowText(_T("Conve&rt"));
-        this->GetMenu()->ModifyMenu(ID_ACTION_CONVERT, MF_BYCOMMAND, ID_ACTION_CONVERT, _T("Conve&rt\tF9"));
+        m_BtnConvert.SetWindowText(m_Config.GetString(0x000A0017, _T("Conve&rt")));
+        this->GetMenu()->ModifyMenu(ID_ACTION_CONVERT, MF_BYCOMMAND, ID_ACTION_CONVERT, m_Config.GetString(0x00030002, _T("Conve&rt\tF9")));
         this->EnableUserInterface(TRUE);
 
         this->pWorkerContext->bRunning = false;
@@ -2288,8 +2293,8 @@ void CBatchEncoderDlg::StartConvert()
 
 void CBatchEncoderDlg::FinishConvert()
 {
-    this->m_BtnConvert.SetWindowText(_T("Conve&rt"));
-    this->GetMenu()->ModifyMenu(ID_ACTION_CONVERT, MF_BYCOMMAND, ID_ACTION_CONVERT, _T("Conve&rt\tF9"));
+    this->m_BtnConvert.SetWindowText(m_Config.GetString(0x000A0017, _T("Conve&rt")));
+    this->GetMenu()->ModifyMenu(ID_ACTION_CONVERT, MF_BYCOMMAND, ID_ACTION_CONVERT, m_Config.GetString(0x00030002, _T("Conve&rt\tF9")));
     this->EnableUserInterface(TRUE);
 
     this->m_Progress.SetPos(0);
