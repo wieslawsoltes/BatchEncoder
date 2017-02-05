@@ -4,8 +4,10 @@
     <!-- File Menu -->
 
     <String key="0x00010001" value="&amp;Plik"/>
-    <String key="0x00010002" value="O&amp;twórz Listę...&#09;Ctrl+L"/>
-    <String key="0x00010003" value="Z&amp;apisz Listę...&#09;Ctrl+S"/>
+    <String key="0x00010002" value="&amp;Otwórz Listę...&#09;Ctrl+L"/>
+    <String key="0x00010003" value="&amp;Zapisz Listę...&#09;Ctrl+S"/>
+    <String key="0x00010004" value="&amp;Wyczyść Listę&#09;Ctrl+E"/>
+    <String key="0x00010005" value="Za&amp;kończ&#09;Alt+F4"/>
 
     <!-- Edit Menu -->
 
@@ -28,5 +30,15 @@
     <!-- Help Menu -->
 
     <String key="0x00060001" value="Pomo&amp;c"/>
+
+    <!-- Strings File Dialogs -->
+
+    <String key="0x00310001" value="Wszystkie Pliki"/>
+    <String key="0x00310002" value="Pliki Xml"/>
+    <String key="0x00310003" value="Pliki Items"/>
+    <String key="0x00310004" value="Pliki Presets"/>
+    <String key="0x00310005" value="Pliki Formats"/>
+    <String key="0x00310006" value="Pliki Exe"/>
+    <String key="0x00310007" value="Pliki Progress"/>
 
 </Language>
