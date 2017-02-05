@@ -14,22 +14,205 @@
     <String key="0x00020001" value="&amp;Edycja"/>
     <String key="0x00020002" value="&amp;Dodaj Pliki...&#09;F5"/>
     <String key="0x00020003" value="Dodaj &amp;Folder...&#09;F6"/>
+    <String key="0x00020004" value="Z&amp;mień Nazwę&#09;F2"/>
+    <String key="0x00020005" value="Rese&amp;tuj Czas/Status&#09;F3"/>
+    <String key="0x00020006" value="Resetuj Wyjście&amp;/Preset&#09;F4"/>
+    <String key="0x00020007" value="&amp;Usuń&#09;DEL"/>
+    <String key="0x00020008" value="&amp;Przytnij&#09;INS"/>
+    <String key="0x00020009" value="U&amp;suń Zaznaczone&#09;Ctrl++"/>
+    <String key="0x0002000A" value="Usuń &amp;Niezaznaczone&#09;Ctrl+-"/>
+    <String key="0x0002000B" value="Zazna&amp;cz Wybrane&#09;Shift++"/>
+    <String key="0x0002000C" value="Odznac&amp;z Wybrane&#09;Shift+-"/>
+    <String key="0x0002000D" value="Zaznacz &amp;Wszystko&#09;Ctrl+A"/>
+    <String key="0x0002000E" value="Odznacz Wsz&amp;ystko&#09;Ctrl+N"/>
+    <String key="0x0002000F" value="Odwróć Zaznaczen&amp;ie&#09;Ctrl+I"/>
+    <String key="0x00020010" value="&amp;Otwórz Plik..."/>
+    <String key="0x00020011" value="Otwórz Folde&amp;r..."/>
 
     <!-- Action Menu -->
 
     <String key="0x00030001" value="&amp;Akcja"/>
+    <String key="0x00030002" value="Konwe&amp;rtuj&#09;F9"/>
+    <String key="0x00030003" value="Za&amp;trzymaj&#09;F9"/>
 
     <!-- Options Menu -->
 
     <String key="0x00040001" value="&amp;Opcje"/>
+    <String key="0x00040002" value="Konifguracja &amp;Presetów...&#09;F7"/>
+    <String key="0x00040003" value="Konifguracja &amp;Formatów...&#09;F8"/>
+    <String key="0x00040004" value="&amp;Usuń Plik Źródłowy Po Zakończeniu"/>
+    <String key="0x00040005" value="&amp;Wyłączenie Po Zakończeniu"/>
+    <String key="0x00040006" value="Nie &amp;Zapisuj KonfiguracjI Przy Wyjściu"/>
+    <String key="0x00040007" value="Usuń &amp;Plik Wyjściowy W Przypadku Błędu"/>
+    <String key="0x00040008" value="Zatrzymaj &amp;Konwersje W Przypadku Błędu"/>
 
     <!-- Language Menu -->
 
     <String key="0x00050001" value="&amp;Język"/>
+    <String key="0x00050002" value="&amp;Domyślny (English)"/>
 
     <!-- Help Menu -->
 
     <String key="0x00060001" value="Pomo&amp;c"/>
+    <String key="0x00060002" value="&amp;Witryna Internetowa..."/>
+    <String key="0x00060003" value="&amp;O Programie..."/>
+
+    <!-- Main Dialog -->
+
+    <String key="0x000A0001" value="Nazwa"/>
+    <String key="0x000A0002" value="Wejście"/>
+    <String key="0x000A0003" value="Rozmiar (bajty)"/>
+    <String key="0x000A0004" value="Wyjście"/>
+    <String key="0x000A0005" value="Preset&#35;"/>
+    <String key="0x000A0006" value="Czas"/>
+    <String key="0x000A0007" value="Status"/>
+
+    <String key="0x000A0010" value="BatchEncoder"/>
+    <String key="0x000A0011" value="Wyjście"/>
+    <String key="0x000A0012" value="format&#58;"/>
+    <String key="0x000A0013" value="preset&#58;"/>
+    <String key="0x000A0014" value="Ścieżka &amp;wyjściowa&#58;"/>
+    <String key="0x000A0015" value="&amp;..."/>
+    <String key="0x000A0016" value="wątki (0=auto)&#58;"/>
+    <String key="0x000A0017" value="Konwe&amp;rtuj"/>
+    <String key="0x000A0018" value="Za&amp;trzymaj"/>
+
+    <!-- Presets Dialog -->
+
+    <String key="0x000B0001" value="Nazwa"/>
+    <String key="0x000B0002" value="Opcje"/>
+
+    <String key="0x000B0010" value="Konifguracja Presetów"/>
+    <String key="0x000B0011" value="&amp;Anuluj"/>
+    <String key="0x000B0012" value="Nazwa&#58;"/>
+    <String key="0x000B0013" value="Opcje wiersza polecenia&#58;"/>
+    <String key="0x000B0014" value="do &amp;Góry"/>
+    <String key="0x000B0015" value="&amp;w Dół"/>
+    <String key="0x000B0016" value="Usuń Wszys&amp;tkie"/>
+    <String key="0x000B0017" value="&amp;Usuń"/>
+    <String key="0x000B0018" value="&amp;Dodaj"/>
+    <String key="0x000B0019" value="Otwór&amp;z"/>
+    <String key="0x000B001A" value="Zapisz &amp;Jako"/>
+    <String key="0x000B001B" value="Z&amp;mień"/>
+    <String key="0x000B001C" value="&amp;OK"/>
+
+    <!-- Formats Dialog -->
+
+    <String key="0x000C0001" value="Nazwa"/>
+    <String key="0x000C0002" value="Szablon"/>
+
+    <String key="0x000C0010" value="Konifguracja Formatów"/>
+    <String key="0x000C0011" value="&amp;Anuluj"/>
+    <String key="0x000C0012" value="&amp;Koder"/>
+    <String key="0x000C0013" value="Dekode&amp;r"/>
+    <String key="0x000C0014" value="Typ&#58;"/>
+    <String key="0x000C0015" value="Wejście"/>
+    <String key="0x000C0016" value="Wyjście"/>
+    <String key="0x000C0017" value="Potoki&#58;"/>
+    <String key="0x000C0018" value="Id&#58;"/>
+    <String key="0x000C0019" value="Nazwa&#58;"/>
+    <String key="0x000C001A" value="Rozszerzenie wyjściowe&#58;"/>
+    <String key="0x000C001B" value="Rozszerzenia wejściowe (oddzielone przecinkiem)&#58;"/>
+    <String key="0x000C001C" value="Domyślny preset&#58;"/>
+    <String key="0x000C001D" value="Ścieżka pliku wykonywalnego wiersza polecenia &#58;"/>
+    <String key="0x000C001E" value="&amp;..."/>
+    <String key="0x000C001F" value="Szablon wiersza polecenia&#58;"/>
+    <String key="0x000C0020" value="Funkcja postępu&#58;"/>
+    <String key="0x000C0021" value="&amp;..."/>
+    <String key="0x000C0022" value="do &amp;Góry"/>
+    <String key="0x000C0023" value="&amp;w Dół"/>
+    <String key="0x000C0024" value="Usuń Wszys&amp;tkie"/>
+    <String key="0x000C0025" value="&amp;Usuń"/>
+    <String key="0x000C0026" value="&amp;Dodaj"/>
+    <String key="0x000C0027" value="Otwór&amp;z"/>
+    <String key="0x000C0028" value="Zapisz &amp;Jako"/>
+    <String key="0x000C0029" value="Z&amp;mień"/>
+    <String key="0x000C002A" value="&amp;OK"/>
+
+    <!-- About Dialog -->
+
+    <String key="0x000D0010" value="O programie BatchEncoder"/>
+    <String key="0x000D0011" value="&amp;OK"/>
+    <String key="0x000D0012" value="Licencjonowany na licencji MIT. Zobacz plik LICENSE w katalogu głównym aplikacji dla pełnej informacji licencyjnej."/>
+
+    <!-- Strings Work Thread -->
+
+    <String key="0x00110001" value="Błąd&#58; nie można załadować funkcji GetProgress biblioteki dll."/>
+    <String key="0x00110002" value="Błąd&#58; nie można uzyskać adresu funkcji GetProgress."/>
+    <String key="0x00110003" value="Błąd&#58; linia konsoli jest zbyt duża dla buforu odczytu."/>
+
+    <String key="0x00120001" value="Błąd&#58; nieprawidłowa konfiguracja potoku formatu."/>
+    <String key="0x00120002" value="Błąd&#58; nie można utworzyć potoku dla stderr."/>
+    <String key="0x00120003" value="Błąd&#58; nie można powielić potoku stderr aby zapobiec procesowi potomnemu przed zamknięciem potoku."/>
+    <String key="0x00120004" value="Błąd&#58; nie można utworzyć procesu z wiersza poleceń (&#37;d)."/>
+    <String key="0x00120005" value="Błąd&#58; postęp nie osiągnął 100&#37;."/>
+    <String key="0x00120006" value="Wykonane"/>
+
+    <String key="0x00130001" value="Błąd&#58; nieprawidłowa konfiguracja potoku formatu."/>
+    <String key="0x00130002" value="Błąd&#58; nie można utworzyć potoku dla stdin."/>
+    <String key="0x00130003" value="Błąd&#58; nie można ustawić flagi dziedziczenia dla potoku stdin."/>
+    <String key="0x00130004" value="Błąd&#58; nie można utworzyć potoku dla stdout."/>
+    <String key="0x00130005" value="Błąd&#58; nie można ustawić flagi dziedziczenia dla potoku stdout."/>
+    <String key="0x00130006" value="Błąd&#58; nie można utworzyć procesu z wiersza poleceń (&#37;d)."/>
+    <String key="0x00130007" value="Błąd&#58; nie można utworzyć wątka odczytu."/>
+    <String key="0x00130008" value="Błąd&#58; nie można utworzyć wątka zapisu."/>
+    <String key="0x00130009" value="Błąd&#58; postęp nie osiągnął 100&#37;."/>
+    <String key="0x0013000A" value="Wykonane"/>
+
+    <String key="0x00140001" value="Błąd&#58; nie można znaleźć pliku wejściowego."/>
+    <String key="0x00140002" value="Błąd&#58; nie można znaleźć poprawnego kodera poprzez id."/>
+    <String key="0x00140003" value="Błąd&#58; nie można znaleźć poprawnego presetu dla formatu kodera."/>
+    <String key="0x00140004" value="Błąd&#58; nie można znaleźć poprawnego dekodera poprzez rozszerzenie."/>
+    <String key="0x00140005" value="Błąd&#58; nie można znaleźć poprawnego presetu dla formatu dekodera."/>
+    <String key="0x00140006" value="Błąd&#58; wyjście dekodera nie jest obsługiwane przez koder."/>
+    <String key="0x00140007" value="Dekodowanie..."/>
+    <String key="0x00140008" value="Błąd&#58; nie mogę znaleźć plik zdekodowany."/>
+    <String key="0x00140009" value="Błąd&#58; wyjątek został wyrzucony podczas konwersji pliku."/>
+    <String key="0x0014000A" value="Kodowanie..."/>
+    <String key="0x0014000B" value="Dekodowanie..."/>
+    <String key="0x0014000C" value="Przetwarzanie..."/>
+    <String key="0x0014000D" value="Błąd&#58; nie mogę znaleźć plik zakodowany."/>
+    <String key="0x0014000E" value="Błąd&#58; wyjątek został wyrzucony podczas konwersji pliku."/>
+
+    <!-- Strings Worker Context -->
+
+    <String key="0x00190001" value="Błąd"/>
+    <String key="0x00190002" value="Błędy"/>
+    <String key="0x00190003" value="Przetwarzanie elementu &#37;d z &#37;d (&#37;d Wykonane, &#37;d &#37;s)"/>
+    <String key="0x00190004" value="Przetworzono &#37;d z &#37;d (&#37;d Wykonane, &#37;d &#37;s) w &#37;s"/>
+
+    <!-- Strings Main Dialog -->
+
+    <String key="0x00210001" value="Nie Wykonano"/>
+    <String key="0x00210002" value="Element"/>
+    <String key="0x00210003" value="Elementy"/>
+    <String key="0x00210004" value="Brak Elementów"/>
+    <String key="0x00210005" value="Dołącz podkatalogi"/>
+    <String key="0x00210006" value="&#60;&#60; Taka sama jak plik wejściowy &#62;&#62;"/>
+    <String key="0x00210007" value="Ścieżka wyjściowa&#58;"/>
+    <String key="0x00210008" value="Nie udało się wczytać pliku&#33;"/>
+    <String key="0x00210009" value="Nie udało się zapisać pliku&#33;"/>
+    <String key="0x0021000A" value="Nie powiodło się przydzielić pamięci dla bufora nazw plików&#33;"/>
+    <String key="0x0021000B" value="Wybierz folder&#58;"/>
+    <String key="0x0021000C" value="Błąd podczas wyszukiwania plików językowych&#33;"/>
+    <String key="0x0021000D" value="Błąd podczas wyszukiwania plików elementów&#33;"/>
+    <String key="0x0021000E" value="Nie można utworzyć ścieżki wyjściowej&#33;"/>
+    <String key="0x0021000F" value="Błąd krytyczny podczas tworzenia wątku&#33;"/>
+
+    <!-- Strings Presets Dialog -->
+
+    <String key="0x00220001" value="BŁĄD"/>
+    <String key="0x00220002" value="Nie udało się wczytać pliku&#33;"/>
+    <String key="0x00220003" value="Nie udało się zapisać pliku&#33;"/>
+    <String key="0x00220004" value="Domyślny"/>
+
+    <!-- Strings Formats Dialog -->
+
+    <String key="0x00230001" value="BŁĄD"/>
+    <String key="0x00230002" value="Nie udało się wczytać pliku&#33;"/>
+    <String key="0x00230003" value="Nie udało się zapisać pliku&#33;"/>
+    <String key="0x00230004" value="Format"/>
+    <String key="0x00230005" value="Domyślny"/>
 
     <!-- Strings File Dialogs -->
 
