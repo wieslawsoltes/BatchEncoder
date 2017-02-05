@@ -6,6 +6,13 @@
 #include "utilities\Utilities.h"
 #include "BatchEncoderWorkerContext.h"
 
+const TCHAR* pszWorkerContext[] = {
+    /* 00 */ _T("Error"),
+    /* 01 */ _T("Errors"),
+    /* 02 */ _T("Processing item %d of %d (%d Done, %d %s)"),
+    /* 03 */ _T("Processed %d of %d (%d Done, %d %s) in %s")
+};
+
 CBatchEncoderWorkerContext::CBatchEncoderWorkerContext(CConfiguration* pConfig, CBatchEncoderDlg* pDlg)
     : CWorkerContext(pConfig)
 {
@@ -33,12 +40,13 @@ void CBatchEncoderWorkerContext::Next(int nItemId)
     if (this->nThreadCount == 1)
     {
         CString szText;
-        szText.Format(_T("Processing item %d of %d (%d Done, %d %s)"),
+        szText.Format(this->GetString(0x00190003, pszWorkerContext[2]),
             this->nProcessedFiles,
             this->nTotalFiles,
             this->nDoneWithoutError,
             this->nErrors,
-            ((this->nErrors == 0) || (this->nErrors > 1)) ? _T("Errors") : _T("Error"));
+            ((this->nErrors == 0) || (this->nErrors > 1)) ? 
+            this->GetString(0x00190002, pszWorkerContext[1]) : this->GetString(0x00190001, pszWorkerContext[0]));
         pDlg->m_StatusBar.SetText(szText, 1, 0);
 
         this->nLastItemId = nItemId;
@@ -52,12 +60,13 @@ void CBatchEncoderWorkerContext::Done()
     this->nErrors = this->nProcessedFiles - this->nDoneWithoutError;
 
     CString szText;
-    szText.Format(_T("Processed %d of %d (%d Done, %d %s) in %s"),
+    szText.Format(this->GetString(0x00190004, pszWorkerContext[3]),
         this->nProcessedFiles,
         this->nTotalFiles,
         this->nDoneWithoutError,
         this->nErrors,
-        ((this->nErrors == 0) || (this->nErrors > 1)) ? _T("Errors") : _T("Error"),
+        ((this->nErrors == 0) || (this->nErrors > 1)) ?
+        this->GetString(0x00190002, pszWorkerContext[1]) : this->GetString(0x00190001, pszWorkerContext[0]),
         this->timer.Format(this->timer.ElapsedTime(), 3));
     pDlg->m_StatusBar.SetText(szText, 1, 0);
 
