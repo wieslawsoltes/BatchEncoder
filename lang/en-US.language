@@ -183,35 +183,37 @@
 
     <!-- Strings Main Dialog -->
 
-    <String key="0x00210001" value="ERROR"/>
-    <String key="0x00210002" value="Not Done"/>
-    <String key="0x00210003" value="Item"/>
-    <String key="0x00210004" value="Items"/>
-    <String key="0x00210005" value="No Items"/>
-    <String key="0x00210006" value="Recurse subdirectories"/>
-    <String key="0x00210007" value="&#60;&#60; same as source file &#62;&#62;"/>
-    <String key="0x00210008" value="Output path&#58;"/>
-    <String key="0x00210009" value="Failed to load file&#33;"/>
-    <String key="0x0021000A" value="Failed to save file&#33;"/>
-    <String key="0x0021000B" value="Failed to allocate memory for filenames buffer&#33;"/>
-    <String key="0x0021000C" value="Select folder&#58;"/>
-    <String key="0x0021000D" value="Error while searching for language files&#33;"/>
-    <String key="0x0021000E" value="Error while searching for item files&#33;"/>
-    <String key="0x0021000F" value="Unable to create output path&#33;"/>
-    <String key="0x00210010" value="Fatal error when creating thread&#33;"/>
+    <String key="0x00210001" value="Not Done"/>
+    <String key="0x00210002" value="Item"/>
+    <String key="0x00210003" value="Items"/>
+    <String key="0x00210004" value="No Items"/>
+    <String key="0x00210005" value="Recurse subdirectories"/>
+    <String key="0x00210006" value="&#60;&#60; same as source file &#62;&#62;"/>
+    <String key="0x00210007" value="Output path&#58;"/>
+    <String key="0x00210008" value="Failed to load file&#33;"/>
+    <String key="0x00210009" value="Failed to save file&#33;"/>
+    <String key="0x0021000A" value="Failed to allocate memory for filenames buffer&#33;"/>
+    <String key="0x0021000B" value="Select folder&#58;"/>
+    <String key="0x0021000C" value="Error while searching for language files&#33;"/>
+    <String key="0x0021000D" value="Error while searching for item files&#33;"/>
+    <String key="0x0021000E" value="Unable to create output path&#33;"/>
+    <String key="0x0021000F" value="Fatal error when creating thread&#33;"/>
 
     <!-- Strings Presets Dialog -->
 
     <String key="0x00220001" value="ERROR"/>
     <String key="0x00220002" value="Failed to load file&#33;"/>
     <String key="0x00220003" value="Failed to save file&#33;"/>
-
+    <String key="0x00220004" value="Default"/>
+    
     <!-- Strings Formats Dialog -->
 
     <String key="0x00230001" value="ERROR"/>
     <String key="0x00230002" value="Failed to load file&#33;"/>
     <String key="0x00230003" value="Failed to save file&#33;"/>
-
+    <String key="0x00230004" value="Format"/>
+    <String key="0x00230005" value="Default"/>
+    
     <!-- Strings File Dialogs -->
 
     <String key="0x00310001" value="All Files"/>
