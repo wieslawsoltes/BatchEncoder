@@ -1301,6 +1301,7 @@ void CMainDlg::OnLanguageChange(UINT nID)
     m_hLangMenu->CheckMenuItem(nID, MF_CHECKED);
 
     this->SetLanguage();
+    this->UpdateStatusBar();
 }
 
 void CMainDlg::OnHelpWebsite()
