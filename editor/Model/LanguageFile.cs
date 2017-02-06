@@ -121,7 +121,7 @@ namespace LanguageEditor
 
         public void Save()
         {
-            if (IsOpen())
+            if (_doc != null)
             {
                 _doc.Save(Path);
             }
@@ -129,7 +129,7 @@ namespace LanguageEditor
 
         public void SaveAs(string path)
         {
-            if (IsOpen())
+            if (_doc != null)
             {
                 _doc.Save(path);
                 Path = path;
