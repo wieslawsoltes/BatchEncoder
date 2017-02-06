@@ -2,7 +2,7 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 #include "StdAfx.h"
-#include "..\BatchEncoder.h"
+#include "..\MainApp.h"
 #include "..\Strings.h"
 #include "..\configuration\LanguageHelper.h"
 #include "..\utilities\Utilities.h"
@@ -15,7 +15,7 @@ IMPLEMENT_DYNAMIC(CFormatsDlg, CDialog)
 CFormatsDlg::CFormatsDlg(CWnd* pParent /*=NULL*/)
     : CResizeDialog(CFormatsDlg::IDD, pParent)
 {
-    this->m_hIcon = AfxGetApp()->LoadIcon(IDI_TRAYICON);
+    this->m_hIcon = AfxGetApp()->LoadIcon(IDI_ICON_MAIN);
     this->szFormatsDialogResize = _T("");
     this->szFormatsListColumns = _T("");
     this->bUpdate = false;

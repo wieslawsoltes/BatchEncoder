@@ -2,9 +2,9 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 #include "StdAfx.h"
-#include "BatchEncoder.h"
+#include "MainApp.h"
 #include "utilities\Utilities.h"
-#include "BatchEncoderWorkerContext.h"
+#include "ProgressWorkerContext.h"
 
 const TCHAR* pszWorkerContext[] = {
     /* 00 */ _T("Error"),
@@ -13,26 +13,26 @@ const TCHAR* pszWorkerContext[] = {
     /* 03 */ _T("Processed %d of %d (%d Done, %d %s) in %s")
 };
 
-CBatchEncoderWorkerContext::CBatchEncoderWorkerContext(CConfiguration* pConfig, CBatchEncoderDlg* pDlg)
+CProgressWorkerContext::CProgressWorkerContext(CConfiguration* pConfig, CMainDlg* pDlg)
     : CWorkerContext(pConfig)
 {
     this->bDone = true;
     this->pDlg = pDlg;
 }
 
-CBatchEncoderWorkerContext::~CBatchEncoderWorkerContext()
+CProgressWorkerContext::~CProgressWorkerContext()
 {
 
 }
 
-void CBatchEncoderWorkerContext::Init()
+void CProgressWorkerContext::Init()
 {
     this->timer.Start();
 
     pDlg->m_Progress.SetPos(0);
 }
 
-void CBatchEncoderWorkerContext::Next(int nItemId)
+void CProgressWorkerContext::Next(int nItemId)
 {
     this->nProcessedFiles++;
     this->nErrors = (this->nProcessedFiles - 1) - this->nDoneWithoutError;
@@ -54,7 +54,7 @@ void CBatchEncoderWorkerContext::Next(int nItemId)
     }
 }
 
-void CBatchEncoderWorkerContext::Done()
+void CProgressWorkerContext::Done()
 {
     this->timer.Stop();
     this->nErrors = this->nProcessedFiles - this->nDoneWithoutError;
@@ -73,7 +73,7 @@ void CBatchEncoderWorkerContext::Done()
     pDlg->FinishConvert();
 }
 
-bool CBatchEncoderWorkerContext::Callback(int nItemId, int nProgress, bool bFinished, bool bError)
+bool CProgressWorkerContext::Callback(int nItemId, int nProgress, bool bFinished, bool bError)
 {
     if (bError == true)
     {
@@ -140,7 +140,7 @@ bool CBatchEncoderWorkerContext::Callback(int nItemId, int nProgress, bool bFini
     return this->bRunning;
 }
 
-void CBatchEncoderWorkerContext::Status(int nItemId, CString szTime, CString szStatus)
+void CProgressWorkerContext::Status(int nItemId, CString szTime, CString szStatus)
 {
     pDlg->m_LstInputItems.SetItemText(nItemId, ITEM_COLUMN_TIME, szTime); // Time
     pDlg->m_LstInputItems.SetItemText(nItemId, ITEM_COLUMN_STATUS, szStatus); // Status

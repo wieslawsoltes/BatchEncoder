@@ -2,7 +2,7 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 #include "StdAfx.h"
-#include "..\BatchEncoder.h"
+#include "..\MainApp.h"
 #include "..\Strings.h"
 #include "..\utilities\TimeCount.h"
 #include "..\utilities\Utilities.h"

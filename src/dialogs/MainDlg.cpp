@@ -2,16 +2,16 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 #include "StdAfx.h"
-#include "..\BatchEncoder.h"
+#include "..\MainApp.h"
 #include "..\Strings.h"
 #include "..\configuration\LanguageHelper.h"
 #include "..\utilities\Utilities.h"
 #include "..\XmlConfiguration.h"
-#include "BatchEncoderDlg.h"
+#include "MainDlg.h"
 #include "PresetsDlg.h"
 #include "AboutDlg.h"
 #include "FormatsDlg.h"
-#include "..\BatchEncoderWorkerContext.h"
+#include "..\ProgressWorkerContext.h"
 #include "..\TraceWorkerContext.h"
 #include "..\worker\WorkThread.h"
 
@@ -58,7 +58,7 @@ int CALLBACK BrowseCallbackAddDir(HWND hWnd, UINT uMsg, LPARAM lp, LPARAM pData)
 {
     if (uMsg == BFFM_INITIALIZED)
     {
-        CBatchEncoderDlg* pDlg = (CBatchEncoderDlg*)pData;
+        CMainDlg* pDlg = (CMainDlg*)pData;
 
         HWND hWndTitle = NULL;
         HFONT hFont;
@@ -115,7 +115,7 @@ int CALLBACK BrowseCallbackOutPath(HWND hWnd, UINT uMsg, LPARAM lp, LPARAM pData
 {
     if (uMsg == BFFM_INITIALIZED)
     {
-        CBatchEncoderDlg* pDlg = (CBatchEncoderDlg*)pData;
+        CMainDlg* pDlg = (CMainDlg*)pData;
 
         TCHAR szText[256] = _T("");
         HWND hWndTitle = NULL;
@@ -169,7 +169,7 @@ int CALLBACK BrowseCallbackOutPath(HWND hWnd, UINT uMsg, LPARAM lp, LPARAM pData
 
 typedef struct tagDragAndDrop
 {
-    CBatchEncoderDlg *pDlg;
+    CMainDlg *pDlg;
     HDROP hDropInfo;
 } DragAndDrop;
 
@@ -186,26 +186,26 @@ DWORD WINAPI DragAndDropThread(LPVOID lpParam)
     return ::CloseHandle(hDDThread);
 }
 
-IMPLEMENT_DYNAMIC(CBatchEncoderDlg, CDialog)
-CBatchEncoderDlg::CBatchEncoderDlg(CWnd* pParent /*=NULL*/)
-    : CResizeDialog(CBatchEncoderDlg::IDD, pParent)
+IMPLEMENT_DYNAMIC(CMainDlg, CDialog)
+CMainDlg::CMainDlg(CWnd* pParent /*=NULL*/)
+    : CResizeDialog(CMainDlg::IDD, pParent)
 {
-    this->m_hIcon = AfxGetApp()->LoadIcon(IDI_TRAYICON);
+    this->m_hIcon = AfxGetApp()->LoadIcon(IDI_ICON_MAIN);
     this->szOptionsFile = ::GetExeFilePath() + _T("BatchEncoder.options");
     this->szFormatsFile = ::GetExeFilePath() + _T("BatchEncoder.formats");
     this->szItemsFile = ::GetExeFilePath() + _T("BatchEncoder.items");
     this->m_Config.m_Options.Defaults();
-    this->pWorkerContext = new CBatchEncoderWorkerContext(&this->m_Config, this);
+    this->pWorkerContext = new CProgressWorkerContext(&this->m_Config, this);
     this->pWorkerContext->bRunning = false;
 }
 
-CBatchEncoderDlg::~CBatchEncoderDlg()
+CMainDlg::~CMainDlg()
 {
     if (this->pWorkerContext != NULL)
         delete this->pWorkerContext;
 }
 
-void CBatchEncoderDlg::DoDataExchange(CDataExchange* pDX)
+void CMainDlg::DoDataExchange(CDataExchange* pDX)
 {
     CResizeDialog::DoDataExchange(pDX);
     DDX_Control(pDX, IDC_PROGRESS_CONVERT, m_Progress);
@@ -224,7 +224,7 @@ void CBatchEncoderDlg::DoDataExchange(CDataExchange* pDX)
     DDX_Control(pDX, IDC_BUTTON_BROWSE_OUTPUT, m_BtnBrowse);
 }
 
-BEGIN_MESSAGE_MAP(CBatchEncoderDlg, CResizeDialog)
+BEGIN_MESSAGE_MAP(CMainDlg, CResizeDialog)
     ON_WM_PAINT()
     ON_WM_QUERYDRAGICON()
     ON_WM_CLOSE()
@@ -297,7 +297,7 @@ BEGIN_MESSAGE_MAP(CBatchEncoderDlg, CResizeDialog)
     ON_COMMAND(ID_ACCELERATOR_F8, OnOptionsConfigureFormat)
 END_MESSAGE_MAP()
 
-BOOL CBatchEncoderDlg::OnInitDialog()
+BOOL CMainDlg::OnInitDialog()
 {
     CResizeDialog::OnInitDialog();
 
@@ -313,7 +313,7 @@ BOOL CBatchEncoderDlg::OnInitDialog()
     m_StatusBar.SetParts(2, nStatusBarParts);
 
     // accelerators
-    m_hAccel = ::LoadAccelerators(::GetModuleHandle(NULL), MAKEINTRESOURCE(IDR_ACCELERATOR_BATCHENCODER));
+    m_hAccel = ::LoadAccelerators(::GetModuleHandle(NULL), MAKEINTRESOURCE(IDR_ACCELERATOR_MAIN));
 
     // OnNotifyFormat WM_NOTIFYFORMAT
 #ifdef _UNICODE
@@ -386,17 +386,17 @@ BOOL CBatchEncoderDlg::OnInitDialog()
     return TRUE;
 }
 
-void CBatchEncoderDlg::OnOK()
+void CMainDlg::OnOK()
 {
 
 }
 
-void CBatchEncoderDlg::OnCancel()
+void CMainDlg::OnCancel()
 {
 
 }
 
-BOOL CBatchEncoderDlg::PreTranslateMessage(MSG* pMsg)
+BOOL CMainDlg::PreTranslateMessage(MSG* pMsg)
 {
     if (m_hAccel != NULL)
     {
@@ -406,7 +406,7 @@ BOOL CBatchEncoderDlg::PreTranslateMessage(MSG* pMsg)
     return CDialog::PreTranslateMessage(pMsg);
 }
 
-void CBatchEncoderDlg::OnPaint()
+void CMainDlg::OnPaint()
 {
     if (IsIconic())
     {
@@ -426,12 +426,12 @@ void CBatchEncoderDlg::OnPaint()
     }
 }
 
-HCURSOR CBatchEncoderDlg::OnQueryDragIcon()
+HCURSOR CMainDlg::OnQueryDragIcon()
 {
     return static_cast<HCURSOR>(m_hIcon);
 }
 
-void CBatchEncoderDlg::OnClose()
+void CMainDlg::OnClose()
 {
     CResizeDialog::OnClose();
 
@@ -449,7 +449,7 @@ void CBatchEncoderDlg::OnClose()
     CResizeDialog::OnOK();
 }
 
-void CBatchEncoderDlg::OnDestroy()
+void CMainDlg::OnDestroy()
 {
     CResizeDialog::OnDestroy();
 
@@ -457,7 +457,7 @@ void CBatchEncoderDlg::OnDestroy()
     m_Config.m_Formats.RemoveAllNodes();
 }
 
-void CBatchEncoderDlg::OnDropFiles(HDROP hDropInfo)
+void CMainDlg::OnDropFiles(HDROP hDropInfo)
 {
     if (this->pWorkerContext->bRunning == false && bHandleDrop == true)
     {
@@ -472,12 +472,12 @@ void CBatchEncoderDlg::OnDropFiles(HDROP hDropInfo)
     CResizeDialog::OnDropFiles(hDropInfo);
 }
 
-BOOL CBatchEncoderDlg::OnHelpInfo(HELPINFO* pHelpInfo)
+BOOL CMainDlg::OnHelpInfo(HELPINFO* pHelpInfo)
 {
     return FALSE;
 }
 
-LRESULT CBatchEncoderDlg::OnListItemChaged(WPARAM wParam, LPARAM lParam)
+LRESULT CMainDlg::OnListItemChaged(WPARAM wParam, LPARAM lParam)
 {
     if (this->pWorkerContext->bRunning == false)
     {
@@ -492,7 +492,7 @@ LRESULT CBatchEncoderDlg::OnListItemChaged(WPARAM wParam, LPARAM lParam)
     return(0);
 }
 
-LRESULT CBatchEncoderDlg::OnNotifyFormat(WPARAM wParam, LPARAM lParam)
+LRESULT CMainDlg::OnNotifyFormat(WPARAM wParam, LPARAM lParam)
 {
 #ifdef _UNICODE
     return NFR_UNICODE;
@@ -501,7 +501,7 @@ LRESULT CBatchEncoderDlg::OnNotifyFormat(WPARAM wParam, LPARAM lParam)
 #endif
 }
 
-void CBatchEncoderDlg::OnLvnKeydownListInputItems(NMHDR *pNMHDR, LRESULT *pResult)
+void CMainDlg::OnLvnKeydownListInputItems(NMHDR *pNMHDR, LRESULT *pResult)
 {
     if (this->pWorkerContext->bRunning == false)
     {
@@ -521,7 +521,7 @@ void CBatchEncoderDlg::OnLvnKeydownListInputItems(NMHDR *pNMHDR, LRESULT *pResul
     *pResult = 0;
 }
 
-void CBatchEncoderDlg::OnNMRclickListInputItems(NMHDR *pNMHDR, LRESULT *pResult)
+void CMainDlg::OnNMRclickListInputItems(NMHDR *pNMHDR, LRESULT *pResult)
 {
     if (this->pWorkerContext->bRunning == false)
     {
@@ -533,7 +533,7 @@ void CBatchEncoderDlg::OnNMRclickListInputItems(NMHDR *pNMHDR, LRESULT *pResult)
     *pResult = 0;
 }
 
-void CBatchEncoderDlg::OnLvnItemchangingListInputItems(NMHDR* pNMHDR, LRESULT* pResult)
+void CMainDlg::OnLvnItemchangingListInputItems(NMHDR* pNMHDR, LRESULT* pResult)
 {
     if (this->pWorkerContext->bRunning == true)
     {
@@ -543,7 +543,7 @@ void CBatchEncoderDlg::OnLvnItemchangingListInputItems(NMHDR* pNMHDR, LRESULT* p
     *pResult = false;
 }
 
-void CBatchEncoderDlg::OnLvnItemchangedListInputItems(NMHDR *pNMHDR, LRESULT *pResult)
+void CMainDlg::OnLvnItemchangedListInputItems(NMHDR *pNMHDR, LRESULT *pResult)
 {
     if (this->pWorkerContext->bRunning == false)
     {
@@ -590,7 +590,7 @@ void CBatchEncoderDlg::OnLvnItemchangedListInputItems(NMHDR *pNMHDR, LRESULT *pR
     *pResult = 0;
 }
 
-void CBatchEncoderDlg::OnCbnSelchangeComboPresets()
+void CMainDlg::OnCbnSelchangeComboPresets()
 {
     if (this->pWorkerContext->bRunning == false)
     {
@@ -604,7 +604,7 @@ void CBatchEncoderDlg::OnCbnSelchangeComboPresets()
     }
 }
 
-void CBatchEncoderDlg::OnCbnSelchangeComboFormat()
+void CMainDlg::OnCbnSelchangeComboFormat()
 {
     if (this->pWorkerContext->bRunning == false)
     {
@@ -619,7 +619,7 @@ void CBatchEncoderDlg::OnCbnSelchangeComboFormat()
     }
 }
 
-void CBatchEncoderDlg::OnBnClickedCheckOutPath()
+void CMainDlg::OnBnClickedCheckOutPath()
 {
     if (this->pWorkerContext->bRunning == false)
     {
@@ -647,7 +647,7 @@ void CBatchEncoderDlg::OnBnClickedCheckOutPath()
     }
 }
 
-void CBatchEncoderDlg::OnEnSetFocusEditOutPath()
+void CMainDlg::OnEnSetFocusEditOutPath()
 {
     if (this->pWorkerContext->bRunning == false && bSameAsSourceEdit == true)
     {
@@ -658,7 +658,7 @@ void CBatchEncoderDlg::OnEnSetFocusEditOutPath()
     }
 }
 
-void CBatchEncoderDlg::OnEnKillFocusEditOutPath()
+void CMainDlg::OnEnKillFocusEditOutPath()
 {
     if (this->pWorkerContext->bRunning == false && bSameAsSourceEdit == true)
     {
@@ -669,7 +669,7 @@ void CBatchEncoderDlg::OnEnKillFocusEditOutPath()
     }
 }
 
-void CBatchEncoderDlg::OnBnClickedButtonBrowsePath()
+void CMainDlg::OnBnClickedButtonBrowsePath()
 {
     if (this->pWorkerContext->bRunning == false)
     {
@@ -732,7 +732,7 @@ void CBatchEncoderDlg::OnBnClickedButtonBrowsePath()
     }
 }
 
-void CBatchEncoderDlg::OnBnClickedButtonConvert()
+void CMainDlg::OnBnClickedButtonConvert()
 {
 #ifdef DEBUG
     if (GetKeyState(VK_CONTROL) < 0)
@@ -744,7 +744,7 @@ void CBatchEncoderDlg::OnBnClickedButtonConvert()
 #endif
 }
 
-void CBatchEncoderDlg::OnFileLoadList()
+void CMainDlg::OnFileLoadList()
 {
     if (this->pWorkerContext->bRunning == false)
     {
@@ -769,7 +769,7 @@ void CBatchEncoderDlg::OnFileLoadList()
     }
 }
 
-void CBatchEncoderDlg::OnFileSaveList()
+void CMainDlg::OnFileSaveList()
 {
     if (this->pWorkerContext->bRunning == false)
     {
@@ -792,7 +792,7 @@ void CBatchEncoderDlg::OnFileSaveList()
     }
 }
 
-void CBatchEncoderDlg::OnFileClearList()
+void CMainDlg::OnFileClearList()
 {
     if (this->pWorkerContext->bRunning == false)
     {
@@ -805,7 +805,7 @@ void CBatchEncoderDlg::OnFileClearList()
     }
 }
 
-void CBatchEncoderDlg::OnFileExit()
+void CMainDlg::OnFileExit()
 {
     if (this->pWorkerContext->bRunning == false)
     {
@@ -813,7 +813,7 @@ void CBatchEncoderDlg::OnFileExit()
     }
 }
 
-void CBatchEncoderDlg::OnEditAddFiles()
+void CMainDlg::OnEditAddFiles()
 {
     if (this->pWorkerContext->bRunning == false)
     {
@@ -876,7 +876,7 @@ void CBatchEncoderDlg::OnEditAddFiles()
     }
 }
 
-void CBatchEncoderDlg::OnEditAddDir()
+void CMainDlg::OnEditAddDir()
 {
     if (this->pWorkerContext->bRunning == false)
     {
@@ -935,7 +935,7 @@ void CBatchEncoderDlg::OnEditAddDir()
     }
 }
 
-void CBatchEncoderDlg::OnEditRename()
+void CMainDlg::OnEditRename()
 {
     if (this->pWorkerContext->bRunning == false)
     {
@@ -952,7 +952,7 @@ void CBatchEncoderDlg::OnEditRename()
     }
 }
 
-void CBatchEncoderDlg::OnEditResetTime()
+void CMainDlg::OnEditResetTime()
 {
     if (this->pWorkerContext->bRunning == false)
     {
@@ -962,7 +962,7 @@ void CBatchEncoderDlg::OnEditResetTime()
     }
 }
 
-void CBatchEncoderDlg::OnEditResetOutput()
+void CMainDlg::OnEditResetOutput()
 {
     if (this->pWorkerContext->bRunning == false)
     {
@@ -970,7 +970,7 @@ void CBatchEncoderDlg::OnEditResetOutput()
     }
 }
 
-void CBatchEncoderDlg::OnEditRemove()
+void CMainDlg::OnEditRemove()
 {
     if (this->pWorkerContext->bRunning == false)
     {
@@ -1007,7 +1007,7 @@ void CBatchEncoderDlg::OnEditRemove()
     }
 }
 
-void CBatchEncoderDlg::OnEditCrop()
+void CMainDlg::OnEditCrop()
 {
     if (this->pWorkerContext->bRunning == false)
     {
@@ -1043,7 +1043,7 @@ void CBatchEncoderDlg::OnEditCrop()
     }
 }
 
-void CBatchEncoderDlg::OnEditRemoveChecked()
+void CMainDlg::OnEditRemoveChecked()
 {
     if (this->pWorkerContext->bRunning == false)
     {
@@ -1070,7 +1070,7 @@ void CBatchEncoderDlg::OnEditRemoveChecked()
     }
 }
 
-void CBatchEncoderDlg::OnEditRemoveUnchecked()
+void CMainDlg::OnEditRemoveUnchecked()
 {
     if (this->pWorkerContext->bRunning == false)
     {
@@ -1097,7 +1097,7 @@ void CBatchEncoderDlg::OnEditRemoveUnchecked()
     }
 }
 
-void CBatchEncoderDlg::OnEditCheckSelected()
+void CMainDlg::OnEditCheckSelected()
 {
     if (this->pWorkerContext->bRunning == false)
     {
@@ -1113,7 +1113,7 @@ void CBatchEncoderDlg::OnEditCheckSelected()
     }
 }
 
-void CBatchEncoderDlg::OnEditUncheckSelected()
+void CMainDlg::OnEditUncheckSelected()
 {
     if (this->pWorkerContext->bRunning == false)
     {
@@ -1131,7 +1131,7 @@ void CBatchEncoderDlg::OnEditUncheckSelected()
     }
 }
 
-void CBatchEncoderDlg::OnEditSelectAll()
+void CMainDlg::OnEditSelectAll()
 {
     if (this->pWorkerContext->bRunning == false)
     {
@@ -1139,7 +1139,7 @@ void CBatchEncoderDlg::OnEditSelectAll()
     }
 }
 
-void CBatchEncoderDlg::OnEditSelectNone()
+void CMainDlg::OnEditSelectNone()
 {
     if (this->pWorkerContext->bRunning == false)
     {
@@ -1147,7 +1147,7 @@ void CBatchEncoderDlg::OnEditSelectNone()
     }
 }
 
-void CBatchEncoderDlg::OnEditInvertSelection()
+void CMainDlg::OnEditInvertSelection()
 {
     if (this->pWorkerContext->bRunning == false)
     {
@@ -1165,7 +1165,7 @@ void CBatchEncoderDlg::OnEditInvertSelection()
     }
 }
 
-void CBatchEncoderDlg::OnEditOpen()
+void CMainDlg::OnEditOpen()
 {
     if (this->pWorkerContext->bRunning == false)
     {
@@ -1179,7 +1179,7 @@ void CBatchEncoderDlg::OnEditOpen()
     }
 }
 
-void CBatchEncoderDlg::OnEditExplore()
+void CMainDlg::OnEditExplore()
 {
     if (this->pWorkerContext->bRunning == false)
     {
@@ -1195,12 +1195,12 @@ void CBatchEncoderDlg::OnEditExplore()
     }
 }
 
-void CBatchEncoderDlg::OnActionConvert()
+void CMainDlg::OnActionConvert()
 {
     this->StartConvert();
 }
 
-void CBatchEncoderDlg::OnOptionsConfigurePresets()
+void CMainDlg::OnOptionsConfigurePresets()
 {
     if (this->pWorkerContext->bRunning == false)
     {
@@ -1225,7 +1225,7 @@ void CBatchEncoderDlg::OnOptionsConfigurePresets()
     }
 }
 
-void CBatchEncoderDlg::OnOptionsConfigureFormat()
+void CMainDlg::OnOptionsConfigureFormat()
 {
     if (this->pWorkerContext->bRunning == false)
     {
@@ -1254,7 +1254,7 @@ void CBatchEncoderDlg::OnOptionsConfigureFormat()
     }
 }
 
-void CBatchEncoderDlg::OnOptionsDeleteSource()
+void CMainDlg::OnOptionsDeleteSource()
 {
     if (this->pWorkerContext->bRunning == false)
     {
@@ -1265,7 +1265,7 @@ void CBatchEncoderDlg::OnOptionsDeleteSource()
     }
 }
 
-void CBatchEncoderDlg::OnOptionsShutdownWindows()
+void CMainDlg::OnOptionsShutdownWindows()
 {
     if (this->pWorkerContext->bRunning == false)
     {
@@ -1276,7 +1276,7 @@ void CBatchEncoderDlg::OnOptionsShutdownWindows()
     }
 }
 
-void CBatchEncoderDlg::OnOptionsDoNotSave()
+void CMainDlg::OnOptionsDoNotSave()
 {
     if (this->pWorkerContext->bRunning == false)
     {
@@ -1287,7 +1287,7 @@ void CBatchEncoderDlg::OnOptionsDoNotSave()
     }
 }
 
-void CBatchEncoderDlg::OnOptionsDeleteOnErrors()
+void CMainDlg::OnOptionsDeleteOnErrors()
 {
     if (this->pWorkerContext->bRunning == false)
     {
@@ -1298,7 +1298,7 @@ void CBatchEncoderDlg::OnOptionsDeleteOnErrors()
     }
 }
 
-void CBatchEncoderDlg::OnOptionsStopOnErrors()
+void CMainDlg::OnOptionsStopOnErrors()
 {
     if (this->pWorkerContext->bRunning == false)
     {
@@ -1309,11 +1309,11 @@ void CBatchEncoderDlg::OnOptionsStopOnErrors()
     }
 }
 
-void CBatchEncoderDlg::OnLanguageDefault()
+void CMainDlg::OnLanguageDefault()
 {
 }
 
-void CBatchEncoderDlg::OnLanguageChange(UINT nID)
+void CMainDlg::OnLanguageChange(UINT nID)
 {
     int nSelectedLanguage = nID - ID_LANGUAGE_MIN;
     CLanguage& language = m_Config.m_Languages.GetData(nSelectedLanguage);
@@ -1336,7 +1336,7 @@ void CBatchEncoderDlg::OnLanguageChange(UINT nID)
     this->SetLanguage();
 }
 
-void CBatchEncoderDlg::OnHelpWebsite()
+void CMainDlg::OnHelpWebsite()
 {
     if (this->pWorkerContext->bRunning == false)
     {
@@ -1344,7 +1344,7 @@ void CBatchEncoderDlg::OnHelpWebsite()
     }
 }
 
-void CBatchEncoderDlg::OnHelpAbout()
+void CMainDlg::OnHelpAbout()
 {
     if (this->pWorkerContext->bRunning == false)
     {
@@ -1354,7 +1354,7 @@ void CBatchEncoderDlg::OnHelpAbout()
     }
 }
 
-bool CBatchEncoderDlg::SearchFolderForLanguages(CString szFile)
+bool CMainDlg::SearchFolderForLanguages(CString szFile)
 {
     try
     {
@@ -1410,7 +1410,7 @@ bool CBatchEncoderDlg::SearchFolderForLanguages(CString szFile)
     return true;
 }
 
-void CBatchEncoderDlg::SetLanguageMenu()
+void CMainDlg::SetLanguageMenu()
 {
     CMenu *m_hMenu = this->GetMenu();
     CMenu *m_hLangMenu = m_hMenu->GetSubMenu(4);
@@ -1456,7 +1456,7 @@ void CBatchEncoderDlg::SetLanguageMenu()
     }
 }
 
-void CBatchEncoderDlg::SetLanguage()
+void CMainDlg::SetLanguage()
 {
     CLanguageHelper helper(&m_Config);
     CMenu *m_hMenu = this->GetMenu();
@@ -1531,7 +1531,7 @@ void CBatchEncoderDlg::SetLanguage()
     helper.SetWndText(&m_BtnConvert, 0x000A0017);
 }
 
-void CBatchEncoderDlg::GetItems()
+void CMainDlg::GetItems()
 {
     int nItems = this->m_LstInputItems.GetItemCount();
     for (int i = 0; i < nItems; i++)
@@ -1544,7 +1544,7 @@ void CBatchEncoderDlg::GetItems()
     }
 }
 
-void CBatchEncoderDlg::SetItems()
+void CMainDlg::SetItems()
 {
     int nItems = m_Config.m_Items.GetSize();
     for (int i = 0; i < nItems; i++)
@@ -1554,7 +1554,7 @@ void CBatchEncoderDlg::SetItems()
     }
 }
 
-void CBatchEncoderDlg::GetOptions()
+void CMainDlg::GetOptions()
 {
     // option: SelectedFormat
     m_Config.m_Options.nSelectedFormat = this->m_CmbFormat.GetCurSel();
@@ -1605,7 +1605,7 @@ void CBatchEncoderDlg::GetOptions()
         nColWidth[6]);
 }
 
-void CBatchEncoderDlg::SetOptions()
+void CMainDlg::SetOptions()
 {
     // option: SelectedFormat
 
@@ -1710,7 +1710,7 @@ void CBatchEncoderDlg::SetOptions()
     // option: FormatsListColumns
 }
 
-bool CBatchEncoderDlg::LoadOptions(CString szFileXml)
+bool CMainDlg::LoadOptions(CString szFileXml)
 {
     XmlConfiguration doc;
     if (doc.Open(szFileXml) == false)
@@ -1726,7 +1726,7 @@ bool CBatchEncoderDlg::LoadOptions(CString szFileXml)
     return true;
 }
 
-bool CBatchEncoderDlg::SaveOptions(CString szFileXml)
+bool CMainDlg::SaveOptions(CString szFileXml)
 {
     this->GetOptions();
 
@@ -1735,7 +1735,7 @@ bool CBatchEncoderDlg::SaveOptions(CString szFileXml)
     return doc.Save(szFileXml);
 }
 
-bool CBatchEncoderDlg::LoadFormats(CString szFileXml)
+bool CMainDlg::LoadFormats(CString szFileXml)
 {
     XmlConfiguration doc;
     if (doc.Open(szFileXml) == false)
@@ -1751,14 +1751,14 @@ bool CBatchEncoderDlg::LoadFormats(CString szFileXml)
     return true;
 }
 
-bool CBatchEncoderDlg::SaveFormats(CString szFileXml)
+bool CMainDlg::SaveFormats(CString szFileXml)
 {
     XmlConfiguration doc;
     doc.SetFormats(this->m_Config.m_Formats);
     return doc.Save(szFileXml);
 }
 
-bool CBatchEncoderDlg::LoadItems(CString szFileXml)
+bool CMainDlg::LoadItems(CString szFileXml)
 {
     XmlConfiguration doc;
     if (doc.Open(szFileXml) == false)
@@ -1775,7 +1775,7 @@ bool CBatchEncoderDlg::LoadItems(CString szFileXml)
     return true;
 }
 
-bool CBatchEncoderDlg::SaveItems(CString szFileXml)
+bool CMainDlg::SaveItems(CString szFileXml)
 {
     this->GetItems();
 
@@ -1784,7 +1784,7 @@ bool CBatchEncoderDlg::SaveItems(CString szFileXml)
     return doc.Save(szFileXml);
 }
 
-int CBatchEncoderDlg::AddToItems(CString szPath)
+int CMainDlg::AddToItems(CString szPath)
 {
     int nFormat = this->m_CmbFormat.GetCurSel();
     int nPreset = this->m_CmbPresets.GetCurSel();
@@ -1826,7 +1826,7 @@ int CBatchEncoderDlg::AddToItems(CString szPath)
     return (int)m_Config.m_Items.GetSize() - 1;
 }
 
-void CBatchEncoderDlg::AddToList(CItem &item, int nItem)
+void CMainDlg::AddToList(CItem &item, int nItem)
 {
     CString tmpBuf;
     LVITEM lvi;
@@ -1879,7 +1879,7 @@ void CBatchEncoderDlg::AddToList(CItem &item, int nItem)
     m_LstInputItems.SetCheck(nItem, item.bChecked);
 }
 
-bool CBatchEncoderDlg::AddToList(CString szPath)
+bool CMainDlg::AddToList(CString szPath)
 {
     int nItem = this->AddToItems(szPath);
     if (nItem == -1)
@@ -1891,7 +1891,7 @@ bool CBatchEncoderDlg::AddToList(CString szPath)
     return true;
 }
 
-void CBatchEncoderDlg::HandleDropFiles(HDROP hDropInfo)
+void CMainDlg::HandleDropFiles(HDROP hDropInfo)
 {
     int nCount = ::DragQueryFile(hDropInfo, (UINT)0xFFFFFFFF, NULL, 0);
     if (nCount > 0)
@@ -1921,7 +1921,7 @@ void CBatchEncoderDlg::HandleDropFiles(HDROP hDropInfo)
     ::DragFinish(hDropInfo);
 }
 
-void CBatchEncoderDlg::SearchFolderForFiles(CString szFile, const bool bRecurse)
+void CMainDlg::SearchFolderForFiles(CString szFile, const bool bRecurse)
 {
     try
     {
@@ -1977,7 +1977,7 @@ void CBatchEncoderDlg::SearchFolderForFiles(CString szFile, const bool bRecurse)
     }
 }
 
-void CBatchEncoderDlg::UpdateFormatComboBox()
+void CMainDlg::UpdateFormatComboBox()
 {
     if (this->pWorkerContext->bRunning == false)
     {
@@ -2001,7 +2001,7 @@ void CBatchEncoderDlg::UpdateFormatComboBox()
     }
 }
 
-void CBatchEncoderDlg::UpdatePresetComboBox()
+void CMainDlg::UpdatePresetComboBox()
 {
     if (this->pWorkerContext->bRunning == false)
     {
@@ -2036,7 +2036,7 @@ void CBatchEncoderDlg::UpdatePresetComboBox()
     }
 }
 
-void CBatchEncoderDlg::UpdateFormatAndPreset()
+void CMainDlg::UpdateFormatAndPreset()
 {
     int nFormat = this->m_CmbFormat.GetCurSel();
     int nPreset = this->m_CmbPresets.GetCurSel();
@@ -2082,12 +2082,12 @@ void CBatchEncoderDlg::UpdateFormatAndPreset()
     }
 }
 
-void CBatchEncoderDlg::ResetOutput()
+void CMainDlg::ResetOutput()
 {
     this->UpdateFormatAndPreset();
 }
 
-void CBatchEncoderDlg::ResetConvertionTime()
+void CMainDlg::ResetConvertionTime()
 {
     int nCount = m_LstInputItems.GetItemCount();
     if (nCount > 0)
@@ -2110,7 +2110,7 @@ void CBatchEncoderDlg::ResetConvertionTime()
     }
 }
 
-void CBatchEncoderDlg::ResetConvertionStatus()
+void CMainDlg::ResetConvertionStatus()
 {
     int nCount = m_LstInputItems.GetItemCount();
     if (nCount > 0)
@@ -2133,7 +2133,7 @@ void CBatchEncoderDlg::ResetConvertionStatus()
     }
 }
 
-void CBatchEncoderDlg::UpdateStatusBar()
+void CMainDlg::UpdateStatusBar()
 {
     int nCount = m_LstInputItems.GetItemCount();
     if (nCount > 0)
@@ -2153,7 +2153,7 @@ void CBatchEncoderDlg::UpdateStatusBar()
     }
 }
 
-void CBatchEncoderDlg::EnableUserInterface(BOOL bEnable)
+void CMainDlg::EnableUserInterface(BOOL bEnable)
 {
     if (bEnable == FALSE)
     {
@@ -2209,7 +2209,7 @@ void CBatchEncoderDlg::EnableUserInterface(BOOL bEnable)
     this->m_ChkOutPath.EnableWindow(bEnable);
 }
 
-void CBatchEncoderDlg::StartConvert()
+void CMainDlg::StartConvert()
 {
     static volatile bool bSafeCheck = false;
     if (bSafeCheck == true)
@@ -2307,7 +2307,7 @@ void CBatchEncoderDlg::StartConvert()
     }
 }
 
-void CBatchEncoderDlg::FinishConvert()
+void CMainDlg::FinishConvert()
 {
     this->m_BtnConvert.SetWindowText(m_Config.GetString(0x000A0017, _T("Conve&rt")));
     this->GetMenu()->ModifyMenu(ID_ACTION_CONVERT, MF_BYCOMMAND, ID_ACTION_CONVERT, m_Config.GetString(0x00030002, _T("Conve&rt\tF9")));
@@ -2344,7 +2344,7 @@ bool ConvertFileTrace(CFileContext* pContext)
 #endif
 
 #ifdef DEBUG
-void CBatchEncoderDlg::TraceConvert()
+void CMainDlg::TraceConvert()
 {
     CWorkerContext *pTraceWorkerContext = new CTraceWorkerContext(&this->m_Config);
 

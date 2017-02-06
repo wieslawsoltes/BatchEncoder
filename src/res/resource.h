@@ -2,13 +2,13 @@
 // Microsoft Visual C++ generated include file.
 // Used by BatchEncoder.rc
 //
-#define IDI_TRAYICON                    101
-#define IDD_DIALOG_BATCHENCODER         102
+#define IDI_ICON_MAIN                   101
+#define IDD_DIALOG_MAIN                 102
 #define IDD_DIALOG_PRESETS              103
 #define IDD_DIALOG_FORMATS              104
 #define IDD_DIALOG_ABOUT                105
-#define IDR_MENU_BATCHENCODER           106
-#define IDR_ACCELERATOR_BATCHENCODER    107
+#define IDR_MENU_MAIN                   106
+#define IDR_ACCELERATOR_MAIN            107
 #define IDC_LIST_ITEMS                  1001
 #define IDC_STATIC_GROUP_OUTPUT         1002
 #define IDC_STATIC_TEXT_FORMAT          1003

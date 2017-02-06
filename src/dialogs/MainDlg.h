@@ -18,13 +18,13 @@
 #define ITEM_COLUMN_TIME    5
 #define ITEM_COLUMN_STATUS  6
 
-class CBatchEncoderDlg : public CResizeDialog
+class CMainDlg : public CResizeDialog
 {
-    DECLARE_DYNAMIC(CBatchEncoderDlg)
+    DECLARE_DYNAMIC(CMainDlg)
 public:
-    CBatchEncoderDlg(CWnd* pParent = NULL);
-    virtual ~CBatchEncoderDlg();
-    enum { IDD = IDD_DIALOG_BATCHENCODER };
+    CMainDlg(CWnd* pParent = NULL);
+    virtual ~CMainDlg();
+    enum { IDD = IDD_DIALOG_MAIN };
 protected:
     virtual void DoDataExchange(CDataExchange* pDX);
     DECLARE_MESSAGE_MAP()

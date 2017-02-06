@@ -45,13 +45,7 @@
     <ClCompile Include="StdAfx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="BatchEncoder.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Strings.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="BatchEncoderWorkerContext.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="XmlConfiguration.cpp">
@@ -84,9 +78,6 @@
     <ClCompile Include="dialogs\AboutDlg.cpp">
       <Filter>Source Files\Dialogs</Filter>
     </ClCompile>
-    <ClCompile Include="dialogs\BatchEncoderDlg.cpp">
-      <Filter>Source Files\Dialogs</Filter>
-    </ClCompile>
     <ClCompile Include="dialogs\FormatsDlg.cpp">
       <Filter>Source Files\Dialogs</Filter>
     </ClCompile>
@@ -105,18 +96,21 @@
     <ClCompile Include="worker\WorkThread.cpp">
       <Filter>Source Files\Worker</Filter>
     </ClCompile>
+    <ClCompile Include="dialogs\MainDlg.cpp">
+      <Filter>Source Files\Dialogs</Filter>
+    </ClCompile>
+    <ClCompile Include="MainApp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ProgressWorkerContext.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="StdAfx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="BatchEncoder.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Strings.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="BatchEncoderWorkerContext.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="XmlConfiguration.h">
@@ -200,9 +194,6 @@
     <ClInclude Include="dialogs\AboutDlg.h">
       <Filter>Header Files\Dialogs</Filter>
     </ClInclude>
-    <ClInclude Include="dialogs\BatchEncoderDlg.h">
-      <Filter>Header Files\Dialogs</Filter>
-    </ClInclude>
     <ClInclude Include="dialogs\FormatsDlg.h">
       <Filter>Header Files\Dialogs</Filter>
     </ClInclude>
@@ -238,6 +229,15 @@
     </ClInclude>
     <ClInclude Include="worker\WorkThread.h">
       <Filter>Header Files\Worker</Filter>
+    </ClInclude>
+    <ClInclude Include="dialogs\MainDlg.h">
+      <Filter>Header Files\Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="MainApp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ProgressWorkerContext.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="TraceWorkerContext.h">
       <Filter>Header Files</Filter>

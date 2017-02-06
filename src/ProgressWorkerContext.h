@@ -8,16 +8,16 @@
 #include "utilities\TimeCount.h"
 #include "Configuration.h"
 #include "worker\WorkerContext.h"
-#include "dialogs\BatchEncoderDlg.h"
+#include "dialogs\MainDlg.h"
 
-class CBatchEncoderWorkerContext : public CWorkerContext
+class CProgressWorkerContext : public CWorkerContext
 {
 private:
     CTimeCount timer;
-    CBatchEncoderDlg *pDlg;
+    CMainDlg *pDlg;
 public:
-    CBatchEncoderWorkerContext(CConfiguration* pConfig, CBatchEncoderDlg* pDlg);
-    virtual ~CBatchEncoderWorkerContext();
+    CProgressWorkerContext(CConfiguration* pConfig, CMainDlg* pDlg);
+    virtual ~CProgressWorkerContext();
 public:
     void Init();
     void Next(int nItemId);

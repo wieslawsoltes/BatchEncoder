@@ -2,7 +2,7 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 #include "StdAfx.h"
-#include "..\BatchEncoder.h"
+#include "..\MainApp.h"
 #include "..\Strings.h"
 #include "..\configuration\LanguageHelper.h"
 #include "..\utilities\Utilities.h"
@@ -15,7 +15,7 @@ IMPLEMENT_DYNAMIC(CPresetsDlg, CDialog)
 CPresetsDlg::CPresetsDlg(CWnd* pParent /*=NULL*/)
     : CResizeDialog(CPresetsDlg::IDD, pParent)
 {
-    this->m_hIcon = AfxGetApp()->LoadIcon(IDI_TRAYICON);
+    this->m_hIcon = AfxGetApp()->LoadIcon(IDI_ICON_MAIN);
     this->szPresetsDialogResize = _T("");
     this->szPresetsListColumns = _T("");
     this->bUpdate = false;

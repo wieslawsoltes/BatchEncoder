@@ -2,27 +2,27 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 #include "StdAfx.h"
-#include "BatchEncoder.h"
+#include "MainApp.h"
 #include "controls\ResizeDialog.h"
-#include "dialogs\BatchEncoderDlg.h"
+#include "dialogs\MainDlg.h"
 
-CBatchEncoderApp theApp;
+CMainApp mainApp;
 
-BEGIN_MESSAGE_MAP(CBatchEncoderApp, CWinApp)
+BEGIN_MESSAGE_MAP(CMainApp, CWinApp)
     ON_COMMAND(ID_HELP, CWinApp::OnHelp)
 END_MESSAGE_MAP()
 
-CBatchEncoderApp::CBatchEncoderApp()
+CMainApp::CMainApp()
 {
 
 }
 
-BOOL CBatchEncoderApp::InitInstance()
+BOOL CMainApp::InitInstance()
 {
     InitCommonControls();
     CWinApp::InitInstance();
 
-    CBatchEncoderDlg dlg;
+    CMainDlg dlg;
     m_pMainWnd = &dlg;
     dlg.DoModal();
 

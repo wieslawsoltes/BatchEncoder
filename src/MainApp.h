@@ -9,13 +9,13 @@
 
 #include "res\resource.h"
 
-class CBatchEncoderApp : public CWinApp
+class CMainApp : public CWinApp
 {
 public:
-    CBatchEncoderApp();
+    CMainApp();
 public:
     virtual BOOL InitInstance();
     DECLARE_MESSAGE_MAP()
 };
 
-extern CBatchEncoderApp theApp;
+extern CMainApp mainApp;

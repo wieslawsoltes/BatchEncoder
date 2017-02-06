@@ -263,12 +263,12 @@ copy /-Y ..\lang\*.language $(OutDir)</Command>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="BatchEncoder.cpp" />
+    <ClCompile Include="MainApp.cpp" />
     <ClCompile Include="Strings.cpp" />
-    <ClCompile Include="BatchEncoderWorkerContext.cpp" />
+    <ClCompile Include="ProgressWorkerContext.cpp" />
     <ClCompile Include="XmlConfiguration.cpp" />
     <ClCompile Include="dialogs\AboutDlg.cpp" />
-    <ClCompile Include="dialogs\BatchEncoderDlg.cpp" />
+    <ClCompile Include="dialogs\MainDlg.cpp" />
     <ClCompile Include="dialogs\FormatsDlg.cpp" />
     <ClCompile Include="dialogs\PresetsDlg.cpp" />
     <ClCompile Include="controls\MyListCtrl.cpp" />
@@ -290,9 +290,9 @@ copy /-Y ..\lang\*.language $(OutDir)</Command>
     <ClInclude Include="TraceWorkerContext.h" />
     <ClInclude Include="version.h" />
     <ClInclude Include="res\resource.h" />
-    <ClInclude Include="BatchEncoder.h" />
+    <ClInclude Include="MainApp.h" />
     <ClInclude Include="Strings.h" />
-    <ClInclude Include="BatchEncoderWorkerContext.h" />
+    <ClInclude Include="ProgressWorkerContext.h" />
     <ClInclude Include="configuration\Format.h" />
     <ClInclude Include="configuration\FormatsList.h" />
     <ClInclude Include="configuration\Item.h" />
@@ -317,7 +317,7 @@ copy /-Y ..\lang\*.language $(OutDir)</Command>
     <ClInclude Include="controls\ResizeDialog.h" />
     <ClInclude Include="Controls.h" />
     <ClInclude Include="dialogs\AboutDlg.h" />
-    <ClInclude Include="dialogs\BatchEncoderDlg.h" />
+    <ClInclude Include="dialogs\MainDlg.h" />
     <ClInclude Include="dialogs\FormatsDlg.h" />
     <ClInclude Include="dialogs\PresetsDlg.h" />
     <ClInclude Include="utilities\TimeCount.h" />
