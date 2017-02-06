@@ -1877,7 +1877,94 @@ void CMainDlg::HandleDropFiles(HDROP hDropInfo)
             else
             {
                 CString szPath = szFile;
-                this->AddToList(szPath);
+                CString szExt = ::GetFileExtension(szPath);
+
+                if (szExt.CompareNoCase(_T("items")) == 0)
+                {
+                    this->LoadItems(szPath);
+                }
+                else if (szExt.CompareNoCase(_T("formats")) == 0)
+                {
+                    this->LoadFormats(szPath);
+                }
+                else if (szExt.CompareNoCase(_T("format")) == 0)
+                {
+                    // TODO: Add new format to formats list.
+                }
+                else if (szExt.CompareNoCase(_T("presets")) == 0)
+                {
+                    // TODO: Add presets to current format presets list.
+                }
+                else if (szExt.CompareNoCase(_T("options")) == 0)
+                {
+                    this->LoadOptions(szPath);
+                }
+                else if (szExt.CompareNoCase(_T("exe")) == 0)
+                {
+                    // Set current format exe path.
+                    int nFormat = this->m_CmbFormat.GetCurSel();
+                    if (nFormat != -1)
+                    {
+                        CFormat& format = m_Config.m_Formats.GetData(nFormat);
+                        format.szPath = szPath;
+                    }
+                }
+                else if (szExt.CompareNoCase(_T("progress")) == 0)
+                {
+                    // Set current format progress path.
+                    int nFormat = this->m_CmbFormat.GetCurSel();
+                    if (nFormat != -1)
+                    {
+                        CFormat& format = m_Config.m_Formats.GetData(nFormat);
+                        format.szFunction = szPath;
+                    }
+                }
+                else if (szExt.CompareNoCase(_T("dll")) == 0)
+                {
+                    // Set current format progress path.
+                    int nFormat = this->m_CmbFormat.GetCurSel();
+                    if (nFormat != -1)
+                    {
+                        CFormat& format = m_Config.m_Formats.GetData(nFormat);
+                        format.szFunction = szPath;
+                    }
+                }
+                else if (szExt.CompareNoCase(_T("language")) == 0)
+                {
+                    // Add new language to languages list.
+                    XmlConfiguration doc;
+                    if (doc.Open(szPath) == true)
+                    {
+                        CLanguage language;
+                        doc.GetLanguage(language);
+
+                        // remove old languages
+                        CMenu *m_hMenu = this->GetMenu();
+                        CMenu *m_hLangMenu = m_hMenu->GetSubMenu(4);
+                        int nLanguages = m_Config.m_Languages.GetSize();
+                        if (nLanguages > 0)
+                        {
+                            for (int i = 0; i < nLanguages; i++)
+                            {
+                                UINT nLangID = ID_LANGUAGE_MIN + i;
+                                m_hLangMenu->DeleteMenu(nLangID, 0);
+                            }
+                        }
+
+                        // add new languages
+                        this->m_Config.m_Languages.InsertNode(language);
+
+                        // update languages menu
+                        this->SetLanguageMenu();
+
+                        // restore default language
+                        this->SetLanguage();
+                    }
+                }
+                else
+                {
+                    this->AddToList(szPath);
+                }
             }
 
             szFile.ReleaseBuffer();
