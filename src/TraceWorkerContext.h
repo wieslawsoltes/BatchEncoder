@@ -6,7 +6,6 @@
 #include <afxwin.h>
 #include <afxcmn.h>
 #include "utilities\TimeCount.h"
-#include "Configuration.h"
 #include "worker\WorkerContext.h"
 
 #ifdef DEBUG

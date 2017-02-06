@@ -6,7 +6,8 @@
 #include <afxcmn.h>
 #include <afxwin.h>
 #include "..\Controls.h"
-#include "..\Configuration.h"
+#include "..\configuration\FormatsList.h"
+#include "..\configuration\Configuration.h"
 
 #define FORMAT_COLUMN_NAME      0
 #define FORMAT_COLUMN_TEMPLATE  1

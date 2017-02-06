@@ -6,7 +6,6 @@
 #include "..\Strings.h"
 #include "..\utilities\TimeCount.h"
 #include "..\utilities\Utilities.h"
-#include "..\Configuration.h"
 #include "WorkThread.h"
 
 bool ProgresssLoop(CFileContext* pContext, CProcessContext &processContext, int &nProgress)

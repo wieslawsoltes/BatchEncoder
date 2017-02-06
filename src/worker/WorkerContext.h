@@ -3,6 +3,8 @@
 
 #pragma once
 
+#include "configuration\Configuration.h"
+
 class CWorkerContext
 {
 public:

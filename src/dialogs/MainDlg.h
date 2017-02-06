@@ -7,7 +7,6 @@
 #include <afxcmn.h>
 #include "..\Controls.h"
 #include "..\utilities\TimeCount.h"
-#include "..\Configuration.h"
 #include "..\worker\WorkerContext.h"
 
 #define ITEM_COLUMN_NAME    0

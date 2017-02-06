@@ -6,7 +6,13 @@
 #include <afxstr.h>
 #include <afxtempl.h>
 #include "xml\tinyxml2.h" // https://github.com/leethomason/tinyxml2
-#include "Configuration.h"
+#include "configuration\Options.h"
+#include "configuration\PresetsList.h"
+#include "configuration\Format.h"
+#include "configuration\FormatsList.h"
+#include "configuration\ItemsList.h"
+#include "configuration\Language.h"
+#include "configuration\LanguagesList.h"
 
 class XmlConfiguration : private tinyxml2::XMLDocument
 {
