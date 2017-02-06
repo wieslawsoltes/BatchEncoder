@@ -57,16 +57,15 @@ const TCHAR* pszMainDialog[] = {
     /* 02 */ _T("Items"),
     /* 03 */ _T("No Items"),
     /* 04 */ _T("Recurse subdirectories"),
-    /* 05 */ _T("<< same as source file >>"),
-    /* 06 */ _T("Output path:"),
-    /* 07 */ _T("Failed to load file!"),
-    /* 08 */ _T("Failed to save file!"),
-    /* 09 */ _T("Failed to allocate memory for filenames buffer!"),
-    /* 10 */ _T("Select folder:"),
-    /* 11 */ _T("Error while searching for language files!"),
-    /* 12 */ _T("Error while searching for item files!"),
-    /* 13 */ _T("Unable to create output path!"),
-    /* 14 */ _T("Fatal error when creating thread!")
+    /* 05 */ _T("Output path:"),
+    /* 06 */ _T("Failed to load file!"),
+    /* 07 */ _T("Failed to save file!"),
+    /* 08 */ _T("Failed to allocate memory for filenames buffer!"),
+    /* 09 */ _T("Select folder:"),
+    /* 10 */ _T("Error while searching for language files!"),
+    /* 11 */ _T("Error while searching for item files!"),
+    /* 12 */ _T("Unable to create output path!"),
+    /* 13 */ _T("Fatal error when creating thread!")
 };
 
 const TCHAR* pszPresetsDialog[] = {

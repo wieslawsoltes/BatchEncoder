@@ -240,8 +240,6 @@ BEGIN_MESSAGE_MAP(CMainDlg, CResizeDialog)
     ON_CBN_SELCHANGE(IDC_COMBO_PRESETS, OnCbnSelchangeComboPresets)
     ON_CBN_SELCHANGE(IDC_COMBO_FORMAT, OnCbnSelchangeComboFormat)
     ON_BN_CLICKED(IDC_CHECK_OUTPUT, OnBnClickedCheckOutPath)
-    ON_EN_SETFOCUS(IDC_EDIT_OUTPUT, OnEnSetFocusEditOutPath)
-    ON_EN_KILLFOCUS(IDC_EDIT_OUTPUT, OnEnKillFocusEditOutPath)
     ON_BN_CLICKED(IDC_BUTTON_BROWSE_OUTPUT, OnBnClickedButtonBrowsePath)
     ON_BN_CLICKED(IDC_BUTTON_CONVERT, OnBnClickedButtonConvert)
     ON_COMMAND(ID_FILE_LOADLIST, OnFileLoadList)
@@ -319,9 +317,6 @@ BOOL CMainDlg::OnInitDialog()
 #ifdef _UNICODE
     m_LstInputItems.SendMessage(CCM_SETUNICODEFORMAT, (WPARAM)(BOOL)TRUE, 0);
 #endif
-
-    // enable '<< same as source file >>'
-    bSameAsSourceEdit = true;
 
     // dialog title
     this->SetWindowText(_T(VER_PRODUCTNAME_STR));
@@ -630,42 +625,14 @@ void CMainDlg::OnBnClickedCheckOutPath()
 
         if (bIsChecked == false)
         {
-            if (bSameAsSourceEdit == true)
-                this->OnEnSetFocusEditOutPath();
-
             m_BtnBrowse.EnableWindow(FALSE);
             m_EdtOutPath.EnableWindow(FALSE);
         }
         else
         {
-            if (bSameAsSourceEdit == true)
-                this->OnEnKillFocusEditOutPath();
-
             m_BtnBrowse.EnableWindow(TRUE);
             m_EdtOutPath.EnableWindow(TRUE);
         }
-    }
-}
-
-void CMainDlg::OnEnSetFocusEditOutPath()
-{
-    if (this->pWorkerContext->bRunning == false && bSameAsSourceEdit == true)
-    {
-        CString szPath;
-        m_EdtOutPath.GetWindowText(szPath);
-        if (szPath.CompareNoCase(m_Config.GetString(0x00210006, pszMainDialog[5])) == 0)
-            m_EdtOutPath.SetWindowText(_T(""));
-    }
-}
-
-void CMainDlg::OnEnKillFocusEditOutPath()
-{
-    if (this->pWorkerContext->bRunning == false && bSameAsSourceEdit == true)
-    {
-        CString szPath;
-        m_EdtOutPath.GetWindowText(szPath);
-        if (szPath.CompareNoCase(_T("")) == 0)
-            m_EdtOutPath.SetWindowText(m_Config.GetString(0x00210006, pszMainDialog[5]));
     }
 }
 
@@ -679,7 +646,7 @@ void CMainDlg::OnBnClickedButtonBrowsePath()
         LPITEMIDLIST pidlBrowse;
         TCHAR *lpBuffer;
 
-        CString szTitle = m_Config.GetString(0x00210007, pszMainDialog[6]);
+        CString szTitle = m_Config.GetString(0x00210006, pszMainDialog[5]);
 
         CString szTmp;
         this->m_EdtOutPath.GetWindowText(szTmp);
@@ -762,7 +729,7 @@ void CMainDlg::OnFileLoadList()
         {
             CString szFileXml = fd.GetPathName();
             if (this->LoadItems(szFileXml) == false)
-                m_StatusBar.SetText(m_Config.GetString(0x00210008, pszMainDialog[7]), 1, 0);
+                m_StatusBar.SetText(m_Config.GetString(0x00210007, pszMainDialog[6]), 1, 0);
             else
                 this->UpdateStatusBar();
         }
@@ -787,7 +754,7 @@ void CMainDlg::OnFileSaveList()
         {
             CString szFileXml = fd.GetPathName();
             if (this->SaveItems(szFileXml) == false)
-                m_StatusBar.SetText(m_Config.GetString(0x00210009, pszMainDialog[8]), 1, 0);
+                m_StatusBar.SetText(m_Config.GetString(0x00210008, pszMainDialog[7]), 1, 0);
         }
     }
 }
@@ -824,7 +791,7 @@ void CMainDlg::OnEditAddFiles()
             pFiles = (TCHAR *)malloc(dwMaxSize);
             if (pFiles == NULL)
             {
-                m_StatusBar.SetText(m_Config.GetString(0x0021000A, pszMainDialog[9]), 1, 0);
+                m_StatusBar.SetText(m_Config.GetString(0x00210009, pszMainDialog[8]), 1, 0);
                 return;
             }
 
@@ -886,7 +853,7 @@ void CMainDlg::OnEditAddDir()
         LPITEMIDLIST pidlBrowse;
         TCHAR *lpBuffer;
 
-        CString szTitle = m_Config.GetString(0x0021000B, pszMainDialog[10]);
+        CString szTitle = m_Config.GetString(0x0021000A, pszMainDialog[9]);
 
         if (SHGetMalloc(&pMalloc) == E_FAIL)
             return;
@@ -1405,7 +1372,7 @@ bool CMainDlg::SearchFolderForLanguages(CString szFile)
     }
     catch (...)
     {
-        m_StatusBar.SetText(m_Config.GetString(0x0021000C, pszMainDialog[11]), 1, 0);
+        m_StatusBar.SetText(m_Config.GetString(0x0021000B, pszMainDialog[10]), 1, 0);
     }
     return true;
 }
@@ -1973,7 +1940,7 @@ void CMainDlg::SearchFolderForFiles(CString szFile, const bool bRecurse)
     }
     catch (...)
     {
-        m_StatusBar.SetText(m_Config.GetString(0x0021000D, pszMainDialog[12]), 1, 0);
+        m_StatusBar.SetText(m_Config.GetString(0x0021000C, pszMainDialog[11]), 1, 0);
     }
 }
 
@@ -2264,7 +2231,7 @@ void CMainDlg::StartConvert()
             {
                 if (::MakeFullPath(szPath) == FALSE)
                 {
-                    m_StatusBar.SetText(m_Config.GetString(0x0021000E, pszMainDialog[13]), 1, 0);
+                    m_StatusBar.SetText(m_Config.GetString(0x0021000D, pszMainDialog[12]), 1, 0);
                     bSafeCheck = false;
                     this->pWorkerContext->bDone = true;
                     return;
@@ -2276,7 +2243,7 @@ void CMainDlg::StartConvert()
         this->pWorkerContext->hThread = ::CreateThread(NULL, 0, WorkThread, this->pWorkerContext, CREATE_SUSPENDED, &this->pWorkerContext->dwThreadID);
         if (this->pWorkerContext->hThread == NULL)
         {
-            m_StatusBar.SetText(m_Config.GetString(0x0021000F, pszMainDialog[14]), 1, 0);
+            m_StatusBar.SetText(m_Config.GetString(0x0021000E, pszMainDialog[13]), 1, 0);
             this->pWorkerContext->bDone = true;
             bSafeCheck = false;
             return;

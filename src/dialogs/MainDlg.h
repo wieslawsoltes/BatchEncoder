@@ -51,7 +51,6 @@ public:
     CString szItemsFile;
     CConfiguration m_Config;
     CWorkerContext* pWorkerContext;
-    bool bSameAsSourceEdit;
 public:
     CMyStatic m_GrpOutput;
     CMyStatic m_StcPreset;
@@ -82,8 +81,6 @@ public:
     afx_msg void OnCbnSelchangeComboPresets();
     afx_msg void OnCbnSelchangeComboFormat();
     afx_msg void OnBnClickedCheckOutPath();
-    afx_msg void OnEnSetFocusEditOutPath();
-    afx_msg void OnEnKillFocusEditOutPath();
     afx_msg void OnBnClickedButtonBrowsePath();
     afx_msg void OnBnClickedButtonConvert();
     afx_msg void OnFileLoadList();
