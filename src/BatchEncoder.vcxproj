@@ -332,7 +332,7 @@ copy /-Y ..\lang\*.language $(OutDir)</Command>
     <ClInclude Include="worker\WorkThread.h" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="res\TrayIcon.ico" />
+    <Image Include="res\BatchEncoder.ico" />
   </ItemGroup>
   <ItemGroup>
     <None Include="res\BatchEncoder.rc2" />
