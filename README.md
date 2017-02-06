@@ -193,6 +193,8 @@ and [use special characters in XML](https://www.dvteclipse.com/documentation/svl
 
 Language files have to be placed in the same directory as the `BatchEncoder.exe` executable to be loaded automatically.
 
+Language files can also be edited in dedicated `LanguageEditor` program. LanguageEditor requires .NET Framework 4.5 and Windows 7 SP1 or above.
+
 ### Default language files
 
 The default language files can be found [here](https://github.com/wieslawsoltes/BatchEncoder/tree/master/lang).
