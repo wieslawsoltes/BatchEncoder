@@ -103,8 +103,8 @@
 
     <String key="0x000C0010" value="Konifguracja Formatów" />
     <String key="0x000C0011" value="&amp;Anuluj" />
-    <String key="0x000C0012" value="&amp;Koder" />
-    <String key="0x000C0013" value="Dekode&amp;r" />
+    <String key="0x000C0012" value="Koder" />
+    <String key="0x000C0013" value="Dekoder" />
     <String key="0x000C0014" value="Typ:" />
     <String key="0x000C0015" value="Wejście" />
     <String key="0x000C0016" value="Wyjście" />
@@ -118,7 +118,7 @@
     <String key="0x000C001E" value="&amp;..." />
     <String key="0x000C001F" value="Szablon wiersza polecenia:" />
     <String key="0x000C0020" value="Funkcja postępu:" />
-    <String key="0x000C0021" value="&amp;..." />
+    <String key="0x000C0021" value="..." />
     <String key="0x000C0022" value="przesuń &amp;w Górę" />
     <String key="0x000C0023" value="prz&amp;esuń w Dół" />
     <String key="0x000C0024" value="Usuń Wszys&amp;tkie" />

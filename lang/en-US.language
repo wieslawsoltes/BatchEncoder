@@ -103,8 +103,8 @@
 
     <String key="0x000C0010" value="Configure Formats" />
     <String key="0x000C0011" value="&amp;Cancel" />
-    <String key="0x000C0012" value="&amp;Encoder" />
-    <String key="0x000C0013" value="&amp;Decoder" />
+    <String key="0x000C0012" value="Encoder" />
+    <String key="0x000C0013" value="Decoder" />
     <String key="0x000C0014" value="Type:" />
     <String key="0x000C0015" value="Input" />
     <String key="0x000C0016" value="Output" />
@@ -118,7 +118,7 @@
     <String key="0x000C001E" value="&amp;..." />
     <String key="0x000C001F" value="Command-line template:" />
     <String key="0x000C0020" value="Progress function:" />
-    <String key="0x000C0021" value="&amp;..." />
+    <String key="0x000C0021" value="..." />
     <String key="0x000C0022" value="move &amp;Up" />
     <String key="0x000C0023" value="move Dow&amp;n" />
     <String key="0x000C0024" value="Dele&amp;te All" />
