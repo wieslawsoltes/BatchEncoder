@@ -1,227 +1,227 @@
-﻿<?xml version="1.0" encoding="UTF-8" ?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <Language id="en-US" original="English" translated="English">
 
     <!-- File Menu -->
 
-    <String key="0x00010001" value="&amp;File"/>
-    <String key="0x00010002" value="&amp;Load List...&#09;Ctrl+L"/>
-    <String key="0x00010003" value="&amp;Save List...&#09;Ctrl+S"/>
-    <String key="0x00010004" value="Cl&amp;ear List&#09;Ctrl+E"/>
-    <String key="0x00010005" value="E&amp;xit&#09;Alt+F4"/>
+    <String key="0x00010001" value="&amp;File" />
+    <String key="0x00010002" value="&amp;Load List...	Ctrl+L" />
+    <String key="0x00010003" value="&amp;Save List...	Ctrl+S" />
+    <String key="0x00010004" value="Cl&amp;ear List	Ctrl+E" />
+    <String key="0x00010005" value="E&amp;xit	Alt+F4" />
 
     <!-- Edit Menu -->
 
-    <String key="0x00020001" value="&amp;Edit"/>
-    <String key="0x00020002" value="&amp;Add Files...&#09;F5"/>
-    <String key="0x00020003" value="Add Dire&amp;ctory...&#09;F6"/>
-    <String key="0x00020004" value="Rena&amp;me&#09;F2"/>
-    <String key="0x00020005" value="Rese&amp;t Time/Status&#09;F3"/>
-    <String key="0x00020006" value="Reset Output&amp;/Preset&#09;F4"/>
-    <String key="0x00020007" value="&amp;Remove&#09;DEL"/>
-    <String key="0x00020008" value="Cro&amp;p&#09;INS"/>
-    <String key="0x00020009" value="Remove Chec&amp;ked&#09;Ctrl++"/>
-    <String key="0x0002000A" value="Remove Unc&amp;hecked&#09;Ctrl+-"/>
-    <String key="0x0002000B" value="Check S&amp;elected&#09;Shift++"/>
-    <String key="0x0002000C" value="&amp;Uncheck Selected&#09;Shift+-"/>
-    <String key="0x0002000D" value="&amp;Select All&#09;Ctrl+A"/>
-    <String key="0x0002000E" value="Select &amp;None&#09;Ctrl+N"/>
-    <String key="0x0002000F" value="&amp;Invert Selection&#09;Ctrl+I"/>
-    <String key="0x00020010" value="&amp;Open File..."/>
-    <String key="0x00020011" value="Open &amp;Directory..."/>
+    <String key="0x00020001" value="&amp;Edit" />
+    <String key="0x00020002" value="&amp;Add Files...	F5" />
+    <String key="0x00020003" value="Add Dire&amp;ctory...	F6" />
+    <String key="0x00020004" value="Rena&amp;me	F2" />
+    <String key="0x00020005" value="Rese&amp;t Time/Status	F3" />
+    <String key="0x00020006" value="Reset Output&amp;/Preset	F4" />
+    <String key="0x00020007" value="&amp;Remove	DEL" />
+    <String key="0x00020008" value="Cro&amp;p	INS" />
+    <String key="0x00020009" value="Remove Chec&amp;ked	Ctrl++" />
+    <String key="0x0002000A" value="Remove Unc&amp;hecked	Ctrl+-" />
+    <String key="0x0002000B" value="Check S&amp;elected	Shift++" />
+    <String key="0x0002000C" value="&amp;Uncheck Selected	Shift+-" />
+    <String key="0x0002000D" value="&amp;Select All	Ctrl+A" />
+    <String key="0x0002000E" value="Select &amp;None	Ctrl+N" />
+    <String key="0x0002000F" value="&amp;Invert Selection	Ctrl+I" />
+    <String key="0x00020010" value="&amp;Open File..." />
+    <String key="0x00020011" value="Open &amp;Directory..." />
 
     <!-- Action Menu -->
 
-    <String key="0x00030001" value="&amp;Action"/>
-    <String key="0x00030002" value="Conve&amp;rt&#09;F9"/>
-    <String key="0x00030003" value="S&amp;top&#09;F9"/>
+    <String key="0x00030001" value="&amp;Action" />
+    <String key="0x00030002" value="Conve&amp;rt	F9" />
+    <String key="0x00030003" value="S&amp;top	F9" />
 
     <!-- Options Menu -->
 
-    <String key="0x00040001" value="&amp;Options"/>
-    <String key="0x00040002" value="Configure &amp;Presets...&#09;F7"/>
-    <String key="0x00040003" value="Configure &amp;Formats...&#09;F8"/>
-    <String key="0x00040004" value="&amp;Delete Source File When Done"/>
-    <String key="0x00040005" value="&amp;Shutdown When Finished"/>
-    <String key="0x00040006" value="Do Not Save Configuration On E&amp;xit"/>
-    <String key="0x00040007" value="Delete &amp;Output File On Error"/>
-    <String key="0x00040008" value="Stop &amp;Conversion On Error"/>
+    <String key="0x00040001" value="&amp;Options" />
+    <String key="0x00040002" value="Configure &amp;Presets...	F7" />
+    <String key="0x00040003" value="Configure &amp;Formats...	F8" />
+    <String key="0x00040004" value="&amp;Delete Source File When Done" />
+    <String key="0x00040005" value="&amp;Shutdown When Finished" />
+    <String key="0x00040006" value="Do Not Save Configuration On E&amp;xit" />
+    <String key="0x00040007" value="Delete &amp;Output File On Error" />
+    <String key="0x00040008" value="Stop &amp;Conversion On Error" />
 
     <!-- Language Menu -->
 
-    <String key="0x00050001" value="&amp;Language"/>
-    <String key="0x00050002" value="&amp;Default (English)"/>
+    <String key="0x00050001" value="&amp;Language" />
+    <String key="0x00050002" value="&amp;Default (English)" />
 
     <!-- Help Menu -->
 
-    <String key="0x00060001" value="&amp;Help"/>
-    <String key="0x00060002" value="&amp;Website..."/>
-    <String key="0x00060003" value="&amp;About..."/>
+    <String key="0x00060001" value="&amp;Help" />
+    <String key="0x00060002" value="&amp;Website..." />
+    <String key="0x00060003" value="&amp;About..." />
 
     <!-- Main Dialog -->
 
-    <String key="0x000A0001" value="Name"/>
-    <String key="0x000A0002" value="Input"/>
-    <String key="0x000A0003" value="Size (bytes)"/>
-    <String key="0x000A0004" value="Output"/>
-    <String key="0x000A0005" value="Preset&#35;"/>
-    <String key="0x000A0006" value="Time"/>
-    <String key="0x000A0007" value="Status"/>
+    <String key="0x000A0001" value="Name" />
+    <String key="0x000A0002" value="Input" />
+    <String key="0x000A0003" value="Size (bytes)" />
+    <String key="0x000A0004" value="Output" />
+    <String key="0x000A0005" value="Preset#" />
+    <String key="0x000A0006" value="Time" />
+    <String key="0x000A0007" value="Status" />
 
-    <String key="0x000A0010" value="BatchEncoder"/>
-    <String key="0x000A0011" value="Output"/>
-    <String key="0x000A0012" value="format&#58;"/>
-    <String key="0x000A0013" value="preset&#58;"/>
-    <String key="0x000A0014" value="O&amp;utput path&#58;"/>
-    <String key="0x000A0015" value="&amp;..."/>
-    <String key="0x000A0016" value="threads (0=auto)&#58;"/>
-    <String key="0x000A0017" value="Conve&amp;rt"/>
-    <String key="0x000A0018" value="S&amp;top"/>
+    <String key="0x000A0010" value="BatchEncoder" />
+    <String key="0x000A0011" value="Output" />
+    <String key="0x000A0012" value="format:" />
+    <String key="0x000A0013" value="preset:" />
+    <String key="0x000A0014" value="O&amp;utput path:" />
+    <String key="0x000A0015" value="&amp;..." />
+    <String key="0x000A0016" value="threads (0=auto):" />
+    <String key="0x000A0017" value="Conve&amp;rt" />
+    <String key="0x000A0018" value="S&amp;top" />
 
     <!-- Presets Dialog -->
 
-    <String key="0x000B0001" value="Name"/>
-    <String key="0x000B0002" value="Options"/>
+    <String key="0x000B0001" value="Name" />
+    <String key="0x000B0002" value="Options" />
 
-    <String key="0x000B0010" value="Configure Presets"/>
-    <String key="0x000B0011" value="&amp;Cancel"/>
-    <String key="0x000B0012" value="Name&#58;"/>
-    <String key="0x000B0013" value="Command-line options&#58;"/>
-    <String key="0x000B0014" value="move &amp;Up"/>
-    <String key="0x000B0015" value="move Dow&amp;n"/>
-    <String key="0x000B0016" value="Dele&amp;te All"/>
-    <String key="0x000B0017" value="&amp;Delete"/>
-    <String key="0x000B0018" value="&amp;Add"/>
-    <String key="0x000B0019" value="&amp;Load"/>
-    <String key="0x000B001A" value="Sa&amp;ve As"/>
-    <String key="0x000B001B" value="C&amp;hange"/>
-    <String key="0x000B001C" value="&amp;OK"/>
+    <String key="0x000B0010" value="Configure Presets" />
+    <String key="0x000B0011" value="&amp;Cancel" />
+    <String key="0x000B0012" value="Name:" />
+    <String key="0x000B0013" value="Command-line options:" />
+    <String key="0x000B0014" value="move &amp;Up" />
+    <String key="0x000B0015" value="move Dow&amp;n" />
+    <String key="0x000B0016" value="Dele&amp;te All" />
+    <String key="0x000B0017" value="&amp;Delete" />
+    <String key="0x000B0018" value="&amp;Add" />
+    <String key="0x000B0019" value="&amp;Load" />
+    <String key="0x000B001A" value="Sa&amp;ve As" />
+    <String key="0x000B001B" value="C&amp;hange" />
+    <String key="0x000B001C" value="&amp;OK" />
 
     <!-- Formats Dialog -->
 
-    <String key="0x000C0001" value="Name"/>
-    <String key="0x000C0002" value="Template"/>
+    <String key="0x000C0001" value="Name" />
+    <String key="0x000C0002" value="Template" />
 
-    <String key="0x000C0010" value="Configure Formats"/>
-    <String key="0x000C0011" value="&amp;Cancel"/>
-    <String key="0x000C0012" value="&amp;Encoder"/>
-    <String key="0x000C0013" value="&amp;Decoder"/>
-    <String key="0x000C0014" value="Type&#58;"/>
-    <String key="0x000C0015" value="Input"/>
-    <String key="0x000C0016" value="Output"/>
-    <String key="0x000C0017" value="Pipes&#58;"/>
-    <String key="0x000C0018" value="Id&#58;"/>
-    <String key="0x000C0019" value="Name&#58;"/>
-    <String key="0x000C001A" value="Output extension&#58;"/>
-    <String key="0x000C001B" value="Input extensions (separated by comma)&#58;"/>
-    <String key="0x000C001C" value="Default preset&#58;"/>
-    <String key="0x000C001D" value="Command-line executable path&#58;"/>
-    <String key="0x000C001E" value="&amp;..."/>
-    <String key="0x000C001F" value="Command-line template&#58;"/>
-    <String key="0x000C0020" value="Progress function&#58;"/>
-    <String key="0x000C0021" value="&amp;..."/>
-    <String key="0x000C0022" value="move &amp;Up"/>
-    <String key="0x000C0023" value="move Dow&amp;n"/>
-    <String key="0x000C0024" value="Dele&amp;te All"/>
-    <String key="0x000C0025" value="&amp;Delete"/>
-    <String key="0x000C0026" value="&amp;Add"/>
-    <String key="0x000C0027" value="&amp;Load"/>
-    <String key="0x000C0028" value="&amp;Save As"/>
-    <String key="0x000C0029" value="C&amp;hange"/>
-    <String key="0x000C002A" value="&amp;OK"/>
+    <String key="0x000C0010" value="Configure Formats" />
+    <String key="0x000C0011" value="&amp;Cancel" />
+    <String key="0x000C0012" value="&amp;Encoder" />
+    <String key="0x000C0013" value="&amp;Decoder" />
+    <String key="0x000C0014" value="Type:" />
+    <String key="0x000C0015" value="Input" />
+    <String key="0x000C0016" value="Output" />
+    <String key="0x000C0017" value="Pipes:" />
+    <String key="0x000C0018" value="Id:" />
+    <String key="0x000C0019" value="Name:" />
+    <String key="0x000C001A" value="Output extension:" />
+    <String key="0x000C001B" value="Input extensions (separated by comma):" />
+    <String key="0x000C001C" value="Default preset:" />
+    <String key="0x000C001D" value="Command-line executable path:" />
+    <String key="0x000C001E" value="&amp;..." />
+    <String key="0x000C001F" value="Command-line template:" />
+    <String key="0x000C0020" value="Progress function:" />
+    <String key="0x000C0021" value="&amp;..." />
+    <String key="0x000C0022" value="move &amp;Up" />
+    <String key="0x000C0023" value="move Dow&amp;n" />
+    <String key="0x000C0024" value="Dele&amp;te All" />
+    <String key="0x000C0025" value="&amp;Delete" />
+    <String key="0x000C0026" value="&amp;Add" />
+    <String key="0x000C0027" value="&amp;Load" />
+    <String key="0x000C0028" value="&amp;Save As" />
+    <String key="0x000C0029" value="C&amp;hange" />
+    <String key="0x000C002A" value="&amp;OK" />
 
     <!-- About Dialog -->
 
-    <String key="0x000D0010" value="About BatchEncoder"/>
-    <String key="0x000D0011" value="&amp;OK"/>
-    <String key="0x000D0012" value="Licensed under the MIT license. See LICENSE file in the application root for full license information."/>
+    <String key="0x000D0010" value="About BatchEncoder" />
+    <String key="0x000D0011" value="&amp;OK" />
+    <String key="0x000D0012" value="Licensed under the MIT license. See LICENSE file in the application root for full license information." />
 
     <!-- Strings Work Thread -->
 
-    <String key="0x00110001" value="Error&#58; can not load GetProgress function library dll."/>
-    <String key="0x00110002" value="Error&#58; can not get GetProgress function address."/>
-    <String key="0x00110003" value="Error&#58; console line is too large for read buffer."/>
+    <String key="0x00110001" value="Error: can not load GetProgress function library dll." />
+    <String key="0x00110002" value="Error: can not get GetProgress function address." />
+    <String key="0x00110003" value="Error: console line is too large for read buffer." />
 
-    <String key="0x00120001" value="Error&#58; invalid format pipe configuration."/>
-    <String key="0x00120002" value="Error&#58; can not create pipes for stderr."/>
-    <String key="0x00120003" value="Error&#58; can not duplicate stderr pipe to prevent child process from closing the pipe."/>
-    <String key="0x00120004" value="Error&#58; can not create command-line process (&#37;d)."/>
-    <String key="0x00120005" value="Error&#58; progress did not reach 100&#37;."/>
-    <String key="0x00120006" value="Done"/>
+    <String key="0x00120001" value="Error: invalid format pipe configuration." />
+    <String key="0x00120002" value="Error: can not create pipes for stderr." />
+    <String key="0x00120003" value="Error: can not duplicate stderr pipe to prevent child process from closing the pipe." />
+    <String key="0x00120004" value="Error: can not create command-line process (%d)." />
+    <String key="0x00120005" value="Error: progress did not reach 100%." />
+    <String key="0x00120006" value="Done" />
 
-    <String key="0x00130001" value="Error&#58; invalid format pipe configuration."/>
-    <String key="0x00130002" value="Error&#58; can not create pipes for stdin."/>
-    <String key="0x00130003" value="Error&#58; can not set stdin pipe inherit flag."/>
-    <String key="0x00130004" value="Error&#58; can not create pipes for stdout."/>
-    <String key="0x00130005" value="Error&#58; can not set stdout pipe inherit flag."/>
-    <String key="0x00130006" value="Error&#58; can not create command-line process (&#37;d)."/>
-    <String key="0x00130007" value="Error&#58; can not create read thread."/>
-    <String key="0x00130008" value="Error&#58; can not create write thread."/>
-    <String key="0x00130009" value="Error&#58; progress did not reach 100&#37;."/>
-    <String key="0x0013000A" value="Done"/>
+    <String key="0x00130001" value="Error: invalid format pipe configuration." />
+    <String key="0x00130002" value="Error: can not create pipes for stdin." />
+    <String key="0x00130003" value="Error: can not set stdin pipe inherit flag." />
+    <String key="0x00130004" value="Error: can not create pipes for stdout." />
+    <String key="0x00130005" value="Error: can not set stdout pipe inherit flag." />
+    <String key="0x00130006" value="Error: can not create command-line process (%d)." />
+    <String key="0x00130007" value="Error: can not create read thread." />
+    <String key="0x00130008" value="Error: can not create write thread." />
+    <String key="0x00130009" value="Error: progress did not reach 100%." />
+    <String key="0x0013000A" value="Done" />
 
-    <String key="0x00140001" value="Error&#58; can not find input file."/>
-    <String key="0x00140002" value="Error&#58; can not find valid encoder by id."/>
-    <String key="0x00140003" value="Error&#58; can not find encoder format preset."/>
-    <String key="0x00140004" value="Error&#58; can not find valid decoder by extension."/>
-    <String key="0x00140005" value="Error&#58; can not find decoder format preset."/>
-    <String key="0x00140006" value="Error&#58; decoder output not supported by encoder."/>
-    <String key="0x00140007" value="Decoding..."/>
-    <String key="0x00140008" value="Error&#58; can not find decoded file."/>
-    <String key="0x00140009" value="Error&#58; exception thrown while converting file."/>
-    <String key="0x0014000A" value="Encoding..."/>
-    <String key="0x0014000B" value="Decoding..."/>
-    <String key="0x0014000C" value="Processing..."/>
-    <String key="0x0014000D" value="Error&#58; can not find encoded file."/>
-    <String key="0x0014000E" value="Error&#58; exception thrown while converting file."/>
+    <String key="0x00140001" value="Error: can not find input file." />
+    <String key="0x00140002" value="Error: can not find valid encoder by id." />
+    <String key="0x00140003" value="Error: can not find encoder format preset." />
+    <String key="0x00140004" value="Error: can not find valid decoder by extension." />
+    <String key="0x00140005" value="Error: can not find decoder format preset." />
+    <String key="0x00140006" value="Error: decoder output not supported by encoder." />
+    <String key="0x00140007" value="Decoding..." />
+    <String key="0x00140008" value="Error: can not find decoded file." />
+    <String key="0x00140009" value="Error: exception thrown while converting file." />
+    <String key="0x0014000A" value="Encoding..." />
+    <String key="0x0014000B" value="Decoding..." />
+    <String key="0x0014000C" value="Processing..." />
+    <String key="0x0014000D" value="Error: can not find encoded file." />
+    <String key="0x0014000E" value="Error: exception thrown while converting file." />
 
     <!-- Strings Worker Context -->
 
-    <String key="0x00190001" value="Error"/>
-    <String key="0x00190002" value="Errors"/>
-    <String key="0x00190003" value="Processing item &#37;d of &#37;d (&#37;d Done, &#37;d &#37;s)"/>
-    <String key="0x00190004" value="Processed &#37;d of &#37;d (&#37;d Done, &#37;d &#37;s) in &#37;s"/>
+    <String key="0x00190001" value="Error" />
+    <String key="0x00190002" value="Errors" />
+    <String key="0x00190003" value="Processing item %d of %d (%d Done, %d %s)" />
+    <String key="0x00190004" value="Processed %d of %d (%d Done, %d %s) in %s" />
 
     <!-- Strings Main Dialog -->
 
-    <String key="0x00210001" value="Not Done"/>
-    <String key="0x00210002" value="Item"/>
-    <String key="0x00210003" value="Items"/>
-    <String key="0x00210004" value="No Items"/>
-    <String key="0x00210005" value="Recurse subdirectories"/>
-    <String key="0x00210006" value="&#60;&#60; same as source file &#62;&#62;"/>
-    <String key="0x00210007" value="Output path&#58;"/>
-    <String key="0x00210008" value="Failed to load file&#33;"/>
-    <String key="0x00210009" value="Failed to save file&#33;"/>
-    <String key="0x0021000A" value="Failed to allocate memory for filenames buffer&#33;"/>
-    <String key="0x0021000B" value="Select folder&#58;"/>
-    <String key="0x0021000C" value="Error while searching for language files&#33;"/>
-    <String key="0x0021000D" value="Error while searching for item files&#33;"/>
-    <String key="0x0021000E" value="Unable to create output path&#33;"/>
-    <String key="0x0021000F" value="Fatal error when creating thread&#33;"/>
+    <String key="0x00210001" value="Not Done" />
+    <String key="0x00210002" value="Item" />
+    <String key="0x00210003" value="Items" />
+    <String key="0x00210004" value="No Items" />
+    <String key="0x00210005" value="Recurse subdirectories" />
+    <String key="0x00210006" value="&lt;&lt; same as source file &gt;&gt;" />
+    <String key="0x00210007" value="Output path:" />
+    <String key="0x00210008" value="Failed to load file!" />
+    <String key="0x00210009" value="Failed to save file!" />
+    <String key="0x0021000A" value="Failed to allocate memory for filenames buffer!" />
+    <String key="0x0021000B" value="Select folder:" />
+    <String key="0x0021000C" value="Error while searching for language files!" />
+    <String key="0x0021000D" value="Error while searching for item files!" />
+    <String key="0x0021000E" value="Unable to create output path!" />
+    <String key="0x0021000F" value="Fatal error when creating thread!" />
 
     <!-- Strings Presets Dialog -->
 
-    <String key="0x00220001" value="ERROR"/>
-    <String key="0x00220002" value="Failed to load file&#33;"/>
-    <String key="0x00220003" value="Failed to save file&#33;"/>
-    <String key="0x00220004" value="Default"/>
+    <String key="0x00220001" value="ERROR" />
+    <String key="0x00220002" value="Failed to load file!" />
+    <String key="0x00220003" value="Failed to save file!" />
+    <String key="0x00220004" value="Default" />
 
     <!-- Strings Formats Dialog -->
 
-    <String key="0x00230001" value="ERROR"/>
-    <String key="0x00230002" value="Failed to load file&#33;"/>
-    <String key="0x00230003" value="Failed to save file&#33;"/>
-    <String key="0x00230004" value="Format"/>
-    <String key="0x00230005" value="Default"/>
+    <String key="0x00230001" value="ERROR" />
+    <String key="0x00230002" value="Failed to load file!" />
+    <String key="0x00230003" value="Failed to save file!" />
+    <String key="0x00230004" value="Format" />
+    <String key="0x00230005" value="Default" />
 
     <!-- Strings File Dialogs -->
 
-    <String key="0x00310001" value="All Files"/>
-    <String key="0x00310002" value="Xml Files"/>
-    <String key="0x00310003" value="Items Files"/>
-    <String key="0x00310004" value="Presets Files"/>
-    <String key="0x00310005" value="Formats Files"/>
-    <String key="0x00310006" value="Exe Files"/>
-    <String key="0x00310007" value="Progress Files"/>
+    <String key="0x00310001" value="All Files" />
+    <String key="0x00310002" value="Xml Files" />
+    <String key="0x00310003" value="Items Files" />
+    <String key="0x00310004" value="Presets Files" />
+    <String key="0x00310005" value="Formats Files" />
+    <String key="0x00310006" value="Exe Files" />
+    <String key="0x00310007" value="Progress Files" />
 
 </Language>
