@@ -5,18 +5,18 @@
 
 #include <afxwin.h>
 #include <afxcmn.h>
-#include "utilities\TimeCount.h"
-#include "worker\WorkerContext.h"
-#include "dialogs\MainDlg.h"
+#include "..\utilities\TimeCount.h"
+#include "..\worker\WorkerContext.h"
 
-class CProgressWorkerContext : public CWorkerContext
+#ifdef DEBUG
+
+class CTraceWorkerContext : public CWorkerContext
 {
 private:
     CTimeCount timer;
-    CMainDlg *pDlg;
 public:
-    CProgressWorkerContext(CConfiguration* pConfig, CMainDlg* pDlg);
-    virtual ~CProgressWorkerContext();
+    CTraceWorkerContext(CConfiguration* pConfig);
+    CTraceWorkerContext::~CTraceWorkerContext();
 public:
     void Init();
     void Next(int nItemId);
@@ -24,3 +24,5 @@ public:
     bool Callback(int nItemId, int nProgress, bool bFinished, bool bError = false);
     void Status(int nItemId, CString szTime, CString szStatus);
 };
+
+#endif

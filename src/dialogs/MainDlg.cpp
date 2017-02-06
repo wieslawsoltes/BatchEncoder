@@ -11,8 +11,8 @@
 #include "PresetsDlg.h"
 #include "AboutDlg.h"
 #include "FormatsDlg.h"
-#include "..\ProgressWorkerContext.h"
-#include "..\TraceWorkerContext.h"
+#include "..\contexts\ProgressWorkerContext.h"
+#include "..\contexts\TraceWorkerContext.h"
 #include "..\worker\WorkThread.h"
 
 #define WM_TRAY (WM_USER + 0x10)

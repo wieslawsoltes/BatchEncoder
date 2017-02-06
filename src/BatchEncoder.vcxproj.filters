@@ -40,9 +40,18 @@
     <Filter Include="Header Files\Configuration">
       <UniqueIdentifier>{1e005ea3-fc6a-4599-a2d3-a5ba272d5366}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Contexts">
+      <UniqueIdentifier>{d579bfb7-6e6c-4ff4-9356-af2ff7701d2d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Contexts">
+      <UniqueIdentifier>{8266f9d5-9c57-44c7-974a-28a13fa47f5a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="StdAfx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MainApp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Strings.cpp">
@@ -78,6 +87,9 @@
     <ClCompile Include="dialogs\AboutDlg.cpp">
       <Filter>Source Files\Dialogs</Filter>
     </ClCompile>
+    <ClCompile Include="dialogs\MainDlg.cpp">
+      <Filter>Source Files\Dialogs</Filter>
+    </ClCompile>
     <ClCompile Include="dialogs\FormatsDlg.cpp">
       <Filter>Source Files\Dialogs</Filter>
     </ClCompile>
@@ -96,18 +108,27 @@
     <ClCompile Include="worker\WorkThread.cpp">
       <Filter>Source Files\Worker</Filter>
     </ClCompile>
-    <ClCompile Include="dialogs\MainDlg.cpp">
-      <Filter>Source Files\Dialogs</Filter>
+    <ClCompile Include="contexts\TraceWorkerContext.cpp">
+      <Filter>Source Files\Contexts</Filter>
     </ClCompile>
-    <ClCompile Include="MainApp.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ProgressWorkerContext.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="contexts\ProgressWorkerContext.cpp">
+      <Filter>Source Files\Contexts</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="version.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="res\resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="StdAfx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MainApp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Strings.h">
@@ -152,15 +173,6 @@
     <ClInclude Include="configuration\LanguageHelper.h">
       <Filter>Header Files\Configuration</Filter>
     </ClInclude>
-    <ClInclude Include="version.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="targetver.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="res\resource.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="controls\Hyperlink.h">
       <Filter>Header Files\Controls</Filter>
     </ClInclude>
@@ -186,6 +198,9 @@
       <Filter>Header Files\Controls</Filter>
     </ClInclude>
     <ClInclude Include="dialogs\AboutDlg.h">
+      <Filter>Header Files\Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="dialogs\MainDlg.h">
       <Filter>Header Files\Dialogs</Filter>
     </ClInclude>
     <ClInclude Include="dialogs\FormatsDlg.h">
@@ -224,17 +239,11 @@
     <ClInclude Include="worker\WorkThread.h">
       <Filter>Header Files\Worker</Filter>
     </ClInclude>
-    <ClInclude Include="dialogs\MainDlg.h">
-      <Filter>Header Files\Dialogs</Filter>
+    <ClInclude Include="contexts\TraceWorkerContext.h">
+      <Filter>Header Files\Contexts</Filter>
     </ClInclude>
-    <ClInclude Include="MainApp.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ProgressWorkerContext.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="TraceWorkerContext.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="contexts\ProgressWorkerContext.h">
+      <Filter>Header Files\Contexts</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

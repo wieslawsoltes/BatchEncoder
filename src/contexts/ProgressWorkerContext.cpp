@@ -2,8 +2,8 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 #include "StdAfx.h"
-#include "MainApp.h"
-#include "utilities\Utilities.h"
+#include "..\MainApp.h"
+#include "..\utilities\Utilities.h"
 #include "ProgressWorkerContext.h"
 
 const TCHAR* pszWorkerContext[] = {
