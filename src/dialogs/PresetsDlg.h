@@ -5,7 +5,12 @@
 
 #include <afxcmn.h>
 #include <afxwin.h>
-#include "..\Controls.h"
+#include "..\controls\MyListCtrl.h"
+#include "..\controls\MyButton.h"
+#include "..\controls\MyComboBox.h"
+#include "..\controls\MyEdit.h"
+#include "..\controls\MyStatic.h"
+#include "..\controls\ResizeDialog.h"
 #include "..\configuration\FormatsList.h"
 #include "..\configuration\Configuration.h"
 

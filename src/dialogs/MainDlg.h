@@ -5,7 +5,13 @@
 
 #include <afxwin.h>
 #include <afxcmn.h>
-#include "..\Controls.h"
+#include "..\controls\MyListCtrl.h"
+#include "..\controls\MyButton.h"
+#include "..\controls\MyComboBox.h"
+#include "..\controls\MyEdit.h"
+#include "..\controls\MyStatic.h"
+#include "..\controls\MyStatusBarCtrl.h"
+#include "..\controls\ResizeDialog.h"
 #include "..\utilities\TimeCount.h"
 #include "..\worker\WorkerContext.h"
 
@@ -54,7 +60,7 @@ public:
     CMyComboBox m_CmbPresets;
     CMyComboBox m_CmbFormat;
     CMyListCtrl m_LstInputItems;
-    CButton m_ChkOutPath;
+    CMyButton m_ChkOutPath;
     CMyButton m_BtnBrowse;
     CMyEdit m_EdtOutPath;
     CMyEdit m_EdtThreads;
