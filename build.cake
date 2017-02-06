@@ -67,7 +67,7 @@ var versionEditor = ParseAssemblyInfo(File("./editor/Properties/AssemblyInfo.cs"
 // ACTIONS
 ///////////////////////////////////////////////////////////////////////////////
 
-var buildSolutionAction = new Action<string,string> ((solution, configuration, platform) => 
+var buildSolutionAction = new Action<string,string,string> ((solution, configuration, platform) => 
 {
     Information("Building: {0}, {1} / {2}", solution, configuration, platform);
     MSBuild(solution, settings => {
