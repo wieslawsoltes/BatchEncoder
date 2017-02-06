@@ -242,7 +242,7 @@ BEGIN
         MENUITEM "Configure &Presets...\tF7",   ID_OPTIONS_CONFIGUREPRESETS
         MENUITEM "Configure &Formats...\tF8",   ID_OPTIONS_CONFIGUREFORMAT
         MENUITEM SEPARATOR
-        MENUITEM "&Delete Source File When Done", ID_OPTIONS_DELETE_SOURCE
+        MENUITEM "&Delete Source Files",        ID_OPTIONS_DELETE_SOURCE
         MENUITEM SEPARATOR
         MENUITEM "&Shutdown When Finished",     ID_OPTIONS_SHUTDOWN_WINDOWS
         MENUITEM SEPARATOR

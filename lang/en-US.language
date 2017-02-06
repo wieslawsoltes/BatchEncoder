@@ -40,7 +40,7 @@
     <String key="0x00040001" value="&amp;Options" />
     <String key="0x00040002" value="Configure &amp;Presets...	F7" />
     <String key="0x00040003" value="Configure &amp;Formats...	F8" />
-    <String key="0x00040004" value="&amp;Delete Source File When Done" />
+    <String key="0x00040004" value="&amp;Delete Source Files" />
     <String key="0x00040005" value="&amp;Shutdown When Finished" />
     <String key="0x00040006" value="Do Not Save Configuration On E&amp;xit" />
     <String key="0x00040007" value="Delete &amp;Output File On Error" />

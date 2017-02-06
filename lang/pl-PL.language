@@ -40,9 +40,9 @@
     <String key="0x00040001" value="&amp;Opcje" />
     <String key="0x00040002" value="Konifguracja &amp;Presetów...	F7" />
     <String key="0x00040003" value="Konifguracja &amp;Formatów...	F8" />
-    <String key="0x00040004" value="&amp;Usuń Plik Źródłowy Po Zakończeniu" />
-    <String key="0x00040005" value="&amp;Wyłączenie Po Zakończeniu" />
-    <String key="0x00040006" value="Nie &amp;Zapisuj KonfiguracjI Przy Wyjściu" />
+    <String key="0x00040004" value="&amp;Usuń Pliki Źródłowe" />
+    <String key="0x00040005" value="&amp;Wyłącz Po Zakończeniu" />
+    <String key="0x00040006" value="Nie &amp;Zapisuj Konfiguracji Przy Wyjściu" />
     <String key="0x00040007" value="Usuń &amp;Plik Wyjściowy W Przypadku Błędu" />
     <String key="0x00040008" value="Zatrzymaj &amp;Konwersje W Przypadku Błędu" />
 
@@ -114,9 +114,9 @@
     <String key="0x000C001A" value="Rozszerzenie wyjściowe:" />
     <String key="0x000C001B" value="Rozszerzenia wejściowe (oddzielone przecinkiem):" />
     <String key="0x000C001C" value="Domyślny preset:" />
-    <String key="0x000C001D" value="Ścieżka pliku wykonywalnego wiersza polecenia:" />
+    <String key="0x000C001D" value="Wiersz polecenia ścieżka pliku wykonywalnego:" />
     <String key="0x000C001E" value="&amp;..." />
-    <String key="0x000C001F" value="Szablon wiersza polecenia:" />
+    <String key="0x000C001F" value="Wiersz polecenia szablon:" />
     <String key="0x000C0020" value="Funkcja postępu:" />
     <String key="0x000C0021" value="..." />
     <String key="0x000C0022" value="przesuń &amp;w Górę" />
@@ -133,7 +133,7 @@
 
     <String key="0x000D0010" value="O programie BatchEncoder" />
     <String key="0x000D0011" value="&amp;OK" />
-    <String key="0x000D0012" value="Licencjonowany na licencji MIT. Zobacz plik LICENSE w katalogu głównym aplikacji dla pełnej informacji licencyjnej." />
+    <String key="0x000D0012" value="Program na licencji MIT. Zobacz plik LICENSE w katalogu głównym aplikacji dla pełnej informacji licencyjnej." />
 
     <!-- Strings Work Thread -->
 
