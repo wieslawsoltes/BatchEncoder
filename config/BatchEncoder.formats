@@ -661,27 +661,27 @@
             <Preset name="Default" options=""/>
         </Presets>
     </Format>
-    <Format id="FFMPEG_AC3_WAV" name="Decode AC3 to WAV" template="$EXE -y -i $INFILE $OPTIONS $OUTFILE" input="true" output="false" function="- none -" path="ffmpeg.exe" type="1" formats="AC3" extension="WAV" default="0">
+    <Format id="FFMPEG_AC3_WAV" name="Decode AC3 to WAV" template="$EXE -y -i $INFILE $OPTIONS -f wav pipe:1" input="true" output="true" function="- none -" path="ffmpeg.exe" type="1" formats="AC3" extension="WAV" default="0">
         <Presets>
             <Preset name="Default" options=""/>
         </Presets>
     </Format>
-    <Format id="FFMPEG_EAC3_WAV" name="Decode EAC3 to WAV" template="$EXE -y -i $INFILE $OPTIONS $OUTFILE" input="true" output="false" function="- none -" path="ffmpeg.exe" type="1" formats="EAC3" extension="WAV" default="0">
+    <Format id="FFMPEG_EAC3_WAV" name="Decode EAC3 to WAV" template="$EXE -y -i $INFILE $OPTIONS -f wav pipe:1" input="true" output="true" function="- none -" path="ffmpeg.exe" type="1" formats="EAC3" extension="WAV" default="0">
         <Presets>
             <Preset name="Default" options=""/>
         </Presets>
     </Format>
-    <Format id="FFMPEG_DTS_WAV" name="Decode DTS to WAV" template="$EXE -y -i $INFILE $OPTIONS $OUTFILE" input="true" output="false" function="- none -" path="ffmpeg.exe" type="1" formats="DTS" extension="WAV" default="0">
+    <Format id="FFMPEG_DTS_WAV" name="Decode DTS to WAV" template="$EXE -y -i $INFILE $OPTIONS -f wav pipe:1" input="true" output="true" function="- none -" path="ffmpeg.exe" type="1" formats="DTS" extension="WAV" default="0">
         <Presets>
             <Preset name="Default" options=""/>
         </Presets>
     </Format>
-    <Format id="FFMPEG_DTSHD_WAV" name="Decode DTSHD to WAV" template="$EXE -y -i $INFILE $OPTIONS $OUTFILE" input="true" output="false" function="- none -" path="ffmpeg.exe" type="1" formats="DTSHD" extension="WAV" default="0">
+    <Format id="FFMPEG_DTSHD_WAV" name="Decode DTSHD to WAV" template="$EXE -y -i $INFILE $OPTIONS -f wav pipe:1" input="true" output="true" function="- none -" path="ffmpeg.exe" type="1" formats="DTSHD" extension="WAV" default="0">
         <Presets>
             <Preset name="Default" options=""/>
         </Presets>
     </Format>
-    <Format id="FFMPEG_TRUEHD_WAV" name="Decode TRUEHD to WAV" template="$EXE -y -i $INFILE $OPTIONS $OUTFILE" input="true" output="false" function="- none -" path="ffmpeg.exe" type="1" formats="TRUEHD" extension="WAV" default="0">
+    <Format id="FFMPEG_TRUEHD_WAV" name="Decode TRUEHD to WAV" template="$EXE -y -i $INFILE $OPTIONS -f wav pipe:1" input="true" output="true" function="- none -" path="ffmpeg.exe" type="1" formats="TRUEHD" extension="WAV" default="0">
         <Presets>
             <Preset name="Default" options=""/>
         </Presets>
