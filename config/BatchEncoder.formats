@@ -71,7 +71,7 @@
             <Preset name="24 Bit 96000 Hz (2 Pass)" options="--rate 96000 --bits 24 --twopass"/>
         </Presets>
     </Format>
-    <Format id="LAME_MP3" name="MP3 (MPEG Layer-3)" template="$EXE $OPTIONS $INFILE $OUTFILE" input="false" output="false" function="GetProgress_LameEnc.progress" path="lame.exe" type="0" formats="WAV" extension="MP3" default="8">
+    <Format id="LAME_MP3" name="MP3 (MPEG Layer-3)" template="$EXE $OPTIONS $INFILE $OUTFILE" input="true" output="true" function="GetProgress_LameEnc.progress" path="lame.exe" type="0" formats="WAV" extension="MP3" default="8">
         <Presets>
             <Preset name="ABR 56 kbit/s Mono" options="--abr 56 -mm"/>
             <Preset name="VBR ~65 kbit/s (V9)" options="-V 9 --vbr-new"/>
@@ -571,17 +571,17 @@
             <Preset name="Insane Max" options="-p5m"/>
         </Presets>
     </Format>
-    <Format id="LAME_MP1_WAV" name="Decode MP1 to WAV" template="$EXE --decode --mp1input $INFILE $OUTFILE" input="false" output="false" function="GetProgress_LameDec.progress" path="lame.exe" type="1" formats="MP1" extension="WAV" default="0">
+    <Format id="LAME_MP1_WAV" name="Decode MP1 to WAV" template="$EXE --decode --mp1input $INFILE $OUTFILE" input="true" output="true" function="GetProgress_LameDec.progress" path="lame.exe" type="1" formats="MP1" extension="WAV" default="0">
         <Presets>
             <Preset name="Default" options=""/>
         </Presets>
     </Format>
-    <Format id="LAME_MP2_WAV" name="Decode MP2 to WAV" template="$EXE --decode --mp2input $INFILE $OUTFILE" input="false" output="false" function="GetProgress_LameDec.progress" path="lame.exe" type="1" formats="MP2" extension="WAV" default="0">
+    <Format id="LAME_MP2_WAV" name="Decode MP2 to WAV" template="$EXE --decode --mp2input $INFILE $OUTFILE" input="true" output="true" function="GetProgress_LameDec.progress" path="lame.exe" type="1" formats="MP2" extension="WAV" default="0">
         <Presets>
             <Preset name="Default" options=""/>
         </Presets>
     </Format>
-    <Format id="LAME_MP3_WAV" name="Decode MP3 to WAV" template="$EXE --decode --mp3input $INFILE $OUTFILE" input="false" output="false" function="GetProgress_LameDec.progress" path="lame.exe" type="1" formats="MP3" extension="WAV" default="0">
+    <Format id="LAME_MP3_WAV" name="Decode MP3 to WAV" template="$EXE --decode --mp3input $INFILE $OUTFILE" input="true" output="true" function="GetProgress_LameDec.progress" path="lame.exe" type="1" formats="MP3" extension="WAV" default="0">
         <Presets>
             <Preset name="Default" options=""/>
         </Presets>
