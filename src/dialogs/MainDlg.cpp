@@ -2194,10 +2194,10 @@ void CMainDlg::UpdateStatusBar()
     if (nCount > 0)
     {
         CString szText;
-        szText.Format(_T("%d %s"), 
-            nCount, 
-            (nCount > 1) ? 
-            m_Config.GetString(0x00210003, pszMainDialog[2]) : 
+        szText.Format(_T("%d %s"),
+            nCount,
+            (nCount > 1) ?
+            m_Config.GetString(0x00210003, pszMainDialog[2]) :
             m_Config.GetString(0x00210002, pszMainDialog[1]));
         m_StatusBar.SetText(szText, 0, 0);
     }
@@ -2389,6 +2389,7 @@ void CMainDlg::FinishConvert()
 }
 
 #ifdef DEBUG
+
 bool ConvertFileTrace(CFileContext* pContext)
 {
     CString szOutput;
@@ -2396,9 +2397,7 @@ bool ConvertFileTrace(CFileContext* pContext)
     OutputDebugString(szOutput);
     return true;
 }
-#endif
 
-#ifdef DEBUG
 void CMainDlg::TraceConvert()
 {
     CWorkerContext *pTraceWorkerContext = new CTraceWorkerContext(&this->m_Config);
@@ -2510,4 +2509,5 @@ void CMainDlg::TraceConvert()
     pTraceWorkerContext->Done();
     pTraceWorkerContext->bDone = true;
 }
+
 #endif
