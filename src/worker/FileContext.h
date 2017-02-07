@@ -7,55 +7,63 @@ class CFileContext
 {
 public:
     CWorkerContext* pWorkerContext;
+    CFormat *pFormat;
+    int nPreset;
+    int nItemId;
     CString szInputFile;
     CString szOutputFile;
-    TCHAR *szCommandLine;
-    int nItemId;
-    CString szFunction;
+    TCHAR pszCommandLine[65536];
     bool bUseReadPipes;
     bool bUseWritePipes;
 public:
-    CFileContext(
-        CWorkerContext *pWorkerContext, 
-        CFormat *pFormat, 
-        int nPreset, 
-        int nItemId, 
-        CString szInputFile, 
-        CString szOutputFile)
+    CFileContext()
+    {
+    }
+    virtual ~CFileContext()
+    {
+    }
+public:
+    void Init(
+        CWorkerContext *pWorkerContext,
+        CFormat *pFormat,
+        int nPreset,
+        int nItemId,
+        CString szInputFile,
+        CString szOutputFile,
+        bool bUseReadPipes,
+        bool bUseWritePipes)
     {
         CPreset& preset = pFormat->m_Presets.GetData(nPreset);
 
         this->pWorkerContext = pWorkerContext;
+        this->pFormat = pFormat;
+        this->nPreset = nPreset;
+        this->nItemId = nItemId;
         this->szInputFile = szInputFile;
         this->szOutputFile = szOutputFile;
+        this->bUseReadPipes = bUseReadPipes;
+        this->bUseWritePipes = bUseWritePipes;
 
-        CString szExecute;
+        CString szCommandLine = pFormat->szTemplate;
 
-        szExecute = pFormat->szTemplate;
-        szExecute.Replace(_T("$EXE"), _T("\"$EXE\""));
-        szExecute.Replace(_T("$EXE"), pFormat->szPath);
-        szExecute.Replace(_T("$OPTIONS"), preset.szOptions);
+        szCommandLine.Replace(_T("$EXE"), _T("\"$EXE\""));
+        szCommandLine.Replace(_T("$EXE"), pFormat->szPath);
 
-        szExecute.Replace(_T("$INFILE"), _T("\"$INFILE\""));
-        if (pFormat->bPipeInput == true)
-            szExecute.Replace(_T("$INFILE"), _T("-"));
+        szCommandLine.Replace(_T("$OPTIONS"), preset.szOptions);
+
+        szCommandLine.Replace(_T("$INFILE"), _T("\"$INFILE\""));
+        if (bUseReadPipes == true)
+            szCommandLine.Replace(_T("$INFILE"), _T("-"));
         else
-            szExecute.Replace(_T("$INFILE"), szInputFile);
+            szCommandLine.Replace(_T("$INFILE"), szInputFile);
 
-        szExecute.Replace(_T("$OUTFILE"), _T("\"$OUTFILE\""));
-        if (pFormat->bPipeOutput == true)
-            szExecute.Replace(_T("$OUTFILE"), _T("-"));
+        szCommandLine.Replace(_T("$OUTFILE"), _T("\"$OUTFILE\""));
+        if (bUseWritePipes == true)
+            szCommandLine.Replace(_T("$OUTFILE"), _T("-"));
         else
-            szExecute.Replace(_T("$OUTFILE"), szOutputFile);
+            szCommandLine.Replace(_T("$OUTFILE"), szOutputFile);
 
-        TCHAR szCommandLine[(64 * 1024)];
-        ZeroMemory(szCommandLine, sizeof(szCommandLine));
-        lstrcpy(szCommandLine, szExecute.GetBuffer(szExecute.GetLength()));
-        this->szCommandLine = szCommandLine;
-
-        this->nItemId = nItemId;
-        this->szFunction = pFormat->szFunction;
-        this->bUseReadPipes = pFormat->bPipeInput;
-        this->bUseWritePipes = pFormat->bPipeOutput;
+        ZeroMemory(this->pszCommandLine, sizeof(this->pszCommandLine));
+        lstrcpy(this->pszCommandLine, szCommandLine.GetBuffer(szCommandLine.GetLength()));
     }
 };

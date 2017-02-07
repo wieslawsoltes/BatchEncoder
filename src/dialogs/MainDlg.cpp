@@ -2390,7 +2390,7 @@ void CMainDlg::FinishConvert()
 bool ConvertFileTrace(CFileContext* pContext)
 {
     CString szOutput;
-    szOutput.Format(_T("[%d] %s\n"), pContext->nItemId, pContext->szCommandLine);
+    szOutput.Format(_T("[%d] %s\n"), pContext->nItemId, pContext->pszCommandLine);
     OutputDebugString(szOutput);
     return true;
 }

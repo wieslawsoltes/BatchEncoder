@@ -23,7 +23,7 @@ bool ProgresssLoop(CFileContext* pContext, CProcessContext &processContext, int 
     int nPreviousProgress = 0;
 
     // load progress function
-    HMODULE hDll = ::LoadLibrary(pContext->szFunction);
+    HMODULE hDll = ::LoadLibrary(pContext->pFormat->szFunction);
     if (hDll == NULL)
     {
         pWorkerContext->Status(pContext->nItemId, pszDefaulTime, pWorkerContext->GetString(0x00110001, pszProgresssLoop[0]));
@@ -175,7 +175,7 @@ bool ConvertFileUsingConsole(CFileContext* pContext)
     processContext.ConnectStdError(processContext.hWritePipeStderr);
 
     timer.Start();
-    if (processContext.Start(pContext->szCommandLine) == false)
+    if (processContext.Start(pContext->pszCommandLine) == false)
     {
         timer.Stop();
 
@@ -485,7 +485,7 @@ bool ConvertFileUsingPipes(CFileContext* pContext)
     }
 
     timer.Start();
-    if (processContext.Start(pContext->szCommandLine) == false)
+    if (processContext.Start(pContext->pszCommandLine) == false)
     {
         timer.Stop();
 
@@ -736,20 +736,38 @@ bool ConvertItem(CItemContext* pContext, ConvertFileFunc *pConvertFile)
         szDecOutputFile = szEncOutputFile + _T(".") + CString(pDecFormat->szOutputExtension).MakeLower();
     }
 
+    CFileContext decoderContext;
+    if (bIsValidEncoderInput == false)
+    {
+        decoderContext.Init(
+            pWorkerContext,
+            pDecFormat,
+            pDecFormat->nDefaultPreset,
+            pContext->item->nId,
+            szDecInputFile,
+            szDecOutputFile,
+            pDecFormat->bPipeInput,
+            pDecFormat->bPipeOutput);
+    }
+
+    CFileContext encoderContext;
+    encoderContext.Init(
+        pWorkerContext,
+        pEncFormat,
+        pContext->item->nPreset,
+        pContext->item->nId,
+        bIsValidEncoderInput == true ? szEncInputFile : szDecOutputFile,
+        szEncOutputFile,
+        pEncFormat->bPipeInput,
+        pEncFormat->bPipeOutput);
+
     // decode
     if (bIsValidEncoderInput == false)
     {
         pWorkerContext->Status(pContext->item->nId, pszDefaulTime, pWorkerContext->GetString(0x00140007, pszConvertItem[6]));
         try
         {
-            CFileContext context(
-                pWorkerContext,
-                pDecFormat,
-                pDecFormat->nDefaultPreset,
-                pContext->item->nId,
-                szDecInputFile,
-                szDecOutputFile);
-            if ((pConvertFile)(&context) == false)
+            if ((pConvertFile)(&decoderContext) == false)
             {
                 if (pWorkerContext->pConfig->m_Options.bDeleteOnErrors == true)
                     ::DeleteFile(szDecOutputFile);
@@ -786,14 +804,7 @@ bool ConvertItem(CItemContext* pContext, ConvertFileFunc *pConvertFile)
         else
             pWorkerContext->Status(pContext->item->nId, pszDefaulTime, pWorkerContext->GetString(0x0014000C, pszConvertItem[11]));
 
-        CFileContext context(
-            pWorkerContext,
-            pEncFormat,
-            pContext->item->nPreset,
-            pContext->item->nId,
-            bIsValidEncoderInput == true ? szEncInputFile : szDecOutputFile,
-            szEncOutputFile);
-        if ((pConvertFile)(&context) == true)
+        if ((pConvertFile)(&encoderContext) == true)
         {
             if (FileExists(szEncOutputFile) == false)
             {
