@@ -698,17 +698,13 @@ bool ConvertItem(CItemContext* pContext, ConvertFileFunc *pConvertFile)
 
     bool bIsValidEncoderInput = pEncFormat->IsValidInputExtension(::GetFileExtension(szEncInputFile));
 
-    CString szName = pContext->item->szName + _T(".") + CString(pEncFormat->szOutputExtension).MakeLower();
+    szEncOutputFile = pContext->item->szName + _T(".") + CString(pEncFormat->szOutputExtension).MakeLower();
     if (szOutPath.GetLength() >= 1)
     {
         if (szOutPath[szOutPath.GetLength() - 1] == '\\' || szOutPath[szOutPath.GetLength() - 1] == '/')
-            szEncOutputFile = szOutPath + szName;
+            szEncOutputFile = szOutPath + szEncOutputFile;
         else
-            szEncOutputFile = szOutPath + _T("\\") + szName;
-    }
-    else
-    {
-        szEncOutputFile = szName;
+            szEncOutputFile = szOutPath + _T("\\") + szEncOutputFile;
     }
 
     // prepare decoder
