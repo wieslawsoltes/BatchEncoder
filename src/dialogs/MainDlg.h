@@ -117,8 +117,9 @@ public:
     afx_msg void OnHelpAbout();
 public:
     bool SearchFolderForLanguages(CString szPath);
-    void SetLanguageMenu();
+    void InitLanguageMenu();
     void SetLanguage();
+    void LoadLanguage(CString szFileXml);
     void GetItems();
     void SetItems();
     void GetOptions();

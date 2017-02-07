@@ -372,7 +372,7 @@ BOOL CMainDlg::OnInitDialog()
         this->LoadFormats(this->szFormatsFile);
         this->LoadOptions(this->szOptionsFile);
         this->SearchFolderForLanguages(::GetExeFilePath());
-        this->SetLanguageMenu();
+        this->InitLanguageMenu();
         this->SetLanguage();
         this->LoadItems(this->szItemsFile);
     }
@@ -1378,7 +1378,7 @@ bool CMainDlg::SearchFolderForLanguages(CString szFile)
     return true;
 }
 
-void CMainDlg::SetLanguageMenu()
+void CMainDlg::InitLanguageMenu()
 {
     CMenu *m_hMenu = this->GetMenu();
     CMenu *m_hLangMenu = m_hMenu->GetSubMenu(4);
@@ -1497,6 +1497,31 @@ void CMainDlg::SetLanguage()
     helper.SetWndText(&m_BtnBrowse, 0x000A0015);
     helper.SetWndText(&m_StcThreads, 0x000A0016);
     helper.SetWndText(&m_BtnConvert, 0x000A0017);
+}
+
+void CMainDlg::LoadLanguage(CString szFileXml)
+{
+    XmlConfiguration doc;
+    if (doc.Open(szFileXml) == true)
+    {
+        // insert to languages list
+        CLanguage language;
+        doc.GetLanguage(language);
+
+        this->m_Config.m_Languages.InsertNode(language);
+
+        // insert to languages menu
+        CMenu *m_hMenu = this->GetMenu();
+        CMenu *m_hLangMenu = m_hMenu->GetSubMenu(4);
+        int nLanguages = m_Config.m_Languages.GetSize();
+
+        CString szBuff;
+        szBuff.Format(_T("%s (%s)"), language.szOriginalName, language.szTranslatedName);
+
+        UINT nLangID = ID_LANGUAGE_MIN + nLanguages - 1;
+        m_hLangMenu->AppendMenu(MF_STRING, nLangID, szBuff);
+        m_hLangMenu->CheckMenuItem(nLangID, MF_UNCHECKED);
+    }
 }
 
 void CMainDlg::GetItems()
@@ -1931,35 +1956,7 @@ void CMainDlg::HandleDropFiles(HDROP hDropInfo)
                 }
                 else if (szExt.CompareNoCase(_T("language")) == 0)
                 {
-                    // Add new language to languages list.
-                    XmlConfiguration doc;
-                    if (doc.Open(szPath) == true)
-                    {
-                        CLanguage language;
-                        doc.GetLanguage(language);
-
-                        // remove old languages
-                        CMenu *m_hMenu = this->GetMenu();
-                        CMenu *m_hLangMenu = m_hMenu->GetSubMenu(4);
-                        int nLanguages = m_Config.m_Languages.GetSize();
-                        if (nLanguages > 0)
-                        {
-                            for (int i = 0; i < nLanguages; i++)
-                            {
-                                UINT nLangID = ID_LANGUAGE_MIN + i;
-                                m_hLangMenu->DeleteMenu(nLangID, 0);
-                            }
-                        }
-
-                        // add new languages
-                        this->m_Config.m_Languages.InsertNode(language);
-
-                        // update languages menu
-                        this->SetLanguageMenu();
-
-                        // restore default language
-                        this->SetLanguage();
-                    }
+                    LoadLanguage(szPath);
                 }
                 else
                 {
@@ -2499,7 +2496,6 @@ void CMainDlg::TraceConvert()
             break;
         }
     }
-
 
     delete pTraceWorkerContext->pQueue;
     delete pTraceWorkerContext->nProgess;
