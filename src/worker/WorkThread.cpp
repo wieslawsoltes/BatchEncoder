@@ -647,16 +647,6 @@ bool ConvertFile(CFileContext* pContext)
         return ConvertFileUsingPipes(pContext);
 }
 
-bool FileExists(CString szPath)
-{
-    WIN32_FIND_DATA w32FileData;
-    ZeroMemory(&w32FileData, sizeof(WIN32_FIND_DATA));
-    HANDLE hFind = ::FindFirstFile(szPath, &w32FileData);
-    bool bInvalidHandle = hFind == INVALID_HANDLE_VALUE;
-    ::FindClose(hFind);
-    return bInvalidHandle == false;
-}
-
 bool ConvertItem(CItemContext* pContext, ConvertFileFunc *pConvertFile)
 {
     CWorkerContext *pWorkerContext = pContext->pWorkerContext;
