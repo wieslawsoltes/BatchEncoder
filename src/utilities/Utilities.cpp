@@ -194,6 +194,15 @@ CString GetFileName(CString szFilePath)
     return strResult;
 }
 
+CString GetFilePath(CString szFilePath)
+{
+    CString strResult = szFilePath;
+    CString szFileName = ::GetFileName(szFilePath);
+    int nPathLength = szFilePath.GetLength() - szFileName.GetLength();
+    strResult.Truncate(nPathLength);
+    return strResult;
+}
+
 CString GetOnlyFileName(CString szFilePath)
 {
     CString szFileName = ::GetFileName(szFilePath);

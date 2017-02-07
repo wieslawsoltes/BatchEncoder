@@ -26,6 +26,8 @@ void SetComboBoxHeight(HWND hDlg, int nComboBoxID, int nSizeLimit);
 
 CString GetFileName(CString szFilePath);
 
+CString GetFilePath(CString szFilePath);
+
 CString GetOnlyFileName(CString szFilePath);
 
 CString GetFileExtension(CString szFilePath);
