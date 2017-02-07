@@ -106,14 +106,18 @@ public:
         }
         return -1;
     }
-    int GetDecoderByExtension(CString szExt)
+    int GetDecoderByExtensionAndFormat(CString szExt, CFormat *pEncoderFormat)
     {
         int nFormats = this->GetSize();
         for (int i = 0; i < nFormats; i++)
         {
             CFormat& format = this->GetData(i);
             if (format.nType == 1 && format.IsValidInputExtension(szExt) == true)
-                return i;
+            {
+                bool bIsValidEncoderInput = pEncoderFormat->IsValidInputExtension(format.szOutputExtension);
+                if (bIsValidEncoderInput == true)
+                    return i;
+            }
         }
         return -1;
     }

@@ -17,13 +17,13 @@ public:
 public:
     CFileContext(
         CWorkerContext *pWorkerContext, 
-        CFormat &format, 
+        CFormat *pFormat, 
         int nPreset, 
         int nItemId, 
         CString szInputFile, 
         CString szOutputFile)
     {
-        CPreset& preset = format.m_Presets.GetData(nPreset);
+        CPreset& preset = pFormat->m_Presets.GetData(nPreset);
 
         this->pWorkerContext = pWorkerContext;
         this->szInputFile = szInputFile;
@@ -31,19 +31,19 @@ public:
 
         CString szExecute;
 
-        szExecute = format.szTemplate;
+        szExecute = pFormat->szTemplate;
         szExecute.Replace(_T("$EXE"), _T("\"$EXE\""));
-        szExecute.Replace(_T("$EXE"), format.szPath);
+        szExecute.Replace(_T("$EXE"), pFormat->szPath);
         szExecute.Replace(_T("$OPTIONS"), preset.szOptions);
 
         szExecute.Replace(_T("$INFILE"), _T("\"$INFILE\""));
-        if (format.bPipeInput == true)
+        if (pFormat->bPipeInput == true)
             szExecute.Replace(_T("$INFILE"), _T("-"));
         else
             szExecute.Replace(_T("$INFILE"), szInputFile);
 
         szExecute.Replace(_T("$OUTFILE"), _T("\"$OUTFILE\""));
-        if (format.bPipeOutput == true)
+        if (pFormat->bPipeOutput == true)
             szExecute.Replace(_T("$OUTFILE"), _T("-"));
         else
             szExecute.Replace(_T("$OUTFILE"), szOutputFile);
@@ -54,8 +54,8 @@ public:
         this->szCommandLine = szCommandLine;
 
         this->nItemId = nItemId;
-        this->szFunction = format.szFunction;
-        this->bUseReadPipes = format.bPipeInput;
-        this->bUseWritePipes = format.bPipeOutput;
+        this->szFunction = pFormat->szFunction;
+        this->bUseReadPipes = pFormat->bPipeInput;
+        this->bUseWritePipes = pFormat->bPipeOutput;
     }
 };
