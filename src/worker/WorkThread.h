@@ -9,8 +9,6 @@
 #include "ItemContext.h"
 #include "ProcessContext.h"
 
-enum Mode { None = -1, Encode = 0, Transcode = 1 };
-
 typedef int GetProgressFunc(char *szLineBuff, int nLineLen);
 
 typedef bool ConvertFileFunc(CFileContext *pContext);

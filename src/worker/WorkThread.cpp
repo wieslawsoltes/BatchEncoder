@@ -705,13 +705,6 @@ bool ConvertItem(CItemContext* pContext, ConvertFileFunc *pConvertFile)
     CString szInputFileExt = ::GetFileExtension(szInputFile).MakeUpper();
     bool bIsValidEncoderInput = encoderFormat.IsValidInputExtension(szInputFileExt);
 
-    // processing mode
-    Mode nProcessingMode = Mode::None;
-    if (bIsValidEncoderInput)
-        nProcessingMode = Mode::Encode;
-    else
-        nProcessingMode = Mode::Transcode;
-
     // output path
     CString szEncoderExtension = encoderFormat.szOutputExtension;
     CString szName = pContext->item->szName + _T(".") + szEncoderExtension.MakeLower();
@@ -731,7 +724,7 @@ bool ConvertItem(CItemContext* pContext, ConvertFileFunc *pConvertFile)
     CString szOrgInputFile = szInputFile;
     CString szOrgOutputFile = szOutputFile;
 
-    if (nProcessingMode == Mode::Transcode)
+    if (bIsValidEncoderInput == false)
     {
         // find decoder
         int nDecoder = pWorkerContext->pConfig->m_Formats.GetDecoderByExtension(pContext->item->szExtension);
@@ -751,8 +744,8 @@ bool ConvertItem(CItemContext* pContext, ConvertFileFunc *pConvertFile)
         }
 
         // validate decoder output extension
-        bIsValidEncoderInput = encoderFormat.IsValidInputExtension(decoderFormat.szOutputExtension);
-        if (bIsValidEncoderInput == false)
+        bool bIsValidDecoderOutput = encoderFormat.IsValidInputExtension(decoderFormat.szOutputExtension);
+        if (bIsValidDecoderOutput == false)
         {
             pWorkerContext->Status(pContext->item->nId, pszDefaulTime, pWorkerContext->GetString(0x00140006, pszConvertItem[5]));
             return false;
@@ -799,7 +792,7 @@ bool ConvertItem(CItemContext* pContext, ConvertFileFunc *pConvertFile)
     if (pWorkerContext->bRunning == false)
         return false;
 
-    if (nProcessingMode == Mode::Transcode)
+    if (bIsValidEncoderInput == false)
     {
         // decoder output file as encoder input file
         szInputFile = szOutputFile;
@@ -808,69 +801,66 @@ bool ConvertItem(CItemContext* pContext, ConvertFileFunc *pConvertFile)
         szOutputFile = szOrgOutputFile;
     }
 
-    if ((nProcessingMode == Mode::Encode) || (nProcessingMode == Mode::Transcode))
+    if (encoderFormat.nType == 0)
+        pWorkerContext->Status(pContext->item->nId, pszDefaulTime, pWorkerContext->GetString(0x0014000A, pszConvertItem[9]));
+    else if (encoderFormat.nType == 1)
+        pWorkerContext->Status(pContext->item->nId, pszDefaulTime, pWorkerContext->GetString(0x0014000B, pszConvertItem[10]));
+    else
+        pWorkerContext->Status(pContext->item->nId, pszDefaulTime, pWorkerContext->GetString(0x0014000C, pszConvertItem[11]));
+
+    try
     {
-        if (encoderFormat.nType == 0)
-            pWorkerContext->Status(pContext->item->nId, pszDefaulTime, pWorkerContext->GetString(0x0014000A, pszConvertItem[9]));
-        else if (encoderFormat.nType == 1)
-            pWorkerContext->Status(pContext->item->nId, pszDefaulTime, pWorkerContext->GetString(0x0014000B, pszConvertItem[10]));
-        else
-            pWorkerContext->Status(pContext->item->nId, pszDefaulTime, pWorkerContext->GetString(0x0014000C, pszConvertItem[11]));
-
-        try
+        CFileContext context(
+            pWorkerContext,
+            encoderFormat,
+            pContext->item->nPreset,
+            pContext->item->nId,
+            szInputFile,
+            szOutputFile);
+        if ((pConvertFile)(&context) == true)
         {
-            CFileContext context(
-                pWorkerContext,
-                encoderFormat,
-                pContext->item->nPreset,
-                pContext->item->nId,
-                szInputFile,
-                szOutputFile);
-            if ((pConvertFile)(&context) == true)
+            // validate encoded file
+            if (FileExists(szOutputFile) == false)
             {
-                // validate encoded file
-                if (FileExists(szOutputFile) == false)
+                if (bIsValidEncoderInput == false)
                 {
-                    if (nProcessingMode == Mode::Transcode)
-                    {
-                        if (pWorkerContext->pConfig->m_Options.bDeleteOnErrors == true)
-                            ::DeleteFile(szInputFile);
-                    }
-
-                    pWorkerContext->Status(pContext->item->nId, pszDefaulTime, pWorkerContext->GetString(0x0014000D, pszConvertItem[12]));
-                    return false;
+                    if (pWorkerContext->pConfig->m_Options.bDeleteOnErrors == true)
+                        ::DeleteFile(szInputFile);
                 }
 
-                if (nProcessingMode == Mode::Transcode)
-                    ::DeleteFile(szInputFile);
-
-                if (pWorkerContext->pConfig->m_Options.bDeleteSourceFiles == true)
-                    ::DeleteFile(szOrgInputFile);
-
-                return true;
-            }
-            else
-            {
-                if (nProcessingMode == Mode::Transcode)
-                    ::DeleteFile(szInputFile);
-
-                if (pWorkerContext->pConfig->m_Options.bDeleteOnErrors == true)
-                    ::DeleteFile(szOutputFile);
-
+                pWorkerContext->Status(pContext->item->nId, pszDefaulTime, pWorkerContext->GetString(0x0014000D, pszConvertItem[12]));
                 return false;
             }
+
+            if (bIsValidEncoderInput == false)
+                ::DeleteFile(szInputFile);
+
+            if (pWorkerContext->pConfig->m_Options.bDeleteSourceFiles == true)
+                ::DeleteFile(szOrgInputFile);
+
+            return true;
         }
-        catch (...)
+        else
         {
-            if (nProcessingMode == Mode::Transcode)
+            if (bIsValidEncoderInput == false)
                 ::DeleteFile(szInputFile);
 
             if (pWorkerContext->pConfig->m_Options.bDeleteOnErrors == true)
                 ::DeleteFile(szOutputFile);
 
-            pWorkerContext->Status(pContext->item->nId, pszDefaulTime, pWorkerContext->GetString(0x0014000E, pszConvertItem[13]));
-            pWorkerContext->Callback(pContext->item->nId, -1, true, true);
+            return false;
         }
+    }
+    catch (...)
+    {
+        if (bIsValidEncoderInput == false)
+            ::DeleteFile(szInputFile);
+
+        if (pWorkerContext->pConfig->m_Options.bDeleteOnErrors == true)
+            ::DeleteFile(szOutputFile);
+
+        pWorkerContext->Status(pContext->item->nId, pszDefaulTime, pWorkerContext->GetString(0x0014000E, pszConvertItem[13]));
+        pWorkerContext->Callback(pContext->item->nId, -1, true, true);
     }
 
     return false;
