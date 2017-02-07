@@ -647,7 +647,7 @@ bool ConvertFile(CFileContext* pContext)
         return ConvertFileUsingPipes(pContext);
 }
 
-bool ConvertItem(CItemContext* pContext, ConvertFileFunc *pConvertFile)
+bool ConvertItem(CItemContext* pContext)
 {
     CWorkerContext *pWorkerContext = pContext->pWorkerContext;
     CFormat *pEncFormat = NULL;
@@ -665,7 +665,7 @@ bool ConvertItem(CItemContext* pContext, ConvertFileFunc *pConvertFile)
 
     // prepare encoder
     szEncInputFile = pContext->item->szPath;
-    if (FileExists(szEncInputFile) == false)
+    if (::FileExists(szEncInputFile) == false)
     {
         pWorkerContext->Status(pContext->item->nId, pszDefaulTime, pWorkerContext->GetString(0x00140001, pszConvertItem[0]));
         return false;
@@ -757,7 +757,7 @@ bool ConvertItem(CItemContext* pContext, ConvertFileFunc *pConvertFile)
         pWorkerContext->Status(pContext->item->nId, pszDefaulTime, pWorkerContext->GetString(0x00140007, pszConvertItem[6]));
         try
         {
-            if ((pConvertFile)(&decoderContext) == false)
+            if (ConvertFile(&decoderContext) == false)
             {
                 if (pWorkerContext->pConfig->m_Options.bDeleteOnErrors == true)
                     ::DeleteFile(szDecOutputFile);
@@ -765,7 +765,7 @@ bool ConvertItem(CItemContext* pContext, ConvertFileFunc *pConvertFile)
                 return false;
             }
 
-            if (FileExists(szDecOutputFile) == false)
+            if (::FileExists(szDecOutputFile) == false)
             {
                 pWorkerContext->Status(pContext->item->nId, pszDefaulTime, pWorkerContext->GetString(0x00140008, pszConvertItem[7]));
                 return false;
@@ -794,9 +794,9 @@ bool ConvertItem(CItemContext* pContext, ConvertFileFunc *pConvertFile)
         else
             pWorkerContext->Status(pContext->item->nId, pszDefaulTime, pWorkerContext->GetString(0x0014000C, pszConvertItem[11]));
 
-        if ((pConvertFile)(&encoderContext) == true)
+        if (ConvertFile(&encoderContext) == true)
         {
-            if (FileExists(szEncOutputFile) == false)
+            if (::FileExists(szEncOutputFile) == false)
             {
                 if (bIsValidEncoderInput == false)
                 {
@@ -842,7 +842,7 @@ bool ConvertItem(CItemContext* pContext, ConvertFileFunc *pConvertFile)
     return false;
 }
 
-bool ConvertLoop(CWorkerContext* pWorkerContext, ConvertFileFunc *pConvertFile)
+bool ConvertLoop(CWorkerContext* pWorkerContext)
 {
     while (!pWorkerContext->pQueue->IsEmpty())
     {
@@ -866,7 +866,7 @@ bool ConvertLoop(CWorkerContext* pWorkerContext, ConvertFileFunc *pConvertFile)
             if (pContext != NULL)
             {
                 pContext->pWorkerContext->Next(pContext->item->nId);
-                if (ConvertItem(pContext, pConvertFile) == true)
+                if (ConvertItem(pContext) == true)
                 {
                     pContext->pWorkerContext->nDoneWithoutError++;
                 }
@@ -893,7 +893,7 @@ DWORD WINAPI ConvertThread(LPVOID lpParam)
     CWorkerContext* pWorkerContext = (CWorkerContext*)lpParam;
     if (pWorkerContext != NULL)
     {
-        if (ConvertLoop(pWorkerContext, &ConvertFile) == true)
+        if (ConvertLoop(pWorkerContext) == true)
             return TRUE;
     }
     return FALSE;
@@ -958,7 +958,7 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
     // single-threaded
     if (pWorkerContext->nThreadCount == 1)
     {
-        ConvertLoop(pWorkerContext, &ConvertFile);
+        ConvertLoop(pWorkerContext);
     }
 
     // multi-threaded

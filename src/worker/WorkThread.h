@@ -11,10 +11,6 @@
 
 typedef int GetProgressFunc(char *szLineBuff, int nLineLen);
 
-typedef bool ConvertFileFunc(CFileContext *pContext);
-
-bool ConvertFile(CFileContext* pContext);
-
-bool ConvertItem(CItemContext* pContext, ConvertFileFunc *pConvertFile);
+bool ConvertItem(CItemContext* pContext);
 
 DWORD WINAPI WorkThread(LPVOID lpParam);

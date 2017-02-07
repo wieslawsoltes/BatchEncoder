@@ -2387,14 +2387,6 @@ void CMainDlg::FinishConvert()
 
 #ifdef DEBUG
 
-bool ConvertFileTrace(CFileContext* pContext)
-{
-    CString szOutput;
-    szOutput.Format(_T("[%d] %s\n"), pContext->nItemId, pContext->pszCommandLine);
-    OutputDebugString(szOutput);
-    return true;
-}
-
 void CMainDlg::TraceConvert()
 {
     CWorkerContext *pTraceWorkerContext = new CTraceWorkerContext(&this->m_Config);
@@ -2477,7 +2469,7 @@ void CMainDlg::TraceConvert()
             if (pContext != NULL)
             {
                 pContext->pWorkerContext->Next(pContext->item->nId);
-                if (ConvertItem(pContext, &ConvertFileTrace) == true)
+                if (ConvertItem(pContext) == true)
                 {
                     pContext->pWorkerContext->nDoneWithoutError++;
                 }
