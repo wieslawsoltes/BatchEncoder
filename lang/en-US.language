@@ -45,6 +45,7 @@
     <String key="0x00040006" value="Do Not Save Configuration On E&amp;xit" />
     <String key="0x00040007" value="Delete &amp;Output File On Error" />
     <String key="0x00040008" value="Stop &amp;Conversion On Error" />
+    <String key="0x00040009" value="&amp;Hide Console Window" />
 
     <!-- Language Menu -->
 

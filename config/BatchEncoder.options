@@ -9,5 +9,6 @@
     <DoNotSaveConfiguration>false</DoNotSaveConfiguration>
     <DeleteOnErrors>true</DeleteOnErrors>
     <StopOnErrors>false</StopOnErrors>
+    <HideConsoleWindow>true</HideConsoleWindow>
     <ThreadCount>0</ThreadCount>
 </Options>
