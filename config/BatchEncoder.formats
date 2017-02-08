@@ -475,7 +475,7 @@
             <Preset name="VBR Quality 1023 (max)" options="-q 1023"/>
         </Presets>
     </Format>
-    <Format id="FFMPEG_AC3" name="AC3 (ATSC A/52) - ffmpeg" template="$EXE -ignore_length true -y -i $INFILE -acodec ac3 $OPTIONS $OUTFILE" input="true" output="false" function="- none -" path="ffmpeg.exe" type="0" formats="WAV" extension="AC3" default="21">
+    <Format id="FFMPEG_AC3" name="AC3 (ATSC A/52) - ffmpeg" template="$EXE -ignore_length true -y -i $INFILE -acodec ac3 $OPTIONS -f ac3 pipe:1" input="true" output="true" function="- none -" path="ffmpeg.exe" type="0" formats="WAV" extension="AC3" default="21">
         <Presets>
             <Preset name="CBR 32 kbit/s" options="-ab 32k"/>
             <Preset name="CBR 40 kbit/s" options="-ab 40k"/>
