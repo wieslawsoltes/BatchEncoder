@@ -158,7 +158,8 @@
     <String key="0x00130007" value="Error: can not create read thread." />
     <String key="0x00130008" value="Error: can not create write thread." />
     <String key="0x00130009" value="Error: progress did not reach 100%." />
-    <String key="0x0013000A" value="Done" />
+    <String key="0x0013000A" value="Error: can not create pipes for process connection." />
+    <String key="0x0013000B" value="Done" />
 
     <String key="0x00140001" value="Error: can not find input file." />
     <String key="0x00140002" value="Error: can not find valid encoder by id." />
@@ -171,7 +172,7 @@
     <String key="0x00140009" value="Error: exception thrown while converting file." />
     <String key="0x0014000A" value="Encoding..." />
     <String key="0x0014000B" value="Decoding..." />
-    <String key="0x0014000C" value="Processing..." />
+    <String key="0x0014000C" value="Transcoding..." />
     <String key="0x0014000D" value="Error: can not find encoded file." />
     <String key="0x0014000E" value="Error: exception thrown while converting file." />
 

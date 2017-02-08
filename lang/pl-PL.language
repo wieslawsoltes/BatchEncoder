@@ -43,7 +43,7 @@
     <String key="0x00040004" value="&amp;Usuń Pliki Źródłowe" />
     <String key="0x00040005" value="&amp;Wyłącz Po Zakończeniu" />
     <String key="0x00040006" value="Nie &amp;Zapisuj Konfiguracji Przy Wyjściu" />
-    <String key="0x00040007" value="Usuń &amp;Plik Wyjściowy W Przypadku Błędu" />
+    <String key="0x00040007" value="Usuń Plik Wyjściowy W Przypadku &amp;Błędu" />
     <String key="0x00040008" value="Zatrzymaj &amp;Konwersje W Przypadku Błędu" />
     <String key="0x00040009" value="Uk&amp;ryj Okno Konsoli" />
 
@@ -158,7 +158,8 @@
     <String key="0x00130007" value="Błąd: nie można utworzyć wątka odczytu." />
     <String key="0x00130008" value="Błąd: nie można utworzyć wątka zapisu." />
     <String key="0x00130009" value="Błąd: postęp nie osiągnął 100%." />
-    <String key="0x0013000A" value="Wykonane" />
+    <String key="0x0013000A" value="Błąd: nie można utworzyć potoku dla połączenia procesów." />
+    <String key="0x0013000B" value="Wykonane" />
 
     <String key="0x00140001" value="Błąd: nie można znaleźć pliku wejściowego." />
     <String key="0x00140002" value="Błąd: nie można znaleźć poprawnego kodera poprzez id." />
@@ -171,7 +172,7 @@
     <String key="0x00140009" value="Błąd: wyjątek został wyrzucony podczas konwersji pliku." />
     <String key="0x0014000A" value="Kodowanie..." />
     <String key="0x0014000B" value="Dekodowanie..." />
-    <String key="0x0014000C" value="Przetwarzanie..." />
+    <String key="0x0014000C" value="Transkodowanie..." />
     <String key="0x0014000D" value="Błąd: nie mogę znaleźć plik zakodowany." />
     <String key="0x0014000E" value="Błąd: wyjątek został wyrzucony podczas konwersji pliku." />
 

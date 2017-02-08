@@ -31,7 +31,8 @@ const TCHAR* pszConvertPipes[] = {
     /* 06 */ _T("Error: can not create read thread."),
     /* 07 */ _T("Error: can not create write thread."),
     /* 08 */ _T("Error: progress did not reach 100%."),
-    /* 09 */ _T("Done")
+    /* 09 */ _T("Error: can not create pipes for process connection."),
+    /* 10 */ _T("Done")
 };
 
 const TCHAR* pszConvertItem[] = {
