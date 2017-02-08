@@ -124,6 +124,10 @@ bool CProgressWorkerContext::Callback(int nItemId, int nProgress, bool bFinished
 
                         nPreviousProgess[i] = nItemProgress;
                     }
+                    else if (nItemProgress == 100 && nItemProgress > nItemPreviousProgress)
+                    {
+                        nPreviousProgess[i] = nItemProgress;
+                    }
                 }
             }
 
