@@ -6,127 +6,18 @@
 class CProcessContext
 {
 public:
-    SECURITY_ATTRIBUTES secattr;
-    HANDLE hReadPipeStderr;
-    HANDLE hWritePipeStderr;
-    HANDLE hReadPipeStdin;
-    HANDLE hWritePipeStdin;
-    HANDLE hReadPipeStdout;
-    HANDLE hWritePipeStdout;
     PROCESS_INFORMATION pInfo;
     STARTUPINFO sInfo;
 public:
     CProcessContext()
     {
-        // security attributes
-        ZeroMemory(&this->secattr, sizeof(this->secattr));
-        this->secattr.nLength = sizeof(this->secattr);
-        this->secattr.bInheritHandle = TRUE;
-        // stderr pipe
-        this->hReadPipeStderr = INVALID_HANDLE_VALUE;
-        this->hWritePipeStderr = INVALID_HANDLE_VALUE;
-        // stdin pipe
-        this->hReadPipeStdin = INVALID_HANDLE_VALUE;
-        this->hWritePipeStdin = INVALID_HANDLE_VALUE;
-        // stdout pipes
-        this->hReadPipeStdout = INVALID_HANDLE_VALUE;
-        this->hWritePipeStdout = INVALID_HANDLE_VALUE;
-        // process info
         ZeroMemory(&this->pInfo, sizeof(this->pInfo));
-        // startup info
         ZeroMemory(&this->sInfo, sizeof(this->sInfo));
         this->sInfo.cb = sizeof(this->sInfo);
         this->sInfo.dwFlags = STARTF_USESTDHANDLES;
     }
     virtual ~CProcessContext()
     {
-    }
-public:
-    bool CreateStderrPipe()
-    {
-        BOOL bResult = ::CreatePipe(&this->hReadPipeStderr, &this->hWritePipeStderr, &this->secattr, 0);
-        if (bResult == FALSE)
-            return false;
-        return true;
-    }
-    void CloseStderrReadPipe()
-    {
-        ::CloseHandle(this->hReadPipeStderr);
-    }
-    void CloseStderrWritePipe()
-    {
-        ::CloseHandle(this->hWritePipeStderr);
-    }
-    bool DuplicateStderrReadPipe()
-    {
-        BOOL bResult = ::DuplicateHandle(::GetCurrentProcess(),
-            this->hReadPipeStderr,
-            ::GetCurrentProcess(),
-            &this->hReadPipeStderr,
-            0,
-            TRUE,
-            DUPLICATE_CLOSE_SOURCE | DUPLICATE_SAME_ACCESS);
-        if (bResult == FALSE)
-        {
-            this->CloseStderrReadPipe();
-            this->CloseStderrWritePipe();
-            return false;
-        }
-        return true;
-    }
-public:
-    bool CreateStdinPipe()
-    {
-        BOOL bResult = ::CreatePipe(&this->hReadPipeStdin, &this->hWritePipeStdin, &this->secattr, 0);
-        if (bResult == FALSE)
-            return false;
-        return true;
-    }
-    void CloseStdinReadPipe()
-    {
-        ::CloseHandle(this->hReadPipeStdin);
-    }
-    void CloseStdinWritePipe()
-    {
-        ::CloseHandle(this->hWritePipeStdin);
-    }
-    bool InheritStdinWritePipe()
-    {
-        BOOL bResult = ::SetHandleInformation(this->hWritePipeStdin, HANDLE_FLAG_INHERIT, 0);
-        if (bResult == FALSE)
-        {
-            this->CloseStdinReadPipe();
-            this->CloseStdinWritePipe();
-            return false;
-        }
-        return true;
-    }
-public:
-    bool CreateStdoutPipe()
-    {
-        BOOL bResult = ::CreatePipe(&this->hReadPipeStdout, &this->hWritePipeStdout, &this->secattr, 0);
-        if (bResult == FALSE)
-            return false;
-        return true;
-    }
-    void CloseStdoutReadPipe()
-    {
-        ::CloseHandle(this->hReadPipeStdout);
-    }
-    void CloseStdoutWritePipe()
-    {
-        ::CloseHandle(this->hWritePipeStdout);
-    }
-    bool InheritStdoutReadPipe()
-    {
-        BOOL bResult = ::SetHandleInformation(this->hReadPipeStdout, HANDLE_FLAG_INHERIT, 0);
-        if (bResult == FALSE)
-        {
-            this->CloseStdoutReadPipe();
-            this->CloseStdoutWritePipe();
-            return false;
-        }
-        return true;
     }
 public:
     void ConnectStdInput(HANDLE hPipeStdin)
@@ -142,14 +33,17 @@ public:
         this->sInfo.hStdError = hPipeStderr;
     }
 public:
-    bool Start(TCHAR *szCommandLine)
+    bool Start(TCHAR *szCommandLine, bool bNoWindow)
     {
+        DWORD dwCreationFlags = NORMAL_PRIORITY_CLASS;
+        if (bNoWindow == true)
+            dwCreationFlags |= CREATE_NO_WINDOW;
         BOOL bResult = ::CreateProcess(NULL,
             szCommandLine,
             NULL,
             NULL,
             TRUE,
-            NORMAL_PRIORITY_CLASS | CREATE_NO_WINDOW,
+            dwCreationFlags,
             NULL,
             NULL,
             &this->sInfo,
