@@ -270,6 +270,7 @@ BEGIN_MESSAGE_MAP(CMainDlg, CResizeDialog)
     ON_COMMAND(ID_OPTIONS_DO_NOT_SAVE, OnOptionsDoNotSave)
     ON_COMMAND(ID_OPTIONS_DELETE_ON_ERRORS, OnOptionsDeleteOnErrors)
     ON_COMMAND(ID_OPTIONS_STOP_ON_ERRORS, OnOptionsStopOnErrors)
+    ON_COMMAND(ID_OPTIONS_HIDE_CONSOLE, OnOptionsHideConsole)
     ON_COMMAND(ID_LANGUAGE_DEFAULT, OnLanguageDefault)
     ON_COMMAND_RANGE(ID_LANGUAGE_MIN, ID_LANGUAGE_MAX, OnLanguageChange)
     ON_COMMAND(ID_HELP_WEBSITE, OnHelpWebsite)
@@ -1276,6 +1277,17 @@ void CMainDlg::OnOptionsStopOnErrors()
     }
 }
 
+void CMainDlg::OnOptionsHideConsole()
+{
+    if (this->pWorkerContext->bRunning == false)
+    {
+        if (this->GetMenu()->GetMenuState(ID_OPTIONS_HIDE_CONSOLE, MF_BYCOMMAND) == MF_CHECKED)
+            this->GetMenu()->CheckMenuItem(ID_OPTIONS_HIDE_CONSOLE, MF_UNCHECKED);
+        else
+            this->GetMenu()->CheckMenuItem(ID_OPTIONS_HIDE_CONSOLE, MF_CHECKED);
+    }
+}
+
 void CMainDlg::OnLanguageDefault()
 {
 }
@@ -1468,6 +1480,7 @@ void CMainDlg::SetLanguage()
     helper.SetMenuItemText(m_hMenu, ID_OPTIONS_DO_NOT_SAVE, 0x00040006);
     helper.SetMenuItemText(m_hMenu, ID_OPTIONS_DELETE_ON_ERRORS, 0x00040007);
     helper.SetMenuItemText(m_hMenu, ID_OPTIONS_STOP_ON_ERRORS, 0x00040008);
+    helper.SetMenuItemText(m_hMenu, ID_OPTIONS_HIDE_CONSOLE, 0x00040009);
 
     // Language Menu
     helper.SetMenuPopupText(m_hMenu, 4, 0x00050001);
@@ -1576,6 +1589,9 @@ void CMainDlg::GetOptions()
     // option: StopOnErrors
     m_Config.m_Options.bStopOnErrors = this->GetMenu()->GetMenuState(ID_OPTIONS_STOP_ON_ERRORS, MF_BYCOMMAND) == MF_CHECKED;
 
+    // option: HideConsoleWindow
+    m_Config.m_Options.bHideConsoleWindow = this->GetMenu()->GetMenuState(ID_OPTIONS_HIDE_CONSOLE, MF_BYCOMMAND) == MF_CHECKED;
+
     // option: ThreadCount
     CString szThreadCount;
     m_EdtThreads.GetWindowText(szThreadCount);
@@ -1664,6 +1680,12 @@ void CMainDlg::SetOptions()
         this->GetMenu()->CheckMenuItem(ID_OPTIONS_STOP_ON_ERRORS, MF_CHECKED);
     else
         this->GetMenu()->CheckMenuItem(ID_OPTIONS_STOP_ON_ERRORS, MF_UNCHECKED);
+
+    // option: HideConsoleWindow
+    if (m_Config.m_Options.bHideConsoleWindow)
+        this->GetMenu()->CheckMenuItem(ID_OPTIONS_HIDE_CONSOLE, MF_CHECKED);
+    else
+        this->GetMenu()->CheckMenuItem(ID_OPTIONS_HIDE_CONSOLE, MF_UNCHECKED);
 
     // option: ThreadCount
     CString szThreadCount;

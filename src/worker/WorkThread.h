@@ -7,6 +7,7 @@
 #include "PipeContext.h"
 #include "FileContext.h"
 #include "ItemContext.h"
+#include "Pipe.h"
 #include "ProcessContext.h"
 
 typedef int GetProgressFunc(char *szLineBuff, int nLineLen);

@@ -251,6 +251,8 @@ BEGIN
         MENUITEM "Delete &Output File On Error", ID_OPTIONS_DELETE_ON_ERRORS
         MENUITEM SEPARATOR
         MENUITEM "Stop &Conversion On Error",   ID_OPTIONS_STOP_ON_ERRORS
+        MENUITEM SEPARATOR
+        MENUITEM "&Hide Console Window",        ID_OPTIONS_HIDE_CONSOLE
     END
     POPUP "&Language"
     BEGIN

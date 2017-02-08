@@ -8,7 +8,7 @@
 #include "..\utilities\Utilities.h"
 #include "WorkThread.h"
 
-bool ProgresssLoop(CFileContext* pContext, CProcessContext &processContext, int &nProgress)
+bool ProgresssLoop(CFileContext* pContext, CProcessContext &processContext, CPipe &Stderr, int &nProgress)
 {
     CWorkerContext *pWorkerContext = pContext->pWorkerContext;
     const int nBuffSize = 4096;
@@ -46,7 +46,7 @@ bool ProgresssLoop(CFileContext* pContext, CProcessContext &processContext, int 
     do
     {
         ZeroMemory(szReadBuff, sizeof(szReadBuff));
-        bRes = ::ReadFile(processContext.hReadPipeStderr, szReadBuff, 100, &dwReadBytes, 0);
+        bRes = ::ReadFile(Stderr.hRead, szReadBuff, 100, &dwReadBytes, 0);
         if (bRes == FALSE || dwReadBytes == 0)
             break;
 
@@ -150,11 +150,12 @@ bool ConvertFileUsingConsole(CFileContext* pContext)
     }
 
     CProcessContext processContext;
+    CPipe Stderr(TRUE);
     int nProgress = 0;
     CTimeCount timer;
 
     // create pipes for stderr
-    if (processContext.CreateStderrPipe() == false)
+    if (Stderr.Create() == false)
     {
         pWorkerContext->Status(pContext->nItemId, pszDefaulTime, pWorkerContext->GetString(0x00120002, pszConvertConsole[1]));
         pWorkerContext->Callback(pContext->nItemId, -1, true, true);
@@ -162,7 +163,7 @@ bool ConvertFileUsingConsole(CFileContext* pContext)
     }
 
     // duplicate stderr read pipe handle to prevent child process from closing the pipe
-    if (processContext.DuplicateStderrReadPipe() == false)
+    if (Stderr.DuplicateRead() == false)
     {
         pWorkerContext->Status(pContext->nItemId, pszDefaulTime, pWorkerContext->GetString(0x00120003, pszConvertConsole[2]));
         pWorkerContext->Callback(pContext->nItemId, -1, true, true);
@@ -171,16 +172,16 @@ bool ConvertFileUsingConsole(CFileContext* pContext)
 
     // connect pipes to process
     processContext.ConnectStdInput(NULL);
-    processContext.ConnectStdOutput(processContext.hWritePipeStderr);
-    processContext.ConnectStdError(processContext.hWritePipeStderr);
+    processContext.ConnectStdOutput(Stderr.hWrite);
+    processContext.ConnectStdError(Stderr.hWrite);
 
     timer.Start();
-    if (processContext.Start(pContext->pszCommandLine) == false)
+    if (processContext.Start(pContext->pszCommandLine, TRUE) == false)
     {
         timer.Stop();
 
-        processContext.CloseStderrReadPipe();
-        processContext.CloseStderrWritePipe();
+        Stderr.CloseRead();
+        Stderr.CloseWrite();
 
         CString szStatus;
         szStatus.Format(pWorkerContext->GetString(0x00120004, pszConvertConsole[3]), ::GetLastError());
@@ -191,19 +192,19 @@ bool ConvertFileUsingConsole(CFileContext* pContext)
     }
 
     // close unused pipe handle
-    processContext.CloseStderrWritePipe();
+    Stderr.CloseWrite();
 
     // console progress loop
-    if (ProgresssLoop(pContext, processContext, nProgress) == false)
+    if (ProgresssLoop(pContext, processContext, Stderr, nProgress) == false)
     {
         timer.Stop();
-        processContext.CloseStderrReadPipe();
+        Stderr.CloseRead();
         processContext.Stop(false);
         return false;
     }
 
     timer.Stop();
-    processContext.CloseStderrReadPipe();
+    Stderr.CloseRead();
     processContext.Stop(nProgress == 100);
 
     if (nProgress != 100)
@@ -401,6 +402,8 @@ bool ConvertFileUsingPipes(CFileContext* pContext)
     }
 
     CProcessContext processContext;
+    CPipe Stdin(TRUE);
+    CPipe Stdout(TRUE);
     CPipeContext readContext;
     CPipeContext writeContext;
     DWORD dwReadThreadID = 0L;
@@ -414,7 +417,7 @@ bool ConvertFileUsingPipes(CFileContext* pContext)
     if (pContext->bUseReadPipes == true)
     {
         // create pipes for stdin
-        if (processContext.CreateStdinPipe() == false)
+        if (Stdin.Create() == false)
         {
             pWorkerContext->Status(pContext->nItemId, pszDefaulTime, pWorkerContext->GetString(0x00130002, pszConvertPipes[1]));
             pWorkerContext->Callback(pContext->nItemId, -1, true, true);
@@ -422,7 +425,7 @@ bool ConvertFileUsingPipes(CFileContext* pContext)
         }
 
         // set stdin write pipe inherit flag
-        if (processContext.InheritStdinWritePipe() == false)
+        if (Stdin.InheritWrite() == false)
         {
             pWorkerContext->Status(pContext->nItemId, pszDefaulTime, pWorkerContext->GetString(0x00130003, pszConvertPipes[2]));
             pWorkerContext->Callback(pContext->nItemId, -1, true, true);
@@ -433,12 +436,12 @@ bool ConvertFileUsingPipes(CFileContext* pContext)
     if (pContext->bUseWritePipes == true)
     {
         // create pipes for stdout
-        if (processContext.CreateStdoutPipe() == false)
+        if (Stdout.Create() == false)
         {
             if (pContext->bUseReadPipes == true)
             {
-                processContext.CloseStdinReadPipe();
-                processContext.CloseStdinWritePipe();
+                Stdin.CloseRead();
+                Stdin.CloseWrite();
             }
 
             pWorkerContext->Status(pContext->nItemId, pszDefaulTime, pWorkerContext->GetString(0x00130004, pszConvertPipes[3]));
@@ -447,16 +450,16 @@ bool ConvertFileUsingPipes(CFileContext* pContext)
         }
 
         // set stdout read pipe inherit flag
-        if (processContext.InheritStdoutReadPipe() == false)
+        if (Stdout.InheritRead() == false)
         {
             if (pContext->bUseReadPipes == true)
             {
-                processContext.CloseStdinReadPipe();
-                processContext.CloseStdinWritePipe();
+                Stdin.CloseRead();
+                Stdin.CloseWrite();
             }
 
-            processContext.CloseStdoutReadPipe();
-            processContext.CloseStdoutWritePipe();
+            Stdout.CloseRead();
+            Stdout.CloseWrite();
 
             pWorkerContext->Status(pContext->nItemId, pszDefaulTime, pWorkerContext->GetString(0x00130005, pszConvertPipes[4]));
             pWorkerContext->Callback(pContext->nItemId, -1, true, true);
@@ -467,38 +470,38 @@ bool ConvertFileUsingPipes(CFileContext* pContext)
     // connect pipes to process
     if ((pContext->bUseReadPipes == true) && (pContext->bUseWritePipes == false))
     {
-        processContext.ConnectStdInput(processContext.hReadPipeStdin);
+        processContext.ConnectStdInput(Stdin.hRead);
         processContext.ConnectStdOutput(NULL);
         processContext.ConnectStdError(NULL);
     }
     else if ((pContext->bUseReadPipes == false) && (pContext->bUseWritePipes == true))
     {
         processContext.ConnectStdInput(NULL);
-        processContext.ConnectStdOutput(processContext.hWritePipeStdout);
+        processContext.ConnectStdOutput(Stdout.hWrite);
         processContext.ConnectStdError(NULL);
     }
     else if ((pContext->bUseReadPipes == true) && (pContext->bUseWritePipes == true))
     {
-        processContext.ConnectStdInput(processContext.hReadPipeStdin);
-        processContext.ConnectStdOutput(processContext.hWritePipeStdout);
+        processContext.ConnectStdInput(Stdin.hRead);
+        processContext.ConnectStdOutput(Stdout.hWrite);
         processContext.ConnectStdError(NULL);
     }
 
     timer.Start();
-    if (processContext.Start(pContext->pszCommandLine) == false)
+    if (processContext.Start(pContext->pszCommandLine, pWorkerContext->pConfig->m_Options.bHideConsoleWindow) == false)
     {
         timer.Stop();
 
         if (pContext->bUseReadPipes == true)
         {
-            processContext.CloseStdinReadPipe();
-            processContext.CloseStdinWritePipe();
+            Stdin.CloseRead();
+            Stdin.CloseWrite();
         }
 
         if (pContext->bUseWritePipes == true)
         {
-            processContext.CloseStdoutReadPipe();
-            processContext.CloseStdoutWritePipe();
+            Stdout.CloseRead();
+            Stdout.CloseWrite();
         }
 
         CString szStatus;
@@ -511,10 +514,10 @@ bool ConvertFileUsingPipes(CFileContext* pContext)
 
     // close unused pipe handles
     if (pContext->bUseReadPipes == true)
-        processContext.CloseStdinReadPipe();
+        Stdin.CloseRead();
 
     if (pContext->bUseWritePipes == true)
-        processContext.CloseStdoutWritePipe();
+        Stdout.CloseWrite();
 
     // create read thread
     if (pContext->bUseReadPipes == true)
@@ -523,7 +526,7 @@ bool ConvertFileUsingPipes(CFileContext* pContext)
         readContext.bFinished = false;
         readContext.pWorkerContext = pWorkerContext;
         readContext.szFileName = pContext->szInputFile;
-        readContext.hPipe = processContext.hWritePipeStdin;
+        readContext.hPipe = Stdin.hWrite;
         readContext.nIndex = pContext->nItemId;
 
         dwReadThreadID = 0L;
@@ -532,7 +535,7 @@ bool ConvertFileUsingPipes(CFileContext* pContext)
         {
             timer.Stop();
 
-            processContext.CloseStdinWritePipe();
+            Stdin.CloseWrite();
 
             pWorkerContext->Status(pContext->nItemId, pszDefaulTime, pWorkerContext->GetString(0x00130007, pszConvertPipes[6]));
             pWorkerContext->Callback(pContext->nItemId, -1, true, true);
@@ -545,7 +548,7 @@ bool ConvertFileUsingPipes(CFileContext* pContext)
             ::WaitForSingleObject(hReadThread, INFINITE);
 
             // NOTE: Handle is closed in ReadThread.
-            //processContext.CloseStdinWritePipe();
+            //Stdin.CloseWrite();
 
             // check for result from read thread
             if ((readContext.bError == false) && (readContext.bFinished == true))
@@ -565,7 +568,7 @@ bool ConvertFileUsingPipes(CFileContext* pContext)
         writeContext.bFinished = false;
         writeContext.pWorkerContext = pWorkerContext;
         writeContext.szFileName = pContext->szOutputFile;
-        writeContext.hPipe = processContext.hReadPipeStdout;
+        writeContext.hPipe = Stdout.hRead;
         writeContext.nIndex = pContext->nItemId;
 
         dwWriteThreadID = 0L;
@@ -574,7 +577,7 @@ bool ConvertFileUsingPipes(CFileContext* pContext)
         {
             timer.Stop();
 
-            processContext.CloseStdoutReadPipe();
+            Stdout.CloseRead();
 
             pWorkerContext->Status(pContext->nItemId, pszDefaulTime, pWorkerContext->GetString(0x00130008, pszConvertPipes[7]));
             pWorkerContext->Callback(pContext->nItemId, -1, true, true);
@@ -584,7 +587,7 @@ bool ConvertFileUsingPipes(CFileContext* pContext)
         // wait for write thread to finish
         ::WaitForSingleObject(hWriteThread, INFINITE);
 
-        processContext.CloseStdoutReadPipe();
+        Stdout.CloseRead();
 
         // check for result from read thread
         if ((writeContext.bError == false) && (writeContext.bFinished == true))
@@ -610,7 +613,7 @@ bool ConvertFileUsingPipes(CFileContext* pContext)
         ::WaitForSingleObject(hReadThread, INFINITE);
 
         // NOTE: Handle is closed in ReadThread.
-        //processContext.CloseStdinWritePipe();
+        //Stdin.CloseWrite();
 
         // check for result from read thread
         if ((readContext.bError == false) && (readContext.bFinished == true) && (bWriteThreadResult == true))
@@ -633,18 +636,233 @@ bool ConvertFileUsingPipes(CFileContext* pContext)
     }
     else
     {
-        pWorkerContext->Status(pContext->nItemId, timer.Format(timer.ElapsedTime(), 1), pWorkerContext->GetString(0x0013000A, pszConvertPipes[9]));
+        pWorkerContext->Status(pContext->nItemId, timer.Format(timer.ElapsedTime(), 1), pWorkerContext->GetString(0x0013000B, pszConvertPipes[10]));
         pWorkerContext->Callback(pContext->nItemId, 100, true, false);
         return true;
     }
 }
 
-bool ConvertFile(CFileContext* pContext)
+bool ConvertFileUsingOnlyPipes(CFileContext* pDecoderContext, CFileContext* pEncoderContext)
 {
-    if ((pContext->bUseReadPipes == false) && (pContext->bUseWritePipes == false))
-        return ConvertFileUsingConsole(pContext);
+    CWorkerContext *pWorkerContext = pDecoderContext->pWorkerContext;
+    CProcessContext processContextDecoder;
+    CProcessContext processContextEncoder;
+    CPipe Stdin(TRUE);
+    CPipe Stdout(TRUE);
+    CPipe Bridge(TRUE);
+    CPipeContext readContext;
+    CPipeContext writeContext;
+    DWORD dwReadThreadID = 0L;
+    DWORD dwWriteThreadID = 0L;
+    HANDLE hReadThread = NULL;
+    HANDLE hWriteThread = NULL;
+    int nProgress = 0;
+    CTimeCount timer;
+
+    // create pipes for stdin
+    if (Stdin.Create() == false)
+    {
+        pWorkerContext->Status(pDecoderContext->nItemId, pszDefaulTime, pWorkerContext->GetString(0x00130002, pszConvertPipes[1]));
+        pWorkerContext->Callback(pDecoderContext->nItemId, -1, true, true);
+        return false;
+    }
+
+    // set stdin write pipe inherit flag
+    if (Stdin.InheritWrite() == false)
+    {
+        pWorkerContext->Status(pDecoderContext->nItemId, pszDefaulTime, pWorkerContext->GetString(0x00130003, pszConvertPipes[2]));
+        pWorkerContext->Callback(pDecoderContext->nItemId, -1, true, true);
+        return false;
+    }
+
+    // create pipes for stdout
+    if (Stdout.Create() == false)
+    {
+        Stdin.CloseRead();
+        Stdin.CloseWrite();
+
+        pWorkerContext->Status(pDecoderContext->nItemId, pszDefaulTime, pWorkerContext->GetString(0x00130004, pszConvertPipes[3]));
+        pWorkerContext->Callback(pDecoderContext->nItemId, -1, true, true);
+        return false;
+    }
+
+    // set stdout read pipe inherit flag
+    if (Stdout.InheritRead() == false)
+    {
+        Stdin.CloseRead();
+        Stdin.CloseWrite();
+
+        Stdout.CloseRead();
+        Stdout.CloseWrite();
+
+        pWorkerContext->Status(pDecoderContext->nItemId, pszDefaulTime, pWorkerContext->GetString(0x00130005, pszConvertPipes[4]));
+        pWorkerContext->Callback(pDecoderContext->nItemId, -1, true, true);
+        return false;
+    }
+
+    // create pipes for processes bridge
+    if (Bridge.Create() == false)
+    {
+        Stdin.CloseRead();
+        Stdin.CloseWrite();
+
+        Stdout.CloseRead();
+        Stdout.CloseWrite();
+
+        pWorkerContext->Status(pDecoderContext->nItemId, pszDefaulTime, pWorkerContext->GetString(0x0013000A, pszConvertPipes[9]));
+        pWorkerContext->Callback(pDecoderContext->nItemId, -1, true, true);
+        return false;
+    }
+
+    // connect pipes to decoder process
+    processContextDecoder.ConnectStdInput(Stdin.hRead);
+    processContextDecoder.ConnectStdOutput(Bridge.hWrite);
+    processContextDecoder.ConnectStdError(GetStdHandle(STD_ERROR_HANDLE));
+
+    // connect pipes to encoder process
+    processContextEncoder.ConnectStdInput(Bridge.hRead);
+    processContextEncoder.ConnectStdOutput(Stdout.hWrite);
+    processContextEncoder.ConnectStdError(GetStdHandle(STD_ERROR_HANDLE));
+
+    timer.Start();
+
+    // create decoder process
+    if (processContextDecoder.Start(pDecoderContext->pszCommandLine, pWorkerContext->pConfig->m_Options.bHideConsoleWindow) == false)
+    {
+        timer.Stop();
+
+        Stdin.CloseRead();
+        Stdin.CloseWrite();
+
+        Stdout.CloseRead();
+        Stdout.CloseWrite();
+
+        Bridge.CloseRead();
+        Bridge.CloseWrite();
+
+        CString szStatus;
+        szStatus.Format(pWorkerContext->GetString(0x00130006, pszConvertPipes[5]), ::GetLastError());
+
+        pWorkerContext->Status(pDecoderContext->nItemId, pszDefaulTime, szStatus);
+        pWorkerContext->Callback(pDecoderContext->nItemId, -1, true, true);
+        return false;
+    }
+
+    // create encoder process
+    if (processContextEncoder.Start(pEncoderContext->pszCommandLine, pWorkerContext->pConfig->m_Options.bHideConsoleWindow) == false)
+    {
+        timer.Stop();
+
+        processContextDecoder.Stop(false);
+
+        Stdin.CloseRead();
+        Stdin.CloseWrite();
+
+        Stdout.CloseRead();
+        Stdout.CloseWrite();
+
+        Bridge.CloseRead();
+        Bridge.CloseWrite();
+
+        CString szStatus;
+        szStatus.Format(pWorkerContext->GetString(0x00130006, pszConvertPipes[5]), ::GetLastError());
+
+        pWorkerContext->Status(pDecoderContext->nItemId, pszDefaulTime, szStatus);
+        pWorkerContext->Callback(pDecoderContext->nItemId, -1, true, true);
+        return false;
+    }
+
+    // close unused pipe handles
+    Stdin.CloseRead();
+    Stdout.CloseWrite();
+    Bridge.CloseWrite();
+    Bridge.CloseRead();
+
+    // create read thread
+    readContext.bError = false;
+    readContext.bFinished = false;
+    readContext.pWorkerContext = pWorkerContext;
+    readContext.szFileName = pDecoderContext->szInputFile;
+    readContext.hPipe = Stdin.hWrite;
+    readContext.nIndex = pDecoderContext->nItemId;
+
+    dwReadThreadID = 0L;
+    hReadThread = ::CreateThread(NULL, 0, ReadThread, (LPVOID)&readContext, 0, &dwReadThreadID);
+    if (hReadThread == NULL)
+    {
+        timer.Stop();
+
+        Stdin.CloseWrite();
+
+        pWorkerContext->Status(pDecoderContext->nItemId, pszDefaulTime, pWorkerContext->GetString(0x00130007, pszConvertPipes[6]));
+        pWorkerContext->Callback(pDecoderContext->nItemId, -1, true, true);
+        return false;
+    }
+
+    // create write thread
+    writeContext.bError = false;
+    writeContext.bFinished = false;
+    writeContext.pWorkerContext = pWorkerContext;
+    writeContext.szFileName = pEncoderContext->szOutputFile;
+    writeContext.hPipe = Stdout.hRead;
+    writeContext.nIndex = pEncoderContext->nItemId;
+
+    dwWriteThreadID = 0L;
+    hWriteThread = ::CreateThread(NULL, 0, WriteThread, (LPVOID)&writeContext, 0, &dwWriteThreadID);
+    if (hWriteThread == NULL)
+    {
+        timer.Stop();
+
+        Stdout.CloseRead();
+
+        pWorkerContext->Status(pDecoderContext->nItemId, pszDefaulTime, pWorkerContext->GetString(0x00130008, pszConvertPipes[7]));
+        pWorkerContext->Callback(pDecoderContext->nItemId, -1, true, true);
+        return false;
+    }
+
+    // wait for read thread to finish after write thread finished
+    ::WaitForSingleObject(hReadThread, INFINITE);
+
+    // NOTE: Handle is closed in ReadThread.
+    //Stdin.CloseWrite();
+
+    // close read thread handle
+    ::CloseHandle(hReadThread);
+
+    Stdout.CloseRead();
+
+    // wait for encoder process to finish
+    ::WaitForSingleObject(processContextEncoder.pInfo.hProcess, INFINITE);
+
+    // wait for write thread to finish
+    ::WaitForSingleObject(hWriteThread, INFINITE);
+
+    // close read thread handle
+    ::CloseHandle(hWriteThread);
+
+    // check for result from read and write thread
+    if ((readContext.bError == false) && (readContext.bFinished == true)
+        && (writeContext.bError == false) && (writeContext.bFinished == true))
+        nProgress = 100;
     else
-        return ConvertFileUsingPipes(pContext);
+        nProgress = -1;
+
+    timer.Stop();
+    processContextDecoder.Stop(nProgress == 100);
+    processContextEncoder.Stop(nProgress == 100);
+
+    if (nProgress != 100)
+    {
+        pWorkerContext->Status(pDecoderContext->nItemId, pszDefaulTime, pWorkerContext->GetString(0x00130009, pszConvertPipes[8]));
+        pWorkerContext->Callback(pDecoderContext->nItemId, -1, true, true);
+        return false;
+    }
+    else
+    {
+        pWorkerContext->Status(pDecoderContext->nItemId, timer.Format(timer.ElapsedTime(), 1), pWorkerContext->GetString(0x0013000B, pszConvertPipes[10]));
+        pWorkerContext->Callback(pDecoderContext->nItemId, 100, true, false);
+        return true;
+    }
 }
 
 bool ConvertItem(CItemContext* pContext)
@@ -751,23 +969,43 @@ bool ConvertItem(CItemContext* pContext)
         pEncFormat->bPipeInput,
         pEncFormat->bPipeOutput);
 
-    // decode
-    if (bIsValidEncoderInput == false)
+    if (bIsValidEncoderInput == false
+        && decoderContext.bUseReadPipes == true
+        && decoderContext.bUseWritePipes == true
+        && encoderContext.bUseReadPipes == true
+        && encoderContext.bUseWritePipes == true)
     {
-        pWorkerContext->Status(pContext->item->nId, pszDefaulTime, pWorkerContext->GetString(0x00140007, pszConvertItem[6]));
+        // trans-code
         try
         {
-            if (ConvertFile(&decoderContext) == false)
+            pWorkerContext->Status(pContext->item->nId, pszDefaulTime, pWorkerContext->GetString(0x0014000C, pszConvertItem[11]));
+
+            bool bResult = ConvertFileUsingOnlyPipes(&decoderContext, &encoderContext);
+            if (bResult == true)
+            {
+                if (::FileExists(szEncOutputFile) == false)
+                {
+                    if (bIsValidEncoderInput == false)
+                    {
+                        if (pWorkerContext->pConfig->m_Options.bDeleteOnErrors == true)
+                            ::DeleteFile(szEncInputFile);
+                    }
+
+                    pWorkerContext->Status(pContext->item->nId, pszDefaulTime, pWorkerContext->GetString(0x0014000D, pszConvertItem[12]));
+                    return false;
+                }
+
+
+                if (pWorkerContext->pConfig->m_Options.bDeleteSourceFiles == true)
+                    ::DeleteFile(szEncInputFile);
+
+                return true;
+            }
+            else
             {
                 if (pWorkerContext->pConfig->m_Options.bDeleteOnErrors == true)
-                    ::DeleteFile(szDecOutputFile);
+                    ::DeleteFile(szEncOutputFile);
 
-                return false;
-            }
-
-            if (::FileExists(szDecOutputFile) == false)
-            {
-                pWorkerContext->Status(pContext->item->nId, pszDefaulTime, pWorkerContext->GetString(0x00140008, pszConvertItem[7]));
                 return false;
             }
         }
@@ -776,47 +1014,98 @@ bool ConvertItem(CItemContext* pContext)
             if (pWorkerContext->pConfig->m_Options.bDeleteOnErrors == true)
                 ::DeleteFile(szEncOutputFile);
 
-            pWorkerContext->Status(pContext->item->nId, pszDefaulTime, pWorkerContext->GetString(0x00140009, pszConvertItem[8]));
+            pWorkerContext->Status(pContext->item->nId, pszDefaulTime, pWorkerContext->GetString(0x0014000E, pszConvertItem[13]));
             pWorkerContext->Callback(pContext->item->nId, -1, true, true);
         }
     }
-
-    if (pWorkerContext->bRunning == false)
-        return false;
-
-    // encode
-    try
+    else
     {
-        if (pEncFormat->nType == 0)
-            pWorkerContext->Status(pContext->item->nId, pszDefaulTime, pWorkerContext->GetString(0x0014000A, pszConvertItem[9]));
-        else if (pEncFormat->nType == 1)
-            pWorkerContext->Status(pContext->item->nId, pszDefaulTime, pWorkerContext->GetString(0x0014000B, pszConvertItem[10]));
-        else
-            pWorkerContext->Status(pContext->item->nId, pszDefaulTime, pWorkerContext->GetString(0x0014000C, pszConvertItem[11]));
-
-        if (ConvertFile(&encoderContext) == true)
+        // decode
+        if (bIsValidEncoderInput == false)
         {
-            if (::FileExists(szEncOutputFile) == false)
+            try
             {
-                if (bIsValidEncoderInput == false)
+                pWorkerContext->Status(pContext->item->nId, pszDefaulTime, pWorkerContext->GetString(0x00140007, pszConvertItem[6]));
+
+                bool bResult = false;
+                if ((decoderContext.bUseReadPipes == false) && (decoderContext.bUseWritePipes == false))
+                    bResult = ConvertFileUsingConsole(&decoderContext);
+                else
+                    bResult = ConvertFileUsingPipes(&decoderContext);
+                if (bResult == false)
                 {
                     if (pWorkerContext->pConfig->m_Options.bDeleteOnErrors == true)
-                        ::DeleteFile(szEncInputFile);
+                        ::DeleteFile(szDecOutputFile);
+
+                    return false;
                 }
 
-                pWorkerContext->Status(pContext->item->nId, pszDefaulTime, pWorkerContext->GetString(0x0014000D, pszConvertItem[12]));
+                if (::FileExists(szDecOutputFile) == false)
+                {
+                    pWorkerContext->Status(pContext->item->nId, pszDefaulTime, pWorkerContext->GetString(0x00140008, pszConvertItem[7]));
+                    return false;
+                }
+            }
+            catch (...)
+            {
+                if (pWorkerContext->pConfig->m_Options.bDeleteOnErrors == true)
+                    ::DeleteFile(szEncOutputFile);
+
+                pWorkerContext->Status(pContext->item->nId, pszDefaulTime, pWorkerContext->GetString(0x00140009, pszConvertItem[8]));
+                pWorkerContext->Callback(pContext->item->nId, -1, true, true);
+            }
+        }
+
+        if (pWorkerContext->bRunning == false)
+            return false;
+
+        // encode
+        try
+        {
+            if (pEncFormat->nType == 0)
+                pWorkerContext->Status(pContext->item->nId, pszDefaulTime, pWorkerContext->GetString(0x0014000A, pszConvertItem[9]));
+            else if (pEncFormat->nType == 1)
+                pWorkerContext->Status(pContext->item->nId, pszDefaulTime, pWorkerContext->GetString(0x0014000B, pszConvertItem[10]));
+
+            bool bResult = false;
+            if ((encoderContext.bUseReadPipes == false) && (encoderContext.bUseWritePipes == false))
+                bResult = ConvertFileUsingConsole(&encoderContext);
+            else
+                bResult = ConvertFileUsingPipes(&encoderContext);
+            if (bResult == true)
+            {
+                if (::FileExists(szEncOutputFile) == false)
+                {
+                    if (bIsValidEncoderInput == false)
+                    {
+                        if (pWorkerContext->pConfig->m_Options.bDeleteOnErrors == true)
+                            ::DeleteFile(szEncInputFile);
+                    }
+
+                    pWorkerContext->Status(pContext->item->nId, pszDefaulTime, pWorkerContext->GetString(0x0014000D, pszConvertItem[12]));
+                    return false;
+                }
+
+                if (bIsValidEncoderInput == false)
+                    ::DeleteFile(szDecOutputFile);
+
+                if (pWorkerContext->pConfig->m_Options.bDeleteSourceFiles == true)
+                    ::DeleteFile(szEncInputFile);
+
+                return true;
+            }
+            else
+            {
+                if (bIsValidEncoderInput == false)
+                    ::DeleteFile(szDecOutputFile);
+
+                if (pWorkerContext->pConfig->m_Options.bDeleteOnErrors == true)
+                    ::DeleteFile(szEncOutputFile);
+
                 return false;
             }
-
-            if (bIsValidEncoderInput == false)
-                ::DeleteFile(szDecOutputFile);
-
-            if (pWorkerContext->pConfig->m_Options.bDeleteSourceFiles == true)
-                ::DeleteFile(szEncInputFile);
-
-            return true;
         }
-        else
+        catch (...)
         {
             if (bIsValidEncoderInput == false)
                 ::DeleteFile(szDecOutputFile);
@@ -824,19 +1113,9 @@ bool ConvertItem(CItemContext* pContext)
             if (pWorkerContext->pConfig->m_Options.bDeleteOnErrors == true)
                 ::DeleteFile(szEncOutputFile);
 
-            return false;
+            pWorkerContext->Status(pContext->item->nId, pszDefaulTime, pWorkerContext->GetString(0x0014000E, pszConvertItem[13]));
+            pWorkerContext->Callback(pContext->item->nId, -1, true, true);
         }
-    }
-    catch (...)
-    {
-        if (bIsValidEncoderInput == false)
-            ::DeleteFile(szDecOutputFile);
-
-        if (pWorkerContext->pConfig->m_Options.bDeleteOnErrors == true)
-            ::DeleteFile(szEncOutputFile);
-
-        pWorkerContext->Status(pContext->item->nId, pszDefaulTime, pWorkerContext->GetString(0x0014000E, pszConvertItem[13]));
-        pWorkerContext->Callback(pContext->item->nId, -1, true, true);
     }
 
     return false;

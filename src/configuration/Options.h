@@ -18,6 +18,7 @@ public:
     bool bDoNotSaveConfiguration;
     bool bDeleteOnErrors;
     bool bStopOnErrors;
+    bool bHideConsoleWindow;
     int nThreadCount;
     CString szMainWindowResize;
     CString szFileListColumns;
@@ -54,6 +55,7 @@ public:
         this->bDoNotSaveConfiguration = other.bDoNotSaveConfiguration;
         this->bDeleteOnErrors = other.bDeleteOnErrors;
         this->bStopOnErrors = other.bStopOnErrors;
+        this->bHideConsoleWindow = other.bHideConsoleWindow;
         this->nThreadCount = other.nThreadCount;
         this->szMainWindowResize = other.szMainWindowResize;
         this->szFileListColumns = other.szFileListColumns;
@@ -76,6 +78,7 @@ public:
         this->bDoNotSaveConfiguration = false;
         this->bDeleteOnErrors = true;
         this->bStopOnErrors = false;
+        this->bHideConsoleWindow = true;
         this->nThreadCount = 0;
         this->szMainWindowResize = _T("");
         this->szFileListColumns = _T("");

@@ -102,6 +102,7 @@
 #define ID_OPTIONS_DO_NOT_SAVE          32814
 #define ID_OPTIONS_DELETE_ON_ERRORS     32815
 #define ID_OPTIONS_STOP_ON_ERRORS       32816
+#define ID_OPTIONS_HIDE_CONSOLE         32817
 #define ID_HELP_ABOUT                   32820
 #define ID_HELP_WEBSITE                 32821
 #define ID_ACCELERATOR_F5               32840

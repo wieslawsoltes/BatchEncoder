@@ -111,6 +111,7 @@ public:
     afx_msg void OnOptionsDoNotSave();
     afx_msg void OnOptionsDeleteOnErrors();
     afx_msg void OnOptionsStopOnErrors();
+    afx_msg void OnOptionsHideConsole();
     afx_msg void OnLanguageDefault();
     afx_msg void OnLanguageChange(UINT nID);
     afx_msg void OnHelpWebsite();
