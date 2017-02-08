@@ -410,7 +410,6 @@ bool ConvertFileUsingPipes(CFileContext* pContext)
     DWORD dwWriteThreadID = 0L;
     HANDLE hReadThread = NULL;
     HANDLE hWriteThread = NULL;
-    bool bWriteThreadResult = false;
     int nProgress = 0;
     CTimeCount timer;
 
@@ -471,20 +470,20 @@ bool ConvertFileUsingPipes(CFileContext* pContext)
     if ((pContext->bUseReadPipes == true) && (pContext->bUseWritePipes == false))
     {
         processContext.ConnectStdInput(Stdin.hRead);
-        processContext.ConnectStdOutput(NULL);
-        processContext.ConnectStdError(NULL);
+        processContext.ConnectStdOutput(GetStdHandle(STD_OUTPUT_HANDLE));
+        processContext.ConnectStdError(GetStdHandle(STD_ERROR_HANDLE));
     }
     else if ((pContext->bUseReadPipes == false) && (pContext->bUseWritePipes == true))
     {
-        processContext.ConnectStdInput(NULL);
+        processContext.ConnectStdInput(GetStdHandle(STD_INPUT_HANDLE));
         processContext.ConnectStdOutput(Stdout.hWrite);
-        processContext.ConnectStdError(NULL);
+        processContext.ConnectStdError(GetStdHandle(STD_ERROR_HANDLE));
     }
     else if ((pContext->bUseReadPipes == true) && (pContext->bUseWritePipes == true))
     {
         processContext.ConnectStdInput(Stdin.hRead);
         processContext.ConnectStdOutput(Stdout.hWrite);
-        processContext.ConnectStdError(NULL);
+        processContext.ConnectStdError(GetStdHandle(STD_ERROR_HANDLE));
     }
 
     timer.Start();
@@ -550,14 +549,17 @@ bool ConvertFileUsingPipes(CFileContext* pContext)
             // NOTE: Handle is closed in ReadThread.
             //Stdin.CloseWrite();
 
+            // close read thread handle
+            ::CloseHandle(hReadThread);
+
+            // wait for process to finish
+            ::WaitForSingleObject(processContext.pInfo.hProcess, INFINITE);
+
             // check for result from read thread
             if ((readContext.bError == false) && (readContext.bFinished == true))
                 nProgress = 100;
             else
                 nProgress = -1;
-
-            // close read thread handle
-            ::CloseHandle(hReadThread);
         }
     }
 
@@ -584,45 +586,55 @@ bool ConvertFileUsingPipes(CFileContext* pContext)
             return false;
         }
 
-        // wait for write thread to finish
-        ::WaitForSingleObject(hWriteThread, INFINITE);
-
-        Stdout.CloseRead();
-
-        // check for result from read thread
-        if ((writeContext.bError == false) && (writeContext.bFinished == true))
+        if (pContext->bUseReadPipes == true)
         {
-            bWriteThreadResult = true;
-            if (pContext->bUseReadPipes == false)
+            // wait for read thread to finish
+            ::WaitForSingleObject(hReadThread, INFINITE);
+
+            // NOTE: Handle is closed in ReadThread.
+            //Stdin.CloseWrite();
+
+            // close read thread handle
+            ::CloseHandle(hReadThread);
+
+            // close read thread handle
+            Stdout.CloseRead();
+
+            // wait for process to finish
+            ::WaitForSingleObject(processContext.pInfo.hProcess, INFINITE);
+
+            // wait for write thread to finish
+            ::WaitForSingleObject(hWriteThread, INFINITE);
+
+            // close read thread handle
+            ::CloseHandle(hWriteThread);
+
+            // check for result from read thread
+            if ((readContext.bError == false) && (readContext.bFinished == true)
+                && (writeContext.bError == false) && (writeContext.bFinished == true))
                 nProgress = 100;
-        }
-        else
-        {
-            bWriteThreadResult = false;
-            if (pContext->bUseReadPipes == false)
+            else
                 nProgress = -1;
         }
-
-        // close read thread handle
-        ::CloseHandle(hWriteThread);
-    }
-
-    // wait for read thread to finish after write thread finished
-    if ((pContext->bUseReadPipes == true) && (pContext->bUseWritePipes == true))
-    {
-        ::WaitForSingleObject(hReadThread, INFINITE);
-
-        // NOTE: Handle is closed in ReadThread.
-        //Stdin.CloseWrite();
-
-        // check for result from read thread
-        if ((readContext.bError == false) && (readContext.bFinished == true) && (bWriteThreadResult == true))
-            nProgress = 100;
         else
-            nProgress = -1;
+        {
+            // wait for process to finish
+            ::WaitForSingleObject(processContext.pInfo.hProcess, INFINITE);
 
-        // close read thread handle
-        ::CloseHandle(hReadThread);
+            // wait for write thread to finish
+            ::WaitForSingleObject(hWriteThread, INFINITE);
+
+            Stdout.CloseRead();
+
+            // close read thread handle
+            ::CloseHandle(hWriteThread);
+
+            // check for result from write thread
+            if ((writeContext.bError == false) && (writeContext.bFinished == true))
+                nProgress = 100;
+            else
+                nProgress = -1;
+        }
     }
 
     timer.Stop();
