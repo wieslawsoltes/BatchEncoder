@@ -1136,7 +1136,7 @@ bool ConvertItem(CItemContext* pContext)
 
 bool ConvertLoop(CWorkerContext* pWorkerContext)
 {
-    while (!pWorkerContext->pQueue->IsEmpty())
+    while (TRUE)
     {
         try
         {
@@ -1160,6 +1160,9 @@ bool ConvertLoop(CWorkerContext* pWorkerContext)
 
             if (pContext != NULL)
             {
+                if (pContext->pWorkerContext->bRunning == false)
+                    return false;
+
                 pContext->pWorkerContext->Next(pContext->item->nId);
                 if (ConvertItem(pContext) == true)
                 {
@@ -1173,6 +1176,10 @@ bool ConvertLoop(CWorkerContext* pWorkerContext)
 
                 if (pContext->pWorkerContext->bRunning == false)
                     return false;
+            }
+            else
+            {
+                return true;
             }
         }
         catch (...)
