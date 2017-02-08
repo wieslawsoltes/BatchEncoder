@@ -269,7 +269,6 @@ bool ReadLoop(CPipeContext* pContext)
         if ((bRes == FALSE) || (dwReadBytes == 0))
             break;
 
-        // NOTE: Sleep(0) solves problem writing to pipe errors
         ::Sleep(0);
 
         // write data to write pipe
@@ -342,6 +341,8 @@ bool WriteLoop(CPipeContext* pContext)
     // read/write loop
     do
     {
+        ::Sleep(0);
+
         // read data from source pipe
         bRes = ::ReadFile(pContext->hPipe, pReadBuff, 4096, &dwReadBytes, 0);
         if ((bRes == FALSE) || (dwReadBytes == 0))
