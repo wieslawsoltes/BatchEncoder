@@ -1146,7 +1146,10 @@ bool ConvertLoop(CWorkerContext* pWorkerContext)
             {
             case WAIT_OBJECT_0:
             {
-                pContext = (CItemContext*)pWorkerContext->pQueue->RemoveHead();
+                if (!pWorkerContext->pQueue->IsEmpty())
+                {
+                    pContext = (CItemContext*)pWorkerContext->pQueue->RemoveHead();
+                }
                 if (!::ReleaseMutex(pWorkerContext->hMutex))
                     return false;
             }
