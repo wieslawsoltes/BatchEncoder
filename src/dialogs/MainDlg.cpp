@@ -167,23 +167,12 @@ int CALLBACK BrowseCallbackOutPath(HWND hWnd, UINT uMsg, LPARAM lp, LPARAM pData
     return(0);
 }
 
-typedef struct tagDragAndDrop
+DWORD WINAPI MainDlgDropThread(LPVOID lpParam)
 {
-    CMainDlg *pDlg;
-    HDROP hDropInfo;
-} DragAndDrop;
-
-static volatile bool bHandleDrop = true;
-static HANDLE hDDThread;
-static DWORD dwDDThreadID;
-static DragAndDrop m_DDParam;
-
-DWORD WINAPI DragAndDropThread(LPVOID lpParam)
-{
-    DragAndDrop* m_ThreadParam = (DragAndDrop*)lpParam;
-    m_ThreadParam->pDlg->HandleDropFiles(m_ThreadParam->hDropInfo);
-    bHandleDrop = true;
-    return ::CloseHandle(hDDThread);
+    MainDlgDropContext* pDD = (MainDlgDropContext*)lpParam;
+    pDD->pDlg->HandleDropFiles(pDD->hDrop);
+    pDD->bHandled = true;
+    return ::CloseHandle(pDD->hThread);
 }
 
 IMPLEMENT_DYNAMIC(CMainDlg, CDialog)
@@ -455,16 +444,15 @@ void CMainDlg::OnDestroy()
 
 void CMainDlg::OnDropFiles(HDROP hDropInfo)
 {
-    if (this->pWorkerContext->bRunning == false && bHandleDrop == true)
+    if (this->pWorkerContext->bRunning == false && this->m_DD.bHandled == true)
     {
-        bHandleDrop = false;
-        m_DDParam.pDlg = this;
-        m_DDParam.hDropInfo = hDropInfo;
-        hDDThread = ::CreateThread(NULL, 0, DragAndDropThread, (LPVOID)&m_DDParam, 0, &dwDDThreadID);
-        if (hDDThread == NULL)
-            bHandleDrop = true;
+        this->m_DD.bHandled = false;
+        this->m_DD.pDlg = this;
+        this->m_DD.hDrop = hDropInfo;
+        this->m_DD.hThread = ::CreateThread(NULL, 0, MainDlgDropThread, (LPVOID)&this->m_DD, 0, &this->m_DD.dwThreadID);
+        if (this->m_DD.hThread == NULL)
+            this->m_DD.bHandled = true;
     }
-
     CResizeDialog::OnDropFiles(hDropInfo);
 }
 

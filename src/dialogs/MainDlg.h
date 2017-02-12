@@ -23,6 +23,17 @@
 #define ITEM_COLUMN_TIME    5
 #define ITEM_COLUMN_STATUS  6
 
+class CMainDlg;
+
+typedef struct tagMainDlgDropContext
+{
+    CMainDlg *pDlg = NULL;
+    HDROP hDrop = NULL;
+    HANDLE hThread = NULL;
+    DWORD dwThreadID = -1;
+    volatile bool bHandled = true;
+} MainDlgDropContext;
+
 class CMainDlg : public CResizeDialog
 {
     DECLARE_DYNAMIC(CMainDlg)
@@ -46,6 +57,7 @@ protected:
     HACCEL m_hAccel;
     BOOL PreTranslateMessage(MSG* pMsg);
 public:
+    MainDlgDropContext m_DD;
     CString szOptionsFile;
     CString szFormatsFile;
     CString szItemsFile;
