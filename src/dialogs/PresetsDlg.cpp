@@ -383,8 +383,6 @@ void CPresetsDlg::OnBnClickedButtonLoadPresets()
         OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER,
         szFilter, this);
 
-    int nPreset = this->m_CmbFormat.GetCurSel();
-
     if (fd.DoModal() == IDOK)
     {
         CString szFileXml = fd.GetPathName();
@@ -403,8 +401,6 @@ void CPresetsDlg::OnBnClickedButtonSavePresets()
     CFileDialog fd(FALSE, _T("presets"), _T("presets"),
         OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER | OFN_OVERWRITEPROMPT,
         szFilter, this);
-
-    int nPreset = this->m_CmbFormat.GetCurSel();
 
     if (fd.DoModal() == IDOK)
     {
