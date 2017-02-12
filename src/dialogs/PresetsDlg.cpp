@@ -11,6 +11,14 @@
 #include "..\XmlConfiguration.h"
 #include "PresetsDlg.h"
 
+DWORD WINAPI PresetsDlgDropThread(LPVOID lpParam)
+{
+    PresetsDlgDropContext* pDD = (PresetsDlgDropContext*)lpParam;
+    pDD->pDlg->HandleDropFiles(pDD->hDrop);
+    pDD->bHandled = true;
+    return ::CloseHandle(pDD->hThread);
+}
+
 IMPLEMENT_DYNAMIC(CPresetsDlg, CDialog)
 CPresetsDlg::CPresetsDlg(CWnd* pParent /*=NULL*/)
     : CResizeDialog(CPresetsDlg::IDD, pParent)
@@ -51,6 +59,7 @@ void CPresetsDlg::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CPresetsDlg, CResizeDialog)
     ON_WM_PAINT()
     ON_WM_QUERYDRAGICON()
+    ON_WM_DROPFILES()
     ON_BN_CLICKED(IDOK, OnBnClickedOk)
     ON_BN_CLICKED(IDCANCEL, OnBnClickedCancel)
     ON_NOTIFY(LVN_ITEMCHANGED, IDC_LIST_PRESETS, OnLvnItemchangedListPresets)
@@ -100,6 +109,9 @@ BOOL CPresetsDlg::OnInitDialog()
 
     this->OnCbnSelchangeComboPresetFormat();
 
+    // enable drag & drop
+    this->DragAcceptFiles(TRUE);
+
     // setup resize anchors
     AddAnchor(IDC_COMBO_PRESET_FORMAT, TOP_LEFT);
     AddAnchor(IDC_LIST_PRESETS, TOP_LEFT, BOTTOM_RIGHT);
@@ -147,6 +159,20 @@ void CPresetsDlg::OnPaint()
 HCURSOR CPresetsDlg::OnQueryDragIcon()
 {
     return static_cast<HCURSOR>(m_hIcon);
+}
+
+void CPresetsDlg::OnDropFiles(HDROP hDropInfo)
+{
+    if (this->m_DD.bHandled == true)
+    {
+        this->m_DD.bHandled = false;
+        this->m_DD.pDlg = this;
+        this->m_DD.hDrop = hDropInfo;
+        this->m_DD.hThread = ::CreateThread(NULL, 0, PresetsDlgDropThread, (LPVOID)&this->m_DD, 0, &this->m_DD.dwThreadID);
+        if (this->m_DD.hThread == NULL)
+            this->m_DD.bHandled = true;
+    }
+    CResizeDialog::OnDropFiles(hDropInfo);
 }
 
 void CPresetsDlg::OnBnClickedOk()
@@ -504,6 +530,34 @@ void CPresetsDlg::InsertPresetsToListCtrl()
             this->AddToList(preset, i);
         }
     }
+}
+
+void CPresetsDlg::HandleDropFiles(HDROP hDropInfo)
+{
+    int nCount = ::DragQueryFile(hDropInfo, (UINT)0xFFFFFFFF, NULL, 0);
+    if (nCount > 0)
+    {
+        for (int i = 0; i < nCount; i++)
+        {
+            int nReqChars = ::DragQueryFile(hDropInfo, i, NULL, 0);
+
+            CString szFile;
+            ::DragQueryFile(hDropInfo, i, szFile.GetBuffer(nReqChars * 2 + 8), nReqChars * 2 + 8);
+            if (!(::GetFileAttributes(szFile) & FILE_ATTRIBUTE_DIRECTORY))
+            {
+                CString szPath = szFile;
+                CString szExt = ::GetFileExtension(szPath);
+
+                if (szExt.CompareNoCase(_T("presets")) == 0)
+                {
+                    this->LoadPresets(szPath);
+                }
+            }
+            szFile.ReleaseBuffer();
+        }
+    }
+
+    ::DragFinish(hDropInfo);
 }
 
 void CPresetsDlg::UpdateFields(CPreset& preset)

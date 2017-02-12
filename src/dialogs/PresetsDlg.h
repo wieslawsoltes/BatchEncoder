@@ -17,6 +17,17 @@
 #define PRESET_COLUMN_NAME      0
 #define PRESET_COLUMN_OPTIONS   1
 
+class CPresetsDlg;
+
+typedef struct tagPresetsDlgDropContext
+{
+    CPresetsDlg *pDlg = NULL;
+    HDROP hDrop = NULL;
+    HANDLE hThread = NULL;
+    DWORD dwThreadID = -1;
+    volatile bool bHandled = true;
+} PresetsDlgDropContext;
+
 class CPresetsDlg : public CResizeDialog
 {
     DECLARE_DYNAMIC(CPresetsDlg)
@@ -34,6 +45,7 @@ protected:
 public:
     virtual BOOL OnInitDialog();
 public:
+    PresetsDlgDropContext m_DD;
     CConfiguration *pConfig;
     CString szPresetsDialogResize;
     CString szPresetsListColumns;
@@ -58,6 +70,7 @@ public:
     CMyButton m_BtnLoad;
     CMyButton m_BtnSave;
 public:
+    afx_msg void OnDropFiles(HDROP hDropInfo);
     afx_msg void OnBnClickedOk();
     afx_msg void OnBnClickedCancel();
     afx_msg void OnLvnItemchangedListPresets(NMHDR *pNMHDR, LRESULT *pResult);
@@ -79,6 +92,7 @@ public:
     void SetLanguage();
     void AddToList(CPreset &preset, int nItem);
     void InsertPresetsToListCtrl();
+    void HandleDropFiles(HDROP hDropInfo);
     void UpdateFields(CPreset &preset);
     void ListSelectionChange();
     void LoadPresets(CString szFileXml);
