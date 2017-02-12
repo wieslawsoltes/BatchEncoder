@@ -11,6 +11,14 @@
 #include "..\XmlConfiguration.h"
 #include "FormatsDlg.h"
 
+DWORD WINAPI FormatsDlgDropThread(LPVOID lpParam)
+{
+    FormatsDlgDropContext* pDD = (FormatsDlgDropContext*)lpParam;
+    pDD->pDlg->HandleDropFiles(pDD->hDrop);
+    pDD->bHandled = true;
+    return ::CloseHandle(pDD->hThread);
+}
+
 IMPLEMENT_DYNAMIC(CFormatsDlg, CDialog)
 CFormatsDlg::CFormatsDlg(CWnd* pParent /*=NULL*/)
     : CResizeDialog(CFormatsDlg::IDD, pParent)
@@ -66,6 +74,7 @@ void CFormatsDlg::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CFormatsDlg, CResizeDialog)
     ON_WM_PAINT()
     ON_WM_QUERYDRAGICON()
+    ON_WM_DROPFILES()
     ON_BN_CLICKED(IDOK, OnBnClickedOk)
     ON_BN_CLICKED(IDCANCEL, OnBnClickedCancel)
     ON_NOTIFY(LVN_ITEMCHANGED, IDC_LIST_FORMATS, OnLvnItemchangedListFormats)
@@ -117,6 +126,9 @@ BOOL CFormatsDlg::OnInitDialog()
 
     m_LstFormats.SetItemState(nSelectedFormat, LVIS_SELECTED, LVIS_SELECTED);
     m_LstFormats.EnsureVisible(nSelectedFormat, FALSE);
+
+    // enable drag & drop
+    this->DragAcceptFiles(TRUE);
 
     // setup resize anchors
     AddAnchor(IDC_LIST_FORMATS, TOP_LEFT, BOTTOM_RIGHT);
@@ -183,6 +195,20 @@ void CFormatsDlg::OnPaint()
 HCURSOR CFormatsDlg::OnQueryDragIcon()
 {
     return static_cast<HCURSOR>(m_hIcon);
+}
+
+void CFormatsDlg::OnDropFiles(HDROP hDropInfo)
+{
+    if (this->m_DD.bHandled == true)
+    {
+        this->m_DD.bHandled = false;
+        this->m_DD.pDlg = this;
+        this->m_DD.hDrop = hDropInfo;
+        this->m_DD.hThread = ::CreateThread(NULL, 0, FormatsDlgDropThread, (LPVOID)&this->m_DD, 0, &this->m_DD.dwThreadID);
+        if (this->m_DD.hThread == NULL)
+            this->m_DD.bHandled = true;
+    }
+    CResizeDialog::OnDropFiles(hDropInfo);
 }
 
 void CFormatsDlg::OnBnClickedOk()
@@ -685,6 +711,93 @@ void CFormatsDlg::InsertFormatsToListCtrl()
         CFormat& format = m_Formats.GetData(i);
         this->AddToList(format, i);
     }
+}
+
+void CFormatsDlg::HandleDropFiles(HDROP hDropInfo)
+{
+    int nCount = ::DragQueryFile(hDropInfo, (UINT)0xFFFFFFFF, NULL, 0);
+    if (nCount > 0)
+    {
+        for (int i = 0; i < nCount; i++)
+        {
+            int nReqChars = ::DragQueryFile(hDropInfo, i, NULL, 0);
+
+            CString szFile;
+            ::DragQueryFile(hDropInfo, i, szFile.GetBuffer(nReqChars * 2 + 8), nReqChars * 2 + 8);
+            if (!(::GetFileAttributes(szFile) & FILE_ATTRIBUTE_DIRECTORY))
+            {
+                CString szPath = szFile;
+                CString szExt = ::GetFileExtension(szPath);
+
+                if (szExt.CompareNoCase(_T("formats")) == 0)
+                {
+                    this->LoadFormats(szPath);
+                }
+                else if (szExt.CompareNoCase(_T("format")) == 0)
+                {
+                    // TODO: Add new format to formats list.
+                }
+                else if (szExt.CompareNoCase(_T("presets")) == 0)
+                {
+                    // Add presets to current format presets list.
+                    POSITION pos = m_LstFormats.GetFirstSelectedItemPosition();
+                    if (pos != NULL)
+                    {
+                        int nItem = m_LstFormats.GetNextSelectedItem(pos);
+                        CFormat& format = this->m_Formats.GetData(nItem);
+
+                        XmlConfiguration doc;
+                        if (doc.Open(szPath) == true)
+                        {
+                            CFormat& format = this->m_Formats.GetData(this->nSelectedFormat);
+                            format.m_Presets.RemoveAllNodes();
+                            doc.GetPresets(format.m_Presets);
+                        }
+                    }
+                }
+                else if (szExt.CompareNoCase(_T("exe")) == 0)
+                {
+                    // Set current format exe path.
+                    POSITION pos = m_LstFormats.GetFirstSelectedItemPosition();
+                    if (pos != NULL)
+                    {
+                        int nItem = m_LstFormats.GetNextSelectedItem(pos);
+                        CFormat& format = this->m_Formats.GetData(nItem);
+                        format.szPath = szPath;
+                        this->m_EdtPath.SetWindowText(format.szPath);
+                    }
+                }
+                else if (szExt.CompareNoCase(_T("progress")) == 0)
+                {
+                    // Set current format progress path.
+                    POSITION pos = m_LstFormats.GetFirstSelectedItemPosition();
+                    if (pos != NULL)
+                    {
+                        int nItem = m_LstFormats.GetNextSelectedItem(pos);
+                        CFormat& format = this->m_Formats.GetData(nItem);
+                        format.szFunction = szPath;
+                        this->m_EdtFunction.SetWindowText(format.szFunction);
+                    }
+                }
+                else if (szExt.CompareNoCase(_T("dll")) == 0)
+                {
+                    // Set current format progress path.
+                    POSITION pos = m_LstFormats.GetFirstSelectedItemPosition();
+                    if (pos != NULL)
+                    {
+                        int nItem = m_LstFormats.GetNextSelectedItem(pos);
+                        CFormat& format = this->m_Formats.GetData(nItem);
+                        format.szFunction = szPath;
+                        this->m_EdtFunction.SetWindowText(format.szFunction);
+                    }
+                }
+            }
+
+            szFile.ReleaseBuffer();
+        }
+    }
+
+    ::DragFinish(hDropInfo);
 }
 
 void CFormatsDlg::UpdateFields(CFormat &format)

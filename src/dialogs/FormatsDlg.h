@@ -17,6 +17,17 @@
 #define FORMAT_COLUMN_NAME      0
 #define FORMAT_COLUMN_TEMPLATE  1
 
+class CFormatsDlg;
+
+typedef struct tagFormatsDlgDropContext
+{
+    CFormatsDlg *pDlg = NULL;
+    HDROP hDrop = NULL;
+    HANDLE hThread = NULL;
+    DWORD dwThreadID = -1;
+    volatile bool bHandled = true;
+} FormatsDlgDropContext;
+
 class CFormatsDlg : public CResizeDialog
 {
     DECLARE_DYNAMIC(CFormatsDlg)
@@ -34,6 +45,7 @@ protected:
 public:
     virtual BOOL OnInitDialog();
 public:
+    FormatsDlgDropContext m_DD;
     CConfiguration *pConfig;
     CString szFormatsDialogResize;
     CString szFormatsListColumns;
@@ -73,6 +85,7 @@ public:
     CMyButton m_BtnBrowsePath;
     CMyButton m_BtnBrowseFunction;
 public:
+    afx_msg void OnDropFiles(HDROP hDropInfo);
     afx_msg void OnBnClickedOk();
     afx_msg void OnBnClickedCancel();
     afx_msg void OnLvnItemchangedListFormats(NMHDR *pNMHDR, LRESULT *pResult);
@@ -105,6 +118,7 @@ public:
     void SetLanguage();
     void AddToList(CFormat &format, int nItem);
     void InsertFormatsToListCtrl();
+    void HandleDropFiles(HDROP hDropInfo);
     void UpdateFields(CFormat &format);
     void ListSelectionChange();
     void LoadFormats(CString szFileXml);
