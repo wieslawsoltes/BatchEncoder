@@ -84,7 +84,7 @@ adds input and output file paths. For specific options for each format use help 
 |-----------------|-------------|-----------------|-----------------|----------------------------------|-------------------------------------------|
 | SSRC            | Encoder     | WAV             | 1.33            | ssrc.exe                         | GetProgress_SsrcEnc.progress              |
 | LAME            | Encoder     | MP3             | 3.99.5          | lame.exe                         | GetProgress_LameEnc.progress              |
-| MPPENC          | Encoder     | MPC             | 1.30.0          | mppenc.exe                       | GetProgress_MppEnc.progress               |
+| MPCENC          | Encoder     | MPC             | 1.30.0          | mpcenc.exe                       | GetProgress_MpcEnc.progress               |
 | FAAC            | Encoder     | AAC             | 1.28-mod        | faac.exe                         | GetProgress_FaacEnc.progress              |
 | NEROAACENC      | Encoder     | M4A             | 1.5.4           | neroAacEnc.exe                   | - none -                                  |
 | NEROAACENC      | Encoder     | MP4             | 1.5.4           | neroAacEnc.exe                   | - none -                                  |
@@ -107,9 +107,9 @@ adds input and output file paths. For specific options for each format use help 
 | LAME            | Decoder     | MP1             | 3.99.5          | lame.exe                         | GetProgress_LameDec.progress              |
 | LAME            | Decoder     | MP2             | 3.99.5          | lame.exe                         | GetProgress_LameDec.progress              |
 | LAME            | Decoder     | MP3             | 3.99.5          | lame.exe                         | GetProgress_LameDec.progress              |
-| MPCDEC          | Decoder     | MPC             | 1.0             | mpcdec.exe                       | GetProgress_MppDec.progress               |
-| MPCDEC          | Decoder     | MPP             | 1.0             | mpcdec.exe                       | GetProgress_MppDec.progress               |
-| MPCDEC          | Decoder     | MP+             | 1.0             | mpcdec.exe                       | GetProgress_MppDec.progress               |
+| MPCDEC          | Decoder     | MPC             | 1.0             | mpcdec.exe                       | GetProgress_MpcDec.progress               |
+| MPCDEC          | Decoder     | MPP             | 1.0             | mpcdec.exe                       | GetProgress_MpcDec.progress               |
+| MPCDEC          | Decoder     | MP+             | 1.0             | mpcdec.exe                       | GetProgress_MpcDec.progress               |
 | FAAD            | Decoder     | AAC             | faad2-20100614  | faad.exe                         | GetProgress_FaadDec.progress              |
 | NEROAACDEC      | Decoder     | MP4             | 1.5.1           | neroAacDec.exe                   | - none -                                  |
 | NEROAACDEC      | Decoder     | M4A             | 1.5.1           | neroAacDec.exe                   | - none -                                  |

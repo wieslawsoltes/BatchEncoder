@@ -97,7 +97,7 @@
             <Preset name="CBR 320 kbit/s" options="-b 320"/>
         </Presets>
     </Format>
-    <Format id="MPCENC_MPC" name="MPC (Musepack)" template="$EXE $OPTIONS --overwrite $INFILE $OUTFILE" input="true" output="false" function="GetProgress_MppEnc.progress" path="mpcenc.exe" type="0" formats="WAV" extension="MPC" default="3">
+    <Format id="MPCENC_MPC" name="MPC (Musepack)" template="$EXE $OPTIONS --overwrite $INFILE $OUTFILE" input="true" output="false" function="GetProgress_MpcEnc.progress" path="mpcenc.exe" type="0" formats="WAV" extension="MPC" default="3">
         <Presets>
             <Preset name="Telephone (32...48 kbps)" options="--telephone"/>
             <Preset name="Thumb (58...86 kbps)" options="--thumb"/>
@@ -586,17 +586,17 @@
             <Preset name="Default" options=""/>
         </Presets>
     </Format>
-    <Format id="MPCDEC_MPC_WAV" name="Decode MPC to WAV" template="$EXE $INFILE $OUTFILE" input="false" output="false" function="GetProgress_MppDec.progress" path="mpcdec.exe" type="1" formats="MPC" extension="WAV" default="0">
+    <Format id="MPCDEC_MPC_WAV" name="Decode MPC to WAV" template="$EXE $INFILE $OUTFILE" input="false" output="false" function="GetProgress_MpcDec.progress" path="mpcdec.exe" type="1" formats="MPC" extension="WAV" default="0">
         <Presets>
             <Preset name="Default" options=""/>
         </Presets>
     </Format>
-    <Format id="MPCDEC_MPP_WAV" name="Decode MPP to WAV" template="$EXE $INFILE $OUTFILE" input="false" output="false" function="GetProgress_MppDec.progress" path="mpcdec.exe" type="1" formats="MPP" extension="WAV" default="0">
+    <Format id="MPCDEC_MPP_WAV" name="Decode MPP to WAV" template="$EXE $INFILE $OUTFILE" input="false" output="false" function="GetProgress_MpcDec.progress" path="mpcdec.exe" type="1" formats="MPP" extension="WAV" default="0">
         <Presets>
             <Preset name="Default" options=""/>
         </Presets>
     </Format>
-    <Format id="MPCDEC_MP+_WAV" name="Decode MP+ to WAV" template="$EXE $INFILE $OUTFILE" input="false" output="false" function="GetProgress_MppDec.progress" path="mpcdec.exe" type="1" formats="MP+" extension="WAV" default="0">
+    <Format id="MPCDEC_MP+_WAV" name="Decode MP+ to WAV" template="$EXE $INFILE $OUTFILE" input="false" output="false" function="GetProgress_MpcDec.progress" path="mpcdec.exe" type="1" formats="MP+" extension="WAV" default="0">
         <Presets>
             <Preset name="Default" options=""/>
         </Presets>
