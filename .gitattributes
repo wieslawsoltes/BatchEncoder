@@ -69,3 +69,4 @@
 
 # GitHub.com Linguist
 src/xml/* linguist-vendored
+src/lua/* linguist-vendored

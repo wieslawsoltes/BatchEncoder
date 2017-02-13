@@ -333,6 +333,9 @@ copy /-Y ..\lang\*.language $(OutDir)</Command>
     <ResourceCompile Include="res\BatchEncoder.rc" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="lua\Lua.vcxproj">
+      <Project>{d3051aac-8129-45f9-a755-9cbb7c61d91d}</Project>
+    </ProjectReference>
     <ProjectReference Include="xml\TinyXml2.vcxproj">
       <Project>{284538ac-d315-437e-ad31-d40934a43236}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
