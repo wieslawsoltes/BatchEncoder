@@ -94,7 +94,7 @@ adds input and output file paths. For specific options for each format use help 
 | FFMPEG          | Encoder     | AC3             | 3.2.2           | ffmpeg.exe                       | - none -                                  |
 | FLAC            | Encoder     | FLAC            | 1.3.2           | flac.exe                         | GetProgress_FlacEnc.progress              |
 | WAVPACK         | Encoder     | WV              | 5.0.0           | wavpack.exe                      | GetProgress_WavPackEnc.progress           |
-| QAAC            | Encoder     | M4A             | 2.62            | qaac.exe                         | - none -                                  |
+| QAAC            | Encoder     | M4A             | 2.62            | qaac.exe                         | GetProgress_QaacEnc.progress              |
 | MAC             | Encoder     | APE             | 4.18            | mac.exe                          | GetProgress_MacEnc.progress               |
 | OFR             | Encoder     | OFR             | 5.100           | ofr.exe                          | GetProgress_OfrEnc.progress               |
 | TTA             | Encoder     | TTA             | 2.3             | tta.exe                          | GetProgress_TtaEnc.progress               |
