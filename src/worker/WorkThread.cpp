@@ -23,6 +23,8 @@ bool ProgresssLoop(CFileContext* pContext, CProcessContext &processContext, CPip
     int nLineLen = 0;
     int nPreviousProgress = 0;
 
+    ::SetCurrentDirectory(::GetExeFilePath());
+
     // load progress function
     CLuaProgess luaProgress;
     if (luaProgress.Open(CT2CA(pContext->pFormat->szFunction)) == false)
