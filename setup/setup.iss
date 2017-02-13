@@ -64,7 +64,7 @@ Source: {#BasePath}\*.md; DestDir: {app}; Flags: ignoreversion; Components: docs
 Source: {#BasePath}\config\*.options; DestDir: {app}; Flags: ignoreversion; Components: config
 Source: {#BasePath}\config\*.formats; DestDir: {app}; Flags: ignoreversion; Components: config
 Source: {#BasePath}\config\*.items; DestDir: {app}; Flags: ignoreversion; Components: config
-Source: {#BasePath}\src\bin\{#ProgramConfiguration}\{#ProgramBuild}\*.progress; DestDir: {app}; Flags: ignoreversion; Components: progress
+Source: {#BasePath}\progress\*.progress; DestDir: {app}; Flags: ignoreversion; Components: progress
 Source: {#BasePath}\lang\*.language; DestDir: {app}; Flags: ignoreversion; Components: lang
 Source: {#BasePath}\scripts\*.ps1; DestDir: {app}; Flags: ignoreversion; Components: scripts
 

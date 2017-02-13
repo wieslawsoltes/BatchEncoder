@@ -87,10 +87,10 @@ var packageBinariesAction = new Action<string,string> ((configuration, platform)
     CopyFileToDirectory(File("README.md"), outputDir);
     CopyFileToDirectory(File("LICENSE.TXT"), outputDir);
     CopyFileToDirectory(exeFile, outputDir);
-    CopyFiles(path + "*.progress", outputDir);
     CopyFiles("./config/*.options", outputDir);
     CopyFiles("./config/*.formats", outputDir);
     CopyFiles("./config/*.items", outputDir);
+    CopyFiles("./progress/*.progress", outputDir);
     CopyFiles("./lang/*.language", outputDir);
     CopyFiles("./scripts/*.ps1", outputDir);
     Zip(outputDir, outputZip);
