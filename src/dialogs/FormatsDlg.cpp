@@ -779,18 +779,6 @@ void CFormatsDlg::HandleDropFiles(HDROP hDropInfo)
                         this->m_EdtFunction.SetWindowText(format.szFunction);
                     }
                 }
-                else if (szExt.CompareNoCase(_T("dll")) == 0)
-                {
-                    // Set current format progress path.
-                    POSITION pos = m_LstFormats.GetFirstSelectedItemPosition();
-                    if (pos != NULL)
-                    {
-                        int nItem = m_LstFormats.GetNextSelectedItem(pos);
-                        CFormat& format = this->m_Formats.GetData(nItem);
-                        format.szFunction = szPath;
-                        this->m_EdtFunction.SetWindowText(format.szFunction);
-                    }
-                }
             }
 
             szFile.ReleaseBuffer();

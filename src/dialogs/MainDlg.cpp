@@ -1954,16 +1954,6 @@ void CMainDlg::HandleDropFiles(HDROP hDropInfo)
                         format.szFunction = szPath;
                     }
                 }
-                else if (szExt.CompareNoCase(_T("dll")) == 0)
-                {
-                    // Set current format progress path.
-                    int nFormat = this->m_CmbFormat.GetCurSel();
-                    if (nFormat != -1)
-                    {
-                        CFormat& format = m_Config.m_Formats.GetData(nFormat);
-                        format.szFunction = szPath;
-                    }
-                }
                 else if (szExt.CompareNoCase(_T("language")) == 0)
                 {
                     LoadLanguage(szPath);
