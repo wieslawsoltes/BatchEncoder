@@ -178,7 +178,7 @@ bool ConvertFileUsingConsole(CFileContext* pContext)
     processContext.ConnectStdError(Stderr.hWrite);
 
     timer.Start();
-    if (processContext.Start(pContext->pszCommandLine, TRUE) == false)
+    if (processContext.Start(pContext->pszCommandLine, pWorkerContext->pConfig->m_Options.bHideConsoleWindow) == false)
     {
         timer.Stop();
 
