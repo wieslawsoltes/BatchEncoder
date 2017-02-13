@@ -131,6 +131,7 @@
       <Command>copy /-Y ..\config\*.options $(OutDir)
 copy /-Y ..\config\*.formats $(OutDir)
 copy /-Y ..\config\*.items $(OutDir)
+copy /-Y ..\progress\*.progress $(OutDir)
 copy /-Y ..\lang\*.language $(OutDir)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -168,6 +169,7 @@ copy /-Y ..\lang\*.language $(OutDir)</Command>
       <Command>copy /-Y ..\config\*.options $(OutDir)
 copy /-Y ..\config\*.formats $(OutDir)
 copy /-Y ..\config\*.items $(OutDir)
+copy /-Y ..\progress\*.progress $(OutDir)
 copy /-Y ..\lang\*.language $(OutDir)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -206,6 +208,7 @@ copy /-Y ..\lang\*.language $(OutDir)</Command>
       <Command>copy /-Y ..\config\*.options $(OutDir)
 copy /-Y ..\config\*.formats $(OutDir)
 copy /-Y ..\config\*.items $(OutDir)
+copy /-Y ..\progress\*.progress $(OutDir)
 copy /-Y ..\lang\*.language $(OutDir)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -245,6 +248,7 @@ copy /-Y ..\lang\*.language $(OutDir)</Command>
       <Command>copy /-Y ..\config\*.options $(OutDir)
 copy /-Y ..\config\*.formats $(OutDir)
 copy /-Y ..\config\*.items $(OutDir)
+copy /-Y ..\progress\*.progress $(OutDir)
 copy /-Y ..\lang\*.language $(OutDir)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
