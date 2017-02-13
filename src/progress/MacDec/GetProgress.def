@@ -1,4 +1,0 @@
-LIBRARY GetProgress_MacDec.dll
-EXPORTS
-
-GetProgress             @1

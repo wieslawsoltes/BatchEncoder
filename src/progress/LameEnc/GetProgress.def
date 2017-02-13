@@ -1,4 +1,0 @@
-LIBRARY GetProgress_LameEnc.dll
-EXPORTS
-
-GetProgress             @1

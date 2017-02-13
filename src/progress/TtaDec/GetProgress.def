@@ -1,4 +1,0 @@
-LIBRARY GetProgress_TtaDec.dll
-EXPORTS
-
-GetProgress             @1

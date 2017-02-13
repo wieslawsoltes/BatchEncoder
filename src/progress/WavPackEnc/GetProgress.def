@@ -1,4 +1,0 @@
-LIBRARY GetProgress_WavPackEnc.dll
-EXPORTS
-
-GetProgress             @1

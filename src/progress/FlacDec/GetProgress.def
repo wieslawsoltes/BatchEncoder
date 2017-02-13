@@ -1,4 +1,0 @@
-LIBRARY GetProgress_FlacDec.dll
-EXPORTS
-
-GetProgress             @1

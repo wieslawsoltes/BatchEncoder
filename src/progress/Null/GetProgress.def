@@ -1,4 +1,0 @@
-LIBRARY GetProgress_Null.dll
-EXPORTS
-
-GetProgress             @1

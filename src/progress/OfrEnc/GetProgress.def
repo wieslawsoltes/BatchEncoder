@@ -1,4 +1,0 @@
-LIBRARY GetProgress_OfrEnc.dll
-EXPORTS
-
-GetProgress             @1
