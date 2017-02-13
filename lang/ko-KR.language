@@ -138,8 +138,8 @@
 
     <!-- Strings Work Thread -->
 
-    <String key="0x00110001" value="오류&#58; 기능 라이브러리 dll을 불러올 수 없습니다."/>
-    <String key="0x00110002" value="오류&#58; GetProgress 기능 주소를 확인할 수 없습니다."/>
+    <String key="0x00110001" value="Error: can not load progress script." />
+    <String key="0x00110002" value="Error: can not find progress function." />
     <String key="0x00110003" value="오류&#58; 읽기 버퍼를 위한 콘솔 라인이 너무 큽니다."/>
 
     <String key="0x00120001" value="오류&#58; 잘못된 형식 파일프 구성입니다."/>

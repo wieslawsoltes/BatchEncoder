@@ -7,8 +7,8 @@
 const TCHAR* pszDefaulTime = _T("--:--");
 
 const TCHAR* pszProgresssLoop[] = {
-    /* 00 */ _T("Error: can not load GetProgress function library dll."),
-    /* 01 */ _T("Error: can not get GetProgress function address."),
+    /* 00 */ _T("Error: can not load progress script."),
+    /* 01 */ _T("Error: can not find progress function."),
     /* 02 */ _T("Error: console line is too large for read buffer.")
 };
 

@@ -138,8 +138,8 @@
 
     <!-- Strings Work Thread -->
 
-    <String key="0x00110001" value="Błąd: nie można załadować funkcji GetProgress biblioteki dll." />
-    <String key="0x00110002" value="Błąd: nie można uzyskać adresu funkcji GetProgress." />
+    <String key="0x00110001" value="Błąd: nie można załadować skryptu postępu." />
+    <String key="0x00110002" value="Błąd: nie można znaleźć funkcji postępu." />
     <String key="0x00110003" value="Błąd: linia konsoli jest zbyt duża dla buforu odczytu." />
 
     <String key="0x00120001" value="Błąd: nieprawidłowa konfiguracja potoku formatu." />
