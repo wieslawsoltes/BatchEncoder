@@ -182,7 +182,7 @@ Files extensions:
 * .formats - Encoder and decoder formats
 * .presets - Predefined format presets
 * .items - Input file items
-* .progress - Compiled progress function into windows DLL
+* .progress - Progress function Lua scripts
 * .language - Language translation strings
 
 Use only UTF-8 compatible text editors (e.g. Notepad) to edit xml configuration files.
@@ -267,28 +267,19 @@ Sometimes you will not get nice progress during conversion, nonetheless you will
 
 ### Progress function format
 
-Progress function are compiled windows DLL libraries with exported `GetProgress` function as `C` api. The `progress` file extension is used instead of `dll`.
+Progress function are simple [Lua](https://www.lua.org/manual/5.1/) scripts with defined `GetProgress` function. The `progress` file extension is used instead of `lua`.
 
-The progress function C signature:
-
-```
-int GetProgress(char *szLineBuff, int nLineLen);
-```
-
-The example of the progress function export definition:
+The progress function signature:
 
 ```
-LIBRARY GetProgress.dll
-EXPORTS
-
-GetProgress             @1
+function GetProgress(s)
 ```
 
-For a quick start use [GetProgress_Null](https://github.com/wieslawsoltes/BatchEncoder/tree/master/src/progress/Null) VC++ project as a template.
+For a quick start use one of the [existing](https://github.com/wieslawsoltes/BatchEncoder/tree/master/progress) progress scripts.
 
 ### Default progress functions
 
-The default progress functions sources can be found [here](https://github.com/wieslawsoltes/BatchEncoder/tree/master/src/progress).
+The default progress functions sources can be found [here](https://github.com/wieslawsoltes/BatchEncoder/tree/master/progress).
 
 ## BatchEncoder Sources
 
