@@ -105,6 +105,7 @@ bool ProgresssLoop(CFileContext* pContext, CProcessContext &processContext, CPip
                 // don't include empty lines
                 if (strlen(szLineBuff) > 0)
                 {
+                    // DEBUG: OutputDebugStringA(szLineBuff); OutputDebugStringA("\n");
                     int nRet = (int)luaProgress.GetProgress(szLineBuff, nLineLen);
                     if (nRet != -1)
                         nProgress = nRet;
