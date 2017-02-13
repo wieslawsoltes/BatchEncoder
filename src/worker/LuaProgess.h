@@ -10,6 +10,8 @@ class CLuaProgess
 {
     lua_State *L = NULL;
 public:
+    const char *name = "GetProgress";
+public:
     CLuaProgess()
     {
     }
@@ -46,7 +48,7 @@ public:
         if (L == NULL)
             return false;
 
-        lua_getglobal(L, "progress"); // [-0, +1, e]
+        lua_getglobal(L, name); // [-0, +1, e]
         if (!lua_isfunction(L, -1)) // [-0, +0, –]
         {
             OutputError(L);
@@ -63,7 +65,7 @@ public:
         if (L == NULL)
             return -1;
 
-        lua_getglobal(L, "progress"); // [-0, +1, e]
+        lua_getglobal(L, name); // [-0, +1, e]
         if (!lua_isfunction(L, -1)) // [-0, +0, –]
         {
             OutputError(L);
@@ -82,14 +84,12 @@ public:
         if (lua_isnil(L, -1) == 1)  // [-0, +0, –]
         {
             OutputError(L);
-            lua_pop(L, 1); // nresults=1
             return -1;
         }
 
         if (!lua_isstring(L, -1))  // [-0, +0, –]
         {
             OutputError(L);
-            lua_pop(L, 1); // nresults=1
             return -1;
         }
 
@@ -98,11 +98,8 @@ public:
         if (isnum != 1)
         {
             OutputError(L);
-            lua_pop(L, 1);
             return -1;
         }
-
-        lua_pop(L, 1); // nresults=1
 
         return result;
     }
