@@ -6,6 +6,7 @@
 #include "..\Strings.h"
 #include "..\utilities\TimeCount.h"
 #include "..\utilities\Utilities.h"
+#include "LuaProgess.h"
 #include "WorkThread.h"
 
 bool ProgresssLoop(CFileContext* pContext, CProcessContext &processContext, CPipe &Stderr, int &nProgress)
@@ -23,16 +24,15 @@ bool ProgresssLoop(CFileContext* pContext, CProcessContext &processContext, CPip
     int nPreviousProgress = 0;
 
     // load progress function
-    HMODULE hDll = ::LoadLibrary(pContext->pFormat->szFunction);
-    if (hDll == NULL)
+    CLuaProgess luaProgress;
+    if (luaProgress.Open(CT2CA(pContext->pFormat->szFunction)) == false)
     {
         pWorkerContext->Status(pContext->nItemId, pszDefaulTime, pWorkerContext->GetString(0x00110001, pszProgresssLoop[0]));
         pWorkerContext->Callback(pContext->nItemId, -1, true, true);
         return false; // ERROR
     }
 
-    GetProgressFunc *pGetProgress = (GetProgressFunc*) ::GetProcAddress(hDll, "GetProgress");
-    if (pGetProgress == NULL)
+    if (luaProgress.HaveGetProgress() == false)
     {
         pWorkerContext->Status(pContext->nItemId, pszDefaulTime, pWorkerContext->GetString(0x00110002, pszProgresssLoop[1]));
         pWorkerContext->Callback(pContext->nItemId, -1, true, true);
@@ -103,7 +103,7 @@ bool ProgresssLoop(CFileContext* pContext, CProcessContext &processContext, CPip
                 // don't include empty lines
                 if (strlen(szLineBuff) > 0)
                 {
-                    int nRet = (pGetProgress)(szLineBuff, nLineLen);
+                    int nRet = luaProgress.GetProgress(szLineBuff, nLineLen);
                     if (nRet != -1)
                         nProgress = nRet;
 
@@ -132,8 +132,7 @@ bool ProgresssLoop(CFileContext* pContext, CProcessContext &processContext, CPip
             break;
     } while (bRes);
 
-    if (hDll != NULL)
-        ::FreeLibrary(hDll);
+    luaProgress.Close();
 
     return true;
 }
