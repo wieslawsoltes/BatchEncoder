@@ -80,53 +80,53 @@ adds input and output file paths. For specific options for each format use help 
 
 ### Encoders
 
-| Name            | Type     | Extension  | Version         | Executable        | In Pipe  | Out Pipe | Progress function                 |
-|-----------------|----------|------------|-----------------|-------------------|----------|----------|-----------------------------------|
-| SSRC            | Encoder  | WAV        | 1.33            | ssrc.exe          | no       | no       | GetProgress_SsrcEnc.progress      |
-| LAME            | Encoder  | MP3        | 3.99.5          | lame.exe          | yes      | yes      | GetProgress_LameEnc.progress      |
-| MPCENC          | Encoder  | MPC        | 1.30.0          | mpcenc.exe        | yes      | no       | GetProgress_MpcEnc.progress       |
-| FAAC            | Encoder  | AAC        | 1.28-mod        | faac.exe          | yes      | no       | GetProgress_FaacEnc.progress      |
-| QAAC            | Encoder  | M4A        | 2.62            | qaac.exe          | yes      | no       | GetProgress_QaacEnc.progress      |
-| NEROAACENC      | Encoder  | M4A        | 1.5.4           | neroAacEnc.exe    | yes      | no       | - none -                          |
-| NEROAACENC      | Encoder  | MP4        | 1.5.4           | neroAacEnc.exe    | yes      | no       | - none -                          |
-| OPUSENC         | Encoder  | OPUS       | 1.2-alpha       | opusenc.exe       | yes      | no       | GetProgress_OpusEnc.progress      |
-| OGGENC          | Encoder  | OGG        | 2.88            | oggenc2.exe       | yes      | no       | GetProgress_OggEnc.progress       |
-| AFTEN           | Encoder  | AC3        | git-2009122     | aften.exe         | yes      | no       | GetProgress_AftenEnc.progress     |
-| FFMPEG          | Encoder  | AC3        | 3.2.2           | ffmpeg.exe        | yes      | yes      | - none -                          |
-| FLAC            | Encoder  | FLAC       | 1.3.2           | flac.exe          | yes      | no       | GetProgress_FlacEnc.progress      |
-| WAVPACK         | Encoder  | WV         | 5.0.0           | wavpack.exe       | no       | no       | GetProgress_WavPackEnc.progress   |
-| MAC             | Encoder  | APE        | 4.18            | mac.exe           | no       | no       | GetProgress_MacEnc.progress       |
-| OFR             | Encoder  | OFR        | 5.100           | ofr.exe           | yes      | no       | GetProgress_OfrEnc.progress       |
-| TTA             | Encoder  | TTA        | 2.3             | tta.exe           | yes      | no       | GetProgress_TtaEnc.progress       |
-| TAKC            | Encoder  | TAK        | 2.3.0           | takc.exe          | yes      | no       | - none -                          |
+| Name         | Extension  | Version         | Executable        | In Pipe  | Out Pipe | Progress function                 |
+|--------------|------------|-----------------|-------------------|----------|----------|-----------------------------------|
+| SSRC         | WAV        | 1.33            | ssrc.exe          | no       | no       | GetProgress_SsrcEnc.progress      |
+| LAME         | MP3        | 3.99.5          | lame.exe          | yes      | yes      | GetProgress_LameEnc.progress      |
+| MPCENC       | MPC        | 1.30.0          | mpcenc.exe        | yes      | no       | GetProgress_MpcEnc.progress       |
+| FAAC         | AAC        | 1.28-mod        | faac.exe          | yes      | no       | GetProgress_FaacEnc.progress      |
+| QAAC         | M4A        | 2.62            | qaac.exe          | yes      | no       | GetProgress_QaacEnc.progress      |
+| NEROAACENC   | M4A        | 1.5.4           | neroAacEnc.exe    | yes      | no       | - none -                          |
+| NEROAACENC   | MP4        | 1.5.4           | neroAacEnc.exe    | yes      | no       | - none -                          |
+| OPUSENC      | OPUS       | 1.2-alpha       | opusenc.exe       | yes      | no       | GetProgress_OpusEnc.progress      |
+| OGGENC       | OGG        | 2.88            | oggenc2.exe       | yes      | no       | GetProgress_OggEnc.progress       |
+| AFTEN        | AC3        | git-2009122     | aften.exe         | yes      | no       | GetProgress_AftenEnc.progress     |
+| FFMPEG       | AC3        | 3.2.2           | ffmpeg.exe        | yes      | yes      | - none -                          |
+| FLAC         | FLAC       | 1.3.2           | flac.exe          | yes      | no       | GetProgress_FlacEnc.progress      |
+| WAVPACK      | WV         | 5.0.0           | wavpack.exe       | no       | no       | GetProgress_WavPackEnc.progress   |
+| MAC          | APE        | 4.18            | mac.exe           | no       | no       | GetProgress_MacEnc.progress       |
+| OFR          | OFR        | 5.100           | ofr.exe           | yes      | no       | GetProgress_OfrEnc.progress       |
+| TTA          | TTA        | 2.3             | tta.exe           | yes      | no       | GetProgress_TtaEnc.progress       |
+| TAKC         | TAK        | 2.3.0           | takc.exe          | yes      | no       | - none -                          |
 
 ### Decoders
 
-| Name            | Type     | Extension  | Version         | Executable        | In Pipe  | Out Pipe | Progress function                 |
-|-----------------|----------|------------|-----------------|-------------------|----------|----------|-----------------------------------|
-| LAME            | Decoder  | MP1        | 3.99.5          | lame.exe          | yes      | yes      | GetProgress_LameDec.progress      |
-| LAME            | Decoder  | MP2        | 3.99.5          | lame.exe          | yes      | yes      | GetProgress_LameDec.progress      |
-| LAME            | Decoder  | MP3        | 3.99.5          | lame.exe          | yes      | yes      | GetProgress_LameDec.progress      |
-| MPCDEC          | Decoder  | MPC        | 1.0             | mpcdec.exe        | no       | no       | GetProgress_MpcDec.progress       |
-| MPCDEC          | Decoder  | MPP        | 1.0             | mpcdec.exe        | no       | no       | GetProgress_MpcDec.progress       |
-| MPCDEC          | Decoder  | MP+        | 1.0             | mpcdec.exe        | no       | no       | GetProgress_MpcDec.progress       |
-| FAAD            | Decoder  | AAC        | faad2-20100614  | faad.exe          | no       | yes      | GetProgress_FaadDec.progress      |
-| NEROAACDEC      | Decoder  | MP4        | 1.5.1           | neroAacDec.exe    | no       | yes      | - none -                          |
-| NEROAACDEC      | Decoder  | M4A        | 1.5.1           | neroAacDec.exe    | no       | yes      | - none -                          |
-| OPUSDEC         | Decoder  | OPUS       | 1.2-alpha       | opusdec.exe       | yes      | no       | GetProgress_OpusDec.progress      |
-| OGGDEC          | Decoder  | OGG        | 1.10.1          | oggdec.exe        | no       | no       | GetProgress_OggDec.progress       |
-| FLAC            | Decoder  | FLAC       | 1.3.2           | flac.exe          | yes      | no       | GetProgress_FlacDec.progress      |
-| WVUNPACK        | Decoder  | WV         | 5.0.0           | wvunpack.exe      | no       | no       | GetProgress_WvUnpackDec.progress  |
-| MAC             | Decoder  | APE        | 4.18            | mac.exe           | no       | no       | GetProgress_MacDec.progress       |
-| MAC             | Decoder  | MAC        | 4.18            | mac.exe           | no       | no       | GetProgress_MacDec.progress       |
-| OFR             | Decoder  | OFR        | 5.100           | ofr.exe           | yes      | no       | GetProgress_OfrDec.progress       |
-| TTA             | Decoder  | TTA        | 2.3             | tta.exe           | yes      | yes      | GetProgress_TtaDec.progress       |
-| TAKC            | Decoder  | TAK        | 2.3.0           | takc.exe          | no       | yes      | - none -                          |
-| FFMPEG          | Decoder  | AC3        | 3.2.2           | ffmpeg.exe        | yes      | yes      | - none -                          |
-| FFMPEG          | Decoder  | EAC3       | 3.2.2           | ffmpeg.exe        | yes      | yes      | - none -                          |
-| FFMPEG          | Decoder  | DTS        | 3.2.2           | ffmpeg.exe        | yes      | yes      | - none -                          |
-| FFMPEG          | Decoder  | DTSHD      | 3.2.2           | ffmpeg.exe        | yes      | yes      | - none -                          |
-| FFMPEG          | Decoder  | TRUEHD     | 3.2.2           | ffmpeg.exe        | yes      | yes      | - none -                          ||
+| Name         | Extension  | Version         | Executable        | In Pipe  | Out Pipe | Progress function                 |
+|--------------|------------|-----------------|-------------------|----------|----------|-----------------------------------|
+| LAME         | MP1        | 3.99.5          | lame.exe          | yes      | yes      | GetProgress_LameDec.progress      |
+| LAME         | MP2        | 3.99.5          | lame.exe          | yes      | yes      | GetProgress_LameDec.progress      |
+| LAME         | MP3        | 3.99.5          | lame.exe          | yes      | yes      | GetProgress_LameDec.progress      |
+| MPCDEC       | MPC        | 1.0             | mpcdec.exe        | no       | no       | GetProgress_MpcDec.progress       |
+| MPCDEC       | MPP        | 1.0             | mpcdec.exe        | no       | no       | GetProgress_MpcDec.progress       |
+| MPCDEC       | MP+        | 1.0             | mpcdec.exe        | no       | no       | GetProgress_MpcDec.progress       |
+| FAAD         | AAC        | faad2-20100614  | faad.exe          | no       | yes      | GetProgress_FaadDec.progress      |
+| NEROAACDEC   | MP4        | 1.5.1           | neroAacDec.exe    | no       | yes      | - none -                          |
+| NEROAACDEC   | M4A        | 1.5.1           | neroAacDec.exe    | no       | yes      | - none -                          |
+| OPUSDEC      | OPUS       | 1.2-alpha       | opusdec.exe       | yes      | no       | GetProgress_OpusDec.progress      |
+| OGGDEC       | OGG        | 1.10.1          | oggdec.exe        | no       | no       | GetProgress_OggDec.progress       |
+| FLAC         | FLAC       | 1.3.2           | flac.exe          | yes      | no       | GetProgress_FlacDec.progress      |
+| WVUNPACK     | WV         | 5.0.0           | wvunpack.exe      | no       | no       | GetProgress_WvUnpackDec.progress  |
+| MAC          | APE        | 4.18            | mac.exe           | no       | no       | GetProgress_MacDec.progress       |
+| MAC          | MAC        | 4.18            | mac.exe           | no       | no       | GetProgress_MacDec.progress       |
+| OFR          | OFR        | 5.100           | ofr.exe           | yes      | no       | GetProgress_OfrDec.progress       |
+| TTA          | TTA        | 2.3             | tta.exe           | yes      | yes      | GetProgress_TtaDec.progress       |
+| TAKC         | TAK        | 2.3.0           | takc.exe          | no       | yes      | - none -                          |
+| FFMPEG       | AC3        | 3.2.2           | ffmpeg.exe        | yes      | yes      | - none -                          |
+| FFMPEG       | EAC3       | 3.2.2           | ffmpeg.exe        | yes      | yes      | - none -                          |
+| FFMPEG       | DTS        | 3.2.2           | ffmpeg.exe        | yes      | yes      | - none -                          |
+| FFMPEG       | DTSHD      | 3.2.2           | ffmpeg.exe        | yes      | yes      | - none -                          |
+| FFMPEG       | TRUEHD     | 3.2.2           | ffmpeg.exe        | yes      | yes      | - none -                          |
 
 ### Tool downloads
 
