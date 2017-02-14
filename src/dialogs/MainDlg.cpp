@@ -1928,7 +1928,21 @@ void CMainDlg::HandleDropFiles(HDROP hDropInfo)
                 }
                 else if (szExt.CompareNoCase(_T("presets")) == 0)
                 {
-                    // TODO: Add presets to current format presets list.
+                    // Set current format presets.
+                    int nFormat = this->m_CmbFormat.GetCurSel();
+                    if (nFormat != -1)
+                    {
+                        CFormat& format = m_Config.m_Formats.GetData(nFormat);
+
+                        XmlConfiguration doc;
+                        if (doc.Open(szPath) == true)
+                        {
+                            format.m_Presets.RemoveAllNodes();
+                            doc.GetPresets(format.m_Presets);
+
+                            this->UpdatePresetComboBox();
+                        }
+                    }
                 }
                 else if (szExt.CompareNoCase(_T("options")) == 0)
                 {
