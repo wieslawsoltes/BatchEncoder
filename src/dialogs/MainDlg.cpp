@@ -1924,7 +1924,16 @@ void CMainDlg::HandleDropFiles(HDROP hDropInfo)
                 }
                 else if (szExt.CompareNoCase(_T("format")) == 0)
                 {
-                    // TODO: Add new format to formats list.
+                    // Add format to formats list.
+                    XmlConfiguration doc;
+                    if (doc.Open(szPath) == true)
+                    {
+                        CFormat format;
+                        doc.GetFormat(format);
+                        m_Config.m_Formats.InsertNode(format);
+
+                        this->UpdateFormatComboBox();
+                    }
                 }
                 else if (szExt.CompareNoCase(_T("presets")) == 0)
                 {
