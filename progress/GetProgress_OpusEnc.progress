@@ -1,4 +1,4 @@
 function GetProgress(s) 
-  if string.match(s, 'Encoding complete') ~= nil then return "100";
-  else return string.match(s, '((%d+))%%'); end;
+  if string.match(s, '^Encoding complete%s-') ~= nil then return "100";
+  else return string.match(s, '%((%d+)%%%)'); end;
 end

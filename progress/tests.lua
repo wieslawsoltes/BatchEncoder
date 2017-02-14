@@ -220,8 +220,8 @@ print(p)
 -- GetProgress_OpusEnc
 
 function GetProgress(s) 
-  if string.match(s, 'Encoding complete') ~= nil then return "100";
-  else return string.match(s, '((%d+))%%'); end;
+  if string.match(s, '^Encoding complete%s-') ~= nil then return "100";
+  else return string.match(s, '%((%d+)%%%)'); end;
 end
 
 p = GetProgress("[|] 00:22:45.04 (37%) 75.8x realtime, 193.2kbit/s")
@@ -232,8 +232,8 @@ print(p)
 -- GetProgress_OpusDec
 
 function GetProgress(s) 
-  if string.match(s, 'Decoding complete.') ~= nil then return "100";
-  else return string.match(s, '((%d+))%%'); end;
+  if string.match(s, '^Decoding complete%s-') ~= nil then return "100";
+  else return string.match(s, '%((%d+)%%%)'); end;
 end
 
 p = GetProgress("[/] 00:11:06 (93%)")
