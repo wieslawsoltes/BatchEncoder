@@ -23,7 +23,9 @@ private:
     void OutputError(lua_State* L)
     {
         const char* message = lua_tostring(L, -1);
+#ifdef DEBUG
         OutputDebugStringA(message);
+#endif
         lua_pop(L, 1);
     }
 public:
