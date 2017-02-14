@@ -1928,7 +1928,7 @@ void CMainDlg::HandleDropFiles(HDROP hDropInfo)
                 }
                 else if (szExt.CompareNoCase(_T("presets")) == 0)
                 {
-                    // Set current format presets.
+                    // Add presets to current format presets list.
                     int nFormat = this->m_CmbFormat.GetCurSel();
                     if (nFormat != -1)
                     {
