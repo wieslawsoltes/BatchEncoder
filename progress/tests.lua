@@ -240,3 +240,12 @@ p = GetProgress("[/] 00:11:06 (93%)")
 print(p)
 p = GetProgress("Decoding complete.")
 print(p)
+
+-- GetProgress_AftenEnc
+
+function GetProgress(s) 
+  return string.match(s, 'progress:%s-(%d+)%%');
+end
+
+p = GetProgress("progress:  67% | q: 368.9 | bw: 60.0 | bitrate: 448.0 kbps ")
+print(p)

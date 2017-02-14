@@ -449,7 +449,7 @@
             <Preset name="ABR 500 kbps" options="-b 500"/>
         </Presets>
     </Format>
-    <Format id="AFTEN_AC3" name="AC3 (ATSC A/52) - aften" template="$EXE $OPTIONS $INFILE $OUTFILE" input="true" output="false" function="- none -" path="aften.exe" type="0" formats="WAV" extension="AC3" default="15">
+    <Format id="AFTEN_AC3" name="AC3 (ATSC A/52) - aften" template="$EXE $OPTIONS $INFILE $OUTFILE" input="true" output="false" function="GetProgress_AftenEnc.progress" path="aften.exe" type="0" formats="WAV" extension="AC3" default="15">
         <Presets>
             <Preset name="CBR 32 kbit/s" options="-b 32"/>
             <Preset name="CBR 40 kbit/s" options="-b 40"/>

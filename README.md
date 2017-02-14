@@ -90,7 +90,7 @@ adds input and output file paths. For specific options for each format use help 
 | NEROAACENC      | Encoder     | MP4             | 1.5.4           | neroAacEnc.exe                   | - none -                                  |
 | OPUSENC         | Encoder     | OPUS            | 1.2-alpha       | opusenc.exe                      | GetProgress_OpusEnc.progress              |
 | OGGENC          | Encoder     | OGG             | 2.88            | oggenc2.exe                      | GetProgress_OggEnc.progress               |
-| AFTEN           | Encoder     | AC3             | git-2009122     | aften.exe                        | - none -                                  |
+| AFTEN           | Encoder     | AC3             | git-2009122     | aften.exe                        | GetProgress_AftenEnc.progress             |
 | FFMPEG          | Encoder     | AC3             | 3.2.2           | ffmpeg.exe                       | - none -                                  |
 | FLAC            | Encoder     | FLAC            | 1.3.2           | flac.exe                         | GetProgress_FlacEnc.progress              |
 | WAVPACK         | Encoder     | WV              | 5.0.0           | wavpack.exe                      | GetProgress_WavPackEnc.progress           |
