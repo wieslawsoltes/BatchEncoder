@@ -166,7 +166,8 @@ print(p)
 -- GetProgress_MpcDec
 
 function GetProgress(s) 
-  return string.match(s, '%ssamples decoded%s');
+  if string.match(s, '%ssamples decoded%s') ~= nil then return "100";
+  else return "-1"; end;
 end
 
 p = GetProgress("160790364 samples decoded in 4350 ms (838.17x)")
