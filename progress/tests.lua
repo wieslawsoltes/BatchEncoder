@@ -216,3 +216,27 @@ p = GetProgress("[18.4%] 11:12.333/1:00:46.041 (79.8x), ETA 0:37.250 ")
 print(p)
 p = GetProgress("11406949/11406949 samples processed in 0:03.281")
 print(p)
+
+-- GetProgress_OpusEnc
+
+function GetProgress(s) 
+  if string.match(s, 'Encoding complete') ~= nil then return "100";
+  else return string.match(s, '((%d+))%%'); end;
+end
+
+p = GetProgress("[|] 00:22:45.04 (37%) 75.8x realtime, 193.2kbit/s")
+print(p)
+p = GetProgress("Encoding complete")
+print(p)
+
+-- GetProgress_OpusDec
+
+function GetProgress(s) 
+  if string.match(s, 'Decoding complete.') ~= nil then return "100";
+  else return string.match(s, '((%d+))%%'); end;
+end
+
+p = GetProgress("[/] 00:11:06 (93%)")
+print(p)
+p = GetProgress("Decoding complete.")
+print(p)

@@ -88,7 +88,7 @@ adds input and output file paths. For specific options for each format use help 
 | FAAC            | Encoder     | AAC             | 1.28-mod        | faac.exe                         | GetProgress_FaacEnc.progress              |
 | NEROAACENC      | Encoder     | M4A             | 1.5.4           | neroAacEnc.exe                   | - none -                                  |
 | NEROAACENC      | Encoder     | MP4             | 1.5.4           | neroAacEnc.exe                   | - none -                                  |
-| OPUSENC         | Encoder     | OPUS            | 1.2-alpha       | opusenc.exe                      | - none -                                  |
+| OPUSENC         | Encoder     | OPUS            | 1.2-alpha       | opusenc.exe                      | GetProgress_OpusEnc.progress              |
 | OGGENC          | Encoder     | OGG             | 2.88            | oggenc2.exe                      | GetProgress_OggEnc.progress               |
 | AFTEN           | Encoder     | AC3             | git-2009122     | aften.exe                        | - none -                                  |
 | FFMPEG          | Encoder     | AC3             | 3.2.2           | ffmpeg.exe                       | - none -                                  |
@@ -113,7 +113,7 @@ adds input and output file paths. For specific options for each format use help 
 | FAAD            | Decoder     | AAC             | faad2-20100614  | faad.exe                         | GetProgress_FaadDec.progress              |
 | NEROAACDEC      | Decoder     | MP4             | 1.5.1           | neroAacDec.exe                   | - none -                                  |
 | NEROAACDEC      | Decoder     | M4A             | 1.5.1           | neroAacDec.exe                   | - none -                                  |
-| OPUSDEC         | Decoder     | OPUS            | 1.2-alpha       | opusdec.exe                      | - none -                                  |
+| OPUSDEC         | Decoder     | OPUS            | 1.2-alpha       | opusdec.exe                      | GetProgress_OpusDec.progress              |
 | OGGDEC          | Decoder     | OGG             | 1.10.1          | oggdec.exe                       | GetProgress_OggDec.progress               |
 | FLAC            | Decoder     | FLAC            | 1.3.2           | flac.exe                         | GetProgress_FlacDec.progress              |
 | WVUNPACK        | Decoder     | WV              | 5.0.0           | wvunpack.exe                     | GetProgress_WvUnpackDec.progress          |

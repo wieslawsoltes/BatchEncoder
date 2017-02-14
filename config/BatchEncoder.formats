@@ -343,7 +343,7 @@
             <Preset name="CBR 465 kbit/s" options="-cbr 465000"/>
         </Presets>
     </Format>
-    <Format id="OPUSENC_OPUS" name="OPUS (Opus Audio Codec)" template="$EXE $OPTIONS $INFILE $OUTFILE" input="true" output="false" function="- none -" path="opusenc.exe" type="0" formats="WAV" extension="OPUS" default="12">
+    <Format id="OPUSENC_OPUS" name="OPUS (Opus Audio Codec)" template="$EXE $OPTIONS $INFILE $OUTFILE" input="true" output="false" function="GetProgress_OpusEnc.progress" path="opusenc.exe" type="0" formats="WAV" extension="OPUS" default="12">
         <Presets>
             <Preset name="VBR 6 kbit/sec" options="--vbr --comp 10 --bitrate 6"/>
             <Preset name="VBR 8 kbit/sec" options="--vbr --comp 10 --bitrate 8"/>
@@ -616,7 +616,7 @@
             <Preset name="Default" options=""/>
         </Presets>
     </Format>
-    <Format id="OPUSDEC_OPUS_WAV" name="Decode OPUS to WAV" template="$EXE $OPTIONS $INFILE $OUTFILE" input="true" output="false" function="- none -" path="opusdec.exe" type="1" formats="OPUS" extension="WAV" default="0">
+    <Format id="OPUSDEC_OPUS_WAV" name="Decode OPUS to WAV" template="$EXE $OPTIONS $INFILE $OUTFILE" input="true" output="false" function="GetProgress_OpusDec.progress" path="opusdec.exe" type="1" formats="OPUS" extension="WAV" default="0">
         <Presets>
             <Preset name="Default" options="--force-wav"/>
         </Presets>
