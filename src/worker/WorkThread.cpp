@@ -1218,7 +1218,7 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
     pWorkerContext->nProcessedFiles = 0;
     pWorkerContext->nDoneWithoutError = 0;
     pWorkerContext->nErrors = 0;
-    pWorkerContext->pQueue = new CObList();
+    pWorkerContext->pQueue = new CObList(nItems);
     pWorkerContext->nProgess = new int[nItems];
     pWorkerContext->nPreviousProgess = new int[nItems];
     pWorkerContext->nLastItemId = -1;
