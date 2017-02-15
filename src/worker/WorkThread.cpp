@@ -340,15 +340,24 @@ bool WriteLoop(CPipeContext* pContext)
     {
         ::Sleep(0);
 
-        bRes = ::ReadFile(pContext->hPipe, pReadBuff, 4096, &dwReadBytes, 0);
-        if ((bRes == FALSE) || (dwReadBytes == 0))
+        DWORD dwAvailableBytes;
+        if (FALSE == PeekNamedPipe(pContext->hPipe, 0, 0, 0, &dwAvailableBytes, 0))
             break;
 
-        bRes = ::WriteFile(hFile, pReadBuff, dwReadBytes, &dwWriteBytes, 0);
-        if ((bRes == FALSE) || (dwWriteBytes == 0) || (dwReadBytes != dwWriteBytes))
-            break;
+        if (dwAvailableBytes > 0)
+        {
+            bRes = ::ReadFile(pContext->hPipe, pReadBuff, 4096, &dwReadBytes, 0);
+            if ((bRes == FALSE) || (dwReadBytes == 0))
+                break;
 
-        nTotalBytesWrite += dwReadBytes;
+            bRes = ::WriteFile(hFile, pReadBuff, dwReadBytes, &dwWriteBytes, 0);
+            if ((bRes == FALSE) || (dwWriteBytes == 0) || (dwReadBytes != dwWriteBytes))
+                break;
+
+            nTotalBytesWrite += dwReadBytes;
+        }
+        else
+            bRes = TRUE;
 
         if (pContext->pWorkerContext->bRunning == false)
             break;
