@@ -120,7 +120,7 @@ bool ProgresssLoop(CFileContext* pContext, CProcessContext &processContext, CPip
                         nPreviousProgress = nProgress;
                     }
 
-                    if (bRunning == false)
+                    if ((pContext->pWorkerContext->bRunning == false) || (bRunning == false))
                         break;
                 }
 
@@ -290,7 +290,7 @@ bool ReadLoop(CPipeContext* pContext)
             nPreviousProgress = nProgress;
         }
 
-        if (bRunning == false)
+        if ((pContext->pWorkerContext->bRunning == false) || (bRunning == false))
             break;
     } while (bRes != FALSE);
 
