@@ -252,6 +252,7 @@ bool ReadLoop(CPipeContext* pContext)
     {
         pContext->bError = true;
         pContext->bFinished = true;
+        ::CloseHandle(pContext->hPipe);
         return false;
     }
 
@@ -261,6 +262,7 @@ bool ReadLoop(CPipeContext* pContext)
         pContext->bError = true;
         pContext->bFinished = true;
         ::CloseHandle(hFile);
+        ::CloseHandle(pContext->hPipe);
         return false;
     }
 
