@@ -275,6 +275,8 @@ The progress function signature:
 function GetProgress(s)
 ```
 
+Most of the Lua progress scripts are using [string manipulation](http://www.lua.org/manual/5.3/manual.html#6.4) with [patterns](http://lua-users.org/wiki/PatternsTutorial).
+
 For a quick start use one of the [existing](https://github.com/wieslawsoltes/BatchEncoder/tree/master/progress) progress scripts.
 
 ### Default progress functions
