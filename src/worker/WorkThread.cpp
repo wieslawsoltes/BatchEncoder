@@ -564,7 +564,7 @@ bool ConvertFileUsingPipes(CFileContext* pContext)
             ::CloseHandle(hReadThread);
 
             // wait for process to finish
-            ::WaitForSingleObject(processContext.pInfo.hProcess, INFINITE);
+            //::WaitForSingleObject(processContext.pInfo.hProcess, INFINITE);
 
             // check for result from read thread
             if ((readContext.bError == false) && (readContext.bFinished == true))
@@ -608,17 +608,29 @@ bool ConvertFileUsingPipes(CFileContext* pContext)
             // close read thread handle
             ::CloseHandle(hReadThread);
 
-            // close read thread handle
-            Stdout.CloseRead();
+            if ((readContext.bError == true) || (readContext.bFinished == false))
+            {
+                // close read thread handle
+                Stdout.CloseRead();
 
-            // wait for process to finish
-            ::WaitForSingleObject(processContext.pInfo.hProcess, INFINITE);
+                // read thread failed so terminate write thread
+                ::TerminateThread(hWriteThread, FALSE);
+                ::CloseHandle(hWriteThread);
+            }
+            else
+            {
+                // close read thread handle
+                Stdout.CloseRead();
 
-            // wait for write thread to finish
-            ::WaitForSingleObject(hWriteThread, INFINITE);
+                // wait for process to finish
+                //::WaitForSingleObject(processContext.pInfo.hProcess, INFINITE);
 
-            // close read thread handle
-            ::CloseHandle(hWriteThread);
+                // wait for write thread to finish
+                ::WaitForSingleObject(hWriteThread, INFINITE);
+
+                // close write thread handle
+                ::CloseHandle(hWriteThread);
+            }
 
             // check for result from read thread
             if ((readContext.bError == false) && (readContext.bFinished == true)
@@ -852,16 +864,27 @@ bool ConvertFileUsingOnlyPipes(CFileContext* pDecoderContext, CFileContext* pEnc
     // close read thread handle
     ::CloseHandle(hReadThread);
 
-    Stdout.CloseRead();
+    if ((readContext.bError == true) || (readContext.bFinished == false))
+    {
+        Stdout.CloseRead();
 
-    // wait for encoder process to finish
-    ::WaitForSingleObject(processContextEncoder.pInfo.hProcess, INFINITE);
+        // read thread failed so terminate write thread
+        ::TerminateThread(hWriteThread, FALSE);
+        ::CloseHandle(hWriteThread);
+    }
+    else
+    {
+        Stdout.CloseRead();
 
-    // wait for write thread to finish
-    ::WaitForSingleObject(hWriteThread, INFINITE);
+        // wait for encoder process to finish
+        //::WaitForSingleObject(processContextEncoder.pInfo.hProcess, INFINITE);
 
-    // close read thread handle
-    ::CloseHandle(hWriteThread);
+        // wait for write thread to finish
+        ::WaitForSingleObject(hWriteThread, INFINITE);
+
+        // close write thread handle
+        ::CloseHandle(hWriteThread);
+    }
 
     // check for result from read and write thread
     if ((readContext.bError == false) && (readContext.bFinished == true)
