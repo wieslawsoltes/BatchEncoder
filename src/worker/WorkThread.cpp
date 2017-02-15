@@ -241,7 +241,6 @@ bool ReadLoop(CPipeContext* pContext)
     pContext->bError = false;
     pContext->bFinished = false;
 
-    // open existing source file with read-only flag
     hFile = ::CreateFile(pContext->szFileName,
         GENERIC_READ,
         FILE_SHARE_READ,
@@ -265,22 +264,18 @@ bool ReadLoop(CPipeContext* pContext)
         return false;
     }
 
-    // read/write loop
     do
     {
-        // read data from source file
         bRes = ::ReadFile(hFile, pReadBuff, 4096, &dwReadBytes, 0);
         if ((bRes == FALSE) || (dwReadBytes == 0))
             break;
 
         ::Sleep(0);
 
-        // write data to write pipe
         bRes = ::WriteFile(pContext->hPipe, pReadBuff, dwReadBytes, &dwWriteBytes, 0);
         if ((bRes == FALSE) || (dwWriteBytes == 0) || (dwReadBytes != dwWriteBytes))
             break;
 
-        // count read/write bytes
         nTotalBytesRead += dwReadBytes;
         nProgress = (int)((nTotalBytesRead * 100) / nFileSize);
 
@@ -294,13 +289,9 @@ bool ReadLoop(CPipeContext* pContext)
             break;
     } while (bRes != FALSE);
 
-    // clean up memory
     ::CloseHandle(hFile);
-
-    // close write pipe to allow write thread terminate reading
     ::CloseHandle(pContext->hPipe);
 
-    // check if all data was processed
     if (nTotalBytesRead != nFileSize)
     {
         pContext->bError = true;
@@ -327,7 +318,6 @@ bool WriteLoop(CPipeContext* pContext)
     pContext->bError = false;
     pContext->bFinished = false;
 
-    // open existing source file with read-only flag
     hFile = ::CreateFile(pContext->szFileName,
         GENERIC_READ | GENERIC_WRITE,
         0,
@@ -342,30 +332,24 @@ bool WriteLoop(CPipeContext* pContext)
         return false;
     }
 
-    // read/write loop
     do
     {
         ::Sleep(0);
 
-        // read data from source pipe
         bRes = ::ReadFile(pContext->hPipe, pReadBuff, 4096, &dwReadBytes, 0);
         if ((bRes == FALSE) || (dwReadBytes == 0))
             break;
 
-        // write data to file
         bRes = ::WriteFile(hFile, pReadBuff, dwReadBytes, &dwWriteBytes, 0);
         if ((bRes == FALSE) || (dwWriteBytes == 0) || (dwReadBytes != dwWriteBytes))
             break;
 
-        // count read/write bytes
         nTotalBytesWrite += dwReadBytes;
 
-        // handle user Stop
         if (pContext->pWorkerContext->bRunning == false)
             break;
     } while (bRes != FALSE);
 
-    // clean up memory
     ::CloseHandle(hFile);
 
     pContext->bError = false;
