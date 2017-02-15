@@ -365,9 +365,18 @@ bool WriteLoop(CPipeContext* pContext)
 
     ::CloseHandle(hFile);
 
-    pContext->bError = false;
-    pContext->bFinished = true;
-    return true;
+    if (nTotalBytesWrite <= 0)
+    {
+        pContext->bError = true;
+        pContext->bFinished = true;
+        return false;
+    }
+    else
+    {
+        pContext->bError = false;
+        pContext->bFinished = true;
+        return true;
+    }
 }
 
 DWORD WINAPI ReadThread(LPVOID lpParam)
