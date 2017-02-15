@@ -300,10 +300,12 @@ bool ReadLoop(CPipeContext* pContext)
         pContext->bFinished = true;
         return false;
     }
-
-    pContext->bError = false;
-    pContext->bFinished = true;
-    return true;
+    else
+    {
+        pContext->bError = false;
+        pContext->bFinished = true;
+        return true;
+    }
 }
 
 bool WriteLoop(CPipeContext* pContext)
