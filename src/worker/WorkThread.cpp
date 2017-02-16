@@ -563,9 +563,6 @@ bool ConvertFileUsingPipes(CFileContext* pContext)
             // close read thread handle
             ::CloseHandle(hReadThread);
 
-            // wait for process to finish
-            //::WaitForSingleObject(processContext.pInfo.hProcess, INFINITE);
-
             // check for result from read thread
             if ((readContext.bError == false) && (readContext.bFinished == true))
                 nProgress = 100;
@@ -622,9 +619,6 @@ bool ConvertFileUsingPipes(CFileContext* pContext)
                 // close read thread handle
                 Stdout.CloseRead();
 
-                // wait for process to finish
-                //::WaitForSingleObject(processContext.pInfo.hProcess, INFINITE);
-
                 // wait for write thread to finish
                 ::WaitForSingleObject(hWriteThread, INFINITE);
 
@@ -641,9 +635,6 @@ bool ConvertFileUsingPipes(CFileContext* pContext)
         }
         else
         {
-            // wait for process to finish
-            //::WaitForSingleObject(processContext.pInfo.hProcess, INFINITE);
-
             // wait for write thread to finish
             ::WaitForSingleObject(hWriteThread, INFINITE);
 
@@ -875,9 +866,6 @@ bool ConvertFileUsingOnlyPipes(CFileContext* pDecoderContext, CFileContext* pEnc
     else
     {
         Stdout.CloseRead();
-
-        // wait for encoder process to finish
-        //::WaitForSingleObject(processContextEncoder.pInfo.hProcess, INFINITE);
 
         // wait for write thread to finish
         ::WaitForSingleObject(hWriteThread, INFINITE);
