@@ -642,7 +642,7 @@ bool ConvertFileUsingPipes(CFileContext* pContext)
         else
         {
             // wait for process to finish
-            ::WaitForSingleObject(processContext.pInfo.hProcess, INFINITE);
+            //::WaitForSingleObject(processContext.pInfo.hProcess, INFINITE);
 
             // wait for write thread to finish
             ::WaitForSingleObject(hWriteThread, INFINITE);
