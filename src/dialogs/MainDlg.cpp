@@ -2115,43 +2115,46 @@ void CMainDlg::UpdateFormatAndPreset()
 {
     int nFormat = this->m_CmbFormat.GetCurSel();
     int nPreset = this->m_CmbPresets.GetCurSel();
-    CFormat& format = m_Config.m_Formats.GetData(nFormat);
-    CPreset& preset = format.m_Presets.GetData(nPreset);
-    int nCount = m_LstInputItems.GetItemCount();
-    if (nCount > 0)
+    if ((nFormat >= 0) && (nPreset >= 0))
     {
-        int nSelected = 0;
-        for (int i = 0; i < nCount; i++)
+        CFormat& format = m_Config.m_Formats.GetData(nFormat);
+        CPreset& preset = format.m_Presets.GetData(nPreset);
+        int nCount = m_LstInputItems.GetItemCount();
+        if (nCount > 0)
         {
-            if (m_LstInputItems.GetItemState(i, LVIS_SELECTED) == LVIS_SELECTED)
-            {
-                CItem& item = m_Config.m_Items.GetData(i);
-                item.szFormatId = format.szId;
-                item.nPreset = nPreset;
-
-                this->m_LstInputItems.SetItemText(i, ITEM_COLUMN_OUTPUT, format.szId);
-
-                CString szPreset;
-                szPreset.Format(_T("%d"), nPreset);
-                this->m_LstInputItems.SetItemText(i, ITEM_COLUMN_PRESET, szPreset);
-
-                nSelected++;
-            }
-        }
-
-        if (nSelected == 0)
-        {
+            int nSelected = 0;
             for (int i = 0; i < nCount; i++)
             {
-                CItem& item = m_Config.m_Items.GetData(i);
-                item.szFormatId = format.szId;
-                item.nPreset = nPreset;
+                if (m_LstInputItems.GetItemState(i, LVIS_SELECTED) == LVIS_SELECTED)
+                {
+                    CItem& item = m_Config.m_Items.GetData(i);
+                    item.szFormatId = format.szId;
+                    item.nPreset = nPreset;
 
-                this->m_LstInputItems.SetItemText(i, ITEM_COLUMN_OUTPUT, format.szId);
+                    this->m_LstInputItems.SetItemText(i, ITEM_COLUMN_OUTPUT, format.szId);
 
-                CString szPreset;
-                szPreset.Format(_T("%d"), nPreset);
-                this->m_LstInputItems.SetItemText(i, ITEM_COLUMN_PRESET, szPreset);
+                    CString szPreset;
+                    szPreset.Format(_T("%d"), nPreset);
+                    this->m_LstInputItems.SetItemText(i, ITEM_COLUMN_PRESET, szPreset);
+
+                    nSelected++;
+                }
+            }
+
+            if (nSelected == 0)
+            {
+                for (int i = 0; i < nCount; i++)
+                {
+                    CItem& item = m_Config.m_Items.GetData(i);
+                    item.szFormatId = format.szId;
+                    item.nPreset = nPreset;
+
+                    this->m_LstInputItems.SetItemText(i, ITEM_COLUMN_OUTPUT, format.szId);
+
+                    CString szPreset;
+                    szPreset.Format(_T("%d"), nPreset);
+                    this->m_LstInputItems.SetItemText(i, ITEM_COLUMN_PRESET, szPreset);
+                }
             }
         }
     }
