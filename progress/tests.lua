@@ -250,3 +250,37 @@ end
 
 p = GetProgress("progress:  67% | q: 368.9 | bw: 60.0 | bitrate: 448.0 kbps ")
 print(p)
+
+-- GetProgress_LaEnc
+
+function GetProgress(s) 
+  r = string.match(s, '%*+');
+  if r == nil then return "-1";
+  else return (string.len(r) * 100) / 24; end;
+end
+
+p = GetProgress("Encoding 01 Beach House - Myth.wav [........................] (42.4%)")
+print(p)
+
+p = GetProgress("Encoding 01 Beach House - Myth.wav [********................] (52.5%)")
+print(p)
+
+p = GetProgress("Encoding 01 Beach House - Myth.wav [************************]")
+print(p)
+
+-- GetProgress_LaDec
+
+function GetProgress(s) 
+  r = string.match(s, '%*+');
+  if r == nil then return "-1";
+  else return (string.len(r) * 100) / 24; end;
+end
+
+p = GetProgress("Decoding 01 Beach House - Myth.la [........................]")
+print(p)
+
+p = GetProgress("Decoding 01 Beach House - Myth.la [**************..........]")
+print(p)
+
+p = GetProgress("Decoding 01 Beach House - Myth.la [************************]")
+print(p)

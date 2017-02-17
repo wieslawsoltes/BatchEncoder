@@ -1,3 +1,5 @@
 function GetProgress(s) 
-  return "-1";
+  r = string.match(s, '%*+');
+  if r == nil then return "-1";
+  else return (string.len(r) * 100) / 24; end;
 end

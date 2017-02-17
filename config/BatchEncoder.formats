@@ -106,7 +106,7 @@
             <Preset name="Compression Level 8 (Best)" options="-8"/>
         </Presets>
     </Format>
-    <Format id="LA_LA" name="LA (Lossless Audio)" template="$EXE $OPTIONS -overwrite ignore.wav $OUTFILE -cin" input="true" output="false" function="- none -" path="la.exe" type="0" formats="WAV" extension="LA" default="0">
+    <Format id="LA_LA" name="LA (Lossless Audio)" template="$EXE $OPTIONS -overwrite ignore.wav $OUTFILE -cin" input="true" output="false" function="GetProgress_LaEnc.progress" path="la.exe" type="0" formats="WAV" extension="LA" default="0">
         <Presets>
             <Preset name="Normal Mode" options=""/>
             <Preset name="High Mode" options="-high"/>
@@ -612,7 +612,7 @@
             <Preset name="Default" options=""/>
         </Presets>
     </Format>
-    <Format id="LA_LA_WAV" name="Decode LA to WAV" template="$EXE $OPTIONS -overwrite ignore.la $OUTFILE -cin" input="true" output="false" function="- none -" path="la.exe" type="1" formats="LA" extension="WAV" default="0">
+    <Format id="LA_LA_WAV" name="Decode LA to WAV" template="$EXE $OPTIONS -overwrite ignore.la $OUTFILE -cin" input="true" output="false" function="GetProgress_LaDec.progress" path="la.exe" type="1" formats="LA" extension="WAV" default="0">
         <Presets>
             <Preset name="Default" options=""/>
         </Presets>
