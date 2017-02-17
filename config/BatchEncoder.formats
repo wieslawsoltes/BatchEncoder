@@ -523,6 +523,12 @@
             <Preset name="ALAC encoding mode" options="--alac"/>
         </Presets>
     </Format>
+    <Format id="LA_LA" name="LA (Lossless Audio)" template="$EXE $OPTIONS -overwrite $INFILE $OUTFILE -cin" input="true" output="false" function="- none -" path="la.exe" type="0" formats="WAV" extension="LA" default="0">
+        <Presets>
+            <Preset name="Normal Mode" options=""/>
+            <Preset name="High Mode" options="-high"/>
+        </Presets>
+    </Format>
     <Format id="MAC_APE" name="APE (Monkey&apos;s Audio)" template="$EXE $INFILE $OUTFILE $OPTIONS" input="false" output="false" function="GetProgress_MacEnc.progress" path="mac.exe" type="0" formats="WAV" extension="APE" default="1">
         <Presets>
             <Preset name="Fast Compression Level" options="-c1000"/>
@@ -632,6 +638,11 @@
         </Presets>
     </Format>
     <Format id="WVUNPACK_WV_WAV" name="Decode WV to WAV" template="$EXE -y $INFILE $OUTFILE" input="false" output="false" function="GetProgress_WvUnpackDec.progress" path="wvunpack.exe" type="1" formats="WV" extension="WAV" default="0">
+        <Presets>
+            <Preset name="Default" options=""/>
+        </Presets>
+    </Format>
+    <Format id="LA_LA_WAV" name="Decode LA to WAV" template="$EXE $OPTIONS -overwrite $INFILE $OUTFILE -cinout" input="true" output="true" function="- none -" path="la.exe" type="1" formats="LA" extension="WAV" default="0">
         <Presets>
             <Preset name="Default" options=""/>
         </Presets>
