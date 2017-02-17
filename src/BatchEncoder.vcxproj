@@ -288,7 +288,6 @@ copy /Y ..\lang\*.language $(OutDir)</Command>
     <ClInclude Include="StdAfx.h" />
     <ClInclude Include="MainApp.h" />
     <ClInclude Include="Strings.h" />
-    <ClInclude Include="worker\LuaProgess.h" />
     <ClInclude Include="XmlConfiguration.h" />
     <ClInclude Include="configuration\Format.h" />
     <ClInclude Include="configuration\FormatsList.h" />
@@ -320,9 +319,11 @@ copy /Y ..\lang\*.language $(OutDir)</Command>
     <ClInclude Include="utilities\Utilities.h" />
     <ClInclude Include="worker\FileContext.h" />
     <ClInclude Include="worker\ItemContext.h" />
+    <ClInclude Include="worker\LuaProgess.h" />
     <ClInclude Include="worker\Pipe.h" />
     <ClInclude Include="worker\PipeContext.h" />
     <ClInclude Include="worker\ProcessContext.h" />
+    <ClInclude Include="worker\Synchronize.h" />
     <ClInclude Include="worker\WorkerContext.h" />
     <ClInclude Include="worker\WorkThread.h" />
     <ClInclude Include="contexts\ProgressWorkerContext.h" />

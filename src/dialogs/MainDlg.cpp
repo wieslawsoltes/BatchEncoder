@@ -2478,7 +2478,7 @@ void CMainDlg::TraceConvert()
     }
 
     pTraceWorkerContext->nThreadCount = 1;
-    pTraceWorkerContext->hMutex = NULL;
+    pTraceWorkerContext->pSync = NULL;
     pTraceWorkerContext->hConvertThread = NULL;
     pTraceWorkerContext->dwConvertThreadID = NULL;
 

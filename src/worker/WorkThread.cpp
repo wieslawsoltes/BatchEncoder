@@ -1162,22 +1162,16 @@ bool ConvertLoop(CWorkerContext* pWorkerContext)
         try
         {
             CItemContext* pContext = NULL;
-            DWORD dwWaitResult = ::WaitForSingleObject(pWorkerContext->hMutex, INFINITE);
-            switch (dwWaitResult)
-            {
-            case WAIT_OBJECT_0:
+            if (pWorkerContext->pSync->Wait() == true)
             {
                 if (!pWorkerContext->pQueue->IsEmpty())
-                {
                     pContext = (CItemContext*)pWorkerContext->pQueue->RemoveHead();
-                }
-                if (!::ReleaseMutex(pWorkerContext->hMutex))
-                    return false;
             }
-            break;
-            case WAIT_ABANDONED:
+            else
                 return false;
-            }
+
+            if (pWorkerContext->pSync->Release() == false)
+                return false;
 
             if (pContext != NULL)
             {
@@ -1272,7 +1266,8 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
             pWorkerContext->nThreadCount = 1;
     }
 
-    pWorkerContext->hMutex = ::CreateMutex(NULL, FALSE, NULL);
+    pWorkerContext->pSync = new CSynchronize();
+
     pWorkerContext->hConvertThread = new HANDLE[pWorkerContext->nThreadCount];
     pWorkerContext->dwConvertThreadID = new DWORD[pWorkerContext->nThreadCount];
 
@@ -1312,7 +1307,7 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
     delete pWorkerContext->nPreviousProgess;
     delete[] pItemsContext;
 
-    ::CloseHandle(pWorkerContext->hMutex);
+    delete pWorkerContext->pSync;
 
     pWorkerContext->Done();
     pWorkerContext->bDone = true;

@@ -3,6 +3,7 @@
 
 #pragma once
 
+#include "Synchronize.h"
 #include "configuration\Configuration.h"
 
 class CWorkerContext
@@ -15,8 +16,8 @@ public:
     HANDLE hThread;
     DWORD dwThreadID;
 public:
+    CSynchronize *pSync;
     volatile int nThreadCount;
-    HANDLE hMutex;
     HANDLE* hConvertThread;
     DWORD* dwConvertThreadID;
 public:

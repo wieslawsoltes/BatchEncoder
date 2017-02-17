@@ -221,7 +221,7 @@
     <ClInclude Include="utilities\Utilities.h">
       <Filter>Header Files\Utilities</Filter>
     </ClInclude>
-    <ClInclude Include="worker\WorkerContext.h">
+    <ClInclude Include="worker\LuaProgess.h">
       <Filter>Header Files\Worker</Filter>
     </ClInclude>
     <ClInclude Include="worker\Pipe.h">
@@ -239,6 +239,12 @@
     <ClInclude Include="worker\ItemContext.h">
       <Filter>Header Files\Worker</Filter>
     </ClInclude>
+    <ClInclude Include="worker\Synchronize.h">
+      <Filter>Header Files\Worker</Filter>
+    </ClInclude>
+    <ClInclude Include="worker\WorkerContext.h">
+      <Filter>Header Files\Worker</Filter>
+    </ClInclude>
     <ClInclude Include="worker\WorkThread.h">
       <Filter>Header Files\Worker</Filter>
     </ClInclude>
@@ -247,9 +253,6 @@
     </ClInclude>
     <ClInclude Include="contexts\ProgressWorkerContext.h">
       <Filter>Header Files\Contexts</Filter>
-    </ClInclude>
-    <ClInclude Include="worker\LuaProgess.h">
-      <Filter>Header Files\Worker</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
