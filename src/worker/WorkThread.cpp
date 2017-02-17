@@ -1268,8 +1268,8 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
 
     pWorkerContext->pSync = new CSynchronize();
 
-    pWorkerContext->hConvertThread = new HANDLE[pWorkerContext->nThreadCount];
-    pWorkerContext->dwConvertThreadID = new DWORD[pWorkerContext->nThreadCount];
+    HANDLE* hConvertThread = new HANDLE[pWorkerContext->nThreadCount];
+    DWORD* dwConvertThreadID = new DWORD[pWorkerContext->nThreadCount];
 
     pWorkerContext->Init();
 
@@ -1285,29 +1285,28 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
         // create worker threads
         for (int i = 0; i < pWorkerContext->nThreadCount; i++)
         {
-            pWorkerContext->dwConvertThreadID[i] = i;
-            pWorkerContext->hConvertThread[i] = ::CreateThread(NULL, 0, ConvertThread, pWorkerContext, CREATE_SUSPENDED, &pWorkerContext->dwConvertThreadID[i]);
-            if (pWorkerContext->hConvertThread[i] == NULL)
+            dwConvertThreadID[i] = i;
+            hConvertThread[i] = ::CreateThread(NULL, 0, ConvertThread, pWorkerContext, CREATE_SUSPENDED, &dwConvertThreadID[i]);
+            if (hConvertThread[i] == NULL)
                 break;
-            ::ResumeThread(pWorkerContext->hConvertThread[i]);
+            ::ResumeThread(hConvertThread[i]);
         }
 
         // wait for all workers to finish
-        ::WaitForMultipleObjects(pWorkerContext->nThreadCount, pWorkerContext->hConvertThread, TRUE, INFINITE);
+        ::WaitForMultipleObjects(pWorkerContext->nThreadCount, hConvertThread, TRUE, INFINITE);
 
         // close convert thread handles
         for (int i = 0; i < pWorkerContext->nThreadCount; i++)
-            ::CloseHandle(pWorkerContext->hConvertThread[i]);
+            ::CloseHandle(hConvertThread[i]);
     }
 
-    delete pWorkerContext->hConvertThread;
-    delete pWorkerContext->dwConvertThreadID;
+    delete hConvertThread;
+    delete dwConvertThreadID;
+    delete pWorkerContext->pSync;
     delete pWorkerContext->pQueue;
     delete pWorkerContext->nProgess;
     delete pWorkerContext->nPreviousProgess;
     delete[] pItemsContext;
-
-    delete pWorkerContext->pSync;
 
     pWorkerContext->Done();
     pWorkerContext->bDone = true;

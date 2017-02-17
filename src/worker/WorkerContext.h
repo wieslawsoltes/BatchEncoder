@@ -18,8 +18,6 @@ public:
 public:
     CSynchronize *pSync;
     volatile int nThreadCount;
-    HANDLE* hConvertThread;
-    DWORD* dwConvertThreadID;
 public:
     volatile int nTotalFiles;
     volatile int nProcessedFiles;
