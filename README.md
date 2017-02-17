@@ -270,7 +270,7 @@ Sometimes you will not get nice progress during conversion, nonetheless you will
 
 ### Progress function format
 
-Progress function are simple [Lua](https://www.lua.org/manual/5.1/) scripts with defined `GetProgress` function. The `progress` file extension is used instead of `lua`.
+Progress function are simple [Lua](http://www.lua.org/manual/5.3/) scripts with defined `GetProgress` function. The `progress` file extension is used instead of `lua`.
 
 The progress function signature:
 
