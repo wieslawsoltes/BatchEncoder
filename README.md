@@ -118,7 +118,7 @@ adds input and output file paths. For specific options for each format use help 
 | OGGDEC       | OGG        | 1.10.1          | oggdec.exe        | no       | no       | GetProgress_OggDec.progress       |
 | FLAC         | FLAC       | 1.3.2           | flac.exe          | yes      | no       | GetProgress_FlacDec.progress      |
 | WVUNPACK     | WV         | 5.0.0           | wvunpack.exe      | no       | no       | GetProgress_WvUnpackDec.progress  |
-| LA           | LA         | 0.4b            | la.exe            | yes      | yes      | - none -                          |
+| LA           | LA         | 0.4b            | la.exe            | yes      | no       | - none -                          |
 | MAC          | APE        | 4.18            | mac.exe           | no       | no       | GetProgress_MacDec.progress       |
 | MAC          | MAC        | 4.18            | mac.exe           | no       | no       | GetProgress_MacDec.progress       |
 | OFR          | OFR        | 5.100           | ofr.exe           | yes      | no       | GetProgress_OfrDec.progress       |
