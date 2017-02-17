@@ -181,7 +181,7 @@
     <String key="0x00190001" value="오류" />
     <String key="0x00190002" value="오류" />
     <String key="0x00190003" value="%d / %d (%d 완료, %d %s) 항목 처리 중" />
-    <String key="0x00190004" value="%s에서 %d / %d (%d 완료, %d %s) 처리됨" />
+    <String key="0x00190004" value="에서 %d / %d (%d 완료, %d %s) 처리됨 %s" />
 
     <!-- Strings Main Dialog -->
 
