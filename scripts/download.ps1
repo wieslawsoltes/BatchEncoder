@@ -40,6 +40,8 @@ $tools =
     ( "http://www.wavpack.com/wavpack-5.0.0-x64.zip", "wavpack-5.0.0-x64.zip", "wavpack-5.0.0-x64" ),
     # Monkey’s Audio
     ( "http://monkeysaudio.com/files/MAC_418.exe", "MAC_418.exe", "MAC_418" ),
+    # La
+    ( "http://www.lossless-audio.com/La04b.exe", "La04b.exe", "La04b" ),
     # OptimFROG
     ( "http://losslessaudio.org/Downloads/A1C0/5100/Win/OptimFROG_Win_x86_5100.zip", "OptimFROG_Win_x86_5100.zip", "OptimFROG_Win_x86_5100" ),
     ( "http://losslessaudio.org/Downloads/A1C0/5100/Win/OptimFROG_Win_x64_5100.zip", "OptimFROG_Win_x64_5100.zip", "OptimFROG_Win_x64_5100" ),
