@@ -49,53 +49,65 @@ public:
             &this->pInfo);
         return bResult == TRUE;
     }
+    bool Wait()
+    {
+        DWORD dwRet = ::WaitForSingleObject(this->pInfo.hProcess, INFINITE);
+        switch (dwRet)
+        {
+        case WAIT_FAILED:
+            return false;
+            break;
+        case WAIT_ABANDONED:
+            break;
+        case WAIT_OBJECT_0:
+            break;
+        case WAIT_TIMEOUT:
+            return false;
+            break;
+        };
+        return true;
+    }
+    bool Wait(int milliseconds)
+    {
+        DWORD dwRet = ::WaitForSingleObject(this->pInfo.hProcess, (DWORD)milliseconds);
+        switch (dwRet)
+        {
+        case WAIT_FAILED:
+            return false;
+            break;
+        case WAIT_ABANDONED:
+            break;
+        case WAIT_OBJECT_0:
+            break;
+        case WAIT_TIMEOUT:
+            return false;
+            break;
+        };
+        return true;
+
+    }
+    bool Terminate(int code = 0)
+    {
+        return ::TerminateProcess(this->pInfo.hProcess, (DWORD)code) == TRUE;
+    }
+    bool Close()
+    {
+        BOOL bCloseProcess = ::CloseHandle(this->pInfo.hProcess);
+        BOOL bCloseThread = ::CloseHandle(this->pInfo.hThread);
+        return (bCloseProcess == TRUE) && (bCloseThread == TRUE);
+    }
     void Stop(bool bWait)
     {
-        // terminate console process if there was an error
-        HANDLE hProcess = ::OpenProcess(PROCESS_ALL_ACCESS, TRUE, this->pInfo.dwProcessId); // PROCESS_TERMINATE
-        if (hProcess != NULL)
+        if (bWait == true)
         {
-            if (bWait == true)
-            {
-                // when properly finishing we need to wait
-                DWORD dwRet = ::WaitForSingleObject(hProcess, INFINITE);
-                switch (dwRet)
-                {
-                case WAIT_FAILED:
-                    // failed, probably process has finished, but error could be to
-                    ::TerminateProcess(hProcess, 0);
-                    break;
-                case WAIT_ABANDONED:
-                    // skip, only for mutex objects
-                    break;
-                case WAIT_OBJECT_0:
-                    // skip, object is signaled, process has terminated
-                    break;
-                case WAIT_TIMEOUT:
-                    // time-out interval elapsed
-                    // object's state is non-signaled
-                    // used when user had pressed stop button
-                    ::TerminateProcess(hProcess, 0);
-                    break;
-                };
-            }
-            else
-            {
-                // don't wait for process to terminate because
-                // this code is only executed when user pressed Stop
-                ::TerminateProcess(hProcess, 0);
-
-                // wait for process to terminate = 5 seconds max
-                // this is because process must release file handles
-                // and we need to delete it if there was an error
-                ::WaitForSingleObject(hProcess, 5000);
-            }
-
-            // release process handle
-            ::CloseHandle(hProcess);
+            if (this->Wait() == false)
+                this->Terminate();
         }
-
-        ::CloseHandle(this->pInfo.hProcess);
-        ::CloseHandle(this->pInfo.hThread);
+        else
+        {
+            this->Terminate();
+            this->Wait(5000);
+        }
+        this->Close();
     }
 };
