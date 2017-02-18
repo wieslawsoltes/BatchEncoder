@@ -122,7 +122,7 @@ adds input and output file paths. For specific options for each format use help 
 | MAC          | APE        | 4.18            | mac.exe           | no       | no       | GetProgress_MacDec.progress       |
 | MAC          | MAC        | 4.18            | mac.exe           | no       | no       | GetProgress_MacDec.progress       |
 | OFR          | OFR        | 5.100           | ofr.exe           | yes      | no       | GetProgress_OfrDec.progress       |
-| TTA          | TTA        | 2.3             | tta.exe           | yes      | yes      | GetProgress_TtaDec.progress       |
+| TTA          | TTA        | 2.3             | tta.exe           | no       | yes      | GetProgress_TtaDec.progress       |
 | TAKC         | TAK        | 2.3.0           | takc.exe          | no       | yes      | - none -                          |
 | FFMPEG       | AC3        | 3.2.2           | ffmpeg.exe        | yes      | yes      | - none -                          |
 | FFMPEG       | EAC3       | 3.2.2           | ffmpeg.exe        | yes      | yes      | - none -                          |

@@ -687,7 +687,7 @@
             <Preset name="Default" options=""/>
         </Presets>
     </Format>
-    <Format id="TTA_TTA_WAV" name="Decode TTA to WAV" template="$EXE -d $OPTIONS $INFILE $OUTFILE" input="true" output="true" function="GetProgress_TtaDec.progress" path="tta.exe" type="1" formats="TTA" extension="WAV" default="0">
+    <Format id="TTA_TTA_WAV" name="Decode TTA to WAV" template="$EXE -d $OPTIONS $INFILE $OUTFILE" input="false" output="true" function="GetProgress_TtaDec.progress" path="tta.exe" type="1" formats="TTA" extension="WAV" default="0">
         <Presets>
             <Preset name="Default" options=""/>
         </Presets>
