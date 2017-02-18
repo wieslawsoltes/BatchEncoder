@@ -126,6 +126,7 @@
       <TargetMachine>MachineX86</TargetMachine>
       <LinkTimeCodeGeneration>Default</LinkTimeCodeGeneration>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <AdditionalDependencies>Rpcrt4.lib</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>copy /-Y ..\config\*.options $(OutDir)
@@ -164,6 +165,7 @@ copy /Y ..\lang\*.language $(OutDir)</Command>
       <TargetMachine>MachineX64</TargetMachine>
       <LinkTimeCodeGeneration>Default</LinkTimeCodeGeneration>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <AdditionalDependencies>Rpcrt4.lib</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>copy /-Y ..\config\*.options $(OutDir)
@@ -203,6 +205,7 @@ copy /Y ..\lang\*.language $(OutDir)</Command>
       <TargetMachine>MachineX86</TargetMachine>
       <LinkTimeCodeGeneration>Default</LinkTimeCodeGeneration>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <AdditionalDependencies>Rpcrt4.lib</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>copy /-Y ..\config\*.options $(OutDir)
@@ -243,6 +246,7 @@ copy /Y ..\lang\*.language $(OutDir)</Command>
       <TargetMachine>MachineX64</TargetMachine>
       <LinkTimeCodeGeneration>Default</LinkTimeCodeGeneration>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <AdditionalDependencies>Rpcrt4.lib</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>copy /-Y ..\config\*.options $(OutDir)

@@ -43,3 +43,5 @@ void GetFullPathName(CString &szFilePath);
 BOOL MakeFullPath(CString szPath);
 
 bool FileExists(CString szPath);
+
+CString GenerateUuidString();

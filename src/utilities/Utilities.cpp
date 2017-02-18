@@ -4,6 +4,7 @@
 #include "StdAfx.h"
 #include "..\MainApp.h"
 #include "Utilities.h"
+#include <Rpc.h>
 
 DWORD CountSetBits(ULONG_PTR bitMask)
 {
@@ -293,4 +294,21 @@ bool FileExists(CString szPath)
     bool bInvalidHandle = hFind == INVALID_HANDLE_VALUE;
     ::FindClose(hFind);
     return bInvalidHandle == false;
+}
+
+CString GenerateUuidString()
+{
+    CString strKey;
+    UUID uuid;
+    if (UuidCreate(&uuid) == RPC_S_OK)
+    {
+        RPC_WSTR szUuid;
+        if (UuidToString(&uuid, &szUuid) == RPC_S_OK)
+        {
+            strKey = (LPTSTR)szUuid;
+            strKey.MakeUpper();
+            RpcStringFree(&szUuid);
+        }
+    }
+    return strKey;
 }
