@@ -45,13 +45,42 @@ public:
             return false;
         return true;
     }
-    void Wait()
+    bool Wait()
     {
-        ::WaitForSingleObject(hThread, INFINITE);
+        DWORD dwRet = ::WaitForSingleObject(hThread, INFINITE);
+        switch (dwRet)
+        {
+        case WAIT_FAILED:
+            return false;
+            break;
+        case WAIT_ABANDONED:
+            break;
+        case WAIT_OBJECT_0:
+            break;
+        case WAIT_TIMEOUT:
+            return false;
+            break;
+        };
+        return true;
     }
-    void Wait(int milliseconds)
+    bool Wait(int milliseconds)
     {
-        ::WaitForSingleObject(hThread, (DWORD)milliseconds);
+        DWORD dwRet = ::WaitForSingleObject(hThread, (DWORD)milliseconds);
+        switch (dwRet)
+        {
+        case WAIT_FAILED:
+            return false;
+            break;
+        case WAIT_ABANDONED:
+            break;
+        case WAIT_OBJECT_0:
+            break;
+        case WAIT_TIMEOUT:
+            return false;
+            break;
+        };
+        return true;
+
     }
     bool Resume()
     {
