@@ -970,11 +970,10 @@ bool ConvertItem(CItemContext* pContext)
         }
 
         szDecInputFile = szEncInputFile;
-
-        CString szDecOutPath = ::GetFilePath(szEncOutputFile);
-        TCHAR szTempFileName[MAX_PATH];
-        ::GetTempFileName(szDecOutPath, _T(""), 0, szTempFileName);
-        szDecOutputFile.Format(_T("%s.%s"), szTempFileName, CString(pDecFormat->szOutputExtension).MakeLower());
+        szDecOutputFile.Format(_T("%s%s.%s"), 
+            ::GetFilePath(szEncOutputFile),
+            GenerateUuidString(), 
+            CString(pDecFormat->szOutputExtension).MakeLower());
     }
 
     CFileContext decoderContext;
