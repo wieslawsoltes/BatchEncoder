@@ -390,9 +390,9 @@ int ReadThread(void *param)
     return FALSE;
 }
 
-DWORD WINAPI WriteThread(LPVOID lpParam)
+int WriteThread(void *param)
 {
-    CPipeContext* pContext = (CPipeContext*)lpParam;
+    CPipeContext* pContext = (CPipeContext*)param;
     if (pContext != NULL)
     {
         if (WriteLoop(pContext) == true)
@@ -418,8 +418,7 @@ bool ConvertFileUsingPipes(CFileContext* pContext)
     CPipeContext readContext;
     CPipeContext writeContext;
     CThread readThread;
-    DWORD dwWriteThreadID = 0L;
-    HANDLE hWriteThread = NULL;
+    CThread writeThread;
     int nProgress = 0;
     CTimeCount timer;
 
@@ -578,9 +577,7 @@ bool ConvertFileUsingPipes(CFileContext* pContext)
         writeContext.hPipe = Stdout.hRead;
         writeContext.nIndex = pContext->nItemId;
 
-        dwWriteThreadID = 0L;
-        hWriteThread = ::CreateThread(NULL, 0, WriteThread, (LPVOID)&writeContext, 0, &dwWriteThreadID);
-        if (hWriteThread == NULL)
+        if (writeThread.Start(WriteThread, &writeContext) == false)
         {
             timer.Stop();
 
@@ -608,8 +605,8 @@ bool ConvertFileUsingPipes(CFileContext* pContext)
                 Stdout.CloseRead();
 
                 // read thread failed so terminate write thread
-                ::TerminateThread(hWriteThread, FALSE);
-                ::CloseHandle(hWriteThread);
+                writeThread.Terminate();
+                writeThread.Close();
             }
             else
             {
@@ -617,10 +614,10 @@ bool ConvertFileUsingPipes(CFileContext* pContext)
                 Stdout.CloseRead();
 
                 // wait for write thread to finish
-                ::WaitForSingleObject(hWriteThread, INFINITE);
+                writeThread.Wait();
 
                 // close write thread handle
-                ::CloseHandle(hWriteThread);
+                writeThread.Close();
             }
 
             // check for result from read thread
@@ -633,12 +630,12 @@ bool ConvertFileUsingPipes(CFileContext* pContext)
         else
         {
             // wait for write thread to finish
-            ::WaitForSingleObject(hWriteThread, INFINITE);
+            writeThread.Wait();
 
             Stdout.CloseRead();
 
             // close read thread handle
-            ::CloseHandle(hWriteThread);
+            writeThread.Close();
 
             // check for result from write thread
             if ((writeContext.bError == false) && (writeContext.bFinished == true))
@@ -676,8 +673,7 @@ bool ConvertFileUsingOnlyPipes(CFileContext* pDecoderContext, CFileContext* pEnc
     CPipeContext readContext;
     CPipeContext writeContext;
     CThread readThread;
-    DWORD dwWriteThreadID = 0L;
-    HANDLE hWriteThread = NULL;
+    CThread writeThread;
     int nProgress = 0;
     CTimeCount timer;
 
@@ -827,9 +823,7 @@ bool ConvertFileUsingOnlyPipes(CFileContext* pDecoderContext, CFileContext* pEnc
     writeContext.hPipe = Stdout.hRead;
     writeContext.nIndex = pEncoderContext->nItemId;
 
-    dwWriteThreadID = 0L;
-    hWriteThread = ::CreateThread(NULL, 0, WriteThread, (LPVOID)&writeContext, 0, &dwWriteThreadID);
-    if (hWriteThread == NULL)
+    if (writeThread.Start(WriteThread, &writeContext) == false)
     {
         timer.Stop();
 
@@ -854,18 +848,18 @@ bool ConvertFileUsingOnlyPipes(CFileContext* pDecoderContext, CFileContext* pEnc
         Stdout.CloseRead();
 
         // read thread failed so terminate write thread
-        ::TerminateThread(hWriteThread, FALSE);
-        ::CloseHandle(hWriteThread);
+        writeThread.Terminate();
+        writeThread.Close();
     }
     else
     {
         Stdout.CloseRead();
 
         // wait for write thread to finish
-        ::WaitForSingleObject(hWriteThread, INFINITE);
+        writeThread.Wait();
 
         // close write thread handle
-        ::CloseHandle(hWriteThread);
+        writeThread.Close();
     }
 
     // check for result from read and write thread
