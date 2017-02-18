@@ -154,7 +154,7 @@ bool ConvertFileUsingConsole(CFileContext* pContext)
     }
 
     CProcess process;
-    CPipe Stderr(TRUE);
+    CPipe Stderr(true);
     int nProgress = 0;
     CTimeCount timer;
 
@@ -413,8 +413,8 @@ bool ConvertFileUsingPipes(CFileContext* pContext)
     }
 
     CProcess process;
-    CPipe Stdin(TRUE);
-    CPipe Stdout(TRUE);
+    CPipe Stdin(true);
+    CPipe Stdout(true);
     CPipeContext readContext;
     CPipeContext writeContext;
     CThread readThread;
@@ -667,9 +667,9 @@ bool ConvertFileUsingOnlyPipes(CFileContext* pDecoderContext, CFileContext* pEnc
     CWorkerContext *pWorkerContext = pDecoderContext->pWorkerContext;
     CProcess decoderProcess;
     CProcess encoderProcess;
-    CPipe Stdin(TRUE);
-    CPipe Stdout(TRUE);
-    CPipe Bridge(TRUE);
+    CPipe Stdin(true);
+    CPipe Stdout(true);
+    CPipe Bridge(true);
     CPipeContext readContext;
     CPipeContext writeContext;
     CThread readThread;

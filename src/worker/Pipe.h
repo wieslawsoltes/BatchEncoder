@@ -11,7 +11,7 @@ public:
     HANDLE hRead;
     HANDLE hWrite;
 public:
-    CPipe(BOOL bInherit)
+    CPipe(bool bInherit)
     {
         ZeroMemory(&this->secattr, sizeof(this->secattr));
         this->secattr.nLength = sizeof(this->secattr);
