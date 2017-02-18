@@ -115,6 +115,10 @@ void XmlConfiguration::GetOptions(tinyxml2::XMLElement *pOptionsElem, COptions &
     if (pOptionElem)
         m_Options.bHideConsoleWindow = ToBool(pOptionElem->GetText());
 
+    pOptionElem = pOptionsElem->FirstChildElement("TryToFindDecoder");
+    if (pOptionElem)
+        m_Options.bTryToFindDecoder = ToBool(pOptionElem->GetText());
+
     pOptionElem = pOptionsElem->FirstChildElement("ThreadCount");
     if (pOptionElem)
         m_Options.nThreadCount = ToInt(pOptionElem->GetText());
@@ -190,6 +194,10 @@ void XmlConfiguration::SetOptions(tinyxml2::XMLElement *pOptionsElem, COptions &
 
     pOptionElem = this->NewElement("HideConsoleWindow");
     pOptionElem->LinkEndChild(this->NewText(CUtf8String(ToCString(m_Options.bHideConsoleWindow)).m_Result));
+    pOptionsElem->LinkEndChild(pOptionElem);
+
+    pOptionElem = this->NewElement("TryToFindDecoder");
+    pOptionElem->LinkEndChild(this->NewText(CUtf8String(ToCString(m_Options.bTryToFindDecoder)).m_Result));
     pOptionsElem->LinkEndChild(pOptionElem);
 
     pOptionElem = this->NewElement("ThreadCount");

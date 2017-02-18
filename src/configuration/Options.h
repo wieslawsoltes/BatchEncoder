@@ -19,6 +19,7 @@ public:
     bool bDeleteOnErrors;
     bool bStopOnErrors;
     bool bHideConsoleWindow;
+    bool bTryToFindDecoder;
     int nThreadCount;
     CString szMainWindowResize;
     CString szFileListColumns;
@@ -56,6 +57,7 @@ public:
         this->bDeleteOnErrors = other.bDeleteOnErrors;
         this->bStopOnErrors = other.bStopOnErrors;
         this->bHideConsoleWindow = other.bHideConsoleWindow;
+        this->bTryToFindDecoder = other.bTryToFindDecoder;
         this->nThreadCount = other.nThreadCount;
         this->szMainWindowResize = other.szMainWindowResize;
         this->szFileListColumns = other.szFileListColumns;
@@ -79,6 +81,7 @@ public:
         this->bDeleteOnErrors = true;
         this->bStopOnErrors = false;
         this->bHideConsoleWindow = true;
+        this->bTryToFindDecoder = true;
         this->nThreadCount = 0;
         this->szMainWindowResize = _T("");
         this->szFileListColumns = _T("");

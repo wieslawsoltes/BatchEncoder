@@ -1794,7 +1794,28 @@ int CMainDlg::AddToItems(CString szPath)
 
     CString szFormatId = _T("");
     if (m_Config.m_Formats.GetSize() > 0)
-        szFormatId = m_Config.m_Formats.GetData(nFormat).szId;
+    {
+        if (m_Config.m_Options.bTryToFindDecoder == true)
+        {
+            int nDecoder = m_Config.m_Formats.GetDecoderByExtension(::GetFileExtension(szPath));
+            if (nDecoder == -1)
+            {
+                CFormat &format = m_Config.m_Formats.GetData(nFormat);
+                szFormatId = format.szId;
+            }
+            else
+            {
+                CFormat &format = m_Config.m_Formats.GetData(nDecoder);
+                szFormatId = format.szId;
+                nPreset = format.nDefaultPreset;
+            }
+        }
+        else
+        {
+            CFormat &format = m_Config.m_Formats.GetData(nFormat);
+            szFormatId = format.szId;
+        }
+    }
 
     WIN32_FIND_DATA w32FileData;
     HANDLE hFind;
