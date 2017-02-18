@@ -138,8 +138,8 @@
 
     <!-- Strings Work Thread -->
 
-    <String key="0x00110001" value="Error: can not load progress script." />
-    <String key="0x00110002" value="Error: can not find progress function." />
+    <String key="0x00110001" value="Error: no se pudo cargar el script de progreso." />
+    <String key="0x00110002" value="Error: no se pudo encontrar la función de progreso." />
     <String key="0x00110003" value="Error: la línea de la consola es demasiado larga para leer el buffer." />
 
     <String key="0x00120001" value="Error: formato incorrecto de la configuración pipe." />
