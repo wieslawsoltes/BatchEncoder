@@ -58,8 +58,7 @@ public:
             if (bWait == true)
             {
                 // when properly finishing we need to wait
-                // for process to terminate = 2 seconds max
-                DWORD dwRet = ::WaitForSingleObject(hProcess, 2000);
+                DWORD dwRet = ::WaitForSingleObject(hProcess, INFINITE);
                 switch (dwRet)
                 {
                 case WAIT_FAILED:
