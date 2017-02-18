@@ -25,8 +25,6 @@ public:
     volatile int nErrors;
 public:
     CObList* pQueue;
-    int* nProgess;
-    int* nPreviousProgess;
     volatile int nLastItemId;
 public:
     CWorkerContext(CConfiguration* pConfig)

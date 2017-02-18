@@ -1229,8 +1229,6 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
     pWorkerContext->nDoneWithoutError = 0;
     pWorkerContext->nErrors = 0;
     pWorkerContext->pQueue = new CObList(nItems);
-    pWorkerContext->nProgess = new int[nItems];
-    pWorkerContext->nPreviousProgess = new int[nItems];
     pWorkerContext->nLastItemId = -1;
 
     for (int i = 0; i < nItems; i++)
@@ -1238,10 +1236,11 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
         CItem& item = pWorkerContext->pConfig->m_Items.GetData(i);
         if (item.bChecked == true)
         {
-            pWorkerContext->nTotalFiles++;
+            item.bFinished = false;
+            item.nProgress = 0;
+            item.nPreviousProgress = 0;
 
-            pWorkerContext->nProgess[i] = 0;
-            pWorkerContext->nPreviousProgess[i] = 0;
+            pWorkerContext->nTotalFiles++;
 
             pItemsContext[i].pWorkerContext = pWorkerContext;
             pItemsContext[i].item = &item;
@@ -1249,8 +1248,8 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
         }
         else
         {
-            pWorkerContext->nProgess[i] = 100;
-            pWorkerContext->nPreviousProgess[i] = 100;
+            item.nProgress = 100;
+            item.nPreviousProgress = 100;
         }
     }
 
@@ -1303,8 +1302,6 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
     delete dwConvertThreadID;
     delete pWorkerContext->pSync;
     delete pWorkerContext->pQueue;
-    delete pWorkerContext->nProgess;
-    delete pWorkerContext->nPreviousProgess;
     delete[] pItemsContext;
 
     pWorkerContext->Done();

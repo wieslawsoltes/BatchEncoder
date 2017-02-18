@@ -40,6 +40,9 @@ bool CTraceWorkerContext::Callback(int nItemId, int nProgress, bool bFinished, b
 {
     if (bError == true)
     {
+        CItem &item = pConfig->m_Items.GetData(nItemId);
+        item.bFinished = true;
+
         if (pConfig->m_Options.bStopOnErrors == true)
         {
             this->bRunning = false;
@@ -47,11 +50,18 @@ bool CTraceWorkerContext::Callback(int nItemId, int nProgress, bool bFinished, b
         return this->bRunning;
     }
 
-    if (bFinished == false && this->bRunning == true)
+    if (bFinished == true)
     {
-        nProgess[nItemId] = nProgress;
-        if (nPreviousProgess[nItemId] > nProgress)
-            nPreviousProgess[nItemId] = nProgress;
+        CItem &item = pConfig->m_Items.GetData(nItemId);
+        item.bFinished = true;
+    }
+
+    if ((bFinished == false) && (this->bRunning == true))
+    {
+        CItem &current = pConfig->m_Items.GetData(nItemId);
+        current.nProgress = nProgress;
+        if (current.nPreviousProgress > nProgress)
+            current.nPreviousProgress = nProgress;
 
         if (nItemId > this->nLastItemId)
         {
@@ -62,19 +72,27 @@ bool CTraceWorkerContext::Callback(int nItemId, int nProgress, bool bFinished, b
         int nItems = pConfig->m_Items.GetSize();
         for (int i = 0; i < nItems; i++)
         {
-            if (pConfig->m_Items.GetData(i).bChecked == TRUE)
+            CItem &item = pConfig->m_Items.GetData(i);
+            if (item.bChecked == true)
             {
-                int nItemProgress = nProgess[i];
-                int nItemPreviousProgress = nPreviousProgess[i];
+                int nItemProgress = item.nProgress;
+                int nItemPreviousProgress = item.nPreviousProgress;
 
                 nTotalProgress += nItemProgress;
 
-                if (nItemProgress > 0 && nItemProgress < 100 && nItemProgress > nItemPreviousProgress)
+                if (item.bFinished == false)
                 {
-                    CString szOutput;
-                    szOutput.Format(_T("Progress: [%d] %d%%\n"), i, nItemProgress);
-                    OutputDebugString(szOutput);
-                    nPreviousProgess[i] = nItemProgress;
+                    if (nItemProgress > 0 && nItemProgress < 100 && nItemProgress > nItemPreviousProgress)
+                    {
+                        CString szOutput;
+                        szOutput.Format(_T("Progress: [%d] %d%%\n"), i, nItemProgress);
+                        OutputDebugString(szOutput);
+                        item.nPreviousProgress = nItemProgress;
+                    }
+                    else if (nItemProgress == 100 && nItemProgress > nItemPreviousProgress)
+                    {
+                        item.nPreviousProgress = nItemProgress;
+                    }
                 }
             }
         }

@@ -77,6 +77,9 @@ bool CProgressWorkerContext::Callback(int nItemId, int nProgress, bool bFinished
 {
     if (bError == true)
     {
+        CItem &item = pConfig->m_Items.GetData(nItemId);
+        item.bFinished = true;
+
         if (pConfig->m_Options.bStopOnErrors == true)
         {
             pDlg->m_Progress.SetPos(0);
@@ -86,13 +89,18 @@ bool CProgressWorkerContext::Callback(int nItemId, int nProgress, bool bFinished
         return this->bRunning;
     }
 
-    if (bFinished == false && this->bRunning == true)
+    if (bFinished == true)
     {
-        nProgess[nItemId] = nProgress;
+        CItem &item = pConfig->m_Items.GetData(nItemId);
+        item.bFinished = true;
+    }
 
-        // check previous progress if two or more passes are used to for item processing
-        if (nPreviousProgess[nItemId] > nProgress)
-            nPreviousProgess[nItemId] = nProgress;
+    if ((bFinished == false) && (this->bRunning == true))
+    {
+        CItem &current = pConfig->m_Items.GetData(nItemId);
+        current.nProgress = nProgress;
+        if (current.nPreviousProgress > nProgress)
+            current.nPreviousProgress = nProgress;
 
         static volatile bool bSafeCheck = false;
         if (bSafeCheck == false)
@@ -109,33 +117,35 @@ bool CProgressWorkerContext::Callback(int nItemId, int nProgress, bool bFinished
             int nItems = pConfig->m_Items.GetSize();
             for (int i = 0; i < nItems; i++)
             {
-                if (pConfig->m_Items.GetData(i).bChecked == TRUE)
+                CItem &item = pConfig->m_Items.GetData(i);
+                if (item.bChecked == true)
                 {
-                    int nItemProgress = nProgess[i];
-                    int nItemPreviousProgress = nPreviousProgess[i];
+                    int nItemProgress = item.nProgress;
+                    int nItemPreviousProgress = item.nPreviousProgress;
 
                     nTotalProgress += nItemProgress;
 
-                    if (nItemProgress > 0 && nItemProgress < 100 && nItemProgress > nItemPreviousProgress)
+                    if (item.bFinished == false)
                     {
-                        CString szProgress;
-                        szProgress.Format(_T("%d%%\0"), nItemProgress);
-                        pDlg->m_LstInputItems.SetItemText(i, ITEM_COLUMN_STATUS, szProgress); // Status
+                        if (nItemProgress > 0 && nItemProgress < 100 && nItemProgress > nItemPreviousProgress)
+                        {
+                            CString szProgress;
+                            szProgress.Format(_T("%d%%\0"), nItemProgress);
+                            pDlg->m_LstInputItems.SetItemText(i, ITEM_COLUMN_STATUS, szProgress); // Status
 
-                        nPreviousProgess[i] = nItemProgress;
-                    }
-                    else if (nItemProgress == 100 && nItemProgress > nItemPreviousProgress)
-                    {
-                        nPreviousProgess[i] = nItemProgress;
+                            item.nPreviousProgress = nItemProgress;
+                        }
+                        else if (nItemProgress == 100 && nItemProgress > nItemPreviousProgress)
+                        {
+                            item.nPreviousProgress = nItemProgress;
+                        }
                     }
                 }
             }
 
             int nPos = nTotalProgress / nTotalFiles;
             if (pDlg->m_Progress.GetPos() != nPos)
-            {
                 pDlg->m_Progress.SetPos(nPos);
-            }
 
             bSafeCheck = false;
         }

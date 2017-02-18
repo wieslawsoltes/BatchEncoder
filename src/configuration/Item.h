@@ -18,6 +18,9 @@ public:
     bool bChecked;
     CString szTime;
     CString szStatus;
+    bool bFinished;
+    int nProgress;
+    int nPreviousProgress;
 public:
     CItem()
     {
@@ -47,5 +50,8 @@ public:
         this->bChecked = other.bChecked;
         this->szTime = other.szTime;
         this->szStatus = other.szStatus;
+        this->bFinished = other.bFinished;
+        this->nProgress = other.nProgress;
+        this->nPreviousProgress = other.nPreviousProgress;
     }
 };

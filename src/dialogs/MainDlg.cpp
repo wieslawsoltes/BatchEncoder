@@ -2476,8 +2476,6 @@ void CMainDlg::TraceConvert()
     pTraceWorkerContext->nDoneWithoutError = 0;
     pTraceWorkerContext->nErrors = 0;
     pTraceWorkerContext->pQueue = new CObList();
-    pTraceWorkerContext->nProgess = new int[nItems];
-    pTraceWorkerContext->nPreviousProgess = new int[nItems];
     pTraceWorkerContext->nLastItemId = -1;
 
     for (int i = 0; i < nItems; i++)
@@ -2485,10 +2483,10 @@ void CMainDlg::TraceConvert()
         CItem& item = pTraceWorkerContext->pConfig->m_Items.GetData(i);
         if (item.bChecked == true)
         {
-            pTraceWorkerContext->nTotalFiles++;
+            item.nProgress = 0;
+            item.nPreviousProgress = 0;
 
-            pTraceWorkerContext->nProgess[i] = 0;
-            pTraceWorkerContext->nPreviousProgess[i] = 0;
+            pTraceWorkerContext->nTotalFiles++;
 
             pItemsContext[i].pWorkerContext = pTraceWorkerContext;
             pItemsContext[i].item = &item;
@@ -2496,8 +2494,8 @@ void CMainDlg::TraceConvert()
         }
         else
         {
-            pTraceWorkerContext->nProgess[i] = 100;
-            pTraceWorkerContext->nPreviousProgess[i] = 100;
+            item.nProgress = 100;
+            item.nPreviousProgress = 100;
         }
     }
 
@@ -2534,8 +2532,6 @@ void CMainDlg::TraceConvert()
     }
 
     delete pTraceWorkerContext->pQueue;
-    delete pTraceWorkerContext->nProgess;
-    delete pTraceWorkerContext->nPreviousProgess;
     delete[] pItemsContext;
 
     pTraceWorkerContext->Done();
