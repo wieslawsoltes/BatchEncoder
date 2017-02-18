@@ -9,7 +9,7 @@
 #include "LuaProgess.h"
 #include "WorkThread.h"
 
-bool ProgresssLoop(CFileContext* pContext, CProcess &processContext, CPipe &Stderr, int &nProgress)
+bool ProgresssLoop(CFileContext* pContext, CProcess &process, CPipe &Stderr, int &nProgress)
 {
     CWorkerContext *pWorkerContext = pContext->pWorkerContext;
     const int nBuffSize = 4096;
@@ -153,7 +153,7 @@ bool ConvertFileUsingConsole(CFileContext* pContext)
         return false;
     }
 
-    CProcess processContext;
+    CProcess process;
     CPipe Stderr(TRUE);
     int nProgress = 0;
     CTimeCount timer;
@@ -175,12 +175,12 @@ bool ConvertFileUsingConsole(CFileContext* pContext)
     }
 
     // connect pipes to process
-    processContext.ConnectStdInput(NULL);
-    processContext.ConnectStdOutput(Stderr.hWrite);
-    processContext.ConnectStdError(Stderr.hWrite);
+    process.ConnectStdInput(NULL);
+    process.ConnectStdOutput(Stderr.hWrite);
+    process.ConnectStdError(Stderr.hWrite);
 
     timer.Start();
-    if (processContext.Start(pContext->pszCommandLine, pWorkerContext->pConfig->m_Options.bHideConsoleWindow) == false)
+    if (process.Start(pContext->pszCommandLine, pWorkerContext->pConfig->m_Options.bHideConsoleWindow) == false)
     {
         timer.Stop();
 
@@ -199,17 +199,17 @@ bool ConvertFileUsingConsole(CFileContext* pContext)
     Stderr.CloseWrite();
 
     // console progress loop
-    if (ProgresssLoop(pContext, processContext, Stderr, nProgress) == false)
+    if (ProgresssLoop(pContext, process, Stderr, nProgress) == false)
     {
         timer.Stop();
         Stderr.CloseRead();
-        processContext.Stop(false);
+        process.Stop(false);
         return false;
     }
 
     timer.Stop();
     Stderr.CloseRead();
-    processContext.Stop(nProgress == 100);
+    process.Stop(nProgress == 100);
 
     if (nProgress != 100)
     {
@@ -412,7 +412,7 @@ bool ConvertFileUsingPipes(CFileContext* pContext)
         return false;
     }
 
-    CProcess processContext;
+    CProcess process;
     CPipe Stdin(TRUE);
     CPipe Stdout(TRUE);
     CPipeContext readContext;
@@ -479,25 +479,25 @@ bool ConvertFileUsingPipes(CFileContext* pContext)
     // connect pipes to process
     if ((pContext->bUseReadPipes == true) && (pContext->bUseWritePipes == false))
     {
-        processContext.ConnectStdInput(Stdin.hRead);
-        processContext.ConnectStdOutput(GetStdHandle(STD_OUTPUT_HANDLE));
-        processContext.ConnectStdError(GetStdHandle(STD_ERROR_HANDLE));
+        process.ConnectStdInput(Stdin.hRead);
+        process.ConnectStdOutput(GetStdHandle(STD_OUTPUT_HANDLE));
+        process.ConnectStdError(GetStdHandle(STD_ERROR_HANDLE));
     }
     else if ((pContext->bUseReadPipes == false) && (pContext->bUseWritePipes == true))
     {
-        processContext.ConnectStdInput(GetStdHandle(STD_INPUT_HANDLE));
-        processContext.ConnectStdOutput(Stdout.hWrite);
-        processContext.ConnectStdError(GetStdHandle(STD_ERROR_HANDLE));
+        process.ConnectStdInput(GetStdHandle(STD_INPUT_HANDLE));
+        process.ConnectStdOutput(Stdout.hWrite);
+        process.ConnectStdError(GetStdHandle(STD_ERROR_HANDLE));
     }
     else if ((pContext->bUseReadPipes == true) && (pContext->bUseWritePipes == true))
     {
-        processContext.ConnectStdInput(Stdin.hRead);
-        processContext.ConnectStdOutput(Stdout.hWrite);
-        processContext.ConnectStdError(GetStdHandle(STD_ERROR_HANDLE));
+        process.ConnectStdInput(Stdin.hRead);
+        process.ConnectStdOutput(Stdout.hWrite);
+        process.ConnectStdError(GetStdHandle(STD_ERROR_HANDLE));
     }
 
     timer.Start();
-    if (processContext.Start(pContext->pszCommandLine, pWorkerContext->pConfig->m_Options.bHideConsoleWindow) == false)
+    if (process.Start(pContext->pszCommandLine, pWorkerContext->pConfig->m_Options.bHideConsoleWindow) == false)
     {
         timer.Stop();
 
@@ -649,7 +649,7 @@ bool ConvertFileUsingPipes(CFileContext* pContext)
     }
 
     timer.Stop();
-    processContext.Stop(nProgress == 100);
+    process.Stop(nProgress == 100);
 
     if (nProgress != 100)
     {
@@ -668,8 +668,8 @@ bool ConvertFileUsingPipes(CFileContext* pContext)
 bool ConvertFileUsingOnlyPipes(CFileContext* pDecoderContext, CFileContext* pEncoderContext)
 {
     CWorkerContext *pWorkerContext = pDecoderContext->pWorkerContext;
-    CProcess processContextDecoder;
-    CProcess processContextEncoder;
+    CProcess decoderProcess;
+    CProcess encoderProcess;
     CPipe Stdin(TRUE);
     CPipe Stdout(TRUE);
     CPipe Bridge(TRUE);
@@ -737,19 +737,19 @@ bool ConvertFileUsingOnlyPipes(CFileContext* pDecoderContext, CFileContext* pEnc
     }
 
     // connect pipes to decoder process
-    processContextDecoder.ConnectStdInput(Stdin.hRead);
-    processContextDecoder.ConnectStdOutput(Bridge.hWrite);
-    processContextDecoder.ConnectStdError(GetStdHandle(STD_ERROR_HANDLE));
+    decoderProcess.ConnectStdInput(Stdin.hRead);
+    decoderProcess.ConnectStdOutput(Bridge.hWrite);
+    decoderProcess.ConnectStdError(GetStdHandle(STD_ERROR_HANDLE));
 
     // connect pipes to encoder process
-    processContextEncoder.ConnectStdInput(Bridge.hRead);
-    processContextEncoder.ConnectStdOutput(Stdout.hWrite);
-    processContextEncoder.ConnectStdError(GetStdHandle(STD_ERROR_HANDLE));
+    encoderProcess.ConnectStdInput(Bridge.hRead);
+    encoderProcess.ConnectStdOutput(Stdout.hWrite);
+    encoderProcess.ConnectStdError(GetStdHandle(STD_ERROR_HANDLE));
 
     timer.Start();
 
     // create decoder process
-    if (processContextDecoder.Start(pDecoderContext->pszCommandLine, pWorkerContext->pConfig->m_Options.bHideConsoleWindow) == false)
+    if (decoderProcess.Start(pDecoderContext->pszCommandLine, pWorkerContext->pConfig->m_Options.bHideConsoleWindow) == false)
     {
         timer.Stop();
 
@@ -771,11 +771,11 @@ bool ConvertFileUsingOnlyPipes(CFileContext* pDecoderContext, CFileContext* pEnc
     }
 
     // create encoder process
-    if (processContextEncoder.Start(pEncoderContext->pszCommandLine, pWorkerContext->pConfig->m_Options.bHideConsoleWindow) == false)
+    if (encoderProcess.Start(pEncoderContext->pszCommandLine, pWorkerContext->pConfig->m_Options.bHideConsoleWindow) == false)
     {
         timer.Stop();
 
-        processContextDecoder.Stop(false);
+        decoderProcess.Stop(false);
 
         Stdin.CloseRead();
         Stdin.CloseWrite();
@@ -876,8 +876,8 @@ bool ConvertFileUsingOnlyPipes(CFileContext* pDecoderContext, CFileContext* pEnc
         nProgress = -1;
 
     timer.Stop();
-    processContextDecoder.Stop(nProgress == 100);
-    processContextEncoder.Stop(nProgress == 100);
+    decoderProcess.Stop(nProgress == 100);
+    encoderProcess.Stop(nProgress == 100);
 
     if (nProgress != 100)
     {
