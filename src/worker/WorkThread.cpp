@@ -379,9 +379,9 @@ bool WriteLoop(CPipeContext* pContext)
     }
 }
 
-DWORD WINAPI ReadThread(LPVOID lpParam)
+int ReadThread(void *param)
 {
-    CPipeContext* pContext = (CPipeContext*)lpParam;
+    CPipeContext* pContext = (CPipeContext*)param;
     if (pContext != NULL)
     {
         if (ReadLoop(pContext) == true)
@@ -417,9 +417,8 @@ bool ConvertFileUsingPipes(CFileContext* pContext)
     CPipe Stdout(TRUE);
     CPipeContext readContext;
     CPipeContext writeContext;
-    DWORD dwReadThreadID = 0L;
+    CThread readThread;
     DWORD dwWriteThreadID = 0L;
-    HANDLE hReadThread = NULL;
     HANDLE hWriteThread = NULL;
     int nProgress = 0;
     CTimeCount timer;
@@ -539,9 +538,7 @@ bool ConvertFileUsingPipes(CFileContext* pContext)
         readContext.hPipe = Stdin.hWrite;
         readContext.nIndex = pContext->nItemId;
 
-        dwReadThreadID = 0L;
-        hReadThread = ::CreateThread(NULL, 0, ReadThread, (LPVOID)&readContext, 0, &dwReadThreadID);
-        if (hReadThread == NULL)
+        if (readThread.Start(ReadThread, &readContext) == false)
         {
             timer.Stop();
 
@@ -555,13 +552,13 @@ bool ConvertFileUsingPipes(CFileContext* pContext)
         // wait for read thread to finish
         if (pContext->bUseWritePipes == false)
         {
-            ::WaitForSingleObject(hReadThread, INFINITE);
+            readThread.Wait();
 
             // NOTE: Handle is closed in ReadThread.
             //Stdin.CloseWrite();
 
             // close read thread handle
-            ::CloseHandle(hReadThread);
+            readThread.Close();
 
             // check for result from read thread
             if ((readContext.bError == false) && (readContext.bFinished == true))
@@ -597,13 +594,13 @@ bool ConvertFileUsingPipes(CFileContext* pContext)
         if (pContext->bUseReadPipes == true)
         {
             // wait for read thread to finish
-            ::WaitForSingleObject(hReadThread, INFINITE);
+            readThread.Wait();
 
             // NOTE: Handle is closed in ReadThread.
             //Stdin.CloseWrite();
 
             // close read thread handle
-            ::CloseHandle(hReadThread);
+            readThread.Close();
 
             if ((readContext.bError == true) || (readContext.bFinished == false))
             {
@@ -678,9 +675,8 @@ bool ConvertFileUsingOnlyPipes(CFileContext* pDecoderContext, CFileContext* pEnc
     CPipe Bridge(TRUE);
     CPipeContext readContext;
     CPipeContext writeContext;
-    DWORD dwReadThreadID = 0L;
+    CThread readThread;
     DWORD dwWriteThreadID = 0L;
-    HANDLE hReadThread = NULL;
     HANDLE hWriteThread = NULL;
     int nProgress = 0;
     CTimeCount timer;
@@ -812,9 +808,7 @@ bool ConvertFileUsingOnlyPipes(CFileContext* pDecoderContext, CFileContext* pEnc
     readContext.hPipe = Stdin.hWrite;
     readContext.nIndex = pDecoderContext->nItemId;
 
-    dwReadThreadID = 0L;
-    hReadThread = ::CreateThread(NULL, 0, ReadThread, (LPVOID)&readContext, 0, &dwReadThreadID);
-    if (hReadThread == NULL)
+    if (readThread.Start(ReadThread, &readContext) == false)
     {
         timer.Stop();
 
@@ -847,13 +841,13 @@ bool ConvertFileUsingOnlyPipes(CFileContext* pDecoderContext, CFileContext* pEnc
     }
 
     // wait for read thread to finish after write thread finished
-    ::WaitForSingleObject(hReadThread, INFINITE);
+    readThread.Wait();
 
     // NOTE: Handle is closed in ReadThread.
     //Stdin.CloseWrite();
 
     // close read thread handle
-    ::CloseHandle(hReadThread);
+    readThread.Close();
 
     if ((readContext.bError == true) || (readContext.bFinished == false))
     {
