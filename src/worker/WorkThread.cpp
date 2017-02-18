@@ -610,11 +610,11 @@ bool ConvertFileUsingPipes(CFileContext* pContext)
             }
             else
             {
-                // close read thread handle
-                Stdout.CloseRead();
-
                 // wait for write thread to finish
                 writeThread.Wait();
+
+                // close write thread handle
+                Stdout.CloseRead();
 
                 // close write thread handle
                 writeThread.Close();
