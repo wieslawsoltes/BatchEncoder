@@ -3,19 +3,19 @@
 
 #pragma once
 
-class CProcessContext
+class CProcess
 {
     PROCESS_INFORMATION pInfo;
     STARTUPINFO sInfo;
 public:
-    CProcessContext()
+    CProcess()
     {
         ZeroMemory(&this->pInfo, sizeof(this->pInfo));
         ZeroMemory(&this->sInfo, sizeof(this->sInfo));
         this->sInfo.cb = sizeof(this->sInfo);
         this->sInfo.dwFlags = STARTF_USESTDHANDLES;
     }
-    virtual ~CProcessContext()
+    virtual ~CProcess()
     {
     }
 public:

@@ -9,7 +9,7 @@
 #include "LuaProgess.h"
 #include "WorkThread.h"
 
-bool ProgresssLoop(CFileContext* pContext, CProcessContext &processContext, CPipe &Stderr, int &nProgress)
+bool ProgresssLoop(CFileContext* pContext, CProcess &processContext, CPipe &Stderr, int &nProgress)
 {
     CWorkerContext *pWorkerContext = pContext->pWorkerContext;
     const int nBuffSize = 4096;
@@ -153,7 +153,7 @@ bool ConvertFileUsingConsole(CFileContext* pContext)
         return false;
     }
 
-    CProcessContext processContext;
+    CProcess processContext;
     CPipe Stderr(TRUE);
     int nProgress = 0;
     CTimeCount timer;
@@ -412,7 +412,7 @@ bool ConvertFileUsingPipes(CFileContext* pContext)
         return false;
     }
 
-    CProcessContext processContext;
+    CProcess processContext;
     CPipe Stdin(TRUE);
     CPipe Stdout(TRUE);
     CPipeContext readContext;
@@ -671,8 +671,8 @@ bool ConvertFileUsingPipes(CFileContext* pContext)
 bool ConvertFileUsingOnlyPipes(CFileContext* pDecoderContext, CFileContext* pEncoderContext)
 {
     CWorkerContext *pWorkerContext = pDecoderContext->pWorkerContext;
-    CProcessContext processContextDecoder;
-    CProcessContext processContextEncoder;
+    CProcess processContextDecoder;
+    CProcess processContextEncoder;
     CPipe Stdin(TRUE);
     CPipe Stdout(TRUE);
     CPipe Bridge(TRUE);

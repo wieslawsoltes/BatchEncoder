@@ -322,7 +322,7 @@ copy /Y ..\lang\*.language $(OutDir)</Command>
     <ClInclude Include="worker\LuaProgess.h" />
     <ClInclude Include="worker\Pipe.h" />
     <ClInclude Include="worker\PipeContext.h" />
-    <ClInclude Include="worker\ProcessContext.h" />
+    <ClInclude Include="worker\Process.h" />
     <ClInclude Include="worker\Synchronize.h" />
     <ClInclude Include="worker\WorkerContext.h" />
     <ClInclude Include="worker\WorkThread.h" />

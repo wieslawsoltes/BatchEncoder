@@ -230,9 +230,6 @@
     <ClInclude Include="worker\PipeContext.h">
       <Filter>Header Files\Worker</Filter>
     </ClInclude>
-    <ClInclude Include="worker\ProcessContext.h">
-      <Filter>Header Files\Worker</Filter>
-    </ClInclude>
     <ClInclude Include="worker\FileContext.h">
       <Filter>Header Files\Worker</Filter>
     </ClInclude>
@@ -253,6 +250,9 @@
     </ClInclude>
     <ClInclude Include="contexts\ProgressWorkerContext.h">
       <Filter>Header Files\Contexts</Filter>
+    </ClInclude>
+    <ClInclude Include="worker\Process.h">
+      <Filter>Header Files\Worker</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
