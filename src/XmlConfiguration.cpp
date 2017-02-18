@@ -291,6 +291,10 @@ void XmlConfiguration::GetFormat(tinyxml2::XMLElement *pFormatElem, CFormat &m_F
     if (pszPath != NULL)
         m_Format.szPath = ToCString(pszPath);
 
+    const char *pszExitCodeSuccess = pFormatElem->Attribute("success");
+    if (pszExitCodeSuccess != NULL)
+        m_Format.nExitCodeSuccess = ToInt(pszExitCodeSuccess);
+
     const char *pszType = pFormatElem->Attribute("type");
     if (pszType != NULL)
         m_Format.nType = ToInt(pszType);
@@ -320,6 +324,7 @@ void XmlConfiguration::SetFormat(tinyxml2::XMLElement *pFormatElem, CFormat &m_F
     pFormatElem->SetAttribute("output", CUtf8String(ToCString(m_Format.bPipeOutput)).m_Result);
     pFormatElem->SetAttribute("function", CUtf8String(m_Format.szFunction).m_Result);
     pFormatElem->SetAttribute("path", CUtf8String(m_Format.szPath).m_Result);
+    pFormatElem->SetAttribute("success", CUtf8String(ToCString(m_Format.nExitCodeSuccess)).m_Result);
     pFormatElem->SetAttribute("type", CUtf8String(ToCString(m_Format.nType)).m_Result);
     pFormatElem->SetAttribute("formats", CUtf8String(m_Format.szInputExtensions).m_Result);
     pFormatElem->SetAttribute("extension", CUtf8String(m_Format.szOutputExtension).m_Result);

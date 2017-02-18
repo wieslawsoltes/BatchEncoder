@@ -292,6 +292,7 @@ void CFormatsDlg::OnBnClickedButtonAddFormat()
     format.bPipeOutput = false;
     format.szFunction = _T("- none -");
     format.szPath = _T("program.exe");
+    format.nExitCodeSuccess = 0;
     format.nType = 0;
     format.szInputExtensions = _T("WAV");
     format.szOutputExtension = _T("EXT");

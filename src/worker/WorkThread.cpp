@@ -203,13 +203,14 @@ bool ConvertFileUsingConsole(CFileContext* pContext)
     {
         timer.Stop();
         Stderr.CloseRead();
-        process.Stop(false);
+        process.Stop(false, pContext->pFormat->nExitCodeSuccess);
         return false;
     }
 
     timer.Stop();
     Stderr.CloseRead();
-    process.Stop(nProgress == 100);
+    if (process.Stop(nProgress == 100, pContext->pFormat->nExitCodeSuccess) == false)
+        nProgress = -1;
 
     if (nProgress != 100)
     {
@@ -647,7 +648,8 @@ bool ConvertFileUsingPipes(CFileContext* pContext)
     }
 
     timer.Stop();
-    process.Stop(nProgress == 100);
+    if (process.Stop(nProgress == 100, pContext->pFormat->nExitCodeSuccess) == false)
+        nProgress = -1;
 
     if (nProgress != 100)
     {
@@ -772,7 +774,7 @@ bool ConvertFileUsingOnlyPipes(CFileContext* pDecoderContext, CFileContext* pEnc
     {
         timer.Stop();
 
-        decoderProcess.Stop(false);
+        decoderProcess.Stop(false, pDecoderContext->pFormat->nExitCodeSuccess);
 
         Stdin.CloseRead();
         Stdin.CloseWrite();
@@ -871,8 +873,12 @@ bool ConvertFileUsingOnlyPipes(CFileContext* pDecoderContext, CFileContext* pEnc
         nProgress = -1;
 
     timer.Stop();
-    decoderProcess.Stop(nProgress == 100);
-    encoderProcess.Stop(nProgress == 100);
+
+    if (decoderProcess.Stop(nProgress == 100, pDecoderContext->pFormat->nExitCodeSuccess) == false)
+        nProgress = -1;
+
+    if (encoderProcess.Stop(nProgress == 100, pEncoderContext->pFormat->nExitCodeSuccess) == false)
+        nProgress = -1;
 
     if (nProgress != 100)
     {

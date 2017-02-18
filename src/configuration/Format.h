@@ -18,6 +18,7 @@ public:
     bool bPipeOutput;
     CString szFunction;
     CString szPath;
+    int nExitCodeSuccess;
     int nType; // 0 - Encoder, 1 - Decoder
     CString szInputExtensions;
     CString szOutputExtension;
@@ -49,6 +50,7 @@ public:
         this->bPipeOutput = other.bPipeOutput;
         this->szFunction = other.szFunction;
         this->szPath = other.szPath;
+        this->nExitCodeSuccess = other.nExitCodeSuccess;
         this->nType = other.nType;
         this->szInputExtensions = other.szInputExtensions;
         this->szOutputExtension = other.szOutputExtension;

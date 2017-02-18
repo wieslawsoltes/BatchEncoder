@@ -96,18 +96,34 @@ public:
         BOOL bCloseThread = ::CloseHandle(this->pInfo.hThread);
         return (bCloseProcess == TRUE) && (bCloseThread == TRUE);
     }
-    void Stop(bool bWait)
+    bool Stop(bool bWait, int nExitCodeSucess)
     {
+        bool bResult = false;
         if (bWait == true)
         {
             if (this->Wait() == false)
+            {
                 this->Terminate();
+                DWORD dwExitCode;
+                ::GetExitCodeProcess(this->pInfo.hProcess, &dwExitCode);
+                bResult = false;
+            }
+            else
+            {
+                DWORD dwExitCode;
+                ::GetExitCodeProcess(this->pInfo.hProcess, &dwExitCode);
+                bResult = (DWORD)nExitCodeSucess == dwExitCode;
+            }
         }
         else
         {
             this->Terminate();
             this->Wait(5000);
+            DWORD dwExitCode;
+            ::GetExitCodeProcess(this->pInfo.hProcess, &dwExitCode);
+            bResult = false;
         }
         this->Close();
+        return bResult;
     }
 };
