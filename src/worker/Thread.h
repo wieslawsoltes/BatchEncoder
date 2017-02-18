@@ -61,6 +61,10 @@ public:
     {
         return ::SuspendThread(hThread) != (DWORD)-1;
     }
+    bool Terminate(int code = 0)
+    {
+        return ::TerminateThread(hThread, (DWORD)code) == TRUE;
+    }
     bool Close()
     {
         return ::CloseHandle(hThread) == TRUE;
