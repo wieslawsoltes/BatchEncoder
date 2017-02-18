@@ -5,7 +5,6 @@
 
 class CProcessContext
 {
-public:
     PROCESS_INFORMATION pInfo;
     STARTUPINFO sInfo;
 public:
