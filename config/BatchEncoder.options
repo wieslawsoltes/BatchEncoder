@@ -10,6 +10,6 @@
     <DeleteOnErrors>true</DeleteOnErrors>
     <StopOnErrors>false</StopOnErrors>
     <HideConsoleWindow>true</HideConsoleWindow>
-    <TryToFindDecoder>true</TryToFindDecoder>
+    <TryToFindDecoder>false</TryToFindDecoder>
     <ThreadCount>0</ThreadCount>
 </Options>

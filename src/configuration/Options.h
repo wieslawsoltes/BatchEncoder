@@ -81,7 +81,7 @@ public:
         this->bDeleteOnErrors = true;
         this->bStopOnErrors = false;
         this->bHideConsoleWindow = true;
-        this->bTryToFindDecoder = true;
+        this->bTryToFindDecoder = false;
         this->nThreadCount = 0;
         this->szMainWindowResize = _T("");
         this->szFileListColumns = _T("");
