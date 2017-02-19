@@ -1012,6 +1012,8 @@ bool ConvertItem(CItemContext* pContext)
         {
             pWorkerContext->Status(pContext->item->nId, pszDefaulTime, pWorkerContext->GetString(0x0014000C, pszConvertItem[11]));
 
+            pContext->item->ResetProgress();
+
             bool bResult = ConvertFileUsingOnlyPipes(&decoderContext, &encoderContext);
             if (bResult == true)
             {
@@ -1059,6 +1061,8 @@ bool ConvertItem(CItemContext* pContext)
             {
                 pWorkerContext->Status(pContext->item->nId, pszDefaulTime, pWorkerContext->GetString(0x00140007, pszConvertItem[6]));
 
+                pContext->item->ResetProgress();
+
                 bool bResult = false;
                 if ((decoderContext.bUseReadPipes == false) && (decoderContext.bUseWritePipes == false))
                     bResult = ConvertFileUsingConsole(&decoderContext);
@@ -1098,6 +1102,8 @@ bool ConvertItem(CItemContext* pContext)
                 pWorkerContext->Status(pContext->item->nId, pszDefaulTime, pWorkerContext->GetString(0x0014000A, pszConvertItem[9]));
             else if (pEncFormat->nType == 1)
                 pWorkerContext->Status(pContext->item->nId, pszDefaulTime, pWorkerContext->GetString(0x0014000B, pszConvertItem[10]));
+
+            pContext->item->ResetProgress();
 
             bool bResult = false;
             if ((encoderContext.bUseReadPipes == false) && (encoderContext.bUseWritePipes == false))
