@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Format id="WVUNPACK_WV_WAV" name="Decode WV to WAV" template="$EXE -y $INFILE $OUTFILE" input="false" output="false" function="GetProgress_WvUnpackDec.progress" path="wvunpack.exe" success="0" type="1" formats="WV" extension="WAV" default="0">
+    <Presets>
+        <Preset name="Default" options=""/>
+    </Presets>
+</Format>
