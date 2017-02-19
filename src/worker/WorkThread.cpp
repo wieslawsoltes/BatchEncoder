@@ -140,90 +140,6 @@ bool ProgresssLoop(CFileContext* pContext, CPipe &Stderr, int &nProgress)
     return true;
 }
 
-bool ConvertFileUsingConsole(CFileContext* pContext)
-{
-    CWorkerContext *pWorkerContext = pContext->pWorkerContext;
-
-    if ((pContext->bUseReadPipes == true) || (pContext->bUseWritePipes == true))
-    {
-        pWorkerContext->Status(pContext->nItemId, pszDefaulTime, pWorkerContext->GetString(0x00120001, pszConvertConsole[0]));
-        pWorkerContext->Callback(pContext->nItemId, -1, true, true);
-        return false;
-    }
-
-    CProcess process;
-    CPipe Stderr(true);
-    int nProgress = 0;
-    CTimeCount timer;
-
-    // create pipes for stderr
-    if (Stderr.Create() == false)
-    {
-        pWorkerContext->Status(pContext->nItemId, pszDefaulTime, pWorkerContext->GetString(0x00120002, pszConvertConsole[1]));
-        pWorkerContext->Callback(pContext->nItemId, -1, true, true);
-        return false;
-    }
-
-    // duplicate stderr read pipe handle to prevent child process from closing the pipe
-    if (Stderr.DuplicateRead() == false)
-    {
-        pWorkerContext->Status(pContext->nItemId, pszDefaulTime, pWorkerContext->GetString(0x00120003, pszConvertConsole[2]));
-        pWorkerContext->Callback(pContext->nItemId, -1, true, true);
-        return false;
-    }
-
-    // connect pipes to process
-    process.ConnectStdInput(NULL);
-    process.ConnectStdOutput(Stderr.hWrite);
-    process.ConnectStdError(Stderr.hWrite);
-
-    timer.Start();
-    if (process.Start(pContext->pszCommandLine, pWorkerContext->pConfig->m_Options.bHideConsoleWindow) == false)
-    {
-        timer.Stop();
-
-        Stderr.CloseRead();
-        Stderr.CloseWrite();
-
-        CString szStatus;
-        szStatus.Format(pWorkerContext->GetString(0x00120004, pszConvertConsole[3]), ::GetLastError());
-
-        pWorkerContext->Status(pContext->nItemId, pszDefaulTime, szStatus);
-        pWorkerContext->Callback(pContext->nItemId, -1, true, true);
-        return false;
-    }
-
-    // close unused pipe handle
-    Stderr.CloseWrite();
-
-    // console progress loop
-    if (ProgresssLoop(pContext, Stderr, nProgress) == false)
-    {
-        timer.Stop();
-        Stderr.CloseRead();
-        process.Stop(false, pContext->pFormat->nExitCodeSuccess);
-        return false;
-    }
-
-    timer.Stop();
-    Stderr.CloseRead();
-    if (process.Stop(nProgress == 100, pContext->pFormat->nExitCodeSuccess) == false)
-        nProgress = -1;
-
-    if (nProgress != 100)
-    {
-        pWorkerContext->Status(pContext->nItemId, pszDefaulTime, pWorkerContext->GetString(0x00120005, pszConvertConsole[4]));
-        pWorkerContext->Callback(pContext->nItemId, -1, true, true);
-        return false;
-    }
-    else
-    {
-        pWorkerContext->Status(pContext->nItemId, timer.Format(timer.ElapsedTime(), 1), pWorkerContext->GetString(0x00120006, pszConvertConsole[5]));
-        pWorkerContext->Callback(pContext->nItemId, 100, true, false);
-        return true;
-    }
-}
-
 bool ReadLoop(CPipeContext* pContext)
 {
     CWorkerContext *pWorkerContext = pContext->pWorkerContext;
@@ -400,6 +316,90 @@ int WriteThread(void *param)
             return TRUE;
     }
     return FALSE;
+}
+
+bool ConvertFileUsingConsole(CFileContext* pContext)
+{
+    CWorkerContext *pWorkerContext = pContext->pWorkerContext;
+
+    if ((pContext->bUseReadPipes == true) || (pContext->bUseWritePipes == true))
+    {
+        pWorkerContext->Status(pContext->nItemId, pszDefaulTime, pWorkerContext->GetString(0x00120001, pszConvertConsole[0]));
+        pWorkerContext->Callback(pContext->nItemId, -1, true, true);
+        return false;
+    }
+
+    CProcess process;
+    CPipe Stderr(true);
+    int nProgress = 0;
+    CTimeCount timer;
+
+    // create pipes for stderr
+    if (Stderr.Create() == false)
+    {
+        pWorkerContext->Status(pContext->nItemId, pszDefaulTime, pWorkerContext->GetString(0x00120002, pszConvertConsole[1]));
+        pWorkerContext->Callback(pContext->nItemId, -1, true, true);
+        return false;
+    }
+
+    // duplicate stderr read pipe handle to prevent child process from closing the pipe
+    if (Stderr.DuplicateRead() == false)
+    {
+        pWorkerContext->Status(pContext->nItemId, pszDefaulTime, pWorkerContext->GetString(0x00120003, pszConvertConsole[2]));
+        pWorkerContext->Callback(pContext->nItemId, -1, true, true);
+        return false;
+    }
+
+    // connect pipes to process
+    process.ConnectStdInput(NULL);
+    process.ConnectStdOutput(Stderr.hWrite);
+    process.ConnectStdError(Stderr.hWrite);
+
+    timer.Start();
+    if (process.Start(pContext->pszCommandLine, pWorkerContext->pConfig->m_Options.bHideConsoleWindow) == false)
+    {
+        timer.Stop();
+
+        Stderr.CloseRead();
+        Stderr.CloseWrite();
+
+        CString szStatus;
+        szStatus.Format(pWorkerContext->GetString(0x00120004, pszConvertConsole[3]), ::GetLastError());
+
+        pWorkerContext->Status(pContext->nItemId, pszDefaulTime, szStatus);
+        pWorkerContext->Callback(pContext->nItemId, -1, true, true);
+        return false;
+    }
+
+    // close unused pipe handle
+    Stderr.CloseWrite();
+
+    // console progress loop
+    if (ProgresssLoop(pContext, Stderr, nProgress) == false)
+    {
+        timer.Stop();
+        Stderr.CloseRead();
+        process.Stop(false, pContext->pFormat->nExitCodeSuccess);
+        return false;
+    }
+
+    timer.Stop();
+    Stderr.CloseRead();
+    if (process.Stop(nProgress == 100, pContext->pFormat->nExitCodeSuccess) == false)
+        nProgress = -1;
+
+    if (nProgress != 100)
+    {
+        pWorkerContext->Status(pContext->nItemId, pszDefaulTime, pWorkerContext->GetString(0x00120005, pszConvertConsole[4]));
+        pWorkerContext->Callback(pContext->nItemId, -1, true, true);
+        return false;
+    }
+    else
+    {
+        pWorkerContext->Status(pContext->nItemId, timer.Format(timer.ElapsedTime(), 1), pWorkerContext->GetString(0x00120006, pszConvertConsole[5]));
+        pWorkerContext->Callback(pContext->nItemId, 100, true, false);
+        return true;
+    }
 }
 
 bool ConvertFileUsingPipes(CFileContext* pContext)
@@ -970,9 +970,9 @@ bool ConvertItem(CItemContext* pContext)
         }
 
         szDecInputFile = szEncInputFile;
-        szDecOutputFile.Format(_T("%s%s.%s"), 
+        szDecOutputFile.Format(_T("%s%s.%s"),
             ::GetFilePath(szEncOutputFile),
-            GenerateUuidString(), 
+            GenerateUuidString(),
             CString(pDecFormat->szOutputExtension).MakeLower());
     }
 
@@ -1224,7 +1224,7 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
 {
     CWorkerContext* pWorkerContext = (CWorkerContext*)lpParam;
     if (pWorkerContext == NULL)
-        return (DWORD)(-1);
+        return FALSE;
 
     int nItems = pWorkerContext->pConfig->m_Items.GetSize();
     CItemContext *pItemsContext = new CItemContext[nItems];
@@ -1268,10 +1268,6 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
     }
 
     pWorkerContext->pSync = new CSynchronize();
-
-    HANDLE* hConvertThread = new HANDLE[pWorkerContext->nThreadCount];
-    DWORD* dwConvertThreadID = new DWORD[pWorkerContext->nThreadCount];
-
     pWorkerContext->Init();
 
     // single-threaded
@@ -1283,6 +1279,9 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
     // multi-threaded
     if (pWorkerContext->nThreadCount > 1)
     {
+        HANDLE* hConvertThread = new HANDLE[pWorkerContext->nThreadCount];
+        DWORD* dwConvertThreadID = new DWORD[pWorkerContext->nThreadCount];
+
         // create worker threads
         for (int i = 0; i < pWorkerContext->nThreadCount; i++)
         {
@@ -1299,10 +1298,11 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
         // close convert thread handles
         for (int i = 0; i < pWorkerContext->nThreadCount; i++)
             ::CloseHandle(hConvertThread[i]);
+
+        delete hConvertThread;
+        delete dwConvertThreadID;
     }
 
-    delete hConvertThread;
-    delete dwConvertThreadID;
     delete pWorkerContext->pSync;
     delete pWorkerContext->pQueue;
     delete[] pItemsContext;
