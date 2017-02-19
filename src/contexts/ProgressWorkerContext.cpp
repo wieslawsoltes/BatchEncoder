@@ -50,7 +50,9 @@ void CProgressWorkerContext::Next(int nItemId)
         pDlg->m_StatusBar.SetText(szText, 1, 0);
 
         this->nLastItemId = nItemId;
-        pDlg->m_LstInputItems.EnsureVisible(nItemId, FALSE);
+
+        if (pDlg->m_Config.m_Options.bEnsureItemIsVisible == true)
+            pDlg->m_LstInputItems.EnsureVisible(nItemId, FALSE);
     }
 }
 
@@ -110,7 +112,8 @@ bool CProgressWorkerContext::Callback(int nItemId, int nProgress, bool bFinished
             if (nItemId > this->nLastItemId)
             {
                 this->nLastItemId = nItemId;
-                pDlg->m_LstInputItems.EnsureVisible(nItemId, FALSE);
+                if (pDlg->m_Config.m_Options.bEnsureItemIsVisible == true)
+                    pDlg->m_LstInputItems.EnsureVisible(nItemId, FALSE);
             }
 
             int nTotalProgress = 0;

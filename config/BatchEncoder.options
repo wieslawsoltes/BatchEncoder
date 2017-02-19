@@ -11,5 +11,6 @@
     <StopOnErrors>false</StopOnErrors>
     <HideConsoleWindow>true</HideConsoleWindow>
     <TryToFindDecoder>false</TryToFindDecoder>
+    <EnsureItemIsVisible>true</EnsureItemIsVisible>
     <ThreadCount>0</ThreadCount>
 </Options>
