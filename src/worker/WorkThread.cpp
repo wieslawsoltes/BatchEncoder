@@ -1259,7 +1259,6 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
     pWorkerContext->nThreadCount = pWorkerContext->pConfig->m_Options.nThreadCount;
     if (pWorkerContext->nThreadCount < 1)
     {
-        // auto-detect number of available threads
         LogicalProcessorInformation info;
         if (GetLogicalProcessorInformation(&info) == 0)
             pWorkerContext->nThreadCount = info.processorCoreCount;
@@ -1282,7 +1281,6 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
         HANDLE* hConvertThread = new HANDLE[pWorkerContext->nThreadCount];
         DWORD* dwConvertThreadID = new DWORD[pWorkerContext->nThreadCount];
 
-        // create worker threads
         for (int i = 0; i < pWorkerContext->nThreadCount; i++)
         {
             dwConvertThreadID[i] = i;
@@ -1292,10 +1290,8 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
             ::ResumeThread(hConvertThread[i]);
         }
 
-        // wait for all workers to finish
         ::WaitForMultipleObjects(pWorkerContext->nThreadCount, hConvertThread, TRUE, INFINITE);
 
-        // close convert thread handles
         for (int i = 0; i < pWorkerContext->nThreadCount; i++)
             ::CloseHandle(hConvertThread[i]);
 
