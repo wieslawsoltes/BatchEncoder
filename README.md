@@ -86,6 +86,7 @@ adds input and output file paths. For specific options for each format use help 
 | LAME         | MP3        | 3.99.5          | lame.exe          | yes      | yes      | GetProgress_LameEnc.progress      |
 | MPCENC       | MPC        | 1.30.0          | mpcenc.exe        | yes      | no       | GetProgress_MpcEnc.progress       |
 | FAAC         | AAC        | 1.28-mod        | faac.exe          | yes      | no       | GetProgress_FaacEnc.progress      |
+| QAAC         | AAC        | 2.62            | qaac.exe          | yes      | no       | GetProgress_QaacEnc.progress      |
 | QAAC         | M4A        | 2.62            | qaac.exe          | yes      | no       | GetProgress_QaacEnc.progress      |
 | NEROAACENC   | M4A        | 1.5.4           | neroAacEnc.exe    | yes      | no       | - none -                          |
 | NEROAACENC   | MP4        | 1.5.4           | neroAacEnc.exe    | yes      | no       | - none -                          |
@@ -112,6 +113,8 @@ adds input and output file paths. For specific options for each format use help 
 | MPCDEC       | MPP        | 1.0             | mpcdec.exe        | no       | no       | GetProgress_MpcDec.progress       |
 | MPCDEC       | MP+        | 1.0             | mpcdec.exe        | no       | no       | GetProgress_MpcDec.progress       |
 | FAAD         | AAC        | faad2-20100614  | faad.exe          | no       | yes      | GetProgress_FaadDec.progress      |
+| QAAC         | AAC        | 2.62            | qaac.exe          | no       | no       | GetProgress_QaacDec.progress      |
+| QAAC         | M4A        | 2.62            | qaac.exe          | no       | no       | GetProgress_QaacDec.progress      |
 | NEROAACDEC   | MP4        | 1.5.1           | neroAacDec.exe    | no       | yes      | - none -                          |
 | NEROAACDEC   | M4A        | 1.5.1           | neroAacDec.exe    | no       | yes      | - none -                          |
 | OPUSDEC      | OPUS       | 1.2-alpha       | opusdec.exe       | yes      | no       | GetProgress_OpusDec.progress      |
