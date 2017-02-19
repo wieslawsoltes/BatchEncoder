@@ -96,6 +96,7 @@
     <String key="0x000B001A" value="&amp;따로 저장" />
     <String key="0x000B001B" value="&amp;변경" />
     <String key="0x000B001C" value="&amp;확인" />
+    <String key="0x000B001D" value="Du&amp;plicate" />
 
     <!-- Formats Dialog -->
 

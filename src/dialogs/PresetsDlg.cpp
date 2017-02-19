@@ -46,6 +46,7 @@ void CPresetsDlg::DoDataExchange(CDataExchange* pDX)
     DDX_Control(pDX, IDC_EDIT_PRESET_OPTIONS, m_EdtOptions);
     DDX_Control(pDX, IDOK, m_BtnOK);
     DDX_Control(pDX, IDCANCEL, m_BtnCancel);
+    DDX_Control(pDX, IDC_BUTTON_PRESET_DUPLICATE, m_BtnDuplicate);
     DDX_Control(pDX, IDC_BUTTON_PRESET_REMOVE_ALL, m_BtnRemoveAll);
     DDX_Control(pDX, IDC_BUTTON_PRESET_REMOVE, m_BtnRemove);
     DDX_Control(pDX, IDC_BUTTON_PRESET_ADD, m_BtnAdd);
@@ -64,6 +65,7 @@ BEGIN_MESSAGE_MAP(CPresetsDlg, CResizeDialog)
     ON_BN_CLICKED(IDCANCEL, OnBnClickedCancel)
     ON_NOTIFY(LVN_ITEMCHANGED, IDC_LIST_PRESETS, OnLvnItemchangedListPresets)
     ON_CBN_SELCHANGE(IDC_COMBO_PRESET_FORMAT, OnCbnSelchangeComboPresetFormat)
+    ON_BN_CLICKED(IDC_BUTTON_PRESET_DUPLICATE, OnBnClickedButtonDuplicate)
     ON_BN_CLICKED(IDC_BUTTON_PRESET_REMOVE_ALL, OnBnClickedButtonRemoveAllPresets)
     ON_BN_CLICKED(IDC_BUTTON_PRESET_REMOVE, OnBnClickedButtonRemovePreset)
     ON_BN_CLICKED(IDC_BUTTON_PRESET_ADD, OnBnClickedButtonAddPreset)
@@ -118,6 +120,7 @@ BOOL CPresetsDlg::OnInitDialog()
     AddAnchor(IDC_BUTTON_PRESET_UP, TOP_RIGHT);
     AddAnchor(IDC_BUTTON_PRESET_DOWN, TOP_RIGHT);
     AddAnchor(IDC_BUTTON_PRESET_ADD, BOTTOM_RIGHT);
+    AddAnchor(IDC_BUTTON_PRESET_DUPLICATE, MIDDLE_RIGHT);
     AddAnchor(IDC_BUTTON_PRESET_REMOVE_ALL, BOTTOM_RIGHT);
     AddAnchor(IDC_BUTTON_PRESET_REMOVE, BOTTOM_RIGHT);
     AddAnchor(IDC_BUTTON_PRESET_LOAD, BOTTOM_LEFT);
@@ -196,6 +199,37 @@ void CPresetsDlg::OnLvnItemchangedListPresets(NMHDR *pNMHDR, LRESULT *pResult)
     this->ListSelectionChange();
 
     *pResult = 0;
+}
+
+void CPresetsDlg::OnBnClickedButtonDuplicate()
+{
+    if (bUpdate == true)
+        return;
+
+    bUpdate = true;
+
+    POSITION pos = m_LstPresets.GetFirstSelectedItemPosition();
+    if (pos != NULL)
+    {
+        int nSelected = m_LstPresets.GetNextSelectedItem(pos);
+        if (nSelected >= 0)
+        {
+            CFormat& format = m_Formats.GetData(nSelectedFormat);
+            CPreset& preset = format.m_Presets.GetData(nSelected);
+            CPreset copy = preset;
+
+            format.m_Presets.InsertAfter(copy, nSelected);
+
+            this->m_LstPresets.DeleteAllItems();
+            this->InsertPresetsToListCtrl();
+
+            m_LstPresets.SetItemState(nSelected + 1, LVIS_SELECTED, LVIS_SELECTED);
+        }
+    }
+
+    bUpdate = false;
+
+    this->ListSelectionChange();
 }
 
 void CPresetsDlg::OnBnClickedButtonRemoveAllPresets()
@@ -489,6 +523,7 @@ void CPresetsDlg::SetLanguage()
     helper.SetWndText(&m_StcOptions, 0x000B0013);
     helper.SetWndText(&m_BtnMoveUp, 0x000B0014);
     helper.SetWndText(&m_BtnMoveDown, 0x000B0015);
+    helper.SetWndText(&m_BtnDuplicate, 0x000B001D);
     helper.SetWndText(&m_BtnRemoveAll, 0x000B0016);
     helper.SetWndText(&m_BtnRemove, 0x000B0017);
     helper.SetWndText(&m_BtnAdd, 0x000B0018);

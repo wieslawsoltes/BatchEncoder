@@ -61,6 +61,7 @@ public:
     CMyEdit m_EdtOptions;
     CMyButton m_BtnOK;
     CMyButton m_BtnCancel;
+    CMyButton m_BtnDuplicate;
     CMyButton m_BtnRemoveAll;
     CMyButton m_BtnRemove;
     CMyButton m_BtnAdd;
@@ -75,6 +76,7 @@ public:
     afx_msg void OnBnClickedCancel();
     afx_msg void OnLvnItemchangedListPresets(NMHDR *pNMHDR, LRESULT *pResult);
     afx_msg void OnCbnSelchangeComboPresetFormat();
+    afx_msg void OnBnClickedButtonDuplicate();
     afx_msg void OnBnClickedButtonRemoveAllPresets();
     afx_msg void OnBnClickedButtonRemovePreset();
     afx_msg void OnBnClickedButtonAddPreset();

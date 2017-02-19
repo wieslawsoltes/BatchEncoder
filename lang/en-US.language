@@ -96,6 +96,7 @@
     <String key="0x000B001A" value="Sa&amp;ve As" />
     <String key="0x000B001B" value="C&amp;hange" />
     <String key="0x000B001C" value="&amp;OK" />
+    <String key="0x000B001D" value="Du&amp;plicate" />
 
     <!-- Formats Dialog -->
 

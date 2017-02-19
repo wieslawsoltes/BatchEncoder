@@ -37,6 +37,7 @@
 #define IDC_BUTTON_PRESET_LOAD          1031
 #define IDC_BUTTON_PRESET_SAVE          1032
 #define IDC_BUTTON_PRESET_UPDATE        1033
+#define IDC_BUTTON_PRESET_DUPLICATE     1034
 #define IDC_LIST_FORMATS                1040
 #define IDC_RADIO_TYPE_ENCODER          1041
 #define IDC_RADIO_TYPE_DECODER          1042
