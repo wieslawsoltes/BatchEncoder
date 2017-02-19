@@ -1235,9 +1235,7 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
         CItem& item = pWorkerContext->pConfig->m_Items.GetData(i);
         if (item.bChecked == true)
         {
-            item.bFinished = false;
-            item.nProgress = 0;
-            item.nPreviousProgress = 0;
+            item.ResetProgress();
 
             pWorkerContext->nTotalFiles++;
 

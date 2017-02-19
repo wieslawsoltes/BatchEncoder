@@ -54,4 +54,11 @@ public:
         this->nProgress = other.nProgress;
         this->nPreviousProgress = other.nPreviousProgress;
     }
+public:
+    void ResetProgress()
+    {
+        this->bFinished = false;
+        this->nProgress = 0;
+        this->nPreviousProgress = 0;
+    }
 };
