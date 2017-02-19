@@ -62,6 +62,18 @@ public:
     {
         m_Items.AddTail(item);
     }
+    void InsertBefore(CItem& item, int nIndex)
+    {
+        POSITION pos = m_Items.FindIndex(nIndex);
+        if (pos != NULL)
+            m_Items.InsertBefore(pos, item);
+    }
+    void InsertAfter(CItem& item, int nIndex)
+    {
+        POSITION pos = m_Items.FindIndex(nIndex);
+        if (pos != NULL)
+            m_Items.InsertAfter(pos, item);
+    }
 public:
     void RemoveNode(int pstn = -1)
     {

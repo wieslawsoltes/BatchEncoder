@@ -63,6 +63,18 @@ public:
     {
         m_Presets.AddTail(preset);
     }
+    void InsertBefore(CPreset &preset, int nIndex)
+    {
+        POSITION pos = m_Presets.FindIndex(nIndex);
+        if (pos != NULL)
+            m_Presets.InsertBefore(pos, preset);
+    }
+    void InsertAfter(CPreset &preset, int nIndex)
+    {
+        POSITION pos = m_Presets.FindIndex(nIndex);
+        if (pos != NULL)
+            m_Presets.InsertAfter(pos, preset);
+    }
     void InsertNode(CString szName)
     {
         CPreset preset;

@@ -63,6 +63,18 @@ public:
     {
         m_Formats.AddTail(format);
     }
+    void InsertBefore(CFormat &format, int nIndex)
+    {
+        POSITION pos = m_Formats.FindIndex(nIndex);
+        if (pos != NULL)
+            m_Formats.InsertBefore(pos, format);
+    }
+    void InsertAfter(CFormat &format, int nIndex)
+    {
+        POSITION pos = m_Formats.FindIndex(nIndex);
+        if (pos != NULL)
+            m_Formats.InsertAfter(pos, format);
+    }
 public:
     void RemoveNode(int pstn = -1)
     {

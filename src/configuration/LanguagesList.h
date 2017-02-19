@@ -63,6 +63,18 @@ public:
     {
         m_Languages.AddTail(language);
     }
+    void InsertBefore(CLanguage &language, int nIndex)
+    {
+        POSITION pos = m_Languages.FindIndex(nIndex);
+        if (pos != NULL)
+            m_Languages.InsertBefore(pos, language);
+    }
+    void InsertAfter(CLanguage &language, int nIndex)
+    {
+        POSITION pos = m_Languages.FindIndex(nIndex);
+        if (pos != NULL)
+            m_Languages.InsertAfter(pos, language);
+    }
 public:
     void RemoveNode(int pstn = -1)
     {
