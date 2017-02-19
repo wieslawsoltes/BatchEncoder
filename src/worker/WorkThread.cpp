@@ -9,7 +9,7 @@
 #include "LuaProgess.h"
 #include "WorkThread.h"
 
-bool ProgresssLoop(CFileContext* pContext, CProcess &process, CPipe &Stderr, int &nProgress)
+bool ProgresssLoop(CFileContext* pContext, CPipe &Stderr, int &nProgress)
 {
     CWorkerContext *pWorkerContext = pContext->pWorkerContext;
     const int nBuffSize = 4096;
@@ -120,7 +120,7 @@ bool ProgresssLoop(CFileContext* pContext, CProcess &process, CPipe &Stderr, int
                         nPreviousProgress = nProgress;
                     }
 
-                    if ((pContext->pWorkerContext->bRunning == false) || (bRunning == false))
+                    if ((pWorkerContext->bRunning == false) || (bRunning == false))
                         break;
                 }
 
@@ -199,7 +199,7 @@ bool ConvertFileUsingConsole(CFileContext* pContext)
     Stderr.CloseWrite();
 
     // console progress loop
-    if (ProgresssLoop(pContext, process, Stderr, nProgress) == false)
+    if (ProgresssLoop(pContext, Stderr, nProgress) == false)
     {
         timer.Stop();
         Stderr.CloseRead();
@@ -228,6 +228,7 @@ bool ConvertFileUsingConsole(CFileContext* pContext)
 
 bool ReadLoop(CPipeContext* pContext)
 {
+    CWorkerContext *pWorkerContext = pContext->pWorkerContext;
     HANDLE hFile = INVALID_HANDLE_VALUE;
     BYTE pReadBuff[4096];
     BOOL bRes = FALSE;
@@ -284,11 +285,11 @@ bool ReadLoop(CPipeContext* pContext)
 
         if (nProgress != nPreviousProgress)
         {
-            bRunning = pContext->pWorkerContext->Callback(pContext->nIndex, nProgress, false);
+            bRunning = pWorkerContext->Callback(pContext->nIndex, nProgress, false);
             nPreviousProgress = nProgress;
         }
 
-        if ((pContext->pWorkerContext->bRunning == false) || (bRunning == false))
+        if ((pWorkerContext->bRunning == false) || (bRunning == false))
             break;
     } while (bRes != FALSE);
 
@@ -311,6 +312,7 @@ bool ReadLoop(CPipeContext* pContext)
 
 bool WriteLoop(CPipeContext* pContext)
 {
+    CWorkerContext *pWorkerContext = pContext->pWorkerContext;
     HANDLE hFile = INVALID_HANDLE_VALUE;
     BYTE pReadBuff[4096];
     BOOL bRes = FALSE;
@@ -360,7 +362,7 @@ bool WriteLoop(CPipeContext* pContext)
         else
             bRes = TRUE;
 
-        if (pContext->pWorkerContext->bRunning == false)
+        if (pWorkerContext->bRunning == false)
             break;
     } while (bRes != FALSE);
 
@@ -1179,21 +1181,21 @@ bool ConvertLoop(CWorkerContext* pWorkerContext)
 
             if (pContext != NULL)
             {
-                if (pContext->pWorkerContext->bRunning == false)
+                if (pWorkerContext->bRunning == false)
                     return false;
 
-                pContext->pWorkerContext->Next(pContext->item->nId);
+                pWorkerContext->Next(pContext->item->nId);
                 if (ConvertItem(pContext) == true)
                 {
-                    pContext->pWorkerContext->nDoneWithoutError++;
+                    pWorkerContext->nDoneWithoutError++;
                 }
                 else
                 {
-                    if (pContext->pWorkerContext->pConfig->m_Options.bStopOnErrors == true)
+                    if (pWorkerContext->pConfig->m_Options.bStopOnErrors == true)
                         return false;
                 }
 
-                if (pContext->pWorkerContext->bRunning == false)
+                if (pWorkerContext->bRunning == false)
                     return false;
             }
             else

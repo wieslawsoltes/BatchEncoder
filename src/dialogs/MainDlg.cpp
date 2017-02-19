@@ -2546,18 +2546,18 @@ void CMainDlg::TraceConvert()
             CItemContext* pContext = (CItemContext*)pTraceWorkerContext->pQueue->RemoveHead();
             if (pContext != NULL)
             {
-                pContext->pWorkerContext->Next(pContext->item->nId);
+                pTraceWorkerContext->Next(pContext->item->nId);
                 if (ConvertItem(pContext) == true)
                 {
-                    pContext->pWorkerContext->nDoneWithoutError++;
+                    pTraceWorkerContext->nDoneWithoutError++;
                 }
                 else
                 {
-                    if (pContext->pWorkerContext->pConfig->m_Options.bStopOnErrors == true)
+                    if (pTraceWorkerContext->pConfig->m_Options.bStopOnErrors == true)
                         break;
                 }
 
-                if (pContext->pWorkerContext->bRunning == false)
+                if (pTraceWorkerContext->bRunning == false)
                     break;
             }
         }
