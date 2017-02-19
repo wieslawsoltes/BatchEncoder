@@ -110,8 +110,6 @@ bool ProgresssLoop(CFileContext* pContext, CPipe &Stderr, int &nProgress)
                     if (nRet != -1)
                         nProgress = nRet;
 
-                    //CString szRet; szRet.Format(_T("%d#n"), nRet); OutputDebugString(szRet);
-
                     ZeroMemory(szLineBuff, sizeof(szLineBuff));
 
                     if (nProgress != nPreviousProgress)
