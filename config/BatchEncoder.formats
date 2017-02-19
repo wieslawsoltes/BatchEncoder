@@ -656,7 +656,12 @@
             <Preset name="Lossless (Best compression)" options="-h"/>
         </Presets>
     </Format>
-    <Format id="FAAD_AAC_WAV" name="Decode AAC to WAV" template="$EXE -o $OUTFILE $INFILE" input="false" output="false" function="GetProgress_FaadDec.progress" path="faad.exe" success="0" type="1" formats="AAC" extension="WAV" default="0">
+    <Format id="FAAD_AAC_WAV" name="Decode AAC to WAV - faad" template="$EXE -o $OUTFILE $INFILE" input="false" output="false" function="GetProgress_FaadDec.progress" path="faad.exe" success="0" type="1" formats="AAC" extension="WAV" default="0">
+        <Presets>
+            <Preset name="Default" options=""/>
+        </Presets>
+    </Format>
+    <Format id="QAAC_AAC_WAV" name="Decode AAC to WAV - qaac" template="$EXE $OPTIONS --decode $INFILE -o $OUTFILE" input="false" output="false" function="GetProgress_QaacDec.progress" path="qaac.exe" success="0" type="1" formats="AAC" extension="WAV" default="0">
         <Presets>
             <Preset name="Default" options=""/>
         </Presets>
@@ -696,7 +701,12 @@
             <Preset name="Default" options=""/>
         </Presets>
     </Format>
-    <Format id="NERO_M4A_WAV" name="Decode M4A to WAV" template="$EXE $OPTIONS -if $INFILE -of $OUTFILE" input="false" output="true" function="- none -" path="neroAacDec.exe" success="0" type="1" formats="M4A" extension="WAV" default="0">
+    <Format id="NERO_M4A_WAV" name="Decode M4A to WAV - nero" template="$EXE $OPTIONS -if $INFILE -of $OUTFILE" input="false" output="true" function="- none -" path="neroAacDec.exe" success="0" type="1" formats="M4A" extension="WAV" default="0">
+        <Presets>
+            <Preset name="Default" options=""/>
+        </Presets>
+    </Format>
+    <Format id="QAAC_M4A_WAV" name="Decode M4A to WAV - qaac" template="$EXE $OPTIONS --decode $INFILE -o $OUTFILE" input="false" output="false" function="GetProgress_QaacDec.progress" path="qaac.exe" success="0" type="1" formats="M4A" extension="WAV" default="0">
         <Presets>
             <Preset name="Default" options=""/>
         </Presets>
