@@ -56,7 +56,7 @@ void CFormatsDlg::DoDataExchange(CDataExchange* pDX)
     DDX_Control(pDX, IDC_EDIT_FORMAT_EXTENSION, m_EdtExtension);
     DDX_Control(pDX, IDC_EDIT_FORMAT_FORMATS, m_EdtFormats);
     DDX_Control(pDX, IDC_EDIT_FORMAT_CODE, m_EdtCode);
-    DDX_Control(pDX, IDC_EDIT_FORMAT_DEFAULT, m_EdtDefault);
+    DDX_Control(pDX, IDC_COMBO_FORMAT_DEFAULT, m_CmbDefault);
     DDX_Control(pDX, IDC_EDIT_FORMAT_PATH, m_EdtPath);
     DDX_Control(pDX, IDC_EDIT_FORMAT_TEMPLATE, m_EdtTemplate);
     DDX_Control(pDX, IDC_EDIT_FORMAT_FUNCTION, m_EdtFunction);
@@ -90,7 +90,7 @@ BEGIN_MESSAGE_MAP(CFormatsDlg, CResizeDialog)
     ON_EN_CHANGE(IDC_EDIT_FORMAT_NAME, OnEnChangeEditFormatName)
     ON_EN_CHANGE(IDC_EDIT_FORMAT_EXTENSION, OnEnChangeEditFormatExtension)
     ON_EN_CHANGE(IDC_EDIT_FORMAT_FORMATS, OnEnChangeEditFormatFormats)
-    ON_EN_CHANGE(IDC_EDIT_FORMAT_DEFAULT, OnEnChangeEditFormatDefault)
+    ON_CBN_SELCHANGE(IDC_COMBO_FORMAT_DEFAULT, OnCbnSelchangeComboDefault)
     ON_EN_CHANGE(IDC_EDIT_FORMAT_PATH, OnEnChangeEditFormatPath)
     ON_EN_CHANGE(IDC_EDIT_FORMAT_TEMPLATE, OnEnChangeEditFormatTemplate)
     ON_EN_CHANGE(IDC_EDIT_FORMAT_FUNCTION, OnEnChangeEditFormatFunction)
@@ -151,7 +151,7 @@ BOOL CFormatsDlg::OnInitDialog()
     AddAnchor(IDC_STATIC_FORMAT_CODE, BOTTOM_LEFT);
     AddAnchor(IDC_EDIT_FORMAT_CODE, BOTTOM_LEFT);
     AddAnchor(IDC_STATIC_FORMAT_DEFAULT, BOTTOM_LEFT, BOTTOM_RIGHT);
-    AddAnchor(IDC_EDIT_FORMAT_DEFAULT, BOTTOM_LEFT, BOTTOM_RIGHT);
+    AddAnchor(IDC_COMBO_FORMAT_DEFAULT, BOTTOM_LEFT, BOTTOM_RIGHT);
     AddAnchor(IDC_BUTTON_EDIT_PRESETS, BOTTOM_RIGHT);
     AddAnchor(IDC_STATIC_FORMAT_PATH, BOTTOM_LEFT);
     AddAnchor(IDC_EDIT_FORMAT_PATH, BOTTOM_LEFT, BOTTOM_RIGHT);
@@ -402,7 +402,7 @@ void CFormatsDlg::OnBnClickedButtonUpdateFormat()
         CString szName = _T("");
         CString szExtension = _T("");
         CString szFormats = _T("");
-        CString szDefault = _T("");
+        int nDefaultPreset = 0;
         CString szTemplate = _T("");
         CString szPath = _T("");
         CString szExitCodeSuccess = _T("");
@@ -416,7 +416,9 @@ void CFormatsDlg::OnBnClickedButtonUpdateFormat()
         this->m_EdtExtension.GetWindowText(szExtension);
         this->m_EdtFormats.GetWindowText(szFormats);
         this->m_EdtCode.GetWindowText(szExitCodeSuccess);
-        this->m_EdtDefault.GetWindowText(szDefault);
+
+        nDefaultPreset = this->m_CmbDefault.GetCurSel();
+
         this->m_EdtName.GetWindowText(szName);
         this->m_EdtTemplate.GetWindowText(szTemplate);
 
@@ -442,7 +444,7 @@ void CFormatsDlg::OnBnClickedButtonUpdateFormat()
         format.szName = szName;
         format.szOutputExtension = szExtension;
         format.szInputExtensions = szFormats;
-        format.nDefaultPreset = _tstoi(szDefault);
+        format.nDefaultPreset = nDefaultPreset;
         format.szTemplate = szTemplate;
         format.nExitCodeSuccess = _tstoi(szExitCodeSuccess);
         format.nType = nType;
@@ -524,7 +526,7 @@ void CFormatsDlg::OnEnChangeEditFormatFormats()
     OnBnClickedButtonUpdateFormat();
 }
 
-void CFormatsDlg::OnEnChangeEditFormatDefault()
+void CFormatsDlg::OnCbnSelchangeComboDefault()
 {
     if (bUpdate == true)
         return;
@@ -857,10 +859,6 @@ void CFormatsDlg::UpdateFields(CFormat &format)
     szExitCodeSuccess.Format(_T("%d\0"), format.nExitCodeSuccess);
     this->m_EdtCode.SetWindowText(szExitCodeSuccess);
 
-    CString szDefaultPreset;
-    szDefaultPreset.Format(_T("%d\0"), format.nDefaultPreset);
-    this->m_EdtDefault.SetWindowText(szDefaultPreset);
-
     this->m_EdtTemplate.SetWindowText(format.szTemplate);
     this->m_EdtPath.SetWindowText(format.szPath);
 
@@ -896,6 +894,31 @@ void CFormatsDlg::UpdateFields(CFormat &format)
     this->m_EdtFunction.SetWindowText(format.szFunction);
 }
 
+void CFormatsDlg::UpdateDefaultComboBox(CFormat &format)
+{
+    this->m_CmbDefault.ResetContent();
+
+    int nPreset = -1;
+
+    int nPresets = format.m_Presets.GetSize();
+    for (int i = 0; i < nPresets; i++)
+    {
+        CPreset& preset = format.m_Presets.GetData(i);
+        this->m_CmbDefault.InsertString(i, preset.szName);
+    }
+
+    nPreset = format.nDefaultPreset;
+
+    static bool bResizeDefaultComboBox = false;
+    if (bResizeDefaultComboBox == false)
+    {
+        ::SetComboBoxHeight(this->GetSafeHwnd(), IDC_COMBO_FORMAT_DEFAULT, 15);
+        bResizeDefaultComboBox = true;
+    }
+
+    this->m_CmbDefault.SetCurSel(nPreset);
+}
+
 void CFormatsDlg::ListSelectionChange()
 {
     if (bUpdate == true)
@@ -911,6 +934,7 @@ void CFormatsDlg::ListSelectionChange()
         CFormat& format = this->m_Formats.GetData(nItem);
 
         this->UpdateFields(format);
+        this->UpdateDefaultComboBox(format);
     }
     else
     {
@@ -919,7 +943,9 @@ void CFormatsDlg::ListSelectionChange()
         this->m_EdtExtension.SetWindowText(_T(""));
         this->m_EdtFormats.SetWindowText(_T(""));
         this->m_EdtCode.SetWindowText(_T(""));
-        this->m_EdtDefault.SetWindowText(_T(""));
+
+        this->m_CmbDefault.ResetContent();
+
         this->m_EdtTemplate.SetWindowText(_T(""));
         this->m_EdtPath.SetWindowText(_T(""));
         this->CheckRadioButton(IDC_RADIO_TYPE_ENCODER,

@@ -65,12 +65,12 @@ public:
     CMyStatic m_StcTemplate;
     CMyStatic m_StcProgress;
     CMyListCtrl m_LstFormats;
+    CMyComboBox m_CmbDefault;
     CMyEdit m_EdtId;
     CMyEdit m_EdtName;
     CMyEdit m_EdtExtension;
     CMyEdit m_EdtFormats;
     CMyEdit m_EdtCode;
-    CMyEdit m_EdtDefault;
     CMyEdit m_EdtPath;
     CMyEdit m_EdtTemplate;
     CMyEdit m_EdtFunction;
@@ -106,7 +106,7 @@ public:
     afx_msg void OnEnChangeEditFormatName();
     afx_msg void OnEnChangeEditFormatExtension();
     afx_msg void OnEnChangeEditFormatFormats();
-    afx_msg void OnEnChangeEditFormatDefault();
+    afx_msg void OnCbnSelchangeComboDefault();
     afx_msg void OnEnChangeEditFormatPath();
     afx_msg void OnEnChangeEditFormatTemplate();
     afx_msg void OnEnChangeEditFormatFunction();
@@ -124,6 +124,7 @@ public:
     void InsertFormatsToListCtrl();
     void HandleDropFiles(HDROP hDropInfo);
     void UpdateFields(CFormat &format);
+    void UpdateDefaultComboBox(CFormat &format);
     void ListSelectionChange();
     void LoadFormats(CString szFileXml);
     void SaveFormats(CString szFileXml);
