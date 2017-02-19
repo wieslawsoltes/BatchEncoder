@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<Format id="NERO_M4A_WAV" name="Decode M4A to WAV" template="$EXE $OPTIONS -if $INFILE -of $OUTFILE" input="false" output="true" function="- none -" path="neroAacDec.exe" success="0" type="1" formats="M4A" extension="WAV" default="0">
+<Format id="NERO_M4A_WAV" name="Decode M4A to WAV - nero" template="$EXE $OPTIONS -if $INFILE -of $OUTFILE" input="false" output="true" function="- none -" path="neroAacDec.exe" success="0" type="1" formats="M4A" extension="WAV" default="0">
     <Presets>
         <Preset name="Default" options=""/>
     </Presets>

@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<Format id="FAAD_AAC_WAV" name="Decode AAC to WAV" template="$EXE -o $OUTFILE $INFILE" input="false" output="false" function="GetProgress_FaadDec.progress" path="faad.exe" success="0" type="1" formats="AAC" extension="WAV" default="0">
+<Format id="FAAD_AAC_WAV" name="Decode AAC to WAV - faad" template="$EXE -o $OUTFILE $INFILE" input="false" output="false" function="GetProgress_FaadDec.progress" path="faad.exe" success="0" type="1" formats="AAC" extension="WAV" default="0">
     <Presets>
         <Preset name="Default" options=""/>
     </Presets>
