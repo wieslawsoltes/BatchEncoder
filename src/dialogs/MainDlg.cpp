@@ -260,6 +260,8 @@ BEGIN_MESSAGE_MAP(CMainDlg, CResizeDialog)
     ON_COMMAND(ID_OPTIONS_DELETE_ON_ERRORS, OnOptionsDeleteOnErrors)
     ON_COMMAND(ID_OPTIONS_STOP_ON_ERRORS, OnOptionsStopOnErrors)
     ON_COMMAND(ID_OPTIONS_HIDE_CONSOLE, OnOptionsHideConsole)
+    ON_COMMAND(ID_OPTIONS_ENSURE_VISIBLE, OnOptionsEnsureVisible)
+    ON_COMMAND(ID_OPTIONS_FIND_DECODER, OnOptionsFindDecoder)
     ON_COMMAND(ID_LANGUAGE_DEFAULT, OnLanguageDefault)
     ON_COMMAND_RANGE(ID_LANGUAGE_MIN, ID_LANGUAGE_MAX, OnLanguageChange)
     ON_COMMAND(ID_HELP_WEBSITE, OnHelpWebsite)
@@ -1214,10 +1216,9 @@ void CMainDlg::OnOptionsDeleteSource()
 {
     if (this->pWorkerContext->bRunning == false)
     {
-        if (this->GetMenu()->GetMenuState(ID_OPTIONS_DELETE_SOURCE, MF_BYCOMMAND) == MF_CHECKED)
-            this->GetMenu()->CheckMenuItem(ID_OPTIONS_DELETE_SOURCE, MF_UNCHECKED);
-        else
-            this->GetMenu()->CheckMenuItem(ID_OPTIONS_DELETE_SOURCE, MF_CHECKED);
+        BOOL bChecked = this->GetMenu()->GetMenuState(ID_OPTIONS_DELETE_SOURCE, MF_BYCOMMAND) == MF_CHECKED;
+        this->GetMenu()->CheckMenuItem(ID_OPTIONS_DELETE_SOURCE, (bChecked == TRUE) ? MF_UNCHECKED : MF_CHECKED);
+        this->m_Config.m_Options.bDeleteSourceFiles = !bChecked;
     }
 }
 
@@ -1225,10 +1226,9 @@ void CMainDlg::OnOptionsShutdownWindows()
 {
     if (this->pWorkerContext->bRunning == false)
     {
-        if (this->GetMenu()->GetMenuState(ID_OPTIONS_SHUTDOWN_WINDOWS, MF_BYCOMMAND) == MF_CHECKED)
-            this->GetMenu()->CheckMenuItem(ID_OPTIONS_SHUTDOWN_WINDOWS, MF_UNCHECKED);
-        else
-            this->GetMenu()->CheckMenuItem(ID_OPTIONS_SHUTDOWN_WINDOWS, MF_CHECKED);
+        BOOL bChecked = this->GetMenu()->GetMenuState(ID_OPTIONS_SHUTDOWN_WINDOWS, MF_BYCOMMAND) == MF_CHECKED;
+        this->GetMenu()->CheckMenuItem(ID_OPTIONS_SHUTDOWN_WINDOWS, (bChecked == TRUE) ? MF_UNCHECKED : MF_CHECKED);
+        this->m_Config.m_Options.bShutdownWhenFinished = !bChecked;
     }
 }
 
@@ -1236,10 +1236,9 @@ void CMainDlg::OnOptionsDoNotSave()
 {
     if (this->pWorkerContext->bRunning == false)
     {
-        if (this->GetMenu()->GetMenuState(ID_OPTIONS_DO_NOT_SAVE, MF_BYCOMMAND) == MF_CHECKED)
-            this->GetMenu()->CheckMenuItem(ID_OPTIONS_DO_NOT_SAVE, MF_UNCHECKED);
-        else
-            this->GetMenu()->CheckMenuItem(ID_OPTIONS_DO_NOT_SAVE, MF_CHECKED);
+        BOOL bChecked = this->GetMenu()->GetMenuState(ID_OPTIONS_DO_NOT_SAVE, MF_BYCOMMAND) == MF_CHECKED;
+        this->GetMenu()->CheckMenuItem(ID_OPTIONS_DO_NOT_SAVE, (bChecked == TRUE) ? MF_UNCHECKED : MF_CHECKED);
+        this->m_Config.m_Options.bDoNotSaveConfiguration = !bChecked;
     }
 }
 
@@ -1247,10 +1246,9 @@ void CMainDlg::OnOptionsDeleteOnErrors()
 {
     if (this->pWorkerContext->bRunning == false)
     {
-        if (this->GetMenu()->GetMenuState(ID_OPTIONS_DELETE_ON_ERRORS, MF_BYCOMMAND) == MF_CHECKED)
-            this->GetMenu()->CheckMenuItem(ID_OPTIONS_DELETE_ON_ERRORS, MF_UNCHECKED);
-        else
-            this->GetMenu()->CheckMenuItem(ID_OPTIONS_DELETE_ON_ERRORS, MF_CHECKED);
+        BOOL bChecked = this->GetMenu()->GetMenuState(ID_OPTIONS_DELETE_ON_ERRORS, MF_BYCOMMAND) == MF_CHECKED;
+        this->GetMenu()->CheckMenuItem(ID_OPTIONS_DELETE_ON_ERRORS, (bChecked == TRUE) ? MF_UNCHECKED : MF_CHECKED);
+        this->m_Config.m_Options.bDeleteOnErrors = !bChecked;
     }
 }
 
@@ -1258,10 +1256,9 @@ void CMainDlg::OnOptionsStopOnErrors()
 {
     if (this->pWorkerContext->bRunning == false)
     {
-        if (this->GetMenu()->GetMenuState(ID_OPTIONS_STOP_ON_ERRORS, MF_BYCOMMAND) == MF_CHECKED)
-            this->GetMenu()->CheckMenuItem(ID_OPTIONS_STOP_ON_ERRORS, MF_UNCHECKED);
-        else
-            this->GetMenu()->CheckMenuItem(ID_OPTIONS_STOP_ON_ERRORS, MF_CHECKED);
+        BOOL bChecked = this->GetMenu()->GetMenuState(ID_OPTIONS_STOP_ON_ERRORS, MF_BYCOMMAND) == MF_CHECKED;
+        this->GetMenu()->CheckMenuItem(ID_OPTIONS_STOP_ON_ERRORS, (bChecked == TRUE) ? MF_UNCHECKED : MF_CHECKED);
+        this->m_Config.m_Options.bStopOnErrors = !bChecked;
     }
 }
 
@@ -1269,10 +1266,29 @@ void CMainDlg::OnOptionsHideConsole()
 {
     if (this->pWorkerContext->bRunning == false)
     {
-        if (this->GetMenu()->GetMenuState(ID_OPTIONS_HIDE_CONSOLE, MF_BYCOMMAND) == MF_CHECKED)
-            this->GetMenu()->CheckMenuItem(ID_OPTIONS_HIDE_CONSOLE, MF_UNCHECKED);
-        else
-            this->GetMenu()->CheckMenuItem(ID_OPTIONS_HIDE_CONSOLE, MF_CHECKED);
+        BOOL bChecked = this->GetMenu()->GetMenuState(ID_OPTIONS_HIDE_CONSOLE, MF_BYCOMMAND) == MF_CHECKED;
+        this->GetMenu()->CheckMenuItem(ID_OPTIONS_HIDE_CONSOLE, (bChecked == TRUE) ? MF_UNCHECKED : MF_CHECKED);
+        this->m_Config.m_Options.bHideConsoleWindow = !bChecked;
+    }
+}
+
+void CMainDlg::OnOptionsEnsureVisible()
+{
+    if (this->pWorkerContext->bRunning == false)
+    {
+        BOOL bChecked = this->GetMenu()->GetMenuState(ID_OPTIONS_ENSURE_VISIBLE, MF_BYCOMMAND) == MF_CHECKED;
+        this->GetMenu()->CheckMenuItem(ID_OPTIONS_ENSURE_VISIBLE, (bChecked == TRUE) ? MF_UNCHECKED : MF_CHECKED);
+        this->m_Config.m_Options.bEnsureItemIsVisible = !bChecked;
+    }
+}
+
+void CMainDlg::OnOptionsFindDecoder()
+{
+    if (this->pWorkerContext->bRunning == false)
+    {
+        BOOL bChecked = this->GetMenu()->GetMenuState(ID_OPTIONS_FIND_DECODER, MF_BYCOMMAND) == MF_CHECKED;
+        this->GetMenu()->CheckMenuItem(ID_OPTIONS_FIND_DECODER, (bChecked == TRUE) ? MF_UNCHECKED : MF_CHECKED);
+        this->m_Config.m_Options.bTryToFindDecoder = !bChecked;
     }
 }
 
@@ -1469,6 +1485,8 @@ void CMainDlg::SetLanguage()
     helper.SetMenuItemText(m_hMenu, ID_OPTIONS_DELETE_ON_ERRORS, 0x00040007);
     helper.SetMenuItemText(m_hMenu, ID_OPTIONS_STOP_ON_ERRORS, 0x00040008);
     helper.SetMenuItemText(m_hMenu, ID_OPTIONS_HIDE_CONSOLE, 0x00040009);
+    helper.SetMenuItemText(m_hMenu, ID_OPTIONS_ENSURE_VISIBLE, 0x0004000A);
+    helper.SetMenuItemText(m_hMenu, ID_OPTIONS_FIND_DECODER, 0x0004000B);
 
     // Language Menu
     helper.SetMenuPopupText(m_hMenu, 4, 0x00050001);
@@ -1580,6 +1598,12 @@ void CMainDlg::GetOptions()
     // option: HideConsoleWindow
     m_Config.m_Options.bHideConsoleWindow = this->GetMenu()->GetMenuState(ID_OPTIONS_HIDE_CONSOLE, MF_BYCOMMAND) == MF_CHECKED;
 
+    // option: EnsureItemIsVisible
+    m_Config.m_Options.bEnsureItemIsVisible = this->GetMenu()->GetMenuState(ID_OPTIONS_ENSURE_VISIBLE, MF_BYCOMMAND) == MF_CHECKED;
+
+    // option: TryToFindDecoder
+    m_Config.m_Options.bTryToFindDecoder = this->GetMenu()->GetMenuState(ID_OPTIONS_FIND_DECODER, MF_BYCOMMAND) == MF_CHECKED;
+
     // option: ThreadCount
     CString szThreadCount;
     m_EdtThreads.GetWindowText(szThreadCount);
@@ -1674,6 +1698,18 @@ void CMainDlg::SetOptions()
         this->GetMenu()->CheckMenuItem(ID_OPTIONS_HIDE_CONSOLE, MF_CHECKED);
     else
         this->GetMenu()->CheckMenuItem(ID_OPTIONS_HIDE_CONSOLE, MF_UNCHECKED);
+
+    // option: EnsureItemIsVisible
+    if (m_Config.m_Options.bEnsureItemIsVisible)
+        this->GetMenu()->CheckMenuItem(ID_OPTIONS_ENSURE_VISIBLE, MF_CHECKED);
+    else
+        this->GetMenu()->CheckMenuItem(ID_OPTIONS_ENSURE_VISIBLE, MF_UNCHECKED);
+
+    // option: TryToFindDecoder
+    if (m_Config.m_Options.bTryToFindDecoder)
+        this->GetMenu()->CheckMenuItem(ID_OPTIONS_FIND_DECODER, MF_CHECKED);
+    else
+        this->GetMenu()->CheckMenuItem(ID_OPTIONS_FIND_DECODER, MF_UNCHECKED);
 
     // option: ThreadCount
     CString szThreadCount;

@@ -46,6 +46,8 @@
     <String key="0x00040007" value="Borrar archivo de &amp;salida si hay error" />
     <String key="0x00040008" value="Detener &amp;conversión si hay error" />
     <String key="0x00040009" value="&amp;Ocultar la ventana de la consola" />
+    <String key="0x0004000A" value="&amp;Ensure Item Is Visible" />
+    <String key="0x0004000B" value="&amp;Try To Find Decoder" />
 
     <!-- Language Menu -->
 

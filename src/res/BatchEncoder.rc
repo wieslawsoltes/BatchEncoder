@@ -260,6 +260,10 @@ BEGIN
         MENUITEM "Stop &Conversion On Error",   ID_OPTIONS_STOP_ON_ERRORS
         MENUITEM SEPARATOR
         MENUITEM "&Hide Console Window",        ID_OPTIONS_HIDE_CONSOLE
+        MENUITEM SEPARATOR
+        MENUITEM "&Ensure Item Is Visible",     ID_OPTIONS_ENSURE_VISIBLE
+        MENUITEM SEPARATOR
+        MENUITEM "&Try To Find Decoder",        ID_OPTIONS_FIND_DECODER
     END
     POPUP "&Language"
     BEGIN

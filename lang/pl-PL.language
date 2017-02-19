@@ -46,6 +46,8 @@
     <String key="0x00040007" value="Usuń Plik Wyjściowy W Przypadku &amp;Błędu" />
     <String key="0x00040008" value="Zatrzymaj &amp;Konwersje W Przypadku Błędu" />
     <String key="0x00040009" value="Uk&amp;ryj Okno Konsoli" />
+    <String key="0x0004000A" value="Zapewnij Że &amp;Element Jest Widoczny" />
+    <String key="0x0004000B" value="Spróbuj Znaleźć &amp;Dekoder" />
 
     <!-- Language Menu -->
 
