@@ -59,6 +59,7 @@ public:
     CMyStatic m_StcName;
     CMyStatic m_StcExtension;
     CMyStatic m_StcFormats;
+    CMyStatic m_StcCode;
     CMyStatic m_StcDefault;
     CMyStatic m_StcPath;
     CMyStatic m_StcTemplate;
@@ -68,6 +69,7 @@ public:
     CMyEdit m_EdtName;
     CMyEdit m_EdtExtension;
     CMyEdit m_EdtFormats;
+    CMyEdit m_EdtCode;
     CMyEdit m_EdtDefault;
     CMyEdit m_EdtPath;
     CMyEdit m_EdtTemplate;
@@ -82,6 +84,7 @@ public:
     CMyButton m_BtnUpdate;
     CMyButton m_BtnLoad;
     CMyButton m_BtnSave;
+    CMyButton m_BtnEditPresets;
     CMyButton m_BtnBrowsePath;
     CMyButton m_BtnBrowseFunction;
 public:
@@ -109,6 +112,7 @@ public:
     afx_msg void OnEnChangeEditFormatFunction();
     afx_msg void OnBnClickedButtonLoadFormats();
     afx_msg void OnBnClickedButtonSaveFormats();
+    afx_msg void OnBnClickedButtonEditPresets();
     afx_msg void OnBnClickedButtonBrowsePath();
     afx_msg void OnBnClickedButtonBrowseProgress();
     afx_msg void OnClose();

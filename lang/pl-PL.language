@@ -129,6 +129,8 @@
     <String key="0x000C0028" value="Zapisz &amp;Jako" />
     <String key="0x000C0029" value="Z&amp;mień" />
     <String key="0x000C002A" value="&amp;OK" />
+    <String key="0x000C002B" value="Kod wyjścia kiedy sukces:" />
+    <String key="0x000C002C" value="&amp;Edytuj Presety" />
 
     <!-- About Dialog -->
 

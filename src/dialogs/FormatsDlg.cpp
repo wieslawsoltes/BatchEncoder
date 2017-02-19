@@ -10,6 +10,7 @@
 #include "..\utilities\Utf8String.h"
 #include "..\XmlConfiguration.h"
 #include "FormatsDlg.h"
+#include "PresetsDlg.h"
 
 DWORD WINAPI FormatsDlgDropThread(LPVOID lpParam)
 {
@@ -44,6 +45,7 @@ void CFormatsDlg::DoDataExchange(CDataExchange* pDX)
     DDX_Control(pDX, IDC_STATIC_FORMAT_NAME, m_StcName);
     DDX_Control(pDX, IDC_STATIC_FORMAT_EXTENSION, m_StcExtension);
     DDX_Control(pDX, IDC_STATIC_FORMAT_FORMATS, m_StcFormats);
+    DDX_Control(pDX, IDC_STATIC_FORMAT_CODE, m_StcCode);
     DDX_Control(pDX, IDC_STATIC_FORMAT_DEFAULT, m_StcDefault);
     DDX_Control(pDX, IDC_STATIC_FORMAT_PATH, m_StcPath);
     DDX_Control(pDX, IDC_STATIC_FORMAT_TEMPLATE, m_StcTemplate);
@@ -53,6 +55,7 @@ void CFormatsDlg::DoDataExchange(CDataExchange* pDX)
     DDX_Control(pDX, IDC_EDIT_FORMAT_NAME, m_EdtName);
     DDX_Control(pDX, IDC_EDIT_FORMAT_EXTENSION, m_EdtExtension);
     DDX_Control(pDX, IDC_EDIT_FORMAT_FORMATS, m_EdtFormats);
+    DDX_Control(pDX, IDC_EDIT_FORMAT_CODE, m_EdtCode);
     DDX_Control(pDX, IDC_EDIT_FORMAT_DEFAULT, m_EdtDefault);
     DDX_Control(pDX, IDC_EDIT_FORMAT_PATH, m_EdtPath);
     DDX_Control(pDX, IDC_EDIT_FORMAT_TEMPLATE, m_EdtTemplate);
@@ -67,6 +70,7 @@ void CFormatsDlg::DoDataExchange(CDataExchange* pDX)
     DDX_Control(pDX, IDC_BUTTON_FORMAT_UPDATE, m_BtnUpdate);
     DDX_Control(pDX, IDC_BUTTON_FORMAT_LOAD, m_BtnLoad);
     DDX_Control(pDX, IDC_BUTTON_FORMAT_SAVE, m_BtnSave);
+    DDX_Control(pDX, IDC_BUTTON_EDIT_PRESETS, m_BtnEditPresets);
     DDX_Control(pDX, IDC_BUTTON_BROWSE_PATH, m_BtnBrowsePath);
     DDX_Control(pDX, IDC_BUTTON_BROWSE_FUNCTION, m_BtnBrowseFunction);
 }
@@ -98,6 +102,7 @@ BEGIN_MESSAGE_MAP(CFormatsDlg, CResizeDialog)
     ON_BN_CLICKED(IDC_BUTTON_FORMAT_UPDATE, OnBnClickedButtonUpdateFormat)
     ON_BN_CLICKED(IDC_BUTTON_FORMAT_LOAD, OnBnClickedButtonLoadFormats)
     ON_BN_CLICKED(IDC_BUTTON_FORMAT_SAVE, OnBnClickedButtonSaveFormats)
+    ON_BN_CLICKED(IDC_BUTTON_EDIT_PRESETS, OnBnClickedButtonEditPresets)
     ON_BN_CLICKED(IDC_BUTTON_BROWSE_PATH, OnBnClickedButtonBrowsePath)
     ON_BN_CLICKED(IDC_BUTTON_BROWSE_FUNCTION, OnBnClickedButtonBrowseProgress)
     ON_WM_CLOSE()
@@ -137,14 +142,17 @@ BOOL CFormatsDlg::OnInitDialog()
     AddAnchor(IDC_RADIO_TYPE_DECODER, BOTTOM_LEFT);
     AddAnchor(IDC_STATIC_FORMAT_ID, BOTTOM_LEFT, BOTTOM_RIGHT);
     AddAnchor(IDC_EDIT_FORMAT_ID, BOTTOM_LEFT, BOTTOM_RIGHT);
-    AddAnchor(IDC_STATIC_FORMAT_EXTENSION, BOTTOM_RIGHT);
-    AddAnchor(IDC_EDIT_FORMAT_EXTENSION, BOTTOM_RIGHT);
-    AddAnchor(IDC_STATIC_FORMAT_NAME, BOTTOM_LEFT, BOTTOM_RIGHT);
-    AddAnchor(IDC_EDIT_FORMAT_NAME, BOTTOM_LEFT, BOTTOM_RIGHT);
-    AddAnchor(IDC_STATIC_FORMAT_FORMATS, BOTTOM_LEFT, BOTTOM_RIGHT);
-    AddAnchor(IDC_EDIT_FORMAT_FORMATS, BOTTOM_LEFT, BOTTOM_RIGHT);
-    AddAnchor(IDC_STATIC_FORMAT_DEFAULT, BOTTOM_RIGHT);
-    AddAnchor(IDC_EDIT_FORMAT_DEFAULT, BOTTOM_RIGHT);
+    AddAnchor(IDC_STATIC_FORMAT_EXTENSION, BOTTOM_LEFT, BOTTOM_RIGHT);
+    AddAnchor(IDC_EDIT_FORMAT_EXTENSION, BOTTOM_LEFT, BOTTOM_RIGHT);
+    AddAnchor(IDC_STATIC_FORMAT_NAME, BOTTOM_LEFT);
+    AddAnchor(IDC_EDIT_FORMAT_NAME, BOTTOM_LEFT);
+    AddAnchor(IDC_STATIC_FORMAT_FORMATS, BOTTOM_LEFT);
+    AddAnchor(IDC_EDIT_FORMAT_FORMATS, BOTTOM_LEFT);
+    AddAnchor(IDC_STATIC_FORMAT_CODE, BOTTOM_LEFT);
+    AddAnchor(IDC_EDIT_FORMAT_CODE, BOTTOM_LEFT);
+    AddAnchor(IDC_STATIC_FORMAT_DEFAULT, BOTTOM_LEFT, BOTTOM_RIGHT);
+    AddAnchor(IDC_EDIT_FORMAT_DEFAULT, BOTTOM_LEFT, BOTTOM_RIGHT);
+    AddAnchor(IDC_BUTTON_EDIT_PRESETS, BOTTOM_RIGHT);
     AddAnchor(IDC_STATIC_FORMAT_PATH, BOTTOM_LEFT);
     AddAnchor(IDC_EDIT_FORMAT_PATH, BOTTOM_LEFT, BOTTOM_RIGHT);
     AddAnchor(IDC_BUTTON_BROWSE_PATH, BOTTOM_RIGHT);
@@ -153,8 +161,8 @@ BOOL CFormatsDlg::OnInitDialog()
     AddAnchor(IDC_CHECK_FORMAT_PIPES_OUTPUT, BOTTOM_LEFT);
     AddAnchor(IDC_STATIC_FORMAT_TEMPLATE, BOTTOM_LEFT, BOTTOM_RIGHT);
     AddAnchor(IDC_EDIT_FORMAT_TEMPLATE, BOTTOM_LEFT, BOTTOM_RIGHT);
-    AddAnchor(IDC_STATIC_FORMAT_FUNCTION, BOTTOM_RIGHT);
-    AddAnchor(IDC_EDIT_FORMAT_FUNCTION, BOTTOM_RIGHT);
+    AddAnchor(IDC_STATIC_FORMAT_FUNCTION, BOTTOM_LEFT, BOTTOM_RIGHT);
+    AddAnchor(IDC_EDIT_FORMAT_FUNCTION, BOTTOM_LEFT, BOTTOM_RIGHT);
     AddAnchor(IDC_BUTTON_BROWSE_FUNCTION, BOTTOM_RIGHT);
     AddAnchor(IDC_BUTTON_FORMAT_UP, TOP_RIGHT);
     AddAnchor(IDC_BUTTON_FORMAT_DOWN, TOP_RIGHT);
@@ -397,16 +405,18 @@ void CFormatsDlg::OnBnClickedButtonUpdateFormat()
         CString szDefault = _T("");
         CString szTemplate = _T("");
         CString szPath = _T("");
+        CString szExitCodeSuccess = _T("");
         int nType = 0;
         bool bInput = false;
         bool bOutput = false;
         CString szFunction = _T("");
 
-        m_EdtId.GetWindowText(szId);
-        m_EdtName.GetWindowText(szName);
-        m_EdtExtension.GetWindowText(szExtension);
-        m_EdtFormats.GetWindowText(szFormats);
-        m_EdtDefault.GetWindowText(szDefault);
+        this->m_EdtId.GetWindowText(szId);
+        this->m_EdtName.GetWindowText(szName);
+        this->m_EdtExtension.GetWindowText(szExtension);
+        this->m_EdtFormats.GetWindowText(szFormats);
+        this->m_EdtCode.GetWindowText(szExitCodeSuccess);
+        this->m_EdtDefault.GetWindowText(szDefault);
         this->m_EdtName.GetWindowText(szName);
         this->m_EdtTemplate.GetWindowText(szTemplate);
 
@@ -434,6 +444,7 @@ void CFormatsDlg::OnBnClickedButtonUpdateFormat()
         format.szInputExtensions = szFormats;
         format.nDefaultPreset = _tstoi(szDefault);
         format.szTemplate = szTemplate;
+        format.nExitCodeSuccess = _tstoi(szExitCodeSuccess);
         format.nType = nType;
         format.bPipeInput = bInput;
         format.bPipeOutput = bOutput;
@@ -583,6 +594,40 @@ void CFormatsDlg::OnBnClickedButtonSaveFormats()
     }
 }
 
+void CFormatsDlg::OnBnClickedButtonEditPresets()
+{
+    POSITION pos = m_LstFormats.GetFirstSelectedItemPosition();
+    if (pos != NULL)
+    {
+        int nItem = m_LstFormats.GetNextSelectedItem(pos);
+
+        CPresetsDlg dlg;
+        dlg.pConfig = pConfig;
+        dlg.nSelectedFormat = nItem;
+        dlg.m_Formats = m_Formats;
+        dlg.szPresetsDialogResize = pConfig->m_Options.szPresetsDialogResize;
+        dlg.szPresetsListColumns = pConfig->m_Options.szPresetsListColumns;
+
+        INT_PTR nRet = dlg.DoModal();
+        if (nRet == IDOK)
+        {
+            this->m_Formats.RemoveAllNodes();
+            this->m_Formats = dlg.m_Formats;
+
+            this->m_LstFormats.DeleteAllItems();
+
+            this->InsertFormatsToListCtrl();
+            m_LstFormats.SetItemState(nItem, LVIS_SELECTED, LVIS_SELECTED);
+            m_LstFormats.EnsureVisible(nItem, FALSE);
+
+            this->ListSelectionChange();
+        }
+
+        pConfig->m_Options.szPresetsDialogResize = dlg.szPresetsDialogResize;
+        pConfig->m_Options.szPresetsListColumns = dlg.szPresetsListColumns;
+    }
+}
+
 void CFormatsDlg::OnBnClickedButtonBrowsePath()
 {
     POSITION pos = m_LstFormats.GetFirstSelectedItemPosition();
@@ -667,8 +712,10 @@ void CFormatsDlg::SetLanguage()
     helper.SetWndText(&m_StcName, 0x000C0019);
     helper.SetWndText(&m_StcExtension, 0x000C001A);
     helper.SetWndText(&m_StcFormats, 0x000C001B);
+    helper.SetWndText(&m_StcCode, 0x000C002B);
     helper.SetWndText(&m_StcDefault, 0x000C001C);
     helper.SetWndText(&m_StcPath, 0x000C001D);
+    helper.SetWndText(&m_BtnEditPresets, 0x000C002C);
     helper.SetWndText(&m_BtnBrowsePath, 0x000C001E);
     helper.SetWndText(&m_StcTemplate, 0x000C001F);
     helper.SetWndText(&m_StcProgress, 0x000C0020);
@@ -806,6 +853,10 @@ void CFormatsDlg::UpdateFields(CFormat &format)
     this->m_EdtExtension.SetWindowText(format.szOutputExtension);
     this->m_EdtFormats.SetWindowText(format.szInputExtensions);
 
+    CString szExitCodeSuccess;
+    szExitCodeSuccess.Format(_T("%d\0"), format.nExitCodeSuccess);
+    this->m_EdtCode.SetWindowText(szExitCodeSuccess);
+
     CString szDefaultPreset;
     szDefaultPreset.Format(_T("%d\0"), format.nDefaultPreset);
     this->m_EdtDefault.SetWindowText(szDefaultPreset);
@@ -867,6 +918,7 @@ void CFormatsDlg::ListSelectionChange()
         this->m_EdtName.SetWindowText(_T(""));
         this->m_EdtExtension.SetWindowText(_T(""));
         this->m_EdtFormats.SetWindowText(_T(""));
+        this->m_EdtCode.SetWindowText(_T(""));
         this->m_EdtDefault.SetWindowText(_T(""));
         this->m_EdtTemplate.SetWindowText(_T(""));
         this->m_EdtPath.SetWindowText(_T(""));

@@ -70,6 +70,9 @@
 #define IDC_BUTTON_FORMAT_LOAD          1070
 #define IDC_BUTTON_FORMAT_SAVE          1071
 #define IDC_BUTTON_FORMAT_UPDATE        1072
+#define IDC_BUTTON_EDIT_PRESETS         1073
+#define IDC_STATIC_FORMAT_CODE          1074
+#define IDC_EDIT_FORMAT_CODE            1075
 #define IDC_STATIC_TEXT_APP_NAME        1080
 #define IDC_STATIC_TEXT_WEBSITE         1081
 #define IDC_STATIC_TEXT_EMAIL           1082

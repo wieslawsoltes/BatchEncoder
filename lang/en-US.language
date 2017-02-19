@@ -129,6 +129,8 @@
     <String key="0x000C0028" value="&amp;Save As" />
     <String key="0x000C0029" value="C&amp;hange" />
     <String key="0x000C002A" value="&amp;OK" />
+    <String key="0x000C002B" value="Exit code on success:" />
+    <String key="0x000C002C" value="&amp;Edit Presets" />
 
     <!-- About Dialog -->
 
