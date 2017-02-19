@@ -329,6 +329,14 @@ BEGIN
         HORZGUIDE, 7
         HORZGUIDE, 19
         HORZGUIDE, 25
+        HORZGUIDE, 37
+        HORZGUIDE, 41
+        HORZGUIDE, 53
+        HORZGUIDE, 108
+        HORZGUIDE, 120
+        HORZGUIDE, 124
+        HORZGUIDE, 136
+        HORZGUIDE, 140
         HORZGUIDE, 152
         HORZGUIDE, 156
         HORZGUIDE, 195
@@ -348,6 +356,14 @@ BEGIN
         VERTGUIDE, 360
         VERTGUIDE, 420
         HORZGUIDE, 7
+        HORZGUIDE, 19
+        HORZGUIDE, 23
+        HORZGUIDE, 35
+        HORZGUIDE, 99
+        HORZGUIDE, 111
+        HORZGUIDE, 115
+        HORZGUIDE, 127
+        HORZGUIDE, 131
         HORZGUIDE, 143
         HORZGUIDE, 147
         HORZGUIDE, 170
