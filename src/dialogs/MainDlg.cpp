@@ -2484,11 +2484,10 @@ void CMainDlg::TraceConvert()
     pTraceWorkerContext->pConfig = &this->m_Config;
 
     int nItems = this->m_Config.m_Items.GetSize();
-    int nChecked = 0;
-
     if (nItems <= 0)
         return;
 
+    int nChecked = 0;
     for (int i = 0; i < nItems; i++)
     {
         CItem& item = this->m_Config.m_Items.GetData(i);
@@ -2501,11 +2500,11 @@ void CMainDlg::TraceConvert()
     if (nChecked <= 0)
         return;
 
+    CItemContext *pItemsContext = new CItemContext[nItems];
+
     pTraceWorkerContext->dwThreadID = -1;
     pTraceWorkerContext->hThread = NULL;
     pTraceWorkerContext->bRunning = true;
-
-    CItemContext *pItemsContext = new CItemContext[nItems];
 
     pTraceWorkerContext->nTotalFiles = 0;
     pTraceWorkerContext->nProcessedFiles = 0;
@@ -2519,14 +2518,11 @@ void CMainDlg::TraceConvert()
         CItem& item = pTraceWorkerContext->pConfig->m_Items.GetData(i);
         if (item.bChecked == true)
         {
-            item.nProgress = 0;
-            item.nPreviousProgress = 0;
-
-            pTraceWorkerContext->nTotalFiles++;
-
+            item.ResetProgress();
             pItemsContext[i].pWorkerContext = pTraceWorkerContext;
             pItemsContext[i].item = &item;
             pTraceWorkerContext->pQueue->AddTail(&pItemsContext[i]);
+            pTraceWorkerContext->nTotalFiles++;
         }
         else
         {
@@ -2536,7 +2532,7 @@ void CMainDlg::TraceConvert()
     }
 
     pTraceWorkerContext->nThreadCount = 1;
-
+    pWorkerContext->pSync = NULL;
     pTraceWorkerContext->Init();
 
     while (!pTraceWorkerContext->pQueue->IsEmpty())

@@ -1242,12 +1242,10 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
         if (item.bChecked == true)
         {
             item.ResetProgress();
-
-            pWorkerContext->nTotalFiles++;
-
             pItemsContext[i].pWorkerContext = pWorkerContext;
             pItemsContext[i].item = &item;
             pWorkerContext->pQueue->AddTail(&pItemsContext[i]);
+            pWorkerContext->nTotalFiles++;
         }
         else
         {
