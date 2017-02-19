@@ -1209,9 +1209,9 @@ bool ConvertLoop(CWorkerContext* pWorkerContext)
     return true;
 }
 
-DWORD WINAPI ConvertThread(LPVOID lpParam)
+int ConvertThread(void *param)
 {
-    CWorkerContext* pWorkerContext = (CWorkerContext*)lpParam;
+    CWorkerContext* pWorkerContext = (CWorkerContext*)param;
     if (pWorkerContext != NULL)
     {
         if (ConvertLoop(pWorkerContext) == true)
@@ -1220,9 +1220,9 @@ DWORD WINAPI ConvertThread(LPVOID lpParam)
     return FALSE;
 }
 
-DWORD WINAPI WorkThread(LPVOID lpParam)
+int WorkThread(void *param)
 {
-    CWorkerContext* pWorkerContext = (CWorkerContext*)lpParam;
+    CWorkerContext* pWorkerContext = (CWorkerContext*)param;
     if (pWorkerContext == NULL)
         return FALSE;
 
@@ -1276,25 +1276,24 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
     // multi-threaded
     if (pWorkerContext->nThreadCount > 1)
     {
-        HANDLE* hConvertThread = new HANDLE[pWorkerContext->nThreadCount];
-        DWORD* dwConvertThreadID = new DWORD[pWorkerContext->nThreadCount];
+        CThread *pConvertThreads = new CThread[pWorkerContext->nThreadCount];
 
         for (int i = 0; i < pWorkerContext->nThreadCount; i++)
         {
-            dwConvertThreadID[i] = i;
-            hConvertThread[i] = ::CreateThread(NULL, 0, ConvertThread, pWorkerContext, CREATE_SUSPENDED, &dwConvertThreadID[i]);
-            if (hConvertThread[i] == NULL)
+            if (pConvertThreads[i].Start(ConvertThread, pWorkerContext, true) == false)
                 break;
-            ::ResumeThread(hConvertThread[i]);
+
+            if (pConvertThreads[i].Resume() == false)
+                break;
         }
 
-        ::WaitForMultipleObjects(pWorkerContext->nThreadCount, hConvertThread, TRUE, INFINITE);
+        for (int i = 0; i < pWorkerContext->nThreadCount; i++)
+            pConvertThreads[i].Wait();
 
         for (int i = 0; i < pWorkerContext->nThreadCount; i++)
-            ::CloseHandle(hConvertThread[i]);
+            pConvertThreads[i].Close();
 
-        delete hConvertThread;
-        delete dwConvertThreadID;
+        delete [] pConvertThreads;
     }
 
     delete pWorkerContext->pSync;
@@ -1304,5 +1303,5 @@ DWORD WINAPI WorkThread(LPVOID lpParam)
     pWorkerContext->Done();
     pWorkerContext->bDone = true;
 
-    return ::CloseHandle(pWorkerContext->hThread);
+    return pWorkerContext->m_Worker.Close();
 }

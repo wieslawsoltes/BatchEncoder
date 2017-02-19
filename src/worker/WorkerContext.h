@@ -4,6 +4,7 @@
 #pragma once
 
 #include "Synchronize.h"
+#include "Thread.h"
 #include "configuration\Configuration.h"
 
 class CWorkerContext
@@ -13,9 +14,7 @@ public:
     volatile bool bDone;
     CConfiguration* pConfig;
 public:
-    HANDLE hThread;
-    DWORD dwThreadID;
-public:
+    CThread m_Worker;
     CSynchronize *pSync;
     volatile int nThreadCount;
 public:

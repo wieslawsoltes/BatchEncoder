@@ -11,8 +11,6 @@
 #include "Thread.h"
 #include "Process.h"
 
-typedef int GetProgressFunc(char *szLineBuff, int nLineLen);
-
 bool ConvertItem(CItemContext* pContext);
 
-DWORD WINAPI WorkThread(LPVOID lpParam);
+int WorkThread(void *param);

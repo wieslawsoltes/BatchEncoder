@@ -2407,9 +2407,7 @@ void CMainDlg::StartConvert()
             }
         }
 
-        this->pWorkerContext->dwThreadID = 0;
-        this->pWorkerContext->hThread = ::CreateThread(NULL, 0, WorkThread, this->pWorkerContext, CREATE_SUSPENDED, &this->pWorkerContext->dwThreadID);
-        if (this->pWorkerContext->hThread == NULL)
+        if (this->pWorkerContext->m_Worker.Start(WorkThread, this->pWorkerContext, true) == false)
         {
             m_StatusBar.SetText(m_Config.GetString(0x0021000E, pszMainDialog[13]), 1, 0);
             this->pWorkerContext->bDone = true;
@@ -2424,8 +2422,7 @@ void CMainDlg::StartConvert()
         this->GetMenu()->ModifyMenu(ID_ACTION_CONVERT, MF_BYCOMMAND, ID_ACTION_CONVERT, m_Config.GetString(0x00030003, _T("S&top\tF9")));
 
         this->pWorkerContext->bRunning = true;
-
-        ::ResumeThread(this->pWorkerContext->hThread);
+        this->pWorkerContext->m_Worker.Resume();
 
         bSafeCheck = false;
     }
@@ -2502,8 +2499,6 @@ void CMainDlg::TraceConvert()
 
     CItemContext *pItemsContext = new CItemContext[nItems];
 
-    pTraceWorkerContext->dwThreadID = -1;
-    pTraceWorkerContext->hThread = NULL;
     pTraceWorkerContext->bRunning = true;
 
     pTraceWorkerContext->nTotalFiles = 0;
