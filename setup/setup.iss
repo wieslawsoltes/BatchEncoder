@@ -47,8 +47,9 @@ UserInfoPage        =no
 Name: main; Description: Main Program; Types: full compact custom
 Name: docs; Description: Documents; Types: full
 Name: config; Description: Configuration; Types: full compact
+Name: formats; Description: Format Definitions; Types: full
 Name: progress; Description: Progress Functions; Types: full compact
-Name: lang; Description: Languages; Types: full compact
+Name: lang; Description: Languages; Types: full
 Name: scripts; Description: Scripts; Types: full
 
 [Tasks]
@@ -64,6 +65,8 @@ Source: {#BasePath}\*.md; DestDir: {app}; Flags: ignoreversion; Components: docs
 Source: {#BasePath}\config\*.options; DestDir: {app}; Flags: ignoreversion; Components: config
 Source: {#BasePath}\config\*.formats; DestDir: {app}; Flags: ignoreversion; Components: config
 Source: {#BasePath}\config\*.items; DestDir: {app}; Flags: ignoreversion; Components: config
+Source: {#BasePath}\formats\encoder\*.format; DestDir: {app}; Flags: ignoreversion; Components: formats
+Source: {#BasePath}\formats\decoder\*.format; DestDir: {app}; Flags: ignoreversion; Components: formats
 Source: {#BasePath}\progress\*.progress; DestDir: {app}; Flags: ignoreversion; Components: progress
 Source: {#BasePath}\lang\*.language; DestDir: {app}; Flags: ignoreversion; Components: lang
 Source: {#BasePath}\scripts\*.ps1; DestDir: {app}; Flags: ignoreversion; Components: scripts

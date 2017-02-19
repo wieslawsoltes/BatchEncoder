@@ -90,6 +90,8 @@ var packageBinariesAction = new Action<string,string> ((configuration, platform)
     CopyFiles("./config/*.options", outputDir);
     CopyFiles("./config/*.formats", outputDir);
     CopyFiles("./config/*.items", outputDir);
+    CopyFiles("./formats/encoder/*.format", outputDir);
+    CopyFiles("./formats/decoder/*.format", outputDir);
     CopyFiles("./progress/*.progress", outputDir);
     CopyFiles("./lang/*.language", outputDir);
     CopyFiles("./scripts/*.ps1", outputDir);
