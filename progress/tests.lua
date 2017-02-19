@@ -218,6 +218,18 @@ print(p)
 p = GetProgress("11406949/11406949 samples processed in 0:03.281")
 print(p)
 
+-- GetProgress_QaacDec
+
+function GetProgress(s) 
+  if string.match(s, '%ssamples processed%s') ~= nil then return "100";
+  else return string.match(s, '%[(%d+.%d+)%%%]'); end;
+end
+
+p = GetProgress("[59.9%] 2:34.830/4:18.660 (354.3x), ETA 0:00.293  ")
+print(p)
+p = GetProgress("11406949/11406949 samples processed in 0:00.718")
+print(p)
+
 -- GetProgress_OpusEnc
 
 function GetProgress(s) 
