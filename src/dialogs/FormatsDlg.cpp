@@ -62,6 +62,9 @@ void CFormatsDlg::DoDataExchange(CDataExchange* pDX)
     DDX_Control(pDX, IDC_EDIT_FORMAT_FUNCTION, m_EdtFunction);
     DDX_Control(pDX, IDOK, m_BtnOK);
     DDX_Control(pDX, IDCANCEL, m_BtnCancel);
+    DDX_Control(pDX, IDC_BUTTON_FORMAT_IMPORT, m_BtnImport);
+    DDX_Control(pDX, IDC_BUTTON_FORMAT_EXPORT, m_BtnExport);
+    DDX_Control(pDX, IDC_BUTTON_FORMAT_DUPLICATE, m_BtnDuplicate);
     DDX_Control(pDX, IDC_BUTTON_FORMAT_REMOVE_ALL, m_BtnRemoveAll);
     DDX_Control(pDX, IDC_BUTTON_FORMAT_REMOVE, m_BtnRemove);
     DDX_Control(pDX, IDC_BUTTON_FORMAT_ADD, m_BtnAdd);
@@ -94,6 +97,9 @@ BEGIN_MESSAGE_MAP(CFormatsDlg, CResizeDialog)
     ON_EN_CHANGE(IDC_EDIT_FORMAT_PATH, OnEnChangeEditFormatPath)
     ON_EN_CHANGE(IDC_EDIT_FORMAT_TEMPLATE, OnEnChangeEditFormatTemplate)
     ON_EN_CHANGE(IDC_EDIT_FORMAT_FUNCTION, OnEnChangeEditFormatFunction)
+    ON_BN_CLICKED(IDC_BUTTON_FORMAT_IMPORT, OnBnClickedButtonImport)
+    ON_BN_CLICKED(IDC_BUTTON_FORMAT_EXPORT, OnBnClickedButtonExport)
+    ON_BN_CLICKED(IDC_BUTTON_FORMAT_DUPLICATE, OnBnClickedButtonDuplicate)
     ON_BN_CLICKED(IDC_BUTTON_FORMAT_REMOVE_ALL, OnBnClickedButtonRemoveAllFormats)
     ON_BN_CLICKED(IDC_BUTTON_FORMAT_REMOVE, OnBnClickedButtonRemoveFormat)
     ON_BN_CLICKED(IDC_BUTTON_FORMAT_ADD, OnBnClickedButtonAddFormat)
@@ -166,6 +172,9 @@ BOOL CFormatsDlg::OnInitDialog()
     AddAnchor(IDC_BUTTON_BROWSE_FUNCTION, BOTTOM_RIGHT);
     AddAnchor(IDC_BUTTON_FORMAT_UP, TOP_RIGHT);
     AddAnchor(IDC_BUTTON_FORMAT_DOWN, TOP_RIGHT);
+    AddAnchor(IDC_BUTTON_FORMAT_IMPORT, MIDDLE_RIGHT);
+    AddAnchor(IDC_BUTTON_FORMAT_EXPORT, MIDDLE_RIGHT);
+    AddAnchor(IDC_BUTTON_FORMAT_DUPLICATE, MIDDLE_RIGHT);
     AddAnchor(IDC_BUTTON_FORMAT_ADD, BOTTOM_RIGHT);
     AddAnchor(IDC_BUTTON_FORMAT_REMOVE_ALL, BOTTOM_RIGHT);
     AddAnchor(IDC_BUTTON_FORMAT_REMOVE, BOTTOM_RIGHT);
@@ -246,6 +255,85 @@ void CFormatsDlg::OnLvnItemchangedListFormats(NMHDR *pNMHDR, LRESULT *pResult)
     this->ListSelectionChange();
 
     *pResult = 0;
+}
+
+void CFormatsDlg::OnBnClickedButtonImport()
+{
+    CString szFilter;
+    szFilter.Format(_T("%s (*.format)|*.format|%s (*.xml)|*.xml|%s (*.*)|*.*||"),
+        pConfig->GetString(0x00310008, pszFileDialogs[7]),
+        pConfig->GetString(0x00310002, pszFileDialogs[1]),
+        pConfig->GetString(0x00310001, pszFileDialogs[0]));
+
+    CFileDialog fd(TRUE, _T("format"), _T(""),
+        OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER,
+        szFilter, this);
+
+    if (fd.DoModal() == IDOK)
+    {
+        CString szFileXml = fd.GetPathName();
+        this->LoadFormat(szFileXml);
+    }
+}
+
+void CFormatsDlg::OnBnClickedButtonExport()
+{
+    POSITION pos = m_LstFormats.GetFirstSelectedItemPosition();
+    if (pos != NULL)
+    {
+        int nSelected = m_LstFormats.GetNextSelectedItem(pos);
+        if (nSelected >= 0)
+        {
+            CFormat& format = m_Formats.GetData(nSelected);
+
+            CString szFilter;
+            szFilter.Format(_T("%s (*.format)|*.format|%s (*.xml)|*.xml|%s (*.*)|*.*||"),
+                pConfig->GetString(0x00310008, pszFileDialogs[7]),
+                pConfig->GetString(0x00310002, pszFileDialogs[1]),
+                pConfig->GetString(0x00310001, pszFileDialogs[0]));
+
+            CFileDialog fd(FALSE, _T("format"), format.szId,
+                OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER | OFN_OVERWRITEPROMPT,
+                szFilter, this);
+
+            if (fd.DoModal() == IDOK)
+            {
+                CString szFileXml = fd.GetPathName();
+                this->SaveFormat(szFileXml, format);
+            }
+        }
+    }
+}
+
+void CFormatsDlg::OnBnClickedButtonDuplicate()
+{
+    if (bUpdate == true)
+        return;
+
+    bUpdate = true;
+
+    POSITION pos = m_LstFormats.GetFirstSelectedItemPosition();
+    if (pos != NULL)
+    {
+        int nSelected = m_LstFormats.GetNextSelectedItem(pos);
+        if (nSelected >= 0)
+        {
+            CFormat& format = m_Formats.GetData(nSelected);
+            CFormat copy = format;
+
+            m_Formats.InsertNode(copy);
+
+            int nItem = m_LstFormats.GetItemCount();
+            AddToList(copy, nItem);
+
+            m_LstFormats.SetItemState(nItem, LVIS_SELECTED, LVIS_SELECTED);
+            m_LstFormats.EnsureVisible(nItem, FALSE);
+        }
+    }
+
+    bUpdate = false;
+
+    this->ListSelectionChange();
 }
 
 void CFormatsDlg::OnBnClickedButtonRemoveAllFormats()
@@ -724,6 +812,9 @@ void CFormatsDlg::SetLanguage()
     helper.SetWndText(&m_BtnBrowseFunction, 0x000C0021);
     helper.SetWndText(&m_BtnMoveUp, 0x000C0022);
     helper.SetWndText(&m_BtnMoveDown, 0x000C0023);
+    helper.SetWndText(&m_BtnImport, 0x000C002D);
+    helper.SetWndText(&m_BtnExport, 0x000C002E);
+    helper.SetWndText(&m_BtnDuplicate, 0x000C002F);
     helper.SetWndText(&m_BtnRemoveAll, 0x000C0024);
     helper.SetWndText(&m_BtnRemove, 0x000C0025);
     helper.SetWndText(&m_BtnAdd, 0x000C0026);
@@ -957,6 +1048,40 @@ void CFormatsDlg::ListSelectionChange()
     }
 
     bUpdate = false;
+}
+
+void CFormatsDlg::LoadFormat(CString szFileXml)
+{
+    XmlConfiguration doc;
+    if (doc.Open(szFileXml) == true)
+    {
+        CFormat format;
+        doc.GetFormat(format);
+        m_Formats.InsertNode(format);
+
+        int nItem = m_Formats.GetSize() - 1;
+        this->AddToList(format, nItem);
+    }
+    else
+    {
+        MessageBox(
+            pConfig->GetString(0x00230002, pszFormatsDialog[1]),
+            pConfig->GetString(0x00230001, pszFormatsDialog[0]),
+            MB_OK | MB_ICONERROR);
+    }
+}
+
+void CFormatsDlg::SaveFormat(CString szFileXml, CFormat &format)
+{
+    XmlConfiguration doc;
+    doc.SetFormat(format);
+    if (doc.Save(szFileXml) != true)
+    {
+        MessageBox(
+            pConfig->GetString(0x00230003, pszFormatsDialog[2]),
+            pConfig->GetString(0x00230001, pszFormatsDialog[0]),
+            MB_OK | MB_ICONERROR);
+    }
 }
 
 void CFormatsDlg::LoadFormats(CString szFileXml)

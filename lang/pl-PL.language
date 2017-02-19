@@ -131,6 +131,9 @@
     <String key="0x000C002A" value="&amp;OK" />
     <String key="0x000C002B" value="Kod wyjścia kiedy sukces:" />
     <String key="0x000C002C" value="Edytuj &amp;Presety" />
+    <String key="0x000C002D" value="&amp;Importuj" />
+    <String key="0x000C002E" value="E&amp;ksportuj" />
+    <String key="0x000C002F" value="Dup&amp;likuj" />
 
     <!-- About Dialog -->
 
@@ -226,5 +229,6 @@
     <String key="0x00310005" value="Pliki Formats" />
     <String key="0x00310006" value="Pliki Exe" />
     <String key="0x00310007" value="Pliki Progress" />
+    <String key="0x00310008" value="Pliki Format" />
 
 </Language>

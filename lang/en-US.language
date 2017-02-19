@@ -131,6 +131,9 @@
     <String key="0x000C002A" value="&amp;OK" />
     <String key="0x000C002B" value="Exit code on success:" />
     <String key="0x000C002C" value="&amp;Edit Presets" />
+    <String key="0x000C002D" value="&amp;Import" />
+    <String key="0x000C002E" value="E&amp;xport" />
+    <String key="0x000C002F" value="Du&amp;plicate" />
 
     <!-- About Dialog -->
 
@@ -226,5 +229,6 @@
     <String key="0x00310005" value="Formats Files" />
     <String key="0x00310006" value="Exe Files" />
     <String key="0x00310007" value="Progress Files" />
+    <String key="0x00310008" value="Format Files" />
 
 </Language>

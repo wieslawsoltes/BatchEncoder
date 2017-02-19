@@ -76,6 +76,9 @@ public:
     CMyEdit m_EdtFunction;
     CMyButton m_BtnOK;
     CMyButton m_BtnCancel;
+    CMyButton m_BtnImport;
+    CMyButton m_BtnExport;
+    CMyButton m_BtnDuplicate;
     CMyButton m_BtnRemoveAll;
     CMyButton m_BtnRemove;
     CMyButton m_BtnAdd;
@@ -92,6 +95,9 @@ public:
     afx_msg void OnBnClickedOk();
     afx_msg void OnBnClickedCancel();
     afx_msg void OnLvnItemchangedListFormats(NMHDR *pNMHDR, LRESULT *pResult);
+    afx_msg void OnBnClickedButtonImport();
+    afx_msg void OnBnClickedButtonExport();
+    afx_msg void OnBnClickedButtonDuplicate();
     afx_msg void OnBnClickedButtonRemoveAllFormats();
     afx_msg void OnBnClickedButtonRemoveFormat();
     afx_msg void OnBnClickedButtonAddFormat();
@@ -126,6 +132,8 @@ public:
     void UpdateFields(CFormat &format);
     void UpdateDefaultComboBox(CFormat &format);
     void ListSelectionChange();
+    void LoadFormat(CString szFileXml);
+    void SaveFormat(CString szFileXml, CFormat &format);
     void LoadFormats(CString szFileXml);
     void SaveFormats(CString szFileXml);
     bool BrowseForPath(CString szDefaultFName, CEdit *pEdit, int nID);
