@@ -49,4 +49,15 @@ public:
         }
         return -1;
     }
+    bool IsValidInputExtension(CString szExt)
+    {
+        int nFormats = this->GetSize();
+        for (int i = 0; i < nFormats; i++)
+        {
+            CFormat& format = this->GetData(i);
+            if (format.IsValidInputExtension(szExt) == true)
+                return true;
+        }
+        return false;
+    }
 };

@@ -112,8 +112,9 @@
 #define ID_OPTIONS_HIDE_CONSOLE         32817
 #define ID_OPTIONS_ENSURE_VISIBLE       32818
 #define ID_OPTIONS_FIND_DECODER         32819
-#define ID_HELP_ABOUT                   32820
-#define ID_HELP_WEBSITE                 32821
+#define ID_OPTIONS_VALIDATE_FILES       32820
+#define ID_HELP_ABOUT                   32830
+#define ID_HELP_WEBSITE                 32831
 #define ID_ACCELERATOR_F5               32840
 #define ID_ACCELERATOR_F6               32841
 #define ID_ACCELERATOR_CTRL_L           32842

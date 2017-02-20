@@ -12,5 +12,6 @@
     <HideConsoleWindow>true</HideConsoleWindow>
     <TryToFindDecoder>false</TryToFindDecoder>
     <EnsureItemIsVisible>true</EnsureItemIsVisible>
+    <ValidateInputFiles>true</ValidateInputFiles>
     <ThreadCount>0</ThreadCount>
 </Options>

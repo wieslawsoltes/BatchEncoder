@@ -123,6 +123,10 @@ void XmlConfiguration::GetOptions(tinyxml2::XMLElement *pOptionsElem, COptions &
     if (pOptionElem)
         m_Options.bEnsureItemIsVisible = ToBool(pOptionElem->GetText());
 
+    pOptionElem = pOptionsElem->FirstChildElement("ValidateInputFiles");
+    if (pOptionElem)
+        m_Options.bValidateInputFiles = ToBool(pOptionElem->GetText());
+
     pOptionElem = pOptionsElem->FirstChildElement("ThreadCount");
     if (pOptionElem)
         m_Options.nThreadCount = ToInt(pOptionElem->GetText());
@@ -206,6 +210,10 @@ void XmlConfiguration::SetOptions(tinyxml2::XMLElement *pOptionsElem, COptions &
 
     pOptionElem = this->NewElement("EnsureItemIsVisible");
     pOptionElem->LinkEndChild(this->NewText(CUtf8String(ToCString(m_Options.bEnsureItemIsVisible)).m_Result));
+    pOptionsElem->LinkEndChild(pOptionElem);
+
+    pOptionElem = this->NewElement("ValidateInputFiles");
+    pOptionElem->LinkEndChild(this->NewText(CUtf8String(ToCString(m_Options.bValidateInputFiles)).m_Result));
     pOptionsElem->LinkEndChild(pOptionElem);
 
     pOptionElem = this->NewElement("ThreadCount");

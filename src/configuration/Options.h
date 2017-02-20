@@ -21,6 +21,7 @@ public:
     bool bHideConsoleWindow;
     bool bTryToFindDecoder;
     bool bEnsureItemIsVisible;
+    bool bValidateInputFiles;
     int nThreadCount;
     CString szMainWindowResize;
     CString szFileListColumns;
@@ -60,6 +61,7 @@ public:
         this->bHideConsoleWindow = other.bHideConsoleWindow;
         this->bTryToFindDecoder = other.bTryToFindDecoder;
         this->bEnsureItemIsVisible = other.bEnsureItemIsVisible;
+        this->bValidateInputFiles = other.bValidateInputFiles;
         this->nThreadCount = other.nThreadCount;
         this->szMainWindowResize = other.szMainWindowResize;
         this->szFileListColumns = other.szFileListColumns;
@@ -85,6 +87,7 @@ public:
         this->bHideConsoleWindow = true;
         this->bTryToFindDecoder = false;
         this->bEnsureItemIsVisible = true;
+        this->bValidateInputFiles = true;
         this->nThreadCount = 0;
         this->szMainWindowResize = _T("");
         this->szFileListColumns = _T("");

@@ -264,6 +264,8 @@ BEGIN
         MENUITEM "&Ensure Item Is Visible",     ID_OPTIONS_ENSURE_VISIBLE
         MENUITEM SEPARATOR
         MENUITEM "&Try To Find Decoder",        ID_OPTIONS_FIND_DECODER
+        MENUITEM SEPARATOR
+        MENUITEM "&Validate Input Files",       ID_OPTIONS_VALIDATE_FILES
     END
     POPUP "&Language"
     BEGIN
