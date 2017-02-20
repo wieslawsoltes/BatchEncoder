@@ -10,15 +10,6 @@ class CListT
 {
     CList<T, T&> m_Items;
 public:
-    void SetData(T& item, int idx)
-    {
-        m_Items.SetAt(m_Items.FindIndex(idx), item);
-    }
-    T& GetData(int idx)
-    {
-        return m_Items.GetAt(m_Items.FindIndex(idx));
-    }
-public:
     CListT()
     {
     }
@@ -46,6 +37,15 @@ public:
             this->InsertNode(item);
         }
     }
+    void Copy(CListT& other)
+    {
+        int nItems = (int)other.m_Items.GetCount();
+        for (int i = 0; i < nItems; i++)
+        {
+            T item = other.m_Items.GetAt(other.m_Items.FindIndex(i));
+            this->InsertNode(item);
+        }
+    }
 public:
     bool IsEmpty()
     {
@@ -54,6 +54,15 @@ public:
     int GetSize()
     {
         return (int)m_Items.GetCount();
+    }
+public:
+    void SetData(T& item, int idx)
+    {
+        m_Items.SetAt(m_Items.FindIndex(idx), item);
+    }
+    T& GetData(int idx)
+    {
+        return m_Items.GetAt(m_Items.FindIndex(idx));
     }
 public:
     void InsertNode(T& item)
@@ -81,16 +90,6 @@ public:
     {
         if (m_Items.GetCount() != 0)
             m_Items.RemoveAll();
-    }
-public:
-    void Copy(CListT& other)
-    {
-        int nItems = (int)other.m_Items.GetCount();
-        for (int i = 0; i < nItems; i++)
-        {
-            T item = other.m_Items.GetAt(other.m_Items.FindIndex(i));
-            this->InsertNode(item);
-        }
     }
 public:
     void SwapItems(int idx1, int idx2)
