@@ -923,9 +923,9 @@ bool ConvertItem(CItemContext* pContext)
         return false;
     }
 
-    pEncFormat = &pWorkerContext->pConfig->m_Formats.GetData(nEncoder);
+    pEncFormat = &pWorkerContext->pConfig->m_Formats.Get(nEncoder);
 
-    if (pContext->item->nPreset >= pEncFormat->m_Presets.GetSize())
+    if (pContext->item->nPreset >= pEncFormat->m_Presets.Count())
     {
         pWorkerContext->Status(pContext->item->nId, pszDefaulTime, pWorkerContext->GetString(0x00140003, pszConvertItem[2]));
         return false;
@@ -952,9 +952,9 @@ bool ConvertItem(CItemContext* pContext)
             return false;
         }
 
-        pDecFormat = &pWorkerContext->pConfig->m_Formats.GetData(nDecoder);
+        pDecFormat = &pWorkerContext->pConfig->m_Formats.Get(nDecoder);
 
-        if (pDecFormat->nDefaultPreset >= pDecFormat->m_Presets.GetSize())
+        if (pDecFormat->nDefaultPreset >= pDecFormat->m_Presets.Count())
         {
             pWorkerContext->Status(pContext->item->nId, pszDefaulTime, pWorkerContext->GetString(0x00140005, pszConvertItem[4]));
             return false;
@@ -1224,7 +1224,7 @@ int WorkThread(void *param)
     if (pWorkerContext == NULL)
         return FALSE;
 
-    int nItems = pWorkerContext->pConfig->m_Items.GetSize();
+    int nItems = pWorkerContext->pConfig->m_Items.Count();
     CItemContext *pItemsContext = new CItemContext[nItems];
 
     pWorkerContext->nTotalFiles = 0;
@@ -1236,7 +1236,7 @@ int WorkThread(void *param)
 
     for (int i = 0; i < nItems; i++)
     {
-        CItem& item = pWorkerContext->pConfig->m_Items.GetData(i);
+        CItem& item = pWorkerContext->pConfig->m_Items.Get(i);
         if (item.bChecked == true)
         {
             item.ResetProgress();

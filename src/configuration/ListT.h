@@ -34,7 +34,7 @@ public:
         for (int i = 0; i < nItems; i++)
         {
             T item = other.m_Items.GetAt(other.m_Items.FindIndex(i));
-            this->InsertNode(item);
+            this->Insert(item);
         }
     }
     void Copy(CListT& other)
@@ -43,29 +43,26 @@ public:
         for (int i = 0; i < nItems; i++)
         {
             T item = other.m_Items.GetAt(other.m_Items.FindIndex(i));
-            this->InsertNode(item);
+            this->Insert(item);
         }
     }
-public:
     bool IsEmpty()
     {
         return (m_Items.GetCount() == 0) ? true : false;
     }
-    int GetSize()
+    int Count()
     {
         return (int)m_Items.GetCount();
     }
-public:
-    void SetData(T& item, int idx)
+    void Set(T& item, int idx)
     {
         m_Items.SetAt(m_Items.FindIndex(idx), item);
     }
-    T& GetData(int idx)
+    T& Get(int idx)
     {
         return m_Items.GetAt(m_Items.FindIndex(idx));
     }
-public:
-    void InsertNode(T& item)
+    void Insert(T& item)
     {
         m_Items.AddTail(item);
     }
@@ -81,24 +78,22 @@ public:
         if (pos != NULL)
             m_Items.InsertAfter(pos, item);
     }
-public:
-    void RemoveNode(int pstn = -1)
+    void Remove(int pstn = -1)
     {
         m_Items.RemoveAt(m_Items.FindIndex(pstn));
     }
-    void RemoveAllNodes(void)
+    void RemoveAll(void)
     {
         if (m_Items.GetCount() != 0)
             m_Items.RemoveAll();
     }
-public:
-    void SwapItems(int idx1, int idx2)
+    void Swap(int idx1, int idx2)
     {
-        T item1 = this->GetData(idx1);
-        T item2 = this->GetData(idx2);
-        if ((idx1 < 0) || (idx2 < 0) || (idx1 >= GetSize()) || (idx2 >= GetSize()))
+        T item1 = this->Get(idx1);
+        T item2 = this->Get(idx2);
+        if ((idx1 < 0) || (idx2 < 0) || (idx1 >= Count()) || (idx2 >= Count()))
             return;
-        this->SetData(item1, idx2);
-        this->SetData(item2, idx1);
+        this->Set(item1, idx2);
+        this->Set(item2, idx1);
     }
 };

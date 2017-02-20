@@ -257,7 +257,7 @@ void XmlConfiguration::GetPresets(tinyxml2::XMLElement *pPresetsElem, CPresetsLi
             CPreset preset;
             preset.szName = ToCString(pszName);
             preset.szOptions = ToCString(pszOptions);
-            m_Presets.InsertNode(preset);
+            m_Presets.Insert(preset);
         }
     }
 }
@@ -266,10 +266,10 @@ void XmlConfiguration::SetPresets(tinyxml2::XMLElement *pPresetsElem, CPresetsLi
 {
     tinyxml2::XMLElement *pPresetElem;
 
-    int nPresets = m_Presets.GetSize();
+    int nPresets = m_Presets.Count();
     for (int i = 0; i < nPresets; i++)
     {
-        CPreset& preset = m_Presets.GetData(i);
+        CPreset& preset = m_Presets.Get(i);
         pPresetElem = this->NewElement("Preset");
         pPresetElem->SetAttribute("name", CUtf8String(preset.szName).m_Result);
         pPresetElem->SetAttribute("options", CUtf8String(preset.szOptions).m_Result);
@@ -358,16 +358,16 @@ void XmlConfiguration::GetFormats(tinyxml2::XMLElement *pFormatsElem, CFormatsLi
     {
         CFormat format;
         this->GetFormat(pFormatElem, format);
-        m_Formats.InsertNode(format);
+        m_Formats.Insert(format);
     }
 }
 
 void XmlConfiguration::SetFormats(tinyxml2::XMLElement *pFormatsElem, CFormatsList &m_Formats)
 {
-    int nFormats = m_Formats.GetSize();
+    int nFormats = m_Formats.Count();
     for (int i = 0; i < nFormats; i++)
     {
-        CFormat& format = m_Formats.GetData(i);
+        CFormat& format = m_Formats.Get(i);
         tinyxml2::XMLElement *pFormatElem = this->NewElement("Format");
         this->SetFormat(pFormatElem, format);
         pFormatsElem->LinkEndChild(pFormatElem);
@@ -421,17 +421,17 @@ void XmlConfiguration::GetItems(tinyxml2::XMLElement *pItemsElem, CItemsList &m_
         if (pszStatus != NULL)
             item.szStatus = ToCString(pszStatus);
 
-        m_Items.InsertNode(item);
+        m_Items.Insert(item);
     }
 }
 
 void XmlConfiguration::SetItems(tinyxml2::XMLElement *pItemsElem, CItemsList &m_Items)
 {
     tinyxml2::XMLElement *pItemElem;
-    int nItems = m_Items.GetSize();
+    int nItems = m_Items.Count();
     for (int i = 0; i < nItems; i++)
     {
-        CItem& item = m_Items.GetData(i);
+        CItem& item = m_Items.Get(i);
         pItemElem = this->NewElement("Item");
         pItemElem->SetAttribute("id", CUtf8String(ToCString(i)).m_Result);
         pItemElem->SetAttribute("path", CUtf8String(item.szPath).m_Result);
@@ -506,16 +506,16 @@ void XmlConfiguration::GetLanguages(tinyxml2::XMLElement *pLanguagesElem, CLangu
     {
         CLanguage language;
         this->GetLanguage(pLanguageElem, language);
-        m_Languages.InsertNode(language);
+        m_Languages.Insert(language);
     }
 }
 
 void XmlConfiguration::SetLanguages(tinyxml2::XMLElement *pLanguagesElem, CLanguagesList &m_Languages)
 {
-    int nLanguages = m_Languages.GetSize();
+    int nLanguages = m_Languages.Count();
     for (int i = 0; i < nLanguages; i++)
     {
-        CLanguage& language = m_Languages.GetData(i);
+        CLanguage& language = m_Languages.Get(i);
         tinyxml2::XMLElement *pLanguageElem = this->NewElement("Language");
         this->SetLanguage(pLanguageElem, language);
         pLanguagesElem->LinkEndChild(pLanguageElem);

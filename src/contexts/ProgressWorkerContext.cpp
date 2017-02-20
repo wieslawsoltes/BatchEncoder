@@ -79,7 +79,7 @@ bool CProgressWorkerContext::Callback(int nItemId, int nProgress, bool bFinished
 {
     if (bError == true)
     {
-        CItem &item = pConfig->m_Items.GetData(nItemId);
+        CItem &item = pConfig->m_Items.Get(nItemId);
         item.bFinished = true;
 
         if (pConfig->m_Options.bStopOnErrors == true)
@@ -93,13 +93,13 @@ bool CProgressWorkerContext::Callback(int nItemId, int nProgress, bool bFinished
 
     if (bFinished == true)
     {
-        CItem &item = pConfig->m_Items.GetData(nItemId);
+        CItem &item = pConfig->m_Items.Get(nItemId);
         item.bFinished = true;
     }
 
     if ((bFinished == false) && (this->bRunning == true))
     {
-        CItem &current = pConfig->m_Items.GetData(nItemId);
+        CItem &current = pConfig->m_Items.Get(nItemId);
         current.nProgress = nProgress;
         if (current.nPreviousProgress > nProgress)
             current.nPreviousProgress = nProgress;
@@ -117,10 +117,10 @@ bool CProgressWorkerContext::Callback(int nItemId, int nProgress, bool bFinished
             }
 
             int nTotalProgress = 0;
-            int nItems = pConfig->m_Items.GetSize();
+            int nItems = pConfig->m_Items.Count();
             for (int i = 0; i < nItems; i++)
             {
-                CItem &item = pConfig->m_Items.GetData(i);
+                CItem &item = pConfig->m_Items.Get(i);
                 if (item.bChecked == true)
                 {
                     int nItemProgress = item.nProgress;

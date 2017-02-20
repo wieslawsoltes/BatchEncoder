@@ -33,7 +33,7 @@ public:
         bool bUseReadPipes,
         bool bUseWritePipes)
     {
-        CPreset& preset = pFormat->m_Presets.GetData(nPreset);
+        CPreset& preset = pFormat->m_Presets.Get(nPreset);
 
         this->pWorkerContext = pWorkerContext;
         this->pFormat = pFormat;

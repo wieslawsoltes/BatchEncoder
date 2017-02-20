@@ -12,10 +12,10 @@ class CFormatsList : public CListT<CFormat>
 public:
     int GetFormatById(CString szFormatId)
     {
-        int nFormats = this->GetSize();
+        int nFormats = this->Count();
         for (int i = 0; i < nFormats; i++)
         {
-            CFormat& format = this->GetData(i);
+            CFormat& format = this->Get(i);
             if (szFormatId.CompareNoCase(format.szId) == 0)
                 return i;
         }
@@ -23,10 +23,10 @@ public:
     }
     int GetDecoderByExtension(CString szExt)
     {
-        int nFormats = this->GetSize();
+        int nFormats = this->Count();
         for (int i = 0; i < nFormats; i++)
         {
-            CFormat& format = this->GetData(i);
+            CFormat& format = this->Get(i);
             if (format.nType == 1 && format.IsValidInputExtension(szExt) == true)
             {
                 return i;
@@ -36,10 +36,10 @@ public:
     }
     int GetDecoderByExtensionAndFormat(CString szExt, CFormat *pEncoderFormat)
     {
-        int nFormats = this->GetSize();
+        int nFormats = this->Count();
         for (int i = 0; i < nFormats; i++)
         {
-            CFormat& format = this->GetData(i);
+            CFormat& format = this->Get(i);
             if (format.nType == 1 && format.IsValidInputExtension(szExt) == true)
             {
                 bool bIsValidEncoderInput = pEncoderFormat->IsValidInputExtension(format.szOutputExtension);
@@ -51,10 +51,10 @@ public:
     }
     bool IsValidInputExtension(CString szExt)
     {
-        int nFormats = this->GetSize();
+        int nFormats = this->Count();
         for (int i = 0; i < nFormats; i++)
         {
-            CFormat& format = this->GetData(i);
+            CFormat& format = this->Get(i);
             if (format.IsValidInputExtension(szExt) == true)
                 return true;
         }

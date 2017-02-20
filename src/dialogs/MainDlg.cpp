@@ -441,8 +441,8 @@ void CMainDlg::OnDestroy()
 {
     CResizeDialog::OnDestroy();
 
-    m_Config.m_Items.RemoveAllNodes();
-    m_Config.m_Formats.RemoveAllNodes();
+    m_Config.m_Items.RemoveAll();
+    m_Config.m_Formats.RemoveAll();
 }
 
 void CMainDlg::OnDropFiles(HDROP hDropInfo)
@@ -472,7 +472,7 @@ LRESULT CMainDlg::OnListItemChaged(WPARAM wParam, LPARAM lParam)
         LPTSTR szText = (LPTSTR)lParam;
         if ((nIndex >= 0) && szText != NULL)
         {
-            CItem& item = m_Config.m_Items.GetData(nIndex);
+            CItem& item = m_Config.m_Items.Get(nIndex);
             item.szName = szText;
         }
     }
@@ -543,12 +543,12 @@ void CMainDlg::OnLvnItemchangedListInputItems(NMHDR *pNMHDR, LRESULT *pResult)
             if (pos != NULL)
             {
                 int nItem = this->m_LstInputItems.GetNextSelectedItem(pos);
-                if (nItem < m_Config.m_Items.GetSize())
+                if (nItem < m_Config.m_Items.Count())
                 {
-                    CItem& item = m_Config.m_Items.GetData(nItem);
-                    if (m_Config.m_Formats.GetSize() > 0)
+                    CItem& item = m_Config.m_Items.Get(nItem);
+                    if (m_Config.m_Formats.Count() > 0)
                     {
-                        CFormat& format = m_Config.m_Formats.GetData(this->m_CmbFormat.GetCurSel());
+                        CFormat& format = m_Config.m_Formats.Get(this->m_CmbFormat.GetCurSel());
                         if (item.szFormatId.CompareNoCase(format.szId) == 0)
                         {
                             format.nDefaultPreset = item.nPreset;
@@ -559,7 +559,7 @@ void CMainDlg::OnLvnItemchangedListInputItems(NMHDR *pNMHDR, LRESULT *pResult)
                             int nFormat = m_Config.m_Formats.GetFormatById(item.szFormatId);
                             if (nFormat >= 0)
                             {
-                                CFormat& format = m_Config.m_Formats.GetData(nFormat);
+                                CFormat& format = m_Config.m_Formats.Get(nFormat);
 
                                 m_Config.m_Options.nSelectedFormat = nFormat;
                                 format.nDefaultPreset = item.nPreset;
@@ -584,7 +584,7 @@ void CMainDlg::OnCbnSelchangeComboPresets()
         int nFormat = this->m_CmbFormat.GetCurSel();
         int nPreset = this->m_CmbPresets.GetCurSel();
 
-        CFormat& format = m_Config.m_Formats.GetData(nFormat);
+        CFormat& format = m_Config.m_Formats.Get(nFormat);
         format.nDefaultPreset = nPreset;
 
         this->UpdateFormatAndPreset();
@@ -757,7 +757,7 @@ void CMainDlg::OnFileClearList()
     {
         if (this->pWorkerContext->bRunning == false)
         {
-            m_Config.m_Items.RemoveAllNodes();
+            m_Config.m_Items.RemoveAll();
             m_LstInputItems.DeleteAllItems();
             this->UpdateStatusBar();
         }
@@ -940,7 +940,7 @@ void CMainDlg::OnEditRemove()
             nItem = m_LstInputItems.GetNextItem(-1, LVIS_SELECTED);
             if (nItem != -1)
             {
-                m_Config.m_Items.RemoveNode(nItem);
+                m_Config.m_Items.Remove(nItem);
                 m_LstInputItems.DeleteItem(nItem);
 
                 nItemLastRemoved = nItem;
@@ -958,7 +958,7 @@ void CMainDlg::OnEditRemove()
 
         if (m_LstInputItems.GetItemCount() == 0)
         {
-            m_Config.m_Items.RemoveAllNodes();
+            m_Config.m_Items.RemoveAll();
             m_LstInputItems.DeleteAllItems();
         }
 
@@ -987,14 +987,14 @@ void CMainDlg::OnEditCrop()
             nItem = m_LstInputItems.GetNextItem(-1, LVIS_SELECTED);
             if (nItem != -1)
             {
-                m_Config.m_Items.RemoveNode(nItem);
+                m_Config.m_Items.Remove(nItem);
                 m_LstInputItems.DeleteItem(nItem);
             }
         } while (nItem != -1);
 
         if (m_LstInputItems.GetItemCount() == 0)
         {
-            m_Config.m_Items.RemoveAllNodes();
+            m_Config.m_Items.RemoveAll();
             m_LstInputItems.DeleteAllItems();
         }
 
@@ -1014,14 +1014,14 @@ void CMainDlg::OnEditRemoveChecked()
         {
             if (m_LstInputItems.GetCheck(i) == TRUE)
             {
-                m_Config.m_Items.RemoveNode(i);
+                m_Config.m_Items.Remove(i);
                 m_LstInputItems.DeleteItem(i);
             }
         }
 
         if (m_LstInputItems.GetItemCount() == 0)
         {
-            m_Config.m_Items.RemoveAllNodes();
+            m_Config.m_Items.RemoveAll();
             m_LstInputItems.DeleteAllItems();
         }
 
@@ -1041,14 +1041,14 @@ void CMainDlg::OnEditRemoveUnchecked()
         {
             if (m_LstInputItems.GetCheck(i) == FALSE)
             {
-                m_Config.m_Items.RemoveNode(i);
+                m_Config.m_Items.Remove(i);
                 m_LstInputItems.DeleteItem(i);
             }
         }
 
         if (m_LstInputItems.GetItemCount() == 0)
         {
-            m_Config.m_Items.RemoveAllNodes();
+            m_Config.m_Items.RemoveAll();
             m_LstInputItems.DeleteAllItems();
         }
 
@@ -1132,7 +1132,7 @@ void CMainDlg::OnEditOpen()
         if (pos != NULL)
         {
             int nItem = m_LstInputItems.GetNextSelectedItem(pos);
-            CItem& item = m_Config.m_Items.GetData(nItem);
+            CItem& item = m_Config.m_Items.Get(nItem);
             ::LaunchAndWait(item.szPath, _T(""), FALSE);
         }
     }
@@ -1146,7 +1146,7 @@ void CMainDlg::OnEditExplore()
         if (pos != NULL)
         {
             int nItem = m_LstInputItems.GetNextSelectedItem(pos);
-            CItem& item = m_Config.m_Items.GetData(nItem);
+            CItem& item = m_Config.m_Items.Get(nItem);
             CString szPath = item.szPath;
             szPath.TrimRight(::GetFileName(item.szPath));
             ::LaunchAndWait(szPath, _T(""), FALSE);
@@ -1173,7 +1173,7 @@ void CMainDlg::OnOptionsConfigurePresets()
         INT_PTR nRet = dlg.DoModal();
         if (nRet == IDOK)
         {
-            m_Config.m_Formats.RemoveAllNodes();
+            m_Config.m_Formats.RemoveAll();
             m_Config.m_Formats = dlg.m_Formats;
             this->UpdateFormatComboBox();
             this->UpdatePresetComboBox();
@@ -1198,7 +1198,7 @@ void CMainDlg::OnOptionsConfigureFormat()
         INT_PTR nRet = dlg.DoModal();
         if (nRet == IDOK)
         {
-            m_Config.m_Formats.RemoveAllNodes();
+            m_Config.m_Formats.RemoveAll();
             m_Config.m_Formats = dlg.m_Formats;
 
             if (dlg.nSelectedFormat >= 0)
@@ -1310,14 +1310,14 @@ void CMainDlg::OnLanguageDefault()
 void CMainDlg::OnLanguageChange(UINT nID)
 {
     int nSelectedLanguage = nID - ID_LANGUAGE_MIN;
-    CLanguage& language = m_Config.m_Languages.GetData(nSelectedLanguage);
+    CLanguage& language = m_Config.m_Languages.Get(nSelectedLanguage);
     m_Config.m_Options.szSelectedLanguage = language.szId;
     m_Config.pLanguage = &language;
 
     CMenu *m_hMenu = this->GetMenu();
     CMenu *m_hLangMenu = m_hMenu->GetSubMenu(4);
 
-    int nLanguages = m_Config.m_Languages.GetSize();
+    int nLanguages = m_Config.m_Languages.Count();
     for (int i = 0; i < nLanguages; i++)
     {
         UINT nLangID = ID_LANGUAGE_MIN + i;
@@ -1382,7 +1382,7 @@ bool CMainDlg::SearchFolderForLanguages(CString szFile)
                 {
                     CLanguage language;
                     doc.GetLanguage(language);
-                    this->m_Config.m_Languages.InsertNode(language);
+                    this->m_Config.m_Languages.Insert(language);
                 }
             }
 
@@ -1410,14 +1410,14 @@ void CMainDlg::InitLanguageMenu()
     CMenu *m_hMenu = this->GetMenu();
     CMenu *m_hLangMenu = m_hMenu->GetSubMenu(4);
 
-    int nLanguages = m_Config.m_Languages.GetSize();
+    int nLanguages = m_Config.m_Languages.Count();
     if (nLanguages > 0 && nLanguages <= (ID_LANGUAGE_MAX - ID_LANGUAGE_MIN))
     {
         m_hLangMenu->DeleteMenu(ID_LANGUAGE_DEFAULT, 0);
 
         for (int i = 0; i < nLanguages; i++)
         {
-            CLanguage language = m_Config.m_Languages.GetData(i);
+            CLanguage language = m_Config.m_Languages.Get(i);
 
             CString szBuff;
             szBuff.Format(_T("%s (%s)"), language.szOriginalName, language.szTranslatedName);
@@ -1432,14 +1432,14 @@ void CMainDlg::InitLanguageMenu()
         {
             m_hLangMenu->CheckMenuItem(ID_LANGUAGE_MIN + nSelectedLanguage, MF_CHECKED);
 
-            CLanguage& language = m_Config.m_Languages.GetData(nSelectedLanguage);
+            CLanguage& language = m_Config.m_Languages.Get(nSelectedLanguage);
             m_Config.pLanguage = &language;
         }
         else
         {
             m_hLangMenu->CheckMenuItem(ID_LANGUAGE_MIN, MF_CHECKED);
 
-            CLanguage& language = m_Config.m_Languages.GetData(0);
+            CLanguage& language = m_Config.m_Languages.Get(0);
             m_Config.m_Options.szSelectedLanguage = language.szId;
             m_Config.pLanguage = &language;
         }
@@ -1539,12 +1539,12 @@ void CMainDlg::LoadLanguage(CString szFileXml)
         CLanguage language;
         doc.GetLanguage(language);
 
-        this->m_Config.m_Languages.InsertNode(language);
+        this->m_Config.m_Languages.Insert(language);
 
         // insert to languages menu
         CMenu *m_hMenu = this->GetMenu();
         CMenu *m_hLangMenu = m_hMenu->GetSubMenu(4);
-        int nLanguages = m_Config.m_Languages.GetSize();
+        int nLanguages = m_Config.m_Languages.Count();
 
         CString szBuff;
         szBuff.Format(_T("%s (%s)"), language.szOriginalName, language.szTranslatedName);
@@ -1560,7 +1560,7 @@ void CMainDlg::GetItems()
     int nItems = this->m_LstInputItems.GetItemCount();
     for (int i = 0; i < nItems; i++)
     {
-        CItem& item = m_Config.m_Items.GetData(i);
+        CItem& item = m_Config.m_Items.Get(i);
         item.nId = i;
         item.bChecked = this->m_LstInputItems.GetCheck(i) == TRUE;
         item.szTime = this->m_LstInputItems.GetItemText(i, ITEM_COLUMN_TIME);
@@ -1570,10 +1570,10 @@ void CMainDlg::GetItems()
 
 void CMainDlg::SetItems()
 {
-    int nItems = m_Config.m_Items.GetSize();
+    int nItems = m_Config.m_Items.Count();
     for (int i = 0; i < nItems; i++)
     {
-        CItem& item = m_Config.m_Items.GetData(i);
+        CItem& item = m_Config.m_Items.Get(i);
         this->AddToList(item, i);
     }
 }
@@ -1801,7 +1801,7 @@ bool CMainDlg::LoadFormats(CString szFileXml)
     if (doc.Open(szFileXml) == false)
         return false;
 
-    this->m_Config.m_Formats.RemoveAllNodes();
+    this->m_Config.m_Formats.RemoveAll();
 
     doc.GetFormats(this->m_Config.m_Formats);
 
@@ -1825,7 +1825,7 @@ bool CMainDlg::LoadItems(CString szFileXml)
         return false;
 
     this->m_LstInputItems.DeleteAllItems();
-    this->m_Config.m_Items.RemoveAllNodes();
+    this->m_Config.m_Items.RemoveAll();
 
     doc.GetItems(this->m_Config.m_Items);
 
@@ -1850,26 +1850,26 @@ int CMainDlg::AddToItems(CString szPath)
     int nPreset = this->m_CmbPresets.GetCurSel();
 
     CString szFormatId = _T("");
-    if (m_Config.m_Formats.GetSize() > 0)
+    if (m_Config.m_Formats.Count() > 0)
     {
         if (m_Config.m_Options.bTryToFindDecoder == true)
         {
             int nDecoder = m_Config.m_Formats.GetDecoderByExtension(::GetFileExtension(szPath));
             if (nDecoder == -1)
             {
-                CFormat &format = m_Config.m_Formats.GetData(nFormat);
+                CFormat &format = m_Config.m_Formats.Get(nFormat);
                 szFormatId = format.szId;
             }
             else
             {
-                CFormat &format = m_Config.m_Formats.GetData(nDecoder);
+                CFormat &format = m_Config.m_Formats.Get(nDecoder);
                 szFormatId = format.szId;
                 nPreset = format.nDefaultPreset;
             }
         }
         else
         {
-            CFormat &format = m_Config.m_Formats.GetData(nFormat);
+            CFormat &format = m_Config.m_Formats.Get(nFormat);
             szFormatId = format.szId;
         }
     }
@@ -1902,9 +1902,9 @@ int CMainDlg::AddToItems(CString szPath)
     item.nPreset = nPreset;
     item.bChecked = true;
 
-    m_Config.m_Items.InsertNode(item);
+    m_Config.m_Items.Insert(item);
 
-    return (int)m_Config.m_Items.GetSize() - 1;
+    return (int)m_Config.m_Items.Count() - 1;
 }
 
 void CMainDlg::AddToList(CItem &item, int nItem)
@@ -1973,7 +1973,7 @@ bool CMainDlg::AddToList(CString szPath)
     if (nItem == -1)
         return false;
 
-    CItem& item = m_Config.m_Items.GetData(nItem);
+    CItem& item = m_Config.m_Items.Get(nItem);
     this->AddToList(item, nItem);
 
     return true;
@@ -2015,7 +2015,7 @@ void CMainDlg::HandleDropFiles(HDROP hDropInfo)
                     {
                         CFormat format;
                         doc.GetFormat(format);
-                        m_Config.m_Formats.InsertNode(format);
+                        m_Config.m_Formats.Insert(format);
 
                         this->UpdateFormatComboBox();
                     }
@@ -2026,12 +2026,12 @@ void CMainDlg::HandleDropFiles(HDROP hDropInfo)
                     int nFormat = this->m_CmbFormat.GetCurSel();
                     if (nFormat != -1)
                     {
-                        CFormat& format = m_Config.m_Formats.GetData(nFormat);
+                        CFormat& format = m_Config.m_Formats.Get(nFormat);
 
                         XmlConfiguration doc;
                         if (doc.Open(szPath) == true)
                         {
-                            format.m_Presets.RemoveAllNodes();
+                            format.m_Presets.RemoveAll();
                             doc.GetPresets(format.m_Presets);
 
                             this->UpdatePresetComboBox();
@@ -2048,7 +2048,7 @@ void CMainDlg::HandleDropFiles(HDROP hDropInfo)
                     int nFormat = this->m_CmbFormat.GetCurSel();
                     if (nFormat != -1)
                     {
-                        CFormat& format = m_Config.m_Formats.GetData(nFormat);
+                        CFormat& format = m_Config.m_Formats.Get(nFormat);
                         format.szPath = szPath;
                     }
                 }
@@ -2058,7 +2058,7 @@ void CMainDlg::HandleDropFiles(HDROP hDropInfo)
                     int nFormat = this->m_CmbFormat.GetCurSel();
                     if (nFormat != -1)
                     {
-                        CFormat& format = m_Config.m_Formats.GetData(nFormat);
+                        CFormat& format = m_Config.m_Formats.Get(nFormat);
                         format.szFunction = szPath;
                     }
                 }
@@ -2143,10 +2143,10 @@ void CMainDlg::UpdateFormatComboBox()
     {
         this->m_CmbFormat.ResetContent();
 
-        int nFormats = m_Config.m_Formats.GetSize();
+        int nFormats = m_Config.m_Formats.Count();
         for (int i = 0; i < nFormats; i++)
         {
-            CFormat& format = m_Config.m_Formats.GetData(i);
+            CFormat& format = m_Config.m_Formats.Get(i);
             this->m_CmbFormat.InsertString(i, format.szName);
         }
 
@@ -2169,16 +2169,16 @@ void CMainDlg::UpdatePresetComboBox()
 
         int nPreset = -1;
 
-        if (m_Config.m_Options.nSelectedFormat > m_Config.m_Formats.GetSize() - 1)
+        if (m_Config.m_Options.nSelectedFormat > m_Config.m_Formats.Count() - 1)
             m_Config.m_Options.nSelectedFormat = 0;
 
-        if (m_Config.m_Options.nSelectedFormat >= 0 && m_Config.m_Formats.GetSize() > 0)
+        if (m_Config.m_Options.nSelectedFormat >= 0 && m_Config.m_Formats.Count() > 0)
         {
-            CFormat& format = m_Config.m_Formats.GetData(m_Config.m_Options.nSelectedFormat);
-            int nPresets = format.m_Presets.GetSize();
+            CFormat& format = m_Config.m_Formats.Get(m_Config.m_Options.nSelectedFormat);
+            int nPresets = format.m_Presets.Count();
             for (int i = 0; i < nPresets; i++)
             {
-                CPreset& preset = format.m_Presets.GetData(i);
+                CPreset& preset = format.m_Presets.Get(i);
                 this->m_CmbPresets.InsertString(i, preset.szName);
             }
 
@@ -2202,8 +2202,8 @@ void CMainDlg::UpdateFormatAndPreset()
     int nPreset = this->m_CmbPresets.GetCurSel();
     if ((nFormat >= 0) && (nPreset >= 0))
     {
-        CFormat& format = m_Config.m_Formats.GetData(nFormat);
-        CPreset& preset = format.m_Presets.GetData(nPreset);
+        CFormat& format = m_Config.m_Formats.Get(nFormat);
+        CPreset& preset = format.m_Presets.Get(nPreset);
         int nCount = m_LstInputItems.GetItemCount();
         if (nCount > 0)
         {
@@ -2212,7 +2212,7 @@ void CMainDlg::UpdateFormatAndPreset()
             {
                 if (m_LstInputItems.GetItemState(i, LVIS_SELECTED) == LVIS_SELECTED)
                 {
-                    CItem& item = m_Config.m_Items.GetData(i);
+                    CItem& item = m_Config.m_Items.Get(i);
                     item.szFormatId = format.szId;
                     item.nPreset = nPreset;
 
@@ -2230,7 +2230,7 @@ void CMainDlg::UpdateFormatAndPreset()
             {
                 for (int i = 0; i < nCount; i++)
                 {
-                    CItem& item = m_Config.m_Items.GetData(i);
+                    CItem& item = m_Config.m_Items.Get(i);
                     item.szFormatId = format.szId;
                     item.nPreset = nPreset;
 
@@ -2392,7 +2392,7 @@ void CMainDlg::StartConvert()
 
         this->pWorkerContext->pConfig = &this->m_Config;
 
-        int nItems = this->m_Config.m_Items.GetSize();
+        int nItems = this->m_Config.m_Items.Count();
         int nChecked = 0;
 
         if (nItems <= 0)
@@ -2404,7 +2404,7 @@ void CMainDlg::StartConvert()
 
         for (int i = 0; i < nItems; i++)
         {
-            CItem& item = this->m_Config.m_Items.GetData(i);
+            CItem& item = this->m_Config.m_Items.Get(i);
             if (item.bChecked == true)
             {
                 this->m_LstInputItems.SetItemText(i, ITEM_COLUMN_TIME, pszDefaulTime);
@@ -2508,14 +2508,14 @@ void CMainDlg::TraceConvert()
 
     pTraceWorkerContext->pConfig = &this->m_Config;
 
-    int nItems = this->m_Config.m_Items.GetSize();
+    int nItems = this->m_Config.m_Items.Count();
     if (nItems <= 0)
         return;
 
     int nChecked = 0;
     for (int i = 0; i < nItems; i++)
     {
-        CItem& item = this->m_Config.m_Items.GetData(i);
+        CItem& item = this->m_Config.m_Items.Get(i);
         if (item.bChecked == true)
         {
             nChecked++;
@@ -2538,7 +2538,7 @@ void CMainDlg::TraceConvert()
 
     for (int i = 0; i < nItems; i++)
     {
-        CItem& item = pTraceWorkerContext->pConfig->m_Items.GetData(i);
+        CItem& item = pTraceWorkerContext->pConfig->m_Items.Get(i);
         if (item.bChecked == true)
         {
             item.ResetProgress();

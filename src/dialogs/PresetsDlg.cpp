@@ -98,10 +98,10 @@ BOOL CPresetsDlg::OnInitDialog()
     m_LstPresets.InsertColumn(PRESET_COLUMN_OPTIONS, _T("Options"), LVCFMT_LEFT, 290);
 
     // file format combo-box
-    int nFormats = m_Formats.GetSize();
+    int nFormats = m_Formats.Count();
     for (int i = 0; i < nFormats; i++)
     {
-        CFormat& format = m_Formats.GetData(i);
+        CFormat& format = m_Formats.Get(i);
         m_CmbFormat.InsertString(i, format.szName);
     }
 
@@ -214,8 +214,8 @@ void CPresetsDlg::OnBnClickedButtonDuplicate()
         int nSelected = m_LstPresets.GetNextSelectedItem(pos);
         if (nSelected >= 0)
         {
-            CFormat& format = m_Formats.GetData(nSelectedFormat);
-            CPreset& preset = format.m_Presets.GetData(nSelected);
+            CFormat& format = m_Formats.Get(nSelectedFormat);
+            CPreset& preset = format.m_Presets.Get(nSelected);
             CPreset copy = preset;
 
             format.m_Presets.InsertAfter(copy, nSelected);
@@ -234,10 +234,10 @@ void CPresetsDlg::OnBnClickedButtonDuplicate()
 
 void CPresetsDlg::OnBnClickedButtonRemoveAllPresets()
 {
-    if (m_Formats.GetSize() > 0)
+    if (m_Formats.Count() > 0)
     {
-        CFormat& format = m_Formats.GetData(nSelectedFormat);
-        format.m_Presets.RemoveAllNodes();
+        CFormat& format = m_Formats.Get(nSelectedFormat);
+        format.m_Presets.RemoveAll();
 
         m_LstPresets.DeleteAllItems();
 
@@ -252,8 +252,8 @@ void CPresetsDlg::OnBnClickedButtonRemovePreset()
     {
         int nItem = m_LstPresets.GetNextSelectedItem(pos);
 
-        CFormat& format = m_Formats.GetData(nSelectedFormat);
-        format.m_Presets.RemoveNode(nItem);
+        CFormat& format = m_Formats.Get(nSelectedFormat);
+        format.m_Presets.Remove(nItem);
 
         m_LstPresets.DeleteItem(nItem);
 
@@ -269,7 +269,7 @@ void CPresetsDlg::OnBnClickedButtonRemovePreset()
 
 void CPresetsDlg::OnBnClickedButtonAddPreset()
 {
-    if (m_Formats.GetSize() > 0)
+    if (m_Formats.Count() > 0)
     {
         if (bUpdate == true)
             return;
@@ -278,11 +278,11 @@ void CPresetsDlg::OnBnClickedButtonAddPreset()
 
         int nItem = m_LstPresets.GetItemCount();
 
-        CFormat& format = m_Formats.GetData(nSelectedFormat);
+        CFormat& format = m_Formats.Get(nSelectedFormat);
         CPreset preset;
         preset.szName = pConfig->GetString(0x00220004, pszPresetsDialog[3]);
         preset.szOptions = _T("");
-        format.m_Presets.InsertNode(preset);
+        format.m_Presets.Insert(preset);
 
         AddToList(preset, nItem);
 
@@ -308,16 +308,16 @@ void CPresetsDlg::OnBnClickedButtonPresetUp()
         int nItem = m_LstPresets.GetNextSelectedItem(pos);
         if (nItem > 0)
         {
-            CFormat& format = m_Formats.GetData(nSelectedFormat);
-            CPreset& preset1 = format.m_Presets.GetData(nItem);
-            CPreset& preset2 = format.m_Presets.GetData(nItem - 1);
+            CFormat& format = m_Formats.Get(nSelectedFormat);
+            CPreset& preset1 = format.m_Presets.Get(nItem);
+            CPreset& preset2 = format.m_Presets.Get(nItem - 1);
 
             m_LstPresets.SetItemText(nItem, PRESET_COLUMN_NAME, preset2.szName);
             m_LstPresets.SetItemText(nItem, PRESET_COLUMN_OPTIONS, preset2.szOptions);
             m_LstPresets.SetItemText(nItem - 1, PRESET_COLUMN_NAME, preset1.szName);
             m_LstPresets.SetItemText(nItem - 1, PRESET_COLUMN_OPTIONS, preset1.szOptions);
 
-            format.m_Presets.SwapItems(nItem, nItem - 1);
+            format.m_Presets.Swap(nItem, nItem - 1);
 
             m_LstPresets.SetItemState(nItem - 1, LVIS_SELECTED, LVIS_SELECTED);
             m_LstPresets.EnsureVisible(nItem - 1, FALSE);
@@ -341,16 +341,16 @@ void CPresetsDlg::OnBnClickedButtonPresetDown()
         int nItems = m_LstPresets.GetItemCount();
         if (nItem != (nItems - 1) && nItem >= 0)
         {
-            CFormat& format = m_Formats.GetData(nSelectedFormat);
-            CPreset& preset1 = format.m_Presets.GetData(nItem);
-            CPreset& preset2 = format.m_Presets.GetData(nItem + 1);
+            CFormat& format = m_Formats.Get(nSelectedFormat);
+            CPreset& preset1 = format.m_Presets.Get(nItem);
+            CPreset& preset2 = format.m_Presets.Get(nItem + 1);
 
             m_LstPresets.SetItemText(nItem, PRESET_COLUMN_NAME, preset2.szName);
             m_LstPresets.SetItemText(nItem, PRESET_COLUMN_OPTIONS, preset2.szOptions);
             m_LstPresets.SetItemText(nItem + 1, PRESET_COLUMN_NAME, preset1.szName);
             m_LstPresets.SetItemText(nItem + 1, PRESET_COLUMN_OPTIONS, preset1.szOptions);
 
-            format.m_Presets.SwapItems(nItem, nItem + 1);
+            format.m_Presets.Swap(nItem, nItem + 1);
 
             m_LstPresets.SetItemState(nItem + 1, LVIS_SELECTED, LVIS_SELECTED);
             m_LstPresets.EnsureVisible(nItem + 1, FALSE);
@@ -378,8 +378,8 @@ void CPresetsDlg::OnBnClickedButtonUpdatePreset()
         this->m_EdtName.GetWindowText(szName);
         this->m_EdtOptions.GetWindowText(szOptions);
 
-        CFormat& format = m_Formats.GetData(nSelectedFormat);
-        CPreset& preset = format.m_Presets.GetData(nItem);
+        CFormat& format = m_Formats.Get(nSelectedFormat);
+        CPreset& preset = format.m_Presets.Get(nItem);
         preset.szName = szName;
         preset.szOptions = szOptions;
 
@@ -400,9 +400,9 @@ void CPresetsDlg::OnCbnSelchangeComboPresetFormat()
 
     this->InsertPresetsToListCtrl();
 
-    if (this->m_Formats.GetSize() > 0)
+    if (this->m_Formats.Count() > 0)
     {
-        CFormat& format = this->m_Formats.GetData(nSelectedFormat);
+        CFormat& format = this->m_Formats.Get(nSelectedFormat);
 
         m_LstPresets.SetItemState(format.nDefaultPreset, LVIS_SELECTED, LVIS_SELECTED);
         m_LstPresets.EnsureVisible(format.nDefaultPreset, FALSE);
@@ -555,13 +555,13 @@ void CPresetsDlg::AddToList(CPreset &preset, int nItem)
 
 void CPresetsDlg::InsertPresetsToListCtrl()
 {
-    if (this->m_Formats.GetSize() > 0)
+    if (this->m_Formats.Count() > 0)
     {
-        CFormat& format = this->m_Formats.GetData(this->nSelectedFormat);
-        int nPresets = format.m_Presets.GetSize();
+        CFormat& format = this->m_Formats.Get(this->nSelectedFormat);
+        int nPresets = format.m_Presets.Count();
         for (int i = 0; i < nPresets; i++)
         {
-            CPreset& preset = format.m_Presets.GetData(i);
+            CPreset& preset = format.m_Presets.Get(i);
             this->AddToList(preset, i);
         }
     }
@@ -613,8 +613,8 @@ void CPresetsDlg::ListSelectionChange()
     {
         int nItem = m_LstPresets.GetNextSelectedItem(pos);
 
-        CFormat& format = m_Formats.GetData(nSelectedFormat);
-        CPreset& preset = format.m_Presets.GetData(nItem);
+        CFormat& format = m_Formats.Get(nSelectedFormat);
+        CPreset& preset = format.m_Presets.Get(nItem);
         format.nDefaultPreset = nItem;
 
         this->UpdateFields(preset);
@@ -635,8 +635,8 @@ void CPresetsDlg::LoadPresets(CString szFileXml)
     {
         this->m_LstPresets.DeleteAllItems();
 
-        CFormat& format = this->m_Formats.GetData(this->nSelectedFormat);
-        format.m_Presets.RemoveAllNodes();
+        CFormat& format = this->m_Formats.Get(this->nSelectedFormat);
+        format.m_Presets.RemoveAll();
 
         doc.GetPresets(format.m_Presets);
 
@@ -653,7 +653,7 @@ void CPresetsDlg::LoadPresets(CString szFileXml)
 
 void CPresetsDlg::SavePresets(CString szFileXml)
 {
-    CFormat& format = this->m_Formats.GetData(this->nSelectedFormat);
+    CFormat& format = this->m_Formats.Get(this->nSelectedFormat);
 
     XmlConfiguration doc;
     doc.SetPresets(format.m_Presets);

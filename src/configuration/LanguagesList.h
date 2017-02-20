@@ -12,10 +12,10 @@ class CLanguagesList : public CListT<CLanguage>
 public:
     int GetLanguageById(CString szLanguageId)
     {
-        int nCount = this->GetSize();
+        int nCount = this->Count();
         for (int i = 0; i < nCount; i++)
         {
-            CLanguage& language = this->GetData(i);
+            CLanguage& language = this->Get(i);
             if (szLanguageId.CompareNoCase(language.szId) == 0)
                 return i;
         }
