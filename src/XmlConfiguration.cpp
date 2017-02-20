@@ -472,7 +472,7 @@ void XmlConfiguration::GetLanguage(tinyxml2::XMLElement *pLanguageElem, CLanguag
             CString szValue;
             _stscanf(ToCString(pszKey), _T("%x"), &nKey);
             szValue = ToCString(pszValue);
-            m_Language.m_Strings.InsertNode(nKey, szValue);
+            m_Language.m_Strings.Insert(nKey, szValue);
         }
     }
 }

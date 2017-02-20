@@ -47,7 +47,7 @@ public:
     {
         if (this->pLanguage != NULL)
         {
-            if (this->pLanguage->m_Strings.m_Map.Lookup(nKey, rValue) == TRUE)
+            if (this->pLanguage->m_Strings.TryGet(nKey, rValue) == TRUE)
                 return true;
         }
         return false;
