@@ -233,8 +233,6 @@ bool WriteLoop(CPipeContext* pContext)
     DWORD dwReadBytes = 0;
     DWORD dwWriteBytes = 0;
     ULONGLONG nTotalBytesWrite = 0;
-    ULONGLONG nFileSize = 0;
-    int nProgress = -1;
 
     pContext->bError = false;
     pContext->bFinished = false;
