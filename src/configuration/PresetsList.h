@@ -9,11 +9,4 @@
 
 class CPresetsList : public CListT<CPreset>
 {
-public:
-    void InsertNode(CString szName)
-    {
-        CPreset preset;
-        preset.szName = szName;
-        m_Items.AddTail(preset);
-    }
 };
