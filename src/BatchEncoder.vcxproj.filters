@@ -137,6 +137,9 @@
     <ClInclude Include="XmlConfiguration.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="configuration\ListT.h">
+      <Filter>Header Files\Configuration</Filter>
+    </ClInclude>
     <ClInclude Include="configuration\Configuration.h">
       <Filter>Header Files\Configuration</Filter>
     </ClInclude>
