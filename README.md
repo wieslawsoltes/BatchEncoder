@@ -311,6 +311,10 @@ For more details please read [Configuring Programs for Windows XP](https://msdn.
 
 Required [TinyXml-2](https://github.com/leethomason/tinyxml2) sources are included in `src\xml` directory.
 
+### Lua Library
+
+Required [Lua 5.3.4](http://www.lua.org/ftp/) sources are included in `src\lua\lua` directory.
+
 ## License
 
 BatchEncoder (Audio Conversion GUI) is licensed under the [MIT license](LICENSE.TXT).
