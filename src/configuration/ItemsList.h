@@ -7,44 +7,44 @@
 #include <afxtempl.h>
 #include "Item.h"
 
-class CItemsList
+template <class T>
+class CListT
 {
+    CList<T, T&> m_Items;
 public:
-    CList<CItem, CItem&> m_Items;
-public:
-    void SetData(CItem& item, int idx)
+    void SetData(T& item, int idx)
     {
         m_Items.SetAt(m_Items.FindIndex(idx), item);
     }
-    CItem& GetData(int idx)
+    T& GetData(int idx)
     {
         return m_Items.GetAt(m_Items.FindIndex(idx));
     }
 public:
-    CItemsList()
+    CListT()
     {
     }
-    CItemsList(const CItemsList &other)
+    CListT(const CListT &other)
     {
         Copy(other);
     }
-    CItemsList& operator=(const CItemsList &other)
+    CListT& operator=(const CListT &other)
     {
         Copy(other);
         return *this;
     }
-    virtual ~CItemsList()
+    virtual ~CListT()
     {
         if (m_Items.GetCount() != 0)
             m_Items.RemoveAll();
     }
 public:
-    void Copy(const CItemsList &other)
+    void Copy(const CListT &other)
     {
         int nItems = (int)other.m_Items.GetCount();
         for (int i = 0; i < nItems; i++)
         {
-            CItem item = other.m_Items.GetAt(other.m_Items.FindIndex(i));
+            T item = other.m_Items.GetAt(other.m_Items.FindIndex(i));
             this->InsertNode(item);
         }
     }
@@ -58,17 +58,17 @@ public:
         return (int)m_Items.GetCount();
     }
 public:
-    void InsertNode(CItem& item)
+    void InsertNode(T& item)
     {
         m_Items.AddTail(item);
     }
-    void InsertBefore(CItem& item, int nIndex)
+    void InsertBefore(T& item, int nIndex)
     {
         POSITION pos = m_Items.FindIndex(nIndex);
         if (pos != NULL)
             m_Items.InsertBefore(pos, item);
     }
-    void InsertAfter(CItem& item, int nIndex)
+    void InsertAfter(T& item, int nIndex)
     {
         POSITION pos = m_Items.FindIndex(nIndex);
         if (pos != NULL)
@@ -85,23 +85,27 @@ public:
             m_Items.RemoveAll();
     }
 public:
-    void Copy(CItemsList& other)
+    void Copy(CListT& other)
     {
         int nItems = (int)other.m_Items.GetCount();
         for (int i = 0; i < nItems; i++)
         {
-            CItem item = other.m_Items.GetAt(other.m_Items.FindIndex(i));
+            T item = other.m_Items.GetAt(other.m_Items.FindIndex(i));
             this->InsertNode(item);
         }
     }
 public:
     void SwapItems(int idx1, int idx2)
     {
-        CItem item1 = this->GetData(idx1);
-        CItem item2 = this->GetData(idx2);
+        T item1 = this->GetData(idx1);
+        T item2 = this->GetData(idx2);
         if ((idx1 < 0) || (idx2 < 0) || (idx1 >= GetSize()) || (idx2 >= GetSize()))
             return;
         this->SetData(item1, idx2);
         this->SetData(item2, idx1);
     }
+};
+
+class CItemsList : public CListT<CItem>
+{
 };
