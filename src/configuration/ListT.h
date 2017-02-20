@@ -8,7 +8,6 @@
 template <class T>
 class CListT
 {
-public:
     CList<T, T&> m_Items;
 public:
     void SetData(T& item, int idx)
