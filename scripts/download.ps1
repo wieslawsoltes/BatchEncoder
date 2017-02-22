@@ -1,6 +1,24 @@
-﻿# Download script to Tools https://github.com/wieslawsoltes/BatchEncoder/wiki/Tools
+﻿# This is BatchEncoder tools download script for PowerShell.
+# This file was downloaded from https://github.com/wieslawsoltes/BatchEncoder/edit/master/scripts/download.ps1
+# Detailed list of tools can be found here https://github.com/wieslawsoltes/BatchEncoder/wiki/Tools
 
-$tools = 
+<#
+.SYNOPSIS
+This is a Powershell script to download tools for BatchEncoder.
+.DESCRIPTION
+This Powershell script will download all necessary tools for BatchEncoder to work.
+.PARAMETER Path
+The tools output path.
+.LINK
+https://github.com/wieslawsoltes/BatchEncoder
+#>
+
+[CmdletBinding()]
+Param(
+    [string]$Path = (Get-Item -Path ".\" -Verbose).FullName
+)
+
+$Tools = 
 @(
     # SSRC
     ( "http://shibatch.sourceforge.net/download/ssrc-1.33.tar.gz", "ssrc-1.33.tar.gz" ),
@@ -61,14 +79,21 @@ $tools =
     ( "https://ffmpeg.zeranoe.com/builds/win64/static/ffmpeg-3.2.2-win64-static.zip", "ffmpeg-3.2.2-win64-static.zip" )
 )
 
-$path = (Get-Item -Path ".\" -Verbose).FullName
+if(!(Test-Path -Path $Path )) {
+    New-Item -ItemType directory -Name $Path
+}
 
-foreach ($tool in $tools) {
+$FullPath = Resolve-Path $Path
+$FullPath = (Get-Item -Path $FullPath -Verbose).FullName
+
+"Ddownload Path: " + $FullPath
+
+foreach ($Tool in $Tools) {
     Try {
         "Downloading: " + $tool[0]
-        (New-Object System.Net.WebClient).DownloadFile($tool[0], $path + "\"  + $tool[1])
+        (New-Object System.Net.WebClient).DownloadFile($Tool[0], $FullPath + "\"  + $Tool[1])
     }
     Catch {
-        "Failed to download: " + $tool[0]
+        "Failed to download: " + $Tool[0]
     }
 }
