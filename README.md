@@ -139,6 +139,13 @@ For more information about tools please see the [wiki page](https://github.com/w
 
 There is also available PowerShell [download script](https://github.com/wieslawsoltes/BatchEncoder/blob/master/scripts/download.ps1) for all supported tools.
 
+Open up a Powershell prompt and execute the download script:
+```PowerShell
+PS> .\download.ps1 -Path "Tools"
+```
+
+The `-Path` parameter is optional and if not provided the script will download to the current directory.
+
 If you having problems running the PowerShell `download.ps1` script see this [instructions](http://stackoverflow.com/a/2035209).
 
 | Name            | Downloads                                                                                                                           |
