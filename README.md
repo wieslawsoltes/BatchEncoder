@@ -211,19 +211,19 @@ The default configuration files can be found [here](https://github.com/wieslawso
 Possible `output path` configurations:
 
 * `""` -> empty string is same as `$SourceDirectory$`
-* `$SourceDirectory$` -> same as $SourceDirectory$\`$Name$`.`$Ext$`
-* `$SourceDirectory$`\`$Name$`.`$Ext$`
-* `$SourceDirectory$`\`$Name$`_converted.`$Ext$`
-* `$SourceDirectory$`\Converted\`$Name$`.`$Ext$`
-* C:\Output -> same as C:\Output\Path\`$Name$`.`$Ext$`
-* C:\Output\`$Name$`.`$Ext$`
-* C:\Output\`$Name$`_converted.`$Ext$`
+* `$SourceDirectory$` -> same as $SourceDirectory$\\`$Name$`.`$Ext$`
+* `$SourceDirectory$`\\`$Name$`.`$Ext$`
+* `$SourceDirectory$`\\`$Name$`_converted.`$Ext$`
+* `$SourceDirectory$`\\Converted\\`$Name$`.`$Ext$`
+* C:\\Output -> same as C:\\Output\\Path\\`$Name$`.`$Ext$`
+* C:\\Output\\`$Name$`.`$Ext$`
+* C:\\Output\\`$Name$`_converted.`$Ext$`
 
 Variables:
 
-* $SourceDirectory$ - input file path.
-* $Name$ - input item name.
-* $Ext$ - output format extension.
+* `$SourceDirectory$` - input file path.
+* `$Name$` - input item name.
+* `$Ext$` - output format extension.
 
 You can add also custom text inside `output path`.
 
