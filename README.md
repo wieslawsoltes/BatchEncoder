@@ -139,6 +139,8 @@ For more information about tools please see the [wiki page](https://github.com/w
 
 There is also available PowerShell [download script](https://github.com/wieslawsoltes/BatchEncoder/blob/master/scripts/download.ps1) for all supported tools.
 
+If you having problems running the PowerShell `download.ps1` script see this [instructions](http://stackoverflow.com/questions/2035193/how-to-run-a-powershell-script).
+
 | Name            | Downloads                                                                                                                           |
 |-----------------|-------------------------------------------------------------------------------------------------------------------------------------|
 | SSRC            | [http://shibatch.sourceforge.net/](http://shibatch.sourceforge.net/)                                                                |
