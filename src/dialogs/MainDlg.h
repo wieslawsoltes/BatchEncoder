@@ -68,12 +68,12 @@ public:
     CMyStatic m_StcPreset;
     CMyStatic m_StcFormat;
     CMyStatic m_StcThreads;
+    CMyButton m_StcOutPath;
     CMyComboBox m_CmbPresets;
     CMyComboBox m_CmbFormat;
+    CMyComboBox m_CmbOutPath;
     CMyListCtrl m_LstInputItems;
-    CMyButton m_ChkOutPath;
     CMyButton m_BtnBrowse;
-    CMyEdit m_EdtOutPath;
     CMyEdit m_EdtThreads;
     CSpinButtonCtrl m_SpinThreads;
     CProgressCtrl m_Progress;
@@ -92,7 +92,6 @@ public:
     afx_msg void OnLvnItemchangedListInputItems(NMHDR *pNMHDR, LRESULT *pResult);
     afx_msg void OnCbnSelchangeComboPresets();
     afx_msg void OnCbnSelchangeComboFormat();
-    afx_msg void OnBnClickedCheckOutPath();
     afx_msg void OnBnClickedButtonBrowsePath();
     afx_msg void OnBnClickedButtonConvert();
     afx_msg void OnFileLoadList();

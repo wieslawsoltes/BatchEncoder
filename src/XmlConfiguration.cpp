@@ -83,10 +83,6 @@ void XmlConfiguration::GetOptions(tinyxml2::XMLElement *pOptionsElem, COptions &
     if (pOptionElem)
         m_Options.szOutputPath = ToCString(pOptionElem->GetText());
 
-    pOptionElem = pOptionsElem->FirstChildElement("OutputPathChecked");
-    if (pOptionElem)
-        m_Options.bOutputPathChecked = ToBool(pOptionElem->GetText());
-
     pOptionElem = pOptionsElem->FirstChildElement("DeleteSourceFiles");
     if (pOptionElem)
         m_Options.bDeleteSourceFiles = ToBool(pOptionElem->GetText());
@@ -170,10 +166,6 @@ void XmlConfiguration::SetOptions(tinyxml2::XMLElement *pOptionsElem, COptions &
 
     pOptionElem = this->NewElement("OutputPath");
     pOptionElem->LinkEndChild(this->NewText(CUtf8String(m_Options.szOutputPath).m_Result));
-    pOptionsElem->LinkEndChild(pOptionElem);
-
-    pOptionElem = this->NewElement("OutputPathChecked");
-    pOptionElem->LinkEndChild(this->NewText(CUtf8String(ToCString(m_Options.bOutputPathChecked)).m_Result));
     pOptionsElem->LinkEndChild(pOptionElem);
 
     pOptionElem = this->NewElement("DeleteSourceFiles");

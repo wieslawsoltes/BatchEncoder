@@ -75,7 +75,7 @@
     <String key="0x000A0011" value="Salida" />
     <String key="0x000A0012" value="Formato:" />
     <String key="0x000A0013" value="Ajuste:" />
-    <String key="0x000A0014" value="Direc&amp;torio de salida:" />
+    <String key="0x000A0014" value="Directorio de salida:" />
     <String key="0x000A0015" value="Y..." />
     <String key="0x000A0016" value="hilos (0=auto):" />
     <String key="0x000A0017" value="Conve&amp;rtir" />
@@ -184,6 +184,7 @@
     <String key="0x0014000C" value="Transcodificando..." />
     <String key="0x0014000D" value="Error: no se pudo encontrar el archivo codificado." />
     <String key="0x0014000E" value="Error: excepción generada mientras se convertía el archivo." />
+    <String key="0x0014000F" value="¡Imposible crear archivo de salida!" />
 
     <!-- Strings Worker Context -->
 
@@ -208,6 +209,7 @@
     <String key="0x0021000C" value="¡Error al buscar archivos objeto!" />
     <String key="0x0021000D" value="¡Imposible crear archivo de salida!" />
     <String key="0x0021000E" value="¡Error crítico al crear hilo!" />
+    <String key="0x0021000F" value="Invalid output path format!" />
 
     <!-- Strings Presets Dialog -->
 

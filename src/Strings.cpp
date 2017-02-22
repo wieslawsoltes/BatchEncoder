@@ -49,7 +49,8 @@ const TCHAR* pszConvertItem[] = {
     /* 10 */ _T("Decoding..."),
     /* 11 */ _T("Processing..."),
     /* 12 */ _T("Error: can not find encoded file."),
-    /* 13 */ _T("Error: exception thrown while converting file.")
+    /* 13 */ _T("Error: exception thrown while converting file."),
+    /* 14 */ _T("Unable to create output path!")
 };
 
 const TCHAR* pszMainDialog[] = {
@@ -66,7 +67,8 @@ const TCHAR* pszMainDialog[] = {
     /* 10 */ _T("Error while searching for language files!"),
     /* 11 */ _T("Error while searching for item files!"),
     /* 12 */ _T("Unable to create output path!"),
-    /* 13 */ _T("Fatal error when creating thread!")
+    /* 13 */ _T("Fatal error when creating thread!"),
+    /* 14 */ _T("Invalid output path format!")
 };
 
 const TCHAR* pszPresetsDialog[] = {

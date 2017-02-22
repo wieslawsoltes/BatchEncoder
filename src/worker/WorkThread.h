@@ -3,6 +3,7 @@
 
 #pragma once
 
+#include "OutputPath.h"
 #include "WorkerContext.h"
 #include "PipeContext.h"
 #include "FileContext.h"

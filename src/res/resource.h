@@ -15,8 +15,8 @@
 #define IDC_COMBO_FORMAT                1004
 #define IDC_STATIC_TEXT_PRESET          1005
 #define IDC_COMBO_PRESETS               1006
-#define IDC_CHECK_OUTPUT                1007
-#define IDC_EDIT_OUTPUT                 1008
+#define IDC_STATIC_TEXT_OUTPUT          1007
+#define IDC_COMBO_OUTPUT                1008
 #define IDC_BUTTON_BROWSE_OUTPUT        1009
 #define IDC_STATIC_THREAD_COUNT         1010
 #define IDC_EDIT_THREADCOUNT            1011

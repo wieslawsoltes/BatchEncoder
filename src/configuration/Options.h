@@ -11,7 +11,6 @@ public:
     CString szSelectedLanguage;
     int nSelectedFormat;
     CString szOutputPath;
-    bool bOutputPathChecked;
     bool bDeleteSourceFiles;
     bool bRecurseChecked;
     bool bShutdownWhenFinished;
@@ -51,7 +50,6 @@ public:
         this->szSelectedLanguage = other.szSelectedLanguage;
         this->nSelectedFormat = other.nSelectedFormat;
         this->szOutputPath = other.szOutputPath;
-        this->bOutputPathChecked = other.bOutputPathChecked;
         this->bDeleteSourceFiles = other.bDeleteSourceFiles;
         this->bRecurseChecked = other.bRecurseChecked;
         this->bShutdownWhenFinished = other.bShutdownWhenFinished;
@@ -77,7 +75,6 @@ public:
         this->szSelectedLanguage = _T("en-US");
         this->nSelectedFormat = 0;
         this->szOutputPath = _T("");
-        this->bOutputPathChecked = false;
         this->bDeleteSourceFiles = false;
         this->bRecurseChecked = true;
         this->bShutdownWhenFinished = false;

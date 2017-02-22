@@ -901,12 +901,6 @@ bool ConvertItem(CItemContext* pContext)
     CString szEncOutputFile;
     CString szDecInputFile;
     CString szDecOutputFile;
-    CString szOutPath;
-
-    if (pWorkerContext->pConfig->m_Options.bOutputPathChecked == true)
-        szOutPath = pWorkerContext->pConfig->m_Options.szOutputPath;
-    else
-        szOutPath = ::GetFilePath(pContext->item->szPath);
 
     // prepare encoder
     szEncInputFile = pContext->item->szPath;
@@ -933,14 +927,34 @@ bool ConvertItem(CItemContext* pContext)
 
     bool bIsValidEncoderInput = pEncFormat->IsValidInputExtension(::GetFileExtension(szEncInputFile));
 
-    szEncOutputFile = pContext->item->szName + _T(".") + CString(pEncFormat->szOutputExtension).MakeLower();
-    if (szOutPath.GetLength() >= 1)
+    szEncOutputFile = pWorkerContext->m_Output.CreateFilePath(
+        pWorkerContext->pConfig->m_Options.szOutputPath,
+        szEncInputFile,
+        pContext->item->szName,
+        pEncFormat->szOutputExtension);
+
+    // create output path
+    if (pWorkerContext->pSyncDir->Wait() == true)
     {
-        if (szOutPath[szOutPath.GetLength() - 1] == '\\' || szOutPath[szOutPath.GetLength() - 1] == '/')
-            szEncOutputFile = szOutPath + szEncOutputFile;
-        else
-            szEncOutputFile = szOutPath + _T("\\") + szEncOutputFile;
+        if (pWorkerContext->m_Output.CreateOutputPath(szEncOutputFile) == false)
+        {
+            pWorkerContext->Status(pContext->item->nId, pszDefaulTime, pWorkerContext->GetString(0x0014000F, pszConvertItem[14]));
+            return false;
+        }
     }
+    else
+    {
+        pWorkerContext->Status(pContext->item->nId, pszDefaulTime, pWorkerContext->GetString(0x0014000F, pszConvertItem[14]));
+        return false;
+    }
+
+    if (pWorkerContext->pSyncDir->Release() == false)
+    {
+        pWorkerContext->Status(pContext->item->nId, pszDefaulTime, pWorkerContext->GetString(0x0014000F, pszConvertItem[14]));
+        return false;
+    }
+
+    ::SetCurrentDirectory(::GetExeFilePath());
 
     // prepare decoder
     if (bIsValidEncoderInput == false)
@@ -1263,6 +1277,7 @@ int WorkThread(void *param)
     }
 
     pWorkerContext->pSync = new CSynchronize();
+    pWorkerContext->pSyncDir = new CSynchronize();
     pWorkerContext->Init();
 
     // single-threaded
@@ -1291,10 +1306,11 @@ int WorkThread(void *param)
         for (int i = 0; i < pWorkerContext->nThreadCount; i++)
             pConvertThreads[i].Close();
 
-        delete [] pConvertThreads;
+        delete[] pConvertThreads;
     }
 
     delete pWorkerContext->pSync;
+    delete pWorkerContext->pSyncDir;
     delete pWorkerContext->pQueue;
     delete[] pItemsContext;
 

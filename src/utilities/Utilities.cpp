@@ -255,6 +255,17 @@ void GetFullPathName(CString &szFilePath)
     szFilePath = szFullPath;
 }
 
+BOOL DirectoryExists(LPCTSTR szPath)
+{
+    if (_taccess_s(szPath, 0) == 0)
+    {
+        struct _stat status;
+        _tstat(szPath, &status);
+        return (status.st_mode & S_IFDIR) != 0;
+    }
+    return FALSE;
+}
+
 BOOL MakeFullPath(CString szPath)
 {
     if (szPath[szPath.GetLength() - 1] != '\\')

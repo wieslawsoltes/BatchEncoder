@@ -75,7 +75,7 @@
     <String key="0x000A0011" value="Output" />
     <String key="0x000A0012" value="format:" />
     <String key="0x000A0013" value="preset:" />
-    <String key="0x000A0014" value="O&amp;utput path:" />
+    <String key="0x000A0014" value="Output path:" />
     <String key="0x000A0015" value="&amp;..." />
     <String key="0x000A0016" value="threads (0=auto):" />
     <String key="0x000A0017" value="Conve&amp;rt" />
@@ -184,6 +184,7 @@
     <String key="0x0014000C" value="Transcoding..." />
     <String key="0x0014000D" value="Error: can not find encoded file." />
     <String key="0x0014000E" value="Error: exception thrown while converting file." />
+    <String key="0x0014000F" value="Unable to create output path!" />
 
     <!-- Strings Worker Context -->
 
@@ -208,6 +209,7 @@
     <String key="0x0021000C" value="Error while searching for item files!" />
     <String key="0x0021000D" value="Unable to create output path!" />
     <String key="0x0021000E" value="Fatal error when creating thread!" />
+    <String key="0x0021000F" value="Invalid output path format!" />
 
     <!-- Strings Presets Dialog -->
 

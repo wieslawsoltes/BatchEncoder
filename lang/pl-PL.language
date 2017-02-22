@@ -75,7 +75,7 @@
     <String key="0x000A0011" value="Wyjście" />
     <String key="0x000A0012" value="format:" />
     <String key="0x000A0013" value="preset:" />
-    <String key="0x000A0014" value="Ścieżka &amp;wyjściowa:" />
+    <String key="0x000A0014" value="Ścieżka wyjściowa:" />
     <String key="0x000A0015" value="&amp;..." />
     <String key="0x000A0016" value="wątki (0=auto):" />
     <String key="0x000A0017" value="Konwe&amp;rtuj" />
@@ -184,6 +184,7 @@
     <String key="0x0014000C" value="Transkodowanie..." />
     <String key="0x0014000D" value="Błąd: nie mogę znaleźć plik zakodowany." />
     <String key="0x0014000E" value="Błąd: wyjątek został wyrzucony podczas konwersji pliku." />
+    <String key="0x0014000F" value="Nie można utworzyć ścieżki wyjściowej!" />
 
     <!-- Strings Worker Context -->
 
@@ -208,6 +209,7 @@
     <String key="0x0021000C" value="Błąd podczas wyszukiwania plików elementów!" />
     <String key="0x0021000D" value="Nie można utworzyć ścieżki wyjściowej!" />
     <String key="0x0021000E" value="Błąd krytyczny podczas tworzenia wątku!" />
+    <String key="0x0021000F" value="Nieprawidłowy format ścieżki wyjściowej!" />
 
     <!-- Strings Presets Dialog -->
 

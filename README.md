@@ -206,6 +206,35 @@ Use only UTF-8 compatible text editors (e.g. Notepad) to edit xml configuration 
 
 The default configuration files can be found [here](https://github.com/wieslawsoltes/BatchEncoder/tree/master/config).
 
+## Output path format
+
+Possible `output path` configurations:
+
+* `""` -> empty string is same as `$SourceDirectory$`
+* `$SourceDirectory$` -> same as $SourceDirectory$\`$Name$`.`$Ext$`
+* `$SourceDirectory$`\`$Name$`.`$Ext$`
+* `$SourceDirectory$`\`$Name$`_converted.`$Ext$`
+* `$SourceDirectory$`\Converted\`$Name$`.`$Ext$`
+* C:\Output -> same as C:\Output\Path\`$Name$`.`$Ext$`
+* C:\Output\`$Name$`.`$Ext$`
+* C:\Output\`$Name$`_converted.`$Ext$`
+
+Variables:
+
+* $SourceDirectory$ - input file path.
+* $Name$ - input item name.
+* $Ext$ - output format extension.
+
+You can add also custom text inside `output path`.
+
+Valid `output path` configurations:
+
+* If output path is empty only input file directory is used (name and extension are added automatically).
+* If `$SourceDirectory$`, `$Name$` and `$Ext$` variables are missing full output path must be provided by user (ignore input file path and variables)
+* If `$SourceDirectory$`, `$Name$` and `$Ext$` variables are present input source file path is used with item `Name` and output format extension.
+* If `$SourceDirectory$` is missing and `$Name$` and `$Ext$` variables are present item `Name` and output format extension are used (full output path must be provided by user).
+* If only `$SourceDirectory$` variable is present input source file path is used (name and extension are added automatically)
+
 ## Translations
 
 * [English (en-US)](https://github.com/wieslawsoltes/BatchEncoder/blob/master/lang/en-US.language) by Wiesław Šoltés

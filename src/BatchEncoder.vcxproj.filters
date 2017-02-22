@@ -263,6 +263,9 @@
     <ClInclude Include="contexts\ProgressWorkerContext.h">
       <Filter>Header Files\Contexts</Filter>
     </ClInclude>
+    <ClInclude Include="worker\OutputPath.h">
+      <Filter>Header Files\Worker</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="res\BatchEncoder.rc2">

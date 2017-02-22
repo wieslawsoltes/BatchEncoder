@@ -40,6 +40,8 @@ CString GetExeFilePath();
 
 void GetFullPathName(CString &szFilePath);
 
+BOOL DirectoryExists(LPCTSTR szPath);
+
 BOOL MakeFullPath(CString szPath);
 
 bool FileExists(CString szPath);

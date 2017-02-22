@@ -202,8 +202,8 @@ void CMainDlg::DoDataExchange(CDataExchange* pDX)
     DDX_Control(pDX, IDC_COMBO_PRESETS, m_CmbPresets);
     DDX_Control(pDX, IDC_COMBO_FORMAT, m_CmbFormat);
     DDX_Control(pDX, IDC_LIST_ITEMS, m_LstInputItems);
-    DDX_Control(pDX, IDC_CHECK_OUTPUT, m_ChkOutPath);
-    DDX_Control(pDX, IDC_EDIT_OUTPUT, m_EdtOutPath);
+    DDX_Control(pDX, IDC_STATIC_TEXT_OUTPUT, m_StcOutPath);
+    DDX_Control(pDX, IDC_COMBO_OUTPUT, m_CmbOutPath);
     DDX_Control(pDX, IDC_EDIT_THREADCOUNT, m_EdtThreads);
     DDX_Control(pDX, IDC_SPIN_THREADCOUNT, m_SpinThreads);
     DDX_Control(pDX, IDC_STATIC_TEXT_PRESET, m_StcPreset);
@@ -228,7 +228,6 @@ BEGIN_MESSAGE_MAP(CMainDlg, CResizeDialog)
     ON_NOTIFY(LVN_ITEMCHANGED, IDC_LIST_ITEMS, OnLvnItemchangedListInputItems)
     ON_CBN_SELCHANGE(IDC_COMBO_PRESETS, OnCbnSelchangeComboPresets)
     ON_CBN_SELCHANGE(IDC_COMBO_FORMAT, OnCbnSelchangeComboFormat)
-    ON_BN_CLICKED(IDC_CHECK_OUTPUT, OnBnClickedCheckOutPath)
     ON_BN_CLICKED(IDC_BUTTON_BROWSE_OUTPUT, OnBnClickedButtonBrowsePath)
     ON_BN_CLICKED(IDC_BUTTON_CONVERT, OnBnClickedButtonConvert)
     ON_COMMAND(ID_FILE_LOADLIST, OnFileLoadList)
@@ -343,6 +342,19 @@ BOOL CMainDlg::OnInitDialog()
     // enable drag & drop
     this->DragAcceptFiles(TRUE);
 
+    // output path presets
+    this->m_CmbOutPath.InsertString(0, _T("$SourceDirectory$"));
+    this->m_CmbOutPath.InsertString(1, _T("$SourceDirectory$\\$Name$.$Ext$"));
+    this->m_CmbOutPath.InsertString(2, _T("$SourceDirectory$\\$Name$_converted.$Ext$"));
+    this->m_CmbOutPath.InsertString(3, _T("$SourceDirectory$\\Converted\\$Name$.$Ext$"));
+    this->m_CmbOutPath.InsertString(4, _T("C:\\Output"));
+    this->m_CmbOutPath.InsertString(5, _T("C:\\Output\\$Name$.$Ext$"));
+    this->m_CmbOutPath.InsertString(6, _T("C:\\Output\\$Name$_converted.$Ext$"));
+
+    ::SetComboBoxHeight(this->GetSafeHwnd(), IDC_COMBO_OUTPUT, 15);
+    this->m_CmbOutPath.SetCurSel(1);
+    this->m_CmbOutPath.SetFocus();
+
     // resize anchors
     AddAnchor(IDC_STATIC_GROUP_OUTPUT, TOP_LEFT, TOP_RIGHT);
     AddAnchor(IDC_STATIC_TEXT_FORMAT, TOP_LEFT);
@@ -350,8 +362,8 @@ BOOL CMainDlg::OnInitDialog()
     AddAnchor(IDC_STATIC_TEXT_PRESET, TOP_LEFT);
     AddAnchor(IDC_COMBO_PRESETS, TOP_LEFT, TOP_RIGHT);
     AddAnchor(IDC_LIST_ITEMS, TOP_LEFT, BOTTOM_RIGHT);
-    AddAnchor(IDC_CHECK_OUTPUT, BOTTOM_LEFT);
-    AddAnchor(IDC_EDIT_OUTPUT, BOTTOM_LEFT, BOTTOM_RIGHT);
+    AddAnchor(IDC_STATIC_TEXT_OUTPUT, BOTTOM_LEFT);
+    AddAnchor(IDC_COMBO_OUTPUT, BOTTOM_LEFT, BOTTOM_RIGHT);
     AddAnchor(IDC_BUTTON_BROWSE_OUTPUT, BOTTOM_RIGHT);
     AddAnchor(IDC_PROGRESS_CONVERT, BOTTOM_LEFT, BOTTOM_RIGHT);
     AddAnchor(IDC_STATIC_THREAD_COUNT, BOTTOM_RIGHT);
@@ -606,28 +618,6 @@ void CMainDlg::OnCbnSelchangeComboFormat()
     }
 }
 
-void CMainDlg::OnBnClickedCheckOutPath()
-{
-    if (this->pWorkerContext->bRunning == false)
-    {
-        bool bIsChecked = false;
-
-        if (m_ChkOutPath.GetCheck() == BST_CHECKED)
-            bIsChecked = true;
-
-        if (bIsChecked == false)
-        {
-            m_BtnBrowse.EnableWindow(FALSE);
-            m_EdtOutPath.EnableWindow(FALSE);
-        }
-        else
-        {
-            m_BtnBrowse.EnableWindow(TRUE);
-            m_EdtOutPath.EnableWindow(TRUE);
-        }
-    }
-}
-
 void CMainDlg::OnBnClickedButtonBrowsePath()
 {
     if (this->pWorkerContext->bRunning == false)
@@ -641,7 +631,7 @@ void CMainDlg::OnBnClickedButtonBrowsePath()
         CString szTitle = m_Config.GetString(0x00210006, pszMainDialog[5]);
 
         CString szTmp;
-        this->m_EdtOutPath.GetWindowText(szTmp);
+        this->m_CmbOutPath.GetWindowText(szTmp);
 
         szLastBrowse = szTmp;
 
@@ -680,7 +670,10 @@ void CMainDlg::OnBnClickedButtonBrowsePath()
             if (::SHGetPathFromIDList(pidlBrowse, lpBuffer))
             {
                 szLastBrowse.Format(_T("%s\0"), lpBuffer);
-                m_EdtOutPath.SetWindowText(lpBuffer);
+
+                CString szOutPath;
+                szOutPath.Format(_T("%s\\%s.%s\0"), lpBuffer, VAR_OUTPUT_NAME, VAR_OUTPUT_EXTENSION);
+                this->m_CmbOutPath.SetWindowText(szOutPath);
             }
             pMalloc->Free(pidlBrowse);
         }
@@ -1524,7 +1517,7 @@ void CMainDlg::SetLanguage()
     helper.SetWndText(&m_GrpOutput, 0x000A0011);
     helper.SetWndText(&m_StcFormat, 0x000A0012);
     helper.SetWndText(&m_StcPreset, 0x000A0013);
-    helper.SetWndText(&m_ChkOutPath, 0x000A0014);
+    helper.SetWndText(&m_StcOutPath, 0x000A0014);
     helper.SetWndText(&m_BtnBrowse, 0x000A0015);
     helper.SetWndText(&m_StcThreads, 0x000A0016);
     helper.SetWndText(&m_BtnConvert, 0x000A0017);
@@ -1584,10 +1577,7 @@ void CMainDlg::GetOptions()
     m_Config.m_Options.nSelectedFormat = this->m_CmbFormat.GetCurSel();
 
     // option: OutputPath
-    m_EdtOutPath.GetWindowText(m_Config.m_Options.szOutputPath);
-
-    // option: OutputPathChecked
-    m_Config.m_Options.bOutputPathChecked = this->m_ChkOutPath.GetCheck() == BST_CHECKED;
+    m_CmbOutPath.GetWindowText(m_Config.m_Options.szOutputPath);
 
     // option: DeleteSourceFiles
     m_Config.m_Options.bDeleteSourceFiles = this->GetMenu()->GetMenuState(ID_OPTIONS_DELETE_SOURCE, MF_BYCOMMAND) == MF_CHECKED;
@@ -1648,28 +1638,14 @@ void CMainDlg::SetOptions()
     // option: OutputPath
     if (m_Config.m_Options.szOutputPath.CompareNoCase(_T("")) != 0)
     {
-        this->m_EdtOutPath.SetWindowText(m_Config.m_Options.szOutputPath);
+        this->m_CmbOutPath.SetWindowText(m_Config.m_Options.szOutputPath);
         szLastBrowse = m_Config.m_Options.szOutputPath;
     }
     else
     {
         m_Config.m_Options.szOutputPath = ::GetExeFilePath();
         szLastBrowse = m_Config.m_Options.szOutputPath;
-        this->m_EdtOutPath.SetWindowText(m_Config.m_Options.szOutputPath);
-    }
-
-    // option: OutputPathChecked
-    if (m_Config.m_Options.bOutputPathChecked)
-    {
-        m_ChkOutPath.SetCheck(BST_CHECKED);
-        m_BtnBrowse.EnableWindow(TRUE);
-        m_EdtOutPath.EnableWindow(TRUE);
-    }
-    else
-    {
-        m_ChkOutPath.SetCheck(BST_UNCHECKED);
-        m_BtnBrowse.EnableWindow(FALSE);
-        m_EdtOutPath.EnableWindow(FALSE);
+        this->m_CmbOutPath.SetWindowText(m_Config.m_Options.szOutputPath);
     }
 
     // option: DeleteSourceFiles
@@ -2320,8 +2296,8 @@ void CMainDlg::EnableUserInterface(BOOL bEnable)
 {
     if (bEnable == FALSE)
     {
-        this->m_ChkOutPath.ShowWindow(SW_HIDE);
-        this->m_EdtOutPath.ShowWindow(SW_HIDE);
+        this->m_StcOutPath.ShowWindow(SW_HIDE);
+        this->m_CmbOutPath.ShowWindow(SW_HIDE);
         this->m_BtnBrowse.ShowWindow(SW_HIDE);
         this->m_StcThreads.ShowWindow(SW_HIDE);
         this->m_EdtThreads.ShowWindow(SW_HIDE);
@@ -2331,8 +2307,8 @@ void CMainDlg::EnableUserInterface(BOOL bEnable)
     else
     {
         this->m_Progress.ShowWindow(SW_HIDE);
-        this->m_ChkOutPath.ShowWindow(SW_SHOW);
-        this->m_EdtOutPath.ShowWindow(SW_SHOW);
+        this->m_StcOutPath.ShowWindow(SW_SHOW);
+        this->m_CmbOutPath.ShowWindow(SW_SHOW);
         this->m_BtnBrowse.ShowWindow(SW_SHOW);
         this->m_StcThreads.ShowWindow(SW_SHOW);
         this->m_EdtThreads.ShowWindow(SW_SHOW);
@@ -2363,13 +2339,8 @@ void CMainDlg::EnableUserInterface(BOOL bEnable)
     this->m_CmbPresets.EnableWindow(bEnable);
     this->m_CmbFormat.EnableWindow(bEnable);
 
-    if (this->m_ChkOutPath.GetCheck() == BST_CHECKED)
-        this->m_EdtOutPath.EnableWindow(bEnable);
-
-    if (this->m_ChkOutPath.GetCheck() == BST_CHECKED)
-        this->m_BtnBrowse.EnableWindow(bEnable);
-
-    this->m_ChkOutPath.EnableWindow(bEnable);
+    this->m_CmbOutPath.EnableWindow(bEnable);
+    this->m_BtnBrowse.EnableWindow(bEnable);
 }
 
 void CMainDlg::StartConvert()
@@ -2420,19 +2391,13 @@ void CMainDlg::StartConvert()
             return;
         }
 
-        if (this->m_Config.m_Options.bOutputPathChecked)
+        CString szOutput = this->m_Config.m_Options.szOutputPath;
+        if (this->pWorkerContext->m_Output.Validate(szOutput) == false)
         {
-            CString szPath = this->m_Config.m_Options.szOutputPath;
-            if (szPath.GetLength() > 0)
-            {
-                if (::MakeFullPath(szPath) == FALSE)
-                {
-                    m_StatusBar.SetText(m_Config.GetString(0x0021000D, pszMainDialog[12]), 1, 0);
-                    bSafeCheck = false;
-                    this->pWorkerContext->bDone = true;
-                    return;
-                }
-            }
+            m_StatusBar.SetText(m_Config.GetString(0x0021000F, pszMainDialog[14]), 1, 0);
+            bSafeCheck = false;
+            this->pWorkerContext->bDone = true;
+            return;
         }
 
         if (this->pWorkerContext->m_Worker.Start(WorkThread, this->pWorkerContext, true) == false)
@@ -2556,6 +2521,7 @@ void CMainDlg::TraceConvert()
 
     pTraceWorkerContext->nThreadCount = 1;
     pWorkerContext->pSync = NULL;
+    pWorkerContext->pSyncDir = NULL;
     pTraceWorkerContext->Init();
 
     while (!pTraceWorkerContext->pQueue->IsEmpty())

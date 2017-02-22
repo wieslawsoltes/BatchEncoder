@@ -75,7 +75,7 @@
     <String key="0x000A0011" value="출력" />
     <String key="0x000A0012" value="출력:" />
     <String key="0x000A0013" value="프리셋:" />
-    <String key="0x000A0014" value="&amp;출력 경로:" />
+    <String key="0x000A0014" value="출력 경로:" />
     <String key="0x000A0015" value="&amp;..." />
     <String key="0x000A0016" value="스레드 (0=자동):" />
     <String key="0x000A0017" value="&amp;변환" />
@@ -184,6 +184,7 @@
     <String key="0x0014000C" value="Transcoding..." />
     <String key="0x0014000D" value="오류: 인코딩된 파일을 찾을 수 없습니다." />
     <String key="0x0014000E" value="오류: exception thrown while converting file." />
+    <String key="0x0014000F" value="출력 경로를 만들 수 없습니다.!" />
 
     <!-- Strings Worker Context -->
 
@@ -208,6 +209,7 @@
     <String key="0x0021000C" value="항목 파일들을 검색하는 동안에 오류가 발생했습니다.!" />
     <String key="0x0021000D" value="출력 경로를 만들 수 없습니다.!" />
     <String key="0x0021000E" value="스레드 생성 시 중대한 오류 발생!" />
+    <String key="0x0021000F" value="Invalid output path format!" />
 
     <!-- Strings Presets Dialog -->
 

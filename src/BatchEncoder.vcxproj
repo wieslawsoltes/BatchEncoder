@@ -292,6 +292,7 @@ copy /Y ..\lang\*.language $(OutDir)</Command>
     <ClInclude Include="StdAfx.h" />
     <ClInclude Include="MainApp.h" />
     <ClInclude Include="Strings.h" />
+    <ClInclude Include="worker\OutputPath.h" />
     <ClInclude Include="XmlConfiguration.h" />
     <ClInclude Include="configuration\ListT.h" />
     <ClInclude Include="configuration\MapT.h" />

@@ -2,7 +2,7 @@
 <Options>
     <SelectedLanguage>en-US</SelectedLanguage>
     <SelectedFormat>11</SelectedFormat>
-    <OutputPathChecked>false</OutputPathChecked>
+    <OutputPath>$SourceDirectory$\$Name$.$Ext$</OutputPath>
     <DeleteSourceFiles>false</DeleteSourceFiles>
     <RecurseChecked>true</RecurseChecked>
     <ShutdownWhenFinished>false</ShutdownWhenFinished>

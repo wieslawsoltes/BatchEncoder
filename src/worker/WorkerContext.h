@@ -3,6 +3,7 @@
 
 #pragma once
 
+#include "OutputPath.h"
 #include "Synchronize.h"
 #include "Thread.h"
 #include "configuration\Configuration.h"
@@ -13,9 +14,11 @@ public:
     volatile bool bRunning;
     volatile bool bDone;
     CConfiguration* pConfig;
+    COutputPath m_Output;
 public:
     CThread m_Worker;
     CSynchronize *pSync;
+    CSynchronize *pSyncDir;
     volatile int nThreadCount;
 public:
     volatile int nTotalFiles;
