@@ -331,7 +331,7 @@ CString ReplaceNoCase(LPCTSTR instr, LPCTSTR oldstr, LPCTSTR newstr)
     CString oldLower(oldstr);
     inputLower.MakeLower();
     oldLower.MakeLower();
-    int pos=0;
+    int pos = 0;
     for (;;)
     {
         pos = inputLower.Find(oldLower, pos);
