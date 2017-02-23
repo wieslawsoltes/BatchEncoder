@@ -5,7 +5,7 @@
 
 #include "..\utilities\Utilities.h"
 
-// Possible output path configurations:
+// Output path:
 // "" -> empty string is same as $SourceDirectory$
 // $SourceDirectory$ -> same as $SourceDirectory$\$Name$.$Ext$
 // $SourceDirectory$\$Name$.$Ext$
