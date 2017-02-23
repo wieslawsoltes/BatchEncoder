@@ -186,6 +186,7 @@
     <String key="0x0014000D" value="Błąd: nie mogę znaleźć plik zakodowany." />
     <String key="0x0014000E" value="Błąd: wyjątek został wyrzucony podczas konwersji pliku." />
     <String key="0x0014000F" value="Nie można utworzyć ścieżki wyjściowej!" />
+    <String key="0x00140010" value="Plik wyjściowy już istnieje." />
 
     <!-- Strings Worker Context -->
 
