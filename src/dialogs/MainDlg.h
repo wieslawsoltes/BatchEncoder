@@ -126,6 +126,7 @@ public:
     afx_msg void OnOptionsEnsureVisible();
     afx_msg void OnOptionsFindDecoder();
     afx_msg void OnOptionsValidateFiles();
+    afx_msg void OnOptionsOverwriteFiles();
     afx_msg void OnLanguageDefault();
     afx_msg void OnLanguageChange(UINT nID);
     afx_msg void OnHelpWebsite();
