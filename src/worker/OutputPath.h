@@ -101,16 +101,16 @@ public:
             {
                 CString szOutputFile = CString(szOutput);
                 CString szInputPath = ::GetFilePath(szInputFile);
-                szOutputFile.Replace(VAR_OUTPUT_SOURCE_DIRECTORY, szInputPath);
-                szOutputFile.Replace(VAR_OUTPUT_NAME, szName);
-                szOutputFile.Replace(VAR_OUTPUT_EXTENSION, CString(szExt).MakeLower());
+                szOutputFile = ReplaceNoCase(szOutputFile, VAR_OUTPUT_SOURCE_DIRECTORY, szInputPath);
+                szOutputFile = ReplaceNoCase(szOutputFile, VAR_OUTPUT_NAME, szName);
+                szOutputFile = ReplaceNoCase(szOutputFile, VAR_OUTPUT_EXTENSION, CString(szExt).MakeLower());
                 return szOutputFile;
             }
             else if ((this->bHaveSourceDirectory == true) && (this->bHaveName == false) && (this->bHaveExt == false))
             {
                 CString szOutPath = CString(szOutput);
                 CString szInputPath = ::GetFilePath(szInputFile);
-                szOutPath.Replace(VAR_OUTPUT_SOURCE_DIRECTORY, szInputPath);
+                szOutputFile = ReplaceNoCase(szOutputFile, VAR_OUTPUT_SOURCE_DIRECTORY, szInputPath);
 
                 CString szOutputFile = szName + _T(".") + CString(szExt).MakeLower();
                 if (szOutPath.GetLength() >= 1)
@@ -125,8 +125,8 @@ public:
             else if ((this->bHaveSourceDirectory == false) && (this->bHaveName == true) && (this->bHaveExt == true))
             {
                 CString szOutputFile = CString(szOutput);
-                szOutputFile.Replace(VAR_OUTPUT_NAME, szName);
-                szOutputFile.Replace(VAR_OUTPUT_EXTENSION, CString(szExt).MakeLower());
+                szOutputFile = ReplaceNoCase(szOutputFile, VAR_OUTPUT_NAME, szName);
+                szOutputFile = ReplaceNoCase(szOutputFile, VAR_OUTPUT_EXTENSION, CString(szExt).MakeLower());
                 return szOutputFile;
             }
         }
