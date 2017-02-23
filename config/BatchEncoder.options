@@ -4,7 +4,6 @@
     <SelectedFormat>11</SelectedFormat>
     <OutputPath>$SourceDirectory$\$Name$.$Ext$</OutputPath>
     <DeleteSourceFiles>false</DeleteSourceFiles>
-    <OverwriteExistingFiles>true</OverwriteExistingFiles>
     <RecurseChecked>true</RecurseChecked>
     <ShutdownWhenFinished>false</ShutdownWhenFinished>
     <DoNotSaveConfiguration>false</DoNotSaveConfiguration>
@@ -14,5 +13,6 @@
     <TryToFindDecoder>false</TryToFindDecoder>
     <EnsureItemIsVisible>true</EnsureItemIsVisible>
     <ValidateInputFiles>true</ValidateInputFiles>
+    <OverwriteExistingFiles>true</OverwriteExistingFiles>
     <ThreadCount>0</ThreadCount>
 </Options>
