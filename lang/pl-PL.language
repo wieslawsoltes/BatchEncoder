@@ -49,6 +49,7 @@
     <String key="0x0004000A" value="Zapewnij Że &amp;Element Jest Widoczny" />
     <String key="0x0004000B" value="Spróbuj Znaleźć &amp;Dekoder" />
     <String key="0x0004000C" value="&amp;Sprawdź Poprawność Plików Wejściowych" />
+    <String key="0x0004000D" value="&amp;Nadpisz Istniejące Pliki" />
 
     <!-- Language Menu -->
 
