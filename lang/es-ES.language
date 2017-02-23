@@ -186,6 +186,7 @@
     <String key="0x0014000D" value="Error: no se pudo encontrar el archivo codificado." />
     <String key="0x0014000E" value="Error: excepción generada mientras se convertía el archivo." />
     <String key="0x0014000F" value="¡Imposible crear archivo de salida!" />
+    <String key="0x00140010" value="Output file already exists." />
 
     <!-- Strings Worker Context -->
 
