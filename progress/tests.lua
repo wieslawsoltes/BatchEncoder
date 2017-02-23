@@ -296,3 +296,15 @@ print(p)
 
 p = GetProgress("Decoding 01 Beach House - Myth.la [************************]")
 print(p)
+
+-- GetProgress_FFdcaEnc
+
+function GetProgress(s) 
+  if string.match(s, '^Done.%s-') ~= nil then return "100";
+  else return string.match(s, '%[(%d+.%d+)%%%]'); end;
+end
+
+p = GetProgress("Done.")
+print(p)
+p = GetProgress("Encoding... 3:39 [84.7%]")
+print(p)

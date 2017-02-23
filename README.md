@@ -101,7 +101,7 @@ adds input and output file paths. For specific options for each format use help 
 | OFR          | OFR        | 5.100           | ofr.exe           | yes      | no       | GetProgress_OfrEnc.progress       |
 | TTA          | TTA        | 2.3             | tta.exe           | yes      | no       | GetProgress_TtaEnc.progress       |
 | TAKC         | TAK        | 2.3.0           | takc.exe          | yes      | no       | - none -                          |
-| FFDCAENC     | DTS        | 2.1.3           | ffdcaenc.exe      | yes      | yes      | - none -                          |
+| FFDCAENC     | DTS        | 2.1.3           | ffdcaenc.exe      | yes      | yes      | GetProgress_FFdcaEnc.progress     |
 
 ### Decoders
 
