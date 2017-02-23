@@ -113,6 +113,7 @@
 #define ID_OPTIONS_ENSURE_VISIBLE       32818
 #define ID_OPTIONS_FIND_DECODER         32819
 #define ID_OPTIONS_VALIDATE_FILES       32820
+#define ID_OPTIONS_OVERWRITE_FILES      32821
 #define ID_HELP_ABOUT                   32830
 #define ID_HELP_WEBSITE                 32831
 #define ID_ACCELERATOR_F5               32840
