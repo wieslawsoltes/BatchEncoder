@@ -37,9 +37,9 @@ public:
     bool Validate(CString szOutput)
     {
         this->bIsEmpty = szOutput.GetLength() <= 0;
-        this->bHaveSourceDirectory = szOutput.Find(VAR_OUTPUT_SOURCE_DIRECTORY) >= 0;
-        this->bHaveName = szOutput.Find(VAR_OUTPUT_NAME) >= 0;
-        this->bHaveExt = szOutput.Find(VAR_OUTPUT_EXTENSION) >= 0;
+        this->bHaveSourceDirectory = FindNoCase(szOutput, VAR_OUTPUT_SOURCE_DIRECTORY) >= 0;
+        this->bHaveName = FindNoCase(szOutput, VAR_OUTPUT_NAME) >= 0;
+        this->bHaveExt = FindNoCase(szOutput, VAR_OUTPUT_EXTENSION) >= 0;
         if (this->bIsEmpty)
         {
             // Only input file directory is used (name and extension are added automatically).
