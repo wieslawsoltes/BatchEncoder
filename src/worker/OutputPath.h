@@ -110,7 +110,7 @@ public:
             {
                 CString szOutPath = CString(szOutput);
                 CString szInputPath = ::GetFilePath(szInputFile);
-                szOutputFile = ReplaceNoCase(szOutputFile, VAR_OUTPUT_SOURCE_DIRECTORY, szInputPath);
+                szOutPath = ReplaceNoCase(szOutPath, VAR_OUTPUT_SOURCE_DIRECTORY, szInputPath);
 
                 CString szOutputFile = szName + _T(".") + CString(szExt).MakeLower();
                 if (szOutPath.GetLength() >= 1)
