@@ -30,6 +30,7 @@ public:
 public:
     void Copy(const CListT &other)
     {
+        this->RemoveAll();
         int nItems = (int)other.m_Items.GetCount();
         for (int i = 0; i < nItems; i++)
         {
