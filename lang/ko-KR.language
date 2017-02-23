@@ -186,6 +186,7 @@
     <String key="0x0014000D" value="오류: 인코딩된 파일을 찾을 수 없습니다." />
     <String key="0x0014000E" value="오류: exception thrown while converting file." />
     <String key="0x0014000F" value="출력 경로를 만들 수 없습니다.!" />
+    <String key="0x00140010" value="Output file already exists." />
 
     <!-- Strings Worker Context -->
 
