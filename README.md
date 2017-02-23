@@ -232,7 +232,7 @@ Valid `output path` configurations:
 * If output path is empty only input file directory is used (name and extension are added automatically).
 * If `$SourceDirectory$`, `$Name$` and `$Ext$` variables are missing full output path must be provided by user (ignore input file path and variables)
 * If `$SourceDirectory$`, `$Name$` and `$Ext$` variables are present input source file path is used with item `Name` and output format extension.
-* If `$SourceDirectory$` is missing and `$Name$` and `$Ext$` variables are present item `Name` and output format extension are used (full output path must be provided by user).
+* If `$SourceDirectory$` is missing and `$Name$` and `$Ext$` variables are present item `Name` and output format extension are used (full output path must be provided by user, if not program writes output files to the BatchEncoder directory).
 * If only `$SourceDirectory$` variable is present input source file path is used (name and extension are added automatically)
 
 ## Translations
