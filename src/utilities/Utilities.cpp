@@ -323,3 +323,25 @@ CString GenerateUuidString()
     }
     return strKey;
 }
+
+CString ReplaceNoCase(LPCTSTR instr, LPCTSTR oldstr, LPCTSTR newstr)
+{
+    CString output(instr);
+    CString inputLower(instr);
+    CString oldLower(oldstr);
+    inputLower.MakeLower();
+    oldLower.MakeLower();
+    int pos=0;
+    for (;;)
+    {
+        pos = inputLower.Find(oldLower, pos);
+        if (pos == -1)
+            break;
+        inputLower.Delete(pos, lstrlen(oldstr));
+        inputLower.Insert(pos, newstr);
+        output.Delete(pos, lstrlen(oldstr));
+        output.Insert(pos, newstr);
+        pos += lstrlen(newstr);
+    }
+    return output;
+}
