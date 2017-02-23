@@ -186,6 +186,7 @@
     <String key="0x0014000D" value="Error: can not find encoded file." />
     <String key="0x0014000E" value="Error: exception thrown while converting file." />
     <String key="0x0014000F" value="Unable to create output path!" />
+    <String key="0x00140010" value="Output file already exists." />
 
     <!-- Strings Worker Context -->
 
