@@ -3,6 +3,8 @@
 
 #pragma once
 
+#include "..\utilities\Utilities.h"
+
 class CFileContext
 {
 public:
@@ -46,22 +48,21 @@ public:
 
         CString szCommandLine = pFormat->szTemplate;
 
-        szCommandLine.Replace(_T("$EXE"), _T("\"$EXE\""));
-        szCommandLine.Replace(_T("$EXE"), pFormat->szPath);
+        szCommandLine = ReplaceNoCase(szCommandLine, _T("$EXE"), _T("\"$EXE\""));
+        szCommandLine = ReplaceNoCase(szCommandLine, _T("$EXE"), pFormat->szPath);
+        szCommandLine = ReplaceNoCase(szCommandLine, _T("$OPTIONS"), preset.szOptions);
 
-        szCommandLine.Replace(_T("$OPTIONS"), preset.szOptions);
-
-        szCommandLine.Replace(_T("$INFILE"), _T("\"$INFILE\""));
+        szCommandLine = ReplaceNoCase(szCommandLine, _T("$INFILE"), _T("\"$INFILE\""));
         if (bUseReadPipes == true)
-            szCommandLine.Replace(_T("$INFILE"), _T("-"));
+            szCommandLine = ReplaceNoCase(szCommandLine, _T("$INFILE"), _T("-"));
         else
-            szCommandLine.Replace(_T("$INFILE"), szInputFile);
+            szCommandLine = ReplaceNoCase(szCommandLine, _T("$INFILE"), szInputFile);
 
-        szCommandLine.Replace(_T("$OUTFILE"), _T("\"$OUTFILE\""));
+        szCommandLine = ReplaceNoCase(szCommandLine, _T("$OUTFILE"), _T("\"$OUTFILE\""));
         if (bUseWritePipes == true)
-            szCommandLine.Replace(_T("$OUTFILE"), _T("-"));
+            szCommandLine = ReplaceNoCase(szCommandLine, _T("$OUTFILE"), _T("-"));
         else
-            szCommandLine.Replace(_T("$OUTFILE"), szOutputFile);
+            szCommandLine = ReplaceNoCase(szCommandLine, _T("$OUTFILE"), szOutputFile);
 
         ZeroMemory(this->pszCommandLine, sizeof(this->pszCommandLine));
         lstrcpy(this->pszCommandLine, szCommandLine.GetBuffer(szCommandLine.GetLength()));
