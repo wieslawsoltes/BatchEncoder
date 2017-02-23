@@ -47,3 +47,5 @@ BOOL MakeFullPath(CString szPath);
 bool FileExists(CString szPath);
 
 CString GenerateUuidString();
+
+CString ReplaceNoCase(LPCTSTR instr, LPCTSTR oldstr, LPCTSTR newstr);
