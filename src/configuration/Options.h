@@ -12,7 +12,6 @@ public:
     int nSelectedFormat;
     CString szOutputPath;
     bool bDeleteSourceFiles;
-    bool bOverwriteExistingFiles;
     bool bRecurseChecked;
     bool bShutdownWhenFinished;
     bool bDoNotSaveConfiguration;
@@ -22,6 +21,7 @@ public:
     bool bTryToFindDecoder;
     bool bEnsureItemIsVisible;
     bool bValidateInputFiles;
+    bool bOverwriteExistingFiles;
     int nThreadCount;
     CString szMainWindowResize;
     CString szFileListColumns;
@@ -52,7 +52,6 @@ public:
         this->nSelectedFormat = other.nSelectedFormat;
         this->szOutputPath = other.szOutputPath;
         this->bDeleteSourceFiles = other.bDeleteSourceFiles;
-        this->bOverwriteExistingFiles = other.bOverwriteExistingFiles;
         this->bRecurseChecked = other.bRecurseChecked;
         this->bShutdownWhenFinished = other.bShutdownWhenFinished;
         this->bDoNotSaveConfiguration = other.bDoNotSaveConfiguration;
@@ -62,6 +61,7 @@ public:
         this->bTryToFindDecoder = other.bTryToFindDecoder;
         this->bEnsureItemIsVisible = other.bEnsureItemIsVisible;
         this->bValidateInputFiles = other.bValidateInputFiles;
+        this->bOverwriteExistingFiles = other.bOverwriteExistingFiles;
         this->nThreadCount = other.nThreadCount;
         this->szMainWindowResize = other.szMainWindowResize;
         this->szFileListColumns = other.szFileListColumns;
@@ -78,7 +78,6 @@ public:
         this->nSelectedFormat = 0;
         this->szOutputPath = _T("");
         this->bDeleteSourceFiles = false;
-        this->bOverwriteExistingFiles = true;
         this->bRecurseChecked = true;
         this->bShutdownWhenFinished = false;
         this->bDoNotSaveConfiguration = false;
@@ -88,6 +87,7 @@ public:
         this->bTryToFindDecoder = false;
         this->bEnsureItemIsVisible = true;
         this->bValidateInputFiles = true;
+        this->bOverwriteExistingFiles = true;
         this->nThreadCount = 0;
         this->szMainWindowResize = _T("");
         this->szFileListColumns = _T("");
