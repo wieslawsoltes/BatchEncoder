@@ -47,22 +47,26 @@ public:
         }
         else
         {
-            if ((this->bHaveSourceDirectory == true) && (this->bHaveName == true) && (this->bHaveExt == true))
+            if ((this->bHaveSourceDirectory == true)
+                && (this->bHaveName == true) && (this->bHaveExt == true))
             {
                 // Input source directory variable is used with name and extension variables.
                 return true;
             }
-            else if ((this->bHaveSourceDirectory == true) && (this->bHaveName == false) && (this->bHaveExt == false))
+            else if ((this->bHaveSourceDirectory == true)
+                && (this->bHaveName == false) && (this->bHaveExt == false))
             {
                 // Only input source directory variable is used (name and extension are added automatically).
                 return true;
             }
-            else if ((this->bHaveSourceDirectory == false) && (this->bHaveName == true) && (this->bHaveExt == true))
+            else if ((this->bHaveSourceDirectory == false)
+                && (this->bHaveName == true) && (this->bHaveExt == true))
             {
                 // Only use name and extension variable (full output path must be provided by user).
                 return true;
             }
-            else if ((this->bHaveSourceDirectory == false) && (this->bHaveName == false) && (this->bHaveExt == false))
+            else if ((this->bHaveSourceDirectory == false)
+                && (this->bHaveName == false) && (this->bHaveExt == false))
             {
                 // Full output path must be provided by user (ignore input file path and variables).
                 return true;
@@ -72,7 +76,9 @@ public:
     }
     CString CreateFilePath(CString szOutput, CString szInputFile, CString szName, CString szExt)
     {
-        if (this->bIsEmpty || ((this->bHaveSourceDirectory == false) && (this->bHaveName == false) && (this->bHaveExt == false)))
+        if (this->bIsEmpty
+            || ((this->bHaveSourceDirectory == false)
+                && (this->bHaveName == false) && (this->bHaveExt == false)))
         {
             CString szOutPath;
             if (this->bIsEmpty)
@@ -97,7 +103,8 @@ public:
         }
         else
         {
-            if ((this->bHaveSourceDirectory == true) && (this->bHaveName == true) && (this->bHaveExt == true))
+            if ((this->bHaveSourceDirectory == true)
+                && (this->bHaveName == true) && (this->bHaveExt == true))
             {
                 CString szOutputFile = CString(szOutput);
                 CString szInputPath = ::GetFilePath(szInputFile);
@@ -106,7 +113,8 @@ public:
                 szOutputFile = ReplaceNoCase(szOutputFile, VAR_OUTPUT_EXTENSION, CString(szExt).MakeLower());
                 return szOutputFile;
             }
-            else if ((this->bHaveSourceDirectory == true) && (this->bHaveName == false) && (this->bHaveExt == false))
+            else if ((this->bHaveSourceDirectory == true)
+                && (this->bHaveName == false) && (this->bHaveExt == false))
             {
                 CString szOutPath = CString(szOutput);
                 CString szInputPath = ::GetFilePath(szInputFile);
