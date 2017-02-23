@@ -262,6 +262,7 @@ BEGIN_MESSAGE_MAP(CMainDlg, CResizeDialog)
     ON_COMMAND(ID_OPTIONS_ENSURE_VISIBLE, OnOptionsEnsureVisible)
     ON_COMMAND(ID_OPTIONS_FIND_DECODER, OnOptionsFindDecoder)
     ON_COMMAND(ID_OPTIONS_VALIDATE_FILES, OnOptionsValidateFiles)
+    ON_COMMAND(ID_OPTIONS_OVERWRITE_FILES, OnOptionsOverwriteFiles)
     ON_COMMAND(ID_LANGUAGE_DEFAULT, OnLanguageDefault)
     ON_COMMAND_RANGE(ID_LANGUAGE_MIN, ID_LANGUAGE_MAX, OnLanguageChange)
     ON_COMMAND(ID_HELP_WEBSITE, OnHelpWebsite)
@@ -1296,6 +1297,16 @@ void CMainDlg::OnOptionsValidateFiles()
     }
 }
 
+void CMainDlg::OnOptionsOverwriteFiles()
+{
+    if (this->pWorkerContext->bRunning == false)
+    {
+        BOOL bChecked = this->GetMenu()->GetMenuState(ID_OPTIONS_OVERWRITE_FILES, MF_BYCOMMAND) == MF_CHECKED;
+        this->GetMenu()->CheckMenuItem(ID_OPTIONS_OVERWRITE_FILES, (bChecked == TRUE) ? MF_UNCHECKED : MF_CHECKED);
+        this->m_Config.m_Options.bOverwriteExistingFiles = !bChecked;
+    }
+}
+
 void CMainDlg::OnLanguageDefault()
 {
 }
@@ -1492,6 +1503,7 @@ void CMainDlg::SetLanguage()
     helper.SetMenuItemText(m_hMenu, ID_OPTIONS_ENSURE_VISIBLE, 0x0004000A);
     helper.SetMenuItemText(m_hMenu, ID_OPTIONS_FIND_DECODER, 0x0004000B);
     helper.SetMenuItemText(m_hMenu, ID_OPTIONS_VALIDATE_FILES, 0x0004000C);
+    helper.SetMenuItemText(m_hMenu, ID_OPTIONS_OVERWRITE_FILES, 0x0004000D);
 
     // Language Menu
     helper.SetMenuPopupText(m_hMenu, 4, 0x00050001);
@@ -1609,6 +1621,9 @@ void CMainDlg::GetOptions()
     // option: ValidateInputFiles
     m_Config.m_Options.bValidateInputFiles = this->GetMenu()->GetMenuState(ID_OPTIONS_VALIDATE_FILES, MF_BYCOMMAND) == MF_CHECKED;
 
+    // option: OverwriteExistingFiles
+    m_Config.m_Options.bOverwriteExistingFiles = this->GetMenu()->GetMenuState(ID_OPTIONS_OVERWRITE_FILES, MF_BYCOMMAND) == MF_CHECKED;
+
     // option: ThreadCount
     CString szThreadCount;
     m_EdtThreads.GetWindowText(szThreadCount);
@@ -1707,6 +1722,12 @@ void CMainDlg::SetOptions()
         this->GetMenu()->CheckMenuItem(ID_OPTIONS_VALIDATE_FILES, MF_CHECKED);
     else
         this->GetMenu()->CheckMenuItem(ID_OPTIONS_VALIDATE_FILES, MF_UNCHECKED);
+
+    // option: OverwriteExistingFiles
+    if (m_Config.m_Options.bOverwriteExistingFiles)
+        this->GetMenu()->CheckMenuItem(ID_OPTIONS_OVERWRITE_FILES, MF_CHECKED);
+    else
+        this->GetMenu()->CheckMenuItem(ID_OPTIONS_OVERWRITE_FILES, MF_UNCHECKED);
 
     // option: ThreadCount
     CString szThreadCount;
