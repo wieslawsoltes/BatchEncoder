@@ -101,6 +101,7 @@ adds input and output file paths. For specific options for each format use help 
 | OFR          | OFR        | 5.100           | ofr.exe           | yes      | no       | GetProgress_OfrEnc.progress       |
 | TTA          | TTA        | 2.3             | tta.exe           | yes      | no       | GetProgress_TtaEnc.progress       |
 | TAKC         | TAK        | 2.3.0           | takc.exe          | yes      | no       | - none -                          |
+| FFDCAENC     | DTS        | 2.1.3           | ffdcaenc.exe      | yes      | yes      | - none -                          |
 
 ### Decoders
 
@@ -173,6 +174,7 @@ If you having problems running the PowerShell `download.ps1` script see this [in
 | NEROAACENC      | [http://www.videohelp.com/software/Nero-AAC-Codec](http://www.videohelp.com/software/Nero-AAC-Codec)                                |
 | NEROAACDEC      | [http://www.videohelp.com/software/Nero-AAC-Codec](http://www.videohelp.com/software/Nero-AAC-Codec)                                |
 | FFMPEG          | [https://ffmpeg.zeranoe.com/builds/](https://ffmpeg.zeranoe.com/builds/)                                                            |
+| FFDCAENC        | [https://github.com/filler56789/ffdcaenc-2](https://github.com/filler56789/ffdcaenc-2/releases)                                     |
 
 ## System requirements
 

@@ -172,6 +172,13 @@
             <Preset name="Insane Compression Level" options="-c5000"/>
         </Presets>
     </Format>
+    <Format id="FFDCAENC_DTS" name="DTS (Coherent Acoustics codec) - ffdcaenc" template="$EXE -i $INFILE -o $OUTFILE $OPTIONS" input="true" output="false" function="- none -" path="ffdcaenc.exe" success="0" type="0" formats="WAV" extension="DTS" default="1">
+        <Presets>
+            <Preset name="1411.2 kbps (CD-compatible)" options="-b 1411.2"/>
+            <Preset name="1509.75 kbps (DVD-compatible)" options="-b 1509.75"/>
+            <Preset name="754.5 kbps (DVD-compatible) half-rate" options="-b 754.5"/>
+        </Presets>
+    </Format>
     <Format id="FLAC_FLAC" name="FLAC (Free Lossless Audio Codec)" template="$EXE $OPTIONS -f -o $OUTFILE $INFILE" input="true" output="false" function="GetProgress_FlacEnc.progress" path="flac.exe" success="0" type="0" formats="WAV" extension="FLAC" default="5">
         <Presets>
             <Preset name="Compression Level 0 (Fast)" options="-0"/>
