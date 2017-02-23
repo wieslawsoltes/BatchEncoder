@@ -49,3 +49,5 @@ bool FileExists(CString szPath);
 CString GenerateUuidString();
 
 CString ReplaceNoCase(LPCTSTR instr, LPCTSTR oldstr, LPCTSTR newstr);
+
+int FindNoCase(LPCTSTR pszString, LPCTSTR pszSearch);

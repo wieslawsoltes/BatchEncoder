@@ -345,3 +345,17 @@ CString ReplaceNoCase(LPCTSTR instr, LPCTSTR oldstr, LPCTSTR newstr)
     }
     return output;
 }
+
+int FindNoCase(LPCTSTR pszString, LPCTSTR pszSearch)
+{
+    int lenString = lstrlen(pszString);
+    int lenSearch = lstrlen(pszSearch);
+    if (lenSearch == 0 || lenSearch > lenString)
+        return -1;
+    for (int i = 0; i < lenString - lenSearch + 1; ++i)
+    {
+        if (_tcsncicmp(&pszString[i], pszSearch, lenSearch) == 0)
+            return i;
+    }
+    return -1;
+}
