@@ -12,6 +12,7 @@ public:
     int nSelectedFormat;
     CString szOutputPath;
     bool bDeleteSourceFiles;
+    bool bOverwriteExistingFiles;
     bool bRecurseChecked;
     bool bShutdownWhenFinished;
     bool bDoNotSaveConfiguration;
@@ -51,6 +52,7 @@ public:
         this->nSelectedFormat = other.nSelectedFormat;
         this->szOutputPath = other.szOutputPath;
         this->bDeleteSourceFiles = other.bDeleteSourceFiles;
+        this->bOverwriteExistingFiles = other.bOverwriteExistingFiles;
         this->bRecurseChecked = other.bRecurseChecked;
         this->bShutdownWhenFinished = other.bShutdownWhenFinished;
         this->bDoNotSaveConfiguration = other.bDoNotSaveConfiguration;
@@ -76,6 +78,7 @@ public:
         this->nSelectedFormat = 0;
         this->szOutputPath = _T("");
         this->bDeleteSourceFiles = false;
+        this->bOverwriteExistingFiles = true;
         this->bRecurseChecked = true;
         this->bShutdownWhenFinished = false;
         this->bDoNotSaveConfiguration = false;
