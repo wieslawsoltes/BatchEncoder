@@ -933,6 +933,15 @@ bool ConvertItem(CItemContext* pContext)
         pContext->item->szName,
         pEncFormat->szOutputExtension);
 
+    if (pWorkerContext->pConfig->m_Options.bOverwriteExistingFiles == false)
+    {
+        if (::FileExists(szEncOutputFile) == true)
+        {
+            pWorkerContext->Status(pContext->item->nId, pszDefaulTime, pWorkerContext->GetString(0x00140010, pszConvertItem[15]));
+            return false;
+        }
+    }
+
     // create output path
     if (pWorkerContext->pSyncDir->Wait() == true)
     {
