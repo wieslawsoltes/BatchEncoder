@@ -50,7 +50,8 @@ const TCHAR* pszConvertItem[] = {
     /* 11 */ _T("Processing..."),
     /* 12 */ _T("Error: can not find encoded file."),
     /* 13 */ _T("Error: exception thrown while converting file."),
-    /* 14 */ _T("Unable to create output path!")
+    /* 14 */ _T("Unable to create output path!"),
+    /* 15 */ _T("Output file already exists.")
 };
 
 const TCHAR* pszMainDialog[] = {
