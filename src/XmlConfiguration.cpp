@@ -87,6 +87,10 @@ void XmlConfiguration::GetOptions(tinyxml2::XMLElement *pOptionsElem, COptions &
     if (pOptionElem)
         m_Options.bDeleteSourceFiles = ToBool(pOptionElem->GetText());
 
+    pOptionElem = pOptionsElem->FirstChildElement("OverwriteExistingFiles");
+    if (pOptionElem)
+        m_Options.bOverwriteExistingFiles = ToBool(pOptionElem->GetText());
+
     pOptionElem = pOptionsElem->FirstChildElement("RecurseChecked");
     if (pOptionElem)
         m_Options.bRecurseChecked = ToBool(pOptionElem->GetText());
@@ -170,6 +174,10 @@ void XmlConfiguration::SetOptions(tinyxml2::XMLElement *pOptionsElem, COptions &
 
     pOptionElem = this->NewElement("DeleteSourceFiles");
     pOptionElem->LinkEndChild(this->NewText(CUtf8String(ToCString(m_Options.bDeleteSourceFiles)).m_Result));
+    pOptionsElem->LinkEndChild(pOptionElem);
+
+    pOptionElem = this->NewElement("OverwriteExistingFiles");
+    pOptionElem->LinkEndChild(this->NewText(CUtf8String(ToCString(m_Options.bOverwriteExistingFiles)).m_Result));
     pOptionsElem->LinkEndChild(pOptionElem);
 
     pOptionElem = this->NewElement("RecurseChecked");
