@@ -49,6 +49,7 @@
     <String key="0x0004000A" value="&amp;Ensure Item Is Visible" />
     <String key="0x0004000B" value="&amp;Try To Find Decoder" />
     <String key="0x0004000C" value="&amp;Validate Input Files" />
+    <String key="0x0004000D" value="Ove&amp;rwrite Existing Files" />
 
     <!-- Language Menu -->
 
