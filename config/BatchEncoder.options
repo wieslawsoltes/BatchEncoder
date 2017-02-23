@@ -4,6 +4,7 @@
     <SelectedFormat>11</SelectedFormat>
     <OutputPath>$SourceDirectory$\$Name$.$Ext$</OutputPath>
     <DeleteSourceFiles>false</DeleteSourceFiles>
+    <OverwriteExistingFiles>true</OverwriteExistingFiles>
     <RecurseChecked>true</RecurseChecked>
     <ShutdownWhenFinished>false</ShutdownWhenFinished>
     <DoNotSaveConfiguration>false</DoNotSaveConfiguration>
