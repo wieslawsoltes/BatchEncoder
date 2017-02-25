@@ -158,12 +158,12 @@
             <Preset name="CBR 640 kbit/s" options="-ab 640k"/>
         </Presets>
     </Format>
-    <Format id="QAAC_ALAC" name="ALAC (Apple Lossless)" template="$EXE $OPTIONS --ignorelength $INFILE -o $OUTFILE" input="true" output="false" function="GetProgress_QaacEnc.progress" path="qaac.exe" success="0" type="0" formats="WAV" extension="M4A" default="0">
+    <Format id="QAAC_ALAC" name="ALAC (Apple Lossless) - qaac" template="$EXE $OPTIONS --ignorelength $INFILE -o $OUTFILE" input="true" output="false" function="GetProgress_QaacEnc.progress" path="qaac.exe" success="0" type="0" formats="WAV" extension="M4A" default="0">
         <Presets>
             <Preset name="ALAC encoding mode" options="--alac"/>
         </Presets>
     </Format>
-    <Format id="MAC_APE" name="APE (Monkey&apos;s Audio)" template="$EXE $INFILE $OUTFILE $OPTIONS" input="false" output="false" function="GetProgress_MacEnc.progress" path="mac.exe" success="0" type="0" formats="WAV" extension="APE" default="1">
+    <Format id="MAC_APE" name="APE (Monkey&apos;s Audio) - mac" template="$EXE $INFILE $OUTFILE $OPTIONS" input="false" output="false" function="GetProgress_MacEnc.progress" path="mac.exe" success="0" type="0" formats="WAV" extension="APE" default="1">
         <Presets>
             <Preset name="Fast Compression Level" options="-c1000"/>
             <Preset name="Normal Compression Level" options="-c2000"/>
@@ -179,7 +179,7 @@
             <Preset name="754.5 kbps (DVD-compatible) half-rate" options="-b 754.5"/>
         </Presets>
     </Format>
-    <Format id="FLAC_FLAC" name="FLAC (Free Lossless Audio Codec)" template="$EXE $OPTIONS -f -o $OUTFILE $INFILE" input="true" output="false" function="GetProgress_FlacEnc.progress" path="flac.exe" success="0" type="0" formats="WAV" extension="FLAC" default="5">
+    <Format id="FLAC_FLAC" name="FLAC (Free Lossless Audio Codec) - flac" template="$EXE $OPTIONS -f -o $OUTFILE $INFILE" input="true" output="false" function="GetProgress_FlacEnc.progress" path="flac.exe" success="0" type="0" formats="WAV" extension="FLAC" default="5">
         <Presets>
             <Preset name="Compression Level 0 (Fast)" options="-0"/>
             <Preset name="Compression Level 1" options="-1"/>
@@ -192,7 +192,7 @@
             <Preset name="Compression Level 8 (Best)" options="-8"/>
         </Presets>
     </Format>
-    <Format id="LA_LA" name="LA (Lossless Audio)" template="$EXE $OPTIONS -overwrite ignore.wav $OUTFILE -cin" input="true" output="false" function="GetProgress_LaEnc.progress" path="la.exe" success="0" type="0" formats="WAV" extension="LA" default="0">
+    <Format id="LA_LA" name="LA (Lossless Audio) - la" template="$EXE $OPTIONS -overwrite ignore.wav $OUTFILE -cin" input="true" output="false" function="GetProgress_LaEnc.progress" path="la.exe" success="0" type="0" formats="WAV" extension="LA" default="0">
         <Presets>
             <Preset name="Normal Mode" options=""/>
             <Preset name="High Mode" options="-high"/>
@@ -354,7 +354,7 @@
             <Preset name="CBR 64 kbps" options="--cbr 64 --he"/>
         </Presets>
     </Format>
-    <Format id="LAME_MP3" name="MP3 (MPEG Layer-3)" template="$EXE $OPTIONS $INFILE $OUTFILE" input="true" output="false" function="GetProgress_LameEnc.progress" path="lame.exe" success="0" type="0" formats="WAV" extension="MP3" default="8">
+    <Format id="LAME_MP3" name="MP3 (MPEG Layer-3) - lame" template="$EXE $OPTIONS $INFILE $OUTFILE" input="true" output="false" function="GetProgress_LameEnc.progress" path="lame.exe" success="0" type="0" formats="WAV" extension="MP3" default="8">
         <Presets>
             <Preset name="ABR 56 kbit/s Mono" options="--abr 56 -mm"/>
             <Preset name="VBR ~65 kbit/s (V9)" options="-V 9 --vbr-new"/>
@@ -429,7 +429,7 @@
             <Preset name="CBR 465 kbit/s" options="-cbr 465000"/>
         </Presets>
     </Format>
-    <Format id="MPCENC_MPC" name="MPC (Musepack)" template="$EXE $OPTIONS --overwrite $INFILE $OUTFILE" input="true" output="false" function="GetProgress_MpcEnc.progress" path="mpcenc.exe" success="0" type="0" formats="WAV" extension="MPC" default="3">
+    <Format id="MPCENC_MPC" name="MPC (Musepack) - mpcenc" template="$EXE $OPTIONS --overwrite $INFILE $OUTFILE" input="true" output="false" function="GetProgress_MpcEnc.progress" path="mpcenc.exe" success="0" type="0" formats="WAV" extension="MPC" default="3">
         <Presets>
             <Preset name="Telephone (32...48 kbps)" options="--telephone"/>
             <Preset name="Thumb (58...86 kbps)" options="--thumb"/>
@@ -440,7 +440,7 @@
             <Preset name="Braindead (232...278 kbps)" options="--braindead"/>
         </Presets>
     </Format>
-    <Format id="OFR_OFR" name="OFR (OptimFROG Lossless Audio)" template="$EXE $OPTIONS --overwrite $INFILE --output $OUTFILE" input="true" output="false" function="GetProgress_OfrEnc.progress" path="ofr.exe" success="0" type="0" formats="WAV" extension="OFR" default="1">
+    <Format id="OFR_OFR" name="OFR (OptimFROG Lossless Audio) - ofr" template="$EXE $OPTIONS --overwrite $INFILE --output $OUTFILE" input="true" output="false" function="GetProgress_OfrEnc.progress" path="ofr.exe" success="0" type="0" formats="WAV" extension="OFR" default="1">
         <Presets>
             <Preset name="Fast Compression Mode" options="--encode --mode fast"/>
             <Preset name="Normal Compression Mode" options="--encode --mode normal"/>
@@ -452,7 +452,7 @@
             <Preset name="Best Compression Mode (New)" options="--encode --mode bestnew"/>
         </Presets>
     </Format>
-    <Format id="OGGENC2_OGG" name="OGG (Ogg Vorbis)" template="$EXE $OPTIONS $INFILE -o $OUTFILE" input="true" output="false" function="GetProgress_OggEnc.progress" path="oggenc2.exe" success="0" type="0" formats="WAV" extension="OGG" default="8">
+    <Format id="OGGENC2_OGG" name="OGG (Ogg Vorbis) - oggenc2" template="$EXE $OPTIONS $INFILE -o $OUTFILE" input="true" output="false" function="GetProgress_OggEnc.progress" path="oggenc2.exe" success="0" type="0" formats="WAV" extension="OGG" default="8">
         <Presets>
             <Preset name="VBR Quality -2 (32 kbps)" options="-q -2"/>
             <Preset name="VBR Quality -1 (32...48 kbps)" options="-q -1"/>
@@ -497,7 +497,7 @@
             <Preset name="ABR 500 kbps" options="-b 500"/>
         </Presets>
     </Format>
-    <Format id="OPUSENC_OPUS" name="OPUS (Opus Audio Codec)" template="$EXE $OPTIONS $INFILE $OUTFILE" input="true" output="false" function="GetProgress_OpusEnc.progress" path="opusenc.exe" success="0" type="0" formats="WAV" extension="OPUS" default="12">
+    <Format id="OPUSENC_OPUS" name="OPUS (Opus Audio Codec) - opusenc" template="$EXE $OPTIONS $INFILE $OUTFILE" input="true" output="false" function="GetProgress_OpusEnc.progress" path="opusenc.exe" success="0" type="0" formats="WAV" extension="OPUS" default="12">
         <Presets>
             <Preset name="VBR 6 kbit/sec" options="--vbr --comp 10 --bitrate 6"/>
             <Preset name="VBR 8 kbit/sec" options="--vbr --comp 10 --bitrate 8"/>
@@ -558,7 +558,7 @@
             <Preset name="CBR 510 kbit/sec" options="--hard-cbr --comp 10 --bitrate 510"/>
         </Presets>
     </Format>
-    <Format id="TAKC_TAK" name="TAK (Tom&apos;s Lossless Audio Kompressor)" template="$EXE -e -overwrite $OPTIONS $INFILE $OUTFILE" input="true" output="false" function="- none -" path="takc.exe" success="0" type="0" formats="WAV" extension="TAK" default="6">
+    <Format id="TAKC_TAK" name="TAK (Tom&apos;s Lossless Audio Kompressor) - takc" template="$EXE -e -overwrite $OPTIONS $INFILE $OUTFILE" input="true" output="false" function="- none -" path="takc.exe" success="0" type="0" formats="WAV" extension="TAK" default="6">
         <Presets>
             <Preset name="Turbo" options="-p0"/>
             <Preset name="Turbo Extra" options="-p0e"/>
@@ -580,12 +580,12 @@
             <Preset name="Insane Max" options="-p5m"/>
         </Presets>
     </Format>
-    <Format id="TTA_TTA" name="TTA (TTAv1 Lossless Audio)" template="$EXE -e $OPTIONS $INFILE  $OUTFILE" input="true" output="false" function="GetProgress_TtaEnc.progress" path="tta.exe" success="0" type="0" formats="WAV" extension="TTA" default="0">
+    <Format id="TTA_TTA" name="TTA (TTAv1 Lossless Audio) - tta" template="$EXE -e $OPTIONS $INFILE  $OUTFILE" input="true" output="false" function="GetProgress_TtaEnc.progress" path="tta.exe" success="0" type="0" formats="WAV" extension="TTA" default="0">
         <Presets>
             <Preset name="Standard Compression" options=""/>
         </Presets>
     </Format>
-    <Format id="SSRC_WAV" name="WAV (Audio Sampling Rate Converter)" template="$EXE $OPTIONS --tmpfile $OUTFILE.tmp $INFILE $OUTFILE" input="false" output="false" function="GetProgress_SsrcEnc.progress" path="ssrc.exe" success="0" type="0" formats="WAV" extension="WAV" default="0">
+    <Format id="SSRC_WAV" name="WAV (Audio Sampling Rate Converter) - ssrc" template="$EXE $OPTIONS --tmpfile $OUTFILE.tmp $INFILE $OUTFILE" input="false" output="false" function="GetProgress_SsrcEnc.progress" path="ssrc.exe" success="0" type="0" formats="WAV" extension="WAV" default="0">
         <Presets>
             <Preset name="No Resampling" options=""/>
             <Preset name="8 Bit 8000 Hz" options="--rate 8000 --bits 8 --normalize"/>
@@ -656,7 +656,7 @@
             <Preset name="24 Bit 96000 Hz (2 Pass)" options="--rate 96000 --bits 24 --twopass"/>
         </Presets>
     </Format>
-    <Format id="WAVPACK_WV" name="WV (WavPack)" template="$EXE $OPTIONS -y $INFILE $OUTFILE" input="false" output="false" function="GetProgress_WavPackEnc.progress" path="wavpack.exe" success="0" type="0" formats="WAV,WV,CAF,W64,DFF,DSF" extension="WV" default="1">
+    <Format id="WAVPACK_WV" name="WV (WavPack) - wavpack" template="$EXE $OPTIONS -y $INFILE $OUTFILE" input="false" output="false" function="GetProgress_WavPackEnc.progress" path="wavpack.exe" success="0" type="0" formats="WAV,WV,CAF,W64,DFF,DSF" extension="WV" default="1">
         <Presets>
             <Preset name="Lossless (Fast compression)" options="-f"/>
             <Preset name="Lossless (Normal compression)" options=""/>
@@ -673,37 +673,37 @@
             <Preset name="Default" options=""/>
         </Presets>
     </Format>
-    <Format id="FFMPEG_AC3_WAV" name="Decode AC3 to WAV" template="$EXE -y -i $INFILE $OPTIONS -f wav $OUTFILE" input="true" output="false" function="- none -" path="ffmpeg.exe" success="0" type="1" formats="AC3" extension="WAV" default="0">
+    <Format id="FFMPEG_AC3_WAV" name="Decode AC3 to WAV - ffmpeg" template="$EXE -y -i $INFILE $OPTIONS -f wav $OUTFILE" input="true" output="false" function="- none -" path="ffmpeg.exe" success="0" type="1" formats="AC3" extension="WAV" default="0">
         <Presets>
             <Preset name="Default" options=""/>
         </Presets>
     </Format>
-    <Format id="MAC_APE_WAV" name="Decode APE to WAV" template="$EXE $INFILE $OUTFILE -d" input="false" output="false" function="GetProgress_MacDec.progress" path="mac.exe" success="0" type="1" formats="APE" extension="WAV" default="0">
+    <Format id="MAC_APE_WAV" name="Decode APE to WAV - mac" template="$EXE $INFILE $OUTFILE -d" input="false" output="false" function="GetProgress_MacDec.progress" path="mac.exe" success="0" type="1" formats="APE" extension="WAV" default="0">
         <Presets>
             <Preset name="Default" options=""/>
         </Presets>
     </Format>
-    <Format id="FFMPEG_DTS_WAV" name="Decode DTS to WAV" template="$EXE -y -i $INFILE $OPTIONS -f wav $OUTFILE" input="true" output="false" function="- none -" path="ffmpeg.exe" success="0" type="1" formats="DTS" extension="WAV" default="0">
+    <Format id="FFMPEG_DTS_WAV" name="Decode DTS to WAV - ffmpeg" template="$EXE -y -i $INFILE $OPTIONS -f wav $OUTFILE" input="true" output="false" function="- none -" path="ffmpeg.exe" success="0" type="1" formats="DTS" extension="WAV" default="0">
         <Presets>
             <Preset name="Default" options=""/>
         </Presets>
     </Format>
-    <Format id="FFMPEG_DTSHD_WAV" name="Decode DTSHD to WAV" template="$EXE -y -i $INFILE $OPTIONS -f wav $OUTFILE" input="true" output="false" function="- none -" path="ffmpeg.exe" success="0" type="1" formats="DTSHD" extension="WAV" default="0">
+    <Format id="FFMPEG_DTSHD_WAV" name="Decode DTSHD to WAV - ffmpeg" template="$EXE -y -i $INFILE $OPTIONS -f wav $OUTFILE" input="true" output="false" function="- none -" path="ffmpeg.exe" success="0" type="1" formats="DTSHD" extension="WAV" default="0">
         <Presets>
             <Preset name="Default" options=""/>
         </Presets>
     </Format>
-    <Format id="FFMPEG_EAC3_WAV" name="Decode EAC3 to WAV" template="$EXE -y -i $INFILE $OPTIONS -f wav $OUTFILE" input="true" output="false" function="- none -" path="ffmpeg.exe" success="0" type="1" formats="EAC3" extension="WAV" default="0">
+    <Format id="FFMPEG_EAC3_WAV" name="Decode EAC3 to WAV - ffmpeg" template="$EXE -y -i $INFILE $OPTIONS -f wav $OUTFILE" input="true" output="false" function="- none -" path="ffmpeg.exe" success="0" type="1" formats="EAC3" extension="WAV" default="0">
         <Presets>
             <Preset name="Default" options=""/>
         </Presets>
     </Format>
-    <Format id="FLAC_FLAC_WAV" name="Decode FLAC to WAV" template="$EXE -d -f -o $OUTFILE $INFILE" input="true" output="false" function="GetProgress_FlacDec.progress" path="flac.exe" success="0" type="1" formats="FLAC" extension="WAV" default="0">
+    <Format id="FLAC_FLAC_WAV" name="Decode FLAC to WAV - flac" template="$EXE -d -f -o $OUTFILE $INFILE" input="true" output="false" function="GetProgress_FlacDec.progress" path="flac.exe" success="0" type="1" formats="FLAC" extension="WAV" default="0">
         <Presets>
             <Preset name="Default" options=""/>
         </Presets>
     </Format>
-    <Format id="LA_LA_WAV" name="Decode LA to WAV" template="$EXE $OPTIONS -overwrite ignore.la $OUTFILE -cin" input="true" output="false" function="GetProgress_LaDec.progress" path="la.exe" success="0" type="1" formats="LA" extension="WAV" default="0">
+    <Format id="LA_LA_WAV" name="Decode LA to WAV - la" template="$EXE $OPTIONS -overwrite ignore.la $OUTFILE -cin" input="true" output="false" function="GetProgress_LaDec.progress" path="la.exe" success="0" type="1" formats="LA" extension="WAV" default="0">
         <Presets>
             <Preset name="Default" options=""/>
         </Presets>
@@ -718,77 +718,77 @@
             <Preset name="Default" options=""/>
         </Presets>
     </Format>
-    <Format id="MAC_MAC_WAV" name="Decode MAC to WAV" template="$EXE $INFILE $OUTFILE -d" input="false" output="false" function="GetProgress_MacDec.progress" path="mac.exe" success="0" type="1" formats="MAC" extension="WAV" default="0">
+    <Format id="MAC_MAC_WAV" name="Decode MAC to WAV - mac" template="$EXE $INFILE $OUTFILE -d" input="false" output="false" function="GetProgress_MacDec.progress" path="mac.exe" success="0" type="1" formats="MAC" extension="WAV" default="0">
         <Presets>
             <Preset name="Default" options=""/>
         </Presets>
     </Format>
-    <Format id="LAME_MP1_WAV" name="Decode MP1 to WAV" template="$EXE --decode --mp1input $INFILE $OUTFILE" input="true" output="false" function="GetProgress_LameDec.progress" path="lame.exe" success="0" type="1" formats="MP1" extension="WAV" default="0">
+    <Format id="LAME_MP1_WAV" name="Decode MP1 to WAV - lame" template="$EXE --decode --mp1input $INFILE $OUTFILE" input="true" output="false" function="GetProgress_LameDec.progress" path="lame.exe" success="0" type="1" formats="MP1" extension="WAV" default="0">
         <Presets>
             <Preset name="Default" options=""/>
         </Presets>
     </Format>
-    <Format id="LAME_MP2_WAV" name="Decode MP2 to WAV" template="$EXE --decode --mp2input $INFILE $OUTFILE" input="true" output="false" function="GetProgress_LameDec.progress" path="lame.exe" success="0" type="1" formats="MP2" extension="WAV" default="0">
+    <Format id="LAME_MP2_WAV" name="Decode MP2 to WAV - lame" template="$EXE --decode --mp2input $INFILE $OUTFILE" input="true" output="false" function="GetProgress_LameDec.progress" path="lame.exe" success="0" type="1" formats="MP2" extension="WAV" default="0">
         <Presets>
             <Preset name="Default" options=""/>
         </Presets>
     </Format>
-    <Format id="LAME_MP3_WAV" name="Decode MP3 to WAV" template="$EXE --decode --mp3input $INFILE $OUTFILE" input="true" output="false" function="GetProgress_LameDec.progress" path="lame.exe" success="0" type="1" formats="MP3" extension="WAV" default="0">
+    <Format id="LAME_MP3_WAV" name="Decode MP3 to WAV - lame" template="$EXE --decode --mp3input $INFILE $OUTFILE" input="true" output="false" function="GetProgress_LameDec.progress" path="lame.exe" success="0" type="1" formats="MP3" extension="WAV" default="0">
         <Presets>
             <Preset name="Default" options=""/>
         </Presets>
     </Format>
-    <Format id="NERO_MP4_WAV" name="Decode MP4 to WAV" template="$EXE $OPTIONS -if $INFILE -of $OUTFILE" input="false" output="true" function="- none -" path="neroAacDec.exe" success="0" type="1" formats="MP4" extension="WAV" default="0">
+    <Format id="NERO_MP4_WAV" name="Decode MP4 to WAV - nero" template="$EXE $OPTIONS -if $INFILE -of $OUTFILE" input="false" output="true" function="- none -" path="neroAacDec.exe" success="0" type="1" formats="MP4" extension="WAV" default="0">
         <Presets>
             <Preset name="Default" options=""/>
         </Presets>
     </Format>
-    <Format id="MPCDEC_MP+_WAV" name="Decode MP+ to WAV" template="$EXE $INFILE $OUTFILE" input="false" output="false" function="GetProgress_MpcDec.progress" path="mpcdec.exe" success="0" type="1" formats="MP+" extension="WAV" default="0">
+    <Format id="MPCDEC_MP+_WAV" name="Decode MP+ to WAV - mpcdec" template="$EXE $INFILE $OUTFILE" input="false" output="false" function="GetProgress_MpcDec.progress" path="mpcdec.exe" success="0" type="1" formats="MP+" extension="WAV" default="0">
         <Presets>
             <Preset name="Default" options=""/>
         </Presets>
     </Format>
-    <Format id="MPCDEC_MPC_WAV" name="Decode MPC to WAV" template="$EXE $INFILE $OUTFILE" input="false" output="false" function="GetProgress_MpcDec.progress" path="mpcdec.exe" success="0" type="1" formats="MPC" extension="WAV" default="0">
+    <Format id="MPCDEC_MPC_WAV" name="Decode MPC to WAV - mpcdec" template="$EXE $INFILE $OUTFILE" input="false" output="false" function="GetProgress_MpcDec.progress" path="mpcdec.exe" success="0" type="1" formats="MPC" extension="WAV" default="0">
         <Presets>
             <Preset name="Default" options=""/>
         </Presets>
     </Format>
-    <Format id="MPCDEC_MPP_WAV" name="Decode MPP to WAV" template="$EXE $INFILE $OUTFILE" input="false" output="false" function="GetProgress_MpcDec.progress" path="mpcdec.exe" success="0" type="1" formats="MPP" extension="WAV" default="0">
+    <Format id="MPCDEC_MPP_WAV" name="Decode MPP to WAV - mpcdec" template="$EXE $INFILE $OUTFILE" input="false" output="false" function="GetProgress_MpcDec.progress" path="mpcdec.exe" success="0" type="1" formats="MPP" extension="WAV" default="0">
         <Presets>
             <Preset name="Default" options=""/>
         </Presets>
     </Format>
-    <Format id="OFR_OFR_WAV" name="Decode OFR to WAV" template="$EXE --decode --overwrite $INFILE --output $OUTFILE" input="true" output="false" function="GetProgress_OfrDec.progress" path="ofr.exe" success="0" type="1" formats="OFR" extension="WAV" default="0">
+    <Format id="OFR_OFR_WAV" name="Decode OFR to WAV - ofr" template="$EXE --decode --overwrite $INFILE --output $OUTFILE" input="true" output="false" function="GetProgress_OfrDec.progress" path="ofr.exe" success="0" type="1" formats="OFR" extension="WAV" default="0">
         <Presets>
             <Preset name="Default" options=""/>
         </Presets>
     </Format>
-    <Format id="OGGDEC_OGG_WAV" name="Decode OGG to WAV" template="$EXE $INFILE -w $OUTFILE" input="false" output="false" function="GetProgress_OggDec.progress" path="oggdec.exe" success="0" type="1" formats="OGG" extension="WAV" default="0">
+    <Format id="OGGDEC_OGG_WAV" name="Decode OGG to WAV - oggdec" template="$EXE $INFILE -w $OUTFILE" input="false" output="false" function="GetProgress_OggDec.progress" path="oggdec.exe" success="0" type="1" formats="OGG" extension="WAV" default="0">
         <Presets>
             <Preset name="Default" options=""/>
         </Presets>
     </Format>
-    <Format id="OPUSDEC_OPUS_WAV" name="Decode OPUS to WAV" template="$EXE $OPTIONS $INFILE $OUTFILE" input="true" output="false" function="GetProgress_OpusDec.progress" path="opusdec.exe" success="0" type="1" formats="OPUS" extension="WAV" default="0">
+    <Format id="OPUSDEC_OPUS_WAV" name="Decode OPUS to WAV - opusdec" template="$EXE $OPTIONS $INFILE $OUTFILE" input="true" output="false" function="GetProgress_OpusDec.progress" path="opusdec.exe" success="0" type="1" formats="OPUS" extension="WAV" default="0">
         <Presets>
             <Preset name="Default" options="--force-wav"/>
         </Presets>
     </Format>
-    <Format id="TAKC_TAK_WAV" name="Decode TAK to WAV" template="$EXE -d -overwrite $INFILE $OUTFILE" input="false" output="true" function="- none -" path="takc.exe" success="0" type="1" formats="TAK" extension="WAV" default="0">
+    <Format id="TAKC_TAK_WAV" name="Decode TAK to WAV - takc" template="$EXE -d -overwrite $INFILE $OUTFILE" input="false" output="true" function="- none -" path="takc.exe" success="0" type="1" formats="TAK" extension="WAV" default="0">
         <Presets>
             <Preset name="Default" options=""/>
         </Presets>
     </Format>
-    <Format id="FFMPEG_TRUEHD_WAV" name="Decode TRUEHD to WAV" template="$EXE -y -i $INFILE $OPTIONS -f wav $OUTFILE" input="true" output="false" function="- none -" path="ffmpeg.exe" success="0" type="1" formats="TRUEHD" extension="WAV" default="0">
+    <Format id="FFMPEG_TRUEHD_WAV" name="Decode TRUEHD to WAV - ffmpeg" template="$EXE -y -i $INFILE $OPTIONS -f wav $OUTFILE" input="true" output="false" function="- none -" path="ffmpeg.exe" success="0" type="1" formats="TRUEHD" extension="WAV" default="0">
         <Presets>
             <Preset name="Default" options=""/>
         </Presets>
     </Format>
-    <Format id="TTA_TTA_WAV" name="Decode TTA to WAV" template="$EXE -d $OPTIONS $INFILE $OUTFILE" input="false" output="true" function="GetProgress_TtaDec.progress" path="tta.exe" success="0" type="1" formats="TTA" extension="WAV" default="0">
+    <Format id="TTA_TTA_WAV" name="Decode TTA to WAV - tta" template="$EXE -d $OPTIONS $INFILE $OUTFILE" input="false" output="true" function="GetProgress_TtaDec.progress" path="tta.exe" success="0" type="1" formats="TTA" extension="WAV" default="0">
         <Presets>
             <Preset name="Default" options=""/>
         </Presets>
     </Format>
-    <Format id="WVUNPACK_WV_WAV" name="Decode WV to WAV" template="$EXE -y $INFILE $OUTFILE" input="false" output="false" function="GetProgress_WvUnpackDec.progress" path="wvunpack.exe" success="0" type="1" formats="WV" extension="WAV" default="0">
+    <Format id="WVUNPACK_WV_WAV" name="Decode WV to WAV - wvunpack" template="$EXE -y $INFILE $OUTFILE" input="false" output="false" function="GetProgress_WvUnpackDec.progress" path="wvunpack.exe" success="0" type="1" formats="WV" extension="WAV" default="0">
         <Presets>
             <Preset name="Default" options=""/>
         </Presets>
