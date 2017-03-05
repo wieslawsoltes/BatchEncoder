@@ -1,5 +1,15 @@
 ﻿# Changelog
 
+### BatchEncoder v1.3
+
+- Added advanced output path options.
+- Added Validate Input Files option.
+- Added overwrite existing files option.
+- Updated tools download.ps1 script.
+- Variable names in format path are case insensitive.
+- Variable names in output path are case insensitive.
+- Added ffdcaenc DTS encoder format.
+
 ### BatchEncoder v1.2
 
 - Changed progress function format to use Lua script files.
