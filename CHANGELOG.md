@@ -1,5 +1,9 @@
 ﻿# Changelog
 
+### BatchEncoder v1.4
+
+- Updated Spanish translation.
+
 ### BatchEncoder v1.3
 
 - Added advanced output path options.
