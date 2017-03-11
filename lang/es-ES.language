@@ -46,15 +46,15 @@
     <String key="0x00040007" value="Borrar archivo de &amp;salida si hay error" />
     <String key="0x00040008" value="Detener &amp;conversión si hay error" />
     <String key="0x00040009" value="&amp;Ocultar la ventana de la consola" />
-    <String key="0x0004000A" value="&amp;Ensure Item Is Visible" />
-    <String key="0x0004000B" value="&amp;Try To Find Decoder" />
-    <String key="0x0004000C" value="&amp;Validate Input Files" />
-    <String key="0x0004000D" value="Ove&amp;rwrite Existing Files" />
+    <String key="0x0004000A" value="&amp;Garantizar que el objeto sea visible" />
+    <String key="0x0004000B" value="&amp;Probar búsqueda del decodificador" />
+    <String key="0x0004000C" value="&amp;Validar archivos de entrada" />
+    <String key="0x0004000D" value="Sob&amp;reescribir archivos existentes" />
 
     <!-- Language Menu -->
 
     <String key="0x00050001" value="&amp;Idioma" />
-    <String key="0x00050002" value="&amp;Predeterminado (English)" />
+    <String key="0x00050002" value="&amp;Predeterminado (Inglés)" />
 
     <!-- Help Menu -->
 
@@ -75,7 +75,7 @@
     <String key="0x000A0010" value="BatchEncoder" />
     <String key="0x000A0011" value="Salida" />
     <String key="0x000A0012" value="Formato:" />
-    <String key="0x000A0013" value="Ajuste:" />
+    <String key="0x000A0013" value="Ajustes:" />
     <String key="0x000A0014" value="Directorio de salida:" />
     <String key="0x000A0015" value="Y..." />
     <String key="0x000A0016" value="hilos (0=auto):" />
@@ -100,7 +100,7 @@
     <String key="0x000B001A" value="Gua&amp;rdar como" />
     <String key="0x000B001B" value="Ca&amp;mbiar" />
     <String key="0x000B001C" value="&amp;OK" />
-    <String key="0x000B001D" value="Du&amp;plicate" />
+    <String key="0x000B001D" value="Du&amp;plicar" />
 
     <!-- Formats Dialog -->
 
@@ -134,17 +134,17 @@
     <String key="0x000C0028" value="&amp;Guardar como" />
     <String key="0x000C0029" value="Ca&amp;mbiar" />
     <String key="0x000C002A" value="&amp;OK" />
-    <String key="0x000C002B" value="Exit code on success:" />
-    <String key="0x000C002C" value="&amp;Edit Presets" />
-    <String key="0x000C002D" value="&amp;Import" />
-    <String key="0x000C002E" value="E&amp;xport" />
-    <String key="0x000C002F" value="Du&amp;plicate" />
+    <String key="0x000C002B" value="Código de salida al finalizar:" />
+    <String key="0x000C002C" value="&amp;Editar Ajustes" />
+    <String key="0x000C002D" value="&amp;Importar" />
+    <String key="0x000C002E" value="E&amp;xportar" />
+    <String key="0x000C002F" value="Du&amp;plicar" />
 
     <!-- About Dialog -->
 
     <String key="0x000D0010" value="Acerca de BatchEncoder" />
     <String key="0x000D0011" value="&amp;OK" />
-    <String key="0x000D0012" value="Licenciado bajo licencia MIT. Mire el archivo LICENSE en la raíz de la aplicación para una completa información de la licencia." />
+    <String key="0x000D0012" value="Licenciado bajo licencia MIT. Mire el archivo LICENSE en la raíz de la aplicación\r\n para una completa información de la licencia." />
 
     <!-- Strings Work Thread -->
 
@@ -186,7 +186,7 @@
     <String key="0x0014000D" value="Error: no se pudo encontrar el archivo codificado." />
     <String key="0x0014000E" value="Error: excepción generada mientras se convertía el archivo." />
     <String key="0x0014000F" value="¡Imposible crear archivo de salida!" />
-    <String key="0x00140010" value="Output file already exists." />
+    <String key="0x00140010" value="El archivo de salida ya existe." />
 
     <!-- Strings Worker Context -->
 
@@ -211,7 +211,7 @@
     <String key="0x0021000C" value="¡Error al buscar archivos objeto!" />
     <String key="0x0021000D" value="¡Imposible crear archivo de salida!" />
     <String key="0x0021000E" value="¡Error crítico al crear hilo!" />
-    <String key="0x0021000F" value="Invalid output path format!" />
+    <String key="0x0021000F" value="¡Formato incorrecto de la ruta de salida!" />
 
     <!-- Strings Presets Dialog -->
 
@@ -237,6 +237,6 @@
     <String key="0x00310005" value="Formatos de archivo" />
     <String key="0x00310006" value="Archivo ejecutables" />
     <String key="0x00310007" value="Archivos de progreso" />
-    <String key="0x00310008" value="Format Files" />
+    <String key="0x00310008" value="Formato de archivo" />
 
 </Language>
