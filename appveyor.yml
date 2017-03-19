@@ -1,4 +1,4 @@
-image: Visual Studio 2015
+image: Visual Studio 2017
 install:
 - choco install -y InnoSetup
 - set PATH="C:\Program Files\7-Zip";"C:\Program Files (x86)\Inno Setup 5";%PATH%

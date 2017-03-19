@@ -337,13 +337,13 @@ Sources are available in the [git source code repository](https://github.com/wie
 
 To build program from sources you will need the following components:
 
-### Microsoft Visual Studio 2015
+### Microsoft Visual Studio 2017
 
-For building `BatchEncoder.sln` solution use [Visual Studio 2015](https://www.visualstudio.com).
+For building `BatchEncoder.sln` solution use [Visual Studio 2017](https://www.visualstudio.com).
 
 ### Windows 7 SDK
 
-For Windows XP compatibility program is compiled using Platform Toolset for Visual Studio 2015 – Windows XP (v140_xp).
+For Windows XP compatibility program is compiled using `Platform Toolset` for `Visual Studio 2017 - Windows XP (v141_xp)`.
 
 For more details please read [Configuring Programs for Windows XP](https://msdn.microsoft.com/en-us/library/jj851139.aspx).
 
