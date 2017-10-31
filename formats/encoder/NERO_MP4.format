@@ -1,27 +1,27 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Format id="NERO_MP4" name="MP4 (MPEG-4/AAC) - nero" template="$EXE $OPTIONS -ignorelength -if $INFILE -of $OUTFILE" input="true" output="false" function="- none -" path="neroAacEnc.exe" success="0" type="0" formats="WAV" extension="MP4" default="10">
     <Presets>
-        <Preset name="VBR Quality 0.00" options="-q 0.00"/>
-        <Preset name="VBR Quality 0.05" options="-q 0.05"/>
-        <Preset name="VBR Quality 0.10" options="-q 0.10"/>
-        <Preset name="VBR Quality 0.15" options="-q 0.15"/>
-        <Preset name="VBR Quality 0.20" options="-q 0.20"/>
-        <Preset name="VBR Quality 0.25" options="-q 0.25"/>
-        <Preset name="VBR Quality 0.30" options="-q 0.30"/>
-        <Preset name="VBR Quality 0.35" options="-q 0.35"/>
-        <Preset name="VBR Quality 0.40" options="-q 0.40"/>
-        <Preset name="VBR Quality 0.45" options="-q 0.45"/>
-        <Preset name="VBR Quality 0.50" options="-q 0.50"/>
-        <Preset name="VBR Quality 0.55" options="-q 0.55"/>
-        <Preset name="VBR Quality 0.60" options="-q 0.60"/>
-        <Preset name="VBR Quality 0.65" options="-q 0.65"/>
-        <Preset name="VBR Quality 0.70" options="-q 0.70"/>
-        <Preset name="VBR Quality 0.75" options="-q 0.75"/>
-        <Preset name="VBR Quality 0.80" options="-q 0.80"/>
-        <Preset name="VBR Quality 0.85" options="-q 0.85"/>
-        <Preset name="VBR Quality 0.90" options="-q 0.90"/>
-        <Preset name="VBR Quality 0.95" options="-q 0.95"/>
-        <Preset name="VBR Quality 1.00" options="-q 1.00"/>
+    <Preset name="VBR Quality 0.00" options="-q 0.00"/>
+    <Preset name="VBR Quality 0.05 : 15 kbps~" options="-q 0.05"/>
+    <Preset name="VBR Quality 0.10 : 24 kbps~" options="-q 0.10"/>
+    <Preset name="VBR Quality 0.15 : 33 kbps~" options="-q 0.15"/>
+    <Preset name="VBR Quality 0.20 : 48 kbps~" options="-q 0.20"/>
+    <Preset name="VBR Quality 0.25 : 63 kbps~" options="-q 0.25"/>
+    <Preset name="VBR Quality 0.30 : 82 kbps~" options="-q 0.30"/>
+    <Preset name="VBR Quality 0.35 : 100 kbps~" options="-q 0.35"/>
+    <Preset name="VBR Quality 0.40 : 125 kbps~" options="-q 0.40"/>
+    <Preset name="VBR Quality 0.45 : 150 kbps~" options="-q 0.45"/>
+    <Preset name="VBR Quality 0.50 : 175 kbps~" options="-q 0.50"/>
+    <Preset name="VBR Quality 0.55 : 200 kbps~" options="-q 0.55"/>
+    <Preset name="VBR Quality 0.60 : 225 kbps~" options="-q 0.60"/>
+    <Preset name="VBR Quality 0.65 : 250 kbps~" options="-q 0.65"/>
+    <Preset name="VBR Quality 0.70 : 275 kbps~" options="-q 0.70"/>
+    <Preset name="VBR Quality 0.75 : 300 kbps~" options="-q 0.75"/>
+    <Preset name="VBR Quality 0.80 : 325 kbps~" options="-q 0.80"/>
+    <Preset name="VBR Quality 0.85 : 350 kbps~" options="-q 0.85"/>
+    <Preset name="VBR Quality 0.90 : 375 kbps~" options="-q 0.90"/>
+    <Preset name="VBR Quality 0.95 : 400 kbps~" options="-q 0.95"/>
+    <Preset name="VBR Quality 1.00 : 400 kbps~" options="-q 1.00"/>
         <Preset name="ABR 32 kbit/s" options="-br 32000"/>
         <Preset name="ABR 48 kbit/s" options="-br 48000"/>
         <Preset name="ABR 64 kbit/s" options="-br 64000"/>
