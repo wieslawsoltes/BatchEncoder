@@ -17,10 +17,10 @@ BatchEncoder is an audio files conversion software.
 
 | Platform              | Type        | Version       | Download                                                                                                                               |
 |-----------------------|-------------|---------------|----------------------------------------------------------------------------------------------------------------------------------------|
-| Windows 32-bit        | Installer   | 1.3           | [BatchEncoder-1.3-Win32.exe](https://github.com/wieslawsoltes/BatchEncoder/releases/download/1.3/BatchEncoder-1.3-Win32.exe)           |
-| Windows 64-bit        | Installer   | 1.3           | [BatchEncoder-1.3-x64.exe](https://github.com/wieslawsoltes/BatchEncoder/releases/download/1.3/BatchEncoder-1.3-x64.exe)               |
-| Windows 32-bit        | Portable    | 1.3           | [BatchEncoder-1.3-Win32.zip](https://github.com/wieslawsoltes/BatchEncoder/releases/download/1.3/BatchEncoder-1.3-Win32.zip)           |
-| Windows 64-bit        | Portable    | 1.3           | [BatchEncoder-1.3-x64.zip](https://github.com/wieslawsoltes/BatchEncoder/releases/download/1.3/BatchEncoder-1.3-x64.zip)               |
+| Windows 32-bit        | Installer   | 1.4           | [BatchEncoder-1.4-Win32.exe](https://github.com/wieslawsoltes/BatchEncoder/releases/download/1.4/BatchEncoder-1.4-Win32.exe)           |
+| Windows 64-bit        | Installer   | 1.4           | [BatchEncoder-1.4-x64.exe](https://github.com/wieslawsoltes/BatchEncoder/releases/download/1.4/BatchEncoder-1.4-x64.exe)               |
+| Windows 32-bit        | Portable    | 1.4           | [BatchEncoder-1.4-Win32.zip](https://github.com/wieslawsoltes/BatchEncoder/releases/download/1.4/BatchEncoder-1.4-Win32.zip)           |
+| Windows 64-bit        | Portable    | 1.4           | [BatchEncoder-1.4-x64.zip](https://github.com/wieslawsoltes/BatchEncoder/releases/download/1.4/BatchEncoder-1.4-x64.zip)               |
 
 ### Mirrors
 
@@ -34,9 +34,9 @@ BatchEncoder is an audio files conversion software.
 
 | Platform                   | Type        | Version       | Download                                                                                                                               |
 |----------------------------|-------------|---------------|----------------------------------------------------------------------------------------------------------------------------------------|
-| Windows .NET4.5 (Any CPU)  | Portable    | 1.0.0         | [LanguageEditor-1.0.0-AnyCPU.zip](https://github.com/wieslawsoltes/BatchEncoder/releases/download/1.3/LanguageEditor-1.0.0-AnyCPU.zip) |
-| Windows .NET4.5 (32-bit)   | Portable    | 1.0.0         | [LanguageEditor-1.0.0-x86.zip](https://github.com/wieslawsoltes/BatchEncoder/releases/download/1.3/LanguageEditor-1.0.0-x86.zip)       |
-| Windows .NET4.5 (64-bit)   | Portable    | 1.0.0         | [LanguageEditor-1.0.0-x64.zip](https://github.com/wieslawsoltes/BatchEncoder/releases/download/1.3/LanguageEditor-1.0.0-x64.zip)       |
+| Windows .NET4.5 (Any CPU)  | Portable    | 1.0.0         | [LanguageEditor-1.0.0-AnyCPU.zip](https://github.com/wieslawsoltes/BatchEncoder/releases/download/1.4/LanguageEditor-1.0.0-AnyCPU.zip) |
+| Windows .NET4.5 (32-bit)   | Portable    | 1.0.0         | [LanguageEditor-1.0.0-x86.zip](https://github.com/wieslawsoltes/BatchEncoder/releases/download/1.4/LanguageEditor-1.0.0-x86.zip)       |
+| Windows .NET4.5 (64-bit)   | Portable    | 1.0.0         | [LanguageEditor-1.0.0-x64.zip](https://github.com/wieslawsoltes/BatchEncoder/releases/download/1.4/LanguageEditor-1.0.0-x64.zip)       |
 
 ## About
 
