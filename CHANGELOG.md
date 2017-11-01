@@ -3,6 +3,9 @@
 ### BatchEncoder v1.4
 
 - Updated Spanish translation.
+- Updated AAC presets to show birate for VBR.
+- Updated projects to Microsoft Visual Studio 2017 (PlatformToolset v141_xp).
+- Changed projects WindowsTargetPlatformVersion to version 7.0.
 
 ### BatchEncoder v1.3
 
