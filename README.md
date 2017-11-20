@@ -349,11 +349,11 @@ For more details please read [Configuring Programs for Windows XP](https://msdn.
 
 ### TinyXml-2 Library
 
-Required [TinyXml-2](https://github.com/leethomason/tinyxml2) sources are included in `src\xml` directory.
+Required [TinyXml-2 v5.0.1](https://github.com/leethomason/tinyxml2) sources are included in `src\xml` directory.
 
 ### Lua Library
 
-Required [Lua 5.3.4](http://www.lua.org/ftp/) sources are included in `src\lua\lua` directory.
+Required [Lua v5.3.4](http://www.lua.org/ftp/) sources are included in `src\lua\lua` directory.
 
 ## License
 
