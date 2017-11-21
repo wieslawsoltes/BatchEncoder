@@ -26,12 +26,6 @@ var artifactsDir = (DirectoryPath)Directory("./artifacts");
 var binDir = (DirectoryPath)Directory("./src/bin");
 var objDir = (DirectoryPath)Directory("./src/obj");
 
-var platformsEditor = new [] { "AnyCPU", "x64", "x86" }.ToList();
-var configurationsEditor = new [] { "Debug", "Release" }.ToList();
-var solutionEditor = "./editor/LanguageEditor.sln";
-var binDirEditor = (DirectoryPath)Directory("./editor/bin");
-var objDirEditor = (DirectoryPath)Directory("./editor/obj");
-
 ///////////////////////////////////////////////////////////////////////////////
 // RELEASE
 ///////////////////////////////////////////////////////////////////////////////
@@ -60,8 +54,6 @@ var suffix = (isRelease || !isAppVeyorBuild) ? "" : "-build" + EnvironmentVariab
 
 Information("Defined Version: {0}.{1}.{2}.{3}", major, minor, revision, build);
 Information("Release Version: {0}", version + suffix);
-
-var versionEditor = ParseAssemblyInfo(File("./editor/Properties/AssemblyInfo.cs")).AssemblyVersion;
 
 ///////////////////////////////////////////////////////////////////////////////
 // ACTIONS
@@ -98,18 +90,6 @@ var packageBinariesAction = new Action<string,string> ((configuration, platform)
     Zip(outputDir, outputZip);
 });
 
-var packageBinariesEditorAction = new Action<string,string> ((configuration, platform) => 
-{
-    var path = "./editor/bin/" + platform + "/" + configuration + "/";
-    var output = "LanguageEditor-" + versionEditor + suffix + "-" + platform + (configuration == "Release" ? "" : ("-(" + configuration + ")"));
-    var outputDir = artifactsDir.Combine(output);
-    var outputZip = artifactsDir.CombineWithFilePath(output + ".zip");
-    var exeFile = File(path + "LanguageEditor.exe");
-    CleanDirectory(outputDir);
-    CopyFileToDirectory(exeFile, outputDir);
-    Zip(outputDir, outputZip);
-});
-
 var packageInstallersAction = new Action<string,string> ((configuration, platform) => 
 {
     StartProcess(iscc, new ProcessSettings { 
@@ -132,8 +112,6 @@ Task("Clean")
     CleanDirectory(artifactsDir);
     CleanDirectory(binDir);
     CleanDirectory(objDir);
-    CleanDirectory(binDirEditor);
-    CleanDirectory(objDirEditor);
 });
 
 Task("Build")
@@ -141,7 +119,6 @@ Task("Build")
     .Does(() =>
 {
     configurations.ForEach(configuration => platforms.ForEach(platform => buildSolutionAction(solution, configuration, platform)));
-    configurationsEditor.ForEach(configuration => platformsEditor.ForEach(platform => buildSolutionAction(solutionEditor, configuration, platform)));
 });
 
 Task("Package-Binaries")
@@ -149,7 +126,6 @@ Task("Package-Binaries")
     .Does(() =>
 {
     configurations.ForEach(configuration => platforms.ForEach(platform => packageBinariesAction(configuration, platform)));
-    configurationsEditor.ForEach(configuration => platformsEditor.ForEach(platform => packageBinariesEditorAction(configuration, platform)));
 });
 
 Task("Package-Installers")
