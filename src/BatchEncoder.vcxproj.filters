@@ -114,6 +114,9 @@
     <ClCompile Include="contexts\ProgressWorkerContext.cpp">
       <Filter>Source Files\Contexts</Filter>
     </ClCompile>
+    <ClCompile Include="XmlConfigurationBase.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="version.h">
@@ -265,6 +268,9 @@
     </ClInclude>
     <ClInclude Include="worker\OutputPath.h">
       <Filter>Header Files\Worker</Filter>
+    </ClInclude>
+    <ClInclude Include="XmlConfigurationBase.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

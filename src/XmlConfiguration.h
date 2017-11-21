@@ -5,7 +5,7 @@
 
 #include <afxstr.h>
 #include <afxtempl.h>
-#include "xml\tinyxml2.h" // https://github.com/leethomason/tinyxml2
+#include "XmlConfigurationBase.h"
 #include "configuration\Options.h"
 #include "configuration\PresetsList.h"
 #include "configuration\Format.h"
@@ -14,22 +14,11 @@
 #include "configuration\Language.h"
 #include "configuration\LanguagesList.h"
 
-class XmlConfiguration : private tinyxml2::XMLDocument
+class XmlConfiguration : private XmlConfigurationBase
 {
-public:
-    const char *m_Utf8DocumentDeclaration = "xml version=\"1.0\" encoding=\"UTF-8\"";
 public:
     XmlConfiguration();
     virtual ~XmlConfiguration();
-private:
-    const LPCTSTR m_True = _T("true");
-    const LPCTSTR m_False = _T("false");
-private:
-    CString ToCString(const char *pszUtf8);
-    bool ToBool(const char *pszUtf8);
-    int ToInt(const char *pszUtf8);
-    CString ToCString(const int nValue);
-    CString ToCString(const bool bValue);
 private:
     void GetOptions(tinyxml2::XMLElement *pOptionsElem, COptions &m_Options);
     void SetOptions(tinyxml2::XMLElement *pOptionsElem, COptions &m_Options);
