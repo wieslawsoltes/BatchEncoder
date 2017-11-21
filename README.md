@@ -9,11 +9,11 @@
 
 BatchEncoder is an audio files conversion software.
 
-### Support BatchEncoder
+## Support BatchEncoder
 
 [![PayPal - The safer, easier way to pay online!](https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=GFQMG36HPYT6W)
 
-### Download BatchEncoder
+## Download BatchEncoder
 
 | Platform              | Type        | Version       | Download                                                                                                                               |
 |-----------------------|-------------|---------------|----------------------------------------------------------------------------------------------------------------------------------------|
@@ -22,21 +22,17 @@ BatchEncoder is an audio files conversion software.
 | Windows 32-bit        | Portable    | 1.4           | [BatchEncoder-1.4-Win32.zip](https://github.com/wieslawsoltes/BatchEncoder/releases/download/1.4/BatchEncoder-1.4-Win32.zip)           |
 | Windows 64-bit        | Portable    | 1.4           | [BatchEncoder-1.4-x64.zip](https://github.com/wieslawsoltes/BatchEncoder/releases/download/1.4/BatchEncoder-1.4-x64.zip)               |
 
-### Mirrors
-
-[![Softpedia Download Mirror](http://www.softpedia.com/_img/softpedia_100_free.png)](http://www.softpedia.com/get/Multimedia/Audio/Audio-CD-Rippers-Encoders/BatchEncoder.shtml)
-
 ### CI Builds
 
 [Download](https://ci.appveyor.com/project/wieslawsoltes/batchencoder/build/artifacts) bleeding edge builds from the CI server.
 
-### Download LanguageEditor
+### Mirrors
 
-| Platform                   | Type        | Version       | Download                                                                                                                               |
-|----------------------------|-------------|---------------|----------------------------------------------------------------------------------------------------------------------------------------|
-| Windows .NET4.5 (Any CPU)  | Portable    | 1.0.0         | [LanguageEditor-1.0.0-AnyCPU.zip](https://github.com/wieslawsoltes/BatchEncoder/releases/download/1.4/LanguageEditor-1.0.0-AnyCPU.zip) |
-| Windows .NET4.5 (32-bit)   | Portable    | 1.0.0         | [LanguageEditor-1.0.0-x86.zip](https://github.com/wieslawsoltes/BatchEncoder/releases/download/1.4/LanguageEditor-1.0.0-x86.zip)       |
-| Windows .NET4.5 (64-bit)   | Portable    | 1.0.0         | [LanguageEditor-1.0.0-x64.zip](https://github.com/wieslawsoltes/BatchEncoder/releases/download/1.4/LanguageEditor-1.0.0-x64.zip)       |
+[![Softpedia Download Mirror](http://www.softpedia.com/_img/softpedia_100_free.png)](http://www.softpedia.com/get/Multimedia/Audio/Audio-CD-Rippers-Encoders/BatchEncoder.shtml)
+
+## Language Editor
+
+Download latest version of the language editor from [here](https://github.com/wieslawsoltes/LanguageEditor#download-languageeditor).
 
 ## About
 
@@ -249,7 +245,7 @@ and [use special characters in XML](https://www.dvteclipse.com/documentation/svl
 
 Language files have to be placed in the same directory as the `BatchEncoder.exe` executable to be loaded automatically.
 
-Language files can also be edited in dedicated `LanguageEditor` program. LanguageEditor requires .NET Framework 4.5 and Windows 7 SP1 or above.
+Language files can also be edited in dedicated [LanguageEditor](https://github.com/wieslawsoltes/LanguageEditor#download-languageeditor) program. LanguageEditor requires .NET Framework 4.5 and Windows 7 SP1 or above.
 
 ### Default language files
 
