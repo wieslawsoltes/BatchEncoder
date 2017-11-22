@@ -10,7 +10,7 @@
 #include "..\controls\MyComboBox.h"
 #include "..\controls\MyEdit.h"
 #include "..\controls\MyStatic.h"
-#include "..\controls\ResizeDialog.h"
+#include "..\controls\MyResizeDialog.h"
 #include "..\configuration\FormatsList.h"
 #include "..\configuration\Configuration.h"
 

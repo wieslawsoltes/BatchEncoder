@@ -48,7 +48,7 @@
     <ClInclude Include="MyStatusBarCtrl.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ResizeDialog.h">
+    <ClInclude Include="MyResizeDialog.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -83,7 +83,7 @@
     <ClCompile Include="MyStatusBarCtrl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ResizeDialog.cpp">
+    <ClCompile Include="MyResizeDialog.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

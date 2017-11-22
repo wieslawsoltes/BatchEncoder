@@ -2,7 +2,7 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 #include "StdAfx.h"
-#include "ResizeDialog.h"
+#include "MyResizeDialog.h"
 
 CMyResizeDialog::CMyResizeDialog()
 {

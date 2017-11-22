@@ -11,7 +11,7 @@
 #include "..\controls\MyEdit.h"
 #include "..\controls\MyStatic.h"
 #include "..\controls\MyStatusBarCtrl.h"
-#include "..\controls\ResizeDialog.h"
+#include "..\controls\MyResizeDialog.h"
 #include "..\utilities\TimeCount.h"
 #include "..\worker\WorkerContext.h"
 
