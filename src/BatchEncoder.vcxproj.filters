@@ -13,12 +13,6 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx</Extensions>
     </Filter>
-    <Filter Include="Source Files\Controls">
-      <UniqueIdentifier>{127b5b18-70df-43ba-80d3-bd58b5825b93}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Controls">
-      <UniqueIdentifier>{403488c1-bc65-4b28-a954-dc69b86fe86b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Dialogs">
       <UniqueIdentifier>{2e7dc192-f9cd-4c30-9138-f55114a3e325}</UniqueIdentifier>
     </Filter>
@@ -60,30 +54,6 @@
     <ClCompile Include="XmlConfiguration.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="controls\MyButton.cpp">
-      <Filter>Source Files\Controls</Filter>
-    </ClCompile>
-    <ClCompile Include="controls\MyComboBox.cpp">
-      <Filter>Source Files\Controls</Filter>
-    </ClCompile>
-    <ClCompile Include="controls\MyEdit.cpp">
-      <Filter>Source Files\Controls</Filter>
-    </ClCompile>
-    <ClCompile Include="controls\MyListCtrl.cpp">
-      <Filter>Source Files\Controls</Filter>
-    </ClCompile>
-    <ClCompile Include="controls\MyStatic.cpp">
-      <Filter>Source Files\Controls</Filter>
-    </ClCompile>
-    <ClCompile Include="controls\MyStatusBarCtrl.cpp">
-      <Filter>Source Files\Controls</Filter>
-    </ClCompile>
-    <ClCompile Include="controls\ResizeDialog.cpp">
-      <Filter>Source Files\Controls</Filter>
-    </ClCompile>
-    <ClCompile Include="controls\Hyperlink.cpp">
-      <Filter>Source Files\Controls</Filter>
-    </ClCompile>
     <ClCompile Include="dialogs\AboutDlg.cpp">
       <Filter>Source Files\Dialogs</Filter>
     </ClCompile>
@@ -116,12 +86,6 @@
     </ClCompile>
     <ClCompile Include="XmlConfigurationBase.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="controls\MyComboBoxEdit.cpp">
-      <Filter>Source Files\Controls</Filter>
-    </ClCompile>
-    <ClCompile Include="controls\MySliderCtrl.cpp">
-      <Filter>Source Files\Controls</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -188,30 +152,6 @@
     <ClInclude Include="configuration\LanguageHelper.h">
       <Filter>Header Files\Configuration</Filter>
     </ClInclude>
-    <ClInclude Include="controls\Hyperlink.h">
-      <Filter>Header Files\Controls</Filter>
-    </ClInclude>
-    <ClInclude Include="controls\MyButton.h">
-      <Filter>Header Files\Controls</Filter>
-    </ClInclude>
-    <ClInclude Include="controls\MyComboBox.h">
-      <Filter>Header Files\Controls</Filter>
-    </ClInclude>
-    <ClInclude Include="controls\MyEdit.h">
-      <Filter>Header Files\Controls</Filter>
-    </ClInclude>
-    <ClInclude Include="controls\MyListCtrl.h">
-      <Filter>Header Files\Controls</Filter>
-    </ClInclude>
-    <ClInclude Include="controls\MyStatic.h">
-      <Filter>Header Files\Controls</Filter>
-    </ClInclude>
-    <ClInclude Include="controls\MyStatusBarCtrl.h">
-      <Filter>Header Files\Controls</Filter>
-    </ClInclude>
-    <ClInclude Include="controls\ResizeDialog.h">
-      <Filter>Header Files\Controls</Filter>
-    </ClInclude>
     <ClInclude Include="dialogs\AboutDlg.h">
       <Filter>Header Files\Dialogs</Filter>
     </ClInclude>
@@ -277,12 +217,6 @@
     </ClInclude>
     <ClInclude Include="XmlConfigurationBase.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="controls\MyComboBoxEdit.h">
-      <Filter>Header Files\Controls</Filter>
-    </ClInclude>
-    <ClInclude Include="controls\MySliderCtrl.h">
-      <Filter>Header Files\Controls</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

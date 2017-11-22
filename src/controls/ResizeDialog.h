@@ -3,6 +3,8 @@
 
 #pragma once
 
+#include <afxdialogex.h>
+
 const CSize NOANCHOR(-1, -1);
 const CSize TOP_LEFT(0, 0);
 const CSize TOP_CENTER(50, 0);
@@ -14,7 +16,7 @@ const CSize BOTTOM_LEFT(0, 100);
 const CSize BOTTOM_CENTER(50, 100);
 const CSize BOTTOM_RIGHT(100, 100);
 
-class CResizeDialog : public CDialog
+class CResizeDialog : public CDialogEx
 {
 private:
     class Layout

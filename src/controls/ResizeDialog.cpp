@@ -10,13 +10,13 @@ CResizeDialog::CResizeDialog()
 }
 
 CResizeDialog::CResizeDialog(UINT nIDTemplate, CWnd* pParentWnd)
-    : CDialog(nIDTemplate, pParentWnd)
+    : CDialogEx(nIDTemplate, pParentWnd)
 {
     InitVars();
 }
 
 CResizeDialog::CResizeDialog(LPCTSTR lpszTemplateName, CWnd* pParentWnd)
-    : CDialog(lpszTemplateName, pParentWnd)
+    : CDialogEx(lpszTemplateName, pParentWnd)
 {
     InitVars();
 }
@@ -32,7 +32,7 @@ CResizeDialog::~CResizeDialog()
     }
 }
 
-BEGIN_MESSAGE_MAP(CResizeDialog, CDialog)
+BEGIN_MESSAGE_MAP(CResizeDialog, CDialogEx)
     ON_WM_GETMINMAXINFO()
     ON_WM_SIZE()
     ON_WM_DESTROY()
@@ -320,7 +320,7 @@ void CResizeDialog::SetWindowRectStr(CString data)
     GetWindowPlacement(&wp);
 
     RECT& rc = wp.rcNormalPosition;
-    if (_stscanf(data, _T("%d %d %d %d %d %d"),
+    if (_stscanf_s(data, _T("%d %d %d %d %d %d"),
         &rc.left, &rc.top,
         &rc.right, &rc.bottom,
         &wp.showCmd, &wp.flags) == 6)

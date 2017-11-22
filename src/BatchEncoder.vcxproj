@@ -257,8 +257,6 @@ copy /Y ..\lang\*.language $(OutDir)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="controls\MyComboBoxEdit.cpp" />
-    <ClCompile Include="controls\MySliderCtrl.cpp" />
     <ClCompile Include="StdAfx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -272,14 +270,6 @@ copy /Y ..\lang\*.language $(OutDir)</Command>
     <ClCompile Include="dialogs\MainDlg.cpp" />
     <ClCompile Include="dialogs\FormatsDlg.cpp" />
     <ClCompile Include="dialogs\PresetsDlg.cpp" />
-    <ClCompile Include="controls\MyListCtrl.cpp" />
-    <ClCompile Include="controls\Hyperlink.cpp" />
-    <ClCompile Include="controls\MyButton.cpp" />
-    <ClCompile Include="controls\MyComboBox.cpp" />
-    <ClCompile Include="controls\MyStatic.cpp" />
-    <ClCompile Include="controls\MyEdit.cpp" />
-    <ClCompile Include="controls\MyStatusBarCtrl.cpp" />
-    <ClCompile Include="controls\ResizeDialog.cpp" />
     <ClCompile Include="utilities\UnicodeUtf8.cpp" />
     <ClCompile Include="utilities\Utf8String.cpp" />
     <ClCompile Include="utilities\Utilities.cpp" />
@@ -289,8 +279,6 @@ copy /Y ..\lang\*.language $(OutDir)</Command>
     <ClCompile Include="XmlConfigurationBase.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="controls\MyComboBoxEdit.h" />
-    <ClInclude Include="controls\MySliderCtrl.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="version.h" />
     <ClInclude Include="res\resource.h" />
@@ -313,14 +301,6 @@ copy /Y ..\lang\*.language $(OutDir)</Command>
     <ClInclude Include="configuration\LanguagesList.h" />
     <ClInclude Include="configuration\StringsMap.h" />
     <ClInclude Include="configuration\LanguageHelper.h" />
-    <ClInclude Include="controls\MyListCtrl.h" />
-    <ClInclude Include="controls\Hyperlink.h" />
-    <ClInclude Include="controls\MyButton.h" />
-    <ClInclude Include="controls\MyComboBox.h" />
-    <ClInclude Include="controls\MyEdit.h" />
-    <ClInclude Include="controls\MyStatic.h" />
-    <ClInclude Include="controls\MyStatusBarCtrl.h" />
-    <ClInclude Include="controls\ResizeDialog.h" />
     <ClInclude Include="dialogs\AboutDlg.h" />
     <ClInclude Include="dialogs\MainDlg.h" />
     <ClInclude Include="dialogs\FormatsDlg.h" />
@@ -353,6 +333,9 @@ copy /Y ..\lang\*.language $(OutDir)</Command>
     <ResourceCompile Include="res\BatchEncoder.rc" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="controls\MFC.Controls.vcxproj">
+      <Project>{5936eb01-037a-4148-a512-dad975c24cbd}</Project>
+    </ProjectReference>
     <ProjectReference Include="lua\Lua.vcxproj">
       <Project>{d3051aac-8129-45f9-a755-9cbb7c61d91d}</Project>
     </ProjectReference>

@@ -92,7 +92,7 @@ BOOL CMyComboBox::OnToolTipText(UINT id, NMHDR *pNMHDR, LRESULT *pResult)
     ::SendMessage(pNMHDR->hwndFrom, TTM_SETMAXTIPWIDTH, 0, (LPARAM)nMyTooltipsWidth);
 
     TCHAR szBuff[nMyTooltipsWidth] = _T("");
-    _stprintf(szBuff, _T("%s"), (LPCTSTR)szTipText);
+    _stprintf_s(szBuff, _T("%s"), (LPCTSTR)szTipText);
 
 #ifndef _UNICODE
     if (pNMHDR->code == TTN_NEEDTEXTA)

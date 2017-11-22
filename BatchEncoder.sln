@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26228.9
+VisualStudioVersion = 15.0.27004.2009
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BatchEncoder", "src\BatchEncoder.vcxproj", "{746662AD-C2A1-43B7-87D2-BC45FE80B52B}"
 EndProject
@@ -13,6 +13,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "lua", "lua", "{A89E33A6-FF71-43BB-99A0-BEE5B341F624}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Lua", "src\lua\Lua.vcxproj", "{D3051AAC-8129-45F9-A755-9CBB7C61D91D}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MFC.Controls", "src\controls\MFC.Controls.vcxproj", "{5936EB01-037A-4148-A512-DAD975C24CBD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -46,6 +48,14 @@ Global
 		{D3051AAC-8129-45F9-A755-9CBB7C61D91D}.Release|Win32.Build.0 = Release|Win32
 		{D3051AAC-8129-45F9-A755-9CBB7C61D91D}.Release|x64.ActiveCfg = Release|x64
 		{D3051AAC-8129-45F9-A755-9CBB7C61D91D}.Release|x64.Build.0 = Release|x64
+		{5936EB01-037A-4148-A512-DAD975C24CBD}.Debug|Win32.ActiveCfg = Debug|Win32
+		{5936EB01-037A-4148-A512-DAD975C24CBD}.Debug|Win32.Build.0 = Debug|Win32
+		{5936EB01-037A-4148-A512-DAD975C24CBD}.Debug|x64.ActiveCfg = Debug|x64
+		{5936EB01-037A-4148-A512-DAD975C24CBD}.Debug|x64.Build.0 = Debug|x64
+		{5936EB01-037A-4148-A512-DAD975C24CBD}.Release|Win32.ActiveCfg = Release|Win32
+		{5936EB01-037A-4148-A512-DAD975C24CBD}.Release|Win32.Build.0 = Release|Win32
+		{5936EB01-037A-4148-A512-DAD975C24CBD}.Release|x64.ActiveCfg = Release|x64
+		{5936EB01-037A-4148-A512-DAD975C24CBD}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -54,5 +64,9 @@ Global
 		{746662AD-C2A1-43B7-87D2-BC45FE80B52B} = {BE63E765-C11E-48A1-9CEA-51334E659521}
 		{284538AC-D315-437E-AD31-D40934A43236} = {9B685B25-09CD-4565-908C-0FDFE64FD5BD}
 		{D3051AAC-8129-45F9-A755-9CBB7C61D91D} = {A89E33A6-FF71-43BB-99A0-BEE5B341F624}
+		{5936EB01-037A-4148-A512-DAD975C24CBD} = {BE63E765-C11E-48A1-9CEA-51334E659521}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {37763D67-1229-4E8D-ABED-3786BB37A99D}
 	EndGlobalSection
 EndGlobal
