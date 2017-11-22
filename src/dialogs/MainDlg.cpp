@@ -357,21 +357,21 @@ BOOL CMainDlg::OnInitDialog()
     this->m_CmbOutPath.SetFocus();
 
     // resize anchors
-    AddAnchor(IDC_STATIC_GROUP_OUTPUT, TOP_LEFT, TOP_RIGHT);
-    AddAnchor(IDC_STATIC_TEXT_FORMAT, TOP_LEFT);
-    AddAnchor(IDC_COMBO_FORMAT, TOP_LEFT);
-    AddAnchor(IDC_STATIC_TEXT_PRESET, TOP_LEFT);
-    AddAnchor(IDC_COMBO_PRESETS, TOP_LEFT, TOP_RIGHT);
-    AddAnchor(IDC_LIST_ITEMS, TOP_LEFT, BOTTOM_RIGHT);
-    AddAnchor(IDC_STATIC_TEXT_OUTPUT, BOTTOM_LEFT);
-    AddAnchor(IDC_COMBO_OUTPUT, BOTTOM_LEFT, BOTTOM_RIGHT);
-    AddAnchor(IDC_BUTTON_BROWSE_OUTPUT, BOTTOM_RIGHT);
-    AddAnchor(IDC_PROGRESS_CONVERT, BOTTOM_LEFT, BOTTOM_RIGHT);
-    AddAnchor(IDC_STATIC_THREAD_COUNT, BOTTOM_RIGHT);
-    AddAnchor(IDC_EDIT_THREADCOUNT, BOTTOM_RIGHT);
-    AddAnchor(IDC_SPIN_THREADCOUNT, BOTTOM_RIGHT);
-    AddAnchor(IDC_BUTTON_CONVERT, BOTTOM_RIGHT);
-    AddAnchor(IDC_STATUSBAR, BOTTOM_LEFT, BOTTOM_RIGHT);
+    AddAnchor(IDC_STATIC_GROUP_OUTPUT, AnchorTopLeft, AnchorTopRight);
+    AddAnchor(IDC_STATIC_TEXT_FORMAT, AnchorTopLeft);
+    AddAnchor(IDC_COMBO_FORMAT, AnchorTopLeft);
+    AddAnchor(IDC_STATIC_TEXT_PRESET, AnchorTopLeft);
+    AddAnchor(IDC_COMBO_PRESETS, AnchorTopLeft, AnchorTopRight);
+    AddAnchor(IDC_LIST_ITEMS, AnchorTopLeft, AnchorBottomRight);
+    AddAnchor(IDC_STATIC_TEXT_OUTPUT, AnchorBottomLeft);
+    AddAnchor(IDC_COMBO_OUTPUT, AnchorBottomLeft, AnchorBottomRight);
+    AddAnchor(IDC_BUTTON_BROWSE_OUTPUT, AnchorBottomRight);
+    AddAnchor(IDC_PROGRESS_CONVERT, AnchorBottomLeft, AnchorBottomRight);
+    AddAnchor(IDC_STATIC_THREAD_COUNT, AnchorBottomRight);
+    AddAnchor(IDC_EDIT_THREADCOUNT, AnchorBottomRight);
+    AddAnchor(IDC_SPIN_THREADCOUNT, AnchorBottomRight);
+    AddAnchor(IDC_BUTTON_CONVERT, AnchorBottomRight);
+    AddAnchor(IDC_STATUSBAR, AnchorBottomLeft, AnchorBottomRight);
 
     try
     {

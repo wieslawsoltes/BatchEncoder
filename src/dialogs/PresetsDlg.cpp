@@ -115,23 +115,23 @@ BOOL CPresetsDlg::OnInitDialog()
     this->DragAcceptFiles(TRUE);
 
     // setup resize anchors
-    AddAnchor(IDC_COMBO_PRESET_FORMAT, TOP_LEFT);
-    AddAnchor(IDC_LIST_PRESETS, TOP_LEFT, BOTTOM_RIGHT);
-    AddAnchor(IDC_BUTTON_PRESET_UP, TOP_RIGHT);
-    AddAnchor(IDC_BUTTON_PRESET_DOWN, TOP_RIGHT);
-    AddAnchor(IDC_BUTTON_PRESET_ADD, BOTTOM_RIGHT);
-    AddAnchor(IDC_BUTTON_PRESET_DUPLICATE, MIDDLE_RIGHT);
-    AddAnchor(IDC_BUTTON_PRESET_REMOVE_ALL, BOTTOM_RIGHT);
-    AddAnchor(IDC_BUTTON_PRESET_REMOVE, BOTTOM_RIGHT);
-    AddAnchor(IDC_BUTTON_PRESET_LOAD, BOTTOM_LEFT);
-    AddAnchor(IDC_BUTTON_PRESET_SAVE, BOTTOM_LEFT);
-    AddAnchor(IDC_STATIC_PRESET_NAME, BOTTOM_LEFT);
-    AddAnchor(IDC_EDIT_PRESET_NAME, BOTTOM_LEFT);
-    AddAnchor(IDC_STATIC_PRESET_OPTIONS, BOTTOM_LEFT, BOTTOM_RIGHT);
-    AddAnchor(IDC_EDIT_PRESET_OPTIONS, BOTTOM_LEFT, BOTTOM_RIGHT);
-    AddAnchor(IDC_BUTTON_PRESET_UPDATE, BOTTOM_RIGHT);
-    AddAnchor(IDOK, BOTTOM_RIGHT);
-    AddAnchor(IDCANCEL, BOTTOM_RIGHT);
+    AddAnchor(IDC_COMBO_PRESET_FORMAT, AnchorTopLeft);
+    AddAnchor(IDC_LIST_PRESETS, AnchorTopLeft, AnchorBottomRight);
+    AddAnchor(IDC_BUTTON_PRESET_UP, AnchorTopRight);
+    AddAnchor(IDC_BUTTON_PRESET_DOWN, AnchorTopRight);
+    AddAnchor(IDC_BUTTON_PRESET_ADD, AnchorBottomRight);
+    AddAnchor(IDC_BUTTON_PRESET_DUPLICATE, AnchorMiddleRight);
+    AddAnchor(IDC_BUTTON_PRESET_REMOVE_ALL, AnchorBottomRight);
+    AddAnchor(IDC_BUTTON_PRESET_REMOVE, AnchorBottomRight);
+    AddAnchor(IDC_BUTTON_PRESET_LOAD, AnchorBottomLeft);
+    AddAnchor(IDC_BUTTON_PRESET_SAVE, AnchorBottomLeft);
+    AddAnchor(IDC_STATIC_PRESET_NAME, AnchorBottomLeft);
+    AddAnchor(IDC_EDIT_PRESET_NAME, AnchorBottomLeft);
+    AddAnchor(IDC_STATIC_PRESET_OPTIONS, AnchorBottomLeft, AnchorBottomRight);
+    AddAnchor(IDC_EDIT_PRESET_OPTIONS, AnchorBottomLeft, AnchorBottomRight);
+    AddAnchor(IDC_BUTTON_PRESET_UPDATE, AnchorBottomRight);
+    AddAnchor(IDOK, AnchorBottomRight);
+    AddAnchor(IDCANCEL, AnchorBottomRight);
 
     this->LoadWindowSettings();
     this->SetLanguage();

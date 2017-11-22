@@ -5,106 +5,71 @@
 
 #include <afxdialogex.h>
 
-const CSize NOANCHOR(-1, -1);
-const CSize TOP_LEFT(0, 0);
-const CSize TOP_CENTER(50, 0);
-const CSize TOP_RIGHT(100, 0);
-const CSize MIDDLE_LEFT(0, 50);
-const CSize MIDDLE_CENTER(50, 50);
-const CSize MIDDLE_RIGHT(100, 50);
-const CSize BOTTOM_LEFT(0, 100);
-const CSize BOTTOM_CENTER(50, 100);
-const CSize BOTTOM_RIGHT(100, 100);
+const CSize AnchorNone(-1, -1);
+const CSize AnchorTopLeft(0, 0);
+const CSize AnchorTopCenter(50, 0);
+const CSize AnchorTopRight(100, 0);
+const CSize AnchorMiddleLeft(0, 50);
+const CSize AnchorMiddleCenter(50, 50);
+const CSize AnchorMiddleRight(100, 50);
+const CSize AnchorBottomLeft(0, 100);
+const CSize AnchorBottomCenter(50, 100);
+const CSize AnchorBottomRight(100, 100);
 
 class CResizeDialog : public CDialogEx
 {
 private:
-    class Layout
+    typedef struct
     {
-    public:
-        HWND hwnd;
-        BOOL adj_hscroll;
-        BOOL need_refresh;
-        SIZE tl_type;
-        SIZE tl_margin;
-        SIZE br_type;
-        SIZE br_margin;
-    public:
-        Layout(HWND hw,
-            SIZE tl_t, SIZE tl_m,
-            SIZE br_t, SIZE br_m,
-            BOOL hscroll,
-            BOOL refresh)
-        {
-            hwnd = hw;
-            adj_hscroll = hscroll;
-            need_refresh = refresh;
-            tl_type = tl_t;
-            tl_margin = tl_m;
-            br_type = br_t;
-            br_margin = br_m;
-        };
-    };
-public:
-    CResizeDialog();
-    CResizeDialog(UINT nIDTemplate, CWnd* pParentWnd = NULL);
-    CResizeDialog(LPCTSTR lpszTemplateName, CWnd* pParentWnd = NULL);
-    virtual ~CResizeDialog();
+        HWND hWnd;
+        BOOL bAdjHscroll;
+        SIZE typeTL, marginTL;
+        SIZE typeBR, marginBR;
+    } Layout;
 private:
-    BOOL m_bShowGrip;
-    BOOL m_bUseMaxTrack;
-    BOOL m_bUseMinTrack;
-    BOOL m_bUseMaxRect;
-public:
-    CString m_sSection;
-    CString m_sEntry;
-public:
+    void InitLayout(Layout &layout, HWND hw, SIZE tTL, SIZE mTL, SIZE tBR, SIZE mBR, BOOL hscroll)
+    {
+        layout.hWnd = hw;
+        layout.typeTL = tTL;
+        layout.marginTL = mTL;
+        layout.typeBR = tBR;
+        layout.marginBR = mBR;
+        layout.bAdjHscroll = hscroll;
+    };
+private:
+    BOOL m_bUseMaxTrack, m_bUseMinTrack, m_bUseMaxRect;
     BOOL m_bInitDone;
-public:
-    SIZE m_szGripSize;
-public:
-    CRect m_rcGripRect;
-public:
-    POINT m_ptMinTrackSize;
-    POINT m_ptMaxTrackSize;
-    POINT m_ptMaxPos;
-    POINT m_ptMaxSize;
-public:
-    CPtrList m_plLayoutList;
+    POINT m_ptMinTrackSize, m_ptMaxTrackSize;
+    POINT m_ptMaxPos, m_ptMaxSize;
+    CList<Layout, Layout> m_LayoutList;
 private:
     void InitVars();
 public:
-    void ArrangeLayout();
-public:
-    void UpdateGripPos();
-public:
-    void AddAnchor(HWND wnd, CSize tl_type, CSize br_type = NOANCHOR);
-    void AddAnchor(UINT ctrl_ID, CSize tl_type, CSize br_type = NOANCHOR)
-    {
-        AddAnchor(::GetDlgItem(*this, ctrl_ID), tl_type, br_type);
-    };
-public:
-    void ShowSizeGrip(BOOL bShow);
-public:
-    void SetMaximizedRect(const CRect& rc);
-    void ResetMaximizedRect();
-public:
-    void SetMinTrackSize(const CSize& size);
-    void ResetMinTrackSize();
-public:
-    void SetMaxTrackSize(const CSize& size);
-    void ResetMaxTrackSize();
-public:
-    CString GetWindowRectStr();
-    void SetWindowRectStr(CString data);
+    void CleanUp();
 protected:
     virtual BOOL OnInitDialog();
 protected:
-    afx_msg UINT OnNcHitTest(CPoint point);
-    afx_msg void OnGetMinMaxInfo(MINMAXINFO FAR* lpMMI);
+    afx_msg void OnGetMinMaxInfo(MINMAXINFO FAR *lpMMI);
     afx_msg void OnSize(UINT nType, int cx, int cy);
-    afx_msg void OnDestroy();
-    afx_msg void OnPaint();
 protected:
     DECLARE_MESSAGE_MAP()
+public:
+    CResizeDialog();
+    CResizeDialog(UINT nIDTemplate, CWnd *pParentWnd = NULL);
+    CResizeDialog(LPCTSTR lpszTemplateName, CWnd *pParentWnd = NULL);
+    virtual ~CResizeDialog();
+public:
+    void UpdateLayout();
+    void ArrangeLayout();
+    void AddAnchor(HWND newWnd, CSize typeTL, CSize typeBR = AnchorNone);
+    void AddAnchor(UINT nCtrlID, CSize typeTL, CSize typeBR = AnchorNone);
+    void SetMaximizedRect(const CRect &rc);
+    void ResetMaximizedRect();
+    void SetMinTrackSize(const CSize &size);
+    void ResetMinTrackSize();
+    void SetMaxTrackSize(const CSize &size);
+    void ResetMaxTrackSize();
+    void UpdateWindowPos(HWND hWnd, CRect newRC);
+    CString GetWindowRectStr();
+    void SetWindowRectStr(CString szData);
 };
