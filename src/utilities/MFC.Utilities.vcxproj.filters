@@ -36,6 +36,12 @@
     <ClInclude Include="Utilities.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="CommandLine.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="OptionsParser.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="StdAfx.cpp">
@@ -51,6 +57,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Utilities.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CommandLine.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="OptionsParser.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
