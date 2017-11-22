@@ -269,15 +269,11 @@ copy /Y ..\lang\*.language $(OutDir)</Command>
     </ClCompile>
     <ClCompile Include="MainApp.cpp" />
     <ClCompile Include="Strings.cpp" />
-    <ClCompile Include="utilities\MyFile.cpp" />
     <ClCompile Include="XmlConfiguration.cpp" />
     <ClCompile Include="dialogs\AboutDlg.cpp" />
     <ClCompile Include="dialogs\MainDlg.cpp" />
     <ClCompile Include="dialogs\FormatsDlg.cpp" />
     <ClCompile Include="dialogs\PresetsDlg.cpp" />
-    <ClCompile Include="utilities\UnicodeUtf8.cpp" />
-    <ClCompile Include="utilities\Utf8String.cpp" />
-    <ClCompile Include="utilities\Utilities.cpp" />
     <ClCompile Include="worker\WorkThread.cpp" />
     <ClCompile Include="contexts\ProgressWorkerContext.cpp" />
     <ClCompile Include="contexts\TraceWorkerContext.cpp" />
@@ -285,7 +281,6 @@ copy /Y ..\lang\*.language $(OutDir)</Command>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="targetver.h" />
-    <ClInclude Include="utilities\MyFile.h" />
     <ClInclude Include="version.h" />
     <ClInclude Include="res\resource.h" />
     <ClInclude Include="StdAfx.h" />
@@ -311,10 +306,6 @@ copy /Y ..\lang\*.language $(OutDir)</Command>
     <ClInclude Include="dialogs\MainDlg.h" />
     <ClInclude Include="dialogs\FormatsDlg.h" />
     <ClInclude Include="dialogs\PresetsDlg.h" />
-    <ClInclude Include="utilities\TimeCount.h" />
-    <ClInclude Include="utilities\UnicodeUtf8.h" />
-    <ClInclude Include="utilities\Utf8String.h" />
-    <ClInclude Include="utilities\Utilities.h" />
     <ClInclude Include="worker\FileContext.h" />
     <ClInclude Include="worker\ItemContext.h" />
     <ClInclude Include="worker\LuaProgess.h" />
@@ -344,6 +335,9 @@ copy /Y ..\lang\*.language $(OutDir)</Command>
     </ProjectReference>
     <ProjectReference Include="lua\Lua.vcxproj">
       <Project>{d3051aac-8129-45f9-a755-9cbb7c61d91d}</Project>
+    </ProjectReference>
+    <ProjectReference Include="utilities\MFC.Utilities.vcxproj">
+      <Project>{4b291d95-c2ca-49e3-9eb5-b9f855d32aa0}</Project>
     </ProjectReference>
     <ProjectReference Include="xml\TinyXml2.vcxproj">
       <Project>{284538ac-d315-437e-ad31-d40934a43236}</Project>

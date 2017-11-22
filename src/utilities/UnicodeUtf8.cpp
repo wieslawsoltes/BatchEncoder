@@ -2,7 +2,6 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 #include "StdAfx.h"
-#include "MainApp.h"
 #include "UnicodeUtf8.h"
 
 // UNICODE to UTF8. WideCharToMultiByte(). Use free(...) to release memory.

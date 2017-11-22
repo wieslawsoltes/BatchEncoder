@@ -25,12 +25,6 @@
     <Filter Include="Source Files\Worker">
       <UniqueIdentifier>{f8cc472c-0a7e-4e72-a429-fcc770c604c0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Utilities">
-      <UniqueIdentifier>{0bc9bc86-af8d-403c-9a4e-4555e64a9ad7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Utilities">
-      <UniqueIdentifier>{7a946019-96c3-4bfa-8d9f-75502092d1b6}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Configuration">
       <UniqueIdentifier>{1e005ea3-fc6a-4599-a2d3-a5ba272d5366}</UniqueIdentifier>
     </Filter>
@@ -66,15 +60,6 @@
     <ClCompile Include="dialogs\PresetsDlg.cpp">
       <Filter>Source Files\Dialogs</Filter>
     </ClCompile>
-    <ClCompile Include="utilities\UnicodeUtf8.cpp">
-      <Filter>Source Files\Utilities</Filter>
-    </ClCompile>
-    <ClCompile Include="utilities\Utf8String.cpp">
-      <Filter>Source Files\Utilities</Filter>
-    </ClCompile>
-    <ClCompile Include="utilities\Utilities.cpp">
-      <Filter>Source Files\Utilities</Filter>
-    </ClCompile>
     <ClCompile Include="worker\WorkThread.cpp">
       <Filter>Source Files\Worker</Filter>
     </ClCompile>
@@ -86,9 +71,6 @@
     </ClCompile>
     <ClCompile Include="XmlConfigurationBase.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="utilities\MyFile.cpp">
-      <Filter>Source Files\Utilities</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -167,18 +149,6 @@
     <ClInclude Include="dialogs\PresetsDlg.h">
       <Filter>Header Files\Dialogs</Filter>
     </ClInclude>
-    <ClInclude Include="utilities\TimeCount.h">
-      <Filter>Header Files\Utilities</Filter>
-    </ClInclude>
-    <ClInclude Include="utilities\UnicodeUtf8.h">
-      <Filter>Header Files\Utilities</Filter>
-    </ClInclude>
-    <ClInclude Include="utilities\Utf8String.h">
-      <Filter>Header Files\Utilities</Filter>
-    </ClInclude>
-    <ClInclude Include="utilities\Utilities.h">
-      <Filter>Header Files\Utilities</Filter>
-    </ClInclude>
     <ClInclude Include="worker\LuaProgess.h">
       <Filter>Header Files\Worker</Filter>
     </ClInclude>
@@ -220,9 +190,6 @@
     </ClInclude>
     <ClInclude Include="XmlConfigurationBase.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="utilities\MyFile.h">
-      <Filter>Header Files\Utilities</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
