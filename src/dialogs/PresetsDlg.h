@@ -28,7 +28,7 @@ typedef struct tagPresetsDlgDropContext
     volatile bool bHandled = true;
 } PresetsDlgDropContext;
 
-class CPresetsDlg : public CResizeDialog
+class CPresetsDlg : public CMyResizeDialog
 {
     DECLARE_DYNAMIC(CPresetsDlg)
 public:

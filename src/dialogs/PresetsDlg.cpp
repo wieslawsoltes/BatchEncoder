@@ -21,7 +21,7 @@ DWORD WINAPI PresetsDlgDropThread(LPVOID lpParam)
 
 IMPLEMENT_DYNAMIC(CPresetsDlg, CDialog)
 CPresetsDlg::CPresetsDlg(CWnd* pParent /*=NULL*/)
-    : CResizeDialog(CPresetsDlg::IDD, pParent)
+    : CMyResizeDialog(CPresetsDlg::IDD, pParent)
 {
     this->m_hIcon = AfxGetApp()->LoadIcon(IDI_ICON_MAIN);
     this->szPresetsDialogResize = _T("");
@@ -37,7 +37,7 @@ CPresetsDlg::~CPresetsDlg()
 
 void CPresetsDlg::DoDataExchange(CDataExchange* pDX)
 {
-    CResizeDialog::DoDataExchange(pDX);
+    CMyResizeDialog::DoDataExchange(pDX);
     DDX_Control(pDX, IDC_STATIC_PRESET_NAME, m_StcName);
     DDX_Control(pDX, IDC_STATIC_PRESET_OPTIONS, m_StcOptions);
     DDX_Control(pDX, IDC_LIST_PRESETS, m_LstPresets);
@@ -57,7 +57,7 @@ void CPresetsDlg::DoDataExchange(CDataExchange* pDX)
     DDX_Control(pDX, IDC_BUTTON_PRESET_SAVE, m_BtnSave);
 }
 
-BEGIN_MESSAGE_MAP(CPresetsDlg, CResizeDialog)
+BEGIN_MESSAGE_MAP(CPresetsDlg, CMyResizeDialog)
     ON_WM_PAINT()
     ON_WM_QUERYDRAGICON()
     ON_WM_DROPFILES()
@@ -81,7 +81,7 @@ END_MESSAGE_MAP()
 
 BOOL CPresetsDlg::OnInitDialog()
 {
-    CResizeDialog::OnInitDialog();
+    CMyResizeDialog::OnInitDialog();
 
     InitCommonControls();
 
@@ -155,7 +155,7 @@ void CPresetsDlg::OnPaint()
     }
     else
     {
-        CResizeDialog::OnPaint();
+        CMyResizeDialog::OnPaint();
     }
 }
 
@@ -175,7 +175,7 @@ void CPresetsDlg::OnDropFiles(HDROP hDropInfo)
         if (this->m_DD.hThread == NULL)
             this->m_DD.bHandled = true;
     }
-    CResizeDialog::OnDropFiles(hDropInfo);
+    CMyResizeDialog::OnDropFiles(hDropInfo);
 }
 
 void CPresetsDlg::OnBnClickedOk()
@@ -473,7 +473,7 @@ void CPresetsDlg::OnClose()
 {
     this->SaveWindowSettings();
 
-    CResizeDialog::OnClose();
+    CMyResizeDialog::OnClose();
 }
 
 void CPresetsDlg::LoadWindowSettings()

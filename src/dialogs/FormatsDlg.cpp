@@ -22,7 +22,7 @@ DWORD WINAPI FormatsDlgDropThread(LPVOID lpParam)
 
 IMPLEMENT_DYNAMIC(CFormatsDlg, CDialog)
 CFormatsDlg::CFormatsDlg(CWnd* pParent /*=NULL*/)
-    : CResizeDialog(CFormatsDlg::IDD, pParent)
+    : CMyResizeDialog(CFormatsDlg::IDD, pParent)
 {
     this->m_hIcon = AfxGetApp()->LoadIcon(IDI_ICON_MAIN);
     this->szFormatsDialogResize = _T("");
@@ -38,7 +38,7 @@ CFormatsDlg::~CFormatsDlg()
 
 void CFormatsDlg::DoDataExchange(CDataExchange* pDX)
 {
-    CResizeDialog::DoDataExchange(pDX);
+    CMyResizeDialog::DoDataExchange(pDX);
     DDX_Control(pDX, IDC_STATIC_GROUP_FORMAT_PIPES, m_GrpPipes);
     DDX_Control(pDX, IDC_STATIC_GROUP_FORMAT_TYPE, m_GrpTypes);
     DDX_Control(pDX, IDC_STATIC_FORMAT_ID, m_StcId);
@@ -78,7 +78,7 @@ void CFormatsDlg::DoDataExchange(CDataExchange* pDX)
     DDX_Control(pDX, IDC_BUTTON_BROWSE_FUNCTION, m_BtnBrowseFunction);
 }
 
-BEGIN_MESSAGE_MAP(CFormatsDlg, CResizeDialog)
+BEGIN_MESSAGE_MAP(CFormatsDlg, CMyResizeDialog)
     ON_WM_PAINT()
     ON_WM_QUERYDRAGICON()
     ON_WM_DROPFILES()
@@ -116,7 +116,7 @@ END_MESSAGE_MAP()
 
 BOOL CFormatsDlg::OnInitDialog()
 {
-    CResizeDialog::OnInitDialog();
+    CMyResizeDialog::OnInitDialog();
 
     InitCommonControls();
 
@@ -205,7 +205,7 @@ void CFormatsDlg::OnPaint()
     }
     else
     {
-        CResizeDialog::OnPaint();
+        CMyResizeDialog::OnPaint();
     }
 }
 
@@ -225,7 +225,7 @@ void CFormatsDlg::OnDropFiles(HDROP hDropInfo)
         if (this->m_DD.hThread == NULL)
             this->m_DD.bHandled = true;
     }
-    CResizeDialog::OnDropFiles(hDropInfo);
+    CMyResizeDialog::OnDropFiles(hDropInfo);
 }
 
 void CFormatsDlg::OnBnClickedOk()
@@ -746,7 +746,7 @@ void CFormatsDlg::OnClose()
 {
     this->SaveWindowSettings();
 
-    CResizeDialog::OnClose();
+    CMyResizeDialog::OnClose();
 }
 
 void CFormatsDlg::LoadWindowSettings()

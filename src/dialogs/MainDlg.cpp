@@ -177,7 +177,7 @@ DWORD WINAPI MainDlgDropThread(LPVOID lpParam)
 
 IMPLEMENT_DYNAMIC(CMainDlg, CDialog)
 CMainDlg::CMainDlg(CWnd* pParent /*=NULL*/)
-    : CResizeDialog(CMainDlg::IDD, pParent)
+    : CMyResizeDialog(CMainDlg::IDD, pParent)
 {
     this->m_hIcon = AfxGetApp()->LoadIcon(IDI_ICON_MAIN);
     this->szOptionsFile = ::GetExeFilePath() + _T("BatchEncoder.options");
@@ -196,7 +196,7 @@ CMainDlg::~CMainDlg()
 
 void CMainDlg::DoDataExchange(CDataExchange* pDX)
 {
-    CResizeDialog::DoDataExchange(pDX);
+    CMyResizeDialog::DoDataExchange(pDX);
     DDX_Control(pDX, IDC_PROGRESS_CONVERT, m_Progress);
     DDX_Control(pDX, IDC_STATIC_GROUP_OUTPUT, m_GrpOutput);
     DDX_Control(pDX, IDC_COMBO_PRESETS, m_CmbPresets);
@@ -213,7 +213,7 @@ void CMainDlg::DoDataExchange(CDataExchange* pDX)
     DDX_Control(pDX, IDC_BUTTON_BROWSE_OUTPUT, m_BtnBrowse);
 }
 
-BEGIN_MESSAGE_MAP(CMainDlg, CResizeDialog)
+BEGIN_MESSAGE_MAP(CMainDlg, CMyResizeDialog)
     ON_WM_PAINT()
     ON_WM_QUERYDRAGICON()
     ON_WM_CLOSE()
@@ -290,7 +290,7 @@ END_MESSAGE_MAP()
 
 BOOL CMainDlg::OnInitDialog()
 {
-    CResizeDialog::OnInitDialog();
+    CMyResizeDialog::OnInitDialog();
 
     InitCommonControls();
 
@@ -423,7 +423,7 @@ void CMainDlg::OnPaint()
     }
     else
     {
-        CResizeDialog::OnPaint();
+        CMyResizeDialog::OnPaint();
     }
 }
 
@@ -434,7 +434,7 @@ HCURSOR CMainDlg::OnQueryDragIcon()
 
 void CMainDlg::OnClose()
 {
-    CResizeDialog::OnClose();
+    CMyResizeDialog::OnClose();
 
     if (this->GetMenu()->GetMenuState(ID_OPTIONS_DO_NOT_SAVE, MF_BYCOMMAND) != MF_CHECKED)
     {
@@ -447,12 +447,12 @@ void CMainDlg::OnClose()
         catch (...) {}
     }
 
-    CResizeDialog::OnOK();
+    CMyResizeDialog::OnOK();
 }
 
 void CMainDlg::OnDestroy()
 {
-    CResizeDialog::OnDestroy();
+    CMyResizeDialog::OnDestroy();
 
     m_Config.m_Items.RemoveAll();
     m_Config.m_Formats.RemoveAll();
@@ -469,7 +469,7 @@ void CMainDlg::OnDropFiles(HDROP hDropInfo)
         if (this->m_DD.hThread == NULL)
             this->m_DD.bHandled = true;
     }
-    CResizeDialog::OnDropFiles(hDropInfo);
+    CMyResizeDialog::OnDropFiles(hDropInfo);
 }
 
 BOOL CMainDlg::OnHelpInfo(HELPINFO* pHelpInfo)

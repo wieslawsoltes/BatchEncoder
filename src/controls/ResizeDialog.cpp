@@ -4,34 +4,34 @@
 #include "StdAfx.h"
 #include "ResizeDialog.h"
 
-CResizeDialog::CResizeDialog()
+CMyResizeDialog::CMyResizeDialog()
 {
     InitVars();
 }
 
-CResizeDialog::CResizeDialog(UINT nIDTemplate, CWnd *pParentWnd)
+CMyResizeDialog::CMyResizeDialog(UINT nIDTemplate, CWnd *pParentWnd)
     : CDialogEx(nIDTemplate, pParentWnd)
 {
     InitVars();
 }
 
-CResizeDialog::CResizeDialog(LPCTSTR lpszTemplateName, CWnd *pParentWnd)
+CMyResizeDialog::CMyResizeDialog(LPCTSTR lpszTemplateName, CWnd *pParentWnd)
     : CDialogEx(lpszTemplateName, pParentWnd)
 {
     InitVars();
 }
 
-CResizeDialog::~CResizeDialog()
+CMyResizeDialog::~CMyResizeDialog()
 {
     m_LayoutList.RemoveAll();
 }
 
-BEGIN_MESSAGE_MAP(CResizeDialog, CDialogEx)
+BEGIN_MESSAGE_MAP(CMyResizeDialog, CDialogEx)
     ON_WM_GETMINMAXINFO()
     ON_WM_SIZE()
 END_MESSAGE_MAP()
 
-void CResizeDialog::InitVars()
+void CMyResizeDialog::InitVars()
 {
     m_bInitDone = FALSE;
     m_bUseMinTrack = TRUE;
@@ -39,7 +39,7 @@ void CResizeDialog::InitVars()
     m_bUseMaxRect = FALSE;
 }
 
-void CResizeDialog::CleanUp()
+void CMyResizeDialog::CleanUp()
 {
     m_bInitDone = FALSE;
 
@@ -48,7 +48,7 @@ void CResizeDialog::CleanUp()
     m_bInitDone = TRUE;
 }
 
-BOOL CResizeDialog::OnInitDialog()
+BOOL CMyResizeDialog::OnInitDialog()
 {
     CDialogEx::OnInitDialog();
 
@@ -63,7 +63,7 @@ BOOL CResizeDialog::OnInitDialog()
     return TRUE;
 }
 
-void CResizeDialog::OnSize(UINT nType, int cx, int cy)
+void CMyResizeDialog::OnSize(UINT nType, int cx, int cy)
 {
     CWnd::OnSize(nType, cx, cy);
 
@@ -74,7 +74,7 @@ void CResizeDialog::OnSize(UINT nType, int cx, int cy)
         ArrangeLayout();
 }
 
-void CResizeDialog::OnGetMinMaxInfo(MINMAXINFO FAR *lpMMI)
+void CMyResizeDialog::OnGetMinMaxInfo(MINMAXINFO FAR *lpMMI)
 {
     if (!m_bInitDone)
         return;
@@ -92,7 +92,7 @@ void CResizeDialog::OnGetMinMaxInfo(MINMAXINFO FAR *lpMMI)
     }
 }
 
-void CResizeDialog::AddAnchor(HWND newWnd, CSize typeTL, CSize typeBR)
+void CMyResizeDialog::AddAnchor(HWND newWnd, CSize typeTL, CSize typeBR)
 {
     ASSERT((newWnd != NULL) && ::IsWindow(newWnd));
     ASSERT(::IsChild(*this, newWnd));
@@ -134,12 +134,12 @@ void CResizeDialog::AddAnchor(HWND newWnd, CSize typeTL, CSize typeBR)
     m_LayoutList.AddTail(layout);
 }
 
-void CResizeDialog::AddAnchor(UINT nCtrlID, CSize typeTL, CSize typeBR)
+void CMyResizeDialog::AddAnchor(UINT nCtrlID, CSize typeTL, CSize typeBR)
 {
     AddAnchor(::GetDlgItem(*this, nCtrlID), typeTL, typeBR);
 }
 
-void CResizeDialog::UpdateLayout()
+void CMyResizeDialog::UpdateLayout()
 {
     POSITION pos = m_LayoutList.GetHeadPosition();
     while (pos != NULL)
@@ -172,7 +172,7 @@ void CResizeDialog::UpdateLayout()
     }
 }
 
-void CResizeDialog::ArrangeLayout()
+void CMyResizeDialog::ArrangeLayout()
 {
     CRect wndRC;
     GetClientRect(&wndRC);
@@ -220,7 +220,7 @@ void CResizeDialog::ArrangeLayout()
     EndDeferWindowPos(hdwp);
 }
 
-void CResizeDialog::SetMaximizedRect(const CRect& rc)
+void CMyResizeDialog::SetMaximizedRect(const CRect& rc)
 {
     m_bUseMaxRect = TRUE;
     m_ptMaxPos = rc.TopLeft();
@@ -228,36 +228,36 @@ void CResizeDialog::SetMaximizedRect(const CRect& rc)
     m_ptMaxSize.y = rc.Height();
 }
 
-void CResizeDialog::ResetMaximizedRect()
+void CMyResizeDialog::ResetMaximizedRect()
 {
     m_bUseMaxRect = FALSE;
 }
 
-void CResizeDialog::SetMinTrackSize(const CSize &size)
+void CMyResizeDialog::SetMinTrackSize(const CSize &size)
 {
     m_bUseMinTrack = TRUE;
     m_ptMinTrackSize.x = size.cx;
     m_ptMinTrackSize.y = size.cy;
 }
 
-void CResizeDialog::ResetMinTrackSize()
+void CMyResizeDialog::ResetMinTrackSize()
 {
     m_bUseMinTrack = FALSE;
 }
 
-void CResizeDialog::SetMaxTrackSize(const CSize &size)
+void CMyResizeDialog::SetMaxTrackSize(const CSize &size)
 {
     m_bUseMaxTrack = TRUE;
     m_ptMaxTrackSize.x = size.cx;
     m_ptMaxTrackSize.y = size.cy;
 }
 
-void CResizeDialog::ResetMaxTrackSize()
+void CMyResizeDialog::ResetMaxTrackSize()
 {
     m_bUseMaxTrack = FALSE;
 }
 
-void CResizeDialog::UpdateWindowPos(HWND hWnd, CRect newRC)
+void CMyResizeDialog::UpdateWindowPos(HWND hWnd, CRect newRC)
 {
     HDWP hDwp = BeginDeferWindowPos(1);
 
@@ -270,7 +270,7 @@ void CResizeDialog::UpdateWindowPos(HWND hWnd, CRect newRC)
     EndDeferWindowPos(hDwp);
 }
 
-CString CResizeDialog::GetWindowRectStr()
+CString CMyResizeDialog::GetWindowRectStr()
 {
     CString szData;
     WINDOWPLACEMENT wp;
@@ -289,7 +289,7 @@ CString CResizeDialog::GetWindowRectStr()
     return szData;
 }
 
-void CResizeDialog::SetWindowRectStr(CString szData)
+void CMyResizeDialog::SetWindowRectStr(CString szData)
 {
     WINDOWPLACEMENT wp;
 

@@ -34,7 +34,7 @@ typedef struct tagMainDlgDropContext
     volatile bool bHandled = true;
 } MainDlgDropContext;
 
-class CMainDlg : public CResizeDialog
+class CMainDlg : public CMyResizeDialog
 {
     DECLARE_DYNAMIC(CMainDlg)
 public:

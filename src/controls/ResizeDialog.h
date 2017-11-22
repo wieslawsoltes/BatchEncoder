@@ -16,7 +16,7 @@ const CSize AnchorBottomLeft(0, 100);
 const CSize AnchorBottomCenter(50, 100);
 const CSize AnchorBottomRight(100, 100);
 
-class CResizeDialog : public CDialogEx
+class CMyResizeDialog : public CDialogEx
 {
 private:
     typedef struct
@@ -54,10 +54,10 @@ protected:
 protected:
     DECLARE_MESSAGE_MAP()
 public:
-    CResizeDialog();
-    CResizeDialog(UINT nIDTemplate, CWnd *pParentWnd = NULL);
-    CResizeDialog(LPCTSTR lpszTemplateName, CWnd *pParentWnd = NULL);
-    virtual ~CResizeDialog();
+    CMyResizeDialog();
+    CMyResizeDialog(UINT nIDTemplate, CWnd *pParentWnd = NULL);
+    CMyResizeDialog(LPCTSTR lpszTemplateName, CWnd *pParentWnd = NULL);
+    virtual ~CMyResizeDialog();
 public:
     void UpdateLayout();
     void ArrangeLayout();
