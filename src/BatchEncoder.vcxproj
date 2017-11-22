@@ -257,6 +257,8 @@ copy /Y ..\lang\*.language $(OutDir)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="controls\MyComboBoxEdit.cpp" />
+    <ClCompile Include="controls\MySliderCtrl.cpp" />
     <ClCompile Include="StdAfx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -287,6 +289,8 @@ copy /Y ..\lang\*.language $(OutDir)</Command>
     <ClCompile Include="XmlConfigurationBase.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="controls\MyComboBoxEdit.h" />
+    <ClInclude Include="controls\MySliderCtrl.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="version.h" />
     <ClInclude Include="res\resource.h" />
