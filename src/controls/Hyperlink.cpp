@@ -4,21 +4,21 @@
 #include "StdAfx.h"
 #include "Hyperlink.h"
 
-IMPLEMENT_DYNAMIC(CHyperlink, CStatic)
+IMPLEMENT_DYNAMIC(CMyHyperlink, CStatic)
 
-CHyperlink::CHyperlink()
+CMyHyperlink::CMyHyperlink()
 {
     m_hCursor = NULL;
     m_bVisited = false;
     m_bCaptured = false;
 }
 
-CHyperlink::~CHyperlink()
+CMyHyperlink::~CMyHyperlink()
 {
 
 }
 
-BEGIN_MESSAGE_MAP(CHyperlink, CMyStatic)
+BEGIN_MESSAGE_MAP(CMyHyperlink, CMyStatic)
     ON_CONTROL_REFLECT(STN_CLICKED, OnStnClicked)
     ON_WM_CTLCOLOR_REFLECT()
     ON_WM_MOUSEMOVE()
@@ -26,13 +26,13 @@ BEGIN_MESSAGE_MAP(CHyperlink, CMyStatic)
     ON_WM_DESTROY()
 END_MESSAGE_MAP()
 
-void CHyperlink::OnStnClicked()
+void CMyHyperlink::OnStnClicked()
 {
     ::ShellExecute(NULL, _T("open"), m_szURL, NULL, NULL, SW_SHOW);
     m_bVisited = true;
 }
 
-HBRUSH CHyperlink::CtlColor(CDC* pDC, UINT nCtlColor)
+HBRUSH CMyHyperlink::CtlColor(CDC* pDC, UINT nCtlColor)
 {
     SetTextColor(pDC->GetSafeHdc(), m_bVisited ? colorVisited : m_bCaptured ? colorHover : colorLink);
     SetBkMode(pDC->GetSafeHdc(), TRANSPARENT);
@@ -40,7 +40,7 @@ HBRUSH CHyperlink::CtlColor(CDC* pDC, UINT nCtlColor)
     return (HBRUSH) ::GetStockObject(NULL_BRUSH);
 }
 
-void CHyperlink::OnMouseMove(UINT nFlags, CPoint point)
+void CMyHyperlink::OnMouseMove(UINT nFlags, CPoint point)
 {
     if (m_bCaptured)
     {
@@ -63,7 +63,7 @@ void CHyperlink::OnMouseMove(UINT nFlags, CPoint point)
     CMyStatic::OnMouseMove(nFlags, point);
 }
 
-BOOL CHyperlink::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
+BOOL CMyHyperlink::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
 {
     if (m_hCursor)
     {
@@ -74,7 +74,7 @@ BOOL CHyperlink::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
     return CMyStatic::OnSetCursor(pWnd, nHitTest, message);
 }
 
-void CHyperlink::OnDestroy()
+void CMyHyperlink::OnDestroy()
 {
     CMyStatic::OnDestroy();
 
@@ -82,7 +82,7 @@ void CHyperlink::OnDestroy()
         ::DestroyCursor(m_hCursor);
 }
 
-void CHyperlink::PreSubclassWindow()
+void CMyHyperlink::PreSubclassWindow()
 {
     colorHover = ::GetSysColor(COLOR_HIGHLIGHT);
     colorLink = RGB(0, 0, 255);

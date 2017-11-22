@@ -9,12 +9,12 @@
 
 #include "MyStatic.h"
 
-class CHyperlink : public CMyStatic
+class CMyHyperlink : public CMyStatic
 {
-    DECLARE_DYNAMIC(CHyperlink)
+    DECLARE_DYNAMIC(CMyHyperlink)
 public:
-    CHyperlink();
-    virtual ~CHyperlink();
+    CMyHyperlink();
+    virtual ~CMyHyperlink();
 protected:
     DECLARE_MESSAGE_MAP()
 protected:

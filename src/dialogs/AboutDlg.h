@@ -29,8 +29,8 @@ public:
 public:
     CMyButton m_BtnOK;
     CMyStatic m_StcMainAppName;
-    CHyperlink m_StcWebsite;
-    CHyperlink m_StcEmail;
+    CMyHyperlink m_StcWebsite;
+    CMyHyperlink m_StcEmail;
     CMyStatic m_StcLicense;
 public:
     afx_msg void OnClose();
