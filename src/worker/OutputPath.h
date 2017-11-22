@@ -147,7 +147,7 @@ public:
         {
             if (!::DirectoryExists(szOutputPath))
             {
-                if (::MakeFullPath(szOutputPath) == FALSE)
+                if (::MakeFullPath(szOutputPath) == false)
                     return false;
             }
         }

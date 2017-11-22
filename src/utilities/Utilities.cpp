@@ -156,11 +156,11 @@ void ShutdownWindows()
 
 void LaunchAndWait(LPCTSTR file, LPCTSTR params, BOOL bWait)
 {
-    // leave sei.lpVerb uninitialized for default action
     SHELLEXECUTEINFO sei;
     ::ZeroMemory(&sei, sizeof(SHELLEXECUTEINFO));
     sei.cbSize = sizeof(SHELLEXECUTEINFO);
     sei.fMask = SEE_MASK_NOCLOSEPROCESS;
+    // leave sei.lpVerb uninitialized for default action
     sei.nShow = SW_SHOWNORMAL;
     sei.lpFile = file;
     sei.lpParameters = params;
@@ -203,19 +203,19 @@ CString GetFilePath(CString szFilePath)
     return strResult;
 }
 
+CString GetFileExtension(CString szFilePath)
+{
+    CString szExt = ::PathFindExtension(szFilePath);
+    szExt.Remove('.');
+    return szExt;
+}
+
 CString GetOnlyFileName(CString szFilePath)
 {
     CString szFileName = ::GetFileName(szFilePath);
     szFileName.TrimRight(::GetFileExtension(szFilePath));
     szFileName.TrimRight(_T("."));
     return szFileName;
-}
-
-CString GetFileExtension(CString szFilePath)
-{
-    CString szExt = ::PathFindExtension(szFilePath);
-    szExt.Remove('.');
-    return szExt;
 }
 
 ULONGLONG GetFileSize64(HANDLE hFile)
@@ -230,6 +230,36 @@ ULONGLONG GetFileSize64(HANDLE hFile)
     return liSize.QuadPart;
 }
 
+ULONGLONG GetFileSize64(CString szFileName)
+{
+    WIN32_FIND_DATA FindFileData;
+    HANDLE hFind;
+    ULARGE_INTEGER ulSize;
+    ULONGLONG nFileSize;
+
+    hFind = ::FindFirstFile(szFileName, &FindFileData);
+    if (hFind == INVALID_HANDLE_VALUE)
+        return 0;
+
+    ::FindClose(hFind);
+
+    ulSize.HighPart = FindFileData.nFileSizeHigh;
+    ulSize.LowPart = FindFileData.nFileSizeLow;
+    nFileSize = ulSize.QuadPart;
+
+    return nFileSize;
+}
+
+__int64 GetFileSizeInt64(FILE *fp)
+{
+    __int64 nCurPos, nSize;
+    nCurPos = _ftelli64(fp);
+    _fseeki64(fp, 0, SEEK_END);
+    nSize = _ftelli64(fp);
+    _fseeki64(fp, nCurPos, SEEK_SET);
+    return nSize;
+}
+
 CString GetExeFilePath()
 {
     TCHAR szExeFilePath[MAX_PATH + 1] = _T("");
@@ -242,6 +272,23 @@ CString GetExeFilePath()
         szTempBuff2 = ::GetFileName(szTempBuff1);
         szTempBuff1.TrimRight(szTempBuff2);
         return szTempBuff1;
+    }
+    return NULL;
+}
+
+CString GetSettingsFilePath(CString szFileName, CString szConfigDirectory)
+{
+    TCHAR szPath[MAX_PATH];
+
+    if (SUCCEEDED(SHGetFolderPath(NULL,
+        CSIDL_APPDATA | CSIDL_FLAG_CREATE,
+        NULL,
+        0,
+        szPath)))
+    {
+        PathAppend(szPath, szConfigDirectory);
+        PathAppend(szPath, szFileName);
+        return szPath;
     }
     return NULL;
 }
@@ -265,7 +312,7 @@ BOOL DirectoryExists(LPCTSTR szPath)
     return FALSE;
 }
 
-BOOL MakeFullPath(CString szPath)
+bool MakeFullPath(CString szPath)
 {
     if (szPath[szPath.GetLength() - 1] != '\\')
         szPath = szPath + _T("\\");
@@ -275,11 +322,11 @@ BOOL MakeFullPath(CString szPath)
 
     int nStart = 3;
     int nEnd = 0;
-    while (TRUE)
+    while (true)
     {
         nEnd = szPath.Find('\\', nStart);
         if (nEnd == -1)
-            return TRUE;
+            return true;
 
         CString szNextDir = szPath.Mid(nStart, nEnd - nStart);
         CString szCurDir = szTmpDir + _T("\\") + szNextDir;
@@ -287,13 +334,13 @@ BOOL MakeFullPath(CString szPath)
         {
             _tchdir(szTmpDir);
             if (_tmkdir(szNextDir) != 0)
-                return FALSE;
+                return false;
         }
 
         szTmpDir += _T("\\") + szNextDir;
         nStart = nEnd + 1;
     }
-    return FALSE;
+    return false;
 }
 
 bool FileExists(CString szPath)
@@ -357,4 +404,16 @@ int FindNoCase(LPCTSTR pszString, LPCTSTR pszSearch)
             return i;
     }
     return -1;
+}
+
+void ConvertAnsiToUnicode(const char *szAnsi, wchar_t *szUnicode, ULONG nLength)
+{
+    // use always + 1 to null-terminate string
+    _mbstowcsz(szUnicode, szAnsi, nLength + 1);
+}
+
+void ConvertUnicodeToAnsi(const wchar_t *szUnicode, char *szAnsi, ULONG nLength)
+{
+    // use always + 1 to null-terminate string
+    _wcstombsz(szAnsi, szUnicode, nLength + 1);
 }

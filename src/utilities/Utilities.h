@@ -28,21 +28,25 @@ CString GetFileName(CString szFilePath);
 
 CString GetFilePath(CString szFilePath);
 
+CString GetFileExtension(CString szFilePath);
+
 CString GetOnlyFileName(CString szFilePath);
-
-CString GetFileExtension(CString szFilePath);
-
-CString GetFileExtension(CString szFilePath);
 
 ULONGLONG GetFileSize64(HANDLE hFile);
 
+ULONGLONG GetFileSize64(CString szFileName);
+
+__int64 GetFileSizeInt64(FILE *fp);
+
 CString GetExeFilePath();
+
+CString GetSettingsFilePath(CString szFileName, CString szConfigDirectory);
 
 void GetFullPathName(CString &szFilePath);
 
 BOOL DirectoryExists(LPCTSTR szPath);
 
-BOOL MakeFullPath(CString szPath);
+bool MakeFullPath(CString szPath);
 
 bool FileExists(CString szPath);
 
@@ -51,3 +55,7 @@ CString GenerateUuidString();
 CString ReplaceNoCase(LPCTSTR instr, LPCTSTR oldstr, LPCTSTR newstr);
 
 int FindNoCase(LPCTSTR pszString, LPCTSTR pszSearch);
+
+void ConvertAnsiToUnicode(const char *szAnsi, wchar_t *szUnicode, ULONG nLength);
+
+void ConvertUnicodeToAnsi(const wchar_t *szUnicode, char *szAnsi, ULONG nLength);
