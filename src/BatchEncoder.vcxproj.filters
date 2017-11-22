@@ -87,6 +87,9 @@
     <ClCompile Include="XmlConfigurationBase.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="utilities\MyFile.cpp">
+      <Filter>Source Files\Utilities</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="version.h">
@@ -217,6 +220,9 @@
     </ClInclude>
     <ClInclude Include="XmlConfigurationBase.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="utilities\MyFile.h">
+      <Filter>Header Files\Utilities</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
