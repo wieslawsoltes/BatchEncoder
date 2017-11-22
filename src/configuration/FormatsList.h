@@ -4,7 +4,7 @@
 #pragma once
 
 #include <afxstr.h>
-#include "ListT.h"
+#include "..\collections\ListT.h"
 #include "Format.h"
 
 class CFormatsList : public CListT<CFormat>

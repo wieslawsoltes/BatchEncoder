@@ -288,8 +288,6 @@ copy /Y ..\lang\*.language $(OutDir)</Command>
     <ClInclude Include="Strings.h" />
     <ClInclude Include="worker\OutputPath.h" />
     <ClInclude Include="XmlConfiguration.h" />
-    <ClInclude Include="configuration\ListT.h" />
-    <ClInclude Include="configuration\MapT.h" />
     <ClInclude Include="configuration\Format.h" />
     <ClInclude Include="configuration\FormatsList.h" />
     <ClInclude Include="configuration\Item.h" />
@@ -298,10 +296,6 @@ copy /Y ..\lang\*.language $(OutDir)</Command>
     <ClInclude Include="configuration\Options.h" />
     <ClInclude Include="configuration\Preset.h" />
     <ClInclude Include="configuration\PresetsList.h" />
-    <ClInclude Include="configuration\Language.h" />
-    <ClInclude Include="configuration\LanguagesList.h" />
-    <ClInclude Include="configuration\StringsMap.h" />
-    <ClInclude Include="configuration\LanguageHelper.h" />
     <ClInclude Include="dialogs\AboutDlg.h" />
     <ClInclude Include="dialogs\MainDlg.h" />
     <ClInclude Include="dialogs\FormatsDlg.h" />

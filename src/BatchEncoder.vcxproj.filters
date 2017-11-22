@@ -95,12 +95,6 @@
     <ClInclude Include="XmlConfiguration.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="configuration\ListT.h">
-      <Filter>Header Files\Configuration</Filter>
-    </ClInclude>
-    <ClInclude Include="configuration\MapT.h">
-      <Filter>Header Files\Configuration</Filter>
-    </ClInclude>
     <ClInclude Include="configuration\Configuration.h">
       <Filter>Header Files\Configuration</Filter>
     </ClInclude>
@@ -123,18 +117,6 @@
       <Filter>Header Files\Configuration</Filter>
     </ClInclude>
     <ClInclude Include="configuration\PresetsList.h">
-      <Filter>Header Files\Configuration</Filter>
-    </ClInclude>
-    <ClInclude Include="configuration\Language.h">
-      <Filter>Header Files\Configuration</Filter>
-    </ClInclude>
-    <ClInclude Include="configuration\LanguagesList.h">
-      <Filter>Header Files\Configuration</Filter>
-    </ClInclude>
-    <ClInclude Include="configuration\StringsMap.h">
-      <Filter>Header Files\Configuration</Filter>
-    </ClInclude>
-    <ClInclude Include="configuration\LanguageHelper.h">
       <Filter>Header Files\Configuration</Filter>
     </ClInclude>
     <ClInclude Include="dialogs\AboutDlg.h">

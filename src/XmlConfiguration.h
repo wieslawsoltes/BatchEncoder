@@ -11,8 +11,8 @@
 #include "configuration\Format.h"
 #include "configuration\FormatsList.h"
 #include "configuration\ItemsList.h"
-#include "configuration\Language.h"
-#include "configuration\LanguagesList.h"
+#include "language\Language.h"
+#include "language\LanguagesList.h"
 
 class XmlConfiguration : private XmlConfigurationBase
 {

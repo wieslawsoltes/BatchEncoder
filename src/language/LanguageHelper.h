@@ -7,16 +7,16 @@
 #ifndef _AFX_NO_AFXCMN_SUPPORT
 #include <afxcmn.h>
 #endif
-#include "Configuration.h"
+#include "LanguageContext.h"
 
 class CLanguageHelper
 {
 public:
-    CConfiguration *pConfig;
+    CLanguageContext *pContext;
 public:
-    CLanguageHelper(CConfiguration *pConfig)
+    CLanguageHelper(CLanguageContext *pContext)
     {
-        this->pConfig = pConfig;
+        this->pContext = pContext;
     }
     virtual ~CLanguageHelper()
     {
@@ -25,7 +25,7 @@ public:
     void SetColumnText(CListCtrl& listCtrl, int nCol, int nKey)
     {
         CString rValue;
-        if (this->pConfig->LookupString(nKey, rValue))
+        if (this->pContext->LookupString(nKey, rValue))
         {
             LVCOLUMN lvCol;
             ::ZeroMemory((void *)&lvCol, sizeof(LVCOLUMN));
@@ -40,7 +40,7 @@ public:
     void SetMenuPopupText(CMenu *hMenu, UINT nPosition, int nKey)
     {
         CString rValue;
-        if (this->pConfig->LookupString(nKey, rValue))
+        if (this->pContext->LookupString(nKey, rValue))
         {
             hMenu->ModifyMenu(nPosition, MF_STRING | MF_BYPOSITION, nPosition, rValue);
         }
@@ -48,7 +48,7 @@ public:
     void SetMenuItemText(CMenu *hMenu, UINT nID, int nKey)
     {
         CString rValue;
-        if (this->pConfig->LookupString(nKey, rValue))
+        if (this->pContext->LookupString(nKey, rValue))
         {
             UINT nState = hMenu->GetMenuState(nID, MF_BYCOMMAND);
             hMenu->ModifyMenu(nID, MF_BYCOMMAND, nID, rValue);
@@ -61,7 +61,7 @@ public:
     void SetWndText(CWnd *hWnd, int nKey)
     {
         CString rValue;
-        if (this->pConfig->LookupString(nKey, rValue))
+        if (this->pContext->LookupString(nKey, rValue))
         {
             hWnd->SetWindowText(rValue);
         }
@@ -69,7 +69,7 @@ public:
     void SetItemText(CWnd *hWnd, UINT nID, int nKey)
     {
         CString rValue;
-        if (this->pConfig->LookupString(nKey, rValue))
+        if (this->pContext->LookupString(nKey, rValue))
         {
             hWnd->GetDlgItem(nID)->SetWindowText(rValue);
         }

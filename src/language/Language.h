@@ -5,7 +5,7 @@
 
 #include <afxstr.h>
 #include <afxtempl.h>
-#include "StringsMap.h"
+#include "..\collections\StringsMap.h"
 
 class CLanguage
 {
