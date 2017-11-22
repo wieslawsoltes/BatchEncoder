@@ -2,7 +2,6 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 #include "StdAfx.h"
-#include "MainApp.h"
 #include "MyEdit.h"
 
 IMPLEMENT_DYNAMIC(CMyEdit, CEdit)
