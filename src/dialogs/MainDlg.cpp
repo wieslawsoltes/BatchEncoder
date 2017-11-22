@@ -4,7 +4,7 @@
 #include "StdAfx.h"
 #include "MainApp.h"
 #include "..\Strings.h"
-#include "..\configuration\LanguageHelper.h"
+#include "..\language\LanguageHelper.h"
 #include "..\utilities\Utilities.h"
 #include "..\XmlConfiguration.h"
 #include "MainDlg.h"
