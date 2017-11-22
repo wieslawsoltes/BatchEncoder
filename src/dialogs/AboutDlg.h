@@ -5,7 +5,7 @@
 
 #include <afxcmn.h>
 #include <afxwin.h>
-#include "..\controls\Hyperlink.h"
+#include "..\controls\MyHyperlink.h"
 #include "..\controls\MyButton.h"
 #include "..\controls\MyStatic.h"
 

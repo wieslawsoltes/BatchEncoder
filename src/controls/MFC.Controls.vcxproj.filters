@@ -21,9 +21,6 @@
     <ClInclude Include="StdAfx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Hyperlink.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="MyButton.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -51,12 +48,12 @@
     <ClInclude Include="MyResizeDialog.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="MyHyperlink.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="StdAfx.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Hyperlink.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="MyButton.cpp">
@@ -84,6 +81,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="MyResizeDialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MyHyperlink.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

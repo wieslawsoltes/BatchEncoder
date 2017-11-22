@@ -193,7 +193,7 @@
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Hyperlink.cpp" />
+    <ClCompile Include="MyHyperlink.cpp" />
     <ClCompile Include="MyButton.cpp" />
     <ClCompile Include="MyComboBox.cpp" />
     <ClCompile Include="MyComboBoxEdit.cpp" />
@@ -211,7 +211,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Hyperlink.h" />
+    <ClInclude Include="MyHyperlink.h" />
     <ClInclude Include="MyButton.h" />
     <ClInclude Include="MyComboBox.h" />
     <ClInclude Include="MyComboBoxEdit.h" />
