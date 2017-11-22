@@ -324,8 +324,14 @@ copy /Y ..\lang\*.language $(OutDir)</Command>
     <ResourceCompile Include="res\BatchEncoder.rc" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="collections\MFC.Collections.vcxproj">
+      <Project>{63699910-884a-47a4-af78-7471b60913ed}</Project>
+    </ProjectReference>
     <ProjectReference Include="controls\MFC.Controls.vcxproj">
       <Project>{5936eb01-037a-4148-a512-dad975c24cbd}</Project>
+    </ProjectReference>
+    <ProjectReference Include="language\MFC.Language.vcxproj">
+      <Project>{8f02f1bd-9f9f-439c-9686-3961c64fc8ee}</Project>
     </ProjectReference>
     <ProjectReference Include="lua\Lua.vcxproj">
       <Project>{d3051aac-8129-45f9-a755-9cbb7c61d91d}</Project>
