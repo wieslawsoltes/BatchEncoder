@@ -5,10 +5,6 @@
 #include "MainApp.h"
 #include "MySliderCtrl.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
-
 CMySliderCtrl::CMySliderCtrl()
 {
     this->szToolTipText = _T("");
