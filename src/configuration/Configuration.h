@@ -14,8 +14,6 @@ public:
     COptions m_Options;
     CFormatsList m_Formats;
     CItemsList m_Items;
-    CLanguagesList m_Languages;
-    CLanguage* pLanguage;
 public:
     CConfiguration()
     {
