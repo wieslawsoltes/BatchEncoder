@@ -5,9 +5,9 @@
 
 #include <afxwin.h>
 #include <afxcmn.h>
-#include "..\utilities\TimeCount.h"
-#include "..\worker\WorkerContext.h"
-#include "..\dialogs\MainDlg.h"
+#include "utilities\TimeCount.h"
+#include "worker\WorkerContext.h"
+#include "dialogs\MainDlg.h"
 
 class CProgressWorkerContext : public CWorkerContext
 {

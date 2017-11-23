@@ -3,12 +3,12 @@
 
 #include "StdAfx.h"
 #include "MainApp.h"
-#include "..\Strings.h"
-#include "..\language\LanguageHelper.h"
-#include "..\utilities\Utilities.h"
-#include "..\utilities\UnicodeUtf8.h"
-#include "..\utilities\Utf8String.h"
-#include "..\XmlConfiguration.h"
+#include "Strings.h"
+#include "language\LanguageHelper.h"
+#include "utilities\Utilities.h"
+#include "utilities\UnicodeUtf8.h"
+#include "utilities\Utf8String.h"
+#include "XmlConfiguration.h"
 #include "FormatsDlg.h"
 #include "PresetsDlg.h"
 

@@ -5,14 +5,14 @@
 
 #include <afxcmn.h>
 #include <afxwin.h>
-#include "..\controls\MyListCtrl.h"
-#include "..\controls\MyButton.h"
-#include "..\controls\MyComboBox.h"
-#include "..\controls\MyEdit.h"
-#include "..\controls\MyStatic.h"
-#include "..\controls\MyResizeDialog.h"
-#include "..\configuration\FormatsList.h"
-#include "..\configuration\Configuration.h"
+#include "controls\MyListCtrl.h"
+#include "controls\MyButton.h"
+#include "controls\MyComboBox.h"
+#include "controls\MyEdit.h"
+#include "controls\MyStatic.h"
+#include "controls\MyResizeDialog.h"
+#include "configuration\FormatsList.h"
+#include "configuration\Configuration.h"
 
 #define PRESET_COLUMN_NAME      0
 #define PRESET_COLUMN_OPTIONS   1

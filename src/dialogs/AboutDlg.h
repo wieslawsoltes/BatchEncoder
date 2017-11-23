@@ -5,10 +5,10 @@
 
 #include <afxcmn.h>
 #include <afxwin.h>
-#include "..\configuration\Configuration.h"
-#include "..\controls\MyHyperlink.h"
-#include "..\controls\MyButton.h"
-#include "..\controls\MyStatic.h"
+#include "configuration\Configuration.h"
+#include "controls\MyHyperlink.h"
+#include "controls\MyButton.h"
+#include "controls\MyStatic.h"
 
 class CAboutDlg : public CDialog
 {

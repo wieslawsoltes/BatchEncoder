@@ -3,7 +3,7 @@
 
 #include "StdAfx.h"
 #include "MainApp.h"
-#include "..\utilities\Utilities.h"
+#include "utilities\Utilities.h"
 #include "ProgressWorkerContext.h"
 
 const TCHAR* pszWorkerContext[] = {

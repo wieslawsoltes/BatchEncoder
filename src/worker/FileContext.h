@@ -3,7 +3,7 @@
 
 #pragma once
 
-#include "..\utilities\Utilities.h"
+#include "utilities\Utilities.h"
 
 class CFileContext
 {

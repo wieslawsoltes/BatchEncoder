@@ -3,7 +3,7 @@
 
 #pragma once
 
-#include "..\utilities\Utilities.h"
+#include "utilities\Utilities.h"
 
 // Output path:
 // "" -> empty string is same as $SourceDirectory$

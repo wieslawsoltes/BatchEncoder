@@ -5,7 +5,7 @@
 
 #include <afxstr.h>
 #include <afxtempl.h>
-#include "xml\tinyxml2.h" // https://github.com/leethomason/tinyxml2
+#include "tinyxml2\tinyxml2.h" // https://github.com/leethomason/tinyxml2
 
 class XmlConfigurationBase : protected tinyxml2::XMLDocument
 {

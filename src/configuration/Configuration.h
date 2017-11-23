@@ -6,7 +6,7 @@
 #include "Options.h"
 #include "FormatsList.h"
 #include "ItemsList.h"
-#include "..\language\LanguageContext.h"
+#include "language\LanguageContext.h"
 
 class CConfiguration : public CLanguageContext
 {

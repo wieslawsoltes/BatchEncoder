@@ -78,25 +78,25 @@
     <OutDir>bin\$(Configuration)\$(Platform)\</OutDir>
     <IntDir>obj\$(Configuration)\$(Platform)\</IntDir>
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>.\;$(VC_IncludePath);$(WindowsSdk_71A_IncludePath);</IncludePath>
+    <IncludePath>.\;.\common;$(VC_IncludePath);$(WindowsSdk_71A_IncludePath);</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>bin\$(Configuration)\$(Platform)\</OutDir>
     <IntDir>obj\$(Configuration)\$(Platform)\</IntDir>
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>.\;$(IncludePath);$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+    <IncludePath>.\;.\common;$(IncludePath);$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>bin\$(Configuration)\$(Platform)\</OutDir>
     <IntDir>obj\$(Configuration)\$(Platform)\</IntDir>
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>.\;$(VC_IncludePath);$(WindowsSdk_71A_IncludePath);</IncludePath>
+    <IncludePath>.\;.\common;$(VC_IncludePath);$(WindowsSdk_71A_IncludePath);</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>bin\$(Configuration)\$(Platform)\</OutDir>
     <IntDir>obj\$(Configuration)\$(Platform)\</IntDir>
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>.\;$(IncludePath);$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+    <IncludePath>.\;.\common;$(IncludePath);$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Midl>
@@ -324,24 +324,23 @@ copy /Y ..\lang\*.language $(OutDir)</Command>
     <ResourceCompile Include="res\BatchEncoder.rc" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="collections\MFC.Collections.vcxproj">
+    <ProjectReference Include="common\collections\MFC.Collections.vcxproj">
       <Project>{63699910-884a-47a4-af78-7471b60913ed}</Project>
     </ProjectReference>
-    <ProjectReference Include="controls\MFC.Controls.vcxproj">
+    <ProjectReference Include="common\controls\MFC.Controls.vcxproj">
       <Project>{5936eb01-037a-4148-a512-dad975c24cbd}</Project>
     </ProjectReference>
-    <ProjectReference Include="language\MFC.Language.vcxproj">
+    <ProjectReference Include="common\language\MFC.Language.vcxproj">
       <Project>{8f02f1bd-9f9f-439c-9686-3961c64fc8ee}</Project>
     </ProjectReference>
-    <ProjectReference Include="lua\Lua.vcxproj">
+    <ProjectReference Include="common\lua\Lua.vcxproj">
       <Project>{d3051aac-8129-45f9-a755-9cbb7c61d91d}</Project>
     </ProjectReference>
-    <ProjectReference Include="utilities\MFC.Utilities.vcxproj">
-      <Project>{4b291d95-c2ca-49e3-9eb5-b9f855d32aa0}</Project>
-    </ProjectReference>
-    <ProjectReference Include="xml\TinyXml2.vcxproj">
+    <ProjectReference Include="common\tinyxml2\TinyXml2.vcxproj">
       <Project>{284538ac-d315-437e-ad31-d40934a43236}</Project>
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="common\utilities\MFC.Utilities.vcxproj">
+      <Project>{4b291d95-c2ca-49e3-9eb5-b9f855d32aa0}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

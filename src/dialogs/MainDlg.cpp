@@ -3,17 +3,17 @@
 
 #include "StdAfx.h"
 #include "MainApp.h"
-#include "..\Strings.h"
-#include "..\language\LanguageHelper.h"
-#include "..\utilities\Utilities.h"
-#include "..\XmlConfiguration.h"
+#include "Strings.h"
+#include "language\LanguageHelper.h"
+#include "utilities\Utilities.h"
+#include "XmlConfiguration.h"
 #include "MainDlg.h"
 #include "PresetsDlg.h"
 #include "AboutDlg.h"
 #include "FormatsDlg.h"
-#include "..\contexts\ProgressWorkerContext.h"
-#include "..\contexts\TraceWorkerContext.h"
-#include "..\worker\WorkThread.h"
+#include "contexts\ProgressWorkerContext.h"
+#include "contexts\TraceWorkerContext.h"
+#include "worker\WorkThread.h"
 
 #define WM_TRAY (WM_USER + 0x10)
 #define IDC_STATUSBAR 1500

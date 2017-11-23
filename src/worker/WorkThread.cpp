@@ -3,9 +3,9 @@
 
 #include "StdAfx.h"
 #include "MainApp.h"
-#include "..\Strings.h"
-#include "..\utilities\TimeCount.h"
-#include "..\utilities\Utilities.h"
+#include "Strings.h"
+#include "utilities\TimeCount.h"
+#include "utilities\Utilities.h"
 #include "LuaProgess.h"
 #include "WorkThread.h"
 
