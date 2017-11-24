@@ -83,6 +83,49 @@ adds input and output file paths. For specific options for each format use help 
 
 [![Configure Presets](screenshots/ConfigurePresets.png)](https://github.com/wieslawsoltes/BatchEncoder/blob/master/screenshots/ConfigurePresets.png)
 
+## Keyboard Shortcuts
+
+### File Menu
+
+| Shortcut          | Description                   |
+|-------------------|-------------------------------|
+| Ctrl+L            | Load List                     |
+| Ctrl+S            | Save List                     |
+| Ctrl+E            | Clear List                    |
+| Alt+F4            | Exit                          |
+
+### Edit Menu
+
+| Shortcut          | Description                   |
+|-------------------|-------------------------------|
+| F5                | Add Files                     |
+| F9                | Add Directory                 |
+| F2                | Rename                        |
+| F3                | Reset Time/Status             |
+| F4                | Reset Output/Preset           |
+| DEL               | Remove                        |
+| INS               | Crop                          |
+| Ctrl++            | Remove Checked                |
+| Ctrl+-            | Remove Unchecked              |
+| Shift++           | Check Selected                |
+| Shift+-           | Uncheck Selected              |
+| Ctrl+A            | Select All                    |
+| Ctrl+N            | Select None                   |
+| Ctrl+I            | Invert Selection              |
+
+### Action Menu
+
+| Shortcut          | Description                   |
+|-------------------|-------------------------------|
+| F9                | Convert                       |
+
+### Options Menu
+
+| Shortcut          | Description                   |
+|-------------------|-------------------------------|
+| F7                | Configure Presets             |
+| F8                | Configure Formats             |
+
 ## Supported formats and tools
 
 ### Encoders
