@@ -326,17 +326,29 @@ For a quick start use one of the [existing](https://github.com/wieslawsoltes/Bat
 
 The default progress functions sources can be found [here](https://github.com/wieslawsoltes/BatchEncoder/tree/master/progress).
 
-## BatchEncoder Sources
+## Troubleshooting
 
-Sources are available in the [git source code repository](https://github.com/wieslawsoltes/BatchEncoder.git).
+To report issues please use:  https://github.com/wieslawsoltes/BatchEncoder/issues
 
-## Building BatchEncoder
+For more informations and help please visit: http://forum.doom9.org/showthread.php?t=174242
 
-To build program from sources you will need the following components:
+## Sources
 
-### Microsoft Visual Studio 2017
+Sources are available in the [git source code repository](https://github.com/wieslawsoltes/BatchEncoder/).
 
-For building `BatchEncoder.sln` solution use [Visual Studio 2017](https://www.visualstudio.com).
+## Build
+
+### Prerequisites
+
+```
+git clone https://github.com/wieslawsoltes/BatchEncoder.git
+cd BatchEncoder
+git submodule update --init --recursive
+```
+
+### Install Visual Studio 2017
+
+* [VS 2017](https://www.visualstudio.com/pl/downloads/)
 
 ### Windows 7 SDK
 
@@ -344,13 +356,16 @@ For Windows XP compatibility program is compiled using `Platform Toolset` for `V
 
 For more details please read [Configuring Programs for Windows XP](https://msdn.microsoft.com/en-us/library/jj851139.aspx).
 
-### TinyXml-2 Library
+### Build Solution
+```
+Open BatchEncoder.sln in Visual Studios 2017 or above.
+```
 
-Required [TinyXml-2 v5.0.1](https://github.com/leethomason/tinyxml2) sources are included in `src\xml` directory.
+### Dependencies
 
-### Lua Library
-
-Required [Lua v5.3.4](http://www.lua.org/ftp/) sources are included in `src\lua\lua` directory.
+* [MfcToolkit](https://github.com/wieslawsoltes/MfcToolkit)
+* [TinyXml-2 v5.0.1](https://github.com/leethomason/tinyxml2)
+* [Lua v5.3.4](http://www.lua.org/ftp/)
 
 ## License
 
