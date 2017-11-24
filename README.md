@@ -23,11 +23,21 @@ BatchEncoder is an audio files conversion software.
 | Windows 32-bit        | Portable    | 1.4           | [BatchEncoder-1.4-Win32.zip](https://github.com/wieslawsoltes/BatchEncoder/releases/download/1.4/BatchEncoder-1.4-Win32.zip)           |
 | Windows 64-bit        | Portable    | 1.4           | [BatchEncoder-1.4-x64.zip](https://github.com/wieslawsoltes/BatchEncoder/releases/download/1.4/BatchEncoder-1.4-x64.zip)               |
 
-### CI Builds
+## System requirements
+
+Minimum supported Windows version is Windows 7 SP1 or above, recommended is Windows 10 Anniversary Update.
+
+Provided binaries should work under Windows XP Service Pack 3 (SP3) for x86, Windows XP Service Pack 2 (SP2) for x64.
+
+Minimum supported Linux version is Ubutnu 16.10 (using Wine 2.0).
+
+Command-line tools may have different hardware and software requirements. All tools have been tested under Windows 10 Anniversary Update.
+
+## CI Builds
 
 [Download](https://ci.appveyor.com/project/wieslawsoltes/batchencoder/build/artifacts) bleeding edge builds from the CI server.
 
-### Mirrors
+## Mirrors
 
 [![Softpedia Download Mirror](http://www.softpedia.com/_img/softpedia_100_free.png)](http://www.softpedia.com/get/Multimedia/Audio/Audio-CD-Rippers-Encoders/BatchEncoder.shtml)
 
@@ -173,16 +183,6 @@ If you having problems running the PowerShell `download.ps1` script see this [in
 | FFMPEG          | [https://ffmpeg.zeranoe.com/builds/](https://ffmpeg.zeranoe.com/builds/)                                                            |
 | FFDCAENC        | [https://github.com/filler56789/ffdcaenc-2](https://github.com/filler56789/ffdcaenc-2/releases)                                     |
 
-## System requirements
-
-Minimum supported Windows version is Windows 7 SP1 or above, recommended is Windows 10 Anniversary Update.
-
-Provided binaries should work under Windows XP Service Pack 3 (SP3) for x86, Windows XP Service Pack 2 (SP2) for x64.
-
-Minimum supported Linux version is Ubutnu 16.10 (using Wine 2.0).
-
-Command-line tools may have different hardware and software requirements. All tools have been tested under Windows 10 Anniversary Update.
-
 ## Configuration files
 
 * Program configuration files are used to store settings. 
@@ -233,24 +233,6 @@ Valid `output path` configurations:
 * If `$SourceDirectory$`, `$Name$` and `$Ext$` variables are present input source file path is used with item `Name` and output format extension.
 * If `$SourceDirectory$` is missing and `$Name$` and `$Ext$` variables are present item `Name` and output format extension are used (full output path must be provided by user, if not program writes output files to the BatchEncoder directory).
 * If only `$SourceDirectory$` variable is present input source file path is used (name and extension are added automatically)
-
-## Translations
-
-* [English (en-US)](https://github.com/wieslawsoltes/BatchEncoder/blob/master/lang/en-US.language) by Wiesław Šoltés
-* [Polish (pl-PL)](https://github.com/wieslawsoltes/BatchEncoder/blob/master/lang/pl-PL.language) by Wiesław Šoltés
-* [Korean (ko-KR)](https://github.com/wieslawsoltes/BatchEncoder/blob/master/lang/ko-KR.language) by JaeHyung Lee
-* [Spanish (es-ES)](https://github.com/wieslawsoltes/BatchEncoder/blob/master/lang/es-ES.language) by Overdrive80
-
-Use only UTF-8 compatible text editors (e.g. Notepad or Visual Studio Code) to edit xml language files
-and [use special characters in XML](https://www.dvteclipse.com/documentation/svlinter/How_to_use_special_characters_in_XML.3F.html#gsc.tab=0).
-
-Language files have to be placed in the same directory as the `BatchEncoder.exe` executable to be loaded automatically.
-
-Language files can also be edited in dedicated [LanguageEditor](https://github.com/wieslawsoltes/LanguageEditor#download-languageeditor) program. LanguageEditor requires .NET Framework 4.5 and Windows 7 SP1 or above.
-
-### Default language files
-
-The default language files can be found [here](https://github.com/wieslawsoltes/BatchEncoder/tree/master/lang).
 
 ## Format specification
 
@@ -326,11 +308,27 @@ For a quick start use one of the [existing](https://github.com/wieslawsoltes/Bat
 
 The default progress functions sources can be found [here](https://github.com/wieslawsoltes/BatchEncoder/tree/master/progress).
 
+## Translations
+
+* [English (en-US)](https://github.com/wieslawsoltes/BatchEncoder/blob/master/lang/en-US.language) by Wiesław Šoltés
+* [Polish (pl-PL)](https://github.com/wieslawsoltes/BatchEncoder/blob/master/lang/pl-PL.language) by Wiesław Šoltés
+* [Korean (ko-KR)](https://github.com/wieslawsoltes/BatchEncoder/blob/master/lang/ko-KR.language) by JaeHyung Lee
+* [Spanish (es-ES)](https://github.com/wieslawsoltes/BatchEncoder/blob/master/lang/es-ES.language) by Overdrive80
+
+Use only UTF-8 compatible text editors (e.g. Notepad or Visual Studio Code) to edit xml language files
+and [use special characters in XML](https://www.dvteclipse.com/documentation/svlinter/How_to_use_special_characters_in_XML.3F.html#gsc.tab=0).
+
+Language files have to be placed in the same directory as the `BatchEncoder.exe` executable to be loaded automatically.
+
+Language files can also be edited in dedicated [LanguageEditor](https://github.com/wieslawsoltes/LanguageEditor#download-languageeditor) program. LanguageEditor requires .NET Framework 4.5 and Windows 7 SP1 or above.
+
+The default language files can be found [here](https://github.com/wieslawsoltes/BatchEncoder/tree/master/lang).
+
 ## Troubleshooting
 
-To report issues please use:  https://github.com/wieslawsoltes/BatchEncoder/issues
+To report issues please use [issues tracker](https://github.com/wieslawsoltes/BatchEncoder/issues).
 
-For more informations and help please visit: http://forum.doom9.org/showthread.php?t=174242
+For more informations and help please visit [this forum thread](http://forum.doom9.org/showthread.php?t=174242).
 
 ## Sources
 
