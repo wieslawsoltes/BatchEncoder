@@ -1,4 +1,5 @@
 #define ProgramName "BatchEncoder"
+#define ProgramExe "BatchEncoder.exe"
 #define ProgramConfiguration CONFIGURATION
 #define ProgramBuild BUILD
 #define ProgramVersion VERSION
@@ -59,7 +60,7 @@ Name: quicklaunchicon; Description: {cm:CreateQuickLaunchIcon}; GroupDescription
 
 [Files]
 
-Source: {#BasePath}\src\bin\{#ProgramConfiguration}\{#ProgramBuild}\BatchEncoder.exe; DestDir: {app}; Flags: ignoreversion; Components: main
+Source: {#BasePath}\src\bin\{#ProgramConfiguration}\{#ProgramBuild}\{#ProgramExe}; DestDir: {app}; Flags: ignoreversion; Components: main
 Source: {#BasePath}\*.txt; DestDir: {app}; Flags: ignoreversion; Components: docs
 Source: {#BasePath}\*.md; DestDir: {app}; Flags: ignoreversion; Components: docs
 Source: {#BasePath}\config\*.options; DestDir: {app}; Flags: ignoreversion; Components: config
@@ -77,17 +78,17 @@ Filename: {app}\{#ProgramName}.url; Section: InternetShortcut; Key: URL; String:
 
 [Icons]
 
-Name: {group}\{#ProgramName}; Filename: {app}\BatchEncoder.exe; WorkingDir: {app}; Components: main
+Name: {group}\{#ProgramName}; Filename: {app}\{#ProgramExe}; WorkingDir: {app}; Components: main
 Name: {group}\{#ProgramName} README; Filename: {app}\README.MD; WorkingDir: {app}; Components: docs
 Name: {group}\{#ProgramName} License; Filename: {app}\LICENSE.TXT; WorkingDir: {app}; Components: docs
 Name: {group}\{#ProgramName} Web Site; Filename: {app}\{#ProgramName}.url; WorkingDir: {app}; Components: main
 Name: {group}\Uninstall {#ProgramName}; Filename: {uninstallexe}; WorkingDir: {app}; Components: main
-Name: {userdesktop}\{#ProgramName}; Filename: {app}\BatchEncoder.exe; WorkingDir: {app}; Tasks: desktopicon; Components: main
-Name: {userappdata}\Microsoft\Internet Explorer\Quick Launch\{#ProgramName}; Filename: {app}\BatchEncoder.exe; WorkingDir: {app}; Tasks: quicklaunchicon; Components: main
+Name: {userdesktop}\{#ProgramName}; Filename: {app}\{#ProgramExe}; WorkingDir: {app}; Tasks: desktopicon; Components: main
+Name: {userappdata}\Microsoft\Internet Explorer\Quick Launch\{#ProgramName}; Filename: {app}\{#ProgramExe}; WorkingDir: {app}; Tasks: quicklaunchicon; Components: main
 
 [Run]
 
-Filename: {app}\BatchEncoder.exe; Description: {cm:LaunchProgram,{#ProgramName}}; WorkingDir: {app}; Flags: nowait postinstall skipifsilent unchecked; Components: main
+Filename: {app}\{#ProgramExe}; Description: {cm:LaunchProgram,{#ProgramName}}; WorkingDir: {app}; Flags: nowait postinstall skipifsilent unchecked; Components: main
 
 [UninstallDelete]
 
