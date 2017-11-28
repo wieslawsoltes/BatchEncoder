@@ -23,6 +23,7 @@ AppPublisherURL     ={#ProgramWebsite}
 AppVersion          ={#ProgramVersion}{#ProgramVersionSuffix}
 UsePreviousAppDir   =yes
 AllowNoIcons        =yes
+LicenseFile         ={#BasePath}\LICENSE.TXT
 Compression         =lzma/max
 SolidCompression    =yes
 WindowVisible       =no
