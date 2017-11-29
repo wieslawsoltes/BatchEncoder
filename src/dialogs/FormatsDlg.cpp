@@ -22,7 +22,7 @@ DWORD WINAPI FormatsDlgDropThread(LPVOID lpParam)
 
 IMPLEMENT_DYNAMIC(CFormatsDlg, CDialog)
 CFormatsDlg::CFormatsDlg(CWnd* pParent /*=NULL*/)
-    : CMyResizeDialog(CFormatsDlg::IDD, pParent)
+    : CMyDialogEx(CFormatsDlg::IDD, pParent)
 {
     this->m_hIcon = AfxGetApp()->LoadIcon(IDI_ICON_MAIN);
     this->szFormatsDialogResize = _T("");
@@ -38,7 +38,7 @@ CFormatsDlg::~CFormatsDlg()
 
 void CFormatsDlg::DoDataExchange(CDataExchange* pDX)
 {
-    CMyResizeDialog::DoDataExchange(pDX);
+    CMyDialogEx::DoDataExchange(pDX);
     DDX_Control(pDX, IDC_STATIC_GROUP_FORMAT_PIPES, m_GrpPipes);
     DDX_Control(pDX, IDC_STATIC_GROUP_FORMAT_TYPE, m_GrpTypes);
     DDX_Control(pDX, IDC_STATIC_FORMAT_ID, m_StcId);
@@ -78,7 +78,7 @@ void CFormatsDlg::DoDataExchange(CDataExchange* pDX)
     DDX_Control(pDX, IDC_BUTTON_BROWSE_FUNCTION, m_BtnBrowseFunction);
 }
 
-BEGIN_MESSAGE_MAP(CFormatsDlg, CMyResizeDialog)
+BEGIN_MESSAGE_MAP(CFormatsDlg, CMyDialogEx)
     ON_WM_PAINT()
     ON_WM_QUERYDRAGICON()
     ON_WM_DROPFILES()
@@ -116,7 +116,7 @@ END_MESSAGE_MAP()
 
 BOOL CFormatsDlg::OnInitDialog()
 {
-    CMyResizeDialog::OnInitDialog();
+    CMyDialogEx::OnInitDialog();
 
     InitCommonControls();
 
@@ -141,48 +141,6 @@ BOOL CFormatsDlg::OnInitDialog()
     // enable drag & drop
     this->DragAcceptFiles(TRUE);
 
-    // setup resize anchors
-    AddAnchor(IDC_LIST_FORMATS, AnchorTopLeft, AnchorBottomRight);
-    AddAnchor(IDC_STATIC_GROUP_FORMAT_TYPE, AnchorBottomLeft);
-    AddAnchor(IDC_RADIO_TYPE_ENCODER, AnchorBottomLeft);
-    AddAnchor(IDC_RADIO_TYPE_DECODER, AnchorBottomLeft);
-    AddAnchor(IDC_STATIC_FORMAT_ID, AnchorBottomLeft, AnchorBottomRight);
-    AddAnchor(IDC_EDIT_FORMAT_ID, AnchorBottomLeft, AnchorBottomRight);
-    AddAnchor(IDC_STATIC_FORMAT_EXTENSION, AnchorBottomLeft, AnchorBottomRight);
-    AddAnchor(IDC_EDIT_FORMAT_EXTENSION, AnchorBottomLeft, AnchorBottomRight);
-    AddAnchor(IDC_STATIC_FORMAT_NAME, AnchorBottomLeft);
-    AddAnchor(IDC_EDIT_FORMAT_NAME, AnchorBottomLeft);
-    AddAnchor(IDC_STATIC_FORMAT_FORMATS, AnchorBottomLeft);
-    AddAnchor(IDC_EDIT_FORMAT_FORMATS, AnchorBottomLeft);
-    AddAnchor(IDC_STATIC_FORMAT_CODE, AnchorBottomLeft);
-    AddAnchor(IDC_EDIT_FORMAT_CODE, AnchorBottomLeft);
-    AddAnchor(IDC_STATIC_FORMAT_DEFAULT, AnchorBottomLeft, AnchorBottomRight);
-    AddAnchor(IDC_COMBO_FORMAT_DEFAULT, AnchorBottomLeft, AnchorBottomRight);
-    AddAnchor(IDC_BUTTON_EDIT_PRESETS, AnchorBottomRight);
-    AddAnchor(IDC_STATIC_FORMAT_PATH, AnchorBottomLeft);
-    AddAnchor(IDC_EDIT_FORMAT_PATH, AnchorBottomLeft, AnchorBottomRight);
-    AddAnchor(IDC_BUTTON_BROWSE_PATH, AnchorBottomRight);
-    AddAnchor(IDC_STATIC_GROUP_FORMAT_PIPES, AnchorBottomLeft);
-    AddAnchor(IDC_CHECK_FORMAT_PIPES_INPUT, AnchorBottomLeft);
-    AddAnchor(IDC_CHECK_FORMAT_PIPES_OUTPUT, AnchorBottomLeft);
-    AddAnchor(IDC_STATIC_FORMAT_TEMPLATE, AnchorBottomLeft, AnchorBottomRight);
-    AddAnchor(IDC_EDIT_FORMAT_TEMPLATE, AnchorBottomLeft, AnchorBottomRight);
-    AddAnchor(IDC_STATIC_FORMAT_FUNCTION, AnchorBottomLeft, AnchorBottomRight);
-    AddAnchor(IDC_EDIT_FORMAT_FUNCTION, AnchorBottomLeft, AnchorBottomRight);
-    AddAnchor(IDC_BUTTON_BROWSE_FUNCTION, AnchorBottomRight);
-    AddAnchor(IDC_BUTTON_FORMAT_UP, AnchorTopRight);
-    AddAnchor(IDC_BUTTON_FORMAT_DOWN, AnchorTopRight);
-    AddAnchor(IDC_BUTTON_FORMAT_IMPORT, AnchorMiddleRight);
-    AddAnchor(IDC_BUTTON_FORMAT_EXPORT, AnchorMiddleRight);
-    AddAnchor(IDC_BUTTON_FORMAT_DUPLICATE, AnchorMiddleRight);
-    AddAnchor(IDC_BUTTON_FORMAT_ADD, AnchorBottomRight);
-    AddAnchor(IDC_BUTTON_FORMAT_REMOVE_ALL, AnchorBottomRight);
-    AddAnchor(IDC_BUTTON_FORMAT_REMOVE, AnchorBottomRight);
-    AddAnchor(IDC_BUTTON_FORMAT_LOAD, AnchorBottomLeft);
-    AddAnchor(IDC_BUTTON_FORMAT_SAVE, AnchorBottomLeft);
-    AddAnchor(IDOK, AnchorBottomRight);
-    AddAnchor(IDCANCEL, AnchorBottomRight);
-
     this->LoadWindowSettings();
     this->SetLanguage();
 
@@ -205,7 +163,7 @@ void CFormatsDlg::OnPaint()
     }
     else
     {
-        CMyResizeDialog::OnPaint();
+        CMyDialogEx::OnPaint();
     }
 }
 
@@ -225,7 +183,7 @@ void CFormatsDlg::OnDropFiles(HDROP hDropInfo)
         if (this->m_DD.hThread == NULL)
             this->m_DD.bHandled = true;
     }
-    CMyResizeDialog::OnDropFiles(hDropInfo);
+    CMyDialogEx::OnDropFiles(hDropInfo);
 }
 
 void CFormatsDlg::OnBnClickedOk()
@@ -746,7 +704,7 @@ void CFormatsDlg::OnClose()
 {
     this->SaveWindowSettings();
 
-    CMyResizeDialog::OnClose();
+    CMyDialogEx::OnClose();
 }
 
 void CFormatsDlg::LoadWindowSettings()

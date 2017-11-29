@@ -10,7 +10,7 @@
 #include "controls\MyComboBox.h"
 #include "controls\MyEdit.h"
 #include "controls\MyStatic.h"
-#include "controls\MyResizeDialog.h"
+#include "controls\MyDialogEx.h"
 #include "configuration\FormatsList.h"
 #include "configuration\Configuration.h"
 
@@ -28,7 +28,7 @@ typedef struct tagPresetsDlgDropContext
     volatile bool bHandled = true;
 } PresetsDlgDropContext;
 
-class CPresetsDlg : public CMyResizeDialog
+class CPresetsDlg : public CMyDialogEx
 {
     DECLARE_DYNAMIC(CPresetsDlg)
 public:

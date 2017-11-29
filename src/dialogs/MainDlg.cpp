@@ -177,7 +177,7 @@ DWORD WINAPI MainDlgDropThread(LPVOID lpParam)
 
 IMPLEMENT_DYNAMIC(CMainDlg, CDialog)
 CMainDlg::CMainDlg(CWnd* pParent /*=NULL*/)
-    : CMyResizeDialog(CMainDlg::IDD, pParent)
+    : CMyDialogEx(CMainDlg::IDD, pParent)
 {
     this->m_hIcon = AfxGetApp()->LoadIcon(IDI_ICON_MAIN);
     this->szOptionsFile = ::GetExeFilePath() + _T("BatchEncoder.options");
@@ -196,7 +196,7 @@ CMainDlg::~CMainDlg()
 
 void CMainDlg::DoDataExchange(CDataExchange* pDX)
 {
-    CMyResizeDialog::DoDataExchange(pDX);
+    CMyDialogEx::DoDataExchange(pDX);
     DDX_Control(pDX, IDC_PROGRESS_CONVERT, m_Progress);
     DDX_Control(pDX, IDC_STATIC_GROUP_OUTPUT, m_GrpOutput);
     DDX_Control(pDX, IDC_COMBO_PRESETS, m_CmbPresets);
@@ -213,7 +213,7 @@ void CMainDlg::DoDataExchange(CDataExchange* pDX)
     DDX_Control(pDX, IDC_BUTTON_BROWSE_OUTPUT, m_BtnBrowse);
 }
 
-BEGIN_MESSAGE_MAP(CMainDlg, CMyResizeDialog)
+BEGIN_MESSAGE_MAP(CMainDlg, CMyDialogEx)
     ON_WM_PAINT()
     ON_WM_QUERYDRAGICON()
     ON_WM_CLOSE()
@@ -290,7 +290,7 @@ END_MESSAGE_MAP()
 
 BOOL CMainDlg::OnInitDialog()
 {
-    CMyResizeDialog::OnInitDialog();
+    CMyDialogEx::OnInitDialog();
 
     InitCommonControls();
 
@@ -302,6 +302,9 @@ BOOL CMainDlg::OnInitDialog()
 
     int nStatusBarParts[2] = { 100, -1 };
     m_StatusBar.SetParts(2, nStatusBarParts);
+
+    CMFCDynamicLayout* layout = this->GetDynamicLayout();
+    layout->AddItem(IDC_STATUSBAR, CMFCDynamicLayout::MoveVertical(100), CMFCDynamicLayout::SizeHorizontal(100));
 
     // accelerators
     m_hAccel = ::LoadAccelerators(::GetModuleHandle(NULL), MAKEINTRESOURCE(IDR_ACCELERATOR_MAIN));
@@ -356,23 +359,6 @@ BOOL CMainDlg::OnInitDialog()
     this->m_CmbOutPath.SetCurSel(1);
     this->m_CmbOutPath.SetFocus();
 
-    // resize anchors
-    AddAnchor(IDC_STATIC_GROUP_OUTPUT, AnchorTopLeft, AnchorTopRight);
-    AddAnchor(IDC_STATIC_TEXT_FORMAT, AnchorTopLeft);
-    AddAnchor(IDC_COMBO_FORMAT, AnchorTopLeft);
-    AddAnchor(IDC_STATIC_TEXT_PRESET, AnchorTopLeft);
-    AddAnchor(IDC_COMBO_PRESETS, AnchorTopLeft, AnchorTopRight);
-    AddAnchor(IDC_LIST_ITEMS, AnchorTopLeft, AnchorBottomRight);
-    AddAnchor(IDC_STATIC_TEXT_OUTPUT, AnchorBottomLeft);
-    AddAnchor(IDC_COMBO_OUTPUT, AnchorBottomLeft, AnchorBottomRight);
-    AddAnchor(IDC_BUTTON_BROWSE_OUTPUT, AnchorBottomRight);
-    AddAnchor(IDC_PROGRESS_CONVERT, AnchorBottomLeft, AnchorBottomRight);
-    AddAnchor(IDC_STATIC_THREAD_COUNT, AnchorBottomRight);
-    AddAnchor(IDC_EDIT_THREADCOUNT, AnchorBottomRight);
-    AddAnchor(IDC_SPIN_THREADCOUNT, AnchorBottomRight);
-    AddAnchor(IDC_BUTTON_CONVERT, AnchorBottomRight);
-    AddAnchor(IDC_STATUSBAR, AnchorBottomLeft, AnchorBottomRight);
-
     try
     {
         this->LoadFormats(this->szFormatsFile);
@@ -404,7 +390,7 @@ BOOL CMainDlg::PreTranslateMessage(MSG* pMsg)
         if (::TranslateAccelerator(this->GetSafeHwnd(), m_hAccel, pMsg))
             return TRUE;
     }
-    return CDialog::PreTranslateMessage(pMsg);
+    return CMyDialogEx::PreTranslateMessage(pMsg);
 }
 
 void CMainDlg::OnPaint()
@@ -423,7 +409,7 @@ void CMainDlg::OnPaint()
     }
     else
     {
-        CMyResizeDialog::OnPaint();
+        CMyDialogEx::OnPaint();
     }
 }
 
@@ -434,7 +420,7 @@ HCURSOR CMainDlg::OnQueryDragIcon()
 
 void CMainDlg::OnClose()
 {
-    CMyResizeDialog::OnClose();
+    CMyDialogEx::OnClose();
 
     if (this->GetMenu()->GetMenuState(ID_OPTIONS_DO_NOT_SAVE, MF_BYCOMMAND) != MF_CHECKED)
     {
@@ -447,12 +433,12 @@ void CMainDlg::OnClose()
         catch (...) {}
     }
 
-    CMyResizeDialog::OnOK();
+    CMyDialogEx::OnOK();
 }
 
 void CMainDlg::OnDestroy()
 {
-    CMyResizeDialog::OnDestroy();
+    CMyDialogEx::OnDestroy();
 
     m_Config.m_Items.RemoveAll();
     m_Config.m_Formats.RemoveAll();
@@ -469,7 +455,7 @@ void CMainDlg::OnDropFiles(HDROP hDropInfo)
         if (this->m_DD.hThread == NULL)
             this->m_DD.bHandled = true;
     }
-    CMyResizeDialog::OnDropFiles(hDropInfo);
+    CMyDialogEx::OnDropFiles(hDropInfo);
 }
 
 BOOL CMainDlg::OnHelpInfo(HELPINFO* pHelpInfo)

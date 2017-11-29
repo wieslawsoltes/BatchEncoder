@@ -3,7 +3,7 @@
 
 #include "StdAfx.h"
 #include "MainApp.h"
-#include "controls\MyResizeDialog.h"
+#include "controls\MyDialogEx.h"
 #include "dialogs\MainDlg.h"
 
 CMainApp mainApp;

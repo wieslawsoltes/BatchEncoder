@@ -11,7 +11,7 @@
 #include "controls\MyEdit.h"
 #include "controls\MyStatic.h"
 #include "controls\MyStatusBarCtrl.h"
-#include "controls\MyResizeDialog.h"
+#include "controls\MyDialogEx.h"
 #include "utilities\TimeCount.h"
 #include "worker\WorkerContext.h"
 
@@ -34,7 +34,7 @@ typedef struct tagMainDlgDropContext
     volatile bool bHandled = true;
 } MainDlgDropContext;
 
-class CMainDlg : public CMyResizeDialog
+class CMainDlg : public CMyDialogEx
 {
     DECLARE_DYNAMIC(CMainDlg)
 public:

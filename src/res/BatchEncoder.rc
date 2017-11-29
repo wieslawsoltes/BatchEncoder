@@ -184,11 +184,11 @@ BEGIN
 END
 
 IDD_DIALOG_ABOUT DIALOGEX 0, 0, 383, 116
-STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
 CAPTION "About BatchEncoder"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    ICON            IDI_ICON_MAIN,IDC_STATIC,7,7,21,20
+    ICON            IDI_ICON_MAIN,IDC_STATIC,7,7,20,20
     CTEXT           "Application Name",IDC_STATIC_TEXT_APP_NAME,35,7,332,20,SS_CENTERIMAGE
     CTEXT           "Website",IDC_STATIC_TEXT_WEBSITE,35,27,332,12,SS_CENTERIMAGE
     CTEXT           "E-mail",IDC_STATIC_TEXT_EMAIL,35,41,332,12,SS_CENTERIMAGE
@@ -310,6 +310,137 @@ BEGIN
     VK_F8,          ID_ACCELERATOR_F8,      VIRTKEY, NOINVERT
 END
 
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO
+BEGIN
+    IDD_DIALOG_MAIN, DIALOG
+    BEGIN
+    END
+
+    IDD_DIALOG_PRESETS, DIALOG
+    BEGIN
+    END
+
+    IDD_DIALOG_FORMATS, DIALOG
+    BEGIN
+    END
+
+    IDD_DIALOG_ABOUT, DIALOG
+    BEGIN
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// AFX_DIALOG_LAYOUT
+//
+
+IDD_DIALOG_MAIN AFX_DIALOG_LAYOUT
+BEGIN
+    0,
+    0, 0, 100, 100,
+    0, 0, 100, 0,
+    0, 0, 0, 0,
+    0, 0, 0, 0,
+    0, 0, 0, 0,
+    0, 0, 100, 0,
+    0, 100, 100, 0,
+    0, 100, 0, 0,
+    0, 100, 100, 0,
+    100, 100, 0, 0,
+    100, 100, 0, 0,
+    100, 100, 0, 0,
+    100, 100, 0, 0,
+    100, 100, 0, 0
+END
+
+IDD_DIALOG_ABOUT AFX_DIALOG_LAYOUT
+BEGIN
+    0,
+    0, 0, 0, 0,
+    50, 50, 0, 0,
+    50, 50, 0, 0,
+    50, 50, 0, 0,
+    0, 100, 100, 0,
+    50, 50, 0, 0,
+    100, 100, 0, 0
+END
+
+IDD_DIALOG_FORMATS AFX_DIALOG_LAYOUT
+BEGIN
+    0,
+    100, 100, 0, 0,
+    0, 0, 100, 100,
+    0, 100, 0, 0,
+    0, 100, 0, 0,
+    0, 100, 100, 0,
+    0, 100, 100, 0,
+    0, 100, 0, 0,
+    0, 100, 0, 0,
+    0, 100, 100, 0,
+    0, 100, 100, 0,
+    0, 100, 0, 0,
+    0, 100, 0, 0,
+    0, 100, 0, 0,
+    0, 100, 0, 0,
+    0, 100, 0, 0,
+    0, 100, 0, 0,
+    0, 100, 0, 0,
+    0, 100, 0, 0,
+    0, 100, 100, 0,
+    0, 100, 100, 0,
+    100, 100, 0, 0,
+    0, 100, 100, 0,
+    0, 100, 100, 0,
+    100, 100, 0, 0,
+    0, 100, 100, 0,
+    0, 100, 100, 0,
+    0, 100, 100, 0,
+    100, 100, 0, 0,
+    0, 100, 100, 0,
+    100, 0, 0, 0,
+    100, 0, 0, 0,
+    100, 0, 0, 0,
+    100, 0, 0, 0,
+    100, 0, 0, 0,
+    100, 0, 0, 0,
+    100, 0, 0, 0,
+    100, 0, 0, 0,
+    0, 100, 0, 0,
+    0, 100, 0, 0,
+    100, 100, 0, 0,
+    100, 100, 0, 0
+END
+
+IDD_DIALOG_PRESETS AFX_DIALOG_LAYOUT
+BEGIN
+    0,
+    100, 100, 0, 0,
+    0, 0, 0, 0,
+    0, 0, 100, 100,
+    0, 100, 0, 0,
+    0, 100, 0, 0,
+    0, 100, 100, 0,
+    0, 100, 100, 0,
+    100, 0, 0, 0,
+    100, 0, 0, 0,
+    100, 0, 0, 0,
+    100, 0, 0, 0,
+    100, 0, 0, 0,
+    100, 0, 0, 0,
+    0, 100, 0, 0,
+    0, 100, 0, 0,
+    0, 100, 0, 0,
+    100, 100, 0, 0
+END
 
 #endif    // English (United States) resources
 /////////////////////////////////////////////////////////////////////////////

@@ -9,7 +9,7 @@
 
 IMPLEMENT_DYNAMIC(CAboutDlg, CDialog)
 CAboutDlg::CAboutDlg(CWnd* pParent /*=NULL*/)
-    : CDialog(CAboutDlg::IDD, pParent)
+    : CMyDialogEx(CAboutDlg::IDD, pParent)
 {
 
 }
@@ -21,7 +21,7 @@ CAboutDlg::~CAboutDlg()
 
 void CAboutDlg::DoDataExchange(CDataExchange* pDX)
 {
-    CDialog::DoDataExchange(pDX);
+    CMyDialogEx::DoDataExchange(pDX);
     DDX_Control(pDX, IDOK, m_BtnOK);
     DDX_Control(pDX, IDC_STATIC_TEXT_APP_NAME, m_StcMainAppName);
     DDX_Control(pDX, IDC_STATIC_TEXT_WEBSITE, m_StcWebsite);
@@ -29,14 +29,14 @@ void CAboutDlg::DoDataExchange(CDataExchange* pDX)
     DDX_Control(pDX, IDC_STATIC_LICENSE, m_StcLicense);
 }
 
-BEGIN_MESSAGE_MAP(CAboutDlg, CDialog)
+BEGIN_MESSAGE_MAP(CAboutDlg, CMyDialogEx)
     ON_WM_CLOSE()
     ON_BN_CLICKED(IDOK, OnBnClickedOk)
 END_MESSAGE_MAP()
 
 BOOL CAboutDlg::OnInitDialog()
 {
-    CDialog::OnInitDialog();
+    CMyDialogEx::OnInitDialog();
 
     m_StcMainAppName.SetBold(true);
     m_StcMainAppName.SetWindowText(_T(VER_PRODUCTNAME_STR " v" VER_FILE_VERSION_SHORT_STR " " VER_COPYRIGHT_STR));
@@ -52,17 +52,17 @@ BOOL CAboutDlg::OnInitDialog()
 
 void CAboutDlg::OnOK()
 {
-    CDialog::OnOK();
+    CMyDialogEx::OnOK();
 }
 
 void CAboutDlg::OnCancel()
 {
-    CDialog::OnCancel();
+    CMyDialogEx::OnCancel();
 }
 
 void CAboutDlg::OnClose()
 {
-    CDialog::OnClose();
+    CMyDialogEx::OnClose();
 }
 
 void CAboutDlg::OnBnClickedOk()

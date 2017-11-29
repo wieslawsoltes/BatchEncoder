@@ -9,8 +9,9 @@
 #include "controls\MyHyperlink.h"
 #include "controls\MyButton.h"
 #include "controls\MyStatic.h"
+#include "controls\MyDialogEx.h"
 
-class CAboutDlg : public CDialog
+class CAboutDlg : public CMyDialogEx
 {
     DECLARE_DYNAMIC(CAboutDlg)
 public:

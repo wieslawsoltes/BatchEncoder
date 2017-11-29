@@ -21,7 +21,7 @@ DWORD WINAPI PresetsDlgDropThread(LPVOID lpParam)
 
 IMPLEMENT_DYNAMIC(CPresetsDlg, CDialog)
 CPresetsDlg::CPresetsDlg(CWnd* pParent /*=NULL*/)
-    : CMyResizeDialog(CPresetsDlg::IDD, pParent)
+    : CMyDialogEx(CPresetsDlg::IDD, pParent)
 {
     this->m_hIcon = AfxGetApp()->LoadIcon(IDI_ICON_MAIN);
     this->szPresetsDialogResize = _T("");
@@ -37,7 +37,7 @@ CPresetsDlg::~CPresetsDlg()
 
 void CPresetsDlg::DoDataExchange(CDataExchange* pDX)
 {
-    CMyResizeDialog::DoDataExchange(pDX);
+    CMyDialogEx::DoDataExchange(pDX);
     DDX_Control(pDX, IDC_STATIC_PRESET_NAME, m_StcName);
     DDX_Control(pDX, IDC_STATIC_PRESET_OPTIONS, m_StcOptions);
     DDX_Control(pDX, IDC_LIST_PRESETS, m_LstPresets);
@@ -57,7 +57,7 @@ void CPresetsDlg::DoDataExchange(CDataExchange* pDX)
     DDX_Control(pDX, IDC_BUTTON_PRESET_SAVE, m_BtnSave);
 }
 
-BEGIN_MESSAGE_MAP(CPresetsDlg, CMyResizeDialog)
+BEGIN_MESSAGE_MAP(CPresetsDlg, CMyDialogEx)
     ON_WM_PAINT()
     ON_WM_QUERYDRAGICON()
     ON_WM_DROPFILES()
@@ -81,7 +81,7 @@ END_MESSAGE_MAP()
 
 BOOL CPresetsDlg::OnInitDialog()
 {
-    CMyResizeDialog::OnInitDialog();
+    CMyDialogEx::OnInitDialog();
 
     InitCommonControls();
 
@@ -114,25 +114,6 @@ BOOL CPresetsDlg::OnInitDialog()
     // enable drag & drop
     this->DragAcceptFiles(TRUE);
 
-    // setup resize anchors
-    AddAnchor(IDC_COMBO_PRESET_FORMAT, AnchorTopLeft);
-    AddAnchor(IDC_LIST_PRESETS, AnchorTopLeft, AnchorBottomRight);
-    AddAnchor(IDC_BUTTON_PRESET_UP, AnchorTopRight);
-    AddAnchor(IDC_BUTTON_PRESET_DOWN, AnchorTopRight);
-    AddAnchor(IDC_BUTTON_PRESET_ADD, AnchorBottomRight);
-    AddAnchor(IDC_BUTTON_PRESET_DUPLICATE, AnchorMiddleRight);
-    AddAnchor(IDC_BUTTON_PRESET_REMOVE_ALL, AnchorBottomRight);
-    AddAnchor(IDC_BUTTON_PRESET_REMOVE, AnchorBottomRight);
-    AddAnchor(IDC_BUTTON_PRESET_LOAD, AnchorBottomLeft);
-    AddAnchor(IDC_BUTTON_PRESET_SAVE, AnchorBottomLeft);
-    AddAnchor(IDC_STATIC_PRESET_NAME, AnchorBottomLeft);
-    AddAnchor(IDC_EDIT_PRESET_NAME, AnchorBottomLeft);
-    AddAnchor(IDC_STATIC_PRESET_OPTIONS, AnchorBottomLeft, AnchorBottomRight);
-    AddAnchor(IDC_EDIT_PRESET_OPTIONS, AnchorBottomLeft, AnchorBottomRight);
-    AddAnchor(IDC_BUTTON_PRESET_UPDATE, AnchorBottomRight);
-    AddAnchor(IDOK, AnchorBottomRight);
-    AddAnchor(IDCANCEL, AnchorBottomRight);
-
     this->LoadWindowSettings();
     this->SetLanguage();
 
@@ -155,7 +136,7 @@ void CPresetsDlg::OnPaint()
     }
     else
     {
-        CMyResizeDialog::OnPaint();
+        CMyDialogEx::OnPaint();
     }
 }
 
@@ -175,7 +156,7 @@ void CPresetsDlg::OnDropFiles(HDROP hDropInfo)
         if (this->m_DD.hThread == NULL)
             this->m_DD.bHandled = true;
     }
-    CMyResizeDialog::OnDropFiles(hDropInfo);
+    CMyDialogEx::OnDropFiles(hDropInfo);
 }
 
 void CPresetsDlg::OnBnClickedOk()
@@ -473,7 +454,7 @@ void CPresetsDlg::OnClose()
 {
     this->SaveWindowSettings();
 
-    CMyResizeDialog::OnClose();
+    CMyDialogEx::OnClose();
 }
 
 void CPresetsDlg::LoadWindowSettings()
