@@ -1,17 +1,17 @@
 ﻿# Changelog
 
-### BatchEncoder v2.0
+### Version 2.0
 
 - Updated TinyXml-2 to version 5.0.1.
 
-### BatchEncoder v1.4
+### Version 1.4
 
 - Updated Spanish translation.
 - Updated AAC presets to show birate for VBR.
 - Updated projects to Microsoft Visual Studio 2017 (PlatformToolset v141_xp).
 - Changed projects WindowsTargetPlatformVersion to version 7.0.
 
-### BatchEncoder v1.3
+### Version 1.3
 
 - Added advanced output path options.
 - Added Validate Input Files option.
@@ -21,7 +21,7 @@
 - Variable names in output path are case insensitive.
 - Added ffdcaenc DTS encoder format.
 
-### BatchEncoder v1.2
+### Version 1.2
 
 - Changed progress function format to use Lua script files.
 - Added La Lossless Audio compression format.
@@ -50,13 +50,13 @@
 - Use unique file name for temporary file when trans-coding.
 - Bug fixes.
 
-### BatchEncoder v1.1
+### Version 1.1
 
 - Added multi-language support.
 - Added Polish language translation.
 - Added ffmpeg ac3 encoder support.
 - Added language editor tool.
 
-### BatchEncoder v1.0
+### Version 1.0
 
 - First public release.
