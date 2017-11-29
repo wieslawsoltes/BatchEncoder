@@ -2,6 +2,7 @@
 
 ### Version 2.0
 
+- Added dynamic layout for dialogs.
 - Updated TinyXml-2 to version 5.0.1.
 
 ### Version 1.4
