@@ -1,6 +1,6 @@
 ﻿# Changelog
 
-### BatchEncoder v1.5
+### BatchEncoder v2.0
 
 - Updated TinyXml-2 to version 5.0.1.
 
