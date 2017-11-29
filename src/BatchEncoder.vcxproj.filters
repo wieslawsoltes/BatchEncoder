@@ -34,6 +34,12 @@
     <Filter Include="Source Files\Contexts">
       <UniqueIdentifier>{8266f9d5-9c57-44c7-974a-28a13fa47f5a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Xml">
+      <UniqueIdentifier>{b2561aef-389a-4b4c-bb83-bf93c5aedd5e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Xml">
+      <UniqueIdentifier>{8f6b2fbd-d6d7-4e5d-b494-8309102637bc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="StdAfx.cpp">
@@ -43,9 +49,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Strings.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="XmlConfiguration.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="dialogs\AboutDlg.cpp">
@@ -69,8 +72,11 @@
     <ClCompile Include="contexts\ProgressWorkerContext.cpp">
       <Filter>Source Files\Contexts</Filter>
     </ClCompile>
-    <ClCompile Include="XmlConfigurationBase.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="xml\XmlConfiguration.cpp">
+      <Filter>Source Files\Xml</Filter>
+    </ClCompile>
+    <ClCompile Include="xml\XmlConfigurationBase.cpp">
+      <Filter>Source Files\Xml</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -90,9 +96,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Strings.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="XmlConfiguration.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="configuration\Configuration.h">
@@ -170,8 +173,11 @@
     <ClInclude Include="worker\OutputPath.h">
       <Filter>Header Files\Worker</Filter>
     </ClInclude>
-    <ClInclude Include="XmlConfigurationBase.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="xml\XmlConfiguration.h">
+      <Filter>Header Files\Xml</Filter>
+    </ClInclude>
+    <ClInclude Include="xml\XmlConfigurationBase.h">
+      <Filter>Header Files\Xml</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -269,7 +269,6 @@ copy /Y ..\lang\*.language $(OutDir)</Command>
     </ClCompile>
     <ClCompile Include="MainApp.cpp" />
     <ClCompile Include="Strings.cpp" />
-    <ClCompile Include="XmlConfiguration.cpp" />
     <ClCompile Include="dialogs\AboutDlg.cpp" />
     <ClCompile Include="dialogs\MainDlg.cpp" />
     <ClCompile Include="dialogs\FormatsDlg.cpp" />
@@ -277,7 +276,8 @@ copy /Y ..\lang\*.language $(OutDir)</Command>
     <ClCompile Include="worker\WorkThread.cpp" />
     <ClCompile Include="contexts\ProgressWorkerContext.cpp" />
     <ClCompile Include="contexts\TraceWorkerContext.cpp" />
-    <ClCompile Include="XmlConfigurationBase.cpp" />
+    <ClCompile Include="xml\XmlConfiguration.cpp" />
+    <ClCompile Include="xml\XmlConfigurationBase.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="targetver.h" />
@@ -287,7 +287,6 @@ copy /Y ..\lang\*.language $(OutDir)</Command>
     <ClInclude Include="MainApp.h" />
     <ClInclude Include="Strings.h" />
     <ClInclude Include="worker\OutputPath.h" />
-    <ClInclude Include="XmlConfiguration.h" />
     <ClInclude Include="configuration\Format.h" />
     <ClInclude Include="configuration\FormatsList.h" />
     <ClInclude Include="configuration\Item.h" />
@@ -312,7 +311,8 @@ copy /Y ..\lang\*.language $(OutDir)</Command>
     <ClInclude Include="worker\WorkThread.h" />
     <ClInclude Include="contexts\ProgressWorkerContext.h" />
     <ClInclude Include="contexts\TraceWorkerContext.h" />
-    <ClInclude Include="XmlConfigurationBase.h" />
+    <ClInclude Include="xml\XmlConfiguration.h" />
+    <ClInclude Include="xml\XmlConfigurationBase.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\BatchEncoder.ico" />

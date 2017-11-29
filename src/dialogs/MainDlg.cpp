@@ -6,7 +6,7 @@
 #include "Strings.h"
 #include "language\LanguageHelper.h"
 #include "utilities\Utilities.h"
-#include "XmlConfiguration.h"
+#include "xml\XmlConfiguration.h"
 #include "MainDlg.h"
 #include "PresetsDlg.h"
 #include "AboutDlg.h"

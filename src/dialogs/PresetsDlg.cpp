@@ -8,7 +8,7 @@
 #include "utilities\Utilities.h"
 #include "utilities\UnicodeUtf8.h"
 #include "utilities\Utf8String.h"
-#include "XmlConfiguration.h"
+#include "xml\XmlConfiguration.h"
 #include "PresetsDlg.h"
 
 DWORD WINAPI PresetsDlgDropThread(LPVOID lpParam)
