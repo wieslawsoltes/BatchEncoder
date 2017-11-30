@@ -65,6 +65,7 @@ Source: {#BasePath}\src\bin\{#ProgramConfiguration}\{#ProgramBuild}\{#ProgramExe
 Source: {#BasePath}\*.txt; DestDir: {app}; Flags: ignoreversion; Components: docs
 Source: {#BasePath}\*.md; DestDir: {app}; Flags: ignoreversion; Components: docs
 Source: {#BasePath}\config\*.options; DestDir: {app}; Flags: ignoreversion; Components: config
+Source: {#BasePath}\config\*.tools; DestDir: {app}; Flags: ignoreversion; Components: config
 Source: {#BasePath}\config\*.formats; DestDir: {app}; Flags: ignoreversion; Components: config
 Source: {#BasePath}\config\*.items; DestDir: {app}; Flags: ignoreversion; Components: config
 Source: {#BasePath}\formats\encoder\*.format; DestDir: {app}; Flags: ignoreversion; Components: formats
