@@ -273,6 +273,7 @@ copy /Y ..\lang\*.language $(OutDir)</Command>
     <ClCompile Include="dialogs\MainDlg.cpp" />
     <ClCompile Include="dialogs\FormatsDlg.cpp" />
     <ClCompile Include="dialogs\PresetsDlg.cpp" />
+    <ClCompile Include="dialogs\ToolsDlg.cpp" />
     <ClCompile Include="worker\WorkThread.cpp" />
     <ClCompile Include="contexts\ProgressWorkerContext.cpp" />
     <ClCompile Include="contexts\TraceWorkerContext.cpp" />
@@ -299,6 +300,7 @@ copy /Y ..\lang\*.language $(OutDir)</Command>
     <ClInclude Include="dialogs\MainDlg.h" />
     <ClInclude Include="dialogs\FormatsDlg.h" />
     <ClInclude Include="dialogs\PresetsDlg.h" />
+    <ClInclude Include="dialogs\ToolsDlg.h" />
     <ClInclude Include="worker\FileContext.h" />
     <ClInclude Include="worker\ItemContext.h" />
     <ClInclude Include="worker\LuaProgess.h" />
