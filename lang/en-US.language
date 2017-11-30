@@ -140,6 +140,12 @@
     <String key="0x000C002E" value="E&amp;xport" />
     <String key="0x000C002F" value="Du&amp;plicate" />
 
+    <!-- Tools Dialog -->
+
+    <String key="0x000E0010" value="Configure Tools" />
+    <String key="0x000E0011" value="&amp;Cancel" />
+    <String key="0x000E0012" value="&amp;OK" />
+
     <!-- About Dialog -->
 
     <String key="0x000D0010" value="About BatchEncoder" />
