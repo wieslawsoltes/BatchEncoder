@@ -5,6 +5,7 @@
 
 #include <afxcmn.h>
 #include <afxwin.h>
+#include "controls\MyButton.h"
 #include "controls\MyDialogEx.h"
 
 class CToolsDlg;
@@ -25,6 +26,9 @@ protected:
     afx_msg HCURSOR OnQueryDragIcon();
 public:
     virtual BOOL OnInitDialog();
+public:
+    CMyButton m_BtnOK;
+    CMyButton m_BtnCancel;
 public:
     afx_msg void OnBnClickedOk();
     afx_msg void OnBnClickedCancel();
