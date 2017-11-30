@@ -6,9 +6,10 @@
 #define IDD_DIALOG_MAIN                 102
 #define IDD_DIALOG_PRESETS              103
 #define IDD_DIALOG_FORMATS              104
-#define IDD_DIALOG_ABOUT                105
-#define IDR_MENU_MAIN                   106
-#define IDR_ACCELERATOR_MAIN            107
+#define IDD_DIALOG_TOOLS                105
+#define IDD_DIALOG_ABOUT                106
+#define IDR_MENU_MAIN                   107
+#define IDR_ACCELERATOR_MAIN            108
 #define IDC_LIST_ITEMS                  1001
 #define IDC_STATIC_GROUP_OUTPUT         1002
 #define IDC_STATIC_TEXT_FORMAT          1003
@@ -141,7 +142,7 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        108
+#define _APS_NEXT_RESOURCE_VALUE        109
 #define _APS_NEXT_COMMAND_VALUE         32870
 #define _APS_NEXT_CONTROL_VALUE         1091
 #define _APS_NEXT_SYMED_VALUE           101
