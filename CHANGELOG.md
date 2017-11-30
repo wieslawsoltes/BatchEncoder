@@ -3,8 +3,9 @@
 ### Version 2.0
 
 - Added dynamic layout for dialogs.
-- Updated TinyXml-2 to version 5.0.1.
 - Updated QAAC AAC format to use --no-optimize instead of --adts.
+- Refactored common code as submodules.
+- Updated TinyXml-2 to version 5.0.1.
 
 ### Version 1.4
 
