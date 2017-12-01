@@ -323,6 +323,7 @@ copy /Y ..\lang\*.language $(OutDir)</Command>
     <ClInclude Include="xml\XmlLanguages.h" />
     <ClInclude Include="xml\XmlOptions.h" />
     <ClInclude Include="xml\XmlPresets.h" />
+    <ClInclude Include="xml\XmlTools.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\BatchEncoder.ico" />
