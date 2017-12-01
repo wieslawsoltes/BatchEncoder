@@ -597,34 +597,3 @@ void XmlConfiguration::SetLanguages(CLanguagesList &m_Languages)
 
     this->SetLanguages(pLanguagesElem, m_Languages);
 }
-
-bool XmlConfiguration::Open(CString szFileName)
-{
-    CStdioFile fp;
-    if (fp.Open(szFileName, CFile::modeRead | CFile::typeBinary) == TRUE)
-    {
-        tinyxml2::XMLError result = this->LoadFile(fp.m_pStream);
-        fp.Close();
-        return result == tinyxml2::XMLError::XML_SUCCESS;
-    }
-    return false;
-}
-
-bool XmlConfiguration::Save(CString szFileName)
-{
-    CStdioFile fp;
-    if (fp.Open(szFileName, CFile::modeCreate | CFile::modeWrite | CFile::typeText) == TRUE)
-    {
-        const unsigned char TIXML_UTF_LEAD_0 = 0xefU;
-        const unsigned char TIXML_UTF_LEAD_1 = 0xbbU;
-        const unsigned char TIXML_UTF_LEAD_2 = 0xbfU;
-        fputc(TIXML_UTF_LEAD_0, fp.m_pStream);
-        fputc(TIXML_UTF_LEAD_1, fp.m_pStream);
-        fputc(TIXML_UTF_LEAD_2, fp.m_pStream);
-        tinyxml2::XMLPrinter printer(fp.m_pStream);
-        this->Print(&printer);
-        fp.Close();
-        return true;
-    }
-    return false;
-}
