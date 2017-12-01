@@ -8,7 +8,7 @@
 #include "XmlBase.h"
 #include "configuration\Options.h"
 
-class XmlOptions : private XmlBase
+class XmlOptions : public XmlBase
 {
 public:
     XmlOptions()
@@ -17,7 +17,7 @@ public:
     virtual ~XmlOptions()
     {
     }
-private:
+protected:
     void GetOptions(tinyxml2::XMLElement *pOptionsElem, COptions &m_Options)
     {
         tinyxml2::XMLElement *pOptionElem;
