@@ -8,7 +8,7 @@
 #include "utilities\Utilities.h"
 #include "utilities\UnicodeUtf8.h"
 #include "utilities\Utf8String.h"
-#include "xml\XmlConfiguration.h"
+#include "xml\XmlPresets.h"
 #include "PresetsDlg.h"
 
 DWORD WINAPI PresetsDlgDropThread(LPVOID lpParam)
@@ -611,7 +611,7 @@ void CPresetsDlg::ListSelectionChange()
 
 void CPresetsDlg::LoadPresets(CString szFileXml)
 {
-    XmlConfiguration doc;
+    XmlPresets doc;
     if (doc.Open(szFileXml) == true)
     {
         this->m_LstPresets.DeleteAllItems();
@@ -636,7 +636,7 @@ void CPresetsDlg::SavePresets(CString szFileXml)
 {
     CFormat& format = this->m_Formats.Get(this->nSelectedFormat);
 
-    XmlConfiguration doc;
+    XmlPresets doc;
     doc.SetPresets(format.m_Presets);
     if (doc.Save(szFileXml) != true)
     {
