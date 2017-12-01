@@ -6,6 +6,7 @@
 #include "Options.h"
 #include "FormatsList.h"
 #include "ItemsList.h"
+#include "ToolsList.h"
 #include "language\LanguageContext.h"
 
 class CConfiguration : public CLanguageContext
@@ -14,6 +15,7 @@ public:
     COptions m_Options;
     CFormatsList m_Formats;
     CItemsList m_Items;
+    CToolsList m_Tools;
 public:
     CConfiguration()
     {
@@ -37,6 +39,7 @@ public:
         this->m_Options = other.m_Options;
         this->m_Formats = other.m_Formats;
         this->m_Items = other.m_Items;
+        this->m_Tools = other.m_Tools;
         this->m_Languages = other.m_Languages;
         this->pLanguage = NULL;
     }
