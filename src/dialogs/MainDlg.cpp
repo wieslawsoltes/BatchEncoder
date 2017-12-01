@@ -6,7 +6,11 @@
 #include "Strings.h"
 #include "language\LanguageHelper.h"
 #include "utilities\Utilities.h"
-#include "xml\XmlConfiguration.h"
+#include "xml\XmlFormats.h"
+#include "xml\XmlItems.h"
+#include "xml\XmlLanguages.h"
+#include "xml\XmlOptions.h"
+#include "xml\XmlPresets.h"
 #include "MainDlg.h"
 #include "PresetsDlg.h"
 #include "AboutDlg.h"
@@ -1367,7 +1371,7 @@ bool CMainDlg::SearchFolderForLanguages(CString szFile)
                 CString szFileXml;
                 szFileXml.Format(_T("%s\\%s\0"), szFile, w32FileData.cFileName);
 
-                XmlConfiguration doc;
+                XmlLanguages doc;
                 if (doc.Open(szFileXml) == true)
                 {
                     CLanguage language;
@@ -1523,7 +1527,7 @@ void CMainDlg::SetLanguage()
 
 void CMainDlg::LoadLanguage(CString szFileXml)
 {
-    XmlConfiguration doc;
+    XmlLanguages doc;
     if (doc.Open(szFileXml) == true)
     {
         // insert to languages list
@@ -1755,7 +1759,7 @@ void CMainDlg::SetOptions()
 
 bool CMainDlg::LoadOptions(CString szFileXml)
 {
-    XmlConfiguration doc;
+    XmlOptions doc;
     if (doc.Open(szFileXml) == false)
         return false;
 
@@ -1773,14 +1777,14 @@ bool CMainDlg::SaveOptions(CString szFileXml)
 {
     this->GetOptions();
 
-    XmlConfiguration doc;
+    XmlOptions doc;
     doc.SetOptions(this->m_Config.m_Options);
     return doc.Save(szFileXml);
 }
 
 bool CMainDlg::LoadFormats(CString szFileXml)
 {
-    XmlConfiguration doc;
+    XmlFormats doc;
     if (doc.Open(szFileXml) == false)
         return false;
 
@@ -1796,14 +1800,14 @@ bool CMainDlg::LoadFormats(CString szFileXml)
 
 bool CMainDlg::SaveFormats(CString szFileXml)
 {
-    XmlConfiguration doc;
+    XmlFormats doc;
     doc.SetFormats(this->m_Config.m_Formats);
     return doc.Save(szFileXml);
 }
 
 bool CMainDlg::LoadItems(CString szFileXml)
 {
-    XmlConfiguration doc;
+    XmlItems doc;
     if (doc.Open(szFileXml) == false)
         return false;
 
@@ -1822,7 +1826,7 @@ bool CMainDlg::SaveItems(CString szFileXml)
 {
     this->GetItems();
 
-    XmlConfiguration doc;
+    XmlItems doc;
     doc.SetItems(this->m_Config.m_Items);
     return doc.Save(szFileXml);
 }
@@ -1993,7 +1997,7 @@ void CMainDlg::HandleDropFiles(HDROP hDropInfo)
                 else if (szExt.CompareNoCase(_T("format")) == 0)
                 {
                     // Add format to formats list.
-                    XmlConfiguration doc;
+                    XmlFormats doc;
                     if (doc.Open(szPath) == true)
                     {
                         CFormat format;
@@ -2011,7 +2015,7 @@ void CMainDlg::HandleDropFiles(HDROP hDropInfo)
                     {
                         CFormat& format = m_Config.m_Formats.Get(nFormat);
 
-                        XmlConfiguration doc;
+                        XmlPresets doc;
                         if (doc.Open(szPath) == true)
                         {
                             format.m_Presets.RemoveAll();
