@@ -9,7 +9,7 @@
 #include "configuration\Preset.h"
 #include "configuration\PresetsList.h"
 
-class XmlPresets : private XmlBase
+class XmlPresets : public XmlBase
 {
 public:
     XmlPresets()
@@ -18,7 +18,7 @@ public:
     virtual ~XmlPresets()
     {
     }
-private:
+protected:
     void GetPresets(tinyxml2::XMLElement *pPresetsElem, CPresetsList &m_Presets)
     {
         tinyxml2::XMLElement *pPresetElem = pPresetsElem->FirstChildElement("Preset");
