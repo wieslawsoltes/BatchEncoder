@@ -6,6 +6,7 @@
 #include <afxstr.h>
 #include <afxtempl.h>
 #include "XmlBase.h"
+#include "XmlPresets.h"
 #include "configuration\Format.h"
 #include "configuration\FormatsList.h"
 
