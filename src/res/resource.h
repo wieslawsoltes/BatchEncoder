@@ -134,9 +134,10 @@
 #define ID_ACCELERATOR_CTRL_A           32853
 #define ID_ACCELERATOR_CTRL_N           32854
 #define ID_ACCELERATOR_CTRL_I           32855
-#define ID_ACCELERATOR_F9               32856
-#define ID_ACCELERATOR_F7               32857
-#define ID_ACCELERATOR_F8               32858
+#define ID_ACCELERATOR_F10              32856
+#define ID_ACCELERATOR_F9               32857
+#define ID_ACCELERATOR_F7               32858
+#define ID_ACCELERATOR_F8               32859
 #define ID_LANGUAGE_DEFAULT             32860
 
 // Next default values for new objects
