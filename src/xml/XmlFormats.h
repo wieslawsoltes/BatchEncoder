@@ -9,7 +9,7 @@
 #include "configuration\Format.h"
 #include "configuration\FormatsList.h"
 
-class XmlFormats : private XmlBase
+class XmlFormats : public XmlPresets
 {
 public:
     XmlFormats()
@@ -18,7 +18,7 @@ public:
     virtual ~XmlFormats()
     {
     }
-private:
+protected:
     void GetFormat(tinyxml2::XMLElement *pFormatElem, CFormat &m_Format)
     {
         const char *pszId = pFormatElem->Attribute("id");
