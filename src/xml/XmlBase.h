@@ -71,7 +71,7 @@ protected:
         return rValue;
     }
 public:
-    Open(CString szFileName)
+    bool Open(CString szFileName)
     {
         CStdioFile fp;
         if (fp.Open(szFileName, CFile::modeRead | CFile::typeBinary) == TRUE)
