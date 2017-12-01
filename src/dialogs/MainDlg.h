@@ -61,6 +61,7 @@ public:
     CString szOptionsFile;
     CString szFormatsFile;
     CString szItemsFile;
+    CString szToolsFile;
     CConfiguration m_Config;
     CWorkerContext* pWorkerContext;
 public:
@@ -117,6 +118,7 @@ public:
     afx_msg void OnActionConvert();
     afx_msg void OnOptionsConfigurePresets();
     afx_msg void OnOptionsConfigureFormat();
+    afx_msg void OnOptionsConfigureTools();
     afx_msg void OnOptionsDeleteSource();
     afx_msg void OnOptionsShutdownWindows();
     afx_msg void OnOptionsDoNotSave();
@@ -144,6 +146,8 @@ public:
     bool SaveOptions(CString szFileXml);
     bool LoadFormats(CString szFileXml);
     bool SaveFormats(CString szFileXml);
+    bool LoadTools(CString szFileXml);
+    bool SaveTools(CString szFileXml);
     bool LoadItems(CString szFileXml);
     bool SaveItems(CString szFileXml);
     int AddToItems(CString szPath);
