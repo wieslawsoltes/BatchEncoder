@@ -50,6 +50,7 @@
     <String key="0x0004000B" value="&amp;Probar búsqueda del decodificador" />
     <String key="0x0004000C" value="&amp;Validar archivos de entrada" />
     <String key="0x0004000D" value="Sob&amp;reescribir archivos existentes" />
+    <String key="0x0004000E" value="Configure Too&amp;ls...	F10" />
 
     <!-- Language Menu -->
 
