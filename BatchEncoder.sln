@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27004.2009
+VisualStudioVersion = 15.0.27004.2010
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BatchEncoder", "src\BatchEncoder.vcxproj", "{746662AD-C2A1-43B7-87D2-BC45FE80B52B}"
 EndProject
@@ -15,6 +15,8 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TinyXml2", "src\common\tinyxml2\TinyXml2.vcxproj", "{284538AC-D315-437E-AD31-D40934A43236}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MFC.Utilities", "src\common\utilities\MFC.Utilities.vcxproj", "{4B291D95-C2CA-49E3-9EB5-B9F855D32AA0}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MFC.Download", "src\common\download\MFC.Download.vcxproj", "{F9C925A3-DEAB-4C4E-8C61-F9B91B2DF8B5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -80,6 +82,14 @@ Global
 		{4B291D95-C2CA-49E3-9EB5-B9F855D32AA0}.Release|Win32.Build.0 = Release|Win32
 		{4B291D95-C2CA-49E3-9EB5-B9F855D32AA0}.Release|x64.ActiveCfg = Release|x64
 		{4B291D95-C2CA-49E3-9EB5-B9F855D32AA0}.Release|x64.Build.0 = Release|x64
+		{F9C925A3-DEAB-4C4E-8C61-F9B91B2DF8B5}.Debug|Win32.ActiveCfg = Debug|Win32
+		{F9C925A3-DEAB-4C4E-8C61-F9B91B2DF8B5}.Debug|Win32.Build.0 = Debug|Win32
+		{F9C925A3-DEAB-4C4E-8C61-F9B91B2DF8B5}.Debug|x64.ActiveCfg = Debug|x64
+		{F9C925A3-DEAB-4C4E-8C61-F9B91B2DF8B5}.Debug|x64.Build.0 = Debug|x64
+		{F9C925A3-DEAB-4C4E-8C61-F9B91B2DF8B5}.Release|Win32.ActiveCfg = Release|Win32
+		{F9C925A3-DEAB-4C4E-8C61-F9B91B2DF8B5}.Release|Win32.Build.0 = Release|Win32
+		{F9C925A3-DEAB-4C4E-8C61-F9B91B2DF8B5}.Release|x64.ActiveCfg = Release|x64
+		{F9C925A3-DEAB-4C4E-8C61-F9B91B2DF8B5}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

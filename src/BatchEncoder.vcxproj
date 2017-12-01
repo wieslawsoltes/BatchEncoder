@@ -341,6 +341,9 @@ copy /Y ..\lang\*.language $(OutDir)</Command>
     <ProjectReference Include="common\controls\MFC.Controls.vcxproj">
       <Project>{5936eb01-037a-4148-a512-dad975c24cbd}</Project>
     </ProjectReference>
+    <ProjectReference Include="common\download\MFC.Download.vcxproj">
+      <Project>{f9c925a3-deab-4c4e-8c61-f9b91b2df8b5}</Project>
+    </ProjectReference>
     <ProjectReference Include="common\language\MFC.Language.vcxproj">
       <Project>{8f02f1bd-9f9f-439c-9686-3961c64fc8ee}</Project>
     </ProjectReference>
