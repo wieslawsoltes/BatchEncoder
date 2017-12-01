@@ -8,7 +8,8 @@
 #include "utilities\Utilities.h"
 #include "utilities\UnicodeUtf8.h"
 #include "utilities\Utf8String.h"
-#include "xml\XmlConfiguration.h"
+#include "xml\XmlFormats.h"
+#include "xml\XmlPresets.h"
 #include "FormatsDlg.h"
 #include "PresetsDlg.h"
 
@@ -835,7 +836,7 @@ void CFormatsDlg::HandleDropFiles(HDROP hDropInfo)
                 else if (szExt.CompareNoCase(_T("format")) == 0)
                 {
                     // Add format to formats list.
-                    XmlConfiguration doc;
+                    XmlFormats doc;
                     if (doc.Open(szPath) == true)
                     {
                         CFormat format;
@@ -855,7 +856,7 @@ void CFormatsDlg::HandleDropFiles(HDROP hDropInfo)
                         int nItem = m_LstFormats.GetNextSelectedItem(pos);
                         CFormat& format = this->m_Formats.Get(nItem);
 
-                        XmlConfiguration doc;
+                        XmlPresets doc;
                         if (doc.Open(szPath) == true)
                         {
                             CFormat& format = this->m_Formats.Get(this->nSelectedFormat);
@@ -1010,7 +1011,7 @@ void CFormatsDlg::ListSelectionChange()
 
 void CFormatsDlg::LoadFormat(CString szFileXml)
 {
-    XmlConfiguration doc;
+    XmlFormats doc;
     if (doc.Open(szFileXml) == true)
     {
         CFormat format;
@@ -1031,7 +1032,7 @@ void CFormatsDlg::LoadFormat(CString szFileXml)
 
 void CFormatsDlg::SaveFormat(CString szFileXml, CFormat &format)
 {
-    XmlConfiguration doc;
+    XmlFormats doc;
     doc.SetFormat(format);
     if (doc.Save(szFileXml) != true)
     {
@@ -1044,7 +1045,7 @@ void CFormatsDlg::SaveFormat(CString szFileXml, CFormat &format)
 
 void CFormatsDlg::LoadFormats(CString szFileXml)
 {
-    XmlConfiguration doc;
+    XmlFormats doc;
     if (doc.Open(szFileXml) == true)
     {
         this->m_Formats.RemoveAll();
@@ -1069,7 +1070,7 @@ void CFormatsDlg::LoadFormats(CString szFileXml)
 
 void CFormatsDlg::SaveFormats(CString szFileXml)
 {
-    XmlConfiguration doc;
+    XmlFormats doc;
     doc.SetFormats(this->m_Formats);
     if (doc.Save(szFileXml) != true)
     {
