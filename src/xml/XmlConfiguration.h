@@ -49,6 +49,4 @@ public:
     void SetLanguage(CLanguage &m_Language);
     void GetLanguages(CLanguagesList &m_Languages);
     void SetLanguages(CLanguagesList &m_Languages);
-    bool Open(CString szFileName);
-    bool Save(CString szFileName);
 };
