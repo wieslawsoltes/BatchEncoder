@@ -50,6 +50,7 @@
     <String key="0x0004000B" value="&amp;Try To Find Decoder" />
     <String key="0x0004000C" value="&amp;Validate Input Files" />
     <String key="0x0004000D" value="Ove&amp;rwrite Existing Files" />
+    <String key="0x0004000E" value="Configure Too&amp;ls...	F10" />
 
     <!-- Language Menu -->
 
