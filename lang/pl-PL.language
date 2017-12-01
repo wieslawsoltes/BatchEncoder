@@ -50,6 +50,7 @@
     <String key="0x0004000B" value="Spróbuj Znaleźć &amp;Dekoder" />
     <String key="0x0004000C" value="&amp;Sprawdź Poprawność Plików Wejściowych" />
     <String key="0x0004000D" value="&amp;Nadpisz Istniejące Pliki" />
+    <String key="0x0004000E" value="Configure Too&amp;ls...	F10" />
 
     <!-- Language Menu -->
 
