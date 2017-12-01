@@ -9,7 +9,7 @@
 #include "language\Language.h"
 #include "language\LanguagesList.h"
 
-class XmlLanguages : private XmlBase
+class XmlLanguages : public XmlBase
 {
 public:
     XmlLanguages()
@@ -18,7 +18,7 @@ public:
     virtual ~XmlLanguages()
     {
     }
-private:
+protected:
     void GetLanguage(tinyxml2::XMLElement *pLanguageElem, CLanguage &m_Language)
     {
         const char *pszId = pLanguageElem->Attribute("id");
