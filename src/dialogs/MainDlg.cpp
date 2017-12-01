@@ -11,10 +11,12 @@
 #include "xml\XmlLanguages.h"
 #include "xml\XmlOptions.h"
 #include "xml\XmlPresets.h"
+#include "xml\XmlTools.h"
 #include "MainDlg.h"
 #include "PresetsDlg.h"
 #include "AboutDlg.h"
 #include "FormatsDlg.h"
+#include "ToolsDlg.h"
 #include "contexts\ProgressWorkerContext.h"
 #include "contexts\TraceWorkerContext.h"
 #include "worker\WorkThread.h"
@@ -187,6 +189,7 @@ CMainDlg::CMainDlg(CWnd* pParent /*=NULL*/)
     this->szOptionsFile = ::GetExeFilePath() + _T("BatchEncoder.options");
     this->szFormatsFile = ::GetExeFilePath() + _T("BatchEncoder.formats");
     this->szItemsFile = ::GetExeFilePath() + _T("BatchEncoder.items");
+    this->szToolsFile = ::GetExeFilePath() + _T("BatchEncoder.tools");
     this->m_Config.m_Options.Defaults();
     this->pWorkerContext = new CProgressWorkerContext(&this->m_Config, this);
     this->pWorkerContext->bRunning = false;
@@ -257,6 +260,7 @@ BEGIN_MESSAGE_MAP(CMainDlg, CMyDialogEx)
     ON_COMMAND(ID_ACTION_CONVERT, OnActionConvert)
     ON_COMMAND(ID_OPTIONS_CONFIGUREPRESETS, OnOptionsConfigurePresets)
     ON_COMMAND(ID_OPTIONS_CONFIGUREFORMAT, OnOptionsConfigureFormat)
+    ON_COMMAND(ID_OPTIONS_CONFIGURETOOLS, OnOptionsConfigureTools)
     ON_COMMAND(ID_OPTIONS_DELETE_SOURCE, OnOptionsDeleteSource)
     ON_COMMAND(ID_OPTIONS_SHUTDOWN_WINDOWS, OnOptionsShutdownWindows)
     ON_COMMAND(ID_OPTIONS_DO_NOT_SAVE, OnOptionsDoNotSave)
@@ -365,6 +369,7 @@ BOOL CMainDlg::OnInitDialog()
 
     try
     {
+        this->LoadTools(this->szToolsFile);
         this->LoadFormats(this->szFormatsFile);
         this->LoadOptions(this->szOptionsFile);
         this->SearchFolderForLanguages(::GetExeFilePath());
@@ -430,6 +435,7 @@ void CMainDlg::OnClose()
     {
         try
         {
+            this->SaveTools(this->szToolsFile);
             this->SaveFormats(this->szFormatsFile);
             this->SaveOptions(this->szOptionsFile);
             this->SaveItems(this->szItemsFile);
@@ -1197,6 +1203,10 @@ void CMainDlg::OnOptionsConfigureFormat()
     }
 }
 
+void CMainDlg::OnOptionsConfigureTools()
+{
+}
+
 void CMainDlg::OnOptionsDeleteSource()
 {
     if (this->pWorkerContext->bRunning == false)
@@ -1802,6 +1812,26 @@ bool CMainDlg::SaveFormats(CString szFileXml)
 {
     XmlFormats doc;
     doc.SetFormats(this->m_Config.m_Formats);
+    return doc.Save(szFileXml);
+}
+
+bool CMainDlg::LoadTools(CString szFileXml)
+{
+    XmlTools doc;
+    if (doc.Open(szFileXml) == false)
+        return false;
+
+    this->m_Config.m_Tools.RemoveAll();
+
+    doc.GetTools(this->m_Config.m_Tools);
+
+    return true;
+}
+
+bool CMainDlg::SaveTools(CString szFileXml)
+{
+    XmlTools doc;
+    doc.SetTools(this->m_Config.m_Tools);
     return doc.Save(szFileXml);
 }
 
