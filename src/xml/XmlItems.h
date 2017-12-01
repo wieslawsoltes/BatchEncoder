@@ -9,7 +9,7 @@
 #include "configuration\Item.h"
 #include "configuration\ItemsList.h"
 
-class XmlItems : private XmlBase
+class XmlItems : public XmlBase
 {
 public:
     XmlItems()
@@ -18,7 +18,7 @@ public:
     virtual ~XmlItems()
     {
     }
-private:
+protected:
     void GetItems(tinyxml2::XMLElement *pItemsElem, CItemsList &m_Items)
     {
         tinyxml2::XMLElement *pItemElem = pItemsElem->FirstChildElement("Item");
