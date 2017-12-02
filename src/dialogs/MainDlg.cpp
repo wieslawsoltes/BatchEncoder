@@ -1205,6 +1205,31 @@ void CMainDlg::OnOptionsConfigureFormat()
 
 void CMainDlg::OnOptionsConfigureTools()
 {
+    if (this->pWorkerContext->bRunning == false)
+    {
+        CToolsDlg dlg;
+        dlg.pConfig = &m_Config;
+        dlg.nSelectedFormat = this->m_CmbFormat.GetCurSel();
+        dlg.m_Formats = m_Config.m_Formats;
+        dlg.szToolsDialogResize = m_Config.m_Options.szFormatsDialogResize;
+        dlg.szToolsListColumns = m_Config.m_Options.szFormatsListColumns;
+
+        INT_PTR nRet = dlg.DoModal();
+        if (nRet == IDOK)
+        {
+            m_Config.m_Formats.RemoveAll();
+            m_Config.m_Formats = dlg.m_Formats;
+
+            if (dlg.nSelectedFormat >= 0)
+                m_Config.m_Options.nSelectedFormat = dlg.nSelectedFormat;
+
+            this->UpdateFormatComboBox();
+            this->UpdatePresetComboBox();
+        }
+
+        m_Config.m_Options.szFormatsDialogResize = dlg.szToolsDialogResize;
+        m_Config.m_Options.szFormatsListColumns = dlg.szToolsListColumns;
+    }
 }
 
 void CMainDlg::OnOptionsDeleteSource()

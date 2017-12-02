@@ -78,10 +78,37 @@
 #define IDC_BUTTON_FORMAT_IMPORT        1076
 #define IDC_BUTTON_FORMAT_EXPORT        1077
 #define IDC_BUTTON_FORMAT_DUPLICATE     1078
-#define IDC_STATIC_TEXT_APP_NAME        1080
-#define IDC_STATIC_TEXT_WEBSITE         1081
-#define IDC_STATIC_TEXT_EMAIL           1082
-#define IDC_STATIC_LICENSE              1083
+#define IDC_LIST_TOOLS                  1090
+#define IDC_STATIC_TOOL_NAME            1091
+#define IDC_EDIT_TOOL_NAME              1092
+#define IDC_STATIC_TOOL_PLATFORM        1093
+#define IDC_EDIT_TOOL_PLATFORM          1094
+#define IDC_STATIC_TOOL_FORMATS         1095
+#define IDC_EDIT_TOOL_FORMATS           1096
+#define IDC_STATIC_TOOL_URL             1097
+#define IDC_EDIT_TOOL_URL               1098
+#define IDC_BUTTON_EDIT_FORMATS         1099
+#define IDC_STATIC_TOOL_FILE            1100
+#define IDC_EDIT_TOOL_FILE              1101
+#define IDC_STATIC_TOOL_EXTRACT         1102
+#define IDC_EDIT_TOOL_EXTRACT           1103
+#define IDC_STATIC_TOOL_PATH            1104
+#define IDC_EDIT_TOOL_PATH              1105
+#define IDC_BUTTON_TOOL_UP              1106
+#define IDC_BUTTON_TOOL_DOWN            1107
+#define IDC_BUTTON_TOOL_REMOVE_ALL      1108
+#define IDC_BUTTON_TOOL_REMOVE          1109
+#define IDC_BUTTON_TOOL_ADD             1110
+#define IDC_BUTTON_TOOL_LOAD            1111
+#define IDC_BUTTON_TOOL_SAVE            1112
+#define IDC_BUTTON_TOOL_UPDATE          1113
+#define IDC_BUTTON_TOOL_IMPORT          1114
+#define IDC_BUTTON_TOOL_EXPORT          1115
+#define IDC_BUTTON_TOOL_DUPLICATE       1116
+#define IDC_STATIC_TEXT_APP_NAME        1130
+#define IDC_STATIC_TEXT_WEBSITE         1131
+#define IDC_STATIC_TEXT_EMAIL           1132
+#define IDC_STATIC_LICENSE              1133
 #define ID_FILE_LOADLIST                32771
 #define ID_FILE_SAVELIST                32772
 #define ID_FILE_CLEARLIST               32773
@@ -146,7 +173,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        109
 #define _APS_NEXT_COMMAND_VALUE         32870
-#define _APS_NEXT_CONTROL_VALUE         1091
+#define _APS_NEXT_CONTROL_VALUE         1140
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

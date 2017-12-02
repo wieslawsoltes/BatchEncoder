@@ -95,5 +95,7 @@ const TCHAR* pszFileDialogs[] = {
     /* 04 */ _T("Formats Files"),
     /* 05 */ _T("Exe Files"),
     /* 06 */ _T("Progress Files"),
-    /* 07 */ _T("Format Files")
+    /* 07 */ _T("Format Files"),
+    /* 08 */ _T("Tools Files"),
+    /* 09 */ _T("Tool Files")
 };
