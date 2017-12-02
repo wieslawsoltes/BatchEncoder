@@ -3,14 +3,14 @@
 
 #pragma once
 
-#include "OutputPath.h"
+#include "utilities\OutputPath.h"
+#include "utilities\Pipe.h"
+#include "utilities\Thread.h"
+#include "utilities\Process.h"
 #include "WorkerContext.h"
 #include "PipeContext.h"
 #include "FileContext.h"
 #include "ItemContext.h"
-#include "Pipe.h"
-#include "Thread.h"
-#include "Process.h"
 
 bool ConvertItem(CItemContext* pContext);
 

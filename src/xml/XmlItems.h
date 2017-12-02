@@ -5,7 +5,7 @@
 
 #include <afxstr.h>
 #include <afxtempl.h>
-#include "XmlBase.h"
+#include "xml\XmlBase.h"
 #include "configuration\Item.h"
 #include "configuration\ItemsList.h"
 

@@ -3,9 +3,9 @@
 
 #pragma once
 
-#include "OutputPath.h"
-#include "Synchronize.h"
-#include "Thread.h"
+#include "utilities\OutputPath.h"
+#include "utilities\Synchronize.h"
+#include "utilities\Thread.h"
 #include "configuration\Configuration.h"
 
 class CWorkerContext
