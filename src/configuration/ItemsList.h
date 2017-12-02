@@ -4,7 +4,7 @@
 #pragma once
 
 #include <afxstr.h>
-#include "collections\ListT.h"
+#include "utilities\ListT.h"
 #include "Item.h"
 
 class CItemsList : public CListT<CItem>
