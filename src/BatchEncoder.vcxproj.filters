@@ -140,15 +140,6 @@
     <ClInclude Include="worker\LuaProgess.h">
       <Filter>Header Files\Worker</Filter>
     </ClInclude>
-    <ClInclude Include="worker\Pipe.h">
-      <Filter>Header Files\Worker</Filter>
-    </ClInclude>
-    <ClInclude Include="worker\Thread.h">
-      <Filter>Header Files\Worker</Filter>
-    </ClInclude>
-    <ClInclude Include="worker\Process.h">
-      <Filter>Header Files\Worker</Filter>
-    </ClInclude>
     <ClInclude Include="worker\PipeContext.h">
       <Filter>Header Files\Worker</Filter>
     </ClInclude>
@@ -156,9 +147,6 @@
       <Filter>Header Files\Worker</Filter>
     </ClInclude>
     <ClInclude Include="worker\ItemContext.h">
-      <Filter>Header Files\Worker</Filter>
-    </ClInclude>
-    <ClInclude Include="worker\Synchronize.h">
       <Filter>Header Files\Worker</Filter>
     </ClInclude>
     <ClInclude Include="worker\WorkerContext.h">
@@ -172,12 +160,6 @@
     </ClInclude>
     <ClInclude Include="contexts\ProgressWorkerContext.h">
       <Filter>Header Files\Contexts</Filter>
-    </ClInclude>
-    <ClInclude Include="worker\OutputPath.h">
-      <Filter>Header Files\Worker</Filter>
-    </ClInclude>
-    <ClInclude Include="xml\XmlBase.h">
-      <Filter>Header Files\Xml</Filter>
     </ClInclude>
     <ClInclude Include="xml\XmlFormats.h">
       <Filter>Header Files\Xml</Filter>

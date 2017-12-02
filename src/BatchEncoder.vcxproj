@@ -289,7 +289,6 @@ copy /Y ..\lang\*.language $(OutDir)</Command>
     <ClInclude Include="StdAfx.h" />
     <ClInclude Include="MainApp.h" />
     <ClInclude Include="Strings.h" />
-    <ClInclude Include="worker\OutputPath.h" />
     <ClInclude Include="configuration\Format.h" />
     <ClInclude Include="configuration\FormatsList.h" />
     <ClInclude Include="configuration\Item.h" />
@@ -308,16 +307,11 @@ copy /Y ..\lang\*.language $(OutDir)</Command>
     <ClInclude Include="worker\FileContext.h" />
     <ClInclude Include="worker\ItemContext.h" />
     <ClInclude Include="worker\LuaProgess.h" />
-    <ClInclude Include="worker\Pipe.h" />
-    <ClInclude Include="worker\Thread.h" />
-    <ClInclude Include="worker\Process.h" />
     <ClInclude Include="worker\PipeContext.h" />
-    <ClInclude Include="worker\Synchronize.h" />
     <ClInclude Include="worker\WorkerContext.h" />
     <ClInclude Include="worker\WorkThread.h" />
     <ClInclude Include="contexts\ProgressWorkerContext.h" />
     <ClInclude Include="contexts\TraceWorkerContext.h" />
-    <ClInclude Include="xml\XmlBase.h" />
     <ClInclude Include="xml\XmlFormats.h" />
     <ClInclude Include="xml\XmlItems.h" />
     <ClInclude Include="xml\XmlLanguages.h" />
@@ -355,6 +349,9 @@ copy /Y ..\lang\*.language $(OutDir)</Command>
     </ProjectReference>
     <ProjectReference Include="common\utilities\MFC.Utilities.vcxproj">
       <Project>{4b291d95-c2ca-49e3-9eb5-b9f855d32aa0}</Project>
+    </ProjectReference>
+    <ProjectReference Include="common\xml\MFC.Xml.vcxproj">
+      <Project>{575068fe-f001-47ef-afb6-af7a10435b8a}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
