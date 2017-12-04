@@ -279,4 +279,15 @@
     <String key="0x00310009" value="Tools Files" />
     <String key="0x00310010" value="Tool Files" />
 
+    <!-- Strings Download Status -->
+
+    <String key="0x00400001" value="Finding resource..." />
+    <String key="0x00400002" value="Connecting..." />
+    <String key="0x00400003" value="Sending request..." />
+    <String key="0x00400004" value="Mime type available" />
+    <String key="0x00400005" value="Cache filename available" />
+    <String key="0x00400006" value="Begin download" />
+    <String key="0x00400007" value="End download" />
+    <String key="0x00400008" value="Status code : " />
+
 </Language>

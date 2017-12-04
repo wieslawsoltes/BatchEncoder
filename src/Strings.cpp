@@ -106,3 +106,14 @@ const TCHAR* pszFileDialogs[] = {
     /* 08 */ _T("Tools Files"),
     /* 09 */ _T("Tool Files")
 };
+
+const TCHAR* pszDownloadStatus[] = {
+    /* 00 */ _T("Finding resource..."),
+    /* 01 */ _T("Connecting..."),
+    /* 02 */ _T("Sending request..."),
+    /* 03 */ _T("Mime type available"),
+    /* 04 */ _T("Cache filename available"),
+    /* 05 */ _T("Begin download"),
+    /* 06 */ _T("End download"),
+    /* 07 */ _T("Status code : ")
+};

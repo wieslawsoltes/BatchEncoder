@@ -911,6 +911,15 @@ void CToolsDlg::DownloadTools()
                 m_Download.Download(tool.szUrl, tool.szFile,
                     [this, i](int nProgress, CString szStatus)
                     {
+                        for (int s = 0; s < 8; s++)
+                        {
+                            if (szStatus.Find(pszDownloadStatus[s]) > 0)
+                            {
+                                CString szTranslation = pConfig->GetString(0x00400001, pszDownloadStatus[s]);
+                                szStatus.Replace(pszDownloadStatus[s], szTranslation);
+                            }
+                        }
+
                         m_LstTools.SetItemText(i, TOOL_COLUMN_STATUS, szStatus);
                     });
             }
