@@ -734,7 +734,7 @@ void CFormatsDlg::SaveWindowSettings()
     this->szFormatsDialogResize = this->GetWindowRectStr();
 
     // save columns width from FormatsList
-    int nColWidth[11];
+    int nColWidth[2];
     for (int i = 0; i < 2; i++)
         nColWidth[i] = m_LstFormats.GetColumnWidth(i);
     szFormatsListColumns.Format(_T("%d %d"),
