@@ -6,9 +6,10 @@
 - Added dynamic layout support for dialogs.
 - Added multi-selection support for presets list.
 - Added multi-selection support for formats list.
-- Updated QAAC AAC format to use --no-optimize instead of --adts.
 - Refactored common code as submodules.
 - Refactored xml configuration code.
+- Updated tools to latest versions.
+- Updated QAAC AAC format to use --no-optimize instead of --adts.
 - Updated TinyXml-2 to version 5.0.1.
 
 ### Version 1.4
