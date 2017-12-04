@@ -2,8 +2,8 @@
 <Tools>
     <Tool name="ssrc_x86" platform="x86" formats="SSRC_WAV" url="http://shibatch.sourceforge.net/download/ssrc-1.33.tar.gz" file="ssrc-1.33.tar.gz" extract="zip" path=""/>
     <Tool name="ssrc_x86" platform="x86" formats="SSRC_WAV" url="http://shibatch.sourceforge.net/download/ssrc-1.30.tgz" file="ssrc-1.30.tgz" extract="zip" path=""/>
-    <Tool name="lame_x86" platform="x86" formats="LAME_MP3,LAME_MP3_WAV,LAME_MP1_WAV,LAME_MP2_WAV,LAME_MP3_WAV" url="http://www.rarewares.org/files/mp3/lame3.99.5.zip" file="lame3.99.5.zip" extract="zip" path="lame3.99.5/lame.exe"/>
-    <Tool name="lame_x64" platform="x64" formats="LAME_MP3,LAME_MP3_WAV,LAME_MP1_WAV,LAME_MP2_WAV,LAME_MP3_WAV" url="http://www.rarewares.org/files/mp3/lame3.99.5-64.zip" file="lame3.99.5-64.zip" extract="zip" path=""/>
+    <Tool name="lame_x86" platform="x86" formats="LAME_MP3,LAME_MP3_WAV,LAME_MP1_WAV,LAME_MP2_WAV,LAME_MP3_WAV" url="http://www.rarewares.org/files/mp3/lame3.100.zip" file="lame3.100.zip" extract="zip" path="lame3.100/lame.exe"/>
+    <Tool name="lame_x64" platform="x64" formats="LAME_MP3,LAME_MP3_WAV,LAME_MP1_WAV,LAME_MP2_WAV,LAME_MP3_WAV" url="http://www.rarewares.org/files/mp3/lame3.100-64.zip" file="lame3.100-64.zip" extract="zip" path="lame3.100-64/lame.exe"/>
     <Tool name="musepack_x86" platform="x86" formats="MPCENC_MPC,MPCDEC_MP+_WAV,MPCDEC_MPC_WAV,MPCDEC_MPP_WAV" url="https://files.musepack.net/windows/musepack_windows_2009-04-02.zip" file="musepack_windows_2009-04-02.zip" extract="zip" path=""/>
     <Tool name="faac_x86" platform="x86" formats="FAAC_AAC" url="http://www.rarewares.org/files/aac/faac-1.28-mod.zip" file="faac-1.28-mod.zip" extract="zip" path=""/>
     <Tool name="faad2_x86" platform="x86" formats="FAAD_AAC_WAV" url="http://www.rarewares.org/files/aac/faad2-20100614.zip" file="faad2-20100614.zip" extract="zip" path=""/>
@@ -19,8 +19,8 @@
     <Tool name="oggenc2_aoTuVb_SSE3_x86" platform="x86" formats="OGGENC2_OGG" url="http://www.rarewares.org/files/ogg/oggenc2.88-aoTuVb6.03_2015-LancerSSE3.zip" file="oggenc2.88-aoTuVb6.03_2015-LancerSSE3.zip" extract="zip" path=""/>
     <Tool name="oggenc2_aoTuVb_SSE3_x64" platform="x64" formats="OGGENC2_OGG" url="http://www.rarewares.org/files/ogg/oggenc2.88-aoTuVb6.03_2015-LancerSSE3_x64.zip" file="oggenc2.88-aoTuVb6.03_2015-LancerSSE3_x64.zip" extract="zip" path=""/>
     <Tool name="oggdec" platform="x86" formats="OGGDEC_OGG_WAV" url="http://www.rarewares.org/files/ogg/oggdecV1.10.1.zip" file="oggdecV1.10.1.zip" extract="zip" path=""/>
-    <Tool name="aften_x86" platform="x86" formats="AFTEN_AC3" url="https://github.com/wieslawsoltes/wavtoac3encoder/releases/download/5.5/aften-git-20091226-icl11_1_054-win32-bin.zip" file="aften-git-20091226-icl11_1_054-win32-bin.zip" extract="zip" path=""/>
-    <Tool name="aften_x64" platform="x64" formats="AFTEN_AC3" url="https://github.com/wieslawsoltes/wavtoac3encoder/releases/download/5.5/aften-git-20091226-icl11_1_054-win64-bin.zip" file="aften-git-20091226-icl11_1_054-win64-bin.zip" extract="zip" path=""/>
+    <Tool name="aften_x86" platform="x86" formats="AFTEN_AC3" url="https://github.com/wieslawsoltes/AftenWindowsBuilds/releases/download/git-20091226/aften-git-20091226-icl11_1_054-win32-bin.zip" file="aften-git-20091226-icl11_1_054-win32-bin.zip" extract="zip" path=""/>
+    <Tool name="aften_x64" platform="x64" formats="AFTEN_AC3" url="https://github.com/wieslawsoltes/AftenWindowsBuilds/releases/download/git-20091226/aften-git-20091226-icl11_1_054-win64-bin.zip" file="aften-git-20091226-icl11_1_054-win64-bin.zip" extract="zip" path=""/>
     <Tool name="flac_x86" platform="x86" formats="FLAC_FLAC,FLAC_FLAC_WAV" url="http://downloads.xiph.org/releases/flac/flac-1.3.2-win.zip" file="flac-1.3.2-win.zip" extract="zip" path=""/>
     <Tool name="wavpack_x86" platform="x86" formats="WAVPACK_WV,WVUNPACK_WV_WAV" url="http://www.wavpack.com/wavpack-5.0.0-x86.zip" file="wavpack-5.0.0-x86.zip" extract="zip" path=""/>
     <Tool name="wavpack_x64" platform="x64" formats="WAVPACK_WV,WVUNPACK_WV_WAV" url="http://www.wavpack.com/wavpack-5.0.0-x64.zip" file="wavpack-5.0.0-x64.zip" extract="zip" path=""/>
@@ -34,9 +34,9 @@
     <Tool name="tta_SSE4_x64" platform="x64" formats="TTA_TTA,TTA_TTA_WAV" url="https://downloads.sourceforge.net/project/tta/tta/ttaenc-win/tta-2.3-64bit-sse4.zip?use_mirror=netassist" file="tta-2.3-64bit-sse4.zip" extract="zip" path=""/>
     <Tool name="TAK_x86" platform="x86" formats="TAKC_TAK,TAKC_TAK_WAV" url="http://www.thbeck.de/Download/TAK_2.3.0.zip" file="TAK_2.3.0.zip" extract="zip" path=""/>
     <Tool name="NeroAACCodec_x86" platform="x86" formats="NERO_M4A,NERO_MP4,NERO_M4A_WAV,NERO_MP4_WAV" url="http://www.videohelp.com/download/NeroAACCodec-1.5.4.zip?r=rmHRsLcz" file="NeroAACCodec-1.5.4.zip" extract="zip" path=""/>
-    <Tool name="qaac_x86" platform="x86" formats="QAAC_AAC,QAAC_ALAC,QAAC_M4A,QAAC_M4A_HE,QAAC_AAC_WAV,QAAC_M4A_WAV" url="https://sites.google.com/site/qaacpage/cabinet/qaac_2.62.zip?attredirects=0&amp;d=1" file="qaac_2.62.zip" extract="zip" path=""/>
+    <Tool name="qaac_x86" platform="x86" formats="QAAC_AAC,QAAC_ALAC,QAAC_M4A,QAAC_M4A_HE,QAAC_AAC_WAV,QAAC_M4A_WAV" url="https://sites.google.com/site/qaacpage/cabinet/qaac_2.64.zip?attredirects=0&amp;d=1" file="qaac_2.64.zip" extract="zip" path=""/>
     <Tool name="lossyWAV_x86" platform="x86" formats="" url="https://hydrogenaud.io/index.php?action=dlattach;topic=112649.0;attach=10350" file="lossyWAV_v1.4.2.zip" extract="zip" path=""/>
-    <Tool name="ffmpeg_x86" platform="x86" formats="FFMPEG_AC3,FFMPEG_AC3_WAV,FFMPEG_DTS_WAV,FFMPEG_DTSHD_WAV,FFMPEG_EAC3_WAV,FFMPEG_TRUEHD_WAV" url="https://ffmpeg.zeranoe.com/builds/win32/static/ffmpeg-3.2.2-win32-static.zip" file="ffmpeg-3.2.2-win32-static.zip" extract="zip" path=""/>
-    <Tool name="ffmpeg_x64" platform="x64" formats="FFMPEG_AC3,FFMPEG_AC3_WAV,FFMPEG_DTS_WAV,FFMPEG_DTSHD_WAV,FFMPEG_EAC3_WAV,FFMPEG_TRUEHD_WAV" url="https://ffmpeg.zeranoe.com/builds/win64/static/ffmpeg-3.2.2-win64-static.zip" file="ffmpeg-3.2.2-win64-static.zip" extract="zip" path=""/>
+    <Tool name="ffmpeg_x86" platform="x86" formats="FFMPEG_AC3,FFMPEG_AC3_WAV,FFMPEG_DTS_WAV,FFMPEG_DTSHD_WAV,FFMPEG_EAC3_WAV,FFMPEG_TRUEHD_WAV" url="https://ffmpeg.zeranoe.com/builds/win32/static/ffmpeg-3.4-win32-static.zip" file="ffmpeg-3.4-win32-static.zip" extract="zip" path=""/>
+    <Tool name="ffmpeg_x64" platform="x64" formats="FFMPEG_AC3,FFMPEG_AC3_WAV,FFMPEG_DTS_WAV,FFMPEG_DTSHD_WAV,FFMPEG_EAC3_WAV,FFMPEG_TRUEHD_WAV" url="https://ffmpeg.zeranoe.com/builds/win64/static/ffmpeg-3.4-win64-static.zip" file="ffmpeg-3.4-win64-static.zip" extract="zip" path=""/>
     <Tool name="ffdcaenc_x86" platform="x86" formats="FFDCAENC_DTS" url="https://github.com/filler56789/ffdcaenc-2/files/299448/ffdcaenc.zip" file="ffdcaenc.zip" extract="zip" path=""/>
 </Tools>

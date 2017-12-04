@@ -24,8 +24,8 @@ $Tools =
     ( "http://shibatch.sourceforge.net/download/ssrc-1.33.tar.gz", "ssrc-1.33.tar.gz" ),
     ( "http://shibatch.sourceforge.net/download/ssrc-1.30.tgz", "ssrc-1.30.tgz" ),
     # LAME
-    ( "http://www.rarewares.org/files/mp3/lame3.99.5.zip", "lame3.99.5.zip" ),
-    ( "http://www.rarewares.org/files/mp3/lame3.99.5-64.zip", "lame3.99.5-64.zip" ),
+    ( "http://www.rarewares.org/files/mp3/lame3.100.zip", "lame3.100.zip" ),
+    ( "http://www.rarewares.org/files/mp3/lame3.100-64.zip", "lame3.100-64.zip" ),
     # Musepack 
     ( "https://files.musepack.net/windows/musepack_windows_2009-04-02.zip", "musepack_windows_2009-04-02.zip" ),
     # FAAC 
@@ -47,8 +47,8 @@ $Tools =
     ( "http://www.rarewares.org/files/ogg/oggenc2.88-aoTuVb6.03_2015-LancerSSE3_x64.zip", "oggenc2.88-aoTuVb6.03_2015-LancerSSE3_x64.zip" ),
     ( "http://www.rarewares.org/files/ogg/oggdecV1.10.1.zip", "oggdecV1.10.1.zip" ),
     # Aften
-    ( "https://github.com/wieslawsoltes/wavtoac3encoder/releases/download/5.5/aften-git-20091226-icl11_1_054-win32-bin.zip", "aften-git-20091226-icl11_1_054-win32-bin.zip" ),
-    ( "https://github.com/wieslawsoltes/wavtoac3encoder/releases/download/5.5/aften-git-20091226-icl11_1_054-win64-bin.zip", "aften-git-20091226-icl11_1_054-win64-bin.zip" ),
+    ( "https://github.com/wieslawsoltes/AftenWindowsBuilds/releases/download/git-20091226/aften-git-20091226-icl11_1_054-win32-bin.zip", "aften-git-20091226-icl11_1_054-win32-bin.zip" ),
+    ( "https://github.com/wieslawsoltes/AftenWindowsBuilds/releases/download/git-20091226/aften-git-20091226-icl11_1_054-win64-bin.zip", "aften-git-20091226-icl11_1_054-win64-bin.zip" ),
     # FLAC
     ( "http://downloads.xiph.org/releases/flac/flac-1.3.2-win.zip", "flac-1.3.2-win.zip" ),
     # WavPack 
@@ -71,12 +71,12 @@ $Tools =
     # Nero AAC
     ( "http://www.videohelp.com/download/NeroAACCodec-1.5.4.zip?r=rmHRsLcz", "NeroAACCodec-1.5.4.zip" ),
     # qaac
-    ( "https://sites.google.com/site/qaacpage/cabinet/qaac_2.62.zip?attredirects=0&d=1", "qaac_2.62.zip" ),
+    ( "https://sites.google.com/site/qaacpage/cabinet/qaac_2.64.zip?attredirects=0&d=1", "qaac_2.64.zip" ),
     # lossyWAV
     ( "https://hydrogenaud.io/index.php?action=dlattach;topic=112649.0;attach=10350", "lossyWAV_v1.4.2.zip" ),
     # FFmpeg
-    ( "https://ffmpeg.zeranoe.com/builds/win32/static/ffmpeg-3.2.2-win32-static.zip", "ffmpeg-3.2.2-win32-static.zip" ),
-    ( "https://ffmpeg.zeranoe.com/builds/win64/static/ffmpeg-3.2.2-win64-static.zip", "ffmpeg-3.2.2-win64-static.zip" ),
+    ( "https://ffmpeg.zeranoe.com/builds/win32/static/ffmpeg-3.4-win32-static.zip", "ffmpeg-3.4-win32-static.zip" ),
+    ( "https://ffmpeg.zeranoe.com/builds/win64/static/ffmpeg-3.4-win64-static.zip", "ffmpeg-3.4-win64-static.zip" ),
     # ffdcaenc
     ( "https://github.com/filler56789/ffdcaenc-2/files/299448/ffdcaenc.zip", "ffdcaenc.zip" )
 )
