@@ -639,7 +639,7 @@ void CToolsDlg::AddToList(CTool &tool, int nItem)
     m_LstTools.InsertItem(&lvi);
 
     lvi.iSubItem = TOOL_COLUMN_URL;
-    lvi.pszText = (LPTSTR)(LPCTSTR)(tool.szurl);
+    lvi.pszText = (LPTSTR)(LPCTSTR)(tool.szUrl);
     m_LstTools.SetItemText(lvi.iItem, TOOL_COLUMN_URL, lvi.pszText);
 
     lvi.iSubItem = TOOL_COLUMN_URL;
