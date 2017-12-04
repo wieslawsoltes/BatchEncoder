@@ -11,4 +11,5 @@ extern const TCHAR* pszConvertItem[];
 extern const TCHAR* pszMainDialog[];
 extern const TCHAR* pszPresetsDialog[];
 extern const TCHAR* pszFormatsDialog[];
+extern const TCHAR* pszToolsDialog[];
 extern const TCHAR* pszFileDialogs[];
