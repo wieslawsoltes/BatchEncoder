@@ -294,6 +294,7 @@ BEGIN_MESSAGE_MAP(CMainDlg, CMyDialogEx)
     ON_COMMAND(ID_ACCELERATOR_F9, OnBnClickedButtonConvert)
     ON_COMMAND(ID_ACCELERATOR_F7, OnOptionsConfigurePresets)
     ON_COMMAND(ID_ACCELERATOR_F8, OnOptionsConfigureFormat)
+    ON_COMMAND(ID_ACCELERATOR_F10, OnOptionsConfigureTools)
 END_MESSAGE_MAP()
 
 BOOL CMainDlg::OnInitDialog()
