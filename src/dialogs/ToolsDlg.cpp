@@ -612,12 +612,13 @@ void CToolsDlg::SaveWindowSettings()
     this->szToolsDialogResize = this->GetWindowRectStr();
 
     // save columns width from ToolsList
-    int nColWidth[2];
-    for (int i = 0; i < 2; i++)
+    int nColWidth[3];
+    for (int i = 0; i < 3; i++)
         nColWidth[i] = m_LstTools.GetColumnWidth(i);
-    szToolsListColumns.Format(_T("%d %d"),
+    szToolsListColumns.Format(_T("%d %d %d"),
         nColWidth[0],
-        nColWidth[1]);
+        nColWidth[1],
+        nColWidth[2]);
 }
 
 void CToolsDlg::SetLanguage()
