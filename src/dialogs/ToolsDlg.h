@@ -13,6 +13,8 @@
 #include "controls\MyDialogEx.h"
 #include "configuration\ToolsList.h"
 #include "configuration\Configuration.h"
+#include "utilities\Download.h"
+#include "utilities\Thread.h"
 
 #define TOOL_COLUMN_NAME      0
 #define TOOL_COLUMN_URL       1
@@ -53,6 +55,8 @@ public:
     volatile bool bUpdate;
     int nSelectedTool;
     CToolsList m_Tools;
+    CDownload m_Download;
+    CThread m_Worker;
 public:
     CMyStatic m_StcName;
     CMyStatic m_StcPlatform;
@@ -82,6 +86,7 @@ public:
     CMyButton m_BtnUpdate;
     CMyButton m_BtnLoad;
     CMyButton m_BtnSave;
+    CMyButton m_BtnDownload;
 public:
     afx_msg void OnDropFiles(HDROP hDropInfo);
     afx_msg void OnBnClickedOk();
@@ -105,6 +110,7 @@ public:
     afx_msg void OnEnChangeEditToolPath();
     afx_msg void OnBnClickedButtonLoadTools();
     afx_msg void OnBnClickedButtonSaveTools();
+    afx_msg void OnBnClickedButtonDownloadSelected();
     afx_msg void OnClose();
 public:
     void LoadWindowSettings();
@@ -119,4 +125,5 @@ public:
     void SaveTool(CString szFileXml, CTool &tool);
     void LoadTools(CString szFileXml);
     void SaveTools(CString szFileXml);
+    void DownloadTools();
 };

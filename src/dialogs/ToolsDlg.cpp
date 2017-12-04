@@ -66,6 +66,7 @@ void CToolsDlg::DoDataExchange(CDataExchange* pDX)
     DDX_Control(pDX, IDC_BUTTON_TOOL_UPDATE, m_BtnUpdate);
     DDX_Control(pDX, IDC_BUTTON_TOOL_LOAD, m_BtnLoad);
     DDX_Control(pDX, IDC_BUTTON_TOOL_SAVE, m_BtnSave);
+    DDX_Control(pDX, IDC_BUTTON_TOOL_DOWNLOAD, m_BtnDownload);
 }
 
 BEGIN_MESSAGE_MAP(CToolsDlg, CMyDialogEx)
@@ -93,6 +94,7 @@ BEGIN_MESSAGE_MAP(CToolsDlg, CMyDialogEx)
     ON_BN_CLICKED(IDC_BUTTON_TOOL_UPDATE, OnBnClickedButtonUpdateTool)
     ON_BN_CLICKED(IDC_BUTTON_TOOL_LOAD, OnBnClickedButtonLoadTools)
     ON_BN_CLICKED(IDC_BUTTON_TOOL_SAVE, OnBnClickedButtonSaveTools)
+    ON_BN_CLICKED(IDC_BUTTON_TOOL_DOWNLOAD, OnBnClickedButtonDownloadSelected)
     ON_WM_CLOSE()
 END_MESSAGE_MAP()
 
@@ -578,6 +580,48 @@ void CToolsDlg::OnBnClickedButtonSaveTools()
     }
 }
 
+void CToolsDlg::OnBnClickedButtonDownloadSelected()
+{
+    if (bUpdate == true)
+    {
+        m_Worker.Terminate();
+
+        CLanguageHelper helper(pConfig);
+        helper.SetWndText(&m_BtnDownload, 0x000E0023);
+
+        bUpdate = false;
+        return;
+    }
+
+    int nCount = m_LstTools.GetItemCount();
+    if (nCount > 0)
+    {
+        if (bUpdate == true)
+            return;
+
+        bUpdate = true;
+
+        for (int i = 0; i < nCount; i++)
+        {
+            if (m_LstTools.GetItemState(i, LVIS_SELECTED) == LVIS_SELECTED)
+            {
+                m_LstTools.SetItemText(i, TOOL_COLUMN_STATUS, _T(""));
+            }
+        }
+
+        bUpdate = false;
+
+        m_Worker.Start(
+            [](void *param)->int
+            {
+                CToolsDlg* pToolsDlg = (CToolsDlg*)param;
+                pToolsDlg->DownloadTools();
+                return pToolsDlg->m_Worker.Close();
+            },
+            this, false);
+    }
+}
+
 void CToolsDlg::OnClose()
 {
     this->SaveWindowSettings();
@@ -648,8 +692,9 @@ void CToolsDlg::SetLanguage()
     helper.SetWndText(&m_BtnAdd, 0x000E0020);
     helper.SetWndText(&m_BtnLoad, 0x000E0021);
     helper.SetWndText(&m_BtnSave, 0x000E0022);
-    helper.SetWndText(&m_BtnUpdate, 0x000E0023);
-    helper.SetWndText(&m_BtnOK, 0x000E0024);
+    helper.SetWndText(&m_BtnDownload, 0x000E0023);
+    helper.SetWndText(&m_BtnUpdate, 0x000E0025);
+    helper.SetWndText(&m_BtnOK, 0x000E0026);
 }
 
 void CToolsDlg::AddToList(CTool &tool, int nItem)
@@ -840,4 +885,39 @@ void CToolsDlg::SaveTools(CString szFileXml)
             pConfig->GetString(0x00240001, pszToolsDialog[0]),
             MB_OK | MB_ICONERROR);
     }
+}
+
+void CToolsDlg::DownloadTools()
+{
+    if (bUpdate == true)
+        return;
+
+    bUpdate = true;
+
+    CLanguageHelper helper(pConfig);
+    helper.SetWndText(&m_BtnDownload, 0x000E0024);
+
+    int nCount = m_LstTools.GetItemCount();
+    if (nCount > 0)
+    {
+        for (int i = 0; i < nCount; i++)
+        {
+            if (m_LstTools.GetItemState(i, LVIS_SELECTED) == LVIS_SELECTED)
+            {
+                m_LstTools.EnsureVisible(i, FALSE);
+
+                CTool& tool = this->m_Tools.Get(i);
+
+                m_Download.Download(tool.szUrl, tool.szFile,
+                    [this, i](int nProgress, CString szStatus)
+                    {
+                        m_LstTools.SetItemText(i, TOOL_COLUMN_STATUS, szStatus);
+                    });
+            }
+        }
+    }
+
+    helper.SetWndText(&m_BtnDownload, 0x000E0023);
+
+    bUpdate = false;
 }

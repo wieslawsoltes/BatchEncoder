@@ -166,8 +166,10 @@
     <String key="0x000E0020" value="&amp;Add" />
     <String key="0x000E0021" value="&amp;Load" />
     <String key="0x000E0022" value="&amp;Save As" />
-    <String key="0x000E0023" value="C&amp;hange" />
-    <String key="0x000E0024" value="&amp;OK" />
+    <String key="0x000E0023" value="Do&amp;wnload Selected" />
+    <String key="0x000E0024" value="Stop Do&amp;wnload" />
+    <String key="0x000E0025" value="C&amp;hange" />
+    <String key="0x000E0026" value="&amp;OK" />
 
     <!-- About Dialog -->
 
