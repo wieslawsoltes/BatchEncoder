@@ -105,7 +105,6 @@ public:
     afx_msg void OnEnChangeEditToolPath();
     afx_msg void OnBnClickedButtonLoadTools();
     afx_msg void OnBnClickedButtonSaveTools();
-    afx_msg void OnBnClickedButtonEditFormats();
     afx_msg void OnClose();
 public:
     void LoadWindowSettings();
