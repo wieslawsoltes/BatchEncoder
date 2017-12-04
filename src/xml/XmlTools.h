@@ -61,7 +61,7 @@ protected:
     }
     void GetTools(tinyxml2::XMLElement *pToolsElem, CToolsList &m_Tools)
     {
-        tinyxml2::XMLElement *pToolElem = pToolsElem->FirstChildElement("Tools");
+        tinyxml2::XMLElement *pToolElem = pToolsElem->FirstChildElement("Tool");
         for (pToolElem; pToolElem; pToolElem = pToolElem->NextSiblingElement())
         {
             CTool tool;
