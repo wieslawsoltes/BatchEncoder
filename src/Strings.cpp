@@ -87,6 +87,13 @@ const TCHAR* pszFormatsDialog[] = {
     /* 04 */ _T("Default")
 };
 
+const TCHAR* pszToolsDialog[] = {
+    /* 00 */ _T("ERROR"),
+    /* 01 */ _T("Failed to load file!"),
+    /* 02 */ _T("Failed to save file!"),
+    /* 03 */ _T("Tool")
+};
+
 const TCHAR* pszFileDialogs[] = {
     /* 00 */ _T("All Files"),
     /* 01 */ _T("Xml Files"),
