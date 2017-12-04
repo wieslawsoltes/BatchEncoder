@@ -17,6 +17,7 @@ public:
     CString szFile;
     CString szExtract;
     CString szPath;
+    CString szStatus;
 public:
     CTool()
     {
@@ -43,6 +44,7 @@ public:
         this->szFile = other.szFile;
         this->szExtract = other.szExtract;
         this->szPath = other.szPath;
+        this->szStatus = other.szStatus;
     }
 public:
     bool IsValidFormat(CString szFormat)
