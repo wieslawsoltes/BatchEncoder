@@ -329,6 +329,7 @@ void CToolsDlg::OnBnClickedButtonAddTool()
     tool.szFile = _T("");
     tool.szExtract = _T("");
     tool.szPath = _T("");
+    tool.szStatus = _T("");
 
     m_Tools.Insert(tool);
 
@@ -360,10 +361,10 @@ void CToolsDlg::OnBnClickedButtonToolUp()
 
             m_LstTools.SetItemText(nItem, TOOL_COLUMN_NAME, tool2.szName);
             m_LstTools.SetItemText(nItem, TOOL_COLUMN_URL, tool2.szUrl);
-            m_LstTools.SetItemText(nItem, TOOL_COLUMN_STATUS, _T(""));
+            m_LstTools.SetItemText(nItem, TOOL_COLUMN_STATUS, tool2.szStatus);
             m_LstTools.SetItemText(nItem - 1, TOOL_COLUMN_NAME, tool1.szName);
             m_LstTools.SetItemText(nItem - 1, TOOL_COLUMN_URL, tool1.szUrl);
-            m_LstTools.SetItemText(nItem - 1, TOOL_COLUMN_STATUS, _T(""));
+            m_LstTools.SetItemText(nItem - 1, TOOL_COLUMN_STATUS, tool1.szStatus);
 
             m_Tools.Swap(nItem, nItem - 1);
 
@@ -394,10 +395,10 @@ void CToolsDlg::OnBnClickedButtonToolDown()
 
             m_LstTools.SetItemText(nItem, TOOL_COLUMN_NAME, tool2.szName);
             m_LstTools.SetItemText(nItem, TOOL_COLUMN_URL, tool2.szUrl);
-            m_LstTools.SetItemText(nItem, TOOL_COLUMN_STATUS, _T(""));
+            m_LstTools.SetItemText(nItem, TOOL_COLUMN_STATUS, tool2.szStatus);
             m_LstTools.SetItemText(nItem + 1, TOOL_COLUMN_NAME, tool1.szName);
             m_LstTools.SetItemText(nItem + 1, TOOL_COLUMN_URL, tool1.szUrl);
-            m_LstTools.SetItemText(nItem + 1, TOOL_COLUMN_STATUS, _T(""));
+            m_LstTools.SetItemText(nItem + 1, TOOL_COLUMN_STATUS, tool1.szStatus);
 
             m_Tools.Swap(nItem, nItem + 1);
 
@@ -448,7 +449,7 @@ void CToolsDlg::OnBnClickedButtonUpdateTool()
 
         m_LstTools.SetItemText(nItem, TOOL_COLUMN_NAME, szName);
         m_LstTools.SetItemText(nItem, TOOL_COLUMN_URL, szUrl);
-        m_LstTools.SetItemText(nItem, TOOL_COLUMN_STATUS, _T(""));
+        m_LstTools.SetItemText(nItem, TOOL_COLUMN_STATUS, tool.szStatus);
 
         m_LstTools.SetItemState(nItem, LVIS_SELECTED, LVIS_SELECTED);
     }
@@ -642,8 +643,8 @@ void CToolsDlg::AddToList(CTool &tool, int nItem)
     lvi.pszText = (LPTSTR)(LPCTSTR)(tool.szUrl);
     m_LstTools.SetItemText(lvi.iItem, TOOL_COLUMN_URL, lvi.pszText);
 
-    lvi.iSubItem = TOOL_COLUMN_URL;
-    lvi.pszText = (LPTSTR)(LPCTSTR)(_T(""));
+    lvi.iSubItem = TOOL_COLUMN_STATUS;
+    lvi.pszText = (LPTSTR)(LPCTSTR)(tool.szStatus);
     m_LstTools.SetItemText(lvi.iItem, TOOL_COLUMN_STATUS, lvi.pszText);
 }
 
