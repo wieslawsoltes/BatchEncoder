@@ -52,12 +52,12 @@ protected:
     void SetTool(tinyxml2::XMLElement *pToolElem, CTool &m_Tool)
     {
         pToolElem->SetAttribute("name", CUtf8String(m_Tool.szName).m_Result);
-        pToolElem->SetAttribute("platform", CUtf8String(m_Tool.szName).m_Result);
-        pToolElem->SetAttribute("formats", CUtf8String(m_Tool.szName).m_Result);
-        pToolElem->SetAttribute("url", CUtf8String(m_Tool.szName).m_Result);
-        pToolElem->SetAttribute("file", CUtf8String(m_Tool.szName).m_Result);
-        pToolElem->SetAttribute("extract", CUtf8String(m_Tool.szName).m_Result);
-        pToolElem->SetAttribute("path", CUtf8String(m_Tool.szName).m_Result);
+        pToolElem->SetAttribute("platform", CUtf8String(m_Tool.szPlatform).m_Result);
+        pToolElem->SetAttribute("formats", CUtf8String(m_Tool.szFormats).m_Result);
+        pToolElem->SetAttribute("url", CUtf8String(m_Tool.szUrl).m_Result);
+        pToolElem->SetAttribute("file", CUtf8String(m_Tool.szFile).m_Result);
+        pToolElem->SetAttribute("extract", CUtf8String(m_Tool.szExtract).m_Result);
+        pToolElem->SetAttribute("path", CUtf8String(m_Tool.szPath).m_Result);
     }
     void GetTools(tinyxml2::XMLElement *pToolsElem, CToolsList &m_Tools)
     {
