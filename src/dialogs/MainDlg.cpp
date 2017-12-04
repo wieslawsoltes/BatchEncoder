@@ -452,6 +452,7 @@ void CMainDlg::OnDestroy()
 
     m_Config.m_Items.RemoveAll();
     m_Config.m_Formats.RemoveAll();
+    m_Config.m_Tools.RemoveAll();
 }
 
 void CMainDlg::OnDropFiles(HDROP hDropInfo)
