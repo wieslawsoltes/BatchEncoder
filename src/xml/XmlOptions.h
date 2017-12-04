@@ -105,6 +105,14 @@ protected:
         pOptionElem = pOptionsElem->FirstChildElement("FormatsListColumns");
         if (pOptionElem)
             m_Options.szFormatsListColumns = ToCString(pOptionElem->GetText());
+
+        pOptionElem = pOptionsElem->FirstChildElement("ToolsDialogResize");
+        if (pOptionElem)
+            m_Options.szToolsDialogResize = ToCString(pOptionElem->GetText());
+
+        pOptionElem = pOptionsElem->FirstChildElement("ToolsListColumns");
+        if (pOptionElem)
+            m_Options.szToolsListColumns = ToCString(pOptionElem->GetText());
     }
     void SetOptions(tinyxml2::XMLElement *pOptionsElem, COptions &m_Options)
     {
@@ -192,6 +200,14 @@ protected:
 
         pOptionElem = this->NewElement("FormatsListColumns");
         pOptionElem->LinkEndChild(this->NewText(CUtf8String(m_Options.szFormatsListColumns).m_Result));
+        pOptionsElem->LinkEndChild(pOptionElem);
+
+        pOptionElem = this->NewElement("ToolsDialogResize");
+        pOptionElem->LinkEndChild(this->NewText(CUtf8String(m_Options.szToolsDialogResize).m_Result));
+        pOptionsElem->LinkEndChild(pOptionElem);
+
+        pOptionElem = this->NewElement("ToolsListColumns");
+        pOptionElem->LinkEndChild(this->NewText(CUtf8String(m_Options.szToolsListColumns).m_Result));
         pOptionsElem->LinkEndChild(pOptionElem);
     }
 public:
