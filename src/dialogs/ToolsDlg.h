@@ -11,11 +11,12 @@
 #include "controls\MyEdit.h"
 #include "controls\MyStatic.h"
 #include "controls\MyDialogEx.h"
-#include "configuration\FormatsList.h"
+#include "configuration\ToolsList.h"
 #include "configuration\Configuration.h"
 
 #define TOOL_COLUMN_NAME      0
 #define TOOL_COLUMN_URL       1
+#define TOOL_COLUMN_STATUS    2
 
 class CToolsDlg;
 
@@ -50,8 +51,8 @@ public:
     CString szToolsDialogResize;
     CString szToolsListColumns;
     volatile bool bUpdate;
-    int nSelectedFormat;
-    CFormatsList m_Formats;
+    int nSelectedTool;
+    CToolsList m_Tools;
 public:
     CMyStatic m_StcName;
     CMyStatic m_StcPlatform;
@@ -81,7 +82,6 @@ public:
     CMyButton m_BtnUpdate;
     CMyButton m_BtnLoad;
     CMyButton m_BtnSave;
-    CMyButton m_BtnEditFormats;
 public:
     afx_msg void OnDropFiles(HDROP hDropInfo);
     afx_msg void OnBnClickedOk();
@@ -111,13 +111,13 @@ public:
     void LoadWindowSettings();
     void SaveWindowSettings();
     void SetLanguage();
-    void AddToList(CFormat &format, int nItem);
-    void InsertFormatsToListCtrl();
+    void AddToList(CTool &tool, int nItem);
+    void InsertToolsToListCtrl();
     void HandleDropFiles(HDROP hDropInfo);
-    void UpdateFields(CFormat &format);
+    void UpdateFields(CTool &format);
     void ListSelectionChange();
     void LoadTool(CString szFileXml);
-    void SaveTool(CString szFileXml, CFormat &format);
+    void SaveTool(CString szFileXml, CTool &tool);
     void LoadTools(CString szFileXml);
     void SaveTools(CString szFileXml);
 };
