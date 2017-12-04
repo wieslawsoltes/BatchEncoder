@@ -1209,26 +1209,20 @@ void CMainDlg::OnOptionsConfigureTools()
     {
         CToolsDlg dlg;
         dlg.pConfig = &m_Config;
-        dlg.nSelectedFormat = this->m_CmbFormat.GetCurSel();
-        dlg.m_Formats = m_Config.m_Formats;
-        dlg.szToolsDialogResize = m_Config.m_Options.szFormatsDialogResize;
-        dlg.szToolsListColumns = m_Config.m_Options.szFormatsListColumns;
+        dlg.nSelectedTool = 0;
+        dlg.m_Tools = m_Config.m_Tools;
+        dlg.szToolsDialogResize = m_Config.m_Options.szToolsDialogResize;
+        dlg.szToolsListColumns = m_Config.m_Options.szToolsListColumns;
 
         INT_PTR nRet = dlg.DoModal();
         if (nRet == IDOK)
         {
-            m_Config.m_Formats.RemoveAll();
-            m_Config.m_Formats = dlg.m_Formats;
-
-            if (dlg.nSelectedFormat >= 0)
-                m_Config.m_Options.nSelectedFormat = dlg.nSelectedFormat;
-
-            this->UpdateFormatComboBox();
-            this->UpdatePresetComboBox();
+            m_Config.m_Tools.RemoveAll();
+            m_Config.m_Tools = dlg.m_Tools;
         }
 
-        m_Config.m_Options.szFormatsDialogResize = dlg.szToolsDialogResize;
-        m_Config.m_Options.szFormatsListColumns = dlg.szToolsListColumns;
+        m_Config.m_Options.szToolsDialogResize = dlg.szToolsDialogResize;
+        m_Config.m_Options.szToolsListColumns = dlg.szToolsListColumns;
     }
 }
 
