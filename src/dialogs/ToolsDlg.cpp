@@ -8,10 +8,8 @@
 #include "utilities\Utilities.h"
 #include "utilities\UnicodeUtf8.h"
 #include "utilities\Utf8String.h"
-#include "xml\XmlFormats.h"
-#include "xml\XmlPresets.h"
+#include "xml\XmlTools.h"
 #include "ToolsDlg.h"
-#include "PresetsDlg.h"
 
 DWORD WINAPI ToolsDlgDropThread(LPVOID lpParam)
 {
@@ -29,7 +27,7 @@ CToolsDlg::CToolsDlg(CWnd* pParent /*=NULL*/)
     this->szToolsDialogResize = _T("");
     this->szToolsListColumns = _T("");
     this->bUpdate = false;
-    this->nSelectedFormat = 0;
+    this->nSelectedTool = 0;
 }
 
 CToolsDlg::~CToolsDlg()
@@ -68,7 +66,6 @@ void CToolsDlg::DoDataExchange(CDataExchange* pDX)
     DDX_Control(pDX, IDC_BUTTON_TOOL_UPDATE, m_BtnUpdate);
     DDX_Control(pDX, IDC_BUTTON_TOOL_LOAD, m_BtnLoad);
     DDX_Control(pDX, IDC_BUTTON_TOOL_SAVE, m_BtnSave);
-    DDX_Control(pDX, IDC_BUTTON_EDIT_FORMATS, m_BtnEditFormats);
 }
 
 BEGIN_MESSAGE_MAP(CToolsDlg, CMyDialogEx)
@@ -96,7 +93,6 @@ BEGIN_MESSAGE_MAP(CToolsDlg, CMyDialogEx)
     ON_BN_CLICKED(IDC_BUTTON_TOOL_UPDATE, OnBnClickedButtonUpdateTool)
     ON_BN_CLICKED(IDC_BUTTON_TOOL_LOAD, OnBnClickedButtonLoadTools)
     ON_BN_CLICKED(IDC_BUTTON_TOOL_SAVE, OnBnClickedButtonSaveTools)
-    ON_BN_CLICKED(IDC_BUTTON_EDIT_FORMATS, OnBnClickedButtonEditFormats)
     ON_WM_CLOSE()
 END_MESSAGE_MAP()
 
@@ -116,13 +112,14 @@ BOOL CToolsDlg::OnInitDialog()
 
     // insert all ListCtrl columns
     m_LstTools.InsertColumn(TOOL_COLUMN_NAME, _T("Name"), LVCFMT_LEFT, 195);
-    m_LstTools.InsertColumn(TOOL_COLUMN_URL, _T("Template"), LVCFMT_LEFT, 295);
+    m_LstTools.InsertColumn(TOOL_COLUMN_URL, _T("Url"), LVCFMT_LEFT, 295);
+    m_LstTools.InsertColumn(TOOL_COLUMN_STATUS, _T("Status"), LVCFMT_LEFT, 195);
 
     // insert all ListCtrl items and sub items
-    this->InsertFormatsToListCtrl();
+    this->InsertToolsToListCtrl();
 
-    m_LstTools.SetItemState(nSelectedFormat, LVIS_SELECTED, LVIS_SELECTED);
-    m_LstTools.EnsureVisible(nSelectedFormat, FALSE);
+    m_LstTools.SetItemState(nSelectedTool, LVIS_SELECTED, LVIS_SELECTED);
+    m_LstTools.EnsureVisible(nSelectedTool, FALSE);
 
     // enable drag & drop
     this->DragAcceptFiles(TRUE);
@@ -176,9 +173,9 @@ void CToolsDlg::OnBnClickedOk()
 {
     POSITION pos = m_LstTools.GetFirstSelectedItemPosition();
     if (pos != NULL)
-        nSelectedFormat = m_LstTools.GetNextSelectedItem(pos);
+        nSelectedTool = m_LstTools.GetNextSelectedItem(pos);
     else
-        nSelectedFormat = -1;
+        nSelectedTool = -1;
 
     this->SaveWindowSettings();
 
@@ -228,7 +225,7 @@ void CToolsDlg::OnBnClickedButtonExport()
         int nSelected = m_LstTools.GetNextSelectedItem(pos);
         if (nSelected >= 0)
         {
-            CFormat& format = m_Formats.Get(nSelected);
+            CTool& tool = m_Tools.Get(nSelected);
 
             CString szFilter;
             szFilter.Format(_T("%s (*.tool)|*.tool|%s (*.xml)|*.xml|%s (*.*)|*.*||"),
@@ -236,14 +233,14 @@ void CToolsDlg::OnBnClickedButtonExport()
                 pConfig->GetString(0x00310002, pszFileDialogs[1]),
                 pConfig->GetString(0x00310001, pszFileDialogs[0]));
 
-            CFileDialog fd(FALSE, _T("tool"), format.szId,
+            CFileDialog fd(FALSE, _T("tool"), tool.szName,
                 OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER | OFN_OVERWRITEPROMPT,
                 szFilter, this);
 
             if (fd.DoModal() == IDOK)
             {
                 CString szFileXml = fd.GetPathName();
-                this->SaveTool(szFileXml, format);
+                this->SaveTool(szFileXml, tool);
             }
         }
     }
@@ -262,10 +259,10 @@ void CToolsDlg::OnBnClickedButtonDuplicate()
         int nSelected = m_LstTools.GetNextSelectedItem(pos);
         if (nSelected >= 0)
         {
-            CFormat& format = m_Formats.Get(nSelected);
-            CFormat copy = format;
+            CTool& tool = m_Tools.Get(nSelected);
+            CTool copy = tool;
 
-            m_Formats.Insert(copy);
+            m_Tools.Insert(copy);
 
             int nItem = m_LstTools.GetItemCount();
             AddToList(copy, nItem);
@@ -282,10 +279,10 @@ void CToolsDlg::OnBnClickedButtonDuplicate()
 
 void CToolsDlg::OnBnClickedButtonRemoveAllTools()
 {
-    if (m_Formats.Count() > 0)
+    if (m_Tools.Count() > 0)
     {
-        CFormat& format = m_Formats.Get(nSelectedFormat);
-        m_Formats.RemoveAll();
+        CTool& tool = m_Tools.Get(nSelectedTool);
+        m_Tools.RemoveAll();
 
         m_LstTools.DeleteAllItems();
 
@@ -300,8 +297,8 @@ void CToolsDlg::OnBnClickedButtonRemoveTool()
     {
         int nItem = m_LstTools.GetNextSelectedItem(pos);
 
-        CFormat& format = m_Formats.Get(nItem);
-        m_Formats.Remove(nItem);
+        CTool& tool = m_Tools.Get(nItem);
+        m_Tools.Remove(nItem);
 
         m_LstTools.DeleteItem(nItem);
 
@@ -324,28 +321,18 @@ void CToolsDlg::OnBnClickedButtonAddTool()
 
     int nItem = m_LstTools.GetItemCount();
 
-    CFormat format;
-    format.szId = _T("ID");
-    format.szName = pConfig->GetString(0x00230004, pszFormatsDialog[3]);
-    format.szTemplate = _T("$EXE $OPTIONS $INFILE $OUTFILE");
-    format.bPipeInput = true;
-    format.bPipeOutput = false;
-    format.szFunction = _T("- none -");
-    format.szPath = _T("program.exe");
-    format.nExitCodeSuccess = 0;
-    format.nType = 0;
-    format.szInputExtensions = _T("WAV");
-    format.szOutputExtension = _T("EXT");
-    format.nDefaultPreset = 0;
+    CTool tool;
+    tool.szName = pConfig->GetString(0x00230004, pszToolsDialog[3]);
+    tool.szPlatform = _T("");
+    tool.szFormats = _T("");
+    tool.szUrl = _T("");
+    tool.szFile = _T("");
+    tool.szExtract = _T("");
+    tool.szPath = _T("");
 
-    CPreset preset;
-    preset.szName = pConfig->GetString(0x00230005, pszFormatsDialog[4]);
-    preset.szOptions = _T("");
-    format.m_Presets.Insert(preset);
+    m_Tools.Insert(tool);
 
-    m_Formats.Insert(format);
-
-    AddToList(format, nItem);
+    AddToList(tool, nItem);
 
     m_LstTools.SetItemState(nItem, LVIS_SELECTED, LVIS_SELECTED);
     m_LstTools.EnsureVisible(nItem, FALSE);
@@ -368,15 +355,17 @@ void CToolsDlg::OnBnClickedButtonToolUp()
         int nItem = m_LstTools.GetNextSelectedItem(pos);
         if (nItem > 0)
         {
-            CFormat& format1 = m_Formats.Get(nItem);
-            CFormat& format2 = m_Formats.Get(nItem - 1);
+            CTool& tool1 = m_Tools.Get(nItem);
+            CTool& tool2 = m_Tools.Get(nItem - 1);
 
-            m_LstTools.SetItemText(nItem, TOOL_COLUMN_NAME, format2.szName);
-            m_LstTools.SetItemText(nItem, TOOL_COLUMN_URL, format2.szTemplate);
-            m_LstTools.SetItemText(nItem - 1, TOOL_COLUMN_NAME, format1.szName);
-            m_LstTools.SetItemText(nItem - 1, TOOL_COLUMN_URL, format1.szTemplate);
+            m_LstTools.SetItemText(nItem, TOOL_COLUMN_NAME, tool2.szName);
+            m_LstTools.SetItemText(nItem, TOOL_COLUMN_URL, tool2.szUrl);
+            m_LstTools.SetItemText(nItem, TOOL_COLUMN_STATUS, _T(""));
+            m_LstTools.SetItemText(nItem - 1, TOOL_COLUMN_NAME, tool1.szName);
+            m_LstTools.SetItemText(nItem - 1, TOOL_COLUMN_URL, tool1.szUrl);
+            m_LstTools.SetItemText(nItem - 1, TOOL_COLUMN_STATUS, _T(""));
 
-            m_Formats.Swap(nItem, nItem - 1);
+            m_Tools.Swap(nItem, nItem - 1);
 
             m_LstTools.SetItemState(nItem - 1, LVIS_SELECTED, LVIS_SELECTED);
             m_LstTools.EnsureVisible(nItem - 1, FALSE);
@@ -400,15 +389,17 @@ void CToolsDlg::OnBnClickedButtonToolDown()
         int nItems = m_LstTools.GetItemCount();
         if (nItem != (nItems - 1) && nItem >= 0)
         {
-            CFormat& format1 = m_Formats.Get(nItem);
-            CFormat& format2 = m_Formats.Get(nItem + 1);
+            CTool& tool1 = m_Tools.Get(nItem);
+            CTool& tool2 = m_Tools.Get(nItem + 1);
 
-            m_LstTools.SetItemText(nItem, TOOL_COLUMN_NAME, format2.szName);
-            m_LstTools.SetItemText(nItem, TOOL_COLUMN_URL, format2.szTemplate);
-            m_LstTools.SetItemText(nItem + 1, TOOL_COLUMN_NAME, format1.szName);
-            m_LstTools.SetItemText(nItem + 1, TOOL_COLUMN_URL, format1.szTemplate);
+            m_LstTools.SetItemText(nItem, TOOL_COLUMN_NAME, tool2.szName);
+            m_LstTools.SetItemText(nItem, TOOL_COLUMN_URL, tool2.szUrl);
+            m_LstTools.SetItemText(nItem, TOOL_COLUMN_STATUS, _T(""));
+            m_LstTools.SetItemText(nItem + 1, TOOL_COLUMN_NAME, tool1.szName);
+            m_LstTools.SetItemText(nItem + 1, TOOL_COLUMN_URL, tool1.szUrl);
+            m_LstTools.SetItemText(nItem + 1, TOOL_COLUMN_STATUS, _T(""));
 
-            m_Formats.Swap(nItem, nItem + 1);
+            m_Tools.Swap(nItem, nItem + 1);
 
             m_LstTools.SetItemState(nItem + 1, LVIS_SELECTED, LVIS_SELECTED);
             m_LstTools.EnsureVisible(nItem + 1, FALSE);
@@ -430,33 +421,34 @@ void CToolsDlg::OnBnClickedButtonUpdateTool()
     {
         int nItem = m_LstTools.GetNextSelectedItem(pos);
 
-        CString szId = _T("");
         CString szName = _T("");
-        CString szExtension = _T("");
+        CString szPlatform = _T("");
         CString szFormats = _T("");
-        CString szTemplate = _T("");
+        CString szUrl = _T("");
+        CString szFile = _T("");
+        CString szExtract = _T("");
         CString szPath = _T("");
-        CString szFunction = _T("");
 
-        this->m_EdtName.GetWindowText(szId);
-        this->m_EdtPlatform.GetWindowText(szName);
+        this->m_EdtName.GetWindowText(szName);
+        this->m_EdtPlatform.GetWindowText(szPlatform);
         this->m_EdtFormats.GetWindowText(szFormats);
-        this->m_EdtPlatform.GetWindowText(szName);
-        this->m_EdtExtract.GetWindowText(szTemplate);
-        this->m_EdtFile.GetWindowText(szPath);
-        this->m_EdtPath.GetWindowText(szFunction);
+        this->m_EdtUrl.GetWindowText(szUrl);
+        this->m_EdtFile.GetWindowText(szFile);
+        this->m_EdtExtract.GetWindowText(szExtract);
+        this->m_EdtPath.GetWindowText(szPath);
 
-        CFormat& format = m_Formats.Get(nItem);
-        format.szId = szId;
-        format.szName = szName;
-        format.szOutputExtension = szExtension;
-        format.szInputExtensions = szFormats;
-        format.szTemplate = szTemplate;
-        format.szPath = szPath;
-        format.szFunction = szFunction;
+        CTool& tool = m_Tools.Get(nItem);
+        tool.szName = szName;
+        tool.szPlatform = szPlatform;
+        tool.szFormats = szFormats;
+        tool.szUrl = szUrl;
+        tool.szFile = szFile;
+        tool.szExtract = szExtract;
+        tool.szPath = szPath;
 
         m_LstTools.SetItemText(nItem, TOOL_COLUMN_NAME, szName);
-        m_LstTools.SetItemText(nItem, TOOL_COLUMN_URL, szTemplate);
+        m_LstTools.SetItemText(nItem, TOOL_COLUMN_URL, szUrl);
+        m_LstTools.SetItemText(nItem, TOOL_COLUMN_STATUS, _T(""));
 
         m_LstTools.SetItemState(nItem, LVIS_SELECTED, LVIS_SELECTED);
     }
@@ -558,40 +550,6 @@ void CToolsDlg::OnBnClickedButtonSaveTools()
     }
 }
 
-void CToolsDlg::OnBnClickedButtonEditFormats()
-{
-    POSITION pos = m_LstTools.GetFirstSelectedItemPosition();
-    if (pos != NULL)
-    {
-        int nItem = m_LstTools.GetNextSelectedItem(pos);
-
-        CPresetsDlg dlg;
-        dlg.pConfig = pConfig;
-        dlg.nSelectedFormat = nItem;
-        dlg.m_Formats = m_Formats;
-        dlg.szPresetsDialogResize = pConfig->m_Options.szPresetsDialogResize;
-        dlg.szPresetsListColumns = pConfig->m_Options.szPresetsListColumns;
-
-        INT_PTR nRet = dlg.DoModal();
-        if (nRet == IDOK)
-        {
-            this->m_Formats.RemoveAll();
-            this->m_Formats = dlg.m_Formats;
-
-            this->m_LstTools.DeleteAllItems();
-
-            this->InsertFormatsToListCtrl();
-            m_LstTools.SetItemState(nItem, LVIS_SELECTED, LVIS_SELECTED);
-            m_LstTools.EnsureVisible(nItem, FALSE);
-
-            this->ListSelectionChange();
-        }
-
-        pConfig->m_Options.szPresetsDialogResize = dlg.szPresetsDialogResize;
-        pConfig->m_Options.szPresetsListColumns = dlg.szPresetsListColumns;
-    }
-}
-
 void CToolsDlg::OnClose()
 {
     this->SaveWindowSettings();
@@ -605,15 +563,16 @@ void CToolsDlg::LoadWindowSettings()
     if (szToolsDialogResize.CompareNoCase(_T("")) != 0)
         this->SetWindowRectStr(szToolsDialogResize);
 
-    // load columns width for FormatsList
+    // load columns width for ToolsList
     if (szToolsListColumns.CompareNoCase(_T("")) != 0)
     {
-        int nColWidth[2];
-        if (_stscanf(szToolsListColumns, _T("%d %d"),
+        int nColWidth[3];
+        if (_stscanf(szToolsListColumns, _T("%d %d %d"),
             &nColWidth[0],
-            &nColWidth[1]) == 2)
+            &nColWidth[1],
+            &nColWidth[2]) == 3)
         {
-            for (int i = 0; i < 2; i++)
+            for (int i = 0; i < 3; i++)
                 m_LstTools.SetColumnWidth(i, nColWidth[i]);
         }
     }
@@ -624,8 +583,8 @@ void CToolsDlg::SaveWindowSettings()
     // save window rectangle and position
     this->szToolsDialogResize = this->GetWindowRectStr();
 
-    // save columns width from FormatsList
-    int nColWidth[11];
+    // save columns width from ToolsList
+    int nColWidth[2];
     for (int i = 0; i < 2; i++)
         nColWidth[i] = m_LstTools.GetColumnWidth(i);
     szToolsListColumns.Format(_T("%d %d"),
@@ -639,6 +598,7 @@ void CToolsDlg::SetLanguage()
 
     helper.SetColumnText(m_LstTools, TOOL_COLUMN_NAME, 0x000C0001);
     helper.SetColumnText(m_LstTools, TOOL_COLUMN_URL, 0x000C0002);
+    helper.SetColumnText(m_LstTools, TOOL_COLUMN_STATUS, 0x000C0002);
 
     helper.SetWndText(this, 0x000C0010);
     helper.SetWndText(&m_BtnCancel, 0x000C0011);
@@ -647,7 +607,6 @@ void CToolsDlg::SetLanguage()
     helper.SetWndText(&m_StcFormats, 0x000C001B);
     helper.SetWndText(&m_StcUrl, 0x000C002B);
     helper.SetWndText(&m_StcFile, 0x000C001D);
-    helper.SetWndText(&m_BtnEditFormats, 0x000C002C);
     helper.SetWndText(&m_StcExtract, 0x000C001F);
     helper.SetWndText(&m_StcPath, 0x000C0020);
     helper.SetWndText(&m_BtnMoveUp, 0x000C0022);
@@ -664,7 +623,7 @@ void CToolsDlg::SetLanguage()
     helper.SetWndText(&m_BtnOK, 0x000C002A);
 }
 
-void CToolsDlg::AddToList(CFormat &format, int nItem)
+void CToolsDlg::AddToList(CTool &tool, int nItem)
 {
     LVITEM lvi;
 
@@ -676,21 +635,25 @@ void CToolsDlg::AddToList(CFormat &format, int nItem)
     lvi.iItem = nItem;
 
     lvi.iSubItem = TOOL_COLUMN_NAME;
-    lvi.pszText = (LPTSTR)(LPCTSTR)(format.szName);
+    lvi.pszText = (LPTSTR)(LPCTSTR)(tool.szName);
     m_LstTools.InsertItem(&lvi);
 
     lvi.iSubItem = TOOL_COLUMN_URL;
-    lvi.pszText = (LPTSTR)(LPCTSTR)(format.szTemplate);
+    lvi.pszText = (LPTSTR)(LPCTSTR)(tool.szurl);
     m_LstTools.SetItemText(lvi.iItem, TOOL_COLUMN_URL, lvi.pszText);
+
+    lvi.iSubItem = TOOL_COLUMN_URL;
+    lvi.pszText = (LPTSTR)(LPCTSTR)(_T(""));
+    m_LstTools.SetItemText(lvi.iItem, TOOL_COLUMN_STATUS, lvi.pszText);
 }
 
-void CToolsDlg::InsertFormatsToListCtrl()
+void CToolsDlg::InsertToolsToListCtrl()
 {
-    int nFormats = m_Formats.Count();
-    for (int i = 0; i < nFormats; i++)
+    int nTools = m_Tools.Count();
+    for (int i = 0; i < nTools; i++)
     {
-        CFormat& format = m_Formats.Get(i);
-        this->AddToList(format, i);
+        CTool& tool = m_Tools.Get(i);
+        this->AddToList(tool, i);
     }
 }
 
@@ -710,64 +673,22 @@ void CToolsDlg::HandleDropFiles(HDROP hDropInfo)
                 CString szPath = szFile;
                 CString szExt = ::GetFileExtension(szPath);
 
-                if (szExt.CompareNoCase(_T("formats")) == 0)
+                if (szExt.CompareNoCase(_T("tools")) == 0)
                 {
                     this->LoadTools(szPath);
                 }
-                else if (szExt.CompareNoCase(_T("format")) == 0)
+                else if (szExt.CompareNoCase(_T("tool")) == 0)
                 {
-                    // Add format to formats list.
-                    XmlFormats doc;
+                    // Add tool to tools list.
+                    XmlTools doc;
                     if (doc.Open(szPath) == true)
                     {
-                        CFormat format;
-                        doc.GetFormat(format);
-                        m_Formats.Insert(format);
+                        CTool tool;
+                        doc.GetTool(tool);
+                        m_Tools.Insert(tool);
 
-                        int nItem = m_Formats.Count() - 1;
-                        this->AddToList(format, nItem);
-                    }
-                }
-                else if (szExt.CompareNoCase(_T("presets")) == 0)
-                {
-                    // Add presets to current format presets list.
-                    POSITION pos = m_LstTools.GetFirstSelectedItemPosition();
-                    if (pos != NULL)
-                    {
-                        int nItem = m_LstTools.GetNextSelectedItem(pos);
-                        CFormat& format = this->m_Formats.Get(nItem);
-
-                        XmlPresets doc;
-                        if (doc.Open(szPath) == true)
-                        {
-                            CFormat& format = this->m_Formats.Get(this->nSelectedFormat);
-                            format.m_Presets.RemoveAll();
-                            doc.GetPresets(format.m_Presets);
-                        }
-                    }
-                }
-                else if (szExt.CompareNoCase(_T("exe")) == 0)
-                {
-                    // Set current format exe path.
-                    POSITION pos = m_LstTools.GetFirstSelectedItemPosition();
-                    if (pos != NULL)
-                    {
-                        int nItem = m_LstTools.GetNextSelectedItem(pos);
-                        CFormat& format = this->m_Formats.Get(nItem);
-                        format.szPath = szPath;
-                        this->m_EdtFile.SetWindowText(format.szPath);
-                    }
-                }
-                else if (szExt.CompareNoCase(_T("progress")) == 0)
-                {
-                    // Set current format progress path.
-                    POSITION pos = m_LstTools.GetFirstSelectedItemPosition();
-                    if (pos != NULL)
-                    {
-                        int nItem = m_LstTools.GetNextSelectedItem(pos);
-                        CFormat& format = this->m_Formats.Get(nItem);
-                        format.szFunction = szPath;
-                        this->m_EdtPath.SetWindowText(format.szFunction);
+                        int nItem = m_Tools.Count() - 1;
+                        this->AddToList(tool, nItem);
                     }
                 }
             }
@@ -779,49 +700,15 @@ void CToolsDlg::HandleDropFiles(HDROP hDropInfo)
     ::DragFinish(hDropInfo);
 }
 
-void CToolsDlg::UpdateFields(CFormat &format)
+void CToolsDlg::UpdateFields(CTool &tool)
 {
-    this->m_EdtName.SetWindowText(format.szId);
-    this->m_EdtPlatform.SetWindowText(format.szName);
-    this->m_EdtFormats.SetWindowText(format.szInputExtensions);
-
-    CString szExitCodeSuccess;
-    szExitCodeSuccess.Format(_T("%d\0"), format.nExitCodeSuccess);
-    this->m_EdtUrl.SetWindowText(szExitCodeSuccess);
-
-    this->m_EdtExtract.SetWindowText(format.szTemplate);
-    this->m_EdtFile.SetWindowText(format.szPath);
-
-    switch (format.nType)
-    {
-    case 0:
-        this->CheckRadioButton(IDC_RADIO_TYPE_ENCODER,
-            IDC_RADIO_TYPE_DECODER,
-            IDC_RADIO_TYPE_ENCODER);
-        break;
-    case 1:
-        this->CheckRadioButton(IDC_RADIO_TYPE_ENCODER,
-            IDC_RADIO_TYPE_DECODER,
-            IDC_RADIO_TYPE_DECODER);
-        break;
-    default:
-        this->CheckRadioButton(IDC_RADIO_TYPE_ENCODER,
-            IDC_RADIO_TYPE_DECODER,
-            IDC_RADIO_TYPE_ENCODER);
-        break;
-    };
-
-    if (format.bPipeInput)
-        CheckDlgButton(IDC_CHECK_FORMAT_PIPES_INPUT, BST_CHECKED);
-    else
-        CheckDlgButton(IDC_CHECK_FORMAT_PIPES_INPUT, BST_UNCHECKED);
-
-    if (format.bPipeOutput)
-        CheckDlgButton(IDC_CHECK_FORMAT_PIPES_OUTPUT, BST_CHECKED);
-    else
-        CheckDlgButton(IDC_CHECK_FORMAT_PIPES_OUTPUT, BST_UNCHECKED);
-
-    this->m_EdtPath.SetWindowText(format.szFunction);
+    this->m_EdtName.SetWindowText(tool.szName);
+    this->m_EdtPlatform.SetWindowText(tool.szPlatform);
+    this->m_EdtFormats.SetWindowText(tool.szFormats);
+    this->m_EdtUrl.SetWindowText(tool.szUrl);
+    this->m_EdtFile.SetWindowText(tool.szFile);
+    this->m_EdtExtract.SetWindowText(tool.szExtract);
+    this->m_EdtPath.SetWindowText(tool.szPath);
 }
 
 void CToolsDlg::ListSelectionChange()
@@ -836,9 +723,9 @@ void CToolsDlg::ListSelectionChange()
     {
         int nItem = m_LstTools.GetNextSelectedItem(pos);
 
-        CFormat& format = this->m_Formats.Get(nItem);
+        CTool& tool = this->m_Tools.Get(nItem);
 
-        this->UpdateFields(format);
+        this->UpdateFields(tool);
     }
     else
     {
@@ -846,14 +733,8 @@ void CToolsDlg::ListSelectionChange()
         this->m_EdtPlatform.SetWindowText(_T(""));
         this->m_EdtFormats.SetWindowText(_T(""));
         this->m_EdtUrl.SetWindowText(_T(""));
-
-        this->m_EdtExtract.SetWindowText(_T(""));
         this->m_EdtFile.SetWindowText(_T(""));
-        this->CheckRadioButton(IDC_RADIO_TYPE_ENCODER,
-            IDC_RADIO_TYPE_DECODER,
-            IDC_RADIO_TYPE_ENCODER);
-        CheckDlgButton(IDC_CHECK_FORMAT_PIPES_INPUT, BST_UNCHECKED);
-        CheckDlgButton(IDC_CHECK_FORMAT_PIPES_OUTPUT, BST_UNCHECKED);
+        this->m_EdtExtract.SetWindowText(_T(""));
         this->m_EdtPath.SetWindowText(_T(""));
     }
 
@@ -862,72 +743,72 @@ void CToolsDlg::ListSelectionChange()
 
 void CToolsDlg::LoadTool(CString szFileXml)
 {
-    XmlFormats doc;
+    XmlTools doc;
     if (doc.Open(szFileXml) == true)
     {
-        CFormat format;
-        doc.GetFormat(format);
-        m_Formats.Insert(format);
+        CTool tool;
+        doc.GetTool(tool);
+        m_Tools.Insert(tool);
 
-        int nItem = m_Formats.Count() - 1;
-        this->AddToList(format, nItem);
+        int nItem = m_Tools.Count() - 1;
+        this->AddToList(tool, nItem);
     }
     else
     {
         MessageBox(
-            pConfig->GetString(0x00230002, pszFormatsDialog[1]),
-            pConfig->GetString(0x00230001, pszFormatsDialog[0]),
+            pConfig->GetString(0x00230002, pszToolsDialog[1]),
+            pConfig->GetString(0x00230001, pszToolsDialog[0]),
             MB_OK | MB_ICONERROR);
     }
 }
 
-void CToolsDlg::SaveTool(CString szFileXml, CFormat &format)
+void CToolsDlg::SaveTool(CString szFileXml, CTool &tool)
 {
-    XmlFormats doc;
-    doc.SetFormat(format);
+    XmlTools doc;
+    doc.SetTool(tool);
     if (doc.Save(szFileXml) != true)
     {
         MessageBox(
-            pConfig->GetString(0x00230003, pszFormatsDialog[2]),
-            pConfig->GetString(0x00230001, pszFormatsDialog[0]),
+            pConfig->GetString(0x00230003, pszToolsDialog[2]),
+            pConfig->GetString(0x00230001, pszToolsDialog[0]),
             MB_OK | MB_ICONERROR);
     }
 }
 
 void CToolsDlg::LoadTools(CString szFileXml)
 {
-    XmlFormats doc;
+    XmlTools doc;
     if (doc.Open(szFileXml) == true)
     {
-        this->m_Formats.RemoveAll();
+        this->m_Tools.RemoveAll();
         this->m_LstTools.DeleteAllItems();
 
-        doc.GetFormats(this->m_Formats);
+        doc.GetTools(this->m_Tools);
 
-        if (this->m_Formats.Count() > 0)
-            nSelectedFormat = 0;
+        if (this->m_Tools.Count() > 0)
+            nSelectedTool = 0;
 
-        this->InsertFormatsToListCtrl();
+        this->InsertToolsToListCtrl();
         this->ListSelectionChange();
     }
     else
     {
         MessageBox(
-            pConfig->GetString(0x00230002, pszFormatsDialog[1]),
-            pConfig->GetString(0x00230001, pszFormatsDialog[0]),
+            pConfig->GetString(0x00230002, pszToolsDialog[1]),
+            pConfig->GetString(0x00230001, pszToolsDialog[0]),
             MB_OK | MB_ICONERROR);
     }
 }
 
 void CToolsDlg::SaveTools(CString szFileXml)
 {
-    XmlFormats doc;
-    doc.SetFormats(this->m_Formats);
+    XmlTools doc;
+    doc.SetTools(this->m_Tools);
     if (doc.Save(szFileXml) != true)
     {
         MessageBox(
-            pConfig->GetString(0x00230003, pszFormatsDialog[2]),
-            pConfig->GetString(0x00230001, pszFormatsDialog[0]),
+            pConfig->GetString(0x00230003, pszToolsDialog[2]),
+            pConfig->GetString(0x00230001, pszToolsDialog[0]),
             MB_OK | MB_ICONERROR);
     }
 }
