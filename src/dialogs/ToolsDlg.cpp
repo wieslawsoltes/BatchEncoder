@@ -322,7 +322,7 @@ void CToolsDlg::OnBnClickedButtonAddTool()
     int nItem = m_LstTools.GetItemCount();
 
     CTool tool;
-    tool.szName = pConfig->GetString(0x00230004, pszToolsDialog[3]);
+    tool.szName = pConfig->GetString(0x00240004, pszToolsDialog[3]);
     tool.szPlatform = _T("");
     tool.szFormats = _T("");
     tool.szUrl = _T("");
@@ -596,31 +596,31 @@ void CToolsDlg::SetLanguage()
 {
     CLanguageHelper helper(pConfig);
 
-    helper.SetColumnText(m_LstTools, TOOL_COLUMN_NAME, 0x000C0001);
-    helper.SetColumnText(m_LstTools, TOOL_COLUMN_URL, 0x000C0002);
-    helper.SetColumnText(m_LstTools, TOOL_COLUMN_STATUS, 0x000C0002);
+    helper.SetColumnText(m_LstTools, TOOL_COLUMN_NAME, 0x000E0001);
+    helper.SetColumnText(m_LstTools, TOOL_COLUMN_URL, 0x000E0002);
+    helper.SetColumnText(m_LstTools, TOOL_COLUMN_STATUS, 0x000E0003);
 
-    helper.SetWndText(this, 0x000C0010);
-    helper.SetWndText(&m_BtnCancel, 0x000C0011);
-    helper.SetWndText(&m_StcName, 0x000C0018);
-    helper.SetWndText(&m_StcPlatform, 0x000C0019);
-    helper.SetWndText(&m_StcFormats, 0x000C001B);
-    helper.SetWndText(&m_StcUrl, 0x000C002B);
-    helper.SetWndText(&m_StcFile, 0x000C001D);
-    helper.SetWndText(&m_StcExtract, 0x000C001F);
-    helper.SetWndText(&m_StcPath, 0x000C0020);
-    helper.SetWndText(&m_BtnMoveUp, 0x000C0022);
-    helper.SetWndText(&m_BtnMoveDown, 0x000C0023);
-    helper.SetWndText(&m_BtnImport, 0x000C002D);
-    helper.SetWndText(&m_BtnExport, 0x000C002E);
-    helper.SetWndText(&m_BtnDuplicate, 0x000C002F);
-    helper.SetWndText(&m_BtnRemoveAll, 0x000C0024);
-    helper.SetWndText(&m_BtnRemove, 0x000C0025);
-    helper.SetWndText(&m_BtnAdd, 0x000C0026);
-    helper.SetWndText(&m_BtnLoad, 0x000C0027);
-    helper.SetWndText(&m_BtnSave, 0x000C0028);
-    helper.SetWndText(&m_BtnUpdate, 0x000C0029);
-    helper.SetWndText(&m_BtnOK, 0x000C002A);
+    helper.SetWndText(this, 0x000E0010);
+    helper.SetWndText(&m_BtnCancel, 0x000E0011);
+    helper.SetWndText(&m_StcName, 0x000E0012);
+    helper.SetWndText(&m_StcPlatform, 0x000E0013);
+    helper.SetWndText(&m_StcFormats, 0x000E0014);
+    helper.SetWndText(&m_StcUrl, 0x000E0015);
+    helper.SetWndText(&m_StcFile, 0x000E0016);
+    helper.SetWndText(&m_StcExtract, 0x000E0017);
+    helper.SetWndText(&m_StcPath, 0x000E0018);
+    helper.SetWndText(&m_BtnMoveUp, 0x000E0019);
+    helper.SetWndText(&m_BtnMoveDown, 0x000E001A);
+    helper.SetWndText(&m_BtnImport, 0x000E001B);
+    helper.SetWndText(&m_BtnExport, 0x000E001C);
+    helper.SetWndText(&m_BtnDuplicate, 0x000E001D);
+    helper.SetWndText(&m_BtnRemoveAll, 0x000E001E);
+    helper.SetWndText(&m_BtnRemove, 0x000E001F);
+    helper.SetWndText(&m_BtnAdd, 0x000E0020);
+    helper.SetWndText(&m_BtnLoad, 0x000E0021);
+    helper.SetWndText(&m_BtnSave, 0x000E0022);
+    helper.SetWndText(&m_BtnUpdate, 0x000E0023);
+    helper.SetWndText(&m_BtnOK, 0x000E0024);
 }
 
 void CToolsDlg::AddToList(CTool &tool, int nItem)
@@ -756,8 +756,8 @@ void CToolsDlg::LoadTool(CString szFileXml)
     else
     {
         MessageBox(
-            pConfig->GetString(0x00230002, pszToolsDialog[1]),
-            pConfig->GetString(0x00230001, pszToolsDialog[0]),
+            pConfig->GetString(0x00240002, pszToolsDialog[1]),
+            pConfig->GetString(0x00240001, pszToolsDialog[0]),
             MB_OK | MB_ICONERROR);
     }
 }
@@ -769,8 +769,8 @@ void CToolsDlg::SaveTool(CString szFileXml, CTool &tool)
     if (doc.Save(szFileXml) != true)
     {
         MessageBox(
-            pConfig->GetString(0x00230003, pszToolsDialog[2]),
-            pConfig->GetString(0x00230001, pszToolsDialog[0]),
+            pConfig->GetString(0x00240003, pszToolsDialog[2]),
+            pConfig->GetString(0x00240001, pszToolsDialog[0]),
             MB_OK | MB_ICONERROR);
     }
 }
@@ -794,8 +794,8 @@ void CToolsDlg::LoadTools(CString szFileXml)
     else
     {
         MessageBox(
-            pConfig->GetString(0x00230002, pszToolsDialog[1]),
-            pConfig->GetString(0x00230001, pszToolsDialog[0]),
+            pConfig->GetString(0x00240002, pszToolsDialog[1]),
+            pConfig->GetString(0x00240001, pszToolsDialog[0]),
             MB_OK | MB_ICONERROR);
     }
 }
@@ -807,8 +807,8 @@ void CToolsDlg::SaveTools(CString szFileXml)
     if (doc.Save(szFileXml) != true)
     {
         MessageBox(
-            pConfig->GetString(0x00230003, pszToolsDialog[2]),
-            pConfig->GetString(0x00230001, pszToolsDialog[0]),
+            pConfig->GetString(0x00240003, pszToolsDialog[2]),
+            pConfig->GetString(0x00240001, pszToolsDialog[0]),
             MB_OK | MB_ICONERROR);
     }
 }
