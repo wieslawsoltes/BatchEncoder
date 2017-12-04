@@ -285,6 +285,7 @@ void CFormatsDlg::OnBnClickedButtonDuplicate()
             int nItem = m_LstFormats.GetItemCount();
             AddToList(copy, nItem);
 
+            m_LstFormats.SetItemState(-1, 0, LVIS_SELECTED);
             m_LstFormats.SetItemState(nItem, LVIS_SELECTED, LVIS_SELECTED);
             m_LstFormats.EnsureVisible(nItem, FALSE);
         }
@@ -310,24 +311,45 @@ void CFormatsDlg::OnBnClickedButtonRemoveAllFormats()
 
 void CFormatsDlg::OnBnClickedButtonRemoveFormat()
 {
-    POSITION pos = m_LstFormats.GetFirstSelectedItemPosition();
-    if (pos != NULL)
+    if (bUpdate == true)
+        return;
+
+    bUpdate = true;
+
+    int nItem = -1;
+    int nItemLastRemoved = -1;
+    do
     {
-        int nItem = m_LstFormats.GetNextSelectedItem(pos);
+        nItem = m_LstFormats.GetNextItem(-1, LVIS_SELECTED);
+        if (nItem != -1)
+        {
+            m_Formats.Remove(nItem);
+            m_LstFormats.DeleteItem(nItem);
 
-        CFormat& format = m_Formats.Get(nItem);
-        m_Formats.Remove(nItem);
+            nItemLastRemoved = nItem;
+        }
+    } while (nItem != -1);
 
-        m_LstFormats.DeleteItem(nItem);
+    m_LstFormats.SetItemState(-1, 0, LVIS_SELECTED);
 
-        int nItems = m_LstFormats.GetItemCount();
-        if (nItem < nItems && nItems >= 0)
-            m_LstFormats.SetItemState(nItem, LVIS_SELECTED, LVIS_SELECTED);
-        else if (nItem >= nItems && nItems >= 0)
-            m_LstFormats.SetItemState(nItem - 1, LVIS_SELECTED, LVIS_SELECTED);
-
-        this->ListSelectionChange();
+    int nItems = m_LstFormats.GetItemCount();
+    if (nItemLastRemoved != -1)
+    {
+        if (nItemLastRemoved < nItems && nItems >= 0)
+        {
+            m_LstFormats.SetItemState(nItemLastRemoved, LVIS_SELECTED, LVIS_SELECTED);
+            m_LstFormats.EnsureVisible(nItemLastRemoved, FALSE);
+        }
+        else if (nItemLastRemoved >= nItems && nItems >= 0)
+        {
+            m_LstFormats.SetItemState(nItemLastRemoved - 1, LVIS_SELECTED, LVIS_SELECTED);
+            m_LstFormats.EnsureVisible(nItemLastRemoved, FALSE);
+        }
     }
+
+    bUpdate = false;
+
+    this->ListSelectionChange();
 }
 
 void CFormatsDlg::OnBnClickedButtonAddFormat()
@@ -362,6 +384,7 @@ void CFormatsDlg::OnBnClickedButtonAddFormat()
 
     AddToList(format, nItem);
 
+    m_LstFormats.SetItemState(-1, 0, LVIS_SELECTED);
     m_LstFormats.SetItemState(nItem, LVIS_SELECTED, LVIS_SELECTED);
     m_LstFormats.EnsureVisible(nItem, FALSE);
 
@@ -393,6 +416,7 @@ void CFormatsDlg::OnBnClickedButtonFormatUp()
 
             m_Formats.Swap(nItem, nItem - 1);
 
+            m_LstFormats.SetItemState(-1, 0, LVIS_SELECTED);
             m_LstFormats.SetItemState(nItem - 1, LVIS_SELECTED, LVIS_SELECTED);
             m_LstFormats.EnsureVisible(nItem - 1, FALSE);
         }
@@ -425,6 +449,7 @@ void CFormatsDlg::OnBnClickedButtonFormatDown()
 
             m_Formats.Swap(nItem, nItem + 1);
 
+            m_LstFormats.SetItemState(-1, 0, LVIS_SELECTED);
             m_LstFormats.SetItemState(nItem + 1, LVIS_SELECTED, LVIS_SELECTED);
             m_LstFormats.EnsureVisible(nItem + 1, FALSE);
         }
@@ -503,6 +528,7 @@ void CFormatsDlg::OnBnClickedButtonUpdateFormat()
         m_LstFormats.SetItemText(nItem, FORMAT_COLUMN_NAME, szName);
         m_LstFormats.SetItemText(nItem, FORMAT_COLUMN_TEMPLATE, szTemplate);
 
+        m_LstFormats.SetItemState(-1, 0, LVIS_SELECTED);
         m_LstFormats.SetItemState(nItem, LVIS_SELECTED, LVIS_SELECTED);
     }
 
@@ -666,6 +692,7 @@ void CFormatsDlg::OnBnClickedButtonEditPresets()
             this->m_LstFormats.DeleteAllItems();
 
             this->InsertFormatsToListCtrl();
+            m_LstFormats.SetItemState(-1, 0, LVIS_SELECTED);
             m_LstFormats.SetItemState(nItem, LVIS_SELECTED, LVIS_SELECTED);
             m_LstFormats.EnsureVisible(nItem, FALSE);
 

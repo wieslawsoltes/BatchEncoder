@@ -2,7 +2,10 @@
 
 ### Version 2.0
 
-- Added dynamic layout for dialogs.
+- Added configure tools dialog.
+- Added dynamic layout support for dialogs.
+- Added multi-selection support for presets list.
+- Added multi-selection support for formats list.
 - Updated QAAC AAC format to use --no-optimize instead of --adts.
 - Refactored common code as submodules.
 - Refactored xml configuration code.

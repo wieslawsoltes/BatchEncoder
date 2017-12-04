@@ -204,7 +204,9 @@ void CPresetsDlg::OnBnClickedButtonDuplicate()
             this->m_LstPresets.DeleteAllItems();
             this->InsertPresetsToListCtrl();
 
+            m_LstPresets.SetItemState(-1, 0, LVIS_SELECTED);
             m_LstPresets.SetItemState(nSelected + 1, LVIS_SELECTED, LVIS_SELECTED);
+            m_LstPresets.EnsureVisible(nSelected + 1, FALSE);
         }
     }
 
@@ -228,24 +230,47 @@ void CPresetsDlg::OnBnClickedButtonRemoveAllPresets()
 
 void CPresetsDlg::OnBnClickedButtonRemovePreset()
 {
-    POSITION pos = m_LstPresets.GetFirstSelectedItemPosition();
-    if (pos != NULL)
+    if (bUpdate == true)
+        return;
+
+    bUpdate = true;
+
+    int nItem = -1;
+    int nItemLastRemoved = -1;
+    do
     {
-        int nItem = m_LstPresets.GetNextSelectedItem(pos);
+        nItem = m_LstPresets.GetNextItem(-1, LVIS_SELECTED);
+        if (nItem != -1)
+        {
+            CFormat& format = m_Formats.Get(nSelectedFormat);
+            format.m_Presets.Remove(nItem);
 
-        CFormat& format = m_Formats.Get(nSelectedFormat);
-        format.m_Presets.Remove(nItem);
+            m_LstPresets.DeleteItem(nItem);
 
-        m_LstPresets.DeleteItem(nItem);
+            nItemLastRemoved = nItem;
+        }
+    } while (nItem != -1);
 
-        int nItems = m_LstPresets.GetItemCount();
-        if (nItem < nItems && nItems >= 0)
-            m_LstPresets.SetItemState(nItem, LVIS_SELECTED, LVIS_SELECTED);
-        else if (nItem >= nItems && nItems >= 0)
-            m_LstPresets.SetItemState(nItem - 1, LVIS_SELECTED, LVIS_SELECTED);
+    m_LstPresets.SetItemState(-1, 0, LVIS_SELECTED);
 
-        this->ListSelectionChange();
+    int nItems = m_LstPresets.GetItemCount();
+    if (nItemLastRemoved != -1)
+    {
+        if (nItemLastRemoved < nItems && nItems >= 0)
+        {
+            m_LstPresets.SetItemState(nItemLastRemoved, LVIS_SELECTED, LVIS_SELECTED);
+            m_LstPresets.EnsureVisible(nItemLastRemoved, FALSE);
+        }
+        else if (nItemLastRemoved >= nItems && nItems >= 0)
+        {
+            m_LstPresets.SetItemState(nItemLastRemoved - 1, LVIS_SELECTED, LVIS_SELECTED);
+            m_LstPresets.EnsureVisible(nItemLastRemoved, FALSE);
+        }
     }
+
+    bUpdate = false;
+
+    this->ListSelectionChange();
 }
 
 void CPresetsDlg::OnBnClickedButtonAddPreset()
@@ -267,6 +292,7 @@ void CPresetsDlg::OnBnClickedButtonAddPreset()
 
         AddToList(preset, nItem);
 
+        m_LstPresets.SetItemState(-1, 0, LVIS_SELECTED);
         m_LstPresets.SetItemState(nItem, LVIS_SELECTED, LVIS_SELECTED);
         m_LstPresets.EnsureVisible(nItem, FALSE);
 
@@ -300,6 +326,7 @@ void CPresetsDlg::OnBnClickedButtonPresetUp()
 
             format.m_Presets.Swap(nItem, nItem - 1);
 
+            m_LstPresets.SetItemState(-1, 0, LVIS_SELECTED);
             m_LstPresets.SetItemState(nItem - 1, LVIS_SELECTED, LVIS_SELECTED);
             m_LstPresets.EnsureVisible(nItem - 1, FALSE);
         }
@@ -333,6 +360,7 @@ void CPresetsDlg::OnBnClickedButtonPresetDown()
 
             format.m_Presets.Swap(nItem, nItem + 1);
 
+            m_LstPresets.SetItemState(-1, 0, LVIS_SELECTED);
             m_LstPresets.SetItemState(nItem + 1, LVIS_SELECTED, LVIS_SELECTED);
             m_LstPresets.EnsureVisible(nItem + 1, FALSE);
         }
@@ -367,7 +395,9 @@ void CPresetsDlg::OnBnClickedButtonUpdatePreset()
         m_LstPresets.SetItemText(nItem, PRESET_COLUMN_NAME, szName);
         m_LstPresets.SetItemText(nItem, PRESET_COLUMN_OPTIONS, szOptions);
 
+        m_LstPresets.SetItemState(-1, 0, LVIS_SELECTED);
         m_LstPresets.SetItemState(nItem, LVIS_SELECTED, LVIS_SELECTED);
+        m_LstPresets.EnsureVisible(nItem, FALSE);
     }
 
     bUpdate = false;
@@ -385,6 +415,7 @@ void CPresetsDlg::OnCbnSelchangeComboPresetFormat()
     {
         CFormat& format = this->m_Formats.Get(nSelectedFormat);
 
+        m_LstPresets.SetItemState(-1, 0, LVIS_SELECTED);
         m_LstPresets.SetItemState(format.nDefaultPreset, LVIS_SELECTED, LVIS_SELECTED);
         m_LstPresets.EnsureVisible(format.nDefaultPreset, FALSE);
 

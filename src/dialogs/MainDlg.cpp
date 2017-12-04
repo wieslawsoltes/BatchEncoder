@@ -943,9 +943,15 @@ void CMainDlg::OnEditRemove()
         if (nItemLastRemoved != -1)
         {
             if (nItemLastRemoved < nItems && nItems >= 0)
+            {
                 m_LstInputItems.SetItemState(nItemLastRemoved, LVIS_SELECTED, LVIS_SELECTED);
+                m_LstInputItems.EnsureVisible(nItemLastRemoved, FALSE);
+            }
             else if (nItemLastRemoved >= nItems && nItems >= 0)
+            {
                 m_LstInputItems.SetItemState(nItemLastRemoved - 1, LVIS_SELECTED, LVIS_SELECTED);
+                m_LstInputItems.EnsureVisible(nItemLastRemoved, FALSE);
+            }
         }
 
         if (m_LstInputItems.GetItemCount() == 0)

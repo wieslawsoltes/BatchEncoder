@@ -267,6 +267,7 @@ void CToolsDlg::OnBnClickedButtonDuplicate()
             int nItem = m_LstTools.GetItemCount();
             AddToList(copy, nItem);
 
+            m_LstTools.SetItemState(-1, 0, LVIS_SELECTED);
             m_LstTools.SetItemState(nItem, LVIS_SELECTED, LVIS_SELECTED);
             m_LstTools.EnsureVisible(nItem, FALSE);
         }
@@ -292,24 +293,45 @@ void CToolsDlg::OnBnClickedButtonRemoveAllTools()
 
 void CToolsDlg::OnBnClickedButtonRemoveTool()
 {
-    POSITION pos = m_LstTools.GetFirstSelectedItemPosition();
-    if (pos != NULL)
+    if (bUpdate == true)
+        return;
+
+    bUpdate = true;
+
+    int nItem = -1;
+    int nItemLastRemoved = -1;
+    do
     {
-        int nItem = m_LstTools.GetNextSelectedItem(pos);
+        nItem = m_LstTools.GetNextItem(-1, LVIS_SELECTED);
+        if (nItem != -1)
+        {
+            m_Tools.Remove(nItem);
+            m_LstTools.DeleteItem(nItem);
 
-        CTool& tool = m_Tools.Get(nItem);
-        m_Tools.Remove(nItem);
+            nItemLastRemoved = nItem;
+        }
+    } while (nItem != -1);
 
-        m_LstTools.DeleteItem(nItem);
+    m_LstTools.SetItemState(-1, 0, LVIS_SELECTED);
 
-        int nItems = m_LstTools.GetItemCount();
-        if (nItem < nItems && nItems >= 0)
-            m_LstTools.SetItemState(nItem, LVIS_SELECTED, LVIS_SELECTED);
-        else if (nItem >= nItems && nItems >= 0)
-            m_LstTools.SetItemState(nItem - 1, LVIS_SELECTED, LVIS_SELECTED);
-
-        this->ListSelectionChange();
+    int nItems = m_LstTools.GetItemCount();
+    if (nItemLastRemoved != -1)
+    {
+        if (nItemLastRemoved < nItems && nItems >= 0)
+        {
+            m_LstTools.SetItemState(nItemLastRemoved, LVIS_SELECTED, LVIS_SELECTED);
+            m_LstTools.EnsureVisible(nItemLastRemoved, FALSE);
+        }
+        else if (nItemLastRemoved >= nItems && nItems >= 0)
+        {
+            m_LstTools.SetItemState(nItemLastRemoved - 1, LVIS_SELECTED, LVIS_SELECTED);
+            m_LstTools.EnsureVisible(nItemLastRemoved, FALSE);
+        }
     }
+
+    bUpdate = false;
+
+    this->ListSelectionChange();
 }
 
 void CToolsDlg::OnBnClickedButtonAddTool()
@@ -335,6 +357,7 @@ void CToolsDlg::OnBnClickedButtonAddTool()
 
     AddToList(tool, nItem);
 
+    m_LstTools.SetItemState(-1, 0, LVIS_SELECTED);
     m_LstTools.SetItemState(nItem, LVIS_SELECTED, LVIS_SELECTED);
     m_LstTools.EnsureVisible(nItem, FALSE);
 
@@ -368,6 +391,7 @@ void CToolsDlg::OnBnClickedButtonToolUp()
 
             m_Tools.Swap(nItem, nItem - 1);
 
+            m_LstTools.SetItemState(-1, 0, LVIS_SELECTED);
             m_LstTools.SetItemState(nItem - 1, LVIS_SELECTED, LVIS_SELECTED);
             m_LstTools.EnsureVisible(nItem - 1, FALSE);
         }
@@ -402,6 +426,7 @@ void CToolsDlg::OnBnClickedButtonToolDown()
 
             m_Tools.Swap(nItem, nItem + 1);
 
+            m_LstTools.SetItemState(-1, 0, LVIS_SELECTED);
             m_LstTools.SetItemState(nItem + 1, LVIS_SELECTED, LVIS_SELECTED);
             m_LstTools.EnsureVisible(nItem + 1, FALSE);
         }
@@ -451,7 +476,9 @@ void CToolsDlg::OnBnClickedButtonUpdateTool()
         m_LstTools.SetItemText(nItem, TOOL_COLUMN_URL, szUrl);
         m_LstTools.SetItemText(nItem, TOOL_COLUMN_STATUS, tool.szStatus);
 
+        m_LstTools.SetItemState(-1, 0, LVIS_SELECTED);
         m_LstTools.SetItemState(nItem, LVIS_SELECTED, LVIS_SELECTED);
+        m_LstTools.EnsureVisible(nItem, FALSE);
     }
 
     bUpdate = false;
