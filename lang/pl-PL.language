@@ -143,28 +143,31 @@
 
     <!-- Tools Dialog -->
 
+    <String key="0x000E0001" value="Name" />
+    <String key="0x000E0002" value="Url" />
+    <String key="0x000E0003" value="Status" />
+
     <String key="0x000E0010" value="Configure Tools" />
     <String key="0x000E0011" value="&amp;Cancel" />
     <String key="0x000E0012" value="Name:" />
     <String key="0x000E0013" value="Platform:" />
     <String key="0x000E0014" value="Supported formats (separated by comma):" />
     <String key="0x000E0015" value="Download URL:" />
-    <String key="0x000E0016" value="&amp;Edit Formats" />
-    <String key="0x000E0017" value="Download file name:" />
-    <String key="0x000E0018" value="Extract method:" />
-    <String key="0x000E0019" value="Extract path:" />
-    <String key="0x000E001A" value="move &amp;Up" />
-    <String key="0x000E001B" value="move Dow&amp;n" />
-    <String key="0x000E001C" value="&amp;Import" />
-    <String key="0x000E001D" value="E&amp;xport" />
-    <String key="0x000E001E" value="Du&amp;plicate" />
-    <String key="0x000E001F" value="Dele&amp;te All" />
-    <String key="0x000E0020" value="&amp;Delete" />
-    <String key="0x000E0021" value="&amp;Add" />
-    <String key="0x000E0022" value="&amp;Load" />
-    <String key="0x000E0023" value="&amp;Save As" />
-    <String key="0x000E0024" value="C&amp;hange" />
-    <String key="0x000E0025" value="&amp;OK" />
+    <String key="0x000E0016" value="Download file name:" />
+    <String key="0x000E0017" value="Extract method:" />
+    <String key="0x000E0018" value="Extract path:" />
+    <String key="0x000E0019" value="move &amp;Up" />
+    <String key="0x000E001A" value="move Dow&amp;n" />
+    <String key="0x000E001B" value="&amp;Import" />
+    <String key="0x000E001C" value="E&amp;xport" />
+    <String key="0x000E001D" value="Du&amp;plicate" />
+    <String key="0x000E001E" value="Dele&amp;te All" />
+    <String key="0x000E001F" value="&amp;Delete" />
+    <String key="0x000E0020" value="&amp;Add" />
+    <String key="0x000E0021" value="&amp;Load" />
+    <String key="0x000E0022" value="&amp;Save As" />
+    <String key="0x000E0023" value="C&amp;hange" />
+    <String key="0x000E0024" value="&amp;OK" />
 
     <!-- About Dialog -->
 
@@ -253,6 +256,13 @@
     <String key="0x00230003" value="Nie udało się zapisać pliku!" />
     <String key="0x00230004" value="Format" />
     <String key="0x00230005" value="Domyślny" />
+
+    <!-- Strings Tools Dialog -->
+
+    <String key="0x00240001" value="ERROR" />
+    <String key="0x00240002" value="Failed to load file!" />
+    <String key="0x00240003" value="Failed to save file!" />
+    <String key="0x00240004" value="Tool" />
 
     <!-- Strings File Dialogs -->
 
