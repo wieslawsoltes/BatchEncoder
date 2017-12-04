@@ -53,6 +53,7 @@ public:
     CString szToolsDialogResize;
     CString szToolsListColumns;
     volatile bool bUpdate;
+    volatile bool bDownload;
     int nSelectedTool;
     CToolsList m_Tools;
     CDownload m_Download;
@@ -112,6 +113,7 @@ public:
     afx_msg void OnBnClickedButtonSaveTools();
     afx_msg void OnBnClickedButtonDownloadSelected();
     afx_msg void OnClose();
+    afx_msg void OnDestroy();
 public:
     void LoadWindowSettings();
     void SaveWindowSettings();
@@ -126,4 +128,5 @@ public:
     void LoadTools(CString szFileXml);
     void SaveTools(CString szFileXml);
     void DownloadTools();
+    void EnableUserInterface(BOOL bEnable = TRUE);
 };

@@ -27,6 +27,7 @@ CToolsDlg::CToolsDlg(CWnd* pParent /*=NULL*/)
     this->szToolsDialogResize = _T("");
     this->szToolsListColumns = _T("");
     this->bUpdate = false;
+    this->bDownload = false;
     this->nSelectedTool = 0;
 }
 
@@ -96,6 +97,7 @@ BEGIN_MESSAGE_MAP(CToolsDlg, CMyDialogEx)
     ON_BN_CLICKED(IDC_BUTTON_TOOL_SAVE, OnBnClickedButtonSaveTools)
     ON_BN_CLICKED(IDC_BUTTON_TOOL_DOWNLOAD, OnBnClickedButtonDownloadSelected)
     ON_WM_CLOSE()
+    ON_WM_DESTROY()
 END_MESSAGE_MAP()
 
 BOOL CToolsDlg::OnInitDialog()
@@ -159,6 +161,9 @@ HCURSOR CToolsDlg::OnQueryDragIcon()
 
 void CToolsDlg::OnDropFiles(HDROP hDropInfo)
 {
+    if (bDownload == true)
+        return;
+
     if (this->m_DD.bHandled == true)
     {
         this->m_DD.bHandled = false;
@@ -173,6 +178,9 @@ void CToolsDlg::OnDropFiles(HDROP hDropInfo)
 
 void CToolsDlg::OnBnClickedOk()
 {
+    if (bDownload == true)
+        return;
+
     POSITION pos = m_LstTools.GetFirstSelectedItemPosition();
     if (pos != NULL)
         nSelectedTool = m_LstTools.GetNextSelectedItem(pos);
@@ -186,6 +194,9 @@ void CToolsDlg::OnBnClickedOk()
 
 void CToolsDlg::OnBnClickedCancel()
 {
+    if (bDownload == true)
+        return;
+
     this->SaveWindowSettings();
 
     OnCancel();
@@ -195,13 +206,19 @@ void CToolsDlg::OnLvnItemchangedListTools(NMHDR *pNMHDR, LRESULT *pResult)
 {
     LPNMLISTVIEW pNMLV = reinterpret_cast<LPNMLISTVIEW>(pNMHDR);
 
-    this->ListSelectionChange();
+    if (bDownload == false)
+    {
+        this->ListSelectionChange();
+    }
 
     *pResult = 0;
 }
 
 void CToolsDlg::OnBnClickedButtonImport()
 {
+    if (bDownload == true)
+        return;
+
     CString szFilter;
     szFilter.Format(_T("%s (*.tool)|*.tool|%s (*.xml)|*.xml|%s (*.*)|*.*||"),
         pConfig->GetString(0x00310010, pszFileDialogs[9]),
@@ -221,6 +238,9 @@ void CToolsDlg::OnBnClickedButtonImport()
 
 void CToolsDlg::OnBnClickedButtonExport()
 {
+    if (bDownload == true)
+        return;
+
     POSITION pos = m_LstTools.GetFirstSelectedItemPosition();
     if (pos != NULL)
     {
@@ -250,6 +270,9 @@ void CToolsDlg::OnBnClickedButtonExport()
 
 void CToolsDlg::OnBnClickedButtonDuplicate()
 {
+    if (bDownload == true)
+        return;
+
     if (bUpdate == true)
         return;
 
@@ -282,6 +305,9 @@ void CToolsDlg::OnBnClickedButtonDuplicate()
 
 void CToolsDlg::OnBnClickedButtonRemoveAllTools()
 {
+    if (bDownload == true)
+        return;
+
     if (m_Tools.Count() > 0)
     {
         CTool& tool = m_Tools.Get(nSelectedTool);
@@ -295,6 +321,9 @@ void CToolsDlg::OnBnClickedButtonRemoveAllTools()
 
 void CToolsDlg::OnBnClickedButtonRemoveTool()
 {
+    if (bDownload == true)
+        return;
+
     if (bUpdate == true)
         return;
 
@@ -338,6 +367,9 @@ void CToolsDlg::OnBnClickedButtonRemoveTool()
 
 void CToolsDlg::OnBnClickedButtonAddTool()
 {
+    if (bDownload == true)
+        return;
+
     if (bUpdate == true)
         return;
 
@@ -370,6 +402,9 @@ void CToolsDlg::OnBnClickedButtonAddTool()
 
 void CToolsDlg::OnBnClickedButtonToolUp()
 {
+    if (bDownload == true)
+        return;
+
     if (bUpdate == true)
         return;
 
@@ -404,6 +439,9 @@ void CToolsDlg::OnBnClickedButtonToolUp()
 
 void CToolsDlg::OnBnClickedButtonToolDown()
 {
+    if (bDownload == true)
+        return;
+
     if (bUpdate == true)
         return;
 
@@ -439,6 +477,9 @@ void CToolsDlg::OnBnClickedButtonToolDown()
 
 void CToolsDlg::OnBnClickedButtonUpdateTool()
 {
+    if (bDownload == true)
+        return;
+
     if (bUpdate == true)
         return;
 
@@ -488,6 +529,9 @@ void CToolsDlg::OnBnClickedButtonUpdateTool()
 
 void CToolsDlg::OnEnChangeEditToolName()
 {
+    if (bDownload == true)
+        return;
+
     if (bUpdate == true)
         return;
 
@@ -496,6 +540,9 @@ void CToolsDlg::OnEnChangeEditToolName()
 
 void CToolsDlg::OnEnChangeEditToolPlatform()
 {
+    if (bDownload == true)
+        return;
+
     if (bUpdate == true)
         return;
 
@@ -504,6 +551,9 @@ void CToolsDlg::OnEnChangeEditToolPlatform()
 
 void CToolsDlg::OnEnChangeEditToolFormats()
 {
+    if (bDownload == true)
+        return;
+
     if (bUpdate == true)
         return;
 
@@ -512,6 +562,9 @@ void CToolsDlg::OnEnChangeEditToolFormats()
 
 void CToolsDlg::OnEnChangeEditToolUrl()
 {
+    if (bDownload == true)
+        return;
+
     if (bUpdate == true)
         return;
 
@@ -520,6 +573,9 @@ void CToolsDlg::OnEnChangeEditToolUrl()
 
 void CToolsDlg::OnEnChangeEditToolFile()
 {
+    if (bDownload == true)
+        return;
+
     if (bUpdate == true)
         return;
 
@@ -528,6 +584,9 @@ void CToolsDlg::OnEnChangeEditToolFile()
 
 void CToolsDlg::OnEnChangeEditToolExtract()
 {
+    if (bDownload == true)
+        return;
+
     if (bUpdate == true)
         return;
 
@@ -536,6 +595,9 @@ void CToolsDlg::OnEnChangeEditToolExtract()
 
 void CToolsDlg::OnEnChangeEditToolPath()
 {
+    if (bDownload == true)
+        return;
+
     if (bUpdate == true)
         return;
 
@@ -544,6 +606,9 @@ void CToolsDlg::OnEnChangeEditToolPath()
 
 void CToolsDlg::OnBnClickedButtonLoadTools()
 {
+    if (bDownload == true)
+        return;
+
     CString szFilter;
     szFilter.Format(_T("%s (*.tools)|*.tools|%s (*.xml)|*.xml|%s (*.*)|*.*||"),
         pConfig->GetString(0x00310009, pszFileDialogs[8]),
@@ -563,6 +628,9 @@ void CToolsDlg::OnBnClickedButtonLoadTools()
 
 void CToolsDlg::OnBnClickedButtonSaveTools()
 {
+    if (bDownload == true)
+        return;
+
     CString szFilter;
     szFilter.Format(_T("%s (*.tools)|*.tools|%s (*.xml)|*.xml|%s (*.*)|*.*||"),
         pConfig->GetString(0x00310009, pszFileDialogs[8]),
@@ -582,25 +650,24 @@ void CToolsDlg::OnBnClickedButtonSaveTools()
 
 void CToolsDlg::OnBnClickedButtonDownloadSelected()
 {
-    if (bUpdate == true)
+    if (bDownload == true)
     {
         m_Worker.Terminate();
 
         CLanguageHelper helper(pConfig);
         helper.SetWndText(&m_BtnDownload, 0x000E0023);
 
-        bUpdate = false;
+        EnableUserInterface(TRUE);
+
+        bDownload = false;
         return;
     }
+
+    bDownload = true;
 
     int nCount = m_LstTools.GetItemCount();
     if (nCount > 0)
     {
-        if (bUpdate == true)
-            return;
-
-        bUpdate = true;
-
         for (int i = 0; i < nCount; i++)
         {
             if (m_LstTools.GetItemState(i, LVIS_SELECTED) == LVIS_SELECTED)
@@ -608,8 +675,6 @@ void CToolsDlg::OnBnClickedButtonDownloadSelected()
                 m_LstTools.SetItemText(i, TOOL_COLUMN_STATUS, _T(""));
             }
         }
-
-        bUpdate = false;
 
         m_Worker.Start(
             [](void *param)->int
@@ -627,6 +692,17 @@ void CToolsDlg::OnClose()
     this->SaveWindowSettings();
 
     CMyDialogEx::OnClose();
+}
+
+void CToolsDlg::OnDestroy()
+{
+    CMyDialogEx::OnDestroy();
+
+    if (bDownload == true)
+    {
+        m_Worker.Terminate();
+        bDownload = false;
+    }
 }
 
 void CToolsDlg::LoadWindowSettings()
@@ -787,6 +863,9 @@ void CToolsDlg::UpdateFields(CTool &tool)
 
 void CToolsDlg::ListSelectionChange()
 {
+    if (bDownload == true)
+        return;
+
     if (bUpdate == true)
         return;
 
@@ -889,10 +968,8 @@ void CToolsDlg::SaveTools(CString szFileXml)
 
 void CToolsDlg::DownloadTools()
 {
-    if (bUpdate == true)
-        return;
-
-    bUpdate = true;
+    bDownload = true;
+    EnableUserInterface(FALSE);
 
     CLanguageHelper helper(pConfig);
     helper.SetWndText(&m_BtnDownload, 0x000E0024);
@@ -913,9 +990,9 @@ void CToolsDlg::DownloadTools()
                     {
                         for (int s = 0; s < 8; s++)
                         {
-                            if (szStatus.Find(pszDownloadStatus[s]) > 0)
+                            if (szStatus.Find(pszDownloadStatus[s]) >= 0)
                             {
-                                CString szTranslation = pConfig->GetString(0x00400001, pszDownloadStatus[s]);
+                                CString szTranslation = pConfig->GetString(0x00400001 + s, pszDownloadStatus[s]);
                                 szStatus.Replace(pszDownloadStatus[s], szTranslation);
                             }
                         }
@@ -927,6 +1004,37 @@ void CToolsDlg::DownloadTools()
     }
 
     helper.SetWndText(&m_BtnDownload, 0x000E0023);
+    EnableUserInterface(TRUE);
 
-    bUpdate = false;
+    bDownload = false;
+}
+
+void CToolsDlg::EnableUserInterface(BOOL bEnable)
+{
+    CMenu* pSysMenu = GetSystemMenu(FALSE);
+    if (bEnable == FALSE)
+        pSysMenu->EnableMenuItem(SC_CLOSE, MF_GRAYED);
+    else
+        pSysMenu->EnableMenuItem(SC_CLOSE, MF_ENABLED);
+
+    this->m_EdtName.EnableWindow(bEnable);
+    this->m_EdtPlatform.EnableWindow(bEnable);
+    this->m_EdtFormats.EnableWindow(bEnable);
+    this->m_EdtUrl.EnableWindow(bEnable);
+    this->m_EdtFile.EnableWindow(bEnable);
+    this->m_EdtExtract.EnableWindow(bEnable);
+    this->m_EdtPath.EnableWindow(bEnable);
+    this->m_BtnOK.EnableWindow(bEnable);
+    this->m_BtnCancel.EnableWindow(bEnable);
+    this->m_BtnImport.EnableWindow(bEnable);
+    this->m_BtnExport.EnableWindow(bEnable);
+    this->m_BtnDuplicate.EnableWindow(bEnable);
+    this->m_BtnRemoveAll.EnableWindow(bEnable);
+    this->m_BtnRemove.EnableWindow(bEnable);
+    this->m_BtnAdd.EnableWindow(bEnable);
+    this->m_BtnMoveUp.EnableWindow(bEnable);
+    this->m_BtnMoveDown.EnableWindow(bEnable);
+    this->m_BtnUpdate.EnableWindow(bEnable);
+    this->m_BtnLoad.EnableWindow(bEnable);
+    this->m_BtnSave.EnableWindow(bEnable);
 }
