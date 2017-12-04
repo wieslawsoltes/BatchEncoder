@@ -29,6 +29,8 @@ public:
     CString szPresetsListColumns;
     CString szFormatsDialogResize;
     CString szFormatsListColumns;
+    CString szToolsDialogResize;
+    CString szToolsListColumns;
 public:
     COptions()
     {
@@ -69,7 +71,8 @@ public:
         this->szPresetsListColumns = other.szPresetsListColumns;
         this->szFormatsDialogResize = other.szFormatsDialogResize;
         this->szFormatsListColumns = other.szFormatsListColumns;
-
+        this->szToolsDialogResize = other.szToolsDialogResize;
+        this->szToolsListColumns = other.szToolsListColumns;
     }
 public:
     void Defaults()
@@ -95,5 +98,7 @@ public:
         this->szPresetsListColumns = _T("");
         this->szFormatsDialogResize = _T("");
         this->szFormatsListColumns = _T("");
+        this->szToolsDialogResize = _T("");
+        this->szToolsListColumns = _T("");
     }
 };
