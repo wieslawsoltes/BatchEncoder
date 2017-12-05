@@ -186,6 +186,8 @@ adds input and output file paths. For specific options for each format use help 
 
 ### Tool downloads
 
+To get required command-line tools use `Configure Tools` dialog. Use the `Download Selected` button to download selected tools.
+
 For more information about tools please see the [wiki page](https://github.com/wieslawsoltes/BatchEncoder/wiki/Tools).
 
 There is also available PowerShell [download script](https://github.com/wieslawsoltes/BatchEncoder/blob/master/scripts/download.ps1) for all supported tools.
@@ -236,8 +238,11 @@ Files extensions:
 
 * .xml - Any configuration file
 * .options - Program options
-* .formats - Encoder and decoder formats
-* .presets - Predefined format presets
+* .formats - Encoder and decoder formats definition
+* .format - Encoder and decoder format definition
+* .presets - Predefined format presets definition
+* .tools - Encoder and decoder tools definition
+* .tool - Encoder and decoder tool definition
 * .items - Input file items
 * .progress - Progress function Lua scripts
 * .language - Language translation strings
