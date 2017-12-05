@@ -1050,7 +1050,6 @@ bool ConvertItem(CItemContext* pContext)
                     return false;
                 }
 
-
                 if (pWorkerContext->pConfig->m_Options.bDeleteSourceFiles == true)
                     ::DeleteFile(szEncInputFile);
 
