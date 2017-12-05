@@ -14,3 +14,4 @@ extern const TCHAR* pszFormatsDialog[];
 extern const TCHAR* pszToolsDialog[];
 extern const TCHAR* pszFileDialogs[];
 extern const TCHAR* pszDownloadStatus[];
+extern const TCHAR* pszExtractStatus[];

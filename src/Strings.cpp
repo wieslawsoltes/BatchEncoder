@@ -117,3 +117,9 @@ const TCHAR* pszDownloadStatus[] = {
     /* 06 */ _T("End download"),
     /* 07 */ _T("Status code : ")
 };
+
+const TCHAR* pszExtractStatus[] = {
+    /* 00 */ _T("Failed to create unzip folder."),
+    /* 01 */ _T("Unziped downloaded file."),
+    /* 02 */ _T("Failed to unzip downloaded file.")
+};
