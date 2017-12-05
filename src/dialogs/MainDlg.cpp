@@ -1219,6 +1219,7 @@ void CMainDlg::OnOptionsConfigureTools()
         dlg.pConfig = &m_Config;
         dlg.nSelectedTool = 0;
         dlg.m_Tools = m_Config.m_Tools;
+        dlg.m_Formats = m_Config.m_Formats;
         dlg.szToolsDialogResize = m_Config.m_Options.szToolsDialogResize;
         dlg.szToolsListColumns = m_Config.m_Options.szToolsListColumns;
 
@@ -1227,6 +1228,12 @@ void CMainDlg::OnOptionsConfigureTools()
         {
             m_Config.m_Tools.RemoveAll();
             m_Config.m_Tools = dlg.m_Tools;
+
+            m_Config.m_Formats.RemoveAll();
+            m_Config.m_Formats = dlg.m_Formats;
+
+            this->UpdateFormatComboBox();
+            this->UpdatePresetComboBox();
         }
 
         m_Config.m_Options.szToolsDialogResize = dlg.szToolsDialogResize;

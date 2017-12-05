@@ -12,6 +12,7 @@
 #include "controls\MyStatic.h"
 #include "controls\MyDialogEx.h"
 #include "configuration\ToolsList.h"
+#include "configuration\FormatsList.h"
 #include "configuration\Configuration.h"
 #include "utilities\Download.h"
 #include "utilities\Thread.h"
@@ -56,6 +57,7 @@ public:
     volatile bool bDownload;
     int nSelectedTool;
     CToolsList m_Tools;
+    CFormatsList m_Formats;
     CDownload m_Download;
     CThread m_Worker;
 public:
