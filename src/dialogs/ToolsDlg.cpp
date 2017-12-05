@@ -971,6 +971,8 @@ void CToolsDlg::DownloadTools()
     bDownload = true;
     EnableUserInterface(FALSE);
 
+    ::SetCurrentDirectory(::GetExeFilePath());
+
     CLanguageHelper helper(pConfig);
     helper.SetWndText(&m_BtnDownload, 0x000E0024);
 
@@ -984,8 +986,11 @@ void CToolsDlg::DownloadTools()
                 m_LstTools.EnsureVisible(i, FALSE);
 
                 CTool& tool = this->m_Tools.Get(i);
+                CString szUrl = tool.szUrl;
+                CString szFilePath = ::GetExeFilePath() + tool.szFile;
+                CString szFolderPath = ::GetExeFilePath() + ::GetOnlyFileName(tool.szFile);
 
-                m_Download.Download(tool.szUrl, tool.szFile,
+                m_Download.Download(szUrl, szFilePath,
                     [this, i](int nProgress, CString szStatus)
                     {
                         for (int s = 0; s < 8; s++)
@@ -999,6 +1004,37 @@ void CToolsDlg::DownloadTools()
 
                         m_LstTools.SetItemText(i, TOOL_COLUMN_STATUS, szStatus);
                     });
+
+                if (tool.szExtract.CompareNoCase(_T("exe")) == 0)
+                {
+
+                }
+                else if (tool.szExtract.CompareNoCase(_T("install")) == 0)
+                {
+                    ::LaunchAndWait(szFilePath, _T(""), FALSE);
+                }
+                else if (tool.szExtract.CompareNoCase(_T("zip")) == 0)
+                {
+                    CComBSTR file(szFilePath);
+                    CComBSTR folder(szFolderPath);
+
+                    if (!::DirectoryExists(szFolderPath))
+                    {
+                        if (::MakeFullPath(szFolderPath) == false)
+                        {
+                            m_LstTools.SetItemText(i, TOOL_COLUMN_STATUS, _T("Failed to create unzip folder."));
+                        }
+                    }
+
+                    if (::DirectoryExists(szFolderPath) == TRUE)
+                    {
+                        bool bUnzipResult = Unzip2Folder(file, folder);
+                        if (bUnzipResult == true)
+                            m_LstTools.SetItemText(i, TOOL_COLUMN_STATUS, _T("Unziped downloaded file."));
+                        else
+                            m_LstTools.SetItemText(i, TOOL_COLUMN_STATUS, _T("Failed to unzip downloaded file."));
+                    }
+                }
             }
         }
     }
