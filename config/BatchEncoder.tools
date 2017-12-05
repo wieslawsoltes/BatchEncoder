@@ -1,5 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Tools>
+    <Tool name="7za-x86" platform="x86" formats="ZIP" url="https://github.com/wieslawsoltes/7-Zip/releases/download/17.01-beta-x86/7za.exe" file="7za.exe" extract="" path="7za.exe"/>
+    <Tool name="7za-x64" platform="x64" formats="ZIP" url="https://github.com/wieslawsoltes/7-Zip/releases/download/17.01-beta-x64/7za.exe" file="7za.exe" extract="" path="7za.exe"/>
     <Tool name="ssrc_x86" platform="x86" formats="SSRC_WAV" url="http://shibatch.sourceforge.net/download/ssrc-1.30.tgz" file="ssrc-1.30.tgz" extract="zip" path=""/>
     <Tool name="ssrc_x64" platform="x64" formats="SSRC_WAV" url="http://shibatch.sourceforge.net/download/ssrc-1.33.tar.gz" file="ssrc-1.33.tar.gz" extract="zip" path=""/>
     <Tool name="lame_x86" platform="x86" formats="LAME_MP3,LAME_MP3_WAV,LAME_MP1_WAV,LAME_MP2_WAV,LAME_MP3_WAV" url="http://www.rarewares.org/files/mp3/lame3.100.zip" file="lame3.100.zip" extract="zip" path="lame3.100/lame.exe"/>
