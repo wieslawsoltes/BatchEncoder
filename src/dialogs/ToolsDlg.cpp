@@ -1018,6 +1018,9 @@ void CToolsDlg::EnableUserInterface(BOOL bEnable)
     this->m_BtnUpdate.EnableWindow(bEnable);
     this->m_BtnLoad.EnableWindow(bEnable);
     this->m_BtnSave.EnableWindow(bEnable);
+    this->m_BtnSetFormat.EnableWindow(bEnable);
+    this->m_BtnSetFormatX86.EnableWindow(bEnable);
+    this->m_BtnSetFormatX64.EnableWindow(bEnable);
 }
 
 void CToolsDlg::DownloadTools()
