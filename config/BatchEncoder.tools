@@ -42,7 +42,7 @@
     <Tool name="wavpack_x64" platform="x64" formats="WAVPACK_WV" url="http://www.wavpack.com/wavpack-5.1.0-x64.zip" file="wavpack-5.1.0-x64.zip" extract="zip" path="wavpack-5.1.0-x64/wavpack.exe"/>
     <Tool name="wvunpack_x86" platform="x86" formats="WVUNPACK_WV_WAV" url="http://www.wavpack.com/wavpack-5.1.0-x86.zip" file="wavpack-5.1.0-x86.zip" extract="zip" path="wavpack-5.1.0-x86/wvunpack.exe"/>
     <Tool name="wvunpack_x64" platform="x64" formats="WVUNPACK_WV_WAV" url="http://www.wavpack.com/wavpack-5.1.0-x64.zip" file="wavpack-5.1.0-x64.zip" extract="zip" path="wavpack-5.1.0-x64/wvunpack.exe"/>
-    <Tool name="MAC_x86" platform="x86" formats="MAC_APE,MAC_APE_WAV,MAC_MAC_WAV" url="http://monkeysaudio.com/files/MAC_418.exe" file="MAC_418.exe" extract="install" path="C:\Program Files (x86)\Monkey's Audio\MAC.exe"/>
+    <Tool name="MAC_x86" platform="x86" formats="MAC_APE,MAC_APE_WAV,MAC_MAC_WAV" url="http://monkeysaudio.com/files/MAC_418.exe" file="MAC_418.exe" extract="install" path="C:\Program Files (x86)\Monkey&apos;s Audio\MAC.exe"/>
     <Tool name="la_x86" platform="x86" formats="LA_LA,LA_LA_WAV" url="http://www.lossless-audio.com/La04b.exe" file="La04b.exe" extract="install" path="C:\Program Files (x86)\La\la.exe"/>
     <Tool name="ofr_x86" platform="x86" formats="OFR_OFR,OFR_OFR_WAV" url="http://losslessaudio.org/Downloads/A1C0/5100/Win/OptimFROG_Win_x86_5100.zip" file="OptimFROG_Win_x86_5100.zip" extract="zip" path="OptimFROG_Win_x86_5100/OptimFROG_Win_x86_5100/ofr.exe"/>
     <Tool name="ofr_x64" platform="x64" formats="OFR_OFR,OFR_OFR_WAV" url="http://losslessaudio.org/Downloads/A1C0/5100/Win/OptimFROG_Win_x64_5100.zip" file="OptimFROG_Win_x64_5100.zip" extract="zip" path="OptimFROG_Win_x64_5100/OptimFROG_Win_x64_5100/ofr.exe"/>
