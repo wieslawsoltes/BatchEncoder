@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Format id="MPCENC_MPC" name="MPC (Musepack)" template="$EXE $OPTIONS --overwrite $INFILE $OUTFILE" input="true" output="false" function="GetProgress_MpcEnc.progress" path="mpcenc.exe" success="0" type="0" formats="WAV" extension="MPC" default="3">
+    <Presets>
+        <Preset name="Telephone (32...48 kbps)" options="--telephone"/>
+        <Preset name="Thumb (58...86 kbps)" options="--thumb"/>
+        <Preset name="Radio (112...152 kbps)" options="--radio"/>
+        <Preset name="Standard (142...184 kbps)" options="--standard"/>
+        <Preset name="Xtreme (168...212 kbps)" options="--xtreme"/>
+        <Preset name="Insane (232...268 kbps)" options="--insane"/>
+        <Preset name="Braindead (232...278 kbps)" options="--braindead"/>
+    </Presets>
+</Format>

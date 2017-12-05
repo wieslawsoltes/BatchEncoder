@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Format id="NERO_MP4_WAV" name="Decode MP4 to WAV" template="$EXE $OPTIONS -if $INFILE -of $OUTFILE" input="false" output="true" function="- none -" path="neroAacDec.exe" success="0" type="1" formats="MP4" extension="WAV" default="0">
+    <Presets>
+        <Preset name="Default" options=""/>
+    </Presets>
+</Format>

@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Format id="LA_LA_WAV" name="Decode LA to WAV" template="$EXE $OPTIONS -overwrite ignore.la $OUTFILE -cin" input="true" output="false" function="GetProgress_LaDec.progress" path="la.exe" success="0" type="1" formats="LA" extension="WAV" default="0">
+    <Presets>
+        <Preset name="Default" options=""/>
+    </Presets>
+</Format>

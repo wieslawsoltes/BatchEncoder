@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Format id="QAAC_ALAC" name="ALAC (Apple Lossless)" template="$EXE $OPTIONS --ignorelength $INFILE -o $OUTFILE" input="true" output="false" function="GetProgress_QaacEnc.progress" path="qaac.exe" success="0" type="0" formats="WAV" extension="M4A" default="0">
+    <Presets>
+        <Preset name="ALAC encoding mode" options="--alac"/>
+    </Presets>
+</Format>

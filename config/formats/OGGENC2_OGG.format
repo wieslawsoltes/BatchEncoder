@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Format id="OGGENC2_OGG" name="OGG (Ogg Vorbis)" template="$EXE $OPTIONS $INFILE -o $OUTFILE" input="true" output="false" function="GetProgress_OggEnc.progress" path="oggenc2.exe" success="0" type="0" formats="WAV" extension="OGG" default="8">
+    <Presets>
+        <Preset name="VBR Quality -2 (32 kbps)" options="-q -2"/>
+        <Preset name="VBR Quality -1 (32...48 kbps)" options="-q -1"/>
+        <Preset name="VBR Quality 0 (64 kbps)" options="-q 0"/>
+        <Preset name="VBR Quality 1 (80 kbps)" options="-q 1"/>
+        <Preset name="VBR Quality 2 (96 kbps)" options="-q 2"/>
+        <Preset name="VBR Quality 3 (112 kbps)" options="-q 3"/>
+        <Preset name="VBR Quality 4 (128 kbps)" options="-q 4"/>
+        <Preset name="VBR Quality 5 (160 kbps)" options="-q 5"/>
+        <Preset name="VBR Quality 6 (192 kbps)" options="-q 6"/>
+        <Preset name="VBR Quality 7 (224 kbps)" options="-q 7"/>
+        <Preset name="VBR Quality 8 (256 kbps)" options="-q 8"/>
+        <Preset name="VBR Quality 9 (320 kbps)" options="-q 9"/>
+        <Preset name="VBR Quality 10 (320...500 kbps)" options="-q 10"/>
+        <Preset name="CBR 32 kbps" options="-m 32 -M 32 --managed"/>
+        <Preset name="CBR 48 kbps" options="-m 48 -M 48 --managed"/>
+        <Preset name="CBR 64 kbps" options="-m 64 -M 64 --managed"/>
+        <Preset name="CBR 80 kbps" options="-m 80 -M 80 --managed"/>
+        <Preset name="CBR 96 kbps" options="-m 96 -M 96 --managed"/>
+        <Preset name="CBR 112 kbps" options="-m 112 -M 112 --managed"/>
+        <Preset name="CBR 128 kbps" options="-m 128 -M 128 --managed"/>
+        <Preset name="CBR 160 kbps" options="-m 160 -M 160 --managed"/>
+        <Preset name="CBR 192 kbps" options="-m 192 -M 192 --managed"/>
+        <Preset name="CBR 224 kbps" options="-m 224 -M 224 --managed"/>
+        <Preset name="CBR 256 kbps" options="-m 256 -M 256 --managed"/>
+        <Preset name="CBR 320 kbps" options="-m 320 -M 320 --managed"/>
+        <Preset name="CBR 400 kbps" options="-m 400 -M 400 --managed"/>
+        <Preset name="CBR 500 kbps" options="-m 500 -M 500 --managed"/>
+        <Preset name="ABR 32 kbps" options="-b 32"/>
+        <Preset name="ABR 48 kbps" options="-b 48"/>
+        <Preset name="ABR 64 kbps" options="-b 64"/>
+        <Preset name="ABR 80 kbps" options="-b 80"/>
+        <Preset name="ABR 96 kbps" options="-b 96"/>
+        <Preset name="ABR 112 kbps" options="-b 112"/>
+        <Preset name="ABR 128 kbps" options="-b 128"/>
+        <Preset name="ABR 160 kbps" options="-b 160"/>
+        <Preset name="ABR 192 kbps" options="-b 192"/>
+        <Preset name="ABR 224 kbps" options="-b 224"/>
+        <Preset name="ABR 256 kbps" options="-b 256"/>
+        <Preset name="ABR 320 kbps" options="-b 320"/>
+        <Preset name="ABR 400 kbps" options="-b 400"/>
+        <Preset name="ABR 500 kbps" options="-b 500"/>
+    </Presets>
+</Format>

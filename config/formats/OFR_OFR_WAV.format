@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Format id="OFR_OFR_WAV" name="Decode OFR to WAV" template="$EXE --decode --overwrite $INFILE --output $OUTFILE" input="true" output="false" function="GetProgress_OfrDec.progress" path="ofr.exe" success="0" type="1" formats="OFR" extension="WAV" default="0">
+    <Presets>
+        <Preset name="Default" options=""/>
+    </Presets>
+</Format>

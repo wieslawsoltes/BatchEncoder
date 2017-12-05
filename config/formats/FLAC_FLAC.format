@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Format id="FLAC_FLAC" name="FLAC (Free Lossless Audio Codec)" template="$EXE $OPTIONS -f -o $OUTFILE $INFILE" input="true" output="false" function="GetProgress_FlacEnc.progress" path="flac.exe" success="0" type="0" formats="WAV" extension="FLAC" default="5">
+    <Presets>
+        <Preset name="Compression Level 0 (Fast)" options="-0"/>
+        <Preset name="Compression Level 1" options="-1"/>
+        <Preset name="Compression Level 2" options="-2"/>
+        <Preset name="Compression Level 3" options="-3"/>
+        <Preset name="Compression Level 4" options="-4"/>
+        <Preset name="Compression Level 5" options="-5"/>
+        <Preset name="Compression Level 6" options="-6"/>
+        <Preset name="Compression Level 7" options="-7"/>
+        <Preset name="Compression Level 8 (Best)" options="-8"/>
+    </Presets>
+</Format>
