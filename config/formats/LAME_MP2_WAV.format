@@ -1,6 +1,0 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
-<Format id="LAME_MP2_WAV" name="Decode MP2 to WAV" template="$EXE --decode --mp2input $INFILE $OUTFILE" input="true" output="false" function="GetProgress_LameDec.progress" path="lame.exe" success="0" type="1" formats="MP2" extension="WAV" default="0">
-    <Presets>
-        <Preset name="Default" options=""/>
-    </Presets>
-</Format>

@@ -1,6 +1,0 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
-<Format id="MPCDEC_MP+_WAV" name="Decode MP+ to WAV" template="$EXE $INFILE $OUTFILE" input="false" output="false" function="GetProgress_MpcDec.progress" path="mpcdec.exe" success="0" type="1" formats="MP+" extension="WAV" default="0">
-    <Presets>
-        <Preset name="Default" options=""/>
-    </Presets>
-</Format>

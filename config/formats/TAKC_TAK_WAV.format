@@ -1,6 +1,0 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
-<Format id="TAKC_TAK_WAV" name="Decode TAK to WAV" template="$EXE -d -overwrite $INFILE $OUTFILE" input="false" output="true" function="- none -" path="takc.exe" success="0" type="1" formats="TAK" extension="WAV" default="0">
-    <Presets>
-        <Preset name="Default" options=""/>
-    </Presets>
-</Format>

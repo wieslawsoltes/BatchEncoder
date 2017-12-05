@@ -1,8 +1,0 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
-<Format id="WAVPACK_WV" name="WV (WavPack)" template="$EXE $OPTIONS -y $INFILE $OUTFILE" input="false" output="false" function="GetProgress_WavPackEnc.progress" path="wavpack.exe" success="0" type="0" formats="WAV,WV,CAF,W64,DFF,DSF" extension="WV" default="1">
-    <Presets>
-        <Preset name="Lossless (Fast compression)" options="-f"/>
-        <Preset name="Lossless (Normal compression)" options=""/>
-        <Preset name="Lossless (Best compression)" options="-h"/>
-    </Presets>
-</Format>

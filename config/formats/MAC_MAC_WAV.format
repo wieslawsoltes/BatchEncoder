@@ -1,6 +1,0 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
-<Format id="MAC_MAC_WAV" name="Decode MAC to WAV" template="$EXE $INFILE $OUTFILE -d" input="false" output="false" function="GetProgress_MacDec.progress" path="mac.exe" success="0" type="1" formats="MAC" extension="WAV" default="0">
-    <Presets>
-        <Preset name="Default" options=""/>
-    </Presets>
-</Format>
