@@ -33,7 +33,7 @@ $Tools =
     # FAAD2 
     ( "http://www.rarewares.org/files/aac/faad2-20100614.zip", "faad2-20100614.zip" ),
     # Opus
-    ( "https://downloads.sourceforge.net/project/muldersoft/Opus%20Tools/opus-tools.2016-11-04.zip?use_mirror=netix", "opus-tools.2016-11-04.zip" ),
+    ( "https://netix.dl.sourceforge.net/project/muldersoft/Opus%20Tools/opus-tools.2017-12-04.zip", "opus-tools.2017-12-04.zip" ),
     # Ogg Vorbis
     ( "http://www.rarewares.org/files/ogg/oggenc2.88-1.3.5-generic.zip", "oggenc2.88-1.3.5-generic.zip" ),
     ( "http://www.rarewares.org/files/ogg/oggenc2.88-1.3.5-P4.zip", "oggenc2.88-1.3.5-P4.zip" ),
@@ -52,8 +52,8 @@ $Tools =
     # FLAC
     ( "http://downloads.xiph.org/releases/flac/flac-1.3.2-win.zip", "flac-1.3.2-win.zip" ),
     # WavPack 
-    ( "http://www.wavpack.com/wavpack-5.0.0-x86.zip", "wavpack-5.0.0-x86.zip" ),
-    ( "http://www.wavpack.com/wavpack-5.0.0-x64.zip", "wavpack-5.0.0-x64.zip" ),
+    ( "http://www.wavpack.com/wavpack-5.1.0-x86.zip", "wavpack-5.1.0-x86.zip" ),
+    ( "http://www.wavpack.com/wavpack-5.1.0-x64.zip", "wavpack-5.1.0-x64.zip" ),
     # Monkey’s Audio
     ( "http://monkeysaudio.com/files/MAC_418.exe", "MAC_418.exe" ),
     # La
@@ -69,7 +69,7 @@ $Tools =
     # TAK 
     ( "http://www.thbeck.de/Download/TAK_2.3.0.zip", "TAK_2.3.0.zip" ),
     # Nero AAC
-    ( "http://www.videohelp.com/download/NeroAACCodec-1.5.4.zip?r=rmHRsLcz", "NeroAACCodec-1.5.4.zip" ),
+    ( "https://www.videohelp.com/download/NeroAACCodec-1.5.4.zip?r=kbLKqdmS", "NeroAACCodec-1.5.4.zip" ),
     # qaac
     ( "https://sites.google.com/site/qaacpage/cabinet/qaac_2.64.zip?attredirects=0&d=1", "qaac_2.64.zip" ),
     # lossyWAV

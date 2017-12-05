@@ -140,12 +140,12 @@ adds input and output file paths. For specific options for each format use help 
 | QAAC         | M4A        | 2.64            | qaac.exe          | yes      | no       | GetProgress_QaacEnc.progress      |
 | NEROAACENC   | M4A        | 1.5.4           | neroAacEnc.exe    | yes      | no       | - none -                          |
 | NEROAACENC   | MP4        | 1.5.4           | neroAacEnc.exe    | yes      | no       | - none -                          |
-| OPUSENC      | OPUS       | 1.2-alpha       | opusenc.exe       | yes      | no       | GetProgress_OpusEnc.progress      |
+| OPUSENC      | OPUS       | 1.2.1-35        | opusenc.exe       | yes      | no       | GetProgress_OpusEnc.progress      |
 | OGGENC       | OGG        | 2.88            | oggenc2.exe       | yes      | no       | GetProgress_OggEnc.progress       |
 | AFTEN        | AC3        | git-2009122     | aften.exe         | yes      | no       | GetProgress_AftenEnc.progress     |
 | FFMPEG       | AC3        | 3.4             | ffmpeg.exe        | yes      | yes      | - none -                          |
 | FLAC         | FLAC       | 1.3.2           | flac.exe          | yes      | no       | GetProgress_FlacEnc.progress      |
-| WAVPACK      | WV         | 5.0.0           | wavpack.exe       | no       | no       | GetProgress_WavPackEnc.progress   |
+| WAVPACK      | WV         | 5.1.0           | wavpack.exe       | no       | no       | GetProgress_WavPackEnc.progress   |
 | LA           | LA         | 0.4b            | la.exe            | yes      | no       | GetProgress_LaEnc.progress        |
 | MAC          | APE        | 4.18            | mac.exe           | no       | no       | GetProgress_MacEnc.progress       |
 | OFR          | OFR        | 5.100           | ofr.exe           | yes      | no       | GetProgress_OfrEnc.progress       |
@@ -168,10 +168,10 @@ adds input and output file paths. For specific options for each format use help 
 | QAAC         | M4A        | 2.64            | qaac.exe          | no       | no       | GetProgress_QaacDec.progress      |
 | NEROAACDEC   | MP4        | 1.5.1           | neroAacDec.exe    | no       | yes      | - none -                          |
 | NEROAACDEC   | M4A        | 1.5.1           | neroAacDec.exe    | no       | yes      | - none -                          |
-| OPUSDEC      | OPUS       | 1.2-alpha       | opusdec.exe       | yes      | no       | GetProgress_OpusDec.progress      |
+| OPUSDEC      | OPUS       | 1.2.1-35        | opusdec.exe       | yes      | no       | GetProgress_OpusDec.progress      |
 | OGGDEC       | OGG        | 1.10.1          | oggdec.exe        | no       | no       | GetProgress_OggDec.progress       |
 | FLAC         | FLAC       | 1.3.2           | flac.exe          | yes      | no       | GetProgress_FlacDec.progress      |
-| WVUNPACK     | WV         | 5.0.0           | wvunpack.exe      | no       | no       | GetProgress_WvUnpackDec.progress  |
+| WVUNPACK     | WV         | 5.1.0           | wvunpack.exe      | no       | no       | GetProgress_WvUnpackDec.progress  |
 | LA           | LA         | 0.4b            | la.exe            | yes      | no       | GetProgress_LaDec.progress        |
 | MAC          | APE        | 4.18            | mac.exe           | no       | no       | GetProgress_MacDec.progress       |
 | MAC          | MAC        | 4.18            | mac.exe           | no       | no       | GetProgress_MacDec.progress       |
