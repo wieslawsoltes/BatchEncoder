@@ -1,0 +1,2 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Tool name="lossyWAV_x64" platform="x64" formats="" url="https://hydrogenaud.io/index.php?action=dlattach;topic=112649.0;attach=10350" file="lossyWAV_v1.4.2.zip" extract="zip" path="lossyWAV_v1.4.2/bin/64-Bit/lossyWAV.exe"/>

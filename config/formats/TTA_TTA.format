@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Format id="TTA_TTA" name="TTA (TTAv1 Lossless Audio) - tta" template="$EXE -e $OPTIONS $INFILE  $OUTFILE" input="true" output="false" function="GetProgress_TtaEnc.progress" path="tta-2.3-32bit/tta.exe" success="0" type="0" formats="WAV" extension="TTA" default="0">
+    <Presets>
+        <Preset name="Standard Compression" options=""/>
+    </Presets>
+</Format>

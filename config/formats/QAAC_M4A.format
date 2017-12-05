@@ -1,0 +1,80 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Format id="QAAC_M4A" name="M4A (MPEG-4/AAC) - qaac" template="$EXE $OPTIONS --ignorelength $INFILE -o $OUTFILE" input="true" output="false" function="GetProgress_QaacEnc.progress" path="qaac_2.64/qaac_2.64/x86/qaac.exe" success="0" type="0" formats="WAV" extension="M4A" default="7">
+    <Presets>
+        <Preset name="True VBR Quality 0 : 40 kbps~" options="--tvbr 0"/>
+        <Preset name="True VBR Quality 9 : 48 kbps~" options="--tvbr 9"/>
+        <Preset name="True VBR Quality 18 : 56 kbps~" options="--tvbr 18"/>
+        <Preset name="True VBR Quality 27 : 64 kbps~" options="--tvbr 27"/>
+        <Preset name="True VBR Quality 36 : 80 kbps~" options="--tvbr 36"/>
+        <Preset name="True VBR Quality 45 : 96 kbps~" options="--tvbr 45"/>
+        <Preset name="True VBR Quality 54 : 112 kbps~" options="--tvbr 54"/>
+        <Preset name="True VBR Quality 63 : 128 kbps~" options="--tvbr 63"/>
+        <Preset name="True VBR Quality 73 : 144 kbps~" options="--tvbr 73"/>
+        <Preset name="True VBR Quality 82 : 160 kbps~" options="--tvbr 82"/>
+        <Preset name="True VBR Quality 91 : 192 kbps~" options="--tvbr 91"/>
+        <Preset name="True VBR Quality 100 : 224 kbps~" options="--tvbr 100"/>
+        <Preset name="True VBR Quality 109 : 288 kbps~" options="--tvbr 109"/>
+        <Preset name="True VBR Quality 118 : 256 kbps~" options="--tvbr 118"/>
+        <Preset name="True VBR Quality 127 : 320 kbps~" options="--tvbr 127"/>
+        <Preset name="Constrained VBR 8 kbps" options="--cvbr 8"/>
+        <Preset name="Constrained VBR 16 kbps" options="--cvbr 16"/>
+        <Preset name="Constrained VBR 24 kbps" options="--cvbr 24"/>
+        <Preset name="Constrained VBR 32 kbps" options="--cvbr 32"/>
+        <Preset name="Constrained VBR 40 kbps" options="--cvbr 40"/>
+        <Preset name="Constrained VBR 48 kbps" options="--cvbr 48"/>
+        <Preset name="Constrained VBR 56 kbps" options="--cvbr 56"/>
+        <Preset name="Constrained VBR 64 kbps" options="--cvbr 64"/>
+        <Preset name="Constrained VBR 80 kbps" options="--cvbr 80"/>
+        <Preset name="Constrained VBR 96 kbps" options="--cvbr 96"/>
+        <Preset name="Constrained VBR 112 kbps" options="--cvbr 112"/>
+        <Preset name="Constrained VBR 128 kbps" options="--cvbr 128"/>
+        <Preset name="Constrained VBR 160 kbps" options="--cvbr 160"/>
+        <Preset name="Constrained VBR 192 kbps" options="--cvbr 192"/>
+        <Preset name="Constrained VBR 224 kbps" options="--cvbr 224"/>
+        <Preset name="Constrained VBR 256 kbps" options="--cvbr 256"/>
+        <Preset name="Constrained VBR 320 kbps" options="--cvbr 320"/>
+        <Preset name="Constrained VBR 384 kbps" options="--cvbr 384"/>
+        <Preset name="Constrained VBR 448 kbps" options="--cvbr 448"/>
+        <Preset name="Constrained VBR 512 kbps" options="--cvbr 512"/>
+        <Preset name="ABR 8 kbps" options="--abr 8"/>
+        <Preset name="ABR 16 kbps" options="--abr 16"/>
+        <Preset name="ABR 24 kbps" options="--abr 24"/>
+        <Preset name="ABR 32 kbps" options="--abr 32"/>
+        <Preset name="ABR 40 kbps" options="--abr 40"/>
+        <Preset name="ABR 48 kbps" options="--abr 48"/>
+        <Preset name="ABR 56 kbps" options="--abr 56"/>
+        <Preset name="ABR 64 kbps" options="--abr 64"/>
+        <Preset name="ABR 80 kbps" options="--abr 80"/>
+        <Preset name="ABR 96 kbps" options="--abr 96"/>
+        <Preset name="ABR 112 kbps" options="--abr 112"/>
+        <Preset name="ABR 128 kbps" options="--abr 128"/>
+        <Preset name="ABR 160 kbps" options="--abr 160"/>
+        <Preset name="ABR 192 kbps" options="--abr 192"/>
+        <Preset name="ABR 224 kbps" options="--abr 224"/>
+        <Preset name="ABR 256 kbps" options="--abr 256"/>
+        <Preset name="ABR 320 kbps" options="--abr 320"/>
+        <Preset name="ABR 384 kbps" options="--abr 384"/>
+        <Preset name="ABR 448 kbps" options="--abr 448"/>
+        <Preset name="ABR 512 kbps" options="--abr 512"/>
+        <Preset name="CBR 8 kbps" options="--cbr 8"/>
+        <Preset name="CBR 16 kbps" options="--cbr 16"/>
+        <Preset name="CBR 24 kbps" options="--cbr 24"/>
+        <Preset name="CBR 32 kbps" options="--cbr 32"/>
+        <Preset name="CBR 40 kbps" options="--cbr 40"/>
+        <Preset name="CBR 48 kbps" options="--cbr 48"/>
+        <Preset name="CBR 56 kbps" options="--cbr 56"/>
+        <Preset name="CBR 64 kbps" options="--cbr 64"/>
+        <Preset name="CBR 80 kbps" options="--cbr 80"/>
+        <Preset name="CBR 96 kbps" options="--cbr 96"/>
+        <Preset name="CBR 112 kbps" options="--cbr 112"/>
+        <Preset name="CBR 128 kbps" options="--cbr 128"/>
+        <Preset name="CBR 160 kbps" options="--cbr 160"/>
+        <Preset name="CBR 192 kbps" options="--cbr 192"/>
+        <Preset name="CBR 224 kbps" options="--cbr 224"/>
+        <Preset name="CBR 256 kbps" options="--cbr 256"/>
+        <Preset name="CBR 320 kbps" options="--cbr 320"/>
+        <Preset name="CBR 384 kbps" options="--cbr 384"/>
+        <Preset name="CBR 448 kbps" options="--cbr 448"/>
+        <Preset name="CBR 512 kbps" options="--cbr 512"/>
+    </Presets>
+</Format>

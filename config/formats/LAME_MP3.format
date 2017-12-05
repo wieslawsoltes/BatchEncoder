@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Format id="LAME_MP3" name="MP3 (MPEG Layer-3) - lame" template="$EXE $OPTIONS $INFILE $OUTFILE" input="true" output="false" function="GetProgress_LameEnc.progress" path="lame3.100/lame.exe" success="0" type="0" formats="WAV" extension="MP3" default="8">
+    <Presets>
+        <Preset name="ABR 56 kbit/s Mono" options="--abr 56 -mm"/>
+        <Preset name="VBR ~65 kbit/s (V9)" options="-V 9 --vbr-new"/>
+        <Preset name="VBR ~85 kbit/s (V8)" options="-V 8 --vbr-new"/>
+        <Preset name="VBR ~100 kbit/s (V7)" options="-V 7 --vbr-new"/>
+        <Preset name="VBR ~115 kbit/s (V6)" options="-V 6 --vbr-new"/>
+        <Preset name="VBR ~130 kbit/s (V5)" options="-V 5 --vbr-new"/>
+        <Preset name="VBR ~165 kbit/s (V4)" options="-V 4 --vbr-new"/>
+        <Preset name="VBR ~175 kbit/s (V3)" options="-V 3 --vbr-new"/>
+        <Preset name="VBR ~190 kbit/s (V2)" options="-V 2 --vbr-new"/>
+        <Preset name="VBR ~225 kbit/s (V1)" options="-V 1 --vbr-new"/>
+        <Preset name="VBR ~245 kbit/s (V0)" options="-V 0 --vbr-new"/>
+        <Preset name="CBR 56 kbit/s" options="-b 56"/>
+        <Preset name="CBR 64 kbit/s" options="-b 64"/>
+        <Preset name="CBR 80 kbit/s" options="-b 80"/>
+        <Preset name="CBR 96 kbit/s" options="-b 96"/>
+        <Preset name="CBR 112 kbit/s" options="-b 112"/>
+        <Preset name="CBR 128 kbit/s" options="-b 128"/>
+        <Preset name="CBR 160 kbit/s" options="-b 160"/>
+        <Preset name="CBR 192 kbit/s" options="-b 192"/>
+        <Preset name="CBR 224 kbit/s" options="-b 224"/>
+        <Preset name="CBR 256 kbit/s" options="-b 256"/>
+        <Preset name="CBR 320 kbit/s" options="-b 320"/>
+    </Presets>
+</Format>

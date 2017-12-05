@@ -1,0 +1,2 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Tool name="faad2_x86" platform="x86" formats="FAAD_AAC_WAV" url="http://www.rarewares.org/files/aac/faad2-20100614.zip" file="faad2-20100614.zip" extract="zip" path="faad2-20100614/faad.exe"/>

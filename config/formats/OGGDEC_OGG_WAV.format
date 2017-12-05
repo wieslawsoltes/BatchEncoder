@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Format id="OGGDEC_OGG_WAV" name="Decode OGG to WAV - oggdec" template="$EXE $INFILE -w $OUTFILE" input="false" output="false" function="GetProgress_OggDec.progress" path="oggdecV1.10.1/oggdec.exe" success="0" type="1" formats="OGG" extension="WAV" default="0">
+    <Presets>
+        <Preset name="Default" options=""/>
+    </Presets>
+</Format>

@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Format id="QAAC_M4A_WAV" name="Decode M4A to WAV - qaac" template="$EXE $OPTIONS --decode $INFILE -o $OUTFILE" input="false" output="false" function="GetProgress_QaacDec.progress" path="qaac_2.64/qaac_2.64/x86/qaac.exe" success="0" type="1" formats="M4A" extension="WAV" default="0">
+    <Presets>
+        <Preset name="Default" options=""/>
+    </Presets>
+</Format>

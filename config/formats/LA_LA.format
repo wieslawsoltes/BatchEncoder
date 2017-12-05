@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Format id="LA_LA" name="LA (Lossless Audio) - la" template="$EXE $OPTIONS -overwrite ignore.wav $OUTFILE -cin" input="true" output="false" function="GetProgress_LaEnc.progress" path="C:\Program Files (x86)\La\la.exe" success="0" type="0" formats="WAV" extension="LA" default="0">
+    <Presets>
+        <Preset name="Normal Mode" options=""/>
+        <Preset name="High Mode" options="-high"/>
+    </Presets>
+</Format>
