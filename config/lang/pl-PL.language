@@ -49,8 +49,8 @@
     <String key="0x0004000A" value="Zapewnij Że &amp;Element Jest Widoczny" />
     <String key="0x0004000B" value="Spróbuj Znaleźć &amp;Dekoder" />
     <String key="0x0004000C" value="&amp;Sprawdź Poprawność Plików Wejściowych" />
-    <String key="0x0004000D" value="&amp;Nadpisz Istniejące Pliki" />
-    <String key="0x0004000E" value="Configure Too&amp;ls...	F10" />
+    <String key="0x0004000D" value="Nadpisz &amp;Istniejące Pliki" />
+    <String key="0x0004000E" value="Konifguracja &amp;Narzędzi...	F10" />
 
     <!-- Language Menu -->
 
@@ -143,36 +143,39 @@
 
     <!-- Tools Dialog -->
 
-    <String key="0x000E0001" value="Name" />
+    <String key="0x000E0001" value="Nazwa" />
     <String key="0x000E0002" value="Url" />
     <String key="0x000E0003" value="Status" />
 
-    <String key="0x000E0010" value="Configure Tools" />
-    <String key="0x000E0011" value="&amp;Cancel" />
-    <String key="0x000E0012" value="Name:" />
-    <String key="0x000E0013" value="Platform:" />
-    <String key="0x000E0014" value="Supported formats (separated by comma):" />
-    <String key="0x000E0015" value="Download URL:" />
-    <String key="0x000E0016" value="Download file name:" />
-    <String key="0x000E0017" value="Extract method:" />
-    <String key="0x000E0018" value="Extract path:" />
-    <String key="0x000E0019" value="move &amp;Up" />
-    <String key="0x000E001A" value="move Dow&amp;n" />
-    <String key="0x000E001B" value="&amp;Import" />
-    <String key="0x000E001C" value="E&amp;xport" />
-    <String key="0x000E001D" value="Du&amp;plicate" />
-    <String key="0x000E001E" value="Dele&amp;te All" />
-    <String key="0x000E001F" value="&amp;Delete" />
-    <String key="0x000E0020" value="&amp;Add" />
-    <String key="0x000E0021" value="&amp;Load" />
-    <String key="0x000E0022" value="&amp;Save As" />
-    <String key="0x000E0023" value="Do&amp;wnload Selected" />
-    <String key="0x000E0024" value="Stop Do&amp;wnload" />
-    <String key="0x000E0025" value="S&amp;et Selected Paths" />
-    <String key="0x000E0026" value="Set x&amp;86 Paths" />
-    <String key="0x000E0027" value="Set x&amp;64 Paths" />
-    <String key="0x000E0028" value="C&amp;hange" />
+    <String key="0x000E0010" value="Konifguracja Narzędzi" />
+    <String key="0x000E0011" value="&amp;Anuluj" />
+    <String key="0x000E0012" value="Nazwa:" />
+    <String key="0x000E0013" value="Platforma:" />
+    <String key="0x000E0014" value="Wspierane formaty (oddzielone przecinkiem):" />
+    <String key="0x000E0015" value="Adres URL do pobrania:" />
+    <String key="0x000E0016" value="Nazwa pobranego pliku:" />
+    <String key="0x000E0017" value="Metoda rozpakowania:" />
+    <String key="0x000E0018" value="Ścieżka do rozpakowania:" />
+    <String key="0x000E0019" value="przesuń &amp;w Górę" />
+    <String key="0x000E001A" value="prz&amp;esuń w Dół" />
+    <String key="0x000E001B" value="&amp;Importuj" />
+    <String key="0x000E001C" value="E&amp;ksportuj" />
+    <String key="0x000E001D" value="Dup&amp;likuj" />
+    <String key="0x000E001E" value="Usuń Wszys&amp;tkie" />
+    <String key="0x000E001F" value="&amp;Usuń" />
+    <String key="0x000E0020" value="&amp;Dodaj" />
+    <String key="0x000E0021" value="Otwór&amp;z" />
+    <String key="0x000E0022" value="Zapisz &amp;Jako" />
+    <String key="0x000E0023" value="&amp;Pobierz Wybrane" />
+    <String key="0x000E0024" value="Zatrzymaj Pobie&amp;ranie" />
+    <String key="0x000E0025" value="Ustaw &amp;Wybrane Ścieżki" />
+    <String key="0x000E0026" value="Ustaw Ścieżki x&amp;86" />
+    <String key="0x000E0027" value="Ustaw Ścieżki x&amp;64" />
+    <String key="0x000E0028" value="Z&amp;mień" />
     <String key="0x000E0029" value="&amp;OK" />
+    <String key="0x000E0001" value="Name" />
+    <String key="0x000E0002" value="Url" />
+    <String key="0x000E0003" value="Status" />
 
     <!-- About Dialog -->
 
@@ -264,10 +267,10 @@
 
     <!-- Strings Tools Dialog -->
 
-    <String key="0x00240001" value="ERROR" />
-    <String key="0x00240002" value="Failed to load file!" />
-    <String key="0x00240003" value="Failed to save file!" />
-    <String key="0x00240004" value="Tool" />
+    <String key="0x00240001" value="BŁĄD" />
+    <String key="0x00240002" value="Nie udało się wczytać pliku!" />
+    <String key="0x00240003" value="Nie udało się zapisać pliku!" />
+    <String key="0x00240004" value="Narzędzie" />
 
     <!-- Strings File Dialogs -->
 
@@ -279,24 +282,24 @@
     <String key="0x00310006" value="Pliki Exe" />
     <String key="0x00310007" value="Pliki Progress" />
     <String key="0x00310008" value="Pliki Format" />
-    <String key="0x00310009" value="Tools Files" />
-    <String key="0x00310010" value="Tool Files" />
+    <String key="0x00310009" value="Pliki Tools" />
+    <String key="0x00310010" value="Pliki Tool" />
 
     <!-- Strings Download Status -->
 
-    <String key="0x00400001" value="Finding resource..." />
-    <String key="0x00400002" value="Connecting..." />
-    <String key="0x00400003" value="Sending request..." />
-    <String key="0x00400004" value="Mime type available" />
-    <String key="0x00400005" value="Cache filename available" />
-    <String key="0x00400006" value="Begin download" />
-    <String key="0x00400007" value="End download" />
-    <String key="0x00400008" value="Status code : " />
+    <String key="0x00400001" value="Znajdowanie zasobów..." />
+    <String key="0x00400002" value="Łączenie..." />
+    <String key="0x00400003" value="Wysyłanie zapytania..." />
+    <String key="0x00400004" value="Dostępny typ mime" />
+    <String key="0x00400005" value="Dostępny plik w pamięci podręcznej" />
+    <String key="0x00400006" value="Rozpoczęcie pobierania" />
+    <String key="0x00400007" value="Koniec pobierania" />
+    <String key="0x00400008" value="Kod statusu : " />
 
     <!-- Strings Extract Status -->
 
-    <String key="0x00410001" value="Failed to create unzip folder." />
-    <String key="0x00410002" value="Unziped downloaded file." />
-    <String key="0x00410003" value="Failed to unzip downloaded file." />
+    <String key="0x00410001" value="Nie udało się utworzyć folderu do rozpakowania." />
+    <String key="0x00410002" value="Rozpakowano pobrany plik." />
+    <String key="0x00410003" value="Nie udało się rozpakować pobranego pliku." />
 
 </Language>
