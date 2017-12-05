@@ -1028,7 +1028,7 @@ void CToolsDlg::DownloadTools()
 
                     if (::DirectoryExists(szFolderPath) == TRUE)
                     {
-                        bool bUnzipResult = Unzip2Folder(file, folder);
+                        bool bUnzipResult = ::Unzip2Folder(file, folder);
                         if (bUnzipResult == true)
                             m_LstTools.SetItemText(i, TOOL_COLUMN_STATUS, _T("Unziped downloaded file."));
                         else
