@@ -168,8 +168,11 @@
     <String key="0x000E0022" value="&amp;Save As" />
     <String key="0x000E0023" value="Do&amp;wnload Selected" />
     <String key="0x000E0024" value="Stop Do&amp;wnload" />
-    <String key="0x000E0025" value="C&amp;hange" />
-    <String key="0x000E0026" value="&amp;OK" />
+    <String key="0x000E0025" value="Set Selected &amp;Paths" />
+    <String key="0x000E0026" value="Set x&amp;86 Paths" />
+    <String key="0x000E0027" value="Set x&amp;64 Paths" />
+    <String key="0x000E0028" value="C&amp;hange" />
+    <String key="0x000E0029" value="&amp;OK" />
 
     <!-- About Dialog -->
 
@@ -289,5 +292,11 @@
     <String key="0x00400006" value="Begin download" />
     <String key="0x00400007" value="End download" />
     <String key="0x00400008" value="Status code : " />
+
+    <!-- Strings Extract Status -->
+
+    <String key="0x00410001" value="Failed to create unzip folder." />
+    <String key="0x00410002" value="Unziped downloaded file." />
+    <String key="0x00410003" value="Failed to unzip downloaded file." />
 
 </Language>
