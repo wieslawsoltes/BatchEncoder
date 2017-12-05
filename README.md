@@ -1,4 +1,4 @@
-# BatchEncoder (Audio Conversion GUI)
+﻿# BatchEncoder (Audio Conversion GUI)
 
 [![Gitter](https://badges.gitter.im/wieslawsoltes/BatchEncoder.svg)](https://gitter.im/wieslawsoltes/BatchEncoder?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
@@ -75,13 +75,17 @@ adds input and output file paths. For specific options for each format use help 
 
 [![File List Converting](screenshots/FileListConverting.png)](https://github.com/wieslawsoltes/BatchEncoder/blob/master/screenshots/FileListConverting.png)
 
+### Configure presets
+
+[![Configure Presets](screenshots/ConfigurePresets.png)](https://github.com/wieslawsoltes/BatchEncoder/blob/master/screenshots/ConfigurePresets.png)
+
 ### Configure formats
 
 [![Configure Formats](screenshots/ConfigureFormats.png)](https://github.com/wieslawsoltes/BatchEncoder/blob/master/screenshots/ConfigureFormats.png)
 
-### Configure presets
+### Configure tools
 
-[![Configure Presets](screenshots/ConfigurePresets.png)](https://github.com/wieslawsoltes/BatchEncoder/blob/master/screenshots/ConfigurePresets.png)
+[![Configure Tools](screenshots/ConfigureTools.png)](https://github.com/wieslawsoltes/BatchEncoder/blob/master/screenshots/ConfigureTools.png)
 
 ## Keyboard Shortcuts
 
