@@ -130,12 +130,12 @@
       <AdditionalDependencies>Rpcrt4.lib</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>copy /-Y ..\config\*.options $(OutDir)
-copy /-Y ..\config\*.tools $(OutDir)
-copy /-Y ..\config\*.formats $(OutDir)
+      <Command>copy /-Y ..\config\*.formats $(OutDir)
+copy /-Y ..\config\*.options $(OutDir)
 copy /-Y ..\config\*.items $(OutDir)
-copy /Y ..\progress\*.progress $(OutDir)
-copy /Y ..\lang\*.language $(OutDir)</Command>
+copy /-Y ..\config\*.tools $(OutDir)
+copy /Y ..\config\progress\*.progress $(OutDir)
+copy /Y ..\config\lang\*.language $(OutDir)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -171,12 +171,12 @@ copy /Y ..\lang\*.language $(OutDir)</Command>
       <AdditionalDependencies>Rpcrt4.lib</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>copy /-Y ..\config\*.options $(OutDir)
-copy /-Y ..\config\*.tools $(OutDir)
-copy /-Y ..\config\*.formats $(OutDir)
+      <Command>copy /-Y ..\config\*.formats $(OutDir)
+copy /-Y ..\config\*.options $(OutDir)
 copy /-Y ..\config\*.items $(OutDir)
-copy /Y ..\progress\*.progress $(OutDir)
-copy /Y ..\lang\*.language $(OutDir)</Command>
+copy /-Y ..\config\*.tools $(OutDir)
+copy /Y ..\config\progress\*.progress $(OutDir)
+copy /Y ..\config\lang\*.language $(OutDir)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -213,12 +213,12 @@ copy /Y ..\lang\*.language $(OutDir)</Command>
       <AdditionalDependencies>Rpcrt4.lib</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>copy /-Y ..\config\*.options $(OutDir)
-copy /-Y ..\config\*.tools $(OutDir)
-copy /-Y ..\config\*.formats $(OutDir)
+      <Command>copy /-Y ..\config\*.formats $(OutDir)
+copy /-Y ..\config\*.options $(OutDir)
 copy /-Y ..\config\*.items $(OutDir)
-copy /Y ..\progress\*.progress $(OutDir)
-copy /Y ..\lang\*.language $(OutDir)</Command>
+copy /-Y ..\config\*.tools $(OutDir)
+copy /Y ..\config\progress\*.progress $(OutDir)
+copy /Y ..\config\lang\*.language $(OutDir)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -256,12 +256,12 @@ copy /Y ..\lang\*.language $(OutDir)</Command>
       <AdditionalDependencies>Rpcrt4.lib</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>copy /-Y ..\config\*.options $(OutDir)
-copy /-Y ..\config\*.tools $(OutDir)
-copy /-Y ..\config\*.formats $(OutDir)
+      <Command>copy /-Y ..\config\*.formats $(OutDir)
+copy /-Y ..\config\*.options $(OutDir)
 copy /-Y ..\config\*.items $(OutDir)
-copy /Y ..\progress\*.progress $(OutDir)
-copy /Y ..\lang\*.language $(OutDir)</Command>
+copy /-Y ..\config\*.tools $(OutDir)
+copy /Y ..\config\progress\*.progress $(OutDir)
+copy /Y ..\config\lang\*.language $(OutDir)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
