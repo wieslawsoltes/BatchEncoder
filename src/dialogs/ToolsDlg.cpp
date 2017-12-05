@@ -68,6 +68,9 @@ void CToolsDlg::DoDataExchange(CDataExchange* pDX)
     DDX_Control(pDX, IDC_BUTTON_TOOL_LOAD, m_BtnLoad);
     DDX_Control(pDX, IDC_BUTTON_TOOL_SAVE, m_BtnSave);
     DDX_Control(pDX, IDC_BUTTON_TOOL_DOWNLOAD, m_BtnDownload);
+    DDX_Control(pDX, IDC_BUTTON_TOOL_SETFORMAT, m_BtnSetFormat);
+    DDX_Control(pDX, IDC_BUTTON_TOOL_SETFORMATX86, m_BtnSetFormatX86);
+    DDX_Control(pDX, IDC_BUTTON_TOOL_SETFORMATX64, m_BtnSetFormatX64);
 }
 
 BEGIN_MESSAGE_MAP(CToolsDlg, CMyDialogEx)
@@ -96,6 +99,9 @@ BEGIN_MESSAGE_MAP(CToolsDlg, CMyDialogEx)
     ON_BN_CLICKED(IDC_BUTTON_TOOL_LOAD, OnBnClickedButtonLoadTools)
     ON_BN_CLICKED(IDC_BUTTON_TOOL_SAVE, OnBnClickedButtonSaveTools)
     ON_BN_CLICKED(IDC_BUTTON_TOOL_DOWNLOAD, OnBnClickedButtonDownloadSelected)
+    ON_BN_CLICKED(IDC_BUTTON_TOOL_SETFORMAT, OnBnClickedButtonToolSetFormat)
+    ON_BN_CLICKED(IDC_BUTTON_TOOL_SETFORMATX86, OnBnClickedButtonToolSetFormatX86)
+    ON_BN_CLICKED(IDC_BUTTON_TOOL_SETFORMATX64, OnBnClickedButtonToolSetFormatX64)
     ON_WM_CLOSE()
     ON_WM_DESTROY()
 END_MESSAGE_MAP()
@@ -687,6 +693,21 @@ void CToolsDlg::OnBnClickedButtonDownloadSelected()
     }
 }
 
+void CToolsDlg::OnBnClickedButtonToolSetFormat()
+{
+    SetFormatPaths();
+}
+
+void CToolsDlg::OnBnClickedButtonToolSetFormatX86()
+{
+    SetFormatPaths(_T("x86"));
+}
+
+void CToolsDlg::OnBnClickedButtonToolSetFormatX64()
+{
+    SetFormatPaths(_T("x64"));
+}
+
 void CToolsDlg::OnClose()
 {
     this->SaveWindowSettings();
@@ -769,8 +790,11 @@ void CToolsDlg::SetLanguage()
     helper.SetWndText(&m_BtnLoad, 0x000E0021);
     helper.SetWndText(&m_BtnSave, 0x000E0022);
     helper.SetWndText(&m_BtnDownload, 0x000E0023);
-    helper.SetWndText(&m_BtnUpdate, 0x000E0025);
-    helper.SetWndText(&m_BtnOK, 0x000E0026);
+    helper.SetWndText(&m_BtnSetFormat, 0x000E0025);
+    helper.SetWndText(&m_BtnSetFormatX86, 0x000E0026);
+    helper.SetWndText(&m_BtnSetFormatX64, 0x000E0027);
+    helper.SetWndText(&m_BtnUpdate, 0x000E0028);
+    helper.SetWndText(&m_BtnOK, 0x000E0029);
 }
 
 void CToolsDlg::AddToList(CTool &tool, int nItem)
@@ -966,6 +990,36 @@ void CToolsDlg::SaveTools(CString szFileXml)
     }
 }
 
+void CToolsDlg::EnableUserInterface(BOOL bEnable)
+{
+    CMenu* pSysMenu = GetSystemMenu(FALSE);
+    if (bEnable == FALSE)
+        pSysMenu->EnableMenuItem(SC_CLOSE, MF_GRAYED);
+    else
+        pSysMenu->EnableMenuItem(SC_CLOSE, MF_ENABLED);
+
+    this->m_EdtName.EnableWindow(bEnable);
+    this->m_EdtPlatform.EnableWindow(bEnable);
+    this->m_EdtFormats.EnableWindow(bEnable);
+    this->m_EdtUrl.EnableWindow(bEnable);
+    this->m_EdtFile.EnableWindow(bEnable);
+    this->m_EdtExtract.EnableWindow(bEnable);
+    this->m_EdtPath.EnableWindow(bEnable);
+    this->m_BtnOK.EnableWindow(bEnable);
+    this->m_BtnCancel.EnableWindow(bEnable);
+    this->m_BtnImport.EnableWindow(bEnable);
+    this->m_BtnExport.EnableWindow(bEnable);
+    this->m_BtnDuplicate.EnableWindow(bEnable);
+    this->m_BtnRemoveAll.EnableWindow(bEnable);
+    this->m_BtnRemove.EnableWindow(bEnable);
+    this->m_BtnAdd.EnableWindow(bEnable);
+    this->m_BtnMoveUp.EnableWindow(bEnable);
+    this->m_BtnMoveDown.EnableWindow(bEnable);
+    this->m_BtnUpdate.EnableWindow(bEnable);
+    this->m_BtnLoad.EnableWindow(bEnable);
+    this->m_BtnSave.EnableWindow(bEnable);
+}
+
 void CToolsDlg::DownloadTools()
 {
     bDownload = true;
@@ -1022,7 +1076,8 @@ void CToolsDlg::DownloadTools()
                     {
                         if (::MakeFullPath(szFolderPath) == false)
                         {
-                            m_LstTools.SetItemText(i, TOOL_COLUMN_STATUS, _T("Failed to create unzip folder."));
+                            CString szStatus = pConfig->GetString(0x00410001, pszExtractStatus[0]);
+                            m_LstTools.SetItemText(i, TOOL_COLUMN_STATUS, szStatus);
                         }
                     }
 
@@ -1030,9 +1085,15 @@ void CToolsDlg::DownloadTools()
                     {
                         bool bUnzipResult = ::Unzip2Folder(file, folder);
                         if (bUnzipResult == true)
-                            m_LstTools.SetItemText(i, TOOL_COLUMN_STATUS, _T("Unziped downloaded file."));
+                        {
+                            CString szStatus = pConfig->GetString(0x00410002, pszExtractStatus[1]);
+                            m_LstTools.SetItemText(i, TOOL_COLUMN_STATUS, szStatus);
+                        }
                         else
-                            m_LstTools.SetItemText(i, TOOL_COLUMN_STATUS, _T("Failed to unzip downloaded file."));
+                        {
+                            CString szStatus = pConfig->GetString(0x00410003, pszExtractStatus[2]);
+                            m_LstTools.SetItemText(i, TOOL_COLUMN_STATUS, szStatus);
+                        }
                     }
                 }
             }
@@ -1045,32 +1106,41 @@ void CToolsDlg::DownloadTools()
     bDownload = false;
 }
 
-void CToolsDlg::EnableUserInterface(BOOL bEnable)
+void CToolsDlg::SetFormatPaths(CString szPlatform)
 {
-    CMenu* pSysMenu = GetSystemMenu(FALSE);
-    if (bEnable == FALSE)
-        pSysMenu->EnableMenuItem(SC_CLOSE, MF_GRAYED);
-    else
-        pSysMenu->EnableMenuItem(SC_CLOSE, MF_ENABLED);
+    int nFormats = m_Formats.Count();
+    for (int i = 0; i < nFormats; i++)
+    {
+        CFormat& format = m_Formats.Get(i);
+        int nTool = m_Tools.GetToolByFormatAndPlatform(format.szId, szPlatform);
+        if (nTool >= 0)
+        {
+            CTool& tool = m_Tools.Get(nTool);
+            format.szPath = tool.szPath;
+        }
+    }
+}
 
-    this->m_EdtName.EnableWindow(bEnable);
-    this->m_EdtPlatform.EnableWindow(bEnable);
-    this->m_EdtFormats.EnableWindow(bEnable);
-    this->m_EdtUrl.EnableWindow(bEnable);
-    this->m_EdtFile.EnableWindow(bEnable);
-    this->m_EdtExtract.EnableWindow(bEnable);
-    this->m_EdtPath.EnableWindow(bEnable);
-    this->m_BtnOK.EnableWindow(bEnable);
-    this->m_BtnCancel.EnableWindow(bEnable);
-    this->m_BtnImport.EnableWindow(bEnable);
-    this->m_BtnExport.EnableWindow(bEnable);
-    this->m_BtnDuplicate.EnableWindow(bEnable);
-    this->m_BtnRemoveAll.EnableWindow(bEnable);
-    this->m_BtnRemove.EnableWindow(bEnable);
-    this->m_BtnAdd.EnableWindow(bEnable);
-    this->m_BtnMoveUp.EnableWindow(bEnable);
-    this->m_BtnMoveDown.EnableWindow(bEnable);
-    this->m_BtnUpdate.EnableWindow(bEnable);
-    this->m_BtnLoad.EnableWindow(bEnable);
-    this->m_BtnSave.EnableWindow(bEnable);
+void CToolsDlg::SetFormatPaths()
+{
+    int nTools = m_LstTools.GetItemCount();
+    int nFormats = m_Formats.Count();
+    if ((nTools > 0) && (nFormats > 0))
+    {
+        for (int i = 0; i < nTools; i++)
+        {
+            if (m_LstTools.GetItemState(i, LVIS_SELECTED) == LVIS_SELECTED)
+            {
+                CTool& tool = this->m_Tools.Get(i);
+                for (int i = 0; i < nFormats; i++)
+                {
+                    CFormat& format = m_Formats.Get(i);
+                    if (tool.IsValidFormat(format.szId))
+                    {
+                        format.szPath = tool.szPath;
+                    }
+                }
+            }
+        }
+    }
 }

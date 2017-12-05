@@ -90,6 +90,9 @@ public:
     CMyButton m_BtnLoad;
     CMyButton m_BtnSave;
     CMyButton m_BtnDownload;
+    CMyButton m_BtnSetFormat;
+    CMyButton m_BtnSetFormatX86;
+    CMyButton m_BtnSetFormatX64;
 public:
     afx_msg void OnDropFiles(HDROP hDropInfo);
     afx_msg void OnBnClickedOk();
@@ -114,6 +117,9 @@ public:
     afx_msg void OnBnClickedButtonLoadTools();
     afx_msg void OnBnClickedButtonSaveTools();
     afx_msg void OnBnClickedButtonDownloadSelected();
+    afx_msg void OnBnClickedButtonToolSetFormat();
+    afx_msg void OnBnClickedButtonToolSetFormatX86();
+    afx_msg void OnBnClickedButtonToolSetFormatX64();
     afx_msg void OnClose();
     afx_msg void OnDestroy();
 public:
@@ -129,6 +135,8 @@ public:
     void SaveTool(CString szFileXml, CTool &tool);
     void LoadTools(CString szFileXml);
     void SaveTools(CString szFileXml);
-    void DownloadTools();
     void EnableUserInterface(BOOL bEnable = TRUE);
+    void DownloadTools();
+    void SetFormatPaths(CString szPlatform);
+    void SetFormatPaths();
 };
