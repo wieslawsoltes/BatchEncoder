@@ -683,13 +683,11 @@ void CToolsDlg::OnBnClickedButtonDownloadSelected()
         }
 
         m_Thread.Start(
-            [](void *param)->int
+            [this]()
             {
-                CToolsDlg* pToolsDlg = (CToolsDlg*)param;
-                pToolsDlg->DownloadTools();
-                return pToolsDlg->m_Thread.Close();
-            },
-            this, false);
+                this->DownloadTools();
+                this->m_Thread.Close();
+            }, false);
     }
 }
 
