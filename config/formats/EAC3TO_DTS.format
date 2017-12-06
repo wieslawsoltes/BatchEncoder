@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Format id="EAC3TO_DTS" name="DTS (Coherent Acoustics codec) - eac3to" template="$EXE $INFILE $OUTFILE -progressnumbers $OPTIONS" input="false" output="false" function="GetProgress_Eac3toEnc.progress" path="eac3to/eac3to.exe" success="0" type="0" formats="RAW,LPCM,PCM,WAV,W64,RF64,AC3,EAC3,DTS,DTSES,DTS9624,DTSHDHR,DTSHDMA,MLP,THD,THDAC3,FLAC,AAC" extension="DTS" default="0">
+    <Presets>
+        <Preset name="768 kbit/s" options="-768"/>
+        <Preset name="1536 kbit/s" options="-1536"/>
+        <Preset name="Extract the DTS core of a DTS-HD track" options="-core"/>
+    </Presets>
+</Format>

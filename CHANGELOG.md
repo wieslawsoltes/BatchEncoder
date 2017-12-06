@@ -9,6 +9,7 @@
 - Refactored worker threads to use lambdas.
 - Refactored common code as submodules.
 - Refactored xml configuration code.
+- Added eac3to support.
 - Updated tools to latest versions.
 - Updated QAAC AAC format to use --no-optimize instead of --adts.
 - Updated TinyXml-2 to version 5.0.1.

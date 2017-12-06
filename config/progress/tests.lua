@@ -308,3 +308,15 @@ p = GetProgress("Done.")
 print(p)
 p = GetProgress("Encoding... 3:39 [84.7%]")
 print(p)
+
+-- GetProgress_Eac3toEnc.progress
+
+function GetProgress(s) 
+  if string.match(s, '^Done.%s-') ~= nil then return "100";
+  else return string.match(s, 'process: (%d+)%%'); end;
+end
+
+p = GetProgress("Done.")
+print(p)
+p = GetProgress("process: 88%")
+print(p)
