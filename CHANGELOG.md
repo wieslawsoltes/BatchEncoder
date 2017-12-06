@@ -6,6 +6,7 @@
 - Added dynamic layout support for dialogs.
 - Added multi-selection support for presets list.
 - Added multi-selection support for formats list.
+- Refactored worker threads to use lambdas.
 - Refactored common code as submodules.
 - Refactored xml configuration code.
 - Updated tools to latest versions.

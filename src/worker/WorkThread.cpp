@@ -294,28 +294,6 @@ bool WriteLoop(CPipeContext* pContext)
     }
 }
 
-int ReadThread(void *param)
-{
-    CPipeContext* pContext = (CPipeContext*)param;
-    if (pContext != NULL)
-    {
-        if (ReadLoop(pContext) == true)
-            return TRUE;
-    }
-    return FALSE;
-}
-
-int WriteThread(void *param)
-{
-    CPipeContext* pContext = (CPipeContext*)param;
-    if (pContext != NULL)
-    {
-        if (WriteLoop(pContext) == true)
-            return TRUE;
-    }
-    return FALSE;
-}
-
 bool ConvertFileUsingConsole(CFileContext* pContext)
 {
     CWorkerContext *pWorkerContext = pContext->pWorkerContext;
@@ -536,7 +514,7 @@ bool ConvertFileUsingPipes(CFileContext* pContext)
         readContext.hPipe = Stdin.hWrite;
         readContext.nIndex = pContext->nItemId;
 
-        if (readThread.Start(ReadThread, &readContext) == false)
+        if (readThread.Start([&readContext]() { ReadLoop(&readContext); }) == false)
         {
             timer.Stop();
 
@@ -576,7 +554,7 @@ bool ConvertFileUsingPipes(CFileContext* pContext)
         writeContext.hPipe = Stdout.hRead;
         writeContext.nIndex = pContext->nItemId;
 
-        if (writeThread.Start(WriteThread, &writeContext) == false)
+        if (writeThread.Start([&writeContext]() { WriteLoop(&writeContext); }) == false)
         {
             timer.Stop();
 
@@ -805,7 +783,7 @@ bool ConvertFileUsingOnlyPipes(CFileContext* pDecoderContext, CFileContext* pEnc
     readContext.hPipe = Stdin.hWrite;
     readContext.nIndex = pDecoderContext->nItemId;
 
-    if (readThread.Start(ReadThread, &readContext) == false)
+    if (readThread.Start([&readContext]() { ReadLoop(&readContext); }) == false)
     {
         timer.Stop();
 
@@ -824,7 +802,7 @@ bool ConvertFileUsingOnlyPipes(CFileContext* pDecoderContext, CFileContext* pEnc
     writeContext.hPipe = Stdout.hRead;
     writeContext.nIndex = pEncoderContext->nItemId;
 
-    if (writeThread.Start(WriteThread, &writeContext) == false)
+    if (writeThread.Start([&writeContext]() { WriteLoop(&writeContext); }) == false)
     {
         timer.Stop();
 
@@ -1229,23 +1207,8 @@ bool ConvertLoop(CWorkerContext* pWorkerContext)
     return true;
 }
 
-int ConvertThread(void *param)
+void Convert(CWorkerContext* pWorkerContext)
 {
-    CWorkerContext* pWorkerContext = (CWorkerContext*)param;
-    if (pWorkerContext != NULL)
-    {
-        if (ConvertLoop(pWorkerContext) == true)
-            return TRUE;
-    }
-    return FALSE;
-}
-
-int WorkThread(void *param)
-{
-    CWorkerContext* pWorkerContext = (CWorkerContext*)param;
-    if (pWorkerContext == NULL)
-        return FALSE;
-
     int nItems = pWorkerContext->pConfig->m_Items.Count();
     CItemContext *pItemsContext = new CItemContext[nItems];
 
@@ -1301,7 +1264,8 @@ int WorkThread(void *param)
 
         for (int i = 0; i < pWorkerContext->nThreadCount; i++)
         {
-            if (pConvertThreads[i].Start(ConvertThread, pWorkerContext, true) == false)
+            
+            if (pConvertThreads[i].Start([pWorkerContext]() { ConvertLoop(pWorkerContext); }, true) == false)
                 break;
 
             if (pConvertThreads[i].Resume() == false)
@@ -1325,5 +1289,5 @@ int WorkThread(void *param)
     pWorkerContext->Done();
     pWorkerContext->bDone = true;
 
-    return pWorkerContext->m_Worker.Close();
+    pWorkerContext->m_Worker.Close();
 }

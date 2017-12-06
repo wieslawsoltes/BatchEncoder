@@ -2476,7 +2476,7 @@ void CMainDlg::StartConvert()
             return;
         }
 
-        if (this->pWorkerContext->m_Worker.Start(WorkThread, this->pWorkerContext, true) == false)
+        if (this->pWorkerContext->m_Worker.Start([this]() { Convert(this->pWorkerContext); }, true) == false)
         {
             m_StatusBar.SetText(m_Config.GetString(0x0021000E, pszMainDialog[13]), 1, 0);
             this->pWorkerContext->bDone = true;
