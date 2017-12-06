@@ -63,14 +63,14 @@
     <ClCompile Include="dialogs\ToolsDlg.cpp">
       <Filter>Source Files\Dialogs</Filter>
     </ClCompile>
-    <ClCompile Include="worker\WorkThread.cpp">
-      <Filter>Source Files\Worker</Filter>
-    </ClCompile>
     <ClCompile Include="contexts\TraceWorkerContext.cpp">
       <Filter>Source Files\Contexts</Filter>
     </ClCompile>
     <ClCompile Include="contexts\ProgressWorkerContext.cpp">
       <Filter>Source Files\Contexts</Filter>
+    </ClCompile>
+    <ClCompile Include="worker\Worker.cpp">
+      <Filter>Source Files\Worker</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -152,9 +152,6 @@
     <ClInclude Include="worker\WorkerContext.h">
       <Filter>Header Files\Worker</Filter>
     </ClInclude>
-    <ClInclude Include="worker\WorkThread.h">
-      <Filter>Header Files\Worker</Filter>
-    </ClInclude>
     <ClInclude Include="contexts\TraceWorkerContext.h">
       <Filter>Header Files\Contexts</Filter>
     </ClInclude>
@@ -178,6 +175,9 @@
     </ClInclude>
     <ClInclude Include="xml\XmlTools.h">
       <Filter>Header Files\Xml</Filter>
+    </ClInclude>
+    <ClInclude Include="worker\Worker.h">
+      <Filter>Header Files\Worker</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -7,7 +7,7 @@
 #include "utilities\TimeCount.h"
 #include "utilities\Utilities.h"
 #include "LuaProgess.h"
-#include "WorkThread.h"
+#include "Worker.h"
 
 bool CWorker::ProgresssLoop(CFileContext* pContext, CPipe &Stderr, int &nProgress)
 {

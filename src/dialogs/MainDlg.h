@@ -14,7 +14,7 @@
 #include "controls\MyDialogEx.h"
 #include "utilities\TimeCount.h"
 #include "worker\WorkerContext.h"
-#include "worker\WorkThread.h"
+#include "worker\Worker.h"
 
 #define ITEM_COLUMN_NAME    0
 #define ITEM_COLUMN_INPUT   1
