@@ -1036,6 +1036,9 @@ void CToolsDlg::DownloadTools()
     int nCount = m_LstTools.GetItemCount();
     if (nCount > 0)
     {
+        bool bExtract = true;
+        CDownload m_Download;
+
         for (int i = 0; i < nCount; i++)
         {
             if (m_LstTools.GetItemState(i, LVIS_SELECTED) == LVIS_SELECTED)
@@ -1062,48 +1065,51 @@ void CToolsDlg::DownloadTools()
                         m_LstTools.SetItemText(i, TOOL_COLUMN_STATUS, szStatus);
                     });
 
-                if (tool.szExtract.CompareNoCase(_T("")) == 0)
+                if (bExtract == true)
                 {
-                }
-                if (tool.szExtract.CompareNoCase(_T("exe")) == 0)
-                {
-                }
-                else if (tool.szExtract.CompareNoCase(_T("install")) == 0)
-                {
-                    ::LaunchAndWait(szFilePath, _T(""), FALSE);
-                }
-                else if (tool.szExtract.CompareNoCase(_T("tgz")) == 0)
-                {
-                }
-                else if (tool.szExtract.CompareNoCase(_T("tar.gz")) == 0)
-                {
-                }
-                else if (tool.szExtract.CompareNoCase(_T("zip")) == 0)
-                {
-                    CComBSTR file(szFilePath);
-                    CComBSTR folder(szFolderPath);
-
-                    if (!::DirectoryExists(szFolderPath))
+                    if (tool.szExtract.CompareNoCase(_T("")) == 0)
                     {
-                        if (::MakeFullPath(szFolderPath) == false)
-                        {
-                            CString szStatus = pConfig->GetString(0x00410001, pszExtractStatus[0]);
-                            m_LstTools.SetItemText(i, TOOL_COLUMN_STATUS, szStatus);
-                        }
                     }
-
-                    if (::DirectoryExists(szFolderPath) == TRUE)
+                    if (tool.szExtract.CompareNoCase(_T("exe")) == 0)
                     {
-                        bool bUnzipResult = ::Unzip2Folder(file, folder);
-                        if (bUnzipResult == true)
+                    }
+                    else if (tool.szExtract.CompareNoCase(_T("install")) == 0)
+                    {
+                        ::LaunchAndWait(szFilePath, _T(""), FALSE);
+                    }
+                    else if (tool.szExtract.CompareNoCase(_T("tgz")) == 0)
+                    {
+                    }
+                    else if (tool.szExtract.CompareNoCase(_T("tar.gz")) == 0)
+                    {
+                    }
+                    else if (tool.szExtract.CompareNoCase(_T("zip")) == 0)
+                    {
+                        CComBSTR file(szFilePath);
+                        CComBSTR folder(szFolderPath);
+
+                        if (!::DirectoryExists(szFolderPath))
                         {
-                            CString szStatus = pConfig->GetString(0x00410002, pszExtractStatus[1]);
-                            m_LstTools.SetItemText(i, TOOL_COLUMN_STATUS, szStatus);
+                            if (::MakeFullPath(szFolderPath) == false)
+                            {
+                                CString szStatus = pConfig->GetString(0x00410001, pszExtractStatus[0]);
+                                m_LstTools.SetItemText(i, TOOL_COLUMN_STATUS, szStatus);
+                            }
                         }
-                        else
+
+                        if (::DirectoryExists(szFolderPath) == TRUE)
                         {
-                            CString szStatus = pConfig->GetString(0x00410003, pszExtractStatus[2]);
-                            m_LstTools.SetItemText(i, TOOL_COLUMN_STATUS, szStatus);
+                            bool bUnzipResult = ::Unzip2Folder(file, folder);
+                            if (bUnzipResult == true)
+                            {
+                                CString szStatus = pConfig->GetString(0x00410002, pszExtractStatus[1]);
+                                m_LstTools.SetItemText(i, TOOL_COLUMN_STATUS, szStatus);
+                            }
+                            else
+                            {
+                                CString szStatus = pConfig->GetString(0x00410003, pszExtractStatus[2]);
+                                m_LstTools.SetItemText(i, TOOL_COLUMN_STATUS, szStatus);
+                            }
                         }
                     }
                 }

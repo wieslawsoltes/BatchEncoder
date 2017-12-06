@@ -58,7 +58,6 @@ public:
     int nSelectedTool;
     CToolsList m_Tools;
     CFormatsList m_Formats;
-    CDownload m_Download;
     CThread m_Worker;
 public:
     CMyStatic m_StcName;
