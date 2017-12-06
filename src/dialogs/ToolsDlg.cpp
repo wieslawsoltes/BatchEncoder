@@ -1062,13 +1062,21 @@ void CToolsDlg::DownloadTools()
                         m_LstTools.SetItemText(i, TOOL_COLUMN_STATUS, szStatus);
                     });
 
+                if (tool.szExtract.CompareNoCase(_T("")) == 0)
+                {
+                }
                 if (tool.szExtract.CompareNoCase(_T("exe")) == 0)
                 {
-
                 }
                 else if (tool.szExtract.CompareNoCase(_T("install")) == 0)
                 {
                     ::LaunchAndWait(szFilePath, _T(""), FALSE);
+                }
+                else if (tool.szExtract.CompareNoCase(_T("tgz")) == 0)
+                {
+                }
+                else if (tool.szExtract.CompareNoCase(_T("tar.gz")) == 0)
+                {
                 }
                 else if (tool.szExtract.CompareNoCase(_T("zip")) == 0)
                 {
