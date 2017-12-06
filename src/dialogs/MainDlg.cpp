@@ -19,7 +19,6 @@
 #include "ToolsDlg.h"
 #include "contexts\ProgressWorkerContext.h"
 #include "contexts\TraceWorkerContext.h"
-#include "worker\WorkThread.h"
 
 #define WM_TRAY (WM_USER + 0x10)
 #define IDC_STATUSBAR 1500
@@ -2476,7 +2475,7 @@ void CMainDlg::StartConvert()
             return;
         }
 
-        if (this->pWorkerContext->m_Worker.Start([this]() { Convert(this->pWorkerContext); }, true) == false)
+        if (this->pWorkerContext->m_Thread.Start([this]() { this->m_Worker.Convert(this->pWorkerContext); }, true) == false)
         {
             m_StatusBar.SetText(m_Config.GetString(0x0021000E, pszMainDialog[13]), 1, 0);
             this->pWorkerContext->bDone = true;
@@ -2491,7 +2490,7 @@ void CMainDlg::StartConvert()
         this->GetMenu()->ModifyMenu(ID_ACTION_CONVERT, MF_BYCOMMAND, ID_ACTION_CONVERT, m_Config.GetString(0x00030003, _T("S&top\tF9")));
 
         this->pWorkerContext->bRunning = true;
-        this->pWorkerContext->m_Worker.Resume();
+        this->pWorkerContext->m_Thread.Resume();
 
         bSafeCheck = false;
     }
@@ -2608,7 +2607,7 @@ void CMainDlg::TraceConvert()
             if (pContext != NULL)
             {
                 pTraceWorkerContext->Next(pContext->item->nId);
-                if (ConvertItem(pContext) == true)
+                if (this->m_Worker.ConvertItem(pContext) == true)
                 {
                     pTraceWorkerContext->nDoneWithoutError++;
                 }

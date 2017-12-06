@@ -12,20 +12,23 @@
 #include "FileContext.h"
 #include "ItemContext.h"
 
-bool ProgresssLoop(CFileContext* pContext, CPipe &Stderr, int &nProgress);
-
-bool ReadLoop(CPipeContext* pContext);
-
-bool WriteLoop(CPipeContext* pContext);
-
-bool ConvertFileUsingConsole(CFileContext* pContext);
-
-bool ConvertFileUsingPipes(CFileContext* pContext);
-
-bool ConvertFileUsingOnlyPipes(CFileContext* pDecoderContext, CFileContext* pEncoderContext);
-
-bool ConvertItem(CItemContext* pContext);
-
-bool ConvertLoop(CWorkerContext* pWorkerContext);
-
-void Convert(CWorkerContext* pWorkerContext);
+class CWorker
+{
+public:
+    CWorker()
+    {
+    }
+    virtual ~CWorker()
+    {
+    }
+public:
+    bool ProgresssLoop(CFileContext* pContext, CPipe &Stderr, int &nProgress);
+    bool ReadLoop(CPipeContext* pContext);
+    bool WriteLoop(CPipeContext* pContext);
+    bool ConvertFileUsingConsole(CFileContext* pContext);
+    bool ConvertFileUsingPipes(CFileContext* pContext);
+    bool ConvertFileUsingOnlyPipes(CFileContext* pDecoderContext, CFileContext* pEncoderContext);
+    bool ConvertItem(CItemContext* pContext);
+    bool ConvertLoop(CWorkerContext* pWorkerContext);
+    void Convert(CWorkerContext* pWorkerContext);
+};

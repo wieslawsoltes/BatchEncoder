@@ -9,7 +9,7 @@
 #include "LuaProgess.h"
 #include "WorkThread.h"
 
-bool ProgresssLoop(CFileContext* pContext, CPipe &Stderr, int &nProgress)
+bool CWorker::ProgresssLoop(CFileContext* pContext, CPipe &Stderr, int &nProgress)
 {
     CWorkerContext *pWorkerContext = pContext->pWorkerContext;
     const int nBuffSize = 4096;
@@ -140,7 +140,7 @@ bool ProgresssLoop(CFileContext* pContext, CPipe &Stderr, int &nProgress)
     return true;
 }
 
-bool ReadLoop(CPipeContext* pContext)
+bool CWorker::ReadLoop(CPipeContext* pContext)
 {
     CWorkerContext *pWorkerContext = pContext->pWorkerContext;
     HANDLE hFile = INVALID_HANDLE_VALUE;
@@ -224,7 +224,7 @@ bool ReadLoop(CPipeContext* pContext)
     }
 }
 
-bool WriteLoop(CPipeContext* pContext)
+bool CWorker::WriteLoop(CPipeContext* pContext)
 {
     CWorkerContext *pWorkerContext = pContext->pWorkerContext;
     HANDLE hFile = INVALID_HANDLE_VALUE;
@@ -294,7 +294,7 @@ bool WriteLoop(CPipeContext* pContext)
     }
 }
 
-bool ConvertFileUsingConsole(CFileContext* pContext)
+bool CWorker::ConvertFileUsingConsole(CFileContext* pContext)
 {
     CWorkerContext *pWorkerContext = pContext->pWorkerContext;
 
@@ -378,7 +378,7 @@ bool ConvertFileUsingConsole(CFileContext* pContext)
     }
 }
 
-bool ConvertFileUsingPipes(CFileContext* pContext)
+bool CWorker::ConvertFileUsingPipes(CFileContext* pContext)
 {
     CWorkerContext *pWorkerContext = pContext->pWorkerContext;
 
@@ -514,7 +514,7 @@ bool ConvertFileUsingPipes(CFileContext* pContext)
         readContext.hPipe = Stdin.hWrite;
         readContext.nIndex = pContext->nItemId;
 
-        if (readThread.Start([&readContext]() { ReadLoop(&readContext); }) == false)
+        if (readThread.Start([this, &readContext]() { this->ReadLoop(&readContext); }) == false)
         {
             timer.Stop();
 
@@ -554,7 +554,7 @@ bool ConvertFileUsingPipes(CFileContext* pContext)
         writeContext.hPipe = Stdout.hRead;
         writeContext.nIndex = pContext->nItemId;
 
-        if (writeThread.Start([&writeContext]() { WriteLoop(&writeContext); }) == false)
+        if (writeThread.Start([this, &writeContext]() { this->WriteLoop(&writeContext); }) == false)
         {
             timer.Stop();
 
@@ -641,7 +641,7 @@ bool ConvertFileUsingPipes(CFileContext* pContext)
     }
 }
 
-bool ConvertFileUsingOnlyPipes(CFileContext* pDecoderContext, CFileContext* pEncoderContext)
+bool CWorker::ConvertFileUsingOnlyPipes(CFileContext* pDecoderContext, CFileContext* pEncoderContext)
 {
     CWorkerContext *pWorkerContext = pDecoderContext->pWorkerContext;
     CProcess decoderProcess;
@@ -783,7 +783,7 @@ bool ConvertFileUsingOnlyPipes(CFileContext* pDecoderContext, CFileContext* pEnc
     readContext.hPipe = Stdin.hWrite;
     readContext.nIndex = pDecoderContext->nItemId;
 
-    if (readThread.Start([&readContext]() { ReadLoop(&readContext); }) == false)
+    if (readThread.Start([this, &readContext]() { this->ReadLoop(&readContext); }) == false)
     {
         timer.Stop();
 
@@ -802,7 +802,7 @@ bool ConvertFileUsingOnlyPipes(CFileContext* pDecoderContext, CFileContext* pEnc
     writeContext.hPipe = Stdout.hRead;
     writeContext.nIndex = pEncoderContext->nItemId;
 
-    if (writeThread.Start([&writeContext]() { WriteLoop(&writeContext); }) == false)
+    if (writeThread.Start([this, &writeContext]() { this->WriteLoop(&writeContext); }) == false)
     {
         timer.Stop();
 
@@ -870,7 +870,7 @@ bool ConvertFileUsingOnlyPipes(CFileContext* pDecoderContext, CFileContext* pEnc
     }
 }
 
-bool ConvertItem(CItemContext* pContext)
+bool CWorker::ConvertItem(CItemContext* pContext)
 {
     CWorkerContext *pWorkerContext = pContext->pWorkerContext;
     CFormat *pEncFormat = NULL;
@@ -1157,7 +1157,7 @@ bool ConvertItem(CItemContext* pContext)
     return false;
 }
 
-bool ConvertLoop(CWorkerContext* pWorkerContext)
+bool CWorker::ConvertLoop(CWorkerContext* pWorkerContext)
 {
     while (TRUE)
     {
@@ -1207,7 +1207,7 @@ bool ConvertLoop(CWorkerContext* pWorkerContext)
     return true;
 }
 
-void Convert(CWorkerContext* pWorkerContext)
+void CWorker::Convert(CWorkerContext* pWorkerContext)
 {
     int nItems = pWorkerContext->pConfig->m_Items.Count();
     CItemContext *pItemsContext = new CItemContext[nItems];
@@ -1265,7 +1265,7 @@ void Convert(CWorkerContext* pWorkerContext)
         for (int i = 0; i < pWorkerContext->nThreadCount; i++)
         {
             
-            if (pConvertThreads[i].Start([pWorkerContext]() { ConvertLoop(pWorkerContext); }, true) == false)
+            if (pConvertThreads[i].Start([this, pWorkerContext]() { this->ConvertLoop(pWorkerContext); }, true) == false)
                 break;
 
             if (pConvertThreads[i].Resume() == false)
@@ -1289,5 +1289,5 @@ void Convert(CWorkerContext* pWorkerContext)
     pWorkerContext->Done();
     pWorkerContext->bDone = true;
 
-    pWorkerContext->m_Worker.Close();
+    pWorkerContext->m_Thread.Close();
 }

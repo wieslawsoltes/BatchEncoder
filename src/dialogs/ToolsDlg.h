@@ -58,7 +58,7 @@ public:
     int nSelectedTool;
     CToolsList m_Tools;
     CFormatsList m_Formats;
-    CThread m_Worker;
+    CThread m_Thread;
 public:
     CMyStatic m_StcName;
     CMyStatic m_StcPlatform;

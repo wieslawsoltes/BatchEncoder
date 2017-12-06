@@ -16,7 +16,7 @@ public:
     CConfiguration* pConfig;
     COutputPath m_Output;
 public:
-    CThread m_Worker;
+    CThread m_Thread;
     CSynchronize *pSync;
     CSynchronize *pSyncDir;
     volatile int nThreadCount;

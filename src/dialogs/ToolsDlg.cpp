@@ -658,7 +658,7 @@ void CToolsDlg::OnBnClickedButtonDownloadSelected()
 {
     if (bDownload == true)
     {
-        m_Worker.Terminate();
+        m_Thread.Terminate();
 
         CLanguageHelper helper(pConfig);
         helper.SetWndText(&m_BtnDownload, 0x000E0023);
@@ -682,12 +682,12 @@ void CToolsDlg::OnBnClickedButtonDownloadSelected()
             }
         }
 
-        m_Worker.Start(
+        m_Thread.Start(
             [](void *param)->int
             {
                 CToolsDlg* pToolsDlg = (CToolsDlg*)param;
                 pToolsDlg->DownloadTools();
-                return pToolsDlg->m_Worker.Close();
+                return pToolsDlg->m_Thread.Close();
             },
             this, false);
     }
@@ -721,7 +721,7 @@ void CToolsDlg::OnDestroy()
 
     if (bDownload == true)
     {
-        m_Worker.Terminate();
+        m_Thread.Terminate();
         bDownload = false;
     }
 }

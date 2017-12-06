@@ -14,6 +14,7 @@
 #include "controls\MyDialogEx.h"
 #include "utilities\TimeCount.h"
 #include "worker\WorkerContext.h"
+#include "worker\WorkThread.h"
 
 #define ITEM_COLUMN_NAME    0
 #define ITEM_COLUMN_INPUT   1
@@ -64,6 +65,7 @@ public:
     CString szToolsFile;
     CConfiguration m_Config;
     CWorkerContext* pWorkerContext;
+    CWorker m_Worker;
 public:
     CMyStatic m_GrpOutput;
     CMyStatic m_StcPreset;
