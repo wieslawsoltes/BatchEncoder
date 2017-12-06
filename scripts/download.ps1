@@ -78,7 +78,9 @@ $Tools =
     ( "https://ffmpeg.zeranoe.com/builds/win32/static/ffmpeg-3.4-win32-static.zip", "ffmpeg-3.4-win32-static.zip" ),
     ( "https://ffmpeg.zeranoe.com/builds/win64/static/ffmpeg-3.4-win64-static.zip", "ffmpeg-3.4-win64-static.zip" ),
     # ffdcaenc
-    ( "https://github.com/filler56789/ffdcaenc-2/files/299448/ffdcaenc.zip", "ffdcaenc.zip" )
+    ( "https://github.com/filler56789/ffdcaenc-2/files/299448/ffdcaenc.zip", "ffdcaenc.zip" ),
+    # eac3to
+    ( "http://madshi.net/eac3to.zip", "eac3to.zip" )
 )
 
 if(!(Test-Path -Path $Path )) {

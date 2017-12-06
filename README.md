@@ -156,6 +156,8 @@ adds input and output file paths. For specific options for each format use help 
 | TTA          | TTA        | 2.3             | tta.exe           | yes      | no       | GetProgress_TtaEnc.progress       |
 | TAKC         | TAK        | 2.3.0           | takc.exe          | yes      | no       | - none -                          |
 | FFDCAENC     | DTS        | 2.1.3           | ffdcaenc.exe      | yes      | yes      | GetProgress_FFdcaEnc.progress     |
+| EAC3TO       | AC3        | 3.34            | eac3to.exe        | no      | no        | GetProgress_Eac3toEnc             |
+| EAC3TO       | DRS        | 3.34            | eac3to.exe        | no      | no        | GetProgress_Eac3toEnc             |
 
 ### Decoders
 
@@ -231,6 +233,7 @@ If you having problems running the PowerShell `download.ps1` script see this [in
 | NEROAACDEC      | [http://www.videohelp.com/software/Nero-AAC-Codec](http://www.videohelp.com/software/Nero-AAC-Codec)                                |
 | FFMPEG          | [https://ffmpeg.zeranoe.com/builds/](https://ffmpeg.zeranoe.com/builds/)                                                            |
 | FFDCAENC        | [https://github.com/filler56789/ffdcaenc-2](https://github.com/filler56789/ffdcaenc-2/releases)                                     |
+| EAC3TO          | [http://forum.doom9.org/showthread.php?t=125966](http://forum.doom9.org/showthread.php?t=125966)                                    |
 
 ## Configuration files
 
