@@ -1824,6 +1824,7 @@ bool CMainDlg::SaveOptions(CString szFileXml)
     this->GetOptions();
 
     XmlOptions doc;
+    doc.Create();
     doc.SetOptions(this->m_Config.m_Options);
     return doc.Save(szFileXml);
 }
@@ -1847,6 +1848,7 @@ bool CMainDlg::LoadFormats(CString szFileXml)
 bool CMainDlg::SaveFormats(CString szFileXml)
 {
     XmlFormats doc;
+    doc.Create();
     doc.SetFormats(this->m_Config.m_Formats);
     return doc.Save(szFileXml);
 }
@@ -1867,6 +1869,7 @@ bool CMainDlg::LoadTools(CString szFileXml)
 bool CMainDlg::SaveTools(CString szFileXml)
 {
     XmlTools doc;
+    doc.Create();
     doc.SetTools(this->m_Config.m_Tools);
     return doc.Save(szFileXml);
 }
@@ -1893,6 +1896,7 @@ bool CMainDlg::SaveItems(CString szFileXml)
     this->GetItems();
 
     XmlItems doc;
+    doc.Create();
     doc.SetItems(this->m_Config.m_Items);
     return doc.Save(szFileXml);
 }

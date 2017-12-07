@@ -5,11 +5,11 @@
 
 #include <afxstr.h>
 #include <afxtempl.h>
-#include "xml\XmlBase.h"
+#include "XmlDoc.h"
 #include "configuration\Preset.h"
 #include "configuration\PresetsList.h"
 
-class XmlPresets : public XmlBase
+class XmlPresets : public XmlDoc
 {
 public:
     XmlPresets()
@@ -19,18 +19,25 @@ public:
     {
     }
 protected:
+    void GetPreset(tinyxml2::XMLElement *pPresetElem, CPreset &m_Preset)
+    {
+        GetAttributeValue(pPresetElem, "name", &m_Preset.szName);
+        GetAttributeValue(pPresetElem, "options", &m_Preset.szOptions);
+    }
+    void SetPreset(tinyxml2::XMLElement *pPresetElem, CPreset &m_Preset)
+    {
+        SetAttributeValue(pPresetElem, "name", m_Preset.szName);
+        SetAttributeValue(pPresetElem, "options", m_Preset.szOptions);
+    }
     void GetPresets(tinyxml2::XMLElement *pPresetsElem, CPresetsList &m_Presets)
     {
         tinyxml2::XMLElement *pPresetElem = pPresetsElem->FirstChildElement("Preset");
-        for (pPresetElem; pPresetElem; pPresetElem = pPresetElem->NextSiblingElement())
+        if (pPresetElem != NULL)
         {
-            const char *pszName = pPresetElem->Attribute("name");
-            const char *pszOptions = pPresetElem->Attribute("options");
-            if (pszName != NULL && pszOptions != NULL)
+            for (pPresetElem; pPresetElem; pPresetElem = pPresetElem->NextSiblingElement())
             {
                 CPreset preset;
-                preset.szName = ToCString(pszName);
-                preset.szOptions = ToCString(pszOptions);
+                this->GetPreset(pPresetElem, preset);
                 m_Presets.Insert(preset);
             }
         }
@@ -44,26 +51,37 @@ protected:
         {
             CPreset& preset = m_Presets.Get(i);
             pPresetElem = this->NewElement("Preset");
-            pPresetElem->SetAttribute("name", CUtf8String(preset.szName).m_Result);
-            pPresetElem->SetAttribute("options", CUtf8String(preset.szOptions).m_Result);
+            this->SetPreset(pPresetElem, preset);
             pPresetsElem->LinkEndChild(pPresetElem);
         }
     }
 public:
+    void GetPreset(CPreset &m_Preset)
+    {
+        tinyxml2::XMLElement *pPresetElem = this->FirstChildElement("Preset");
+        if (pPresetElem != NULL)
+        {
+            this->GetPreset(pPresetElem, m_Preset);
+        }
+    }
+    void SetPreset(CPreset &m_Preset)
+    {
+        tinyxml2::XMLElement *pPresetElem = this->NewElement("Preset");
+        this->LinkEndChild(pPresetElem);
+        this->SetPreset(pPresetElem, m_Preset);
+    }
     void GetPresets(CPresetsList &m_Presets)
     {
         tinyxml2::XMLElement *pPresetsElem = this->FirstChildElement("Presets");
         if (pPresetsElem != NULL)
+        {
             this->GetPresets(pPresetsElem, m_Presets);
+        }
     }
     void SetPresets(CPresetsList &m_Presets)
     {
-        tinyxml2::XMLDeclaration* decl = this->NewDeclaration(m_Utf8DocumentDeclaration);
-        this->LinkEndChild(decl);
-
         tinyxml2::XMLElement *pPresetsElem = this->NewElement("Presets");
         this->LinkEndChild(pPresetsElem);
-
         this->SetPresets(pPresetsElem, m_Presets);
     }
 };

@@ -881,7 +881,9 @@ bool CWorker::ConvertItem(CItemContext* pContext)
     CString szDecOutputFile;
 
     // prepare encoder
-    szEncInputFile = pContext->item->szPath;
+    CPath& path = pContext->item->m_Paths.Get(0);
+
+    szEncInputFile = path.szPath;
     if (::FileExists(szEncInputFile) == false)
     {
         pWorkerContext->Status(pContext->item->nId, pszDefaulTime, pWorkerContext->GetString(0x00140001, pszConvertItem[0]));

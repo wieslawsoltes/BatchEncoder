@@ -5,11 +5,12 @@
 
 #include <afxstr.h>
 #include <afxtempl.h>
-#include "xml\XmlBase.h"
+#include "XmlDoc.h"
+#include "XmlPaths.h"
 #include "configuration\Item.h"
 #include "configuration\ItemsList.h"
 
-class XmlItems : public XmlBase
+class XmlItems : public XmlPaths
 {
 public:
     XmlItems()
@@ -19,54 +20,51 @@ public:
     {
     }
 protected:
+    void GetItem(tinyxml2::XMLElement *pItemElem, CItem &m_Item)
+    {
+        GetAttributeValue(pItemElem, "id", &m_Item.nId);
+        GetAttributeValue(pItemElem, "size", &m_Item.szSize);
+        GetAttributeValue(pItemElem, "name", &m_Item.szName);
+        GetAttributeValue(pItemElem, "extension", &m_Item.szExtension);
+        GetAttributeValue(pItemElem, "format", &m_Item.szFormatId);
+        GetAttributeValue(pItemElem, "preset", &m_Item.nPreset);
+        GetAttributeValue(pItemElem, "checked", &m_Item.bChecked);
+        GetAttributeValue(pItemElem, "time", &m_Item.szTime);
+        GetAttributeValue(pItemElem, "status", &m_Item.szStatus);
+
+        tinyxml2::XMLElement *pPathsElem = pItemElem->FirstChildElement("Paths");
+        if (pPathsElem != NULL)
+        {
+            this->GetPaths(pPathsElem, m_Item.m_Paths);
+        }
+    }
+    void SetItem(tinyxml2::XMLElement *pItemElem, CItem &m_Item, int nId)
+    {
+        SetAttributeValue(pItemElem, "id", nId);
+        SetAttributeValue(pItemElem, "size", m_Item.szSize);
+        SetAttributeValue(pItemElem, "name", m_Item.szName);
+        SetAttributeValue(pItemElem, "extension", m_Item.szExtension);
+        SetAttributeValue(pItemElem, "format", m_Item.szFormatId);
+        SetAttributeValue(pItemElem, "preset", m_Item.nPreset);
+        SetAttributeValue(pItemElem, "checked", m_Item.bChecked);
+        SetAttributeValue(pItemElem, "time", m_Item.szTime);
+        SetAttributeValue(pItemElem, "status", m_Item.szStatus);
+
+        tinyxml2::XMLElement *pPathsElem = this->NewElement("Paths");
+        pItemElem->LinkEndChild(pPathsElem);
+        this->SetPaths(pPathsElem, m_Item.m_Paths);
+    }
     void GetItems(tinyxml2::XMLElement *pItemsElem, CItemsList &m_Items)
     {
         tinyxml2::XMLElement *pItemElem = pItemsElem->FirstChildElement("Item");
-        for (pItemElem; pItemElem; pItemElem = pItemElem->NextSiblingElement())
+        if (pItemElem != NULL)
         {
-            CItem item;
-
-            const char *pszId = pItemElem->Attribute("id");
-            if (pszId != NULL)
-                item.nId = _tstoi(ToCString(pszId));
-
-            const char *pszPath = pItemElem->Attribute("path");
-            if (pszPath != NULL)
-                item.szPath = ToCString(pszPath);
-
-            const char *pszSize = pItemElem->Attribute("size");
-            if (pszSize != NULL)
-                item.szSize = ToCString(pszSize);
-
-            const char *pszName = pItemElem->Attribute("name");
-            if (pszName != NULL)
-                item.szName = ToCString(pszName);
-
-            const char *pszExtension = pItemElem->Attribute("extension");
-            if (pszExtension != NULL)
-                item.szExtension = ToCString(pszExtension);
-
-            const char *pszFormatId = pItemElem->Attribute("format");
-            if (pszFormatId != NULL)
-                item.szFormatId = ToCString(pszFormatId);
-
-            const char *pszPreset = pItemElem->Attribute("preset");
-            if (pszPreset != NULL)
-                item.nPreset = ToInt(pszPreset);
-
-            const char *pszChecked = pItemElem->Attribute("checked");
-            if (pszChecked != NULL)
-                item.bChecked = ToBool(pszChecked);
-
-            const char *pszTime = pItemElem->Attribute("time");
-            if (pszTime != NULL)
-                item.szTime = ToCString(pszTime);
-
-            const char *pszStatus = pItemElem->Attribute("status");
-            if (pszStatus != NULL)
-                item.szStatus = ToCString(pszStatus);
-
-            m_Items.Insert(item);
+            for (pItemElem; pItemElem; pItemElem = pItemElem->NextSiblingElement())
+            {
+                CItem item;
+                this->GetItem(pItemElem, item);
+                m_Items.Insert(item);
+            }
         }
     }
     void SetItems(tinyxml2::XMLElement *pItemsElem, CItemsList &m_Items)
@@ -77,34 +75,37 @@ protected:
         {
             CItem& item = m_Items.Get(i);
             pItemElem = this->NewElement("Item");
-            pItemElem->SetAttribute("id", CUtf8String(ToCString(i)).m_Result);
-            pItemElem->SetAttribute("path", CUtf8String(item.szPath).m_Result);
-            pItemElem->SetAttribute("size", CUtf8String(item.szSize).m_Result);
-            pItemElem->SetAttribute("name", CUtf8String(item.szName).m_Result);
-            pItemElem->SetAttribute("extension", CUtf8String(item.szExtension).m_Result);
-            pItemElem->SetAttribute("format", CUtf8String(item.szFormatId).m_Result);
-            pItemElem->SetAttribute("preset", CUtf8String(ToCString(item.nPreset)).m_Result);
-            pItemElem->SetAttribute("checked", CUtf8String(ToCString(item.bChecked)).m_Result);
-            pItemElem->SetAttribute("time", CUtf8String(item.szTime).m_Result);
-            pItemElem->SetAttribute("status", CUtf8String(item.szStatus).m_Result);
             pItemsElem->LinkEndChild(pItemElem);
+            this->SetItem(pItemElem, item, i);
         }
     }
 public:
+    void GetItem(CItem &m_Item)
+    {
+        tinyxml2::XMLElement *pItemElem = this->FirstChildElement("Item");
+        if (pItemElem != NULL)
+        {
+            this->GetItem(pItemElem, m_Item);
+        }
+    }
+    void SetItem(CItem &m_Item)
+    {
+        tinyxml2::XMLElement *pItemElem = this->NewElement("Item");
+        this->LinkEndChild(pItemElem);
+        this->SetItem(pItemElem, m_Item, -1);
+    }
     void GetItems(CItemsList &m_Items)
     {
         tinyxml2::XMLElement *pItemsElem = this->FirstChildElement("Items");
         if (pItemsElem != NULL)
+        {
             this->GetItems(pItemsElem, m_Items);
+        }
     }
     void SetItems(CItemsList &m_Items)
     {
-        tinyxml2::XMLDeclaration* decl = this->NewDeclaration(m_Utf8DocumentDeclaration);
-        this->LinkEndChild(decl);
-
         tinyxml2::XMLElement *pItemsElem = this->NewElement("Items");
         this->LinkEndChild(pItemsElem);
-
         this->SetItems(pItemsElem, m_Items);
     }
 };

@@ -940,6 +940,7 @@ void CToolsDlg::LoadTool(CString szFileXml)
 void CToolsDlg::SaveTool(CString szFileXml, CTool &tool)
 {
     XmlTools doc;
+    doc.Create();
     doc.SetTool(tool);
     if (doc.Save(szFileXml) != true)
     {
@@ -978,6 +979,7 @@ void CToolsDlg::LoadTools(CString szFileXml)
 void CToolsDlg::SaveTools(CString szFileXml)
 {
     XmlTools doc;
+    doc.Create();
     doc.SetTools(this->m_Tools);
     if (doc.Save(szFileXml) != true)
     {

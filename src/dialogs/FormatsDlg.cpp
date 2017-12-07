@@ -1060,6 +1060,7 @@ void CFormatsDlg::LoadFormat(CString szFileXml)
 void CFormatsDlg::SaveFormat(CString szFileXml, CFormat &format)
 {
     XmlFormats doc;
+    doc.Create();
     doc.SetFormat(format);
     if (doc.Save(szFileXml) != true)
     {
@@ -1098,6 +1099,7 @@ void CFormatsDlg::LoadFormats(CString szFileXml)
 void CFormatsDlg::SaveFormats(CString szFileXml)
 {
     XmlFormats doc;
+    doc.Create();
     doc.SetFormats(this->m_Formats);
     if (doc.Save(szFileXml) != true)
     {

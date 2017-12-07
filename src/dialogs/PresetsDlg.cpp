@@ -668,6 +668,7 @@ void CPresetsDlg::SavePresets(CString szFileXml)
     CFormat& format = this->m_Formats.Get(this->nSelectedFormat);
 
     XmlPresets doc;
+    doc.Create();
     doc.SetPresets(format.m_Presets);
     if (doc.Save(szFileXml) != true)
     {
