@@ -129,6 +129,7 @@ adds input and output file paths. For specific options for each format use help 
 |-------------------|-------------------------------|
 | F7                | Configure Presets             |
 | F8                | Configure Formats             |
+| F10               | Configure Tools               |
 
 ## Supported formats and tools
 
