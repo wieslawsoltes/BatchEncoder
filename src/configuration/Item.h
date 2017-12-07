@@ -4,12 +4,13 @@
 #pragma once
 
 #include <afxstr.h>
+#include "PathsList.h"
 
 class CItem
 {
 public:
     int nId;
-    CString szPath;
+    CPathsList m_Paths;
     CString szSize;
     CString szName;
     CString szExtension;
@@ -41,7 +42,7 @@ public:
     void Copy(const CItem &other)
     {
         this->nId = other.nId;
-        this->szPath = other.szPath;
+        this->m_Paths = other.m_Paths;
         this->szSize = other.szSize;
         this->szName = other.szName;
         this->szExtension = other.szExtension;

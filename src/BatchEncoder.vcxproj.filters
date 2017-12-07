@@ -179,6 +179,18 @@
     <ClInclude Include="worker\Worker.h">
       <Filter>Header Files\Worker</Filter>
     </ClInclude>
+    <ClInclude Include="configuration\Path.h">
+      <Filter>Header Files\Configuration</Filter>
+    </ClInclude>
+    <ClInclude Include="configuration\PathsList.h">
+      <Filter>Header Files\Configuration</Filter>
+    </ClInclude>
+    <ClInclude Include="xml\XmlPaths.h">
+      <Filter>Header Files\Xml</Filter>
+    </ClInclude>
+    <ClInclude Include="xml\XmlDoc.h">
+      <Filter>Header Files\Xml</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="res\BatchEncoder.rc2">

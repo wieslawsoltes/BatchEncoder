@@ -283,6 +283,8 @@ copy /Y ..\config\lang\*.language $(OutDir)</Command>
     <ClCompile Include="contexts\TraceWorkerContext.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="configuration\Path.h" />
+    <ClInclude Include="configuration\PathsList.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="version.h" />
     <ClInclude Include="res\resource.h" />
@@ -312,10 +314,12 @@ copy /Y ..\config\lang\*.language $(OutDir)</Command>
     <ClInclude Include="worker\Worker.h" />
     <ClInclude Include="contexts\ProgressWorkerContext.h" />
     <ClInclude Include="contexts\TraceWorkerContext.h" />
+    <ClInclude Include="xml\XmlDoc.h" />
     <ClInclude Include="xml\XmlFormats.h" />
     <ClInclude Include="xml\XmlItems.h" />
     <ClInclude Include="xml\XmlLanguages.h" />
     <ClInclude Include="xml\XmlOptions.h" />
+    <ClInclude Include="xml\XmlPaths.h" />
     <ClInclude Include="xml\XmlPresets.h" />
     <ClInclude Include="xml\XmlTools.h" />
   </ItemGroup>

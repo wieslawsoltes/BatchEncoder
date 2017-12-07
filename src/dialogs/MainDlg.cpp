@@ -1130,7 +1130,8 @@ void CMainDlg::OnEditOpen()
         {
             int nItem = m_LstInputItems.GetNextSelectedItem(pos);
             CItem& item = m_Config.m_Items.Get(nItem);
-            ::LaunchAndWait(item.szPath, _T(""), FALSE);
+            CPath& path = item.m_Paths.Get(0);
+            ::LaunchAndWait(path.szPath, _T(""), FALSE);
         }
     }
 }
@@ -1144,8 +1145,9 @@ void CMainDlg::OnEditExplore()
         {
             int nItem = m_LstInputItems.GetNextSelectedItem(pos);
             CItem& item = m_Config.m_Items.Get(nItem);
-            CString szPath = item.szPath;
-            szPath.TrimRight(::GetFileName(item.szPath));
+            CPath& path = item.m_Paths.Get(0);
+            CString szPath = path.szPath;
+            szPath.TrimRight(::GetFileName(path.szPath));
             ::LaunchAndWait(szPath, _T(""), FALSE);
         }
     }
@@ -1945,7 +1947,10 @@ int CMainDlg::AddToItems(CString szPath)
     szFileSize.Format(_T("%I64d"), nFileSize);
 
     CItem item;
-    item.szPath = szPath;
+    CPath path;
+    path.szPath = szPath;
+    path.szSize = szFileSize;
+    item.m_Paths.Insert(path);
     item.szSize = szFileSize;
     item.szName = ::GetOnlyFileName(szPath);
     item.szExtension = ::GetFileExtension(szPath).MakeUpper();
