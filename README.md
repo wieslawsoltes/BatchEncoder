@@ -157,7 +157,7 @@ adds input and output file paths. For specific options for each format use help 
 | TAKC         | TAK        | 2.3.0           | takc.exe          | yes      | no       | - none -                          |
 | FFDCAENC     | DTS        | 2.1.3           | ffdcaenc.exe      | yes      | yes      | GetProgress_FFdcaEnc.progress     |
 | EAC3TO       | AC3        | 3.34            | eac3to.exe        | no      | no        | GetProgress_Eac3toEnc             |
-| EAC3TO       | DRS        | 3.34            | eac3to.exe        | no      | no        | GetProgress_Eac3toEnc             |
+| EAC3TO       | DTS        | 3.34            | eac3to.exe        | no      | no        | GetProgress_Eac3toEnc             |
 
 ### Decoders
 
