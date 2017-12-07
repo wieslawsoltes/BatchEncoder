@@ -602,7 +602,7 @@
             <Preset name="Standard Compression" options=""/>
         </Presets>
     </Format>
-    <Format id="SSRC_WAV" name="WAV (Audio Sampling Rate Converter) - ssrc" template="$EXE $OPTIONS --tmpfile $OUTFILE.tmp $INFILE $OUTFILE" input="false" output="false" function="GetProgress_SsrcEnc.progress" path="ssrc-1.30/ssrc-1.30/ssrc.exe" success="0" type="0" formats="WAV" extension="WAV" default="0">
+    <Format id="SSRC_WAV" name="WAV (Audio Sampling Rate Converter) - ssrc" template="$EXE $OPTIONS --tmpfile $OUTFILE.tmp $INFILE $OUTFILE" input="false" output="false" function="GetProgress_SsrcEnc.progress" path="ssrc-1.33/ssrc-1.33/bin/ssrc.exe" success="0" type="0" formats="WAV" extension="WAV" default="0">
         <Presets>
             <Preset name="No Resampling" options=""/>
             <Preset name="8 Bit 8000 Hz" options="--rate 8000 --bits 8 --normalize"/>
