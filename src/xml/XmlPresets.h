@@ -19,69 +19,67 @@ public:
     {
     }
 protected:
-    void GetPreset(tinyxml2::XMLElement *pPresetElem, CPreset &m_Preset)
+    void GetPreset(XmlElement *element, CPreset &m_Preset)
     {
-        GetAttributeValue(pPresetElem, "name", &m_Preset.szName);
-        GetAttributeValue(pPresetElem, "options", &m_Preset.szOptions);
+        GetAttributeValue(element, "name", &m_Preset.szName);
+        GetAttributeValue(element, "options", &m_Preset.szOptions);
     }
-    void SetPreset(tinyxml2::XMLElement *pPresetElem, CPreset &m_Preset)
+    void SetPreset(XmlElement *element, CPreset &m_Preset)
     {
-        SetAttributeValue(pPresetElem, "name", m_Preset.szName);
-        SetAttributeValue(pPresetElem, "options", m_Preset.szOptions);
+        SetAttributeValue(element, "name", m_Preset.szName);
+        SetAttributeValue(element, "options", m_Preset.szOptions);
     }
-    void GetPresets(tinyxml2::XMLElement *pPresetsElem, CPresetsList &m_Presets)
+    void GetPresets(XmlElement *parent, CPresetsList &m_Presets)
     {
-        tinyxml2::XMLElement *pPresetElem = pPresetsElem->FirstChildElement("Preset");
-        if (pPresetElem != NULL)
+        auto element = parent->FirstChildElement("Preset");
+        if (element != NULL)
         {
-            for (pPresetElem; pPresetElem; pPresetElem = pPresetElem->NextSiblingElement())
+            for (element; element; element = element->NextSiblingElement())
             {
                 CPreset preset;
-                this->GetPreset(pPresetElem, preset);
+                this->GetPreset(element, preset);
                 m_Presets.Insert(preset);
             }
         }
     }
-    void SetPresets(tinyxml2::XMLElement *pPresetsElem, CPresetsList &m_Presets)
+    void SetPresets(XmlElement *parent, CPresetsList &m_Presets)
     {
-        tinyxml2::XMLElement *pPresetElem;
-
         int nPresets = m_Presets.Count();
         for (int i = 0; i < nPresets; i++)
         {
             CPreset& preset = m_Presets.Get(i);
-            pPresetElem = this->NewElement("Preset");
-            this->SetPreset(pPresetElem, preset);
-            pPresetsElem->LinkEndChild(pPresetElem);
+            auto element = this->NewElement("Preset");
+            this->SetPreset(element, preset);
+            parent->LinkEndChild(element);
         }
     }
 public:
     void GetPreset(CPreset &m_Preset)
     {
-        tinyxml2::XMLElement *pPresetElem = this->FirstChildElement("Preset");
-        if (pPresetElem != NULL)
+        auto element = this->FirstChildElement("Preset");
+        if (element != NULL)
         {
-            this->GetPreset(pPresetElem, m_Preset);
+            this->GetPreset(element, m_Preset);
         }
     }
     void SetPreset(CPreset &m_Preset)
     {
-        tinyxml2::XMLElement *pPresetElem = this->NewElement("Preset");
-        this->LinkEndChild(pPresetElem);
-        this->SetPreset(pPresetElem, m_Preset);
+        auto element = this->NewElement("Preset");
+        this->LinkEndChild(element);
+        this->SetPreset(element, m_Preset);
     }
     void GetPresets(CPresetsList &m_Presets)
     {
-        tinyxml2::XMLElement *pPresetsElem = this->FirstChildElement("Presets");
-        if (pPresetsElem != NULL)
+        auto element = this->FirstChildElement("Presets");
+        if (element != NULL)
         {
-            this->GetPresets(pPresetsElem, m_Presets);
+            this->GetPresets(element, m_Presets);
         }
     }
     void SetPresets(CPresetsList &m_Presets)
     {
-        tinyxml2::XMLElement *pPresetsElem = this->NewElement("Presets");
-        this->LinkEndChild(pPresetsElem);
-        this->SetPresets(pPresetsElem, m_Presets);
+        auto element = this->NewElement("Presets");
+        this->LinkEndChild(element);
+        this->SetPresets(element, m_Presets);
     }
 };

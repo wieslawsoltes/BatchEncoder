@@ -18,70 +18,70 @@ public:
     {
     }
 protected:
-    void GetOptions(tinyxml2::XMLElement *pOptionsElem, COptions &m_Options)
+    void GetOptions(XmlElement *element, COptions &m_Options)
     {
-        GetChildValue(pOptionsElem, "SelectedLanguage", &m_Options.szSelectedLanguage);
-        GetChildValue(pOptionsElem, "SelectedFormat", &m_Options.nSelectedFormat);
-        GetChildValue(pOptionsElem, "OutputPath", &m_Options.szOutputPath);
-        GetChildValue(pOptionsElem, "DeleteSourceFiles", &m_Options.bDeleteSourceFiles);
-        GetChildValue(pOptionsElem, "RecurseChecked", &m_Options.bRecurseChecked);
-        GetChildValue(pOptionsElem, "ShutdownWhenFinished", &m_Options.bShutdownWhenFinished);
-        GetChildValue(pOptionsElem, "DoNotSaveConfiguration", &m_Options.bDoNotSaveConfiguration);
-        GetChildValue(pOptionsElem, "DeleteOnErrors", &m_Options.bDeleteOnErrors);
-        GetChildValue(pOptionsElem, "StopOnErrors", &m_Options.bStopOnErrors);
-        GetChildValue(pOptionsElem, "HideConsoleWindow", &m_Options.bHideConsoleWindow);
-        GetChildValue(pOptionsElem, "TryToFindDecoder", &m_Options.bTryToFindDecoder);
-        GetChildValue(pOptionsElem, "EnsureItemIsVisible", &m_Options.bEnsureItemIsVisible);
-        GetChildValue(pOptionsElem, "ValidateInputFiles", &m_Options.bValidateInputFiles);
-        GetChildValue(pOptionsElem, "OverwriteExistingFiles", &m_Options.bOverwriteExistingFiles);
-        GetChildValue(pOptionsElem, "ThreadCount", &m_Options.nThreadCount);
-        GetChildValue(pOptionsElem, "MainWindowResize", &m_Options.szMainWindowResize);
-        GetChildValue(pOptionsElem, "FileListColumns", &m_Options.szFileListColumns);
-        GetChildValue(pOptionsElem, "PresetsDialogResize", &m_Options.szPresetsDialogResize);
-        GetChildValue(pOptionsElem, "PresetsListColumns", &m_Options.szPresetsListColumns);
-        GetChildValue(pOptionsElem, "FormatsDialogResize", &m_Options.szFormatsDialogResize);
-        GetChildValue(pOptionsElem, "FormatsListColumns", &m_Options.szFormatsListColumns);
-        GetChildValue(pOptionsElem, "ToolsDialogResize", &m_Options.szToolsDialogResize);
-        GetChildValue(pOptionsElem, "ToolsListColumns", &m_Options.szToolsListColumns);
+        GetChildValue(element, "SelectedLanguage", &m_Options.szSelectedLanguage);
+        GetChildValue(element, "SelectedFormat", &m_Options.nSelectedFormat);
+        GetChildValue(element, "OutputPath", &m_Options.szOutputPath);
+        GetChildValue(element, "DeleteSourceFiles", &m_Options.bDeleteSourceFiles);
+        GetChildValue(element, "RecurseChecked", &m_Options.bRecurseChecked);
+        GetChildValue(element, "ShutdownWhenFinished", &m_Options.bShutdownWhenFinished);
+        GetChildValue(element, "DoNotSaveConfiguration", &m_Options.bDoNotSaveConfiguration);
+        GetChildValue(element, "DeleteOnErrors", &m_Options.bDeleteOnErrors);
+        GetChildValue(element, "StopOnErrors", &m_Options.bStopOnErrors);
+        GetChildValue(element, "HideConsoleWindow", &m_Options.bHideConsoleWindow);
+        GetChildValue(element, "TryToFindDecoder", &m_Options.bTryToFindDecoder);
+        GetChildValue(element, "EnsureItemIsVisible", &m_Options.bEnsureItemIsVisible);
+        GetChildValue(element, "ValidateInputFiles", &m_Options.bValidateInputFiles);
+        GetChildValue(element, "OverwriteExistingFiles", &m_Options.bOverwriteExistingFiles);
+        GetChildValue(element, "ThreadCount", &m_Options.nThreadCount);
+        GetChildValue(element, "MainWindowResize", &m_Options.szMainWindowResize);
+        GetChildValue(element, "FileListColumns", &m_Options.szFileListColumns);
+        GetChildValue(element, "PresetsDialogResize", &m_Options.szPresetsDialogResize);
+        GetChildValue(element, "PresetsListColumns", &m_Options.szPresetsListColumns);
+        GetChildValue(element, "FormatsDialogResize", &m_Options.szFormatsDialogResize);
+        GetChildValue(element, "FormatsListColumns", &m_Options.szFormatsListColumns);
+        GetChildValue(element, "ToolsDialogResize", &m_Options.szToolsDialogResize);
+        GetChildValue(element, "ToolsListColumns", &m_Options.szToolsListColumns);
     }
-    void SetOptions(tinyxml2::XMLElement *pOptionsElem, COptions &m_Options)
+    void SetOptions(XmlElement *element, COptions &m_Options)
     {
-        SetChildValue(pOptionsElem, "SelectedLanguage", m_Options.szSelectedLanguage);
-        SetChildValue(pOptionsElem, "SelectedFormat", m_Options.nSelectedFormat);
-        SetChildValue(pOptionsElem, "OutputPath", m_Options.szOutputPath);
-        SetChildValue(pOptionsElem, "DeleteSourceFiles", m_Options.bDeleteSourceFiles);
-        SetChildValue(pOptionsElem, "RecurseChecked", m_Options.bRecurseChecked);
-        SetChildValue(pOptionsElem, "ShutdownWhenFinished", m_Options.bShutdownWhenFinished);
-        SetChildValue(pOptionsElem, "DoNotSaveConfiguration", m_Options.bDoNotSaveConfiguration);
-        SetChildValue(pOptionsElem, "DeleteOnErrors", m_Options.bDeleteOnErrors);
-        SetChildValue(pOptionsElem, "StopOnErrors", m_Options.bStopOnErrors);
-        SetChildValue(pOptionsElem, "HideConsoleWindow", m_Options.bHideConsoleWindow);
-        SetChildValue(pOptionsElem, "TryToFindDecoder", m_Options.bTryToFindDecoder);
-        SetChildValue(pOptionsElem, "EnsureItemIsVisible", m_Options.bEnsureItemIsVisible);
-        SetChildValue(pOptionsElem, "ValidateInputFiles", m_Options.bValidateInputFiles);
-        SetChildValue(pOptionsElem, "OverwriteExistingFiles", m_Options.bOverwriteExistingFiles);
-        SetChildValue(pOptionsElem, "ThreadCount", m_Options.nThreadCount);
-        SetChildValue(pOptionsElem, "MainWindowResize", m_Options.szMainWindowResize);
-        SetChildValue(pOptionsElem, "FileListColumns", m_Options.szFileListColumns);
-        SetChildValue(pOptionsElem, "PresetsDialogResize", m_Options.szPresetsDialogResize);
-        SetChildValue(pOptionsElem, "PresetsListColumns", m_Options.szPresetsListColumns);
-        SetChildValue(pOptionsElem, "FormatsDialogResize", m_Options.szFormatsDialogResize);
-        SetChildValue(pOptionsElem, "FormatsListColumns", m_Options.szFormatsListColumns);
-        SetChildValue(pOptionsElem, "ToolsDialogResize", m_Options.szToolsDialogResize);
-        SetChildValue(pOptionsElem, "ToolsListColumns", m_Options.szToolsListColumns);
+        SetChildValue(element, "SelectedLanguage", m_Options.szSelectedLanguage);
+        SetChildValue(element, "SelectedFormat", m_Options.nSelectedFormat);
+        SetChildValue(element, "OutputPath", m_Options.szOutputPath);
+        SetChildValue(element, "DeleteSourceFiles", m_Options.bDeleteSourceFiles);
+        SetChildValue(element, "RecurseChecked", m_Options.bRecurseChecked);
+        SetChildValue(element, "ShutdownWhenFinished", m_Options.bShutdownWhenFinished);
+        SetChildValue(element, "DoNotSaveConfiguration", m_Options.bDoNotSaveConfiguration);
+        SetChildValue(element, "DeleteOnErrors", m_Options.bDeleteOnErrors);
+        SetChildValue(element, "StopOnErrors", m_Options.bStopOnErrors);
+        SetChildValue(element, "HideConsoleWindow", m_Options.bHideConsoleWindow);
+        SetChildValue(element, "TryToFindDecoder", m_Options.bTryToFindDecoder);
+        SetChildValue(element, "EnsureItemIsVisible", m_Options.bEnsureItemIsVisible);
+        SetChildValue(element, "ValidateInputFiles", m_Options.bValidateInputFiles);
+        SetChildValue(element, "OverwriteExistingFiles", m_Options.bOverwriteExistingFiles);
+        SetChildValue(element, "ThreadCount", m_Options.nThreadCount);
+        SetChildValue(element, "MainWindowResize", m_Options.szMainWindowResize);
+        SetChildValue(element, "FileListColumns", m_Options.szFileListColumns);
+        SetChildValue(element, "PresetsDialogResize", m_Options.szPresetsDialogResize);
+        SetChildValue(element, "PresetsListColumns", m_Options.szPresetsListColumns);
+        SetChildValue(element, "FormatsDialogResize", m_Options.szFormatsDialogResize);
+        SetChildValue(element, "FormatsListColumns", m_Options.szFormatsListColumns);
+        SetChildValue(element, "ToolsDialogResize", m_Options.szToolsDialogResize);
+        SetChildValue(element, "ToolsListColumns", m_Options.szToolsListColumns);
     }
 public:
     void GetOptions(COptions &m_Options)
     {
-        tinyxml2::XMLElement *pOptionsElem = this->FirstChildElement("Options");
-        if (pOptionsElem != NULL)
+        auto element = this->FirstChildElement("Options");
+        if (element != NULL)
         {
-            this->GetOptions(pOptionsElem, m_Options);
+            this->GetOptions(element, m_Options);
         }
     }
     void SetOptions(COptions &m_Options)
     {
-        tinyxml2::XMLElement *pOptionsElem = this->NewElement("Options");
+        auto pOptionsElem = this->NewElement("Options");
         this->LinkEndChild(pOptionsElem);
         this->SetOptions(pOptionsElem, m_Options);
     }

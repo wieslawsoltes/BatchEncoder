@@ -20,97 +20,97 @@ public:
     {
     }
 protected:
-    void GetFormat(tinyxml2::XMLElement *pFormatElem, CFormat &m_Format)
+    void GetFormat(XmlElement *element, CFormat &m_Format)
     {
-        GetAttributeValue(pFormatElem, "id", &m_Format.szId);
-        GetAttributeValue(pFormatElem, "name", &m_Format.szName);
-        GetAttributeValue(pFormatElem, "template", &m_Format.szTemplate);
-        GetAttributeValue(pFormatElem, "input", &m_Format.bPipeInput);
-        GetAttributeValue(pFormatElem, "output", &m_Format.bPipeOutput);
-        GetAttributeValue(pFormatElem, "function", &m_Format.szFunction);
-        GetAttributeValue(pFormatElem, "path", &m_Format.szPath);
-        GetAttributeValue(pFormatElem, "success", &m_Format.nExitCodeSuccess);
-        GetAttributeValue(pFormatElem, "type", &m_Format.nType);
-        GetAttributeValue(pFormatElem, "formats", &m_Format.szInputExtensions);
-        GetAttributeValue(pFormatElem, "extension", &m_Format.szOutputExtension);
-        GetAttributeValue(pFormatElem, "default", &m_Format.nDefaultPreset);
+        GetAttributeValue(element, "id", &m_Format.szId);
+        GetAttributeValue(element, "name", &m_Format.szName);
+        GetAttributeValue(element, "template", &m_Format.szTemplate);
+        GetAttributeValue(element, "input", &m_Format.bPipeInput);
+        GetAttributeValue(element, "output", &m_Format.bPipeOutput);
+        GetAttributeValue(element, "function", &m_Format.szFunction);
+        GetAttributeValue(element, "path", &m_Format.szPath);
+        GetAttributeValue(element, "success", &m_Format.nExitCodeSuccess);
+        GetAttributeValue(element, "type", &m_Format.nType);
+        GetAttributeValue(element, "formats", &m_Format.szInputExtensions);
+        GetAttributeValue(element, "extension", &m_Format.szOutputExtension);
+        GetAttributeValue(element, "default", &m_Format.nDefaultPreset);
 
-        tinyxml2::XMLElement *pPresetsElem = pFormatElem->FirstChildElement("Presets");
-        if (pPresetsElem != NULL)
+        auto parent = element->FirstChildElement("Presets");
+        if (parent != NULL)
         {
-            this->GetPresets(pPresetsElem, m_Format.m_Presets);
+            this->GetPresets(parent, m_Format.m_Presets);
         }
     }
-    void SetFormat(tinyxml2::XMLElement *pFormatElem, CFormat &m_Format)
+    void SetFormat(XmlElement *element, CFormat &m_Format)
     {
-        SetAttributeValue(pFormatElem, "id", m_Format.szId);
-        SetAttributeValue(pFormatElem, "name", m_Format.szName);
-        SetAttributeValue(pFormatElem, "template", m_Format.szTemplate);
-        SetAttributeValue(pFormatElem, "input", m_Format.bPipeInput);
-        SetAttributeValue(pFormatElem, "output", m_Format.bPipeOutput);
-        SetAttributeValue(pFormatElem, "function", m_Format.szFunction);
-        SetAttributeValue(pFormatElem, "path", m_Format.szPath);
-        SetAttributeValue(pFormatElem, "success", m_Format.nExitCodeSuccess);
-        SetAttributeValue(pFormatElem, "type", m_Format.nType);
-        SetAttributeValue(pFormatElem, "formats", m_Format.szInputExtensions);
-        SetAttributeValue(pFormatElem, "extension", m_Format.szOutputExtension);
-        SetAttributeValue(pFormatElem, "default", m_Format.nDefaultPreset);
+        SetAttributeValue(element, "id", m_Format.szId);
+        SetAttributeValue(element, "name", m_Format.szName);
+        SetAttributeValue(element, "template", m_Format.szTemplate);
+        SetAttributeValue(element, "input", m_Format.bPipeInput);
+        SetAttributeValue(element, "output", m_Format.bPipeOutput);
+        SetAttributeValue(element, "function", m_Format.szFunction);
+        SetAttributeValue(element, "path", m_Format.szPath);
+        SetAttributeValue(element, "success", m_Format.nExitCodeSuccess);
+        SetAttributeValue(element, "type", m_Format.nType);
+        SetAttributeValue(element, "formats", m_Format.szInputExtensions);
+        SetAttributeValue(element, "extension", m_Format.szOutputExtension);
+        SetAttributeValue(element, "default", m_Format.nDefaultPreset);
 
-        tinyxml2::XMLElement *pPresetsElem = this->NewElement("Presets");
-        pFormatElem->LinkEndChild(pPresetsElem);
-        this->SetPresets(pPresetsElem, m_Format.m_Presets);
+        auto parent = this->NewElement("Presets");
+        element->LinkEndChild(parent);
+        this->SetPresets(parent, m_Format.m_Presets);
     }
-    void GetFormats(tinyxml2::XMLElement *pFormatsElem, CFormatsList &m_Formats)
+    void GetFormats(XmlElement *parent, CFormatsList &m_Formats)
     {
-        tinyxml2::XMLElement *pFormatElem = pFormatsElem->FirstChildElement("Format");
-        if (pFormatElem != NULL)
+        auto element = parent->FirstChildElement("Format");
+        if (element != NULL)
         {
-            for (pFormatElem; pFormatElem; pFormatElem = pFormatElem->NextSiblingElement())
+            for (element; element; element = element->NextSiblingElement())
             {
                 CFormat format;
-                this->GetFormat(pFormatElem, format);
+                this->GetFormat(element, format);
                 m_Formats.Insert(format);
             }
         }
     }
-    void SetFormats(tinyxml2::XMLElement *pFormatsElem, CFormatsList &m_Formats)
+    void SetFormats(XmlElement *parent, CFormatsList &m_Formats)
     {
         int nFormats = m_Formats.Count();
         for (int i = 0; i < nFormats; i++)
         {
             CFormat& format = m_Formats.Get(i);
-            tinyxml2::XMLElement *pFormatElem = this->NewElement("Format");
-            pFormatsElem->LinkEndChild(pFormatElem);
-            this->SetFormat(pFormatElem, format);
+            auto element = this->NewElement("Format");
+            parent->LinkEndChild(element);
+            this->SetFormat(element, format);
         }
     }
 public:
     void GetFormat(CFormat &m_Format)
     {
-        tinyxml2::XMLElement *pFormatElem = this->FirstChildElement("Format");
-        if (pFormatElem != NULL)
+        auto element = this->FirstChildElement("Format");
+        if (element != NULL)
         {
-            this->GetFormat(pFormatElem, m_Format);
+            this->GetFormat(element, m_Format);
         }
     }
     void SetFormat(CFormat &m_Format)
     {
-        tinyxml2::XMLElement *pFormatElem = this->NewElement("Format");
-        this->LinkEndChild(pFormatElem);
-        this->SetFormat(pFormatElem, m_Format);
+        auto element = this->NewElement("Format");
+        this->LinkEndChild(element);
+        this->SetFormat(element, m_Format);
     }
     void GetFormats(CFormatsList &m_Formats)
     {
-        tinyxml2::XMLElement *pFormatsElem = this->FirstChildElement("Formats");
-        if (pFormatsElem != NULL)
+        auto element = this->FirstChildElement("Formats");
+        if (element != NULL)
         {
-            this->GetFormats(pFormatsElem, m_Formats);
+            this->GetFormats(element, m_Formats);
         }
     }
     void SetFormats(CFormatsList &m_Formats)
     {
-        tinyxml2::XMLElement *pFormatsElem = this->NewElement("Formats");
-        this->LinkEndChild(pFormatsElem);
-        this->SetFormats(pFormatsElem, m_Formats);
+        auto element = this->NewElement("Formats");
+        this->LinkEndChild(element);
+        this->SetFormats(element, m_Formats);
     }
 };

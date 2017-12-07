@@ -19,77 +19,77 @@ public:
     {
     }
 protected:
-    void GetTool(tinyxml2::XMLElement *pToolElem, CTool &m_Tool)
+    void GetTool(XmlElement *element, CTool &m_Tool)
     {
-        GetAttributeValue(pToolElem, "name", &m_Tool.szName);
-        GetAttributeValue(pToolElem, "platform", &m_Tool.szPlatform);
-        GetAttributeValue(pToolElem, "formats", &m_Tool.szFormats);
-        GetAttributeValue(pToolElem, "url", &m_Tool.szUrl);
-        GetAttributeValue(pToolElem, "file", &m_Tool.szFile);
-        GetAttributeValue(pToolElem, "extract", &m_Tool.szExtract);
-        GetAttributeValue(pToolElem, "path", &m_Tool.szPath);
+        GetAttributeValue(element, "name", &m_Tool.szName);
+        GetAttributeValue(element, "platform", &m_Tool.szPlatform);
+        GetAttributeValue(element, "formats", &m_Tool.szFormats);
+        GetAttributeValue(element, "url", &m_Tool.szUrl);
+        GetAttributeValue(element, "file", &m_Tool.szFile);
+        GetAttributeValue(element, "extract", &m_Tool.szExtract);
+        GetAttributeValue(element, "path", &m_Tool.szPath);
     }
-    void SetTool(tinyxml2::XMLElement *pToolElem, CTool &m_Tool)
+    void SetTool(XmlElement *element, CTool &m_Tool)
     {
-        SetAttributeValue(pToolElem, "name", m_Tool.szName);
-        SetAttributeValue(pToolElem, "platform", m_Tool.szPlatform);
-        SetAttributeValue(pToolElem, "formats", m_Tool.szFormats);
-        SetAttributeValue(pToolElem, "url", m_Tool.szUrl);
-        SetAttributeValue(pToolElem, "file", m_Tool.szFile);
-        SetAttributeValue(pToolElem, "extract", m_Tool.szExtract);
-        SetAttributeValue(pToolElem, "path", m_Tool.szPath);
+        SetAttributeValue(element, "name", m_Tool.szName);
+        SetAttributeValue(element, "platform", m_Tool.szPlatform);
+        SetAttributeValue(element, "formats", m_Tool.szFormats);
+        SetAttributeValue(element, "url", m_Tool.szUrl);
+        SetAttributeValue(element, "file", m_Tool.szFile);
+        SetAttributeValue(element, "extract", m_Tool.szExtract);
+        SetAttributeValue(element, "path", m_Tool.szPath);
     }
-    void GetTools(tinyxml2::XMLElement *pToolsElem, CToolsList &m_Tools)
+    void GetTools(XmlElement *parent, CToolsList &m_Tools)
     {
-        tinyxml2::XMLElement *pToolElem = pToolsElem->FirstChildElement("Tool");
-        if (pToolElem != NULL)
+        auto element = parent->FirstChildElement("Tool");
+        if (element != NULL)
         {
-            for (pToolElem; pToolElem; pToolElem = pToolElem->NextSiblingElement())
+            for (element; element; element = element->NextSiblingElement())
             {
                 CTool tool;
-                this->GetTool(pToolElem, tool);
+                this->GetTool(element, tool);
                 m_Tools.Insert(tool);
             }
         }
     }
-    void SetTools(tinyxml2::XMLElement *pToolsElem, CToolsList &m_Tools)
+    void SetTools(XmlElement *parent, CToolsList &m_Tools)
     {
         int nTools = m_Tools.Count();
         for (int i = 0; i < nTools; i++)
         {
             CTool& tool = m_Tools.Get(i);
-            tinyxml2::XMLElement *pToolElem = this->NewElement("Tool");
-            pToolsElem->LinkEndChild(pToolElem);
-            this->SetTool(pToolElem, tool);
+            auto element = this->NewElement("Tool");
+            parent->LinkEndChild(element);
+            this->SetTool(element, tool);
         }
     }
 public:
     void GetTool(CTool &m_Tool)
     {
-        tinyxml2::XMLElement *pToolElem = this->FirstChildElement("Tool");
-        if (pToolElem != NULL)
+        auto element = this->FirstChildElement("Tool");
+        if (element != NULL)
         {
-            this->GetTool(pToolElem, m_Tool);
+            this->GetTool(element, m_Tool);
         }
     }
     void SetTool(CTool &m_Tool)
     {
-        tinyxml2::XMLElement *pToolElem = this->NewElement("Tool");
-        this->LinkEndChild(pToolElem);
-        this->SetTool(pToolElem, m_Tool);
+        auto element = this->NewElement("Tool");
+        this->LinkEndChild(element);
+        this->SetTool(element, m_Tool);
     }
     void GetTools(CToolsList &m_Tools)
     {
-        tinyxml2::XMLElement *pToolsElem = this->FirstChildElement("Tools");
-        if (pToolsElem != NULL)
+        auto element = this->FirstChildElement("Tools");
+        if (element != NULL)
         {
-            this->GetTools(pToolsElem, m_Tools);
+            this->GetTools(element, m_Tools);
         }
     }
     void SetTools(CToolsList &m_Tools)
     {
-        tinyxml2::XMLElement *pToolsElem = this->NewElement("Tools");
-        this->LinkEndChild(pToolsElem);
-        this->SetTools(pToolsElem, m_Tools);
+        auto element = this->NewElement("Tools");
+        this->LinkEndChild(element);
+        this->SetTools(element, m_Tools);
     }
 };

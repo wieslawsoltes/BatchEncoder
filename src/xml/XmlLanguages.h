@@ -19,22 +19,22 @@ public:
     {
     }
 protected:
-    void GetLanguage(tinyxml2::XMLElement *pLanguageElem, CLanguage &m_Language)
+    void GetLanguage(XmlElement *parent, CLanguage &m_Language)
     {
-        GetAttributeValue(pLanguageElem, "id", &m_Language.szId);
-        GetAttributeValue(pLanguageElem, "original", &m_Language.szOriginalName);
-        GetAttributeValue(pLanguageElem, "translated", &m_Language.szTranslatedName);
+        GetAttributeValue(parent, "id", &m_Language.szId);
+        GetAttributeValue(parent, "original", &m_Language.szOriginalName);
+        GetAttributeValue(parent, "translated", &m_Language.szTranslatedName);
 
-        tinyxml2::XMLElement *pStringElem = pLanguageElem->FirstChildElement("String");
-        if (pStringElem != NULL)
+        auto element = parent->FirstChildElement("String");
+        if (element != NULL)
         {
-            for (pStringElem; pStringElem; pStringElem = pStringElem->NextSiblingElement())
+            for (element; element; element = element->NextSiblingElement())
             {
                 CString szKey;
                 CString szValue;
 
-                GetAttributeValue(pStringElem, "key", &szKey);
-                GetAttributeValue(pStringElem, "value", &szValue);
+                GetAttributeValue(element, "key", &szKey);
+                GetAttributeValue(element, "value", &szValue);
 
                 int nKey;
                 _stscanf(szKey, _T("%x"), &nKey);
@@ -42,11 +42,11 @@ protected:
             }
         }
     }
-    void SetLanguage(tinyxml2::XMLElement *pLanguageElem, CLanguage &m_Language)
+    void SetLanguage(XmlElement *parent, CLanguage &m_Language)
     {
-        SetAttributeValue(pLanguageElem, "id", m_Language.szId);
-        SetAttributeValue(pLanguageElem, "original", m_Language.szOriginalName);
-        SetAttributeValue(pLanguageElem, "translated", m_Language.szTranslatedName);
+        SetAttributeValue(parent, "id", m_Language.szId);
+        SetAttributeValue(parent, "original", m_Language.szOriginalName);
+        SetAttributeValue(parent, "translated", m_Language.szTranslatedName);
 
         POSITION pos = m_Language.m_Strings.m_Map.GetStartPosition();
         while (pos != NULL)
@@ -57,64 +57,64 @@ protected:
             m_Language.m_Strings.m_Map.GetNextAssoc(pos, nKey, rValue);
             szKey.Format(_T("%X"), nKey);
 
-            tinyxml2::XMLElement *pStringElem = this->NewElement("String");
-            pLanguageElem->LinkEndChild(pStringElem);
+            auto element = this->NewElement("String");
+            parent->LinkEndChild(element);
 
-            SetAttributeValue(pStringElem, "", szKey);
-            SetAttributeValue(pStringElem, "", rValue);
+            SetAttributeValue(element, "", szKey);
+            SetAttributeValue(element, "", rValue);
         }
     }
-    void GetLanguages(tinyxml2::XMLElement *pLanguagesElem, CLanguagesList &m_Languages)
+    void GetLanguages(XmlElement *parent, CLanguagesList &m_Languages)
     {
-        tinyxml2::XMLElement *pLanguageElem = pLanguagesElem->FirstChildElement("Language");
-        if (pLanguageElem != NULL)
+        auto element = parent->FirstChildElement("Language");
+        if (element != NULL)
         {
-            for (pLanguageElem; pLanguageElem; pLanguageElem = pLanguageElem->NextSiblingElement())
+            for (element; element; element = element->NextSiblingElement())
             {
                 CLanguage language;
-                this->GetLanguage(pLanguageElem, language);
+                this->GetLanguage(element, language);
                 m_Languages.Insert(language);
             }
         }
     }
-    void SetLanguages(tinyxml2::XMLElement *pLanguagesElem, CLanguagesList &m_Languages)
+    void SetLanguages(XmlElement *parent, CLanguagesList &m_Languages)
     {
         int nLanguages = m_Languages.Count();
         for (int i = 0; i < nLanguages; i++)
         {
             CLanguage& language = m_Languages.Get(i);
-            tinyxml2::XMLElement *pLanguageElem = this->NewElement("Language");
-            pLanguagesElem->LinkEndChild(pLanguageElem);
-            this->SetLanguage(pLanguageElem, language);
+            auto element = this->NewElement("Language");
+            parent->LinkEndChild(element);
+            this->SetLanguage(element, language);
         }
     }
 public:
     void GetLanguage(CLanguage &m_Language)
     {
-        tinyxml2::XMLElement *pLanguageElem = this->FirstChildElement("Language");
-        if (pLanguageElem != NULL)
+        auto element = this->FirstChildElement("Language");
+        if (element != NULL)
         {
-            this->GetLanguage(pLanguageElem, m_Language);
+            this->GetLanguage(element, m_Language);
         }
     }
     void SetLanguage(CLanguage &m_Language)
     {
-        tinyxml2::XMLElement *pLanguageElem = this->NewElement("Language");
-        this->LinkEndChild(pLanguageElem);
-        this->SetLanguage(pLanguageElem, m_Language);
+        auto element = this->NewElement("Language");
+        this->LinkEndChild(element);
+        this->SetLanguage(element, m_Language);
     }
     void GetLanguages(CLanguagesList &m_Languages)
     {
-        tinyxml2::XMLElement *pLanguagesElem = this->FirstChildElement("Languages");
-        if (pLanguagesElem != NULL)
+        auto element = this->FirstChildElement("Languages");
+        if (element != NULL)
         {
-            this->GetLanguages(pLanguagesElem, m_Languages);
+            this->GetLanguages(element, m_Languages);
         }
     }
     void SetLanguages(CLanguagesList &m_Languages)
     {
-        tinyxml2::XMLElement *pLanguagesElem = this->NewElement("Languages");
-        this->LinkEndChild(pLanguagesElem);
-        this->SetLanguages(pLanguagesElem, m_Languages);
+        auto element = this->NewElement("Languages");
+        this->LinkEndChild(element);
+        this->SetLanguages(element, m_Languages);
     }
 };

@@ -7,6 +7,8 @@
 #include <afxtempl.h>
 #include "xml\XmlBase.h"
 
+typedef tinyxml2::XMLElement XmlElement;
+
 class XmlDoc : public XmlBase
 {
 public:
@@ -17,91 +19,90 @@ public:
     {
     }
 protected:
-    void GetAttributeValue(tinyxml2::XMLElement *pElem, const char *pszName, CString *pszValue)
+    void GetAttributeValue(XmlElement *element, const char *name, CString *value)
     {
-        const char *pszResult = pElem->Attribute(pszName);
+        const char *pszResult = element->Attribute(name);
         if (pszResult != NULL)
         {
-            (*pszValue) = ToCString(pszResult);
+            (*value) = ToCString(pszResult);
         }
     }
-    void GetAttributeValue(tinyxml2::XMLElement *pElem, const char *pszName, int *pnValue)
+    void GetAttributeValue(XmlElement *element, const char *name, int *value)
     {
-        const char *pszResult = pElem->Attribute(pszName);
+        const char *pszResult = element->Attribute(name);
         if (pszResult != NULL)
         {
-            (*pnValue) = ToInt(pszResult);
+            (*value) = ToInt(pszResult);
         }
     }
-    void GetAttributeValue(tinyxml2::XMLElement *pElem, const char *pszName, bool *pbValue)
+    void GetAttributeValue(XmlElement *element, const char *name, bool *value)
     {
-        const char *pszResult = pElem->Attribute(pszName);
+        const char *pszResult = element->Attribute(name);
         if (pszResult != NULL)
         {
-            (*pbValue) = ToBool(pszResult);
+            (*value) = ToBool(pszResult);
         }
     }
 protected:
-    void SetAttributeValue(tinyxml2::XMLElement *pElem, const char *pszName, CString& szValue)
+    void SetAttributeValue(XmlElement *element, const char *name, CString& value)
     {
-        pElem->SetAttribute(pszName, CUtf8String(szValue).m_Result);
+        element->SetAttribute(name, CUtf8String(value).m_Result);
     }
-    void SetAttributeValue(tinyxml2::XMLElement *pElem, const char *pszName, int &nValue)
+    void SetAttributeValue(XmlElement *element, const char *name, int &value)
     {
-        pElem->SetAttribute(pszName, CUtf8String(ToCString(nValue)).m_Result);
+        element->SetAttribute(name, CUtf8String(ToCString(value)).m_Result);
     }
-    void SetAttributeValue(tinyxml2::XMLElement *pElem, const char *pszName, bool &bValue)
+    void SetAttributeValue(XmlElement *element, const char *name, bool &value)
     {
-        pElem->SetAttribute(pszName, CUtf8String(ToCString(bValue)).m_Result);
-    }
-protected:
-    void GetChildValue(tinyxml2::XMLElement *pParent, const char *pszName, CString *pszValue)
-    {
-        tinyxml2::XMLElement *pOptionElem = pParent->FirstChildElement(pszName);
-        if (pOptionElem != NULL)
-        {
-            (*pszValue) = ToCString(pOptionElem->GetText());
-        }
-    }
-    void GetChildValue(tinyxml2::XMLElement *pParent, const char *pszName, int *pnValue)
-    {
-        tinyxml2::XMLElement *pOptionElem = pParent->FirstChildElement(pszName);
-        if (pOptionElem != NULL)
-        {
-            (*pnValue) = ToInt(pOptionElem->GetText());
-        }
-    }
-    void GetChildValue(tinyxml2::XMLElement *pParent, const char *pszName, bool *pbValue)
-    {
-        tinyxml2::XMLElement *pOptionElem = pParent->FirstChildElement(pszName);
-        if (pOptionElem != NULL)
-        {
-            (*pbValue) = ToBool(pOptionElem->GetText());
-        }
+        element->SetAttribute(name, CUtf8String(ToCString(value)).m_Result);
     }
 protected:
-    void SetChildValue(tinyxml2::XMLElement *pParent, const char *pszName, CString& szValue)
+    void GetChildValue(XmlElement *parent, const char *name, CString *value)
     {
-        tinyxml2::XMLElement * pElem = this->NewElement(pszName);
-        pElem->LinkEndChild(this->NewText(CUtf8String(szValue).m_Result));
-        pParent->LinkEndChild(pElem);
+        auto element = parent->FirstChildElement(name);
+        if (element != NULL)
+        {
+            (*value) = ToCString(element->GetText());
+        }
     }
-    void SetChildValue(tinyxml2::XMLElement *pParent, const char *pszName, int &nValue)
+    void GetChildValue(XmlElement *parent, const char *name, int *value)
     {
-        tinyxml2::XMLElement * pElem = this->NewElement(pszName);
-        pElem->LinkEndChild(this->NewText(CUtf8String(ToCString(nValue)).m_Result));
-        pParent->LinkEndChild(pElem);
+        auto element = parent->FirstChildElement(name);
+        if (element != NULL)
+        {
+            (*value) = ToInt(element->GetText());
+        }
     }
-    void SetChildValue(tinyxml2::XMLElement *pParent, const char *pszName, bool &bValue)
+    void GetChildValue(XmlElement *parent, const char *name, bool *value)
     {
-        tinyxml2::XMLElement * pElem = this->NewElement(pszName);
-        pElem->LinkEndChild(this->NewText(CUtf8String(ToCString(bValue)).m_Result));
-        pParent->LinkEndChild(pElem);
+        auto element = parent->FirstChildElement(name);
+        if (element != NULL)
+        {
+            (*value) = ToBool(element->GetText());
+        }
+    }
+protected:
+    void SetChildValue(XmlElement *parent, const char *name, CString& value)
+    {
+        auto element = this->NewElement(name);
+        element->LinkEndChild(this->NewText(CUtf8String(value).m_Result));
+        parent->LinkEndChild(element);
+    }
+    void SetChildValue(XmlElement *parent, const char *name, int &value)
+    {
+        auto element = this->NewElement(name);
+        element->LinkEndChild(this->NewText(CUtf8String(ToCString(value)).m_Result));
+        parent->LinkEndChild(element);
+    }
+    void SetChildValue(XmlElement *parent, const char *name, bool &value)
+    {
+        auto element = this->NewElement(name);
+        element->LinkEndChild(this->NewText(CUtf8String(ToCString(value)).m_Result));
+        parent->LinkEndChild(element);
     }
 public:
     void Create()
     {
-        tinyxml2::XMLDeclaration* decl = this->NewDeclaration(m_Utf8DocumentDeclaration);
-        this->LinkEndChild(decl);
+        this->LinkEndChild(this->NewDeclaration(m_Utf8DocumentDeclaration));
     }
 };

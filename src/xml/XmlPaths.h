@@ -19,69 +19,67 @@ public:
     {
     }
 protected:
-    void GetPath(tinyxml2::XMLElement *pPathElem, CPath &m_Path)
+    void GetPath(XmlElement *element, CPath &m_Path)
     {
-        GetAttributeValue(pPathElem, "path", &m_Path.szPath);
-        GetAttributeValue(pPathElem, "size", &m_Path.szSize);
+        GetAttributeValue(element, "path", &m_Path.szPath);
+        GetAttributeValue(element, "size", &m_Path.szSize);
     }
-    void SetPath(tinyxml2::XMLElement *pPathElem, CPath &m_Path)
+    void SetPath(XmlElement *element, CPath &m_Path)
     {
-        SetAttributeValue(pPathElem, "path", m_Path.szPath);
-        SetAttributeValue(pPathElem, "size", m_Path.szSize);
+        SetAttributeValue(element, "path", m_Path.szPath);
+        SetAttributeValue(element, "size", m_Path.szSize);
     }
-    void GetPaths(tinyxml2::XMLElement *pPathsElem, CPathsList &m_Paths)
+    void GetPaths(XmlElement *parent, CPathsList &m_Paths)
     {
-        tinyxml2::XMLElement *pPathElem = pPathsElem->FirstChildElement("Path");
-        if (pPathElem != NULL)
+        auto element = parent->FirstChildElement("Path");
+        if (element != NULL)
         {
-            for (pPathElem; pPathElem; pPathElem = pPathElem->NextSiblingElement())
+            for (element; element; element = element->NextSiblingElement())
             {
                 CPath path;
-                this->GetPath(pPathElem, path);
+                this->GetPath(element, path);
                 m_Paths.Insert(path);
             }
         }
     }
-    void SetPaths(tinyxml2::XMLElement *pPathsElem, CPathsList &m_Paths)
+    void SetPaths(XmlElement *parent, CPathsList &m_Paths)
     {
-        tinyxml2::XMLElement *pPathElem;
-
         int nPaths = m_Paths.Count();
         for (int i = 0; i < nPaths; i++)
         {
             CPath& path = m_Paths.Get(i);
-            pPathElem = this->NewElement("Path");
-            pPathsElem->LinkEndChild(pPathElem);
-            this->SetPath(pPathElem, path);
+            auto element = this->NewElement("Path");
+            parent->LinkEndChild(element);
+            this->SetPath(element, path);
         }
     }
 public:
     void GetPath(CPath &m_Path)
     {
-        tinyxml2::XMLElement *pPathElem = this->FirstChildElement("Path");
-        if (pPathElem != NULL)
+        auto element = this->FirstChildElement("Path");
+        if (element != NULL)
         {
-            this->GetPath(pPathElem, m_Path);
+            this->GetPath(element, m_Path);
         }
     }
     void SetPath(CPath &m_Path)
     {
-        tinyxml2::XMLElement *pPathElem = this->NewElement("Path");
-        this->LinkEndChild(pPathElem);
-        this->SetPath(pPathElem, m_Path);
+        auto element = this->NewElement("Path");
+        this->LinkEndChild(element);
+        this->SetPath(element, m_Path);
     }
     void GetPaths(CPathsList &m_Paths)
     {
-        tinyxml2::XMLElement *pPathsElem = this->FirstChildElement("Paths");
-        if (pPathsElem != NULL)
+        auto element = this->FirstChildElement("Paths");
+        if (element != NULL)
         {
-            this->GetPaths(pPathsElem, m_Paths);
+            this->GetPaths(element, m_Paths);
         }
     }
     void SetPaths(CPathsList &m_Paths)
     {
-        tinyxml2::XMLElement *pPathsElem = this->NewElement("Paths");
-        this->LinkEndChild(pPathsElem);
-        this->SetPaths(pPathsElem, m_Paths);
+        auto element = this->NewElement("Paths");
+        this->LinkEndChild(element);
+        this->SetPaths(element, m_Paths);
     }
 };
