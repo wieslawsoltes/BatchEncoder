@@ -213,7 +213,7 @@ void CFormatsDlg::OnLvnItemchangedListFormats(NMHDR *pNMHDR, LRESULT *pResult)
 
     this->ListSelectionChange();
 
-    *pResult = nullptr;
+    *pResult = 0;
 }
 
 void CFormatsDlg::OnBnClickedButtonImport()
