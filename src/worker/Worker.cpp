@@ -11,7 +11,7 @@
 
 bool CWorker::ProgresssLoop(CFileContext* pContext, CPipe &Stderr, int &nProgress)
 {
-    CWorkerContext *pWorkerContext = pContext->pWorkerContext;
+    auto pWorkerContext = pContext->pWorkerContext;
     const int nBuffSize = 4096;
     char szReadBuff[nBuffSize];
     char szLineBuff[nBuffSize];
@@ -142,7 +142,7 @@ bool CWorker::ProgresssLoop(CFileContext* pContext, CPipe &Stderr, int &nProgres
 
 bool CWorker::ReadLoop(CPipeContext* pContext)
 {
-    CWorkerContext *pWorkerContext = pContext->pWorkerContext;
+    auto pWorkerContext = pContext->pWorkerContext;
     HANDLE hFile = INVALID_HANDLE_VALUE;
     BYTE pReadBuff[4096];
     BOOL bRes = FALSE;
@@ -226,7 +226,7 @@ bool CWorker::ReadLoop(CPipeContext* pContext)
 
 bool CWorker::WriteLoop(CPipeContext* pContext)
 {
-    CWorkerContext *pWorkerContext = pContext->pWorkerContext;
+    auto pWorkerContext = pContext->pWorkerContext;
     HANDLE hFile = INVALID_HANDLE_VALUE;
     BYTE pReadBuff[4096];
     BOOL bRes = FALSE;
@@ -296,7 +296,7 @@ bool CWorker::WriteLoop(CPipeContext* pContext)
 
 bool CWorker::ConvertFileUsingConsole(CFileContext* pContext)
 {
-    CWorkerContext *pWorkerContext = pContext->pWorkerContext;
+    auto pWorkerContext = pContext->pWorkerContext;
 
     if ((pContext->bUseReadPipes == true) || (pContext->bUseWritePipes == true))
     {
@@ -380,7 +380,7 @@ bool CWorker::ConvertFileUsingConsole(CFileContext* pContext)
 
 bool CWorker::ConvertFileUsingPipes(CFileContext* pContext)
 {
-    CWorkerContext *pWorkerContext = pContext->pWorkerContext;
+    auto pWorkerContext = pContext->pWorkerContext;
 
     if ((pContext->bUseReadPipes == false) && (pContext->bUseWritePipes == false))
     {
@@ -643,7 +643,7 @@ bool CWorker::ConvertFileUsingPipes(CFileContext* pContext)
 
 bool CWorker::ConvertFileUsingOnlyPipes(CFileContext* pDecoderContext, CFileContext* pEncoderContext)
 {
-    CWorkerContext *pWorkerContext = pDecoderContext->pWorkerContext;
+    auto pWorkerContext = pDecoderContext->pWorkerContext;
     CProcess decoderProcess;
     CProcess encoderProcess;
     CPipe Stdin(true);
@@ -872,7 +872,7 @@ bool CWorker::ConvertFileUsingOnlyPipes(CFileContext* pDecoderContext, CFileCont
 
 bool CWorker::ConvertItem(CItemContext* pContext)
 {
-    CWorkerContext *pWorkerContext = pContext->pWorkerContext;
+    auto pWorkerContext = pContext->pWorkerContext;
     CFormat *pEncFormat = nullptr;
     CFormat *pDecFormat = nullptr;
     CString szEncInputFile;
@@ -1212,7 +1212,7 @@ bool CWorker::ConvertLoop(CWorkerContext* pWorkerContext)
 void CWorker::Convert(CWorkerContext* pWorkerContext)
 {
     int nItems = pWorkerContext->pConfig->m_Items.Count();
-    CItemContext *pItemsContext = new CItemContext[nItems];
+    auto pItemsContext = new CItemContext[nItems];
 
     pWorkerContext->nTotalFiles = 0;
     pWorkerContext->nProcessedFiles = 0;
