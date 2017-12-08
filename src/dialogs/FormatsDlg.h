@@ -21,9 +21,9 @@ class CFormatsDlg;
 
 typedef struct tagFormatsDlgDropContext
 {
-    CFormatsDlg *pDlg = NULL;
-    HDROP hDrop = NULL;
-    HANDLE hThread = NULL;
+    CFormatsDlg *pDlg = nullptr;
+    HDROP hDrop = nullptr;
+    HANDLE hThread = nullptr;
     DWORD dwThreadID = -1;
     volatile bool bHandled = true;
 } FormatsDlgDropContext;
@@ -32,7 +32,7 @@ class CFormatsDlg : public CMyDialogEx
 {
     DECLARE_DYNAMIC(CFormatsDlg)
 public:
-    CFormatsDlg(CWnd* pParent = NULL);
+    CFormatsDlg(CWnd* pParent = nullptr);
     virtual ~CFormatsDlg();
     enum { IDD = IDD_DIALOG_FORMATS };
 protected:
