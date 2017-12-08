@@ -32,7 +32,7 @@ protected:
     void GetPaths(XmlElement *parent, CPathsList &m_Paths)
     {
         auto element = parent->FirstChildElement("Path");
-        if (element != NULL)
+        if (element != nullptr)
         {
             for (element; element; element = element->NextSiblingElement())
             {
@@ -57,7 +57,7 @@ public:
     void GetPath(CPath &m_Path)
     {
         auto element = this->FirstChildElement("Path");
-        if (element != NULL)
+        if (element != nullptr)
         {
             this->GetPath(element, m_Path);
         }
@@ -71,7 +71,7 @@ public:
     void GetPaths(CPathsList &m_Paths)
     {
         auto element = this->FirstChildElement("Paths");
-        if (element != NULL)
+        if (element != nullptr)
         {
             this->GetPaths(element, m_Paths);
         }
