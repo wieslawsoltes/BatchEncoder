@@ -8,7 +8,7 @@
 
 class CLuaProgess
 {
-    lua_State *L = NULL;
+    lua_State *L = nullptr;
 public:
     const char *name = "GetProgress";
 public:
@@ -32,7 +32,7 @@ public:
     bool Open(const char *filename)
     {
         L = luaL_newstate();
-        if (L == NULL)
+        if (L == nullptr)
             return false;
 
         luaL_openlibs(L); // [-0, +0, e]
@@ -47,7 +47,7 @@ public:
     }
     bool HaveGetProgress()
     {
-        if (L == NULL)
+        if (L == nullptr)
             return false;
 
         lua_getglobal(L, name); // [-0, +1, e]
@@ -64,7 +64,7 @@ public:
     }
     double GetProgress(const char *szLineBuff, size_t nLineLen)
     {
-        if (L == NULL)
+        if (L == nullptr)
             return -1;
 
         lua_getglobal(L, name); // [-0, +1, e]
@@ -107,10 +107,10 @@ public:
     }
     void Close()
     {
-        if (L != NULL)
+        if (L != nullptr)
         {
             lua_close(L);
-            L = NULL;
+            L = nullptr;
         }
     }
 };
