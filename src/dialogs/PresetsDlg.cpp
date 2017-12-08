@@ -20,7 +20,7 @@ DWORD WINAPI PresetsDlgDropThread(LPVOID lpParam)
 }
 
 IMPLEMENT_DYNAMIC(CPresetsDlg, CDialog)
-CPresetsDlg::CPresetsDlg(CWnd* pParent /*=NULL*/)
+CPresetsDlg::CPresetsDlg(CWnd* pParent /*=nullptr*/)
     : CMyDialogEx(CPresetsDlg::IDD, pParent)
 {
     this->m_hIcon = AfxGetApp()->LoadIcon(IDI_ICON_MAIN);
@@ -152,8 +152,8 @@ void CPresetsDlg::OnDropFiles(HDROP hDropInfo)
         this->m_DD.bHandled = false;
         this->m_DD.pDlg = this;
         this->m_DD.hDrop = hDropInfo;
-        this->m_DD.hThread = ::CreateThread(NULL, 0, PresetsDlgDropThread, (LPVOID)&this->m_DD, 0, &this->m_DD.dwThreadID);
-        if (this->m_DD.hThread == NULL)
+        this->m_DD.hThread = ::CreateThread(nullptr, 0, PresetsDlgDropThread, (LPVOID)&this->m_DD, 0, &this->m_DD.dwThreadID);
+        if (this->m_DD.hThread == nullptr)
             this->m_DD.bHandled = true;
     }
     CMyDialogEx::OnDropFiles(hDropInfo);
@@ -190,7 +190,7 @@ void CPresetsDlg::OnBnClickedButtonDuplicate()
     bUpdate = true;
 
     POSITION pos = m_LstPresets.GetFirstSelectedItemPosition();
-    if (pos != NULL)
+    if (pos != nullptr)
     {
         int nSelected = m_LstPresets.GetNextSelectedItem(pos);
         if (nSelected >= 0)
@@ -310,7 +310,7 @@ void CPresetsDlg::OnBnClickedButtonPresetUp()
     bUpdate = true;
 
     POSITION pos = m_LstPresets.GetFirstSelectedItemPosition();
-    if (pos != NULL)
+    if (pos != nullptr)
     {
         int nItem = m_LstPresets.GetNextSelectedItem(pos);
         if (nItem > 0)
@@ -343,7 +343,7 @@ void CPresetsDlg::OnBnClickedButtonPresetDown()
     bUpdate = true;
 
     POSITION pos = m_LstPresets.GetFirstSelectedItemPosition();
-    if (pos != NULL)
+    if (pos != nullptr)
     {
         int nItem = m_LstPresets.GetNextSelectedItem(pos);
         int nItems = m_LstPresets.GetItemCount();
@@ -377,7 +377,7 @@ void CPresetsDlg::OnBnClickedButtonUpdatePreset()
     bUpdate = true;
 
     POSITION pos = m_LstPresets.GetFirstSelectedItemPosition();
-    if (pos != NULL)
+    if (pos != nullptr)
     {
         int nItem = m_LstPresets.GetNextSelectedItem(pos);
 
@@ -581,12 +581,12 @@ void CPresetsDlg::InsertPresetsToListCtrl()
 
 void CPresetsDlg::HandleDropFiles(HDROP hDropInfo)
 {
-    int nCount = ::DragQueryFile(hDropInfo, (UINT)0xFFFFFFFF, NULL, 0);
+    int nCount = ::DragQueryFile(hDropInfo, (UINT)0xFFFFFFFF, nullptr, 0);
     if (nCount > 0)
     {
         for (int i = 0; i < nCount; i++)
         {
-            int nReqChars = ::DragQueryFile(hDropInfo, i, NULL, 0);
+            int nReqChars = ::DragQueryFile(hDropInfo, i, nullptr, 0);
 
             CString szFile;
             ::DragQueryFile(hDropInfo, i, szFile.GetBuffer(nReqChars * 2 + 8), nReqChars * 2 + 8);
@@ -621,7 +621,7 @@ void CPresetsDlg::ListSelectionChange()
     bUpdate = true;
 
     POSITION pos = m_LstPresets.GetFirstSelectedItemPosition();
-    if (pos != NULL)
+    if (pos != nullptr)
     {
         int nItem = m_LstPresets.GetNextSelectedItem(pos);
 
