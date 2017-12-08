@@ -21,9 +21,9 @@ class CPresetsDlg;
 
 typedef struct tagPresetsDlgDropContext
 {
-    CPresetsDlg *pDlg = NULL;
-    HDROP hDrop = NULL;
-    HANDLE hThread = NULL;
+    CPresetsDlg *pDlg = nullptr;
+    HDROP hDrop = nullptr;
+    HANDLE hThread = nullptr;
     DWORD dwThreadID = -1;
     volatile bool bHandled = true;
 } PresetsDlgDropContext;
@@ -32,7 +32,7 @@ class CPresetsDlg : public CMyDialogEx
 {
     DECLARE_DYNAMIC(CPresetsDlg)
 public:
-    CPresetsDlg(CWnd* pParent = NULL);
+    CPresetsDlg(CWnd* pParent = nullptr);
     virtual ~CPresetsDlg();
     enum { IDD = IDD_DIALOG_PRESETS };
 protected:
