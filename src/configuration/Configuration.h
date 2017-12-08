@@ -19,7 +19,7 @@ public:
 public:
     CConfiguration()
     {
-        this->pLanguage = NULL;
+        this->pLanguage = nullptr;
     }
     CConfiguration(const CConfiguration &other)
     {
@@ -41,6 +41,6 @@ public:
         this->m_Items = other.m_Items;
         this->m_Tools = other.m_Tools;
         this->m_Languages = other.m_Languages;
-        this->pLanguage = NULL;
+        this->pLanguage = nullptr;
     }
 };
