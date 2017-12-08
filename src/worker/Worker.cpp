@@ -160,10 +160,10 @@ bool CWorker::ReadLoop(CPipeContext* pContext)
     hFile = ::CreateFile(pContext->szFileName,
         GENERIC_READ,
         FILE_SHARE_READ,
-        NULL,
+        nullptr,
         OPEN_EXISTING,
         0,
-        NULL);
+        nullptr);
     if (hFile == INVALID_HANDLE_VALUE)
     {
         pContext->bError = true;
@@ -240,10 +240,10 @@ bool CWorker::WriteLoop(CPipeContext* pContext)
     hFile = ::CreateFile(pContext->szFileName,
         GENERIC_READ | GENERIC_WRITE,
         0,
-        NULL,
+        nullptr,
         CREATE_ALWAYS,
         0,
-        NULL);
+        nullptr);
     if (hFile == INVALID_HANDLE_VALUE)
     {
         pContext->bError = true;
@@ -327,7 +327,7 @@ bool CWorker::ConvertFileUsingConsole(CFileContext* pContext)
     }
 
     // connect pipes to process
-    process.ConnectStdInput(NULL);
+    process.ConnectStdInput(nullptr);
     process.ConnectStdOutput(Stderr.hWrite);
     process.ConnectStdError(Stderr.hWrite);
 
@@ -873,8 +873,8 @@ bool CWorker::ConvertFileUsingOnlyPipes(CFileContext* pDecoderContext, CFileCont
 bool CWorker::ConvertItem(CItemContext* pContext)
 {
     CWorkerContext *pWorkerContext = pContext->pWorkerContext;
-    CFormat *pEncFormat = NULL;
-    CFormat *pDecFormat = NULL;
+    CFormat *pEncFormat = nullptr;
+    CFormat *pDecFormat = nullptr;
     CString szEncInputFile;
     CString szEncOutputFile;
     CString szDecInputFile;
@@ -1165,7 +1165,7 @@ bool CWorker::ConvertLoop(CWorkerContext* pWorkerContext)
     {
         try
         {
-            CItemContext* pContext = NULL;
+            CItemContext* pContext = nullptr;
             if (pWorkerContext->pSync->Wait() == true)
             {
                 if (!pWorkerContext->pQueue->IsEmpty())
@@ -1177,7 +1177,7 @@ bool CWorker::ConvertLoop(CWorkerContext* pWorkerContext)
             if (pWorkerContext->pSync->Release() == false)
                 return false;
 
-            if (pContext != NULL)
+            if (pContext != nullptr)
             {
                 if (pWorkerContext->bRunning == false)
                     return false;
