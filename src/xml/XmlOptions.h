@@ -74,7 +74,7 @@ public:
     void GetOptions(COptions &m_Options)
     {
         auto element = this->FirstChildElement("Options");
-        if (element != NULL)
+        if (element != nullptr)
         {
             this->GetOptions(element, m_Options);
         }
