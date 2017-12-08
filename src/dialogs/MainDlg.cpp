@@ -35,8 +35,8 @@
 static CString szLastBrowse;
 static WNDPROC lpOldWindowProc;
 static bool bRecurseChecked = true;
-static HWND hWndBtnRecurse = NULL;
-static HWND hWndStaticText = NULL;
+static HWND hWndBtnRecurse = nullptr;
+static HWND hWndStaticText = nullptr;
 
 int CALLBACK BrowseCallbackProc(HWND hWnd, UINT uMsg, LPARAM lp, LPARAM pData)
 {
@@ -65,7 +65,7 @@ int CALLBACK BrowseCallbackAddDir(HWND hWnd, UINT uMsg, LPARAM lp, LPARAM pData)
     {
         CMainDlg* pDlg = (CMainDlg*)pData;
 
-        HWND hWndTitle = NULL;
+        HWND hWndTitle = nullptr;
         HFONT hFont;
         RECT rc, rcTitle, rcTree, rcWnd;
 
@@ -89,8 +89,8 @@ int CALLBACK BrowseCallbackAddDir(HWND hWnd, UINT uMsg, LPARAM lp, LPARAM pData)
             rc.left, rc.top,
             rc.right - rc.left, rc.bottom - rc.top,
             hWnd,
-            NULL, NULL, NULL);
-        if (hWndBtnRecurse != NULL)
+            nullptr, nullptr, nullptr);
+        if (hWndBtnRecurse != nullptr)
         {
             ::ShowWindow(hWndTitle, SW_HIDE);
             ::ShowWindow(::GetDlgItem(hWnd, IDC_STATUSTEXT), SW_HIDE);
@@ -123,7 +123,7 @@ int CALLBACK BrowseCallbackOutPath(HWND hWnd, UINT uMsg, LPARAM lp, LPARAM pData
         CMainDlg* pDlg = (CMainDlg*)pData;
 
         TCHAR szText[256] = _T("");
-        HWND hWndTitle = NULL;
+        HWND hWndTitle = nullptr;
         HFONT hFont;
         RECT rc, rcTitle, rcTree, rcWnd;
 
@@ -150,8 +150,8 @@ int CALLBACK BrowseCallbackOutPath(HWND hWnd, UINT uMsg, LPARAM lp, LPARAM pData
             rc.left, rc.top,
             rc.right - rc.left, rc.bottom - rc.top,
             hWnd,
-            NULL, NULL, NULL);
-        if (hWndStaticText != NULL)
+            nullptr, nullptr, nullptr);
+        if (hWndStaticText != nullptr)
         {
             ::ShowWindow(hWndTitle, SW_HIDE);
             ::ShowWindow(::GetDlgItem(hWnd, IDC_STATUSTEXT), SW_HIDE);
@@ -181,7 +181,7 @@ DWORD WINAPI MainDlgDropThread(LPVOID lpParam)
 }
 
 IMPLEMENT_DYNAMIC(CMainDlg, CDialog)
-CMainDlg::CMainDlg(CWnd* pParent /*=NULL*/)
+CMainDlg::CMainDlg(CWnd* pParent /*=nullptr*/)
     : CMyDialogEx(CMainDlg::IDD, pParent)
 {
     this->m_hIcon = AfxGetApp()->LoadIcon(IDI_ICON_MAIN);
@@ -196,7 +196,7 @@ CMainDlg::CMainDlg(CWnd* pParent /*=NULL*/)
 
 CMainDlg::~CMainDlg()
 {
-    if (this->pWorkerContext != NULL)
+    if (this->pWorkerContext != nullptr)
         delete this->pWorkerContext;
 }
 
@@ -315,7 +315,7 @@ BOOL CMainDlg::OnInitDialog()
     layout->AddItem(IDC_STATUSBAR, CMFCDynamicLayout::MoveVertical(100), CMFCDynamicLayout::SizeHorizontal(100));
 
     // accelerators
-    m_hAccel = ::LoadAccelerators(::GetModuleHandle(NULL), MAKEINTRESOURCE(IDR_ACCELERATOR_MAIN));
+    m_hAccel = ::LoadAccelerators(::GetModuleHandle(nullptr), MAKEINTRESOURCE(IDR_ACCELERATOR_MAIN));
 
     // OnNotifyFormat WM_NOTIFYFORMAT
 #ifdef _UNICODE
@@ -394,7 +394,7 @@ void CMainDlg::OnCancel()
 
 BOOL CMainDlg::PreTranslateMessage(MSG* pMsg)
 {
-    if (m_hAccel != NULL)
+    if (m_hAccel != nullptr)
     {
         if (::TranslateAccelerator(this->GetSafeHwnd(), m_hAccel, pMsg))
             return TRUE;
@@ -462,8 +462,8 @@ void CMainDlg::OnDropFiles(HDROP hDropInfo)
         this->m_DD.bHandled = false;
         this->m_DD.pDlg = this;
         this->m_DD.hDrop = hDropInfo;
-        this->m_DD.hThread = ::CreateThread(NULL, 0, MainDlgDropThread, (LPVOID)&this->m_DD, 0, &this->m_DD.dwThreadID);
-        if (this->m_DD.hThread == NULL)
+        this->m_DD.hThread = ::CreateThread(nullptr, 0, MainDlgDropThread, (LPVOID)&this->m_DD, 0, &this->m_DD.dwThreadID);
+        if (this->m_DD.hThread == nullptr)
             this->m_DD.bHandled = true;
     }
     CMyDialogEx::OnDropFiles(hDropInfo);
@@ -480,7 +480,7 @@ LRESULT CMainDlg::OnListItemChaged(WPARAM wParam, LPARAM lParam)
     {
         INT nIndex = (INT)wParam;
         LPTSTR szText = (LPTSTR)lParam;
-        if ((nIndex >= 0) && szText != NULL)
+        if ((nIndex >= 0) && szText != nullptr)
         {
             CItem& item = m_Config.m_Items.Get(nIndex);
             item.szName = szText;
@@ -525,7 +525,7 @@ void CMainDlg::OnNMRclickListInputItems(NMHDR *pNMHDR, LRESULT *pResult)
         POINT point;
         GetCursorPos(&point);
         CMenu *subMenu = this->GetMenu()->GetSubMenu(1);
-        subMenu->TrackPopupMenu(0, point.x, point.y, this, NULL);
+        subMenu->TrackPopupMenu(0, point.x, point.y, this, nullptr);
     }
     *pResult = 0;
 }
@@ -550,7 +550,7 @@ void CMainDlg::OnLvnItemchangedListInputItems(NMHDR *pNMHDR, LRESULT *pResult)
         if (nSelCount == 1)
         {
             POSITION pos = m_LstInputItems.GetFirstSelectedItemPosition();
-            if (pos != NULL)
+            if (pos != nullptr)
             {
                 int nItem = this->m_LstInputItems.GetNextSelectedItem(pos);
                 if (nItem < m_Config.m_Items.Count())
@@ -636,7 +636,7 @@ void CMainDlg::OnBnClickedButtonBrowsePath()
         if (SHGetMalloc(&pMalloc) == E_FAIL)
             return;
 
-        if ((lpBuffer = (TCHAR *)pMalloc->Alloc(MAX_PATH * 2)) == NULL)
+        if ((lpBuffer = (TCHAR *)pMalloc->Alloc(MAX_PATH * 2)) == nullptr)
         {
             pMalloc->Release();
             return;
@@ -663,7 +663,7 @@ void CMainDlg::OnBnClickedButtonBrowsePath()
         bi.lParam = reinterpret_cast<LPARAM>(this);
 
         pidlBrowse = ::SHBrowseForFolder(&bi);
-        if (pidlBrowse != NULL)
+        if (pidlBrowse != nullptr)
         {
             if (::SHGetPathFromIDList(pidlBrowse, lpBuffer))
             {
@@ -767,12 +767,12 @@ void CMainDlg::OnEditAddFiles()
 {
     if (this->pWorkerContext->bRunning == false)
     {
-        TCHAR *pFiles = NULL;
+        TCHAR *pFiles = nullptr;
         const DWORD dwMaxSize = (4096 * MAX_PATH);
         try
         {
             pFiles = (TCHAR *)malloc(dwMaxSize);
-            if (pFiles == NULL)
+            if (pFiles == nullptr)
             {
                 m_StatusBar.SetText(m_Config.GetString(0x00210009, pszMainDialog[8]), 1, 0);
                 return;
@@ -804,24 +804,24 @@ void CMainDlg::OnEditAddFiles()
                         CString szPath = sFilePath;
                         this->AddToList(szPath);
                     }
-                } while (pos != NULL);
+                } while (pos != nullptr);
 
                 this->UpdateStatusBar();
             }
         }
         catch (...)
         {
-            if (pFiles != NULL)
+            if (pFiles != nullptr)
             {
                 free(pFiles);
-                pFiles = NULL;
+                pFiles = nullptr;
             }
         }
 
-        if (pFiles != NULL)
+        if (pFiles != nullptr)
         {
             free(pFiles);
-            pFiles = NULL;
+            pFiles = nullptr;
         }
     }
 }
@@ -841,7 +841,7 @@ void CMainDlg::OnEditAddDir()
         if (SHGetMalloc(&pMalloc) == E_FAIL)
             return;
 
-        if ((lpBuffer = (TCHAR *)pMalloc->Alloc(MAX_PATH * 2)) == NULL)
+        if ((lpBuffer = (TCHAR *)pMalloc->Alloc(MAX_PATH * 2)) == nullptr)
         {
             pMalloc->Release();
             return;
@@ -868,7 +868,7 @@ void CMainDlg::OnEditAddDir()
         bi.lParam = reinterpret_cast<LPARAM>(this);
 
         pidlBrowse = ::SHBrowseForFolder(&bi);
-        if (pidlBrowse != NULL)
+        if (pidlBrowse != nullptr)
         {
             if (::SHGetPathFromIDList(pidlBrowse, lpBuffer))
             {
@@ -893,7 +893,7 @@ void CMainDlg::OnEditRename()
             return;
 
         POSITION pos = m_LstInputItems.GetFirstSelectedItemPosition();
-        if (pos != NULL)
+        if (pos != nullptr)
         {
             this->m_LstInputItems.SetFocus();
             int nItem = m_LstInputItems.GetNextSelectedItem(pos);
@@ -1126,7 +1126,7 @@ void CMainDlg::OnEditOpen()
     if (this->pWorkerContext->bRunning == false)
     {
         POSITION pos = m_LstInputItems.GetFirstSelectedItemPosition();
-        if (pos != NULL)
+        if (pos != nullptr)
         {
             int nItem = m_LstInputItems.GetNextSelectedItem(pos);
             CItem& item = m_Config.m_Items.Get(nItem);
@@ -1141,7 +1141,7 @@ void CMainDlg::OnEditExplore()
     if (this->pWorkerContext->bRunning == false)
     {
         POSITION pos = m_LstInputItems.GetFirstSelectedItemPosition();
-        if (pos != NULL)
+        if (pos != nullptr)
         {
             int nItem = m_LstInputItems.GetNextSelectedItem(pos);
             CItem& item = m_Config.m_Items.Get(nItem);
@@ -1393,7 +1393,7 @@ bool CMainDlg::SearchFolderForLanguages(CString szFile)
     try
     {
         WIN32_FIND_DATA w32FileData;
-        HANDLE hSearch = NULL;
+        HANDLE hSearch = nullptr;
         BOOL fFinished = FALSE;
         TCHAR cTempBuf[(MAX_PATH * 2) + 1];
 
@@ -2041,12 +2041,12 @@ bool CMainDlg::AddToList(CString szPath)
 
 void CMainDlg::HandleDropFiles(HDROP hDropInfo)
 {
-    int nCount = ::DragQueryFile(hDropInfo, (UINT)0xFFFFFFFF, NULL, 0);
+    int nCount = ::DragQueryFile(hDropInfo, (UINT)0xFFFFFFFF, nullptr, 0);
     if (nCount > 0)
     {
         for (int i = 0; i < nCount; i++)
         {
-            int nReqChars = ::DragQueryFile(hDropInfo, i, NULL, 0);
+            int nReqChars = ::DragQueryFile(hDropInfo, i, nullptr, 0);
 
             CString szFile;
             ::DragQueryFile(hDropInfo, i, szFile.GetBuffer(nReqChars * 2 + 8), nReqChars * 2 + 8);
@@ -2146,7 +2146,7 @@ void CMainDlg::SearchFolderForFiles(CString szFile, const bool bRecurse)
     try
     {
         WIN32_FIND_DATA w32FileData;
-        HANDLE hSearch = NULL;
+        HANDLE hSearch = nullptr;
         BOOL fFinished = FALSE;
         TCHAR cTempBuf[(MAX_PATH * 2) + 1];
 
@@ -2604,8 +2604,8 @@ void CMainDlg::TraceConvert()
     }
 
     pTraceWorkerContext->nThreadCount = 1;
-    pWorkerContext->pSync = NULL;
-    pWorkerContext->pSyncDir = NULL;
+    pWorkerContext->pSync = nullptr;
+    pWorkerContext->pSyncDir = nullptr;
     pTraceWorkerContext->Init();
 
     while (!pTraceWorkerContext->pQueue->IsEmpty())
@@ -2613,7 +2613,7 @@ void CMainDlg::TraceConvert()
         try
         {
             CItemContext* pContext = (CItemContext*)pTraceWorkerContext->pQueue->RemoveHead();
-            if (pContext != NULL)
+            if (pContext != nullptr)
             {
                 pTraceWorkerContext->Next(pContext->item->nId);
                 if (this->m_Worker.ConvertItem(pContext) == true)
