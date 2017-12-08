@@ -20,7 +20,7 @@ DWORD WINAPI ToolsDlgDropThread(LPVOID lpParam)
 }
 
 IMPLEMENT_DYNAMIC(CToolsDlg, CDialog)
-CToolsDlg::CToolsDlg(CWnd* pParent /*=NULL*/)
+CToolsDlg::CToolsDlg(CWnd* pParent /*=nullptr*/)
     : CMyDialogEx(CToolsDlg::IDD, pParent)
 {
     this->m_hIcon = AfxGetApp()->LoadIcon(IDI_ICON_MAIN);
@@ -175,8 +175,8 @@ void CToolsDlg::OnDropFiles(HDROP hDropInfo)
         this->m_DD.bHandled = false;
         this->m_DD.pDlg = this;
         this->m_DD.hDrop = hDropInfo;
-        this->m_DD.hThread = ::CreateThread(NULL, 0, ToolsDlgDropThread, (LPVOID)&this->m_DD, 0, &this->m_DD.dwThreadID);
-        if (this->m_DD.hThread == NULL)
+        this->m_DD.hThread = ::CreateThread(nullptr, 0, ToolsDlgDropThread, (LPVOID)&this->m_DD, 0, &this->m_DD.dwThreadID);
+        if (this->m_DD.hThread == nullptr)
             this->m_DD.bHandled = true;
     }
     CMyDialogEx::OnDropFiles(hDropInfo);
@@ -188,7 +188,7 @@ void CToolsDlg::OnBnClickedOk()
         return;
 
     POSITION pos = m_LstTools.GetFirstSelectedItemPosition();
-    if (pos != NULL)
+    if (pos != nullptr)
         nSelectedTool = m_LstTools.GetNextSelectedItem(pos);
     else
         nSelectedTool = -1;
@@ -248,7 +248,7 @@ void CToolsDlg::OnBnClickedButtonExport()
         return;
 
     POSITION pos = m_LstTools.GetFirstSelectedItemPosition();
-    if (pos != NULL)
+    if (pos != nullptr)
     {
         int nSelected = m_LstTools.GetNextSelectedItem(pos);
         if (nSelected >= 0)
@@ -285,7 +285,7 @@ void CToolsDlg::OnBnClickedButtonDuplicate()
     bUpdate = true;
 
     POSITION pos = m_LstTools.GetFirstSelectedItemPosition();
-    if (pos != NULL)
+    if (pos != nullptr)
     {
         int nSelected = m_LstTools.GetNextSelectedItem(pos);
         if (nSelected >= 0)
@@ -417,7 +417,7 @@ void CToolsDlg::OnBnClickedButtonToolUp()
     bUpdate = true;
 
     POSITION pos = m_LstTools.GetFirstSelectedItemPosition();
-    if (pos != NULL)
+    if (pos != nullptr)
     {
         int nItem = m_LstTools.GetNextSelectedItem(pos);
         if (nItem > 0)
@@ -454,7 +454,7 @@ void CToolsDlg::OnBnClickedButtonToolDown()
     bUpdate = true;
 
     POSITION pos = m_LstTools.GetFirstSelectedItemPosition();
-    if (pos != NULL)
+    if (pos != nullptr)
     {
         int nItem = m_LstTools.GetNextSelectedItem(pos);
         int nItems = m_LstTools.GetItemCount();
@@ -492,7 +492,7 @@ void CToolsDlg::OnBnClickedButtonUpdateTool()
     bUpdate = true;
 
     POSITION pos = m_LstTools.GetFirstSelectedItemPosition();
-    if (pos != NULL)
+    if (pos != nullptr)
     {
         int nItem = m_LstTools.GetNextSelectedItem(pos);
 
@@ -831,12 +831,12 @@ void CToolsDlg::InsertToolsToListCtrl()
 
 void CToolsDlg::HandleDropFiles(HDROP hDropInfo)
 {
-    int nCount = ::DragQueryFile(hDropInfo, (UINT)0xFFFFFFFF, NULL, 0);
+    int nCount = ::DragQueryFile(hDropInfo, (UINT)0xFFFFFFFF, nullptr, 0);
     if (nCount > 0)
     {
         for (int i = 0; i < nCount; i++)
         {
-            int nReqChars = ::DragQueryFile(hDropInfo, i, NULL, 0);
+            int nReqChars = ::DragQueryFile(hDropInfo, i, nullptr, 0);
 
             CString szFile;
             ::DragQueryFile(hDropInfo, i, szFile.GetBuffer(nReqChars * 2 + 8), nReqChars * 2 + 8);
@@ -894,7 +894,7 @@ void CToolsDlg::ListSelectionChange()
     bUpdate = true;
 
     POSITION pos = m_LstTools.GetFirstSelectedItemPosition();
-    if (pos != NULL)
+    if (pos != nullptr)
     {
         int nItem = m_LstTools.GetNextSelectedItem(pos);
 
