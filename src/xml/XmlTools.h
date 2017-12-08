@@ -42,7 +42,7 @@ protected:
     void GetTools(XmlElement *parent, CToolsList &m_Tools)
     {
         auto element = parent->FirstChildElement("Tool");
-        if (element != NULL)
+        if (element != nullptr)
         {
             for (element; element; element = element->NextSiblingElement())
             {
@@ -67,7 +67,7 @@ public:
     void GetTool(CTool &m_Tool)
     {
         auto element = this->FirstChildElement("Tool");
-        if (element != NULL)
+        if (element != nullptr)
         {
             this->GetTool(element, m_Tool);
         }
@@ -81,7 +81,7 @@ public:
     void GetTools(CToolsList &m_Tools)
     {
         auto element = this->FirstChildElement("Tools");
-        if (element != NULL)
+        if (element != nullptr)
         {
             this->GetTools(element, m_Tools);
         }
