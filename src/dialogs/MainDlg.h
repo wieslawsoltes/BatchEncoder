@@ -28,9 +28,9 @@ class CMainDlg;
 
 typedef struct tagMainDlgDropContext
 {
-    CMainDlg *pDlg = NULL;
-    HDROP hDrop = NULL;
-    HANDLE hThread = NULL;
+    CMainDlg *pDlg = nullptr;
+    HDROP hDrop = nullptr;
+    HANDLE hThread = nullptr;
     DWORD dwThreadID = -1;
     volatile bool bHandled = true;
 } MainDlgDropContext;
@@ -39,7 +39,7 @@ class CMainDlg : public CMyDialogEx
 {
     DECLARE_DYNAMIC(CMainDlg)
 public:
-    CMainDlg(CWnd* pParent = NULL);
+    CMainDlg(CWnd* pParent = nullptr);
     virtual ~CMainDlg();
     enum { IDD = IDD_DIALOG_MAIN };
 protected:
