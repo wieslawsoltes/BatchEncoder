@@ -32,7 +32,7 @@ protected:
     void GetPresets(XmlElement *parent, CPresetsList &m_Presets)
     {
         auto element = parent->FirstChildElement("Preset");
-        if (element != NULL)
+        if (element != nullptr)
         {
             for (element; element; element = element->NextSiblingElement())
             {
@@ -57,7 +57,7 @@ public:
     void GetPreset(CPreset &m_Preset)
     {
         auto element = this->FirstChildElement("Preset");
-        if (element != NULL)
+        if (element != nullptr)
         {
             this->GetPreset(element, m_Preset);
         }
@@ -71,7 +71,7 @@ public:
     void GetPresets(CPresetsList &m_Presets)
     {
         auto element = this->FirstChildElement("Presets");
-        if (element != NULL)
+        if (element != nullptr)
         {
             this->GetPresets(element, m_Presets);
         }
