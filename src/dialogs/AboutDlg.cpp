@@ -8,7 +8,7 @@
 #include "AboutDlg.h"
 
 IMPLEMENT_DYNAMIC(CAboutDlg, CDialog)
-CAboutDlg::CAboutDlg(CWnd* pParent /*=NULL*/)
+CAboutDlg::CAboutDlg(CWnd* pParent /*=nullptr*/)
     : CMyDialogEx(CAboutDlg::IDD, pParent)
 {
 
