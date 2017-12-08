@@ -36,7 +36,7 @@ protected:
         GetAttributeValue(element, "default", &m_Format.nDefaultPreset);
 
         auto parent = element->FirstChildElement("Presets");
-        if (parent != NULL)
+        if (parent != nullptr)
         {
             this->GetPresets(parent, m_Format.m_Presets);
         }
@@ -63,7 +63,7 @@ protected:
     void GetFormats(XmlElement *parent, CFormatsList &m_Formats)
     {
         auto element = parent->FirstChildElement("Format");
-        if (element != NULL)
+        if (element != nullptr)
         {
             for (element; element; element = element->NextSiblingElement())
             {
@@ -88,7 +88,7 @@ public:
     void GetFormat(CFormat &m_Format)
     {
         auto element = this->FirstChildElement("Format");
-        if (element != NULL)
+        if (element != nullptr)
         {
             this->GetFormat(element, m_Format);
         }
@@ -102,7 +102,7 @@ public:
     void GetFormats(CFormatsList &m_Formats)
     {
         auto element = this->FirstChildElement("Formats");
-        if (element != NULL)
+        if (element != nullptr)
         {
             this->GetFormats(element, m_Formats);
         }
