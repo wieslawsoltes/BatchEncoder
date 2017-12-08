@@ -25,9 +25,9 @@ class CToolsDlg;
 
 typedef struct tagToolsDlgDropContext
 {
-    CToolsDlg *pDlg = NULL;
-    HDROP hDrop = NULL;
-    HANDLE hThread = NULL;
+    CToolsDlg *pDlg = nullptr;
+    HDROP hDrop = nullptr;
+    HANDLE hThread = nullptr;
     DWORD dwThreadID = -1;
     volatile bool bHandled = true;
 } ToolsDlgDropContext;
@@ -36,7 +36,7 @@ class CToolsDlg : public CMyDialogEx
 {
     DECLARE_DYNAMIC(CToolsDlg)
 public:
-    CToolsDlg(CWnd* pParent = NULL);
+    CToolsDlg(CWnd* pParent = nullptr);
     virtual ~CToolsDlg();
     enum { IDD = IDD_DIALOG_TOOLS };
 protected:
