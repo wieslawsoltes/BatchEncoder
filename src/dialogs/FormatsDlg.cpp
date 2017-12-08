@@ -22,7 +22,7 @@ DWORD WINAPI FormatsDlgDropThread(LPVOID lpParam)
 }
 
 IMPLEMENT_DYNAMIC(CFormatsDlg, CDialog)
-CFormatsDlg::CFormatsDlg(CWnd* pParent /*=NULL*/)
+CFormatsDlg::CFormatsDlg(CWnd* pParent /*=nullptr*/)
     : CMyDialogEx(CFormatsDlg::IDD, pParent)
 {
     this->m_hIcon = AfxGetApp()->LoadIcon(IDI_ICON_MAIN);
@@ -180,8 +180,8 @@ void CFormatsDlg::OnDropFiles(HDROP hDropInfo)
         this->m_DD.bHandled = false;
         this->m_DD.pDlg = this;
         this->m_DD.hDrop = hDropInfo;
-        this->m_DD.hThread = ::CreateThread(NULL, 0, FormatsDlgDropThread, (LPVOID)&this->m_DD, 0, &this->m_DD.dwThreadID);
-        if (this->m_DD.hThread == NULL)
+        this->m_DD.hThread = ::CreateThread(nullptr, 0, FormatsDlgDropThread, (LPVOID)&this->m_DD, 0, &this->m_DD.dwThreadID);
+        if (this->m_DD.hThread == nullptr)
             this->m_DD.bHandled = true;
     }
     CMyDialogEx::OnDropFiles(hDropInfo);
@@ -190,7 +190,7 @@ void CFormatsDlg::OnDropFiles(HDROP hDropInfo)
 void CFormatsDlg::OnBnClickedOk()
 {
     POSITION pos = m_LstFormats.GetFirstSelectedItemPosition();
-    if (pos != NULL)
+    if (pos != nullptr)
         nSelectedFormat = m_LstFormats.GetNextSelectedItem(pos);
     else
         nSelectedFormat = -1;
@@ -213,7 +213,7 @@ void CFormatsDlg::OnLvnItemchangedListFormats(NMHDR *pNMHDR, LRESULT *pResult)
 
     this->ListSelectionChange();
 
-    *pResult = 0;
+    *pResult = nullptr;
 }
 
 void CFormatsDlg::OnBnClickedButtonImport()
@@ -238,7 +238,7 @@ void CFormatsDlg::OnBnClickedButtonImport()
 void CFormatsDlg::OnBnClickedButtonExport()
 {
     POSITION pos = m_LstFormats.GetFirstSelectedItemPosition();
-    if (pos != NULL)
+    if (pos != nullptr)
     {
         int nSelected = m_LstFormats.GetNextSelectedItem(pos);
         if (nSelected >= 0)
@@ -272,7 +272,7 @@ void CFormatsDlg::OnBnClickedButtonDuplicate()
     bUpdate = true;
 
     POSITION pos = m_LstFormats.GetFirstSelectedItemPosition();
-    if (pos != NULL)
+    if (pos != nullptr)
     {
         int nSelected = m_LstFormats.GetNextSelectedItem(pos);
         if (nSelected >= 0)
@@ -401,7 +401,7 @@ void CFormatsDlg::OnBnClickedButtonFormatUp()
     bUpdate = true;
 
     POSITION pos = m_LstFormats.GetFirstSelectedItemPosition();
-    if (pos != NULL)
+    if (pos != nullptr)
     {
         int nItem = m_LstFormats.GetNextSelectedItem(pos);
         if (nItem > 0)
@@ -433,7 +433,7 @@ void CFormatsDlg::OnBnClickedButtonFormatDown()
     bUpdate = true;
 
     POSITION pos = m_LstFormats.GetFirstSelectedItemPosition();
-    if (pos != NULL)
+    if (pos != nullptr)
     {
         int nItem = m_LstFormats.GetNextSelectedItem(pos);
         int nItems = m_LstFormats.GetItemCount();
@@ -466,7 +466,7 @@ void CFormatsDlg::OnBnClickedButtonUpdateFormat()
     bUpdate = true;
 
     POSITION pos = m_LstFormats.GetFirstSelectedItemPosition();
-    if (pos != NULL)
+    if (pos != nullptr)
     {
         int nItem = m_LstFormats.GetNextSelectedItem(pos);
 
@@ -672,7 +672,7 @@ void CFormatsDlg::OnBnClickedButtonSaveFormats()
 void CFormatsDlg::OnBnClickedButtonEditPresets()
 {
     POSITION pos = m_LstFormats.GetFirstSelectedItemPosition();
-    if (pos != NULL)
+    if (pos != nullptr)
     {
         int nItem = m_LstFormats.GetNextSelectedItem(pos);
 
@@ -707,7 +707,7 @@ void CFormatsDlg::OnBnClickedButtonEditPresets()
 void CFormatsDlg::OnBnClickedButtonBrowsePath()
 {
     POSITION pos = m_LstFormats.GetFirstSelectedItemPosition();
-    if (pos != NULL)
+    if (pos != nullptr)
     {
         int nItem = m_LstFormats.GetNextSelectedItem(pos);
         CString szPath;
@@ -719,7 +719,7 @@ void CFormatsDlg::OnBnClickedButtonBrowsePath()
 void CFormatsDlg::OnBnClickedButtonBrowseProgress()
 {
     POSITION pos = m_LstFormats.GetFirstSelectedItemPosition();
-    if (pos != NULL)
+    if (pos != nullptr)
     {
         int nItem = m_LstFormats.GetNextSelectedItem(pos);
         CString szFunction;
@@ -842,12 +842,12 @@ void CFormatsDlg::InsertFormatsToListCtrl()
 
 void CFormatsDlg::HandleDropFiles(HDROP hDropInfo)
 {
-    int nCount = ::DragQueryFile(hDropInfo, (UINT)0xFFFFFFFF, NULL, 0);
+    int nCount = ::DragQueryFile(hDropInfo, (UINT)0xFFFFFFFF, nullptr, 0);
     if (nCount > 0)
     {
         for (int i = 0; i < nCount; i++)
         {
-            int nReqChars = ::DragQueryFile(hDropInfo, i, NULL, 0);
+            int nReqChars = ::DragQueryFile(hDropInfo, i, nullptr, 0);
 
             CString szFile;
             ::DragQueryFile(hDropInfo, i, szFile.GetBuffer(nReqChars * 2 + 8), nReqChars * 2 + 8);
@@ -878,7 +878,7 @@ void CFormatsDlg::HandleDropFiles(HDROP hDropInfo)
                 {
                     // Add presets to current format presets list.
                     POSITION pos = m_LstFormats.GetFirstSelectedItemPosition();
-                    if (pos != NULL)
+                    if (pos != nullptr)
                     {
                         int nItem = m_LstFormats.GetNextSelectedItem(pos);
                         CFormat& format = this->m_Formats.Get(nItem);
@@ -896,7 +896,7 @@ void CFormatsDlg::HandleDropFiles(HDROP hDropInfo)
                 {
                     // Set current format exe path.
                     POSITION pos = m_LstFormats.GetFirstSelectedItemPosition();
-                    if (pos != NULL)
+                    if (pos != nullptr)
                     {
                         int nItem = m_LstFormats.GetNextSelectedItem(pos);
                         CFormat& format = this->m_Formats.Get(nItem);
@@ -908,7 +908,7 @@ void CFormatsDlg::HandleDropFiles(HDROP hDropInfo)
                 {
                     // Set current format progress path.
                     POSITION pos = m_LstFormats.GetFirstSelectedItemPosition();
-                    if (pos != NULL)
+                    if (pos != nullptr)
                     {
                         int nItem = m_LstFormats.GetNextSelectedItem(pos);
                         CFormat& format = this->m_Formats.Get(nItem);
@@ -1004,7 +1004,7 @@ void CFormatsDlg::ListSelectionChange()
     bUpdate = true;
 
     POSITION pos = m_LstFormats.GetFirstSelectedItemPosition();
-    if (pos != NULL)
+    if (pos != nullptr)
     {
         int nItem = m_LstFormats.GetNextSelectedItem(pos);
 
