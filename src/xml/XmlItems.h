@@ -33,7 +33,7 @@ protected:
         GetAttributeValue(element, "status", &m_Item.szStatus);
 
         auto parent = element->FirstChildElement("Paths");
-        if (parent != NULL)
+        if (parent != nullptr)
         {
             this->GetPaths(parent, m_Item.m_Paths);
         }
@@ -57,7 +57,7 @@ protected:
     void GetItems(XmlElement *parent, CItemsList &m_Items)
     {
         auto element = parent->FirstChildElement("Item");
-        if (element != NULL)
+        if (element != nullptr)
         {
             for (element; element; element = element->NextSiblingElement())
             {
@@ -82,7 +82,7 @@ public:
     void GetItem(CItem &m_Item)
     {
         auto element = this->FirstChildElement("Item");
-        if (element != NULL)
+        if (element != nullptr)
         {
             this->GetItem(element, m_Item);
         }
@@ -96,7 +96,7 @@ public:
     void GetItems(CItemsList &m_Items)
     {
         auto element = this->FirstChildElement("Items");
-        if (element != NULL)
+        if (element != nullptr)
         {
             this->GetItems(element, m_Items);
         }
