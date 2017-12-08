@@ -22,7 +22,7 @@ protected:
     void GetAttributeValue(XmlElement *element, const char *name, CString *value)
     {
         const char *pszResult = element->Attribute(name);
-        if (pszResult != NULL)
+        if (pszResult != nullptr)
         {
             (*value) = ToCString(pszResult);
         }
@@ -30,7 +30,7 @@ protected:
     void GetAttributeValue(XmlElement *element, const char *name, int *value)
     {
         const char *pszResult = element->Attribute(name);
-        if (pszResult != NULL)
+        if (pszResult != nullptr)
         {
             (*value) = ToInt(pszResult);
         }
@@ -38,7 +38,7 @@ protected:
     void GetAttributeValue(XmlElement *element, const char *name, bool *value)
     {
         const char *pszResult = element->Attribute(name);
-        if (pszResult != NULL)
+        if (pszResult != nullptr)
         {
             (*value) = ToBool(pszResult);
         }
@@ -60,7 +60,7 @@ protected:
     void GetChildValue(XmlElement *parent, const char *name, CString *value)
     {
         auto element = parent->FirstChildElement(name);
-        if (element != NULL)
+        if (element != nullptr)
         {
             (*value) = ToCString(element->GetText());
         }
@@ -68,7 +68,7 @@ protected:
     void GetChildValue(XmlElement *parent, const char *name, int *value)
     {
         auto element = parent->FirstChildElement(name);
-        if (element != NULL)
+        if (element != nullptr)
         {
             (*value) = ToInt(element->GetText());
         }
@@ -76,7 +76,7 @@ protected:
     void GetChildValue(XmlElement *parent, const char *name, bool *value)
     {
         auto element = parent->FirstChildElement(name);
-        if (element != NULL)
+        if (element != nullptr)
         {
             (*value) = ToBool(element->GetText());
         }
