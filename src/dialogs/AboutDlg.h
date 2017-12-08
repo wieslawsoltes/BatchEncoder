@@ -15,7 +15,7 @@ class CAboutDlg : public CMyDialogEx
 {
     DECLARE_DYNAMIC(CAboutDlg)
 public:
-    CAboutDlg(CWnd* pParent = NULL);
+    CAboutDlg(CWnd* pParent = nullptr);
     virtual ~CAboutDlg();
     enum { IDD = IDD_DIALOG_ABOUT };
 protected:
