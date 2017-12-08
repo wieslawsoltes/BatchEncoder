@@ -26,7 +26,7 @@ protected:
         GetAttributeValue(parent, "translated", &m_Language.szTranslatedName);
 
         auto element = parent->FirstChildElement("String");
-        if (element != NULL)
+        if (element != nullptr)
         {
             for (element; element; element = element->NextSiblingElement())
             {
@@ -49,7 +49,7 @@ protected:
         SetAttributeValue(parent, "translated", m_Language.szTranslatedName);
 
         POSITION pos = m_Language.m_Strings.m_Map.GetStartPosition();
-        while (pos != NULL)
+        while (pos != nullptr)
         {
             CString rValue;
             CString szKey;
@@ -67,7 +67,7 @@ protected:
     void GetLanguages(XmlElement *parent, CLanguagesList &m_Languages)
     {
         auto element = parent->FirstChildElement("Language");
-        if (element != NULL)
+        if (element != nullptr)
         {
             for (element; element; element = element->NextSiblingElement())
             {
@@ -92,7 +92,7 @@ public:
     void GetLanguage(CLanguage &m_Language)
     {
         auto element = this->FirstChildElement("Language");
-        if (element != NULL)
+        if (element != nullptr)
         {
             this->GetLanguage(element, m_Language);
         }
@@ -106,7 +106,7 @@ public:
     void GetLanguages(CLanguagesList &m_Languages)
     {
         auto element = this->FirstChildElement("Languages");
-        if (element != NULL)
+        if (element != nullptr)
         {
             this->GetLanguages(element, m_Languages);
         }
