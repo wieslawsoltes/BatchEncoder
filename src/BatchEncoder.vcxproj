@@ -314,7 +314,6 @@ copy /Y ..\config\lang\*.language $(OutDir)</Command>
     <ClInclude Include="worker\Worker.h" />
     <ClInclude Include="contexts\ProgressWorkerContext.h" />
     <ClInclude Include="contexts\TraceWorkerContext.h" />
-    <ClInclude Include="xml\XmlDoc.h" />
     <ClInclude Include="xml\XmlFormats.h" />
     <ClInclude Include="xml\XmlItems.h" />
     <ClInclude Include="xml\XmlLanguages.h" />

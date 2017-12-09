@@ -188,9 +188,6 @@
     <ClInclude Include="xml\XmlPaths.h">
       <Filter>Header Files\Xml</Filter>
     </ClInclude>
-    <ClInclude Include="xml\XmlDoc.h">
-      <Filter>Header Files\Xml</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="res\BatchEncoder.rc2">

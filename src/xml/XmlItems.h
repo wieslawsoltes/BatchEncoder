@@ -3,9 +3,7 @@
 
 #pragma once
 
-#include <afxstr.h>
-#include <afxtempl.h>
-#include "XmlDoc.h"
+#include "xml\XmlDoc.h"
 #include "XmlPaths.h"
 #include "configuration\Item.h"
 #include "configuration\ItemsList.h"
