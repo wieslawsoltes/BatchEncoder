@@ -2616,8 +2616,8 @@ void CMainDlg::TraceConvert()
     }
 
     pTraceWorkerContext->nThreadCount = 1;
-    pWorkerContext->pSync = nullptr;
-    pWorkerContext->pSyncDir = nullptr;
+    pTraceWorkerContext->pSync = new CSynchronize();
+    pTraceWorkerContext->pSyncDir = new CSynchronize();
     pTraceWorkerContext->Init();
 
     while (!pTraceWorkerContext->pQueue->IsEmpty())
@@ -2648,6 +2648,8 @@ void CMainDlg::TraceConvert()
         }
     }
 
+    delete pTraceWorkerContext->pSync;
+    delete pTraceWorkerContext->pSyncDir;
     delete pTraceWorkerContext->pQueue;
     delete[] pItemsContext;
 
