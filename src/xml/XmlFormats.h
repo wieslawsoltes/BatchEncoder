@@ -8,16 +8,16 @@
 #include "configuration\Format.h"
 #include "configuration\FormatsList.h"
 
-class XmlFormats : public XmlPresets
+class XmlFormats : public XmlDoc
 {
 public:
-    XmlFormats()
+    XmlFormats(XmlDocumnent &doc) : XmlDoc(doc)
     {
     }
     virtual ~XmlFormats()
     {
     }
-protected:
+public:
     void GetFormat(const XmlElement *element, CFormat &m_Format)
     {
         GetAttributeValue(element, "id", &m_Format.szId);
@@ -36,7 +36,7 @@ protected:
         auto parent = element->FirstChildElement("Presets");
         if (parent != nullptr)
         {
-            this->GetPresets(parent, m_Format.m_Presets);
+            XmlPresets(m_Document).GetPresets(parent, m_Format.m_Presets);
         }
     }
     void SetFormat(XmlElement *element, CFormat &m_Format)
@@ -56,7 +56,7 @@ protected:
 
         auto parent = this->NewElement("Presets");
         element->LinkEndChild(parent);
-        this->SetPresets(parent, m_Format.m_Presets);
+        XmlPresets(m_Document).SetPresets(parent, m_Format.m_Presets);
     }
     void GetFormats(const XmlElement *parent, CFormatsList &m_Formats)
     {

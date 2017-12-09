@@ -9,13 +9,13 @@
 class XmlOptions : public XmlDoc
 {
 public:
-    XmlOptions()
+    XmlOptions(XmlDocumnent &doc) : XmlDoc(doc)
     {
     }
     virtual ~XmlOptions()
     {
     }
-protected:
+public:
     void GetOptions(const XmlElement *element, COptions &m_Options)
     {
         GetChildValue(element, "SelectedLanguage", &m_Options.szSelectedLanguage);

@@ -10,13 +10,13 @@
 class XmlPaths : public XmlDoc
 {
 public:
-    XmlPaths()
+    XmlPaths(XmlDocumnent &doc) : XmlDoc(doc)
     {
     }
     virtual ~XmlPaths()
     {
     }
-protected:
+public:
     void GetPath(const XmlElement *element, CPath &m_Path)
     {
         GetAttributeValue(element, "path", &m_Path.szPath);

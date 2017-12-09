@@ -10,13 +10,13 @@
 class XmlPresets : public XmlDoc
 {
 public:
-    XmlPresets()
+    XmlPresets(XmlDocumnent &doc) : XmlDoc(doc)
     {
     }
     virtual ~XmlPresets()
     {
     }
-protected:
+public:
     void GetPreset(const XmlElement *element, CPreset &m_Preset)
     {
         GetAttributeValue(element, "name", &m_Preset.szName);

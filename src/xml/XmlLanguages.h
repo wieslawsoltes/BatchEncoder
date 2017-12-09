@@ -10,13 +10,13 @@
 class XmlLanguages : public XmlDoc
 {
 public:
-    XmlLanguages()
+    XmlLanguages(XmlDocumnent &doc) : XmlDoc(doc)
     {
     }
     virtual ~XmlLanguages()
     {
     }
-protected:
+public:
     void GetLanguage(const XmlElement *parent, CLanguage &m_Language)
     {
         GetAttributeValue(parent, "id", &m_Language.szId);

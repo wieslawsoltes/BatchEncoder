@@ -1416,11 +1416,12 @@ bool CMainDlg::SearchFolderForLanguages(CString szFile)
                 CString szFileXml;
                 szFileXml.Format(_T("%s\\%s\0"), szFile, w32FileData.cFileName);
 
-                XmlLanguages doc;
-                if (doc.Open(szFileXml) == true)
+                XmlDocumnent doc;
+                XmlLanguages xmlLanguages(doc);
+                if (xmlLanguages.Open(szFileXml) == true)
                 {
                     CLanguage language;
-                    doc.GetLanguage(language);
+                    xmlLanguages.GetLanguage(language);
                     this->m_Config.m_Languages.Insert(language);
                 }
             }
@@ -1573,12 +1574,13 @@ void CMainDlg::SetLanguage()
 
 void CMainDlg::LoadLanguage(CString szFileXml)
 {
-    XmlLanguages doc;
-    if (doc.Open(szFileXml) == true)
+    XmlDocumnent doc;
+    XmlLanguages xmlLanguages(doc);
+    if (xmlLanguages.Open(szFileXml) == true)
     {
         // insert to languages list
         CLanguage language;
-        doc.GetLanguage(language);
+        xmlLanguages.GetLanguage(language);
 
         this->m_Config.m_Languages.Insert(language);
 
@@ -1805,12 +1807,13 @@ void CMainDlg::SetOptions()
 
 bool CMainDlg::LoadOptions(CString szFileXml)
 {
-    XmlOptions doc;
-    if (doc.Open(szFileXml) == false)
+    XmlDocumnent doc;
+    XmlOptions xmlOptions(doc);
+    if (xmlOptions.Open(szFileXml) == false)
         return false;
 
     this->m_Config.m_Options.Defaults();
-    doc.GetOptions(this->m_Config.m_Options);
+    xmlOptions.GetOptions(this->m_Config.m_Options);
 
     this->SetOptions();
     this->UpdateFormatComboBox();
@@ -1823,21 +1826,23 @@ bool CMainDlg::SaveOptions(CString szFileXml)
 {
     this->GetOptions();
 
-    XmlOptions doc;
-    doc.Create();
-    doc.SetOptions(this->m_Config.m_Options);
-    return doc.Save(szFileXml);
+    XmlDocumnent doc;
+    XmlOptions xmlOptions(doc);
+    xmlOptions.Create();
+    xmlOptions.SetOptions(this->m_Config.m_Options);
+    return xmlOptions.Save(szFileXml);
 }
 
 bool CMainDlg::LoadFormats(CString szFileXml)
 {
-    XmlFormats doc;
-    if (doc.Open(szFileXml) == false)
+    XmlDocumnent doc;
+    XmlFormats xmlFormats(doc);
+    if (xmlFormats.Open(szFileXml) == false)
         return false;
 
     this->m_Config.m_Formats.RemoveAll();
 
-    doc.GetFormats(this->m_Config.m_Formats);
+    xmlFormats.GetFormats(this->m_Config.m_Formats);
 
     this->UpdateFormatComboBox();
     this->UpdatePresetComboBox();
@@ -1847,43 +1852,47 @@ bool CMainDlg::LoadFormats(CString szFileXml)
 
 bool CMainDlg::SaveFormats(CString szFileXml)
 {
-    XmlFormats doc;
-    doc.Create();
-    doc.SetFormats(this->m_Config.m_Formats);
-    return doc.Save(szFileXml);
+    XmlDocumnent doc;
+    XmlFormats xmlFormats(doc);
+    xmlFormats.Create();
+    xmlFormats.SetFormats(this->m_Config.m_Formats);
+    return xmlFormats.Save(szFileXml);
 }
 
 bool CMainDlg::LoadTools(CString szFileXml)
 {
-    XmlTools doc;
-    if (doc.Open(szFileXml) == false)
+    XmlDocumnent doc;
+    XmlTools xmlTools(doc);
+    if (xmlTools.Open(szFileXml) == false)
         return false;
 
     this->m_Config.m_Tools.RemoveAll();
 
-    doc.GetTools(this->m_Config.m_Tools);
+    xmlTools.GetTools(this->m_Config.m_Tools);
 
     return true;
 }
 
 bool CMainDlg::SaveTools(CString szFileXml)
 {
-    XmlTools doc;
-    doc.Create();
-    doc.SetTools(this->m_Config.m_Tools);
-    return doc.Save(szFileXml);
+    XmlDocumnent doc;
+    XmlTools xmlTools(doc);
+    xmlTools.Create();
+    xmlTools.SetTools(this->m_Config.m_Tools);
+    return xmlTools.Save(szFileXml);
 }
 
 bool CMainDlg::LoadItems(CString szFileXml)
 {
-    XmlItems doc;
-    if (doc.Open(szFileXml) == false)
+    XmlDocumnent doc;
+    XmlItems xmlItems(doc);
+    if (xmlItems.Open(szFileXml) == false)
         return false;
 
     this->m_LstInputItems.DeleteAllItems();
     this->m_Config.m_Items.RemoveAll();
 
-    doc.GetItems(this->m_Config.m_Items);
+    xmlItems.GetItems(this->m_Config.m_Items);
 
     this->SetItems();
     this->UpdateStatusBar();
@@ -1895,10 +1904,11 @@ bool CMainDlg::SaveItems(CString szFileXml)
 {
     this->GetItems();
 
-    XmlItems doc;
-    doc.Create();
-    doc.SetItems(this->m_Config.m_Items);
-    return doc.Save(szFileXml);
+    XmlDocumnent doc;
+    XmlItems xmlItems(doc);
+    xmlItems.Create();
+    xmlItems.SetItems(this->m_Config.m_Items);
+    return xmlItems.Save(szFileXml);
 }
 
 int CMainDlg::AddToItems(CString szPath)
@@ -2070,11 +2080,12 @@ void CMainDlg::HandleDropFiles(HDROP hDropInfo)
                 else if (szExt.CompareNoCase(_T("format")) == 0)
                 {
                     // Add format to formats list.
-                    XmlFormats doc;
-                    if (doc.Open(szPath) == true)
+                    XmlDocumnent doc;
+                    XmlFormats xmlFormats(doc);
+                    if (xmlFormats.Open(szPath) == true)
                     {
                         CFormat format;
-                        doc.GetFormat(format);
+                        xmlFormats.GetFormat(format);
                         m_Config.m_Formats.Insert(format);
 
                         this->UpdateFormatComboBox();
@@ -2088,11 +2099,12 @@ void CMainDlg::HandleDropFiles(HDROP hDropInfo)
                     {
                         CFormat& format = m_Config.m_Formats.Get(nFormat);
 
-                        XmlPresets doc;
-                        if (doc.Open(szPath) == true)
+                        XmlDocumnent doc;
+                        XmlPresets xmlPresets(doc);
+                        if (xmlPresets.Open(szPath) == true)
                         {
                             format.m_Presets.RemoveAll();
-                            doc.GetPresets(format.m_Presets);
+                            xmlPresets.GetPresets(format.m_Presets);
 
                             this->UpdatePresetComboBox();
                         }

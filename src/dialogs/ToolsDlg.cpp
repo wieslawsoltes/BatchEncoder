@@ -852,11 +852,12 @@ void CToolsDlg::HandleDropFiles(HDROP hDropInfo)
                 else if (szExt.CompareNoCase(_T("tool")) == 0)
                 {
                     // Add tool to tools list.
-                    XmlTools doc;
-                    if (doc.Open(szPath) == true)
+                    XmlDocumnent doc;
+                    XmlTools xmlTools(doc);
+                    if (xmlTools.Open(szPath) == true)
                     {
                         CTool tool;
-                        doc.GetTool(tool);
+                        xmlTools.GetTool(tool);
                         m_Tools.Insert(tool);
 
                         int nItem = m_Tools.Count() - 1;
@@ -918,11 +919,12 @@ void CToolsDlg::ListSelectionChange()
 
 void CToolsDlg::LoadTool(CString szFileXml)
 {
-    XmlTools doc;
-    if (doc.Open(szFileXml) == true)
+    XmlDocumnent doc;
+    XmlTools xmlTools(doc);
+    if (xmlTools.Open(szFileXml) == true)
     {
         CTool tool;
-        doc.GetTool(tool);
+        xmlTools.GetTool(tool);
         m_Tools.Insert(tool);
 
         int nItem = m_Tools.Count() - 1;
@@ -939,10 +941,11 @@ void CToolsDlg::LoadTool(CString szFileXml)
 
 void CToolsDlg::SaveTool(CString szFileXml, CTool &tool)
 {
-    XmlTools doc;
-    doc.Create();
-    doc.SetTool(tool);
-    if (doc.Save(szFileXml) != true)
+    XmlDocumnent doc;
+    XmlTools xmlTools(doc);
+    xmlTools.Create();
+    xmlTools.SetTool(tool);
+    if (xmlTools.Save(szFileXml) != true)
     {
         MessageBox(
             pConfig->GetString(0x00240003, pszToolsDialog[2]),
@@ -953,13 +956,14 @@ void CToolsDlg::SaveTool(CString szFileXml, CTool &tool)
 
 void CToolsDlg::LoadTools(CString szFileXml)
 {
-    XmlTools doc;
-    if (doc.Open(szFileXml) == true)
+    XmlDocumnent doc;
+    XmlTools xmlTools(doc);
+    if (xmlTools.Open(szFileXml) == true)
     {
         this->m_Tools.RemoveAll();
         this->m_LstTools.DeleteAllItems();
 
-        doc.GetTools(this->m_Tools);
+        xmlTools.GetTools(this->m_Tools);
 
         if (this->m_Tools.Count() > 0)
             nSelectedTool = 0;
@@ -978,10 +982,11 @@ void CToolsDlg::LoadTools(CString szFileXml)
 
 void CToolsDlg::SaveTools(CString szFileXml)
 {
-    XmlTools doc;
-    doc.Create();
-    doc.SetTools(this->m_Tools);
-    if (doc.Save(szFileXml) != true)
+    XmlDocumnent doc;
+    XmlTools xmlTools(doc);
+    xmlTools.Create();
+    xmlTools.SetTools(this->m_Tools);
+    if (xmlTools.Save(szFileXml) != true)
     {
         MessageBox(
             pConfig->GetString(0x00240003, pszToolsDialog[2]),

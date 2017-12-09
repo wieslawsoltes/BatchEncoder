@@ -863,11 +863,12 @@ void CFormatsDlg::HandleDropFiles(HDROP hDropInfo)
                 else if (szExt.CompareNoCase(_T("format")) == 0)
                 {
                     // Add format to formats list.
-                    XmlFormats doc;
-                    if (doc.Open(szPath) == true)
+                    XmlDocumnent doc;
+                    XmlFormats xmlFormats(doc);
+                    if (xmlFormats.Open(szPath) == true)
                     {
                         CFormat format;
-                        doc.GetFormat(format);
+                        xmlFormats.GetFormat(format);
                         m_Formats.Insert(format);
 
                         int nItem = m_Formats.Count() - 1;
@@ -883,12 +884,13 @@ void CFormatsDlg::HandleDropFiles(HDROP hDropInfo)
                         int nItem = m_LstFormats.GetNextSelectedItem(pos);
                         CFormat& format = this->m_Formats.Get(nItem);
 
-                        XmlPresets doc;
-                        if (doc.Open(szPath) == true)
+                        XmlDocumnent doc;
+                        XmlPresets xmlPresets(doc);
+                        if (xmlPresets.Open(szPath) == true)
                         {
                             CFormat& format = this->m_Formats.Get(this->nSelectedFormat);
                             format.m_Presets.RemoveAll();
-                            doc.GetPresets(format.m_Presets);
+                            xmlPresets.GetPresets(format.m_Presets);
                         }
                     }
                 }
@@ -1038,11 +1040,12 @@ void CFormatsDlg::ListSelectionChange()
 
 void CFormatsDlg::LoadFormat(CString szFileXml)
 {
-    XmlFormats doc;
-    if (doc.Open(szFileXml) == true)
+    XmlDocumnent doc;
+    XmlFormats xmlFormats(doc);
+    if (xmlFormats.Open(szFileXml) == true)
     {
         CFormat format;
-        doc.GetFormat(format);
+        xmlFormats.GetFormat(format);
         m_Formats.Insert(format);
 
         int nItem = m_Formats.Count() - 1;
@@ -1059,10 +1062,11 @@ void CFormatsDlg::LoadFormat(CString szFileXml)
 
 void CFormatsDlg::SaveFormat(CString szFileXml, CFormat &format)
 {
-    XmlFormats doc;
-    doc.Create();
-    doc.SetFormat(format);
-    if (doc.Save(szFileXml) != true)
+    XmlDocumnent doc;
+    XmlFormats xmlFormats(doc);
+    xmlFormats.Create();
+    xmlFormats.SetFormat(format);
+    if (xmlFormats.Save(szFileXml) != true)
     {
         MessageBox(
             pConfig->GetString(0x00230003, pszFormatsDialog[2]),
@@ -1073,13 +1077,14 @@ void CFormatsDlg::SaveFormat(CString szFileXml, CFormat &format)
 
 void CFormatsDlg::LoadFormats(CString szFileXml)
 {
-    XmlFormats doc;
-    if (doc.Open(szFileXml) == true)
+    XmlDocumnent doc;
+    XmlFormats xmlFormats(doc);
+    if (xmlFormats.Open(szFileXml) == true)
     {
         this->m_Formats.RemoveAll();
         this->m_LstFormats.DeleteAllItems();
 
-        doc.GetFormats(this->m_Formats);
+        xmlFormats.GetFormats(this->m_Formats);
 
         if (this->m_Formats.Count() > 0)
             nSelectedFormat = 0;
@@ -1098,10 +1103,11 @@ void CFormatsDlg::LoadFormats(CString szFileXml)
 
 void CFormatsDlg::SaveFormats(CString szFileXml)
 {
-    XmlFormats doc;
-    doc.Create();
-    doc.SetFormats(this->m_Formats);
-    if (doc.Save(szFileXml) != true)
+    XmlDocumnent doc;
+    XmlFormats xmlFormats(doc);
+    xmlFormats.Create();
+    xmlFormats.SetFormats(this->m_Formats);
+    if (xmlFormats.Save(szFileXml) != true)
     {
         MessageBox(
             pConfig->GetString(0x00230003, pszFormatsDialog[2]),

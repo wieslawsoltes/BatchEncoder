@@ -10,13 +10,13 @@
 class XmlTools : public XmlDoc
 {
 public:
-    XmlTools()
+    XmlTools(XmlDocumnent &doc) : XmlDoc(doc)
     {
     }
     virtual ~XmlTools()
     {
     }
-protected:
+public:
     void GetTool(const XmlElement *element, CTool &m_Tool)
     {
         GetAttributeValue(element, "name", &m_Tool.szName);

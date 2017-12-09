@@ -8,16 +8,16 @@
 #include "configuration\Item.h"
 #include "configuration\ItemsList.h"
 
-class XmlItems : public XmlPaths
+class XmlItems : public XmlDoc
 {
 public:
-    XmlItems()
+    XmlItems(XmlDocumnent &doc) : XmlDoc(doc)
     {
     }
     virtual ~XmlItems()
     {
     }
-protected:
+public:
     void GetItem(const XmlElement *element, CItem &m_Item)
     {
         GetAttributeValue(element, "id", &m_Item.nId);
@@ -33,7 +33,7 @@ protected:
         auto parent = element->FirstChildElement("Paths");
         if (parent != nullptr)
         {
-            this->GetPaths(parent, m_Item.m_Paths);
+            XmlPaths(m_Document).GetPaths(parent, m_Item.m_Paths);
         }
     }
     void SetItem(XmlElement *element, CItem &m_Item, int nId)
@@ -50,7 +50,7 @@ protected:
 
         auto parent = this->NewElement("Paths");
         element->LinkEndChild(parent);
-        this->SetPaths(parent, m_Item.m_Paths);
+        XmlPaths(m_Document).SetPaths(parent, m_Item.m_Paths);
     }
     void GetItems(const XmlElement *parent, CItemsList &m_Items)
     {

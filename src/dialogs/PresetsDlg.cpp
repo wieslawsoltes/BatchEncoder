@@ -642,15 +642,16 @@ void CPresetsDlg::ListSelectionChange()
 
 void CPresetsDlg::LoadPresets(CString szFileXml)
 {
-    XmlPresets doc;
-    if (doc.Open(szFileXml) == true)
+    XmlDocumnent doc;
+    XmlPresets xmlPresets(doc);
+    if (xmlPresets.Open(szFileXml) == true)
     {
         this->m_LstPresets.DeleteAllItems();
 
         CFormat& format = this->m_Formats.Get(this->nSelectedFormat);
         format.m_Presets.RemoveAll();
 
-        doc.GetPresets(format.m_Presets);
+        xmlPresets.GetPresets(format.m_Presets);
 
         this->InsertPresetsToListCtrl();
     }
@@ -667,10 +668,11 @@ void CPresetsDlg::SavePresets(CString szFileXml)
 {
     CFormat& format = this->m_Formats.Get(this->nSelectedFormat);
 
-    XmlPresets doc;
-    doc.Create();
-    doc.SetPresets(format.m_Presets);
-    if (doc.Save(szFileXml) != true)
+    XmlDocumnent doc;
+    XmlPresets xmlPresets(doc);
+    xmlPresets.Create();
+    xmlPresets.SetPresets(format.m_Presets);
+    if (xmlPresets.Save(szFileXml) != true)
     {
         MessageBox(
             pConfig->GetString(0x00220003, pszPresetsDialog[2]),
