@@ -17,7 +17,7 @@ public:
     {
     }
 protected:
-    void GetPreset(XmlElement *element, CPreset &m_Preset)
+    void GetPreset(const XmlElement *element, CPreset &m_Preset)
     {
         GetAttributeValue(element, "name", &m_Preset.szName);
         GetAttributeValue(element, "options", &m_Preset.szOptions);
@@ -27,7 +27,7 @@ protected:
         SetAttributeValue(element, "name", m_Preset.szName);
         SetAttributeValue(element, "options", m_Preset.szOptions);
     }
-    void GetPresets(XmlElement *parent, CPresetsList &m_Presets)
+    void GetPresets(const XmlElement *parent, CPresetsList &m_Presets)
     {
         auto element = parent->FirstChildElement("Preset");
         if (element != nullptr)

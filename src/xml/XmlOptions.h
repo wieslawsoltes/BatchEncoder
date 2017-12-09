@@ -16,7 +16,7 @@ public:
     {
     }
 protected:
-    void GetOptions(XmlElement *element, COptions &m_Options)
+    void GetOptions(const XmlElement *element, COptions &m_Options)
     {
         GetChildValue(element, "SelectedLanguage", &m_Options.szSelectedLanguage);
         GetChildValue(element, "SelectedFormat", &m_Options.nSelectedFormat);

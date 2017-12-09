@@ -17,7 +17,7 @@ public:
     {
     }
 protected:
-    void GetLanguage(XmlElement *parent, CLanguage &m_Language)
+    void GetLanguage(const XmlElement *parent, CLanguage &m_Language)
     {
         GetAttributeValue(parent, "id", &m_Language.szId);
         GetAttributeValue(parent, "original", &m_Language.szOriginalName);
@@ -62,7 +62,7 @@ protected:
             SetAttributeValue(element, "", rValue);
         }
     }
-    void GetLanguages(XmlElement *parent, CLanguagesList &m_Languages)
+    void GetLanguages(const XmlElement *parent, CLanguagesList &m_Languages)
     {
         auto element = parent->FirstChildElement("Language");
         if (element != nullptr)

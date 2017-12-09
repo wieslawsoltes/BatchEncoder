@@ -18,7 +18,7 @@ public:
     {
     }
 protected:
-    void GetFormat(XmlElement *element, CFormat &m_Format)
+    void GetFormat(const XmlElement *element, CFormat &m_Format)
     {
         GetAttributeValue(element, "id", &m_Format.szId);
         GetAttributeValue(element, "name", &m_Format.szName);
@@ -58,7 +58,7 @@ protected:
         element->LinkEndChild(parent);
         this->SetPresets(parent, m_Format.m_Presets);
     }
-    void GetFormats(XmlElement *parent, CFormatsList &m_Formats)
+    void GetFormats(const XmlElement *parent, CFormatsList &m_Formats)
     {
         auto element = parent->FirstChildElement("Format");
         if (element != nullptr)

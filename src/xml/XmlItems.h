@@ -18,7 +18,7 @@ public:
     {
     }
 protected:
-    void GetItem(XmlElement *element, CItem &m_Item)
+    void GetItem(const XmlElement *element, CItem &m_Item)
     {
         GetAttributeValue(element, "id", &m_Item.nId);
         GetAttributeValue(element, "size", &m_Item.szSize);
@@ -52,7 +52,7 @@ protected:
         element->LinkEndChild(parent);
         this->SetPaths(parent, m_Item.m_Paths);
     }
-    void GetItems(XmlElement *parent, CItemsList &m_Items)
+    void GetItems(const XmlElement *parent, CItemsList &m_Items)
     {
         auto element = parent->FirstChildElement("Item");
         if (element != nullptr)

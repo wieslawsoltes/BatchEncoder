@@ -17,7 +17,7 @@ public:
     {
     }
 protected:
-    void GetTool(XmlElement *element, CTool &m_Tool)
+    void GetTool(const XmlElement *element, CTool &m_Tool)
     {
         GetAttributeValue(element, "name", &m_Tool.szName);
         GetAttributeValue(element, "platform", &m_Tool.szPlatform);
@@ -37,7 +37,7 @@ protected:
         SetAttributeValue(element, "extract", m_Tool.szExtract);
         SetAttributeValue(element, "path", m_Tool.szPath);
     }
-    void GetTools(XmlElement *parent, CToolsList &m_Tools)
+    void GetTools(const XmlElement *parent, CToolsList &m_Tools)
     {
         auto element = parent->FirstChildElement("Tool");
         if (element != nullptr)

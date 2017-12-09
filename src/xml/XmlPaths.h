@@ -17,7 +17,7 @@ public:
     {
     }
 protected:
-    void GetPath(XmlElement *element, CPath &m_Path)
+    void GetPath(const XmlElement *element, CPath &m_Path)
     {
         GetAttributeValue(element, "path", &m_Path.szPath);
         GetAttributeValue(element, "size", &m_Path.szSize);
@@ -27,7 +27,7 @@ protected:
         SetAttributeValue(element, "path", m_Path.szPath);
         SetAttributeValue(element, "size", m_Path.szSize);
     }
-    void GetPaths(XmlElement *parent, CPathsList &m_Paths)
+    void GetPaths(const XmlElement *parent, CPathsList &m_Paths)
     {
         auto element = parent->FirstChildElement("Path");
         if (element != nullptr)
