@@ -31,9 +31,6 @@
     <Filter Include="Header Files\Contexts">
       <UniqueIdentifier>{d579bfb7-6e6c-4ff4-9356-af2ff7701d2d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Contexts">
-      <UniqueIdentifier>{8266f9d5-9c57-44c7-974a-28a13fa47f5a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Xml">
       <UniqueIdentifier>{8f6b2fbd-d6d7-4e5d-b494-8309102637bc}</UniqueIdentifier>
     </Filter>
@@ -62,12 +59,6 @@
     </ClCompile>
     <ClCompile Include="dialogs\ToolsDlg.cpp">
       <Filter>Source Files\Dialogs</Filter>
-    </ClCompile>
-    <ClCompile Include="contexts\TraceWorkerContext.cpp">
-      <Filter>Source Files\Contexts</Filter>
-    </ClCompile>
-    <ClCompile Include="contexts\ProgressWorkerContext.cpp">
-      <Filter>Source Files\Contexts</Filter>
     </ClCompile>
     <ClCompile Include="worker\Worker.cpp">
       <Filter>Source Files\Worker</Filter>

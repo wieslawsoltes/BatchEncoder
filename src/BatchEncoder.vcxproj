@@ -279,8 +279,6 @@ copy /Y ..\config\lang\*.language $(OutDir)</Command>
     <ClCompile Include="dialogs\PresetsDlg.cpp" />
     <ClCompile Include="dialogs\ToolsDlg.cpp" />
     <ClCompile Include="worker\Worker.cpp" />
-    <ClCompile Include="contexts\ProgressWorkerContext.cpp" />
-    <ClCompile Include="contexts\TraceWorkerContext.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="configuration\Path.h" />
