@@ -22,7 +22,6 @@ $Tools =
 @(
     # SSRC
     ( "http://shibatch.sourceforge.net/download/ssrc-1.33.tar.gz", "ssrc-1.33.tar.gz" ),
-    ( "http://shibatch.sourceforge.net/download/ssrc-1.30.tgz", "ssrc-1.30.tgz" ),
     # LAME
     ( "http://www.rarewares.org/files/mp3/lame3.100.zip", "lame3.100.zip" ),
     ( "http://www.rarewares.org/files/mp3/lame3.100-64.zip", "lame3.100-64.zip" ),
@@ -68,8 +67,6 @@ $Tools =
     ( "https://downloads.sourceforge.net/project/tta/tta/ttaenc-win/tta-2.3-64bit-sse4.zip?use_mirror=netassist", "tta-2.3-64bit-sse4.zip" ),
     # TAK 
     ( "http://www.thbeck.de/Download/TAK_2.3.0.zip", "TAK_2.3.0.zip" ),
-    # Nero AAC
-    ( "https://www.videohelp.com/download/NeroAACCodec-1.5.4.zip?r=kbLKqdmS", "NeroAACCodec-1.5.4.zip" ),
     # qaac
     ( "https://sites.google.com/site/qaacpage/cabinet/qaac_2.64.zip?attredirects=0&d=1", "qaac_2.64.zip" ),
     # lossyWAV
