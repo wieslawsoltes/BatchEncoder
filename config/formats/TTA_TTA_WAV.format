@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<Format id="TTA_TTA_WAV" name="Decode TTA to WAV - tta" template="$EXE -d $OPTIONS $INFILE $OUTFILE" input="false" output="true" function="GetProgress_TtaDec.progress" path="tta-2.3-32bit/tta.exe" success="0" type="1" formats="TTA" extension="WAV" default="0">
+<Format id="TTA_TTA_WAV" name="Decode TTA to WAV - tta" template="$EXE -d $OPTIONS $INFILE $OUTFILE" input="false" output="true" function="progress\GetProgress_TtaDec.progress" path="tools/tta-2.3-32bit/tta.exe" success="0" type="1" formats="TTA" extension="WAV" default="0">
     <Presets>
         <Preset name="Default" options=""/>
     </Presets>

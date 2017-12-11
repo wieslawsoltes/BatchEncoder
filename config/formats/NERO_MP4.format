@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<Format id="NERO_MP4" name="MP4 (MPEG-4/AAC) - nero" template="$EXE $OPTIONS -ignorelength -if $INFILE -of $OUTFILE" input="true" output="false" function="- none -" path="NeroAACCodec-1.5.4/win32/neroAacEnc.exe" success="0" type="0" formats="WAV" extension="MP4" default="10">
+<Format id="NERO_MP4" name="MP4 (MPEG-4/AAC) - nero" template="$EXE $OPTIONS -ignorelength -if $INFILE -of $OUTFILE" input="true" output="false" function="- none -" path="tools/NeroAACCodec-1.5.4/win32/neroAacEnc.exe" success="0" type="0" formats="WAV" extension="MP4" default="10">
     <Presets>
         <Preset name="VBR Quality 0.00" options="-q 0.00"/>
         <Preset name="VBR Quality 0.05 : 15 kbps~" options="-q 0.05"/>

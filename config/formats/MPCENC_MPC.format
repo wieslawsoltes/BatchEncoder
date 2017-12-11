@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<Format id="MPCENC_MPC" name="MPC (Musepack) - mpcenc" template="$EXE $OPTIONS --overwrite $INFILE $OUTFILE" input="true" output="false" function="GetProgress_MpcEnc.progress" path="musepack_windows_2009-04-02/32bit/mpcenc.exe" success="0" type="0" formats="WAV" extension="MPC" default="3">
+<Format id="MPCENC_MPC" name="MPC (Musepack) - mpcenc" template="$EXE $OPTIONS --overwrite $INFILE $OUTFILE" input="true" output="false" function="progress\GetProgress_MpcEnc.progress" path="tools/musepack_windows_2009-04-02/32bit/mpcenc.exe" success="0" type="0" formats="WAV" extension="MPC" default="3">
     <Presets>
         <Preset name="Telephone (32...48 kbps)" options="--telephone"/>
         <Preset name="Thumb (58...86 kbps)" options="--thumb"/>

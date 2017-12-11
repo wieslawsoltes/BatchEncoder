@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<Format id="OPUSDEC_OPUS_WAV" name="Decode OPUS to WAV - opusdec" template="$EXE $OPTIONS $INFILE $OUTFILE" input="true" output="false" function="GetProgress_OpusDec.progress" path="opus-tools.2017-12-04/opusdec.i686.exe" success="0" type="1" formats="OPUS" extension="WAV" default="0">
+<Format id="OPUSDEC_OPUS_WAV" name="Decode OPUS to WAV - opusdec" template="$EXE $OPTIONS $INFILE $OUTFILE" input="true" output="false" function="progress\GetProgress_OpusDec.progress" path="tools/opus-tools.2017-12-04/opusdec.i686.exe" success="0" type="1" formats="OPUS" extension="WAV" default="0">
     <Presets>
         <Preset name="Default" options="--force-wav"/>
     </Presets>

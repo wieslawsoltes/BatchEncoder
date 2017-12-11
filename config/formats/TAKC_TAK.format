@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<Format id="TAKC_TAK" name="TAK (Tom&apos;s Lossless Audio Kompressor) - takc" template="$EXE -e -overwrite $OPTIONS $INFILE $OUTFILE" input="true" output="false" function="- none -" path="TAK_2.3.0/Applications/Takc.exe" success="0" type="0" formats="WAV" extension="TAK" default="6">
+<Format id="TAKC_TAK" name="TAK (Tom&apos;s Lossless Audio Kompressor) - takc" template="$EXE -e -overwrite $OPTIONS $INFILE $OUTFILE" input="true" output="false" function="- none -" path="tools/TAK_2.3.0/Applications/Takc.exe" success="0" type="0" formats="WAV" extension="TAK" default="6">
     <Presets>
         <Preset name="Turbo" options="-p0"/>
         <Preset name="Turbo Extra" options="-p0e"/>

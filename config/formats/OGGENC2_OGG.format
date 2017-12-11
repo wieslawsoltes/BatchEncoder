@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<Format id="OGGENC2_OGG" name="OGG (Ogg Vorbis) - oggenc2" template="$EXE $OPTIONS $INFILE -o $OUTFILE" input="true" output="false" function="GetProgress_OggEnc.progress" path="oggenc2.88-1.3.5-generic/oggenc2.exe" success="0" type="0" formats="WAV" extension="OGG" default="8">
+<Format id="OGGENC2_OGG" name="OGG (Ogg Vorbis) - oggenc2" template="$EXE $OPTIONS $INFILE -o $OUTFILE" input="true" output="false" function="progress\GetProgress_OggEnc.progress" path="tools/oggenc2.88-1.3.5-generic/oggenc2.exe" success="0" type="0" formats="WAV" extension="OGG" default="8">
     <Presets>
         <Preset name="VBR Quality -2 (32 kbps)" options="-q -2"/>
         <Preset name="VBR Quality -1 (32...48 kbps)" options="-q -1"/>

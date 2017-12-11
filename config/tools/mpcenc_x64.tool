@@ -1,2 +1,2 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<Tool name="mpcenc_x64" platform="x64" formats="MPCENC_MPC" url="https://files.musepack.net/windows/musepack_windows_2009-04-02.zip" file="musepack_windows_2009-04-02.zip" extract="zip" path="musepack_windows_2009-04-02/64bit/mpcenc.exe"/>
+<Tool name="mpcenc_x64" platform="x64" formats="MPCENC_MPC" url="https://files.musepack.net/windows/musepack_windows_2009-04-02.zip" file="musepack_windows_2009-04-02.zip" extract="zip" path="tools/musepack_windows_2009-04-02/64bit/mpcenc.exe"/>

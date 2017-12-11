@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<Format id="LAME_MP1_WAV" name="Decode MP1 to WAV - lame" template="$EXE --decode --mp1input $INFILE $OUTFILE" input="true" output="false" function="GetProgress_LameDec.progress" path="lame3.100/lame.exe" success="0" type="1" formats="MP1" extension="WAV" default="0">
+<Format id="LAME_MP1_WAV" name="Decode MP1 to WAV - lame" template="$EXE --decode --mp1input $INFILE $OUTFILE" input="true" output="false" function="progress\GetProgress_LameDec.progress" path="tools/lame3.100/lame.exe" success="0" type="1" formats="MP1" extension="WAV" default="0">
     <Presets>
         <Preset name="Default" options=""/>
     </Presets>
