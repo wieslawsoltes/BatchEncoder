@@ -1055,8 +1055,14 @@ void CToolsDlg::DownloadTools()
                 CString szFilePath = ::GetExeFilePath() + tool.szFile;
                 CString szFolderPath = ::GetExeFilePath() + ::GetOnlyFileName(tool.szFile);
 
-                m_Download.Download(szUrl, szFilePath,
-                    [this, i](int nProgress, CString szStatus)
+                if (tool.szExtract.CompareNoCase(_T("url")) == 0)
+                {
+                    ::LaunchAndWait(szUrl, _T(""), TRUE);
+                }
+                else
+                {
+                    m_Download.Download(szUrl, szFilePath,
+                        [this, i](int nProgress, CString szStatus)
                     {
                         for (int s = 0; s < 8; s++)
                         {
@@ -1069,24 +1075,13 @@ void CToolsDlg::DownloadTools()
 
                         m_LstTools.SetItemText(i, TOOL_COLUMN_STATUS, szStatus);
                     });
+                }
 
                 if (bExtract == true)
                 {
-                    if (tool.szExtract.CompareNoCase(_T("")) == 0)
+                    if (tool.szExtract.CompareNoCase(_T("install")) == 0)
                     {
-                    }
-                    if (tool.szExtract.CompareNoCase(_T("exe")) == 0)
-                    {
-                    }
-                    else if (tool.szExtract.CompareNoCase(_T("install")) == 0)
-                    {
-                        ::LaunchAndWait(szFilePath, _T(""), FALSE);
-                    }
-                    else if (tool.szExtract.CompareNoCase(_T("tgz")) == 0)
-                    {
-                    }
-                    else if (tool.szExtract.CompareNoCase(_T("tar.gz")) == 0)
-                    {
+                        ::LaunchAndWait(szFilePath, _T(""), TRUE);
                     }
                     else if (tool.szExtract.CompareNoCase(_T("zip")) == 0)
                     {
