@@ -50,7 +50,7 @@
     <String key="0x0004000B" value="&amp;Probar búsqueda del decodificador" />
     <String key="0x0004000C" value="&amp;Validar archivos de entrada" />
     <String key="0x0004000D" value="Sob&amp;reescribir archivos existentes" />
-    <String key="0x0004000E" value="Configure Too&amp;ls...	F10" />
+    <String key="0x0004000E" value="Configurar Herramientas...	F10" />
 
     <!-- Language Menu -->
 
@@ -143,35 +143,35 @@
 
     <!-- Tools Dialog -->
 
-    <String key="0x000E0001" value="Name" />
-    <String key="0x000E0002" value="Url" />
-    <String key="0x000E0003" value="Status" />
+    <String key="0x000E0001" value="Nombre" />
+    <String key="0x000E0002" value="Enlace" />
+    <String key="0x000E0003" value="Estado" />
 
-    <String key="0x000E0010" value="Configure Tools" />
-    <String key="0x000E0011" value="&amp;Cancel" />
-    <String key="0x000E0012" value="Name:" />
-    <String key="0x000E0013" value="Platform:" />
-    <String key="0x000E0014" value="Supported formats (separated by comma):" />
-    <String key="0x000E0015" value="Download URL:" />
-    <String key="0x000E0016" value="Download file name:" />
-    <String key="0x000E0017" value="Extract method:" />
-    <String key="0x000E0018" value="Extract path:" />
-    <String key="0x000E0019" value="move &amp;Up" />
-    <String key="0x000E001A" value="move Dow&amp;n" />
-    <String key="0x000E001B" value="&amp;Import" />
-    <String key="0x000E001C" value="E&amp;xport" />
-    <String key="0x000E001D" value="Du&amp;plicate" />
-    <String key="0x000E001E" value="Dele&amp;te All" />
-    <String key="0x000E001F" value="&amp;Delete" />
-    <String key="0x000E0020" value="&amp;Add" />
-    <String key="0x000E0021" value="&amp;Load" />
-    <String key="0x000E0022" value="&amp;Save As" />
-    <String key="0x000E0023" value="Do&amp;wnload Selected" />
-    <String key="0x000E0024" value="Stop Do&amp;wnload" />
-    <String key="0x000E0025" value="S&amp;et Selected Paths" />
-    <String key="0x000E0026" value="Set x&amp;86 Paths" />
-    <String key="0x000E0027" value="Set x&amp;64 Paths" />
-    <String key="0x000E0028" value="C&amp;hange" />
+    <String key="0x000E0010" value="Configurar Herramientas" />
+    <String key="0x000E0011" value="&amp;Cancelar" />
+    <String key="0x000E0012" value="Nombre:" />
+    <String key="0x000E0013" value="Plataforma:" />
+    <String key="0x000E0014" value="Formatos soportados (separados por coma):" />
+    <String key="0x000E0015" value="Descargar Enlace:" />
+    <String key="0x000E0016" value="Descargar archivo:" />
+    <String key="0x000E0017" value="Método extracción:" />
+    <String key="0x000E0018" value="Ruta extracción:" />
+    <String key="0x000E0019" value="s&amp;ubir" />
+    <String key="0x000E001A" value="ba&amp;jar" />
+    <String key="0x000E001B" value="&amp;Importar" />
+    <String key="0x000E001C" value="E&amp;xportar" />
+    <String key="0x000E001D" value="Du&amp;plicar" />
+    <String key="0x000E001E" value="Borrar &amp;Todo" />
+    <String key="0x000E001F" value="&amp;Borrar" />
+    <String key="0x000E0020" value="&amp;Añadir" />
+    <String key="0x000E0021" value="Ca&amp;rgar" />
+    <String key="0x000E0022" value="&amp;Guardar como" />
+    <String key="0x000E0023" value="Descargar &ampSeleccionado" />
+    <String key="0x000E0024" value="Parar &ampDescarga" />
+    <String key="0x000E0025" value="&amp;Fijar Rutas Seleccionadas" />
+    <String key="0x000E0026" value="Fijar Rutas x&amp;86" />
+    <String key="0x000E0027" value="Fijar Rutas x&amp;64" />
+    <String key="0x000E0028" value="Ca&amp;mbiar" />
     <String key="0x000E0029" value="&amp;OK" />
 
     <!-- About Dialog -->
@@ -265,9 +265,9 @@
     <!-- Strings Tools Dialog -->
 
     <String key="0x00240001" value="ERROR" />
-    <String key="0x00240002" value="Failed to load file!" />
-    <String key="0x00240003" value="Failed to save file!" />
-    <String key="0x00240004" value="Tool" />
+    <String key="0x00240002" value="Fallo cargando archivo" />
+    <String key="0x00240003" value="Fallo guardando archivo" />
+    <String key="0x00240004" value="Herramienta" />
 
     <!-- Strings File Dialogs -->
 
@@ -279,24 +279,24 @@
     <String key="0x00310006" value="Archivo ejecutables" />
     <String key="0x00310007" value="Archivos de progreso" />
     <String key="0x00310008" value="Formato de archivo" />
-    <String key="0x00310009" value="Tools Files" />
-    <String key="0x00310010" value="Tool Files" />
+    <String key="0x00310009" value="Herramientas Archivos" />
+    <String key="0x00310010" value="Herramienta Archivos" />
 
     <!-- Strings Download Status -->
 
-    <String key="0x00400001" value="Finding resource..." />
-    <String key="0x00400002" value="Connecting..." />
-    <String key="0x00400003" value="Sending request..." />
-    <String key="0x00400004" value="Mime type available" />
-    <String key="0x00400005" value="Cache filename available" />
-    <String key="0x00400006" value="Begin download" />
-    <String key="0x00400007" value="End download" />
-    <String key="0x00400008" value="Status code : " />
+    <String key="0x00400001" value="Buscando recursos..." />
+    <String key="0x00400002" value="Conectando..." />
+    <String key="0x00400003" value="Enviando petición..." />
+    <String key="0x00400004" value="Tipo Mime disponible" />
+    <String key="0x00400005" value="Archivo disponible en Cache" />
+    <String key="0x00400006" value="Comienzo descarga" />
+    <String key="0x00400007" value="Fin descarga" />
+    <String key="0x00400008" value="Código de estado : " />
 
     <!-- Strings Extract Status -->
 
-    <String key="0x00410001" value="Failed to create unzip folder." />
-    <String key="0x00410002" value="Unziped downloaded file." />
-    <String key="0x00410003" value="Failed to unzip downloaded file." />
+    <String key="0x00410001" value="Fallo creando carpeta descompresión." />
+    <String key="0x00410002" value="Archivo descargado descomprimido." />
+    <String key="0x00410003" value="Fallo descomprimiendo archivo descargado." />
 
 </Language>
