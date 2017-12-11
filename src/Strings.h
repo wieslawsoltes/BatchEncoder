@@ -8,6 +8,7 @@ extern const TCHAR* pszProgresssLoop[];
 extern const TCHAR* pszConvertConsole[];
 extern const TCHAR* pszConvertPipes[];
 extern const TCHAR* pszConvertItem[];
+extern const TCHAR* pszWorkerContext[];
 extern const TCHAR* pszMainDialog[];
 extern const TCHAR* pszPresetsDialog[];
 extern const TCHAR* pszFormatsDialog[];

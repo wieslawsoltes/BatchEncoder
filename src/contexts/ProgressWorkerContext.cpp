@@ -5,13 +5,7 @@
 #include "MainApp.h"
 #include "utilities\Utilities.h"
 #include "ProgressWorkerContext.h"
-
-const TCHAR* pszWorkerContext[] = {
-    /* 00 */ _T("Error"),
-    /* 01 */ _T("Errors"),
-    /* 02 */ _T("Processing item %d of %d (%d Done, %d %s)"),
-    /* 03 */ _T("Processed %d of %d (%d Done, %d %s) in %s")
-};
+#include "Strings.h"
 
 CProgressWorkerContext::CProgressWorkerContext(CConfiguration* pConfig, CMainDlg* pDlg)
     : CWorkerContext(pConfig)

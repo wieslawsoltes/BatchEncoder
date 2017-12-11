@@ -54,6 +54,13 @@ const TCHAR* pszConvertItem[] = {
     /* 15 */ _T("Output file already exists.")
 };
 
+const TCHAR* pszWorkerContext[] = {
+    /* 00 */ _T("Error"),
+    /* 01 */ _T("Errors"),
+    /* 02 */ _T("Processing item %d of %d (%d Done, %d %s)"),
+    /* 03 */ _T("Processed %d of %d (%d Done, %d %s) in %s")
+};
+
 const TCHAR* pszMainDialog[] = {
     /* 00 */ _T("Not Done"),
     /* 01 */ _T("Item"),
