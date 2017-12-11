@@ -1033,7 +1033,7 @@ void CToolsDlg::DownloadTools()
     bDownload = true;
     EnableUserInterface(FALSE);
 
-    ::SetCurrentDirectory(::GetExeFilePath());
+    ::SetCurrentDirectory(mainApp.szToolsPath);
 
     CLanguageHelper helper(pConfig);
     helper.SetWndText(&m_BtnDownload, 0x000E0024);
@@ -1052,8 +1052,8 @@ void CToolsDlg::DownloadTools()
 
                 CTool& tool = this->m_Tools.Get(i);
                 CString szUrl = tool.szUrl;
-                CString szFilePath = ::GetExeFilePath() + tool.szFile;
-                CString szFolderPath = ::GetExeFilePath() + ::GetOnlyFileName(tool.szFile);
+                CString szFilePath = mainApp.CombinePath(mainApp.szToolsPath, tool.szFile);
+                CString szFolderPath = mainApp.CombinePath(mainApp.szToolsPath, ::GetOnlyFileName(tool.szFile));
 
                 if (tool.szExtract.CompareNoCase(_T("url")) == 0)
                 {

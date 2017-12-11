@@ -6,6 +6,11 @@
 - Added dynamic layout support for dialogs.
 - Added multi-selection support for presets list.
 - Added multi-selection support for formats list.
+- Refactored configuration file storage.
+- Installed version config is stored in %appdata%\BatchEncoder path.
+- Portable version config is stored in .\BatchEncoder path.
+- Installed version tools are stored in %appdata%\BatchEncoder\tools path.
+- Portable version tools are stored in .\BatchEncoder\tools path.
 - Refactored worker threads to use lambdas.
 - Refactored common code as submodules.
 - Refactored xml configuration code.

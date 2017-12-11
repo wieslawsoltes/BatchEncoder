@@ -185,10 +185,6 @@ CMainDlg::CMainDlg(CWnd* pParent /*=nullptr*/)
     : CMyDialogEx(CMainDlg::IDD, pParent)
 {
     this->m_hIcon = AfxGetApp()->LoadIcon(IDI_ICON_MAIN);
-    this->szOptionsFile = ::GetExeFilePath() + _T("BatchEncoder.options");
-    this->szFormatsFile = ::GetExeFilePath() + _T("BatchEncoder.formats");
-    this->szItemsFile = ::GetExeFilePath() + _T("BatchEncoder.items");
-    this->szToolsFile = ::GetExeFilePath() + _T("BatchEncoder.tools");
     this->m_Config.m_Options.Defaults();
     this->pWorkerContext = new CProgressWorkerContext(&this->m_Config, this);
     this->pWorkerContext->bRunning = false;
@@ -369,13 +365,22 @@ BOOL CMainDlg::OnInitDialog()
 
     try
     {
-        this->LoadTools(this->szToolsFile);
-        this->LoadFormats(this->szFormatsFile);
-        this->LoadOptions(this->szOptionsFile);
-        this->SearchFolderForLanguages(::GetExeFilePath());
+        this->LoadTools(mainApp.szToolsFile);
+        this->LoadFormats(mainApp.szFormatsFile);
+
+        if (this->LoadOptions(mainApp.szOptionsFile) == false)
+        {
+            this->m_Config.m_Options.Defaults();
+            this->SetOptions();
+            this->UpdateFormatComboBox();
+            this->UpdatePresetComboBox();
+        }
+
+        this->SearchFolderForLanguages(mainApp.szSettingsPath);
+        this->SearchFolderForLanguages(mainApp.szLanguagesPath);
         this->InitLanguageMenu();
         this->SetLanguage();
-        this->LoadItems(this->szItemsFile);
+        this->LoadItems(mainApp.szItemsFile);
     }
     catch (...) {}
 
@@ -435,10 +440,10 @@ void CMainDlg::OnClose()
     {
         try
         {
-            this->SaveTools(this->szToolsFile);
-            this->SaveFormats(this->szFormatsFile);
-            this->SaveOptions(this->szOptionsFile);
-            this->SaveItems(this->szItemsFile);
+            this->SaveTools(mainApp.szToolsFile);
+            this->SaveFormats(mainApp.szFormatsFile);
+            this->SaveOptions(mainApp.szOptionsFile);
+            this->SaveItems(mainApp.szItemsFile);
         }
         catch (...) {}
     }
@@ -1696,7 +1701,7 @@ void CMainDlg::SetOptions()
     }
     else
     {
-        m_Config.m_Options.szOutputPath = ::GetExeFilePath();
+        m_Config.m_Options.szOutputPath = mainApp.szSettingsPath;
         szLastBrowse = m_Config.m_Options.szOutputPath;
         this->m_CmbOutPath.SetWindowText(m_Config.m_Options.szOutputPath);
     }
@@ -1812,7 +1817,6 @@ bool CMainDlg::LoadOptions(CString szFileXml)
     if (xmlOptions.Open(szFileXml) == false)
         return false;
 
-    this->m_Config.m_Options.Defaults();
     xmlOptions.GetOptions(this->m_Config.m_Options);
 
     this->SetOptions();
@@ -2452,7 +2456,7 @@ void CMainDlg::StartConvert()
 
         m_StatusBar.SetText(_T(""), 1, 0);
 
-        ::SetCurrentDirectory(::GetExeFilePath());
+        ::SetCurrentDirectory(mainApp.szSettingsPath);
 
         this->GetOptions();
         this->GetItems();
@@ -2543,9 +2547,9 @@ void CMainDlg::FinishConvert()
         {
             try
             {
-                this->SaveFormats(this->szFormatsFile);
-                this->SaveOptions(this->szOptionsFile);
-                this->SaveItems(this->szItemsFile);
+                this->SaveFormats(mainApp.szFormatsFile);
+                this->SaveOptions(mainApp.szOptionsFile);
+                this->SaveItems(mainApp.szItemsFile);
             }
             catch (...) {}
         }
@@ -2562,7 +2566,7 @@ void CMainDlg::TraceConvert()
 
     pTraceWorkerContext->bDone = false;
 
-    ::SetCurrentDirectory(::GetExeFilePath());
+    ::SetCurrentDirectory(mainApp.szSettingsPath);
 
     this->GetOptions();
     this->GetItems();

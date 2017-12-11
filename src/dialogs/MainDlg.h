@@ -59,10 +59,6 @@ protected:
     BOOL PreTranslateMessage(MSG* pMsg);
 public:
     MainDlgDropContext m_DD;
-    CString szOptionsFile;
-    CString szFormatsFile;
-    CString szItemsFile;
-    CString szToolsFile;
     CConfiguration m_Config;
     CWorkerContext* pWorkerContext;
     CWorker m_Worker;

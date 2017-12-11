@@ -134,8 +134,15 @@
 copy /-Y ..\config\*.options $(OutDir)
 copy /-Y ..\config\*.items $(OutDir)
 copy /-Y ..\config\*.tools $(OutDir)
-copy /Y ..\config\progress\*.progress $(OutDir)
-copy /Y ..\config\lang\*.language $(OutDir)</Command>
+if not exist $(OutDir)formats\ mkdir $(OutDir)formats\
+if not exist $(OutDir)lang\ mkdir $(OutDir)lang\
+if not exist $(OutDir)progress\ mkdir $(OutDir)progress\
+if not exist $(OutDir)tools\ mkdir $(OutDir)tools\
+copy /Y ..\config\formats\*.format $(OutDir)formats\
+copy /Y ..\config\lang\*.language $(OutDir)lang\
+copy /Y ..\config\progress\*.progress $(OutDir)progress\
+copy /Y ..\config\tools\*.tool $(OutDir)tools\
+rem copy /Y ..\setup\*.portable $(OutDir)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -175,8 +182,15 @@ copy /Y ..\config\lang\*.language $(OutDir)</Command>
 copy /-Y ..\config\*.options $(OutDir)
 copy /-Y ..\config\*.items $(OutDir)
 copy /-Y ..\config\*.tools $(OutDir)
-copy /Y ..\config\progress\*.progress $(OutDir)
-copy /Y ..\config\lang\*.language $(OutDir)</Command>
+if not exist $(OutDir)formats\ mkdir $(OutDir)formats\
+if not exist $(OutDir)lang\ mkdir $(OutDir)lang\
+if not exist $(OutDir)progress\ mkdir $(OutDir)progress\
+if not exist $(OutDir)tools\ mkdir $(OutDir)tools\
+copy /Y ..\config\formats\*.format $(OutDir)formats\
+copy /Y ..\config\lang\*.language $(OutDir)lang\
+copy /Y ..\config\progress\*.progress $(OutDir)progress\
+copy /Y ..\config\tools\*.tool $(OutDir)tools\
+rem copy /Y ..\setup\*.portable $(OutDir)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -217,8 +231,15 @@ copy /Y ..\config\lang\*.language $(OutDir)</Command>
 copy /-Y ..\config\*.options $(OutDir)
 copy /-Y ..\config\*.items $(OutDir)
 copy /-Y ..\config\*.tools $(OutDir)
-copy /Y ..\config\progress\*.progress $(OutDir)
-copy /Y ..\config\lang\*.language $(OutDir)</Command>
+if not exist $(OutDir)formats\ mkdir $(OutDir)formats\
+if not exist $(OutDir)lang\ mkdir $(OutDir)lang\
+if not exist $(OutDir)progress\ mkdir $(OutDir)progress\
+if not exist $(OutDir)tools\ mkdir $(OutDir)tools\
+copy /Y ..\config\formats\*.format $(OutDir)formats\
+copy /Y ..\config\lang\*.language $(OutDir)lang\
+copy /Y ..\config\progress\*.progress $(OutDir)progress\
+copy /Y ..\config\tools\*.tool $(OutDir)tools\
+rem copy /Y ..\setup\*.portable $(OutDir)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -260,8 +281,15 @@ copy /Y ..\config\lang\*.language $(OutDir)</Command>
 copy /-Y ..\config\*.options $(OutDir)
 copy /-Y ..\config\*.items $(OutDir)
 copy /-Y ..\config\*.tools $(OutDir)
-copy /Y ..\config\progress\*.progress $(OutDir)
-copy /Y ..\config\lang\*.language $(OutDir)</Command>
+if not exist $(OutDir)formats\ mkdir $(OutDir)formats\
+if not exist $(OutDir)lang\ mkdir $(OutDir)lang\
+if not exist $(OutDir)progress\ mkdir $(OutDir)progress\
+if not exist $(OutDir)tools\ mkdir $(OutDir)tools\
+copy /Y ..\config\formats\*.format $(OutDir)formats\
+copy /Y ..\config\lang\*.language $(OutDir)lang\
+copy /Y ..\config\progress\*.progress $(OutDir)progress\
+copy /Y ..\config\tools\*.tool $(OutDir)tools\
+rem copy /Y ..\setup\*.portable $(OutDir)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>

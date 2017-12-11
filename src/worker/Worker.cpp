@@ -23,7 +23,7 @@ bool CWorker::ProgresssLoop(CFileContext* pContext, CPipe &Stderr, int &nProgres
     int nLineLen = 0;
     int nPreviousProgress = 0;
 
-    ::SetCurrentDirectory(::GetExeFilePath());
+    ::SetCurrentDirectory(mainApp.szSettingsPath);
 
     // load progress function
     CLuaProgess luaProgress;
@@ -943,7 +943,7 @@ bool CWorker::ConvertItem(CItemContext* pContext)
         return false;
     }
 
-    ::SetCurrentDirectory(::GetExeFilePath());
+    ::SetCurrentDirectory(mainApp.szSettingsPath);
 
     // prepare decoder
     if (bIsValidEncoderInput == false)

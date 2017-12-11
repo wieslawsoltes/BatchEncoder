@@ -23,7 +23,6 @@ AppPublisherURL     ={#ProgramWebsite}
 AppVersion          ={#ProgramVersion}{#ProgramVersionSuffix}
 UsePreviousAppDir   =yes
 AllowNoIcons        =yes
-LicenseFile         ={#BasePath}\LICENSE.TXT
 Compression         =lzma/max
 SolidCompression    =yes
 WindowVisible       =no
@@ -65,15 +64,15 @@ Name: quicklaunchicon; Description: {cm:CreateQuickLaunchIcon}; GroupDescription
 Source: {#BasePath}\src\bin\{#ProgramConfiguration}\{#ProgramBuild}\{#ProgramExe}; DestDir: {app}; Flags: ignoreversion; Components: main
 Source: {#BasePath}\*.txt; DestDir: {app}; Flags: ignoreversion; Components: docs
 Source: {#BasePath}\*.md; DestDir: {app}; Flags: ignoreversion; Components: docs
-Source: {#BasePath}\config\*.formats; DestDir: {app}; Flags: ignoreversion; Components: config
-Source: {#BasePath}\config\*.items; DestDir: {app}; Flags: ignoreversion; Components: config
-Source: {#BasePath}\config\*.options; DestDir: {app}; Flags: ignoreversion; Components: config
-Source: {#BasePath}\config\*.tools; DestDir: {app}; Flags: ignoreversion; Components: config
-Source: {#BasePath}\config\formats\*.format; DestDir: {app}; Flags: ignoreversion; Components: formats
-Source: {#BasePath}\config\lang\*.language; DestDir: {app}; Flags: ignoreversion; Components: lang
-Source: {#BasePath}\config\progress\*.progress; DestDir: {app}; Flags: ignoreversion; Components: progress
-Source: {#BasePath}\config\tools\*.tool; DestDir: {app}; Flags: ignoreversion; Components: tools
-Source: {#BasePath}\scripts\*.ps1; DestDir: {app}; Flags: ignoreversion; Components: scripts
+Source: {#BasePath}\config\*.formats; DestDir: {userappdata}\BatchEncoder; Flags: ignoreversion; Components: config
+Source: {#BasePath}\config\*.items; DestDir: {userappdata}\BatchEncoder; Flags: ignoreversion; Components: config
+Source: {#BasePath}\config\*.options; DestDir: {userappdata}\BatchEncoder; Flags: ignoreversion; Components: config
+Source: {#BasePath}\config\*.tools; DestDir: {userappdata}\BatchEncoder; Flags: ignoreversion; Components: config
+Source: {#BasePath}\config\formats\*.format; DestDir: {userappdata}\BatchEncoder\formats; Flags: ignoreversion; Components: formats
+Source: {#BasePath}\config\lang\*.language; DestDir: {userappdata}\BatchEncoder\lang; Flags: ignoreversion; Components: lang
+Source: {#BasePath}\config\progress\*.progress; DestDir: {userappdata}\BatchEncoder\progress; Flags: ignoreversion; Components: progress
+Source: {#BasePath}\config\tools\*.tool; DestDir: {userappdata}\BatchEncoder\tools; Flags: ignoreversion; Components: tools
+Source: {#BasePath}\scripts\*.ps1; DestDir: {userappdata}\BatchEncoder; Flags: ignoreversion; Components: scripts
 
 [INI]
 

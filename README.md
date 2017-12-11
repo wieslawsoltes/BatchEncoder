@@ -238,9 +238,13 @@ If you having problems running the PowerShell `download.ps1` script see this [in
 
 ## Configuration files
 
-* Program configuration files are used to store settings. 
-* System registry is not used to store any program settings so program can be used as portable without installation. 
-* Configuration is stored as XML text files with UTF-8 encoding.
+* Program configuration files are stored in `%appdata%\BatchEncoder` folder for installed version.
+* Downloaded tool are stored in `%appdata%\BatchEncoder\tools` folder for installed version.
+* To enable portable mode create empty file `BatchEncoder.portable` in same directory as `BatchEncoder.exe` file.
+* Program configuration files are stored in `.\BatchEncoder` folder for portable version.
+* Downloaded tool are stored in `.\BatchEncoder\tools` folder for portable version.
+* System registry is not used to store program settings. 
+* Configuration file are in `XML` text format with `UTF-8` encoding.
 
 Files extensions:
 
@@ -255,7 +259,7 @@ Files extensions:
 * .progress - Progress function Lua scripts
 * .language - Language translation strings
 
-Use only UTF-8 compatible text editors (e.g. Notepad) to edit xml configuration files.
+Use only `UTF-8` compatible text editors (e.g. Notepad) to edit xml configuration files.
 
 ### Default configuration files
 
