@@ -79,7 +79,7 @@ public:
     {
         this->szSelectedLanguage = _T("en-US");
         this->nSelectedFormat = 14;
-        this->szOutputPath = _T("$SourceDirectory$\$Name$.$Ext$");
+        this->szOutputPath = _T("$SourceDirectory$\\$Name$.$Ext$");
         this->bDeleteSourceFiles = false;
         this->bRecurseChecked = true;
         this->bShutdownWhenFinished = false;
