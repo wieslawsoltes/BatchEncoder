@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Presets>
+    <Preset name="Fast Compression Level" options="-c1000"/>
+    <Preset name="Normal Compression Level" options="-c2000"/>
+    <Preset name="High Compression Level" options="-c3000"/>
+    <Preset name="Extra High Compression Level" options="-c4000"/>
+    <Preset name="Insane Compression Level" options="-c5000"/>
+</Presets>
