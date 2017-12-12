@@ -464,20 +464,22 @@ void CPresetsDlg::OnBnClickedButtonLoadPresets()
 
 void CPresetsDlg::OnBnClickedButtonSavePresets()
 {
+    CFormat& format = this->m_Formats.Get(this->nSelectedFormat);
+
     CString szFilter;
     szFilter.Format(_T("%s (*.presets)|*.presets|%s (*.xml)|*.xml|%s (*.*)|*.*||"),
         pConfig->GetString(0x00310004, pszFileDialogs[3]),
         pConfig->GetString(0x00310002, pszFileDialogs[1]),
         pConfig->GetString(0x00310001, pszFileDialogs[0]));
 
-    CFileDialog fd(FALSE, _T("presets"), _T("presets"),
+    CFileDialog fd(FALSE, _T("presets"), format.szId,
         OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER | OFN_OVERWRITEPROMPT,
         szFilter, this);
 
     if (fd.DoModal() == IDOK)
     {
         CString szFileXml = fd.GetPathName();
-        this->SavePresets(szFileXml);
+        this->SavePresets(szFileXml, format);
     }
 }
 
@@ -664,10 +666,8 @@ void CPresetsDlg::LoadPresets(CString szFileXml)
     }
 }
 
-void CPresetsDlg::SavePresets(CString szFileXml)
+void CPresetsDlg::SavePresets(CString szFileXml, CFormat &format)
 {
-    CFormat& format = this->m_Formats.Get(this->nSelectedFormat);
-
     XmlDocumnent doc;
     XmlPresets xmlPresets(doc);
     xmlPresets.Create();

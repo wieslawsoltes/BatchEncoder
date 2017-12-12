@@ -98,5 +98,5 @@ public:
     void UpdateFields(CPreset &preset);
     void ListSelectionChange();
     void LoadPresets(CString szFileXml);
-    void SavePresets(CString szFileXml);
+    void SavePresets(CString szFileXml, CFormat &format);
 };
