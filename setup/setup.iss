@@ -49,6 +49,7 @@ Name: main; Description: Main Program; Types: full compact custom
 Name: docs; Description: Documents; Types: full
 Name: config; Description: Configuration; Types: full compact
 Name: formats; Description: Format Definitions; Types: full compact
+Name: presets; Description: Preset Definitions; Types: full compact
 Name: lang; Description: Languages; Types: full
 Name: progress; Description: Progress Functions; Types: full compact
 Name: tools; Description: Tool Definitions; Types: full
@@ -69,6 +70,7 @@ Source: {#BasePath}\config\*.items; DestDir: {userappdata}\{#ProgramName}; Flags
 Source: {#BasePath}\config\*.options; DestDir: {userappdata}\{#ProgramName}; Flags: ignoreversion; Components: config
 Source: {#BasePath}\config\*.tools; DestDir: {userappdata}\{#ProgramName}; Flags: ignoreversion; Components: config
 Source: {#BasePath}\config\formats\*.format; DestDir: {userappdata}\{#ProgramName}\formats; Flags: ignoreversion; Components: formats
+Source: {#BasePath}\config\presets\*.presets; DestDir: {userappdata}\{#ProgramName}\presets; Flags: ignoreversion; Components: presets
 Source: {#BasePath}\config\lang\*.language; DestDir: {userappdata}\{#ProgramName}\lang; Flags: ignoreversion; Components: lang
 Source: {#BasePath}\config\progress\*.progress; DestDir: {userappdata}\{#ProgramName}\progress; Flags: ignoreversion; Components: progress
 Source: {#BasePath}\config\tools\*.tool; DestDir: {userappdata}\{#ProgramName}\tools; Flags: ignoreversion; Components: tools
