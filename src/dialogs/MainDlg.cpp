@@ -1863,6 +1863,76 @@ bool CMainDlg::SaveFormats(CString szFileXml)
     return xmlFormats.Save(szFileXml);
 }
 
+bool CMainDlg::LoadFormat(CString szFileXml)
+{
+    XmlDocumnent doc;
+    XmlFormats xmlFormats(doc);
+    if (xmlFormats.Open(szFileXml) == false)
+        return false;
+
+    CFormat format;
+    xmlFormats.GetFormat(format);
+    m_Config.m_Formats.Insert(format);
+
+    this->UpdateFormatComboBox();
+    this->UpdatePresetComboBox();
+    return true;
+}
+
+bool CMainDlg::SaveFormat(CString szFileXml)
+{
+    int nFormat = this->m_CmbFormat.GetCurSel();
+    if (nFormat != -1)
+    {
+        CFormat& format = m_Config.m_Formats.Get(nFormat);
+
+        XmlDocumnent doc;
+        XmlFormats xmlFormats(doc);
+        xmlFormats.Create();
+        xmlFormats.SetFormat(format);
+        return xmlFormats.Save(szFileXml);
+    }
+    return false;
+}
+
+bool CMainDlg::LoadPresets(CString szFileXml)
+{
+    int nFormat = this->m_CmbFormat.GetCurSel();
+    if (nFormat != -1)
+    {
+        CFormat& format = m_Config.m_Formats.Get(nFormat);
+
+        XmlDocumnent doc;
+        XmlPresets xmlPresets(doc);
+        if (xmlPresets.Open(szFileXml) == false)
+            return false;
+
+        format.m_Presets.RemoveAll();
+        xmlPresets.GetPresets(format.m_Presets);
+
+        this->UpdatePresetComboBox();
+
+        return true;
+    }
+    return false;
+}
+
+bool CMainDlg::SavePresets(CString szFileXml)
+{
+    int nFormat = this->m_CmbFormat.GetCurSel();
+    if (nFormat != -1)
+    {
+        CFormat& format = m_Config.m_Formats.Get(nFormat);
+
+        XmlDocumnent doc;
+        XmlPresets xmlPresets(doc);
+        xmlPresets.Create();
+        xmlPresets.SetPresets(format.m_Presets);
+        return xmlPresets.Save(szFileXml);
+    }
+    return false;
+}
+
 bool CMainDlg::LoadTools(CString szFileXml)
 {
     XmlDocumnent doc;
@@ -1884,6 +1954,20 @@ bool CMainDlg::SaveTools(CString szFileXml)
     xmlTools.Create();
     xmlTools.SetTools(this->m_Config.m_Tools);
     return xmlTools.Save(szFileXml);
+}
+
+bool CMainDlg::LoadTool(CString szFileXml)
+{
+    XmlDocumnent doc;
+    XmlTools xmlTools(doc);
+    if (xmlTools.Open(szFileXml) == false)
+        return false;
+
+    CTool tool;
+    xmlTools.GetTool(tool);
+    m_Config.m_Tools.Insert(tool);
+
+    return true;
 }
 
 bool CMainDlg::LoadItems(CString szFileXml)
@@ -2083,40 +2167,23 @@ void CMainDlg::HandleDropFiles(HDROP hDropInfo)
                 }
                 else if (szExt.CompareNoCase(_T("format")) == 0)
                 {
-                    // Add format to formats list.
-                    XmlDocumnent doc;
-                    XmlFormats xmlFormats(doc);
-                    if (xmlFormats.Open(szPath) == true)
-                    {
-                        CFormat format;
-                        xmlFormats.GetFormat(format);
-                        m_Config.m_Formats.Insert(format);
-
-                        this->UpdateFormatComboBox();
-                    }
+                    this->LoadFormat(szPath);
                 }
                 else if (szExt.CompareNoCase(_T("presets")) == 0)
                 {
-                    // Add presets to current format presets list.
-                    int nFormat = this->m_CmbFormat.GetCurSel();
-                    if (nFormat != -1)
-                    {
-                        CFormat& format = m_Config.m_Formats.Get(nFormat);
-
-                        XmlDocumnent doc;
-                        XmlPresets xmlPresets(doc);
-                        if (xmlPresets.Open(szPath) == true)
-                        {
-                            format.m_Presets.RemoveAll();
-                            xmlPresets.GetPresets(format.m_Presets);
-
-                            this->UpdatePresetComboBox();
-                        }
-                    }
+                    this->LoadPresets(szPath);
                 }
                 else if (szExt.CompareNoCase(_T("options")) == 0)
                 {
                     this->LoadOptions(szPath);
+                }
+                else if (szExt.CompareNoCase(_T("tools")) == 0)
+                {
+                    this->LoadTools(szPath);
+                }
+                else if (szExt.CompareNoCase(_T("tool")) == 0)
+                {
+                    this->LoadTool(szPath);
                 }
                 else if (szExt.CompareNoCase(_T("exe")) == 0)
                 {

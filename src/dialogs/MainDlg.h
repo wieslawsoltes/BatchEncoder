@@ -144,8 +144,13 @@ public:
     bool SaveOptions(CString szFileXml);
     bool LoadFormats(CString szFileXml);
     bool SaveFormats(CString szFileXml);
+    bool LoadFormat(CString szFileXml);
+    bool SaveFormat(CString szFileXml);
+    bool LoadPresets(CString szFileXml);
+    bool SavePresets(CString szFileXml);
     bool LoadTools(CString szFileXml);
     bool SaveTools(CString szFileXml);
+    bool LoadTool(CString szFileXml);
     bool LoadItems(CString szFileXml);
     bool SaveItems(CString szFileXml);
     int AddToItems(CString szPath);
