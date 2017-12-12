@@ -173,9 +173,6 @@
     <String key="0x000E0027" value="Ustaw Ścieżki x&amp;64" />
     <String key="0x000E0028" value="Z&amp;mień" />
     <String key="0x000E0029" value="&amp;OK" />
-    <String key="0x000E0001" value="Name" />
-    <String key="0x000E0002" value="Url" />
-    <String key="0x000E0003" value="Status" />
 
     <!-- About Dialog -->
 
