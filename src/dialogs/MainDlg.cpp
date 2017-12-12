@@ -17,8 +17,7 @@
 #include "AboutDlg.h"
 #include "FormatsDlg.h"
 #include "ToolsDlg.h"
-#include "contexts\ProgressWorkerContext.h"
-#include "contexts\TraceWorkerContext.h"
+#include "contexts\MainDlgWorkerContext.h"
 
 #define WM_TRAY (WM_USER + 0x10)
 #define IDC_STATUSBAR 1500
@@ -186,7 +185,7 @@ CMainDlg::CMainDlg(CWnd* pParent /*=nullptr*/)
 {
     this->m_hIcon = AfxGetApp()->LoadIcon(IDI_ICON_MAIN);
     this->m_Config.m_Options.Defaults();
-    this->pWorkerContext = new CProgressWorkerContext(&this->m_Config, this);
+    this->pWorkerContext = new CMainDlgWorkerContext(&this->m_Config, this);
     this->pWorkerContext->bRunning = false;
 }
 
@@ -689,14 +688,7 @@ void CMainDlg::OnBnClickedButtonBrowsePath()
 
 void CMainDlg::OnBnClickedButtonConvert()
 {
-#ifdef DEBUG
-    if (GetKeyState(VK_CONTROL) < 0)
-        this->TraceConvert();
-    else
-        this->StartConvert();
-#else
     this->StartConvert();
-#endif
 }
 
 void CMainDlg::OnFileLoadList()
@@ -2628,108 +2620,3 @@ void CMainDlg::FinishConvert()
         ::ShutdownWindows();
     }
 }
-
-#ifdef DEBUG
-
-void CMainDlg::TraceConvert()
-{
-    CWorkerContext *pTraceWorkerContext = new CTraceWorkerContext(&this->m_Config);
-
-    pTraceWorkerContext->bDone = false;
-
-    ::SetCurrentDirectory(mainApp.szSettingsPath);
-
-    this->GetOptions();
-    this->GetItems();
-
-    pTraceWorkerContext->pConfig = &this->m_Config;
-
-    int nItems = this->m_Config.m_Items.Count();
-    if (nItems <= 0)
-        return;
-
-    int nChecked = 0;
-    for (int i = 0; i < nItems; i++)
-    {
-        CItem& item = this->m_Config.m_Items.Get(i);
-        if (item.bChecked == true)
-        {
-            nChecked++;
-        }
-    }
-
-    if (nChecked <= 0)
-        return;
-
-    CItemContext *pItemsContext = new CItemContext[nItems];
-
-    pTraceWorkerContext->bRunning = true;
-
-    pTraceWorkerContext->nTotalFiles = 0;
-    pTraceWorkerContext->nProcessedFiles = 0;
-    pTraceWorkerContext->nDoneWithoutError = 0;
-    pTraceWorkerContext->nErrors = 0;
-    pTraceWorkerContext->pQueue = new CObList();
-    pTraceWorkerContext->nLastItemId = -1;
-
-    for (int i = 0; i < nItems; i++)
-    {
-        CItem& item = pTraceWorkerContext->pConfig->m_Items.Get(i);
-        if (item.bChecked == true)
-        {
-            item.ResetProgress();
-            pItemsContext[i].pWorkerContext = pTraceWorkerContext;
-            pItemsContext[i].item = &item;
-            pTraceWorkerContext->pQueue->AddTail(&pItemsContext[i]);
-            pTraceWorkerContext->nTotalFiles++;
-        }
-        else
-        {
-            item.nProgress = 100;
-            item.nPreviousProgress = 100;
-        }
-    }
-
-    pTraceWorkerContext->nThreadCount = 1;
-    pTraceWorkerContext->pSync = new CSynchronize();
-    pTraceWorkerContext->pSyncDir = new CSynchronize();
-    pTraceWorkerContext->Init();
-
-    while (!pTraceWorkerContext->pQueue->IsEmpty())
-    {
-        try
-        {
-            CItemContext* pContext = (CItemContext*)pTraceWorkerContext->pQueue->RemoveHead();
-            if (pContext != nullptr)
-            {
-                pTraceWorkerContext->Next(pContext->item->nId);
-                if (this->m_Worker.ConvertItem(pContext) == true)
-                {
-                    pTraceWorkerContext->nDoneWithoutError++;
-                }
-                else
-                {
-                    if (pTraceWorkerContext->pConfig->m_Options.bStopOnErrors == true)
-                        break;
-                }
-
-                if (pTraceWorkerContext->bRunning == false)
-                    break;
-            }
-        }
-        catch (...)
-        {
-            break;
-        }
-    }
-
-    delete pTraceWorkerContext->pSync;
-    delete pTraceWorkerContext->pSyncDir;
-    delete pTraceWorkerContext->pQueue;
-    delete[] pItemsContext;
-
-    pTraceWorkerContext->Done();
-    pTraceWorkerContext->bDone = true;
-}
-
-#endif

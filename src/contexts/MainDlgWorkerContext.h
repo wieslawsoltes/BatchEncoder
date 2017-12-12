@@ -11,19 +11,19 @@
 #include "dialogs\MainDlg.h"
 #include "Strings.h"
 
-class CProgressWorkerContext : public CWorkerContext
+class CMainDlgWorkerContext : public CWorkerContext
 {
 private:
     CTimeCount timer;
     CMainDlg *pDlg;
 public:
-    CProgressWorkerContext(CConfiguration* pConfig, CMainDlg* pDlg)
+    CMainDlgWorkerContext(CConfiguration* pConfig, CMainDlg* pDlg)
         : CWorkerContext(pConfig)
     {
         this->bDone = true;
         this->pDlg = pDlg;
     }
-    virtual ~CProgressWorkerContext()
+    virtual ~CMainDlgWorkerContext()
     {
     }
 public:
