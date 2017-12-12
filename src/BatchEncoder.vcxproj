@@ -142,7 +142,7 @@ copy /Y ..\config\formats\*.format $(OutDir)formats\
 copy /Y ..\config\lang\*.language $(OutDir)lang\
 copy /Y ..\config\progress\*.progress $(OutDir)progress\
 copy /Y ..\config\tools\*.tool $(OutDir)tools\
-rem copy /Y ..\setup\*.portable $(OutDir)</Command>
+copy /Y ..\setup\*.portable $(OutDir)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -190,7 +190,7 @@ copy /Y ..\config\formats\*.format $(OutDir)formats\
 copy /Y ..\config\lang\*.language $(OutDir)lang\
 copy /Y ..\config\progress\*.progress $(OutDir)progress\
 copy /Y ..\config\tools\*.tool $(OutDir)tools\
-rem copy /Y ..\setup\*.portable $(OutDir)</Command>
+copy /Y ..\setup\*.portable $(OutDir)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -239,7 +239,7 @@ copy /Y ..\config\formats\*.format $(OutDir)formats\
 copy /Y ..\config\lang\*.language $(OutDir)lang\
 copy /Y ..\config\progress\*.progress $(OutDir)progress\
 copy /Y ..\config\tools\*.tool $(OutDir)tools\
-rem copy /Y ..\setup\*.portable $(OutDir)</Command>
+copy /Y ..\setup\*.portable $(OutDir)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -289,7 +289,7 @@ copy /Y ..\config\formats\*.format $(OutDir)formats\
 copy /Y ..\config\lang\*.language $(OutDir)lang\
 copy /Y ..\config\progress\*.progress $(OutDir)progress\
 copy /Y ..\config\tools\*.tool $(OutDir)tools\
-rem copy /Y ..\setup\*.portable $(OutDir)</Command>
+copy /Y ..\setup\*.portable $(OutDir)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
