@@ -15,12 +15,8 @@
 class CWorker
 {
 public:
-    CWorker()
-    {
-    }
-    virtual ~CWorker()
-    {
-    }
+    CWorker() { }
+    virtual ~CWorker() { }
 public:
     bool ProgresssLoop(CFileContext* pContext, CPipe &Stderr, int &nProgress);
     bool ReadLoop(CPipeContext* pContext);
