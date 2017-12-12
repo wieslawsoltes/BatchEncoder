@@ -36,7 +36,6 @@ BOOL CMainApp::InitInstance()
 {
     INITCOMMONCONTROLSEX InitCtrls;
     InitCtrls.dwSize = sizeof(InitCtrls);
-
     InitCtrls.dwICC = ICC_WIN95_CLASSES;
     InitCommonControlsEx(&InitCtrls);
 
