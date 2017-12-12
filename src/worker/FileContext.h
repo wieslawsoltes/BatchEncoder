@@ -18,22 +18,10 @@ public:
     bool bUseReadPipes;
     bool bUseWritePipes;
 public:
-    CFileContext()
-    {
-    }
-    virtual ~CFileContext()
-    {
-    }
+    CFileContext() { }
+    virtual ~CFileContext() { }
 public:
-    void Init(
-        CWorkerContext *pWorkerContext,
-        CFormat *pFormat,
-        int nPreset,
-        int nItemId,
-        CString szInputFile,
-        CString szOutputFile,
-        bool bUseReadPipes,
-        bool bUseWritePipes)
+    void Init(CWorkerContext *pWorkerContext, CFormat *pFormat, int nPreset, int nItemId, CString szInputFile, CString szOutputFile, bool bUseReadPipes, bool bUseWritePipes)
     {
         CPreset& preset = pFormat->m_Presets.Get(nPreset);
 
