@@ -1808,6 +1808,10 @@ void CMainDlg::SetOptions()
     // option: FormatsDialogResize
 
     // option: FormatsListColumns
+
+    // option: ToolsDialogResize
+
+    // option: ToolsListColumns
 }
 
 bool CMainDlg::LoadOptions(CString szFileXml)
