@@ -24,6 +24,7 @@ public:
     CString szSettingsPath;
 public:
     CString szFormatsPath;
+    CString szPresetsPath;
     CString szLanguagesPath;
     CString szProgressPath;
     CString szToolsPath;

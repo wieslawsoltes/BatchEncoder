@@ -50,6 +50,7 @@ BOOL CMainApp::InitInstance()
         this->szSettingsPath = ::GetExeFilePath();
 
         this->szFormatsPath = this->szSettingsPath + _T("formats");
+        this->szPresetsPath = this->szSettingsPath + _T("presets");
         this->szLanguagesPath = this->szSettingsPath + _T("lang");
         this->szProgressPath = this->szSettingsPath + _T("progress");
         this->szToolsPath = this->szSettingsPath + _T("tools");
@@ -57,6 +58,7 @@ BOOL CMainApp::InitInstance()
         try
         {
             ::CreateDirectory(this->szFormatsPath, NULL);
+            ::CreateDirectory(this->szPresetsPath, NULL);
             ::CreateDirectory(this->szLanguagesPath, NULL);
             ::CreateDirectory(this->szProgressPath, NULL);
             ::CreateDirectory(this->szToolsPath, NULL);
@@ -75,6 +77,7 @@ BOOL CMainApp::InitInstance()
         this->szSettingsPath = GetSettingsFilePath(_T(""), szConfigDir);
 
         this->szFormatsPath = GetSettingsFilePath(_T(""), szConfigDir + _T("\\formats"));
+        this->szPresetsPath = GetSettingsFilePath(_T(""), szConfigDir + _T("\\presets"));
         this->szLanguagesPath = GetSettingsFilePath(_T(""), szConfigDir + _T("\\lang"));
         this->szProgressPath = GetSettingsFilePath(_T(""), szConfigDir + _T("\\progress"));
         this->szToolsPath = GetSettingsFilePath(_T(""), szConfigDir + _T("\\tools"));
@@ -83,6 +86,7 @@ BOOL CMainApp::InitInstance()
         {
             ::CreateDirectory(szSettingsPath, NULL);
             ::CreateDirectory(szFormatsPath, NULL);
+            ::CreateDirectory(szPresetsPath, NULL);
             ::CreateDirectory(szLanguagesPath, NULL);
             ::CreateDirectory(szProgressPath, NULL);
             ::CreateDirectory(szToolsPath, NULL);
