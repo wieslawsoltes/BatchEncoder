@@ -11,6 +11,8 @@
 #include "controls\MyEdit.h"
 #include "controls\MyStatic.h"
 #include "controls\MyStatusBarCtrl.h"
+#include "controls\MySpinButtonCtrl.h"
+#include "controls\MyProgressCtrl.h"
 #include "controls\MyDialogEx.h"
 #include "utilities\TimeCount.h"
 #include "worker\WorkerContext.h"
@@ -74,8 +76,8 @@ public:
     CMyListCtrl m_LstInputItems;
     CMyButton m_BtnBrowse;
     CMyEdit m_EdtThreads;
-    CSpinButtonCtrl m_SpinThreads;
-    CProgressCtrl m_Progress;
+    CMySpinButtonCtrl m_SpinThreads;
+    CMyProgressCtrl m_Progress;
     CMyButton m_BtnConvert;
     CMyStatusBarCtrl m_StatusBar;
 public:
