@@ -1,5 +1,8 @@
 ﻿# Changelog
 
+### Version 2.1
+- Updated tools download urls.
+
 ### Version 2.0
 
 - Added configure tools dialog.
