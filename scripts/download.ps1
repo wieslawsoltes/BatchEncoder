@@ -21,7 +21,7 @@ Param(
 $Tools = 
 @(
     # SSRC
-    ( "http://shibatch.sourceforge.net/download/ssrc-1.33.tar.gz", "ssrc-1.33.tar.gz" ),
+    ( "https://raw.githubusercontent.com/shibatch/SSRC/master/bin/ssrc.exe", "ssrc.exe" ),
     # LAME
     ( "http://www.rarewares.org/files/mp3/lame3.100.zip", "lame3.100.zip" ),
     ( "http://www.rarewares.org/files/mp3/lame3.100-64.zip", "lame3.100-64.zip" ),
@@ -77,7 +77,9 @@ $Tools =
     # ffdcaenc
     ( "https://github.com/filler56789/ffdcaenc-2/files/299448/ffdcaenc.zip", "ffdcaenc.zip" ),
     # eac3to
-    ( "http://madshi.net/eac3to.zip", "eac3to.zip" )
+    ( "http://madshi.net/eac3to.zip", "eac3to.zip" ),
+    # NeroAACCodec
+    ( "http://ftp6.nero.com/tools/NeroAACCodec-1.5.1.zip", "NeroAACCodec-1.5.1.zip" )
 )
 
 if(!(Test-Path -Path $Path )) {
