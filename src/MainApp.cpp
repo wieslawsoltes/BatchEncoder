@@ -7,7 +7,7 @@
 #include "dialogs\MainDlg.h"
 #include "utilities\Utilities.h"
 
-CMainApp mainApp;
+CMainApp m_App;
 
 BEGIN_MESSAGE_MAP(CMainApp, CWinAppEx)
     ON_COMMAND(ID_HELP, CWinAppEx::OnHelp)

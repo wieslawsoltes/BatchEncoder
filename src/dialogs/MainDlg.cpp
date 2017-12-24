@@ -364,10 +364,10 @@ BOOL CMainDlg::OnInitDialog()
 
     try
     {
-        this->LoadTools(mainApp.szToolsFile);
-        this->LoadFormats(mainApp.szFormatsFile);
+        this->LoadTools(m_App.szToolsFile);
+        this->LoadFormats(m_App.szFormatsFile);
 
-        if (this->LoadOptions(mainApp.szOptionsFile) == false)
+        if (this->LoadOptions(m_App.szOptionsFile) == false)
         {
             this->m_Config.m_Options.Defaults();
             this->SetOptions();
@@ -375,11 +375,11 @@ BOOL CMainDlg::OnInitDialog()
             this->UpdatePresetComboBox();
         }
 
-        this->SearchFolderForLanguages(mainApp.szSettingsPath);
-        this->SearchFolderForLanguages(mainApp.szLanguagesPath);
+        this->SearchFolderForLanguages(m_App.szSettingsPath);
+        this->SearchFolderForLanguages(m_App.szLanguagesPath);
         this->InitLanguageMenu();
         this->SetLanguage();
-        this->LoadItems(mainApp.szItemsFile);
+        this->LoadItems(m_App.szItemsFile);
     }
     catch (...) {}
 
@@ -439,10 +439,10 @@ void CMainDlg::OnClose()
     {
         try
         {
-            this->SaveTools(mainApp.szToolsFile);
-            this->SaveFormats(mainApp.szFormatsFile);
-            this->SaveOptions(mainApp.szOptionsFile);
-            this->SaveItems(mainApp.szItemsFile);
+            this->SaveTools(m_App.szToolsFile);
+            this->SaveFormats(m_App.szFormatsFile);
+            this->SaveOptions(m_App.szOptionsFile);
+            this->SaveItems(m_App.szItemsFile);
         }
         catch (...) {}
     }
@@ -1693,7 +1693,7 @@ void CMainDlg::SetOptions()
     }
     else
     {
-        m_Config.m_Options.szOutputPath = mainApp.szSettingsPath;
+        m_Config.m_Options.szOutputPath = m_App.szSettingsPath;
         szLastBrowse = m_Config.m_Options.szOutputPath;
         this->m_CmbOutPath.SetWindowText(m_Config.m_Options.szOutputPath);
     }
@@ -2519,7 +2519,7 @@ void CMainDlg::StartConvert()
 
         m_StatusBar.SetText(_T(""), 1, 0);
 
-        ::SetCurrentDirectory(mainApp.szSettingsPath);
+        ::SetCurrentDirectory(m_App.szSettingsPath);
 
         this->GetOptions();
         this->GetItems();
@@ -2610,9 +2610,9 @@ void CMainDlg::FinishConvert()
         {
             try
             {
-                this->SaveFormats(mainApp.szFormatsFile);
-                this->SaveOptions(mainApp.szOptionsFile);
-                this->SaveItems(mainApp.szItemsFile);
+                this->SaveFormats(m_App.szFormatsFile);
+                this->SaveOptions(m_App.szOptionsFile);
+                this->SaveItems(m_App.szItemsFile);
             }
             catch (...) {}
         }

@@ -35,4 +35,4 @@ public:
     CString szToolsFile;
 };
 
-extern CMainApp mainApp;
+extern CMainApp m_App;
