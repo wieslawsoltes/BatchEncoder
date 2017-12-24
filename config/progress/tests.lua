@@ -320,3 +320,12 @@ p = GetProgress("Done.")
 print(p)
 p = GetProgress("process: 88%")
 print(p)
+
+--- GetProgress_AvsDec
+
+function GetProgress(s) 
+  return string.match(s, '^Progress: (%d+)%%');
+end
+
+p = GetProgress("Progress: 100% (265533250/265533250)")
+print(p)
