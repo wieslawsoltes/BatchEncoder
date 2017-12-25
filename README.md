@@ -422,6 +422,7 @@ Open BatchEncoder.sln in Visual Studios 2017 or above.
 ### Dependencies
 
 * [MfcToolkit](https://github.com/wieslawsoltes/MfcToolkit)
+* [AvsDec](https://github.com/wieslawsoltes/AvsDec)
 * [TinyXml-2 v5.0.1](https://github.com/leethomason/tinyxml2)
 * [Lua v5.3.4](http://www.lua.org/ftp/)
 
