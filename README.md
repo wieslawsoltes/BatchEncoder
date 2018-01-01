@@ -190,6 +190,8 @@ adds input and output file paths. For specific options for each format use help 
 | FFMPEG       | DTS        | 3.4             | ffmpeg.exe        | yes      | yes      | - none -                          |
 | FFMPEG       | DTSHD      | 3.4             | ffmpeg.exe        | yes      | yes      | - none -                          |
 | FFMPEG       | TRUEHD     | 3.4             | ffmpeg.exe        | yes      | yes      | - none -                          |
+| FFMPEG       | MKA        | 3.4             | ffmpeg.exe        | yes      | yes      | - none -                          |
+| AVSDEC       | AVS        | 1.0             | AvsDec.exe        | no       | no       | GetProgress_AvsDec.progress       |
 
 ### Tool downloads
 
@@ -235,6 +237,7 @@ If you having problems running the PowerShell `download.ps1` script see this [in
 | FFMPEG          | [https://ffmpeg.zeranoe.com/builds/](https://ffmpeg.zeranoe.com/builds/)                                                            |
 | FFDCAENC        | [https://github.com/filler56789/ffdcaenc-2](https://github.com/filler56789/ffdcaenc-2/releases)                                     |
 | EAC3TO          | [http://forum.doom9.org/showthread.php?t=125966](http://forum.doom9.org/showthread.php?t=125966)                                    |
+| AVSDEC          | [https://github.com/wieslawsoltes/AvsDec/releases](https://github.com/wieslawsoltes/AvsDec/releases)                                |
 
 ## Configuration files
 
