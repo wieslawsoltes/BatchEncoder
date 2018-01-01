@@ -3,7 +3,7 @@
 ### Version 2.2
 
 - Added AvsDec tool to support .avs Avisynth scripts.
-- Added .mka deocoder support using ffmpeg.
+- Added .mka decoder support using ffmpeg.
 
 ### Version 2.1
 
