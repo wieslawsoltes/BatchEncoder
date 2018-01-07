@@ -4,6 +4,7 @@
 
 - Added AvsDec tool to support .avs Avisynth scripts.
 - Added .mka decoder support using ffmpeg.
+- Added Japanese translation.
 
 ### Version 2.1
 

@@ -377,6 +377,7 @@ The default progress functions sources can be found [here](https://github.com/wi
 * [Polish (pl-PL)](https://github.com/wieslawsoltes/BatchEncoder/blob/master/config/lang/pl-PL.language) by Wiesław Šoltés
 * [Korean (ko-KR)](https://github.com/wieslawsoltes/BatchEncoder/blob/master/config/lang/ko-KR.language) by JaeHyung Lee
 * [Spanish (es-ES)](https://github.com/wieslawsoltes/BatchEncoder/blob/master/config/lang/es-ES.language) by Overdrive80, tebasuna51
+* [Japanese (ja-JP)](https://github.com/wieslawsoltes/BatchEncoder/blob/master/config/lang/ko-KR.language) by nihongoka.com
 
 Use only UTF-8 compatible text editors (e.g. Notepad or Visual Studio Code) to edit xml language files
 and [use special characters in XML](https://www.dvteclipse.com/documentation/svlinter/How_to_use_special_characters_in_XML.3F.html#gsc.tab=0).

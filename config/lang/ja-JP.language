@@ -1,0 +1,302 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Language id="ja-JP" original="Japanese" translated="日本語">
+
+    <!-- File Menu -->
+
+    <String key="0x00010001" value="ファイル(&amp;F)" />
+    <String key="0x00010002" value="リストの読み込み(&amp;L)...	Ctrl+L" />
+    <String key="0x00010003" value="リストの保存(&amp;S)...	Ctrl+S" />
+    <String key="0x00010004" value="リストのクリア(&amp;E)	Ctrl+E" />
+    <String key="0x00010005" value="終了(&amp;X)		Alt+F4" />
+
+    <!-- Edit Menu -->
+
+    <String key="0x00020001" value="編集(&amp;E)" />
+    <String key="0x00020002" value="ファイルの追加(&amp;A)...	F5" />
+    <String key="0x00020003" value="フォルダーの追加(&amp;C)...	F6" />
+    <String key="0x00020004" value="名前の変更(&amp;M)	F2" />
+    <String key="0x00020005" value="時間・ステータスのリセット(&amp;T)	F3" />
+    <String key="0x00020006" value="出力・プリセットのリセット(&amp;P)	F4" />
+    <String key="0x00020007" value="削除(&amp;R)	DEL" />
+    <String key="0x00020008" value="クロップ(&amp;P)	INS" />
+    <String key="0x00020009" value="チェック項目の削除(&amp;K)	Ctrl++" />
+    <String key="0x0002000A" value="チェック項目以外の削除(&amp;H)	Ctrl+-" />
+    <String key="0x0002000B" value="選択項目をチェック(&amp;E)	Shift++" />
+    <String key="0x0002000C" value="選択項目をチェック解除(&amp;U)	Shift+-" />
+    <String key="0x0002000D" value="すべて選択(&amp;S)	Ctrl+A" />
+    <String key="0x0002000E" value="何も選択しない(&amp;N)	Ctrl+N" />
+    <String key="0x0002000F" value="選択反転(&amp;I)	Ctrl+I" />
+    <String key="0x00020010" value="ファイルを開く(&amp;O)..." />
+    <String key="0x00020011" value="フォルダーを開く(&amp;D)..." />
+
+    <!-- Action Menu -->
+
+    <String key="0x00030001" value="実行(&amp;A)" />
+    <String key="0x00030002" value="変換(&amp;R)	F9" />
+    <String key="0x00030003" value="停止(&amp;T)	F9" />
+
+    <!-- Options Menu -->
+
+    <String key="0x00040001" value="オプション(&amp;O)" />
+    <String key="0x00040002" value="プリセットの設定(&amp;P)...	F7" />
+    <String key="0x00040003" value="形式の設定(&amp;F)...	F8" />
+    <String key="0x00040004" value="変換元のファイルを削除(&amp;D)" />
+    <String key="0x00040005" value="変換終了時にシャットダウン(&amp;S)" />
+    <String key="0x00040006" value="終了時に設定を保存しない(&amp;X)" />
+    <String key="0x00040007" value="エラー時には出力ファイルを削除(&amp;O)" />
+    <String key="0x00040008" value="エラー時には変換を停止(&amp;C)" />
+    <String key="0x00040009" value="コンソールウィンドウを表示しない(&amp;H)" />
+    <String key="0x0004000A" value="項目が見えるようにする(&amp;E)" />
+    <String key="0x0004000B" value="デコーダーの検索を試みる(&amp;T)" />
+    <String key="0x0004000C" value="入力ファイルの正当性を確認(&amp;V)" />
+    <String key="0x0004000D" value="既存のファイルを上書き(&amp;R)" />
+    <String key="0x0004000E" value="ツールの設定(&amp;L)...	F10" />
+
+    <!-- Language Menu -->
+
+    <String key="0x00050001" value="言語(&amp;L)" />
+    <String key="0x00050002" value="デフォルト (英語)(&amp;D)" />
+
+    <!-- Help Menu -->
+
+    <String key="0x00060001" value="ヘルプ(&amp;H)" />
+    <String key="0x00060002" value="Webページ(&amp;W)..." />
+    <String key="0x00060003" value="バージョン情報(&amp;A)..." />
+
+    <!-- Main Dialog -->
+
+    <String key="0x000A0001" value="名前" />
+    <String key="0x000A0002" value="入力" />
+    <String key="0x000A0003" value="サイズ (bytes)" />
+    <String key="0x000A0004" value="出力" />
+    <String key="0x000A0005" value="プリセット#" />
+    <String key="0x000A0006" value="時間" />
+    <String key="0x000A0007" value="ステータス" />
+
+    <String key="0x000A0010" value="BatchEncoder" />
+    <String key="0x000A0011" value="出力" />
+    <String key="0x000A0012" value="形式:" />
+    <String key="0x000A0013" value="プリセット:" />
+    <String key="0x000A0014" value="出力先:" />
+    <String key="0x000A0015" value="&amp;..." />
+    <String key="0x000A0016" value="スレッド数 (0=自動):" />
+    <String key="0x000A0017" value="変換開始(&amp;R)" />
+    <String key="0x000A0018" value="変換停止(&amp;T)" />
+
+    <!-- Presets Dialog -->
+
+    <String key="0x000B0001" value="名前" />
+    <String key="0x000B0002" value="オプション" />
+
+    <String key="0x000B0010" value="プリセットの設定" />
+    <String key="0x000B0011" value="キャンセル(&amp;C)" />
+    <String key="0x000B0012" value="名前:" />
+    <String key="0x000B0013" value="コマンドラインオプション:" />
+    <String key="0x000B0014" value="上に移動(&amp;U)" />
+    <String key="0x000B0015" value="下に移動(&amp;N)" />
+    <String key="0x000B0016" value="すべて削除(&amp;T)" />
+    <String key="0x000B0017" value="削除(&amp;D)" />
+    <String key="0x000B0018" value="追加(&amp;A)" />
+    <String key="0x000B0019" value="読み込み(&amp;L)" />
+    <String key="0x000B001A" value="保存(&amp;V)" />
+    <String key="0x000B001B" value="変更(&amp;H)" />
+    <String key="0x000B001C" value="OK(&amp;O)" />
+    <String key="0x000B001D" value="複製(&amp;P)" />
+
+    <!-- Formats Dialog -->
+
+    <String key="0x000C0001" value="名前" />
+    <String key="0x000C0002" value="テンプレート" />
+
+    <String key="0x000C0010" value="形式の設定" />
+    <String key="0x000C0011" value="キャンセル(&amp;C)" />
+    <String key="0x000C0012" value="エンコーダー" />
+    <String key="0x000C0013" value="デコーダー" />
+    <String key="0x000C0014" value="タイプ:" />
+    <String key="0x000C0015" value="入力" />
+    <String key="0x000C0016" value="出力" />
+    <String key="0x000C0017" value="パイプ:" />
+    <String key="0x000C0018" value="ID:" />
+    <String key="0x000C0019" value="名前:" />
+    <String key="0x000C001A" value="出力拡張子:" />
+    <String key="0x000C001B" value="入力拡張子 (コンマ区切り):" />
+    <String key="0x000C001C" value="デフォルトのプリセット:" />
+    <String key="0x000C001D" value="コマンドライン実行ファイルの場所:" />
+    <String key="0x000C001E" value="&amp;..." />
+    <String key="0x000C001F" value="コマンドラインのテンプレート:" />
+    <String key="0x000C0020" value="進捗機能:" />
+    <String key="0x000C0021" value="..." />
+    <String key="0x000C0022" value="上に移動(&amp;U)" />
+    <String key="0x000C0023" value="下に移動(&amp;N)" />
+    <String key="0x000C0024" value="すべて削除(&amp;T)" />
+    <String key="0x000C0025" value="削除(&amp;D)" />
+    <String key="0x000C0026" value="追加(&amp;A)" />
+    <String key="0x000C0027" value="読み込み(&amp;L)" />
+    <String key="0x000C0028" value="保存(&amp;S)" />
+    <String key="0x000C0029" value="変更(&amp;H)" />
+    <String key="0x000C002A" value="OK(&amp;O)" />
+    <String key="0x000C002B" value="成功時の終了コード:" />
+    <String key="0x000C002C" value="プリセット編集(&amp;E)" />
+    <String key="0x000C002D" value="インポート(&amp;I)" />
+    <String key="0x000C002E" value="エクスポート(&amp;X)" />
+    <String key="0x000C002F" value="複製(&amp;P)" />
+
+    <!-- Tools Dialog -->
+
+    <String key="0x000E0001" value="名前" />
+    <String key="0x000E0002" value="URL" />
+    <String key="0x000E0003" value="ステータス" />
+
+    <String key="0x000E0010" value="ツールの設定" />
+    <String key="0x000E0011" value="キャンセル(&amp;C)" />
+    <String key="0x000E0012" value="名前:" />
+    <String key="0x000E0013" value="プラットフォーム:" />
+    <String key="0x000E0014" value="対応形式 (コンマ区切り):" />
+    <String key="0x000E0015" value="ダウンロードURL:" />
+    <String key="0x000E0016" value="ダウンロードファイル名:" />
+    <String key="0x000E0017" value="展開方法:" />
+    <String key="0x000E0018" value="展開パス:" />
+    <String key="0x000E0019" value="上に移動(&amp;U)" />
+    <String key="0x000E001A" value="下に移動(&amp;N)" />
+    <String key="0x000E001B" value="インポート(&amp;I)" />
+    <String key="0x000E001C" value="エクスポート(&amp;X)" />
+    <String key="0x000E001D" value="複製(&amp;P)" />
+    <String key="0x000E001E" value="すべて削除(&amp;T)" />
+    <String key="0x000E001F" value="削除(&amp;D)" />
+    <String key="0x000E0020" value="追加(&amp;A)" />
+    <String key="0x000E0021" value="読み込み(&amp;L)" />
+    <String key="0x000E0022" value="名前を付けて保存(&amp;S)" />
+    <String key="0x000E0023" value="ダウンロード(&amp;W)" />
+    <String key="0x000E0024" value="ダウンロード停止(&amp;W)" />
+    <String key="0x000E0025" value="パスの設定(&amp;E)" />
+    <String key="0x000E0026" value="x86パスのセット(&amp;8)" />
+    <String key="0x000E0027" value="x64パスのセット(&amp;6)" />
+    <String key="0x000E0028" value="変更(&amp;H)" />
+    <String key="0x000E0029" value="OK(&amp;O)" />
+
+    <!-- About Dialog -->
+
+    <String key="0x000D0010" value="BatchEncoder バージョン情報" />
+    <String key="0x000D0011" value="OK(&amp;O) " />
+    <String key="0x000D0012" value="Licensed under the MIT license. See LICENSE file in the application root for full license information." />
+
+    <!-- Strings Work Thread -->
+
+    <String key="0x00110001" value="エラー: 進捗スクリプトが読み込めません。" />
+    <String key="0x00110002" value="エラー: 進捗機能が見つかりません。" />
+    <String key="0x00110003" value="エラー: コンソール行が大きすぎるため、バッファーに読み込むことができません。" />
+
+    <String key="0x00120001" value="エラー: 形式パイプの設定が正しくありません。" />
+    <String key="0x00120002" value="エラー: 標準エラーのパイプが作成できません。" />
+    <String key="0x00120003" value="エラー: 子プロセスのパイプ閉塞処理により、標準エラーのパイプが複製できません。" />
+    <String key="0x00120004" value="エラー: コマンドラインプロセス(%d)が作成できません。" />
+    <String key="0x00120005" value="エラー: 進捗状況が100％達しませんでした。" />
+    <String key="0x00120006" value="完了" />
+
+    <String key="0x00130001" value="エラー: パイプ設定の形式が正しくありません。" />
+    <String key="0x00130002" value="エラー: 標準入力のパイプが作成できません。" />
+    <String key="0x00130003" value="エラー: 標準入力パイプの継承フラグがセットできません。" />
+    <String key="0x00130004" value="エラー: 標準出力のパイプが作成できません。" />
+    <String key="0x00130005" value="エラー: 標準出力パイプの継承フラグがセットできません。" />
+    <String key="0x00130006" value="エラー: コマンドラインプロセス(%d)が作成できません。" />
+    <String key="0x00130007" value="エラー: 読み込みスレッドが作成できません。" />
+    <String key="0x00130008" value="エラー: 書き込みスレッドが作成できません。" />
+    <String key="0x00130009" value="エラー: 進捗状況が100％達しませんでした。" />
+    <String key="0x0013000A" value="エラー: プロセス接続のパイプが作成できませんでした。" />
+    <String key="0x0013000B" value="完了" />
+
+    <String key="0x00140001" value="エラー: 入力ファイルが見つかりません。" />
+    <String key="0x00140002" value="エラー: IDによる正しいエンコーダーが見つかりません。" />
+    <String key="0x00140003" value="エラー: エンコーダー形式のプリセットが見つかりません。" />
+    <String key="0x00140004" value="エラー: 拡張子による正しいデコーダーが見つかりません。" />
+    <String key="0x00140005" value="エラー: デコーダー形式のプリセットが見つかりません。" />
+    <String key="0x00140006" value="エラー: エンコーダーがデコーダー出力に対応していません。" />
+    <String key="0x00140007" value="デコードしています..." />
+    <String key="0x00140008" value="エラー: デコードされたファイルが見つかりません。" />
+    <String key="0x00140009" value="エラー: ファイルの変換中に例外が発生しました。" />
+    <String key="0x0014000A" value="エンコードしています..." />
+    <String key="0x0014000B" value="デコードしています..." />
+    <String key="0x0014000C" value="変換しています..." />
+    <String key="0x0014000D" value="エラー: エンコードされたファイルが見つかりません。" />
+    <String key="0x0014000E" value="エラー: ファイルの変換中に例外が発生しました。" />
+    <String key="0x0014000F" value="出力先のフォルダーを作成できません。" />
+    <String key="0x00140010" value="出力ファイルが既に存在しています。" />
+
+    <!-- Strings Worker Context -->
+
+    <String key="0x00190001" value="エラー" />
+    <String key="0x00190002" value="エラー" />
+    <String key="0x00190003" value="項目 %d / %d を処理しています (%d 完了, %d %s)" />
+    <String key="0x00190004" value="項目 %d / %d を処理しました (%d 完了, %d %s) in %s" />
+
+    <!-- Strings Main Dialog -->
+
+    <String key="0x00210001" value="未完了" />
+    <String key="0x00210002" value="項目" />
+    <String key="0x00210003" value="項目" />
+    <String key="0x00210004" value="項目なし" />
+    <String key="0x00210005" value="サブフォルダーを含める" />
+    <String key="0x00210006" value="出力フォルダー:" />
+    <String key="0x00210007" value="ファイルの読み込みに失敗しました。" />
+    <String key="0x00210008" value="ファイルの保存に失敗しました。" />
+    <String key="0x00210009" value="ファイル名バッファーのメモリー割り当てに失敗しました。" />
+    <String key="0x0021000A" value="フォルダーの選択:" />
+    <String key="0x0021000B" value="言語ファイルの検索でエラーが発生しました。" />
+    <String key="0x0021000C" value="項目ファイルの検索でエラーが発生しました。" />
+    <String key="0x0021000D" value="出力フォルダーを作成できません。" />
+    <String key="0x0021000E" value="スレッドの作成で致命的なエラーが発生しました。" />
+    <String key="0x0021000F" value="出力先のフォルダーの形式が正しくありません。" />
+
+    <!-- Strings Presets Dialog -->
+
+    <String key="0x00220001" value="エラー" />
+    <String key="0x00220002" value="ファイルの読み込みに失敗しました。" />
+    <String key="0x00220003" value="ファイルの保存に失敗しました。" />
+    <String key="0x00220004" value="デフォルト" />
+
+    <!-- Strings Formats Dialog -->
+
+    <String key="0x00230001" value="エラー" />
+    <String key="0x00230002" value="ファイルの読み込みに失敗しました。" />
+    <String key="0x00230003" value="ファイルの保存に失敗しました。" />
+    <String key="0x00230004" value="形式" />
+    <String key="0x00230005" value="デフォルト" />
+
+    <!-- Strings Tools Dialog -->
+
+    <String key="0x00240001" value="エラー" />
+    <String key="0x00240002" value="ファイルの読み込みに失敗しました。" />
+    <String key="0x00240003" value="ファイルの保存に失敗しました。" />
+    <String key="0x00240004" value="ツール" />
+
+    <!-- Strings File Dialogs -->
+
+    <String key="0x00310001" value="すべてのファイル" />
+    <String key="0x00310002" value="XMLファイル" />
+    <String key="0x00310003" value="項目ファイル" />
+    <String key="0x00310004" value="プリセットファイル" />
+    <String key="0x00310005" value="形式ファイル" />
+    <String key="0x00310006" value="実行ファイル" />
+    <String key="0x00310007" value="進捗ファイル" />
+    <String key="0x00310008" value="形式ファイル" />
+    <String key="0x00310009" value="ツールファイル" />
+    <String key="0x00310010" value="ツールファイル" />
+
+    <!-- Strings Download Status -->
+
+    <String key="0x00400001" value="ファイルを検索しています..." />
+    <String key="0x00400002" value="接続しています..." />
+    <String key="0x00400003" value="要求を送っています..." />
+    <String key="0x00400004" value="MIME Typeを利用することができます" />
+    <String key="0x00400005" value="キャッシュファイル名を利用することができます。" />
+    <String key="0x00400006" value="ダウンロードを開始します" />
+    <String key="0x00400007" value="ダウンロードを終了します" />
+    <String key="0x00400008" value="ステータスコード : " />
+
+    <!-- Strings Extract Status -->
+
+    <String key="0x00410001" value="展開先フォルダーの作成に失敗しました。" />
+    <String key="0x00410002" value="ダウンロードしたファイルを展開しました。" />
+    <String key="0x00410003" value="ダウンロードしたファイルの展開に失敗しました。" />
+
+</Language>
