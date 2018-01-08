@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<Format id="REWAVI_AVI_WAV" name="Decode AVI to WAV - rewavi" template="$EXE $INFILE $OUTFILE $OPTIONS" input="false" output="false" function="progress\GetProgress_ReWaviDec.progress" path="tools/rewavi-0.02-Win32/rewavi.exe" success="0" type="1" formats="AVI" extension="WAV" default="0">
+<Format id="REWAVI_AVI_WAV" name="Decode AVI to WAV - rewavi" template="$EXE $INFILE $OUTFILE $OPTIONS" input="false" output="false" function="progress\GetProgress_ReWaviDec.progress" path="tools/rewavi-0.03-Win32/rewavi.exe" success="0" type="1" formats="AVI" extension="WAV" default="0">
     <Presets>
         <Preset name="Auto" options="-x 0"/>
         <Preset name="1ch (FC) Mono" options="-x 4"/>
