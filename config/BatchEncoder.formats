@@ -810,12 +810,12 @@
             <Preset name="Default" options=""/>
         </Presets>
     </Format>
-    <Format id="REWAVI_AVI_RAW" name="Decode AVI to RAW - rewavi" template="$EXE $INFILE $OUTFILE $OPTIONS" input="false" output="false" function="progress\GetProgress_ReWaviDec.progress" path="tools/rewavi-0.02-Win32/rewavi.exe" success="0" type="1" formats="AVI" extension="RAW" default="0">
+    <Format id="REWAVI_AVI_RAW" name="Decode AVI to RAW - rewavi" template="$EXE $INFILE $OUTFILE $OPTIONS" input="false" output="false" function="progress\GetProgress_ReWaviDec.progress" path="tools/rewavi-0.03-Win32/rewavi.exe" success="0" type="1" formats="AVI" extension="RAW" default="0">
         <Presets>
             <Preset name="Default" options="-r"/>
         </Presets>
     </Format>
-    <Format id="REWAVI_AVI_WAV" name="Decode AVI to WAV - rewavi" template="$EXE $INFILE $OUTFILE $OPTIONS" input="false" output="false" function="progress\GetProgress_ReWaviDec.progress" path="tools/rewavi-0.02-Win32/rewavi.exe" success="0" type="1" formats="AVI" extension="WAV" default="0">
+    <Format id="REWAVI_AVI_WAV" name="Decode AVI to WAV - rewavi" template="$EXE $INFILE $OUTFILE $OPTIONS" input="false" output="false" function="progress\GetProgress_ReWaviDec.progress" path="tools/rewavi-0.03-Win32/rewavi.exe" success="0" type="1" formats="AVI" extension="WAV" default="0">
         <Presets>
             <Preset name="Auto" options="-x 0"/>
             <Preset name="1ch (FC) Mono" options="-x 4"/>
@@ -832,12 +832,12 @@
             <Preset name="6ch (BR,BL,LF,FR,FL)" options="-x 59"/>
         </Presets>
     </Format>
-    <Format id="REWAVI_AVS_RAW" name="Decode AVS to RAW - rewavi" template="$EXE $INFILE $OUTFILE $OPTIONS" input="false" output="false" function="progress\GetProgress_ReWaviDec.progress" path="tools/rewavi-0.02-Win32/rewavi.exe" success="0" type="1" formats="AVS" extension="RAW" default="0">
+    <Format id="REWAVI_AVS_RAW" name="Decode AVS to RAW - rewavi" template="$EXE $INFILE $OUTFILE $OPTIONS" input="false" output="false" function="progress\GetProgress_ReWaviDec.progress" path="tools/rewavi-0.03-Win32/rewavi.exe" success="0" type="1" formats="AVS" extension="RAW" default="0">
         <Presets>
             <Preset name="Default" options="-r"/>
         </Presets>
     </Format>
-    <Format id="REWAVI_AVS_WAV" name="Decode AVS to WAV - rewavi" template="$EXE $INFILE $OUTFILE $OPTIONS" input="false" output="false" function="progress\GetProgress_ReWaviDec.progress" path="tools/rewavi-0.02-Win32/rewavi.exe" success="0" type="1" formats="AVS" extension="WAV" default="0">
+    <Format id="REWAVI_AVS_WAV" name="Decode AVS to WAV - rewavi" template="$EXE $INFILE $OUTFILE $OPTIONS" input="false" output="false" function="progress\GetProgress_ReWaviDec.progress" path="tools/rewavi-0.03-Win32/rewavi.exe" success="0" type="1" formats="AVS" extension="WAV" default="0">
         <Presets>
             <Preset name="Auto" options="-x 0"/>
             <Preset name="1ch (FC) Mono" options="-x 4"/>
