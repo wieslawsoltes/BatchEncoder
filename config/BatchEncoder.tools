@@ -61,5 +61,5 @@
     <Tool name="ffdcaenc_x86" platform="x86" formats="FFDCAENC_DTS" url="https://github.com/filler56789/ffdcaenc-2/files/299448/ffdcaenc.zip" file="ffdcaenc.zip" extract="zip" path="tools/ffdcaenc/ffdcaenc/release/ffdcaenc.exe"/>
     <Tool name="eac3to_x86" platform="x86" formats="EAC3TO_AC3,EAC3TO_DTS" url="http://madshi.net/eac3to.zip" file="eac3to.zip" extract="zip" path="tools/eac3to/eac3to.exe"/>
     <Tool name="avsdec_x86" platform="x86" formats="AVSDEC_AVS_RAW" url="https://github.com/wieslawsoltes/AvsDec/releases/download/1.0/AvsDec-1.0-Win32.zip" file="AvsDec-1.0-Win32.zip" extract="zip" path="tools/AvsDec-1.0-Win32/AvsDec.exe"/>
-    <Tool name="avsdec_x64" platform="x86" formats="AVSDEC_AVS_RAW" url="https://github.com/wieslawsoltes/AvsDec/releases/download/1.0/AvsDec-1.0-x64.zip" file="AvsDec-1.0-x64.zip" extract="zip" path="tools/AvsDec-1.0-x64/AvsDec.exe"/>
+    <Tool name="avsdec_x64" platform="x64" formats="AVSDEC_AVS_RAW" url="https://github.com/wieslawsoltes/AvsDec/releases/download/1.0/AvsDec-1.0-x64.zip" file="AvsDec-1.0-x64.zip" extract="zip" path="tools/AvsDec-1.0-x64/AvsDec.exe"/>
 </Tools>
