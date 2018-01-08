@@ -82,7 +82,10 @@ $Tools =
     ( "http://ftp6.nero.com/tools/NeroAACCodec-1.5.1.zip", "NeroAACCodec-1.5.1.zip" ),
     # AvsDec
     ( "https://github.com/wieslawsoltes/AvsDec/releases/download/1.0/AvsDec-1.0-Win32.zip", "AvsDec-1.0-Win32.zip" ),
-    ( "https://github.com/wieslawsoltes/AvsDec/releases/download/1.0/AvsDec-1.0-x64.zip", "AvsDec-1.0-x64.zip" )
+    ( "https://github.com/wieslawsoltes/AvsDec/releases/download/1.0/AvsDec-1.0-x64.zip", "AvsDec-1.0-x64.zip" ),
+    # rewavi
+    ( "https://github.com/wieslawsoltes/rewavi/releases/download/0.04/rewavi-0.04-Win32.zip", "rewavi-0.04-Win32.zip" ),
+    ( "https://github.com/wieslawsoltes/rewavi/releases/download/0.04/rewavi-0.04-x64.zip", "rewavi-0.04-x64.zip" )
 )
 
 if(!(Test-Path -Path $Path )) {
