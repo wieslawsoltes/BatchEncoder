@@ -3,6 +3,8 @@
 ### Version 2.2
 
 - Added AvsDec tool to support .avs Avisynth scripts.
+- Added rewavi tool to support .avs Avisynth scripts.
+- Added rewavi tool to support .avi files.
 - Added .mka decoder support using ffmpeg.
 - Added Japanese translation.
 
