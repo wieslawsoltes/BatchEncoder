@@ -1,6 +1,18 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<Format id="REWAVI_AVS_WAV" name="Decode AVS to WAV - rewavi" template="$EXE $INFILE $OUTFILE" input="false" output="false" function="progress\GetProgress_ReWaviDec.progress" path="tools/rewavi-0.02-Win32/rewavi.exe" success="0" type="1" formats="AVS" extension="WAV" default="0">
+<Format id="REWAVI_AVS_WAV" name="Decode AVS to WAV - rewavi" template="$EXE $INFILE $OUTFILE $OPTIONS" input="false" output="false" function="progress\GetProgress_ReWaviDec.progress" path="tools/rewavi-0.02-Win32/rewavi.exe" success="0" type="1" formats="AVS" extension="WAV" default="0">
     <Presets>
-        <Preset name="Default" options=""/>
+        <Preset name="Auto" options="-x 0"/>
+        <Preset name="1ch (FC) Mono" options="-x 4"/>
+        <Preset name="2ch (FR,FL) Stereo" options="-x 3"/>
+        <Preset name="3ch (BC,FR,FL) First Surround" options="-x 259"/>
+        <Preset name="4ch (BR,BL,FR,FL) Quadro" options="-x 51"/>
+        <Preset name="5ch (BR,BL,FC,FR,FL) like Dpl II (without LFE)" options="-x 55"/>
+        <Preset name="6ch (BR,BL,LF,FC,FR,FL) Standard Surround" options="-x 63"/>
+        <Preset name="7ch (BC,BR,BL,LF,FC,FR,FL) with back center" options="-x 319"/>
+        <Preset name="8ch (FLC,FRC,BR,BL,LF,FC,FR,FL) with front center left/right" options="-x 255"/>
+        <Preset name="3ch (FC,FR,FL)" options="-x 7"/>
+        <Preset name="4ch (C,FC,FR,FL) - like Dpl I" options="-x 263"/>
+        <Preset name="5ch (C,LF,FC,FR,FL)" options="-x 271"/>
+        <Preset name="6ch (BR,BL,LF,FR,FL)" options="-x 59"/>
     </Presets>
 </Format>
