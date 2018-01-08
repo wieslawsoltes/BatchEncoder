@@ -192,6 +192,8 @@ adds input and output file paths. For specific options for each format use help 
 | FFMPEG       | TRUEHD     | 3.4             | ffmpeg.exe        | yes      | yes      | - none -                          |
 | FFMPEG       | MKA        | 3.4             | ffmpeg.exe        | yes      | yes      | - none -                          |
 | AVSDEC       | AVS        | 1.0             | AvsDec.exe        | no       | no       | GetProgress_AvsDec.progress       |
+| REWAVI       | AVS        | 0.02            | rewavi.exe        | no       | yes      | GetProgress_ReWaviDec.progress    |
+| REWAVI       | AVI        | 0.02            | rewavi.exe        | no       | yes      | GetProgress_ReWaviDec.progress    |
 
 ### Tool downloads
 
@@ -227,7 +229,7 @@ If you having problems running the PowerShell `download.ps1` script see this [in
 | WAVPACK         | [http://www.wavpack.com/downloads.html](http://www.wavpack.com/downloads.html)                                                      |
 | WVUNPACK        | [http://www.wavpack.com/downloads.html](http://www.wavpack.com/downloads.html)                                                      |
 | QAAC            | [https://sites.google.com/site/qaacpage/cabinet](https://sites.google.com/site/qaacpage/cabinet)                                    |
-| LA              | [http://www.lossless-audio.com/download.htm](http://www.lossless-audio.com/download.htm)    
+| LA              | [http://www.lossless-audio.com/download.htm](http://www.lossless-audio.com/download.htm)                                            |
 | MAC             | [http://www.monkeysaudio.com/download.html](http://www.monkeysaudio.com/download.html)                                              |
 | OFR             | [http://losslessaudio.org/Downloads.php](http://losslessaudio.org/Downloads.php)                                                    |
 | TTA             | [https://sourceforge.net/projects/tta/files/tta/ttaenc-win/](https://sourceforge.net/projects/tta/files/tta/ttaenc-win/)            |
@@ -238,6 +240,7 @@ If you having problems running the PowerShell `download.ps1` script see this [in
 | FFDCAENC        | [https://github.com/filler56789/ffdcaenc-2](https://github.com/filler56789/ffdcaenc-2/releases)                                     |
 | EAC3TO          | [http://forum.doom9.org/showthread.php?t=125966](http://forum.doom9.org/showthread.php?t=125966)                                    |
 | AVSDEC          | [https://github.com/wieslawsoltes/AvsDec/releases](https://github.com/wieslawsoltes/AvsDec/releases)                                |
+| REWAVI          | [https://github.com/wieslawsoltes/rewavi/releases](https://github.com/wieslawsoltes/rewavi/releases)                                |
 
 ## Configuration files
 
