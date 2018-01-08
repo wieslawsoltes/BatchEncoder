@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<Format id="REWAVI_AVS_RAW" name="Decode AVS to RAW - rewavi" template="$EXE $INFILE $OUTFILE" input="false" output="false" function="progress\GetProgress_ReWaviDec.progress" path="tools/rewavi-0.02-Win32/rewavi.exe" success="0" type="1" formats="AVS" extension="RAW" default="0">
+<Format id="REWAVI_AVS_RAW" name="Decode AVS to RAW - rewavi" template="$EXE $INFILE $OUTFILE -r" input="false" output="false" function="progress\GetProgress_ReWaviDec.progress" path="tools/rewavi-0.02-Win32/rewavi.exe" success="0" type="1" formats="AVS" extension="RAW" default="0">
     <Presets>
         <Preset name="Default" options=""/>
     </Presets>
