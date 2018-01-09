@@ -84,8 +84,8 @@ $Tools =
     ( "https://github.com/wieslawsoltes/AvsDec/releases/download/2.2/AvsDec-2.2-Win32-UNICODE.zip", "AvsDec-2.2-Win32-UNICODE.zip" ),
     ( "https://github.com/wieslawsoltes/AvsDec/releases/download/2.2/AvsDec-2.2-x64-UNICODE.zip", "AvsDec-2.2-x64-UNICODE.zip" ),
     # rewavi
-    ( "https://github.com/wieslawsoltes/rewavi/releases/download/0.05/rewavi-0.05-Win32.zip", "rewavi-0.05-Win32.zip" ),
-    ( "https://github.com/wieslawsoltes/rewavi/releases/download/0.05/rewavi-0.05-x64.zip", "rewavi-0.05-x64.zip" )
+    ( "https://github.com/wieslawsoltes/rewavi/releases/download/0.06/rewavi-0.06-Win32.zip", "rewavi-0.06-Win32.zip" ),
+    ( "https://github.com/wieslawsoltes/rewavi/releases/download/0.06/rewavi-0.06-x64.zip", "rewavi-0.06-x64.zip" )
 )
 
 if(!(Test-Path -Path $Path )) {
