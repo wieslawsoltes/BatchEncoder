@@ -1,0 +1,2 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Tool name="sndfile_convert_x86" platform="x86" formats="" url="http://www.mega-nerd.com/libsndfile/files/libsndfile-1.0.28-w32.zip" file="libsndfile-1.0.28-w32.zip" extract="zip" path="tools/libsndfile-1.0.28-w32/bin/sndfile-convert.exe"/>
