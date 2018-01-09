@@ -1,0 +1,2 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Tool name="twolame_x86" platform="x86" formats="" url="http://www.rarewares.org/files/mp3/twolame0.3.13.zip" file="twolame0.3.13.zip" extract="zip" path="tools/twolame0.3.13/twolame.exe"/>
