@@ -18,10 +18,10 @@ BatchEncoder is an audio files conversion software.
 
 | Platform              | Type        | Version       | Download                                                                                                                               |
 |-----------------------|-------------|---------------|----------------------------------------------------------------------------------------------------------------------------------------|
-| Windows 32-bit        | Installer   | 2.1           | [BatchEncoder-2.1-Win32.exe](https://github.com/wieslawsoltes/BatchEncoder/releases/download/2.1/BatchEncoder-2.1-Win32.exe)           |
-| Windows 64-bit        | Installer   | 2.1           | [BatchEncoder-2.1-x64.exe](https://github.com/wieslawsoltes/BatchEncoder/releases/download/2.1/BatchEncoder-2.1-x64.exe)               |
-| Windows 32-bit        | Portable    | 2.1           | [BatchEncoder-2.1-Win32.zip](https://github.com/wieslawsoltes/BatchEncoder/releases/download/2.1/BatchEncoder-2.1-Win32.zip)           |
-| Windows 64-bit        | Portable    | 2.1           | [BatchEncoder-2.1-x64.zip](https://github.com/wieslawsoltes/BatchEncoder/releases/download/2.1/BatchEncoder-2.1-x64.zip)               |
+| Windows 32-bit        | Installer   | 2.2           | [BatchEncoder-2.2-Win32.exe](https://github.com/wieslawsoltes/BatchEncoder/releases/download/2.2/BatchEncoder-2.2-Win32.exe)           |
+| Windows 64-bit        | Installer   | 2.2           | [BatchEncoder-2.2-x64.exe](https://github.com/wieslawsoltes/BatchEncoder/releases/download/2.2/BatchEncoder-2.2-x64.exe)               |
+| Windows 32-bit        | Portable    | 2.2           | [BatchEncoder-2.2-Win32.zip](https://github.com/wieslawsoltes/BatchEncoder/releases/download/2.2/BatchEncoder-2.2-Win32.zip)           |
+| Windows 64-bit        | Portable    | 2.2           | [BatchEncoder-2.2-x64.zip](https://github.com/wieslawsoltes/BatchEncoder/releases/download/2.2/BatchEncoder-2.2-x64.zip)               |
 
 ## System requirements
 
@@ -192,8 +192,8 @@ adds input and output file paths. For specific options for each format use help 
 | FFMPEG       | TRUEHD     | 3.4             | ffmpeg.exe        | yes      | yes      | - none -                          |
 | FFMPEG       | MKA        | 3.4             | ffmpeg.exe        | yes      | yes      | - none -                          |
 | AVSDEC       | AVS        | 1.0             | AvsDec.exe        | no       | no       | GetProgress_AvsDec.progress       |
-| REWAVI       | AVS        | 0.04            | rewavi.exe        | no       | yes      | GetProgress_ReWaviDec.progress    |
-| REWAVI       | AVI        | 0.04            | rewavi.exe        | no       | yes      | GetProgress_ReWaviDec.progress    |
+| REWAVI       | AVS        | 0.05            | rewavi.exe        | no       | yes      | GetProgress_ReWaviDec.progress    |
+| REWAVI       | AVI        | 0.05            | rewavi.exe        | no       | yes      | GetProgress_ReWaviDec.progress    |
 
 ### Tool downloads
 
