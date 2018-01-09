@@ -1,5 +1,10 @@
 ﻿# Changelog
 
+### Version 2.3
+
+- Added refalac support.
+- Updated rewavi tool.
+
 ### Version 2.2
 
 - Added AvsDec tool to support .avs Avisynth scripts.
