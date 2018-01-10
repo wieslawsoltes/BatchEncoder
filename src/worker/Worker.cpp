@@ -1018,6 +1018,8 @@ bool CWorker::ConvertItem(CItemContext* pContext)
             bool bResult = ConvertFileUsingOnlyPipes(&decoderContext, &encoderContext);
             if (bResult == true)
             {
+				// check if output file exists
+				/*
                 if (::FileExists(szEncOutputFile) == false)
                 {
                     if (bIsValidEncoderInput == false)
@@ -1029,6 +1031,7 @@ bool CWorker::ConvertItem(CItemContext* pContext)
                     pWorkerContext->Status(pContext->item->nId, pszDefaulTime, pWorkerContext->GetString(0x0014000D, pszConvertItem[12]));
                     return false;
                 }
+				*/
 
                 if (pWorkerContext->pConfig->m_Options.bDeleteSourceFiles == true)
                     ::DeleteFile(szEncInputFile);
@@ -1112,6 +1115,8 @@ bool CWorker::ConvertItem(CItemContext* pContext)
                 bResult = ConvertFileUsingPipes(&encoderContext);
             if (bResult == true)
             {
+				// check if output file exists
+				/*
                 if (::FileExists(szEncOutputFile) == false)
                 {
                     if (bIsValidEncoderInput == false)
@@ -1123,6 +1128,7 @@ bool CWorker::ConvertItem(CItemContext* pContext)
                     pWorkerContext->Status(pContext->item->nId, pszDefaulTime, pWorkerContext->GetString(0x0014000D, pszConvertItem[12]));
                     return false;
                 }
+				*/
 
                 if (bIsValidEncoderInput == false)
                     ::DeleteFile(szDecOutputFile);
