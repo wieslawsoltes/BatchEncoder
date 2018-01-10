@@ -4,6 +4,7 @@
 
 - Added refalac support.
 - Updated rewavi tool.
+- Added $OUTPATH variable to format template.
 
 ### Version 2.2
 

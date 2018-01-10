@@ -52,6 +52,10 @@ public:
         else
             szCommandLine = ReplaceNoCase(szCommandLine, _T("$OUTFILE"), szOutputFile);
 
+		CString szOutputPath = ::GetFilePath(szOutputFile);
+		szCommandLine = ReplaceNoCase(szCommandLine, _T("$OUTPATH"), _T("\"$OUTPATH\""));
+		szCommandLine = ReplaceNoCase(szCommandLine, _T("$OUTPATH"), szOutputPath);
+
         ZeroMemory(this->pszCommandLine, sizeof(this->pszCommandLine));
         lstrcpy(this->pszCommandLine, szCommandLine.GetBuffer(szCommandLine.GetLength()));
     }
