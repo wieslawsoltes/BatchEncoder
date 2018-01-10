@@ -685,6 +685,11 @@
             <Preset name="Lossless (Best compression)" options="-h"/>
         </Presets>
     </Format>
+    <Format id="AVSDEC_WAV" name="Split multi-channel WAV file - avsdec" template="$EXE -s $INFILE $OUTPATH" input="false" output="false" function="progress\GetProgress_AvsDec.progress" path="tools/AvsDec-2.3-Win32-UNICODE/AvsDec.exe" success="0" type="0" formats="WAV" extension="" default="0">
+        <Presets>
+            <Preset name="Default" options=""/>
+        </Presets>
+    </Format>
     <Format id="FAAD_AAC_WAV" name="Decode AAC to WAV - faad" template="$EXE -o $OUTFILE $INFILE" input="false" output="false" function="progress\GetProgress_FaadDec.progress" path="tools/faad2-20100614/faad.exe" success="0" type="1" formats="AAC" extension="WAV" default="0">
         <Presets>
             <Preset name="Default" options=""/>
@@ -859,7 +864,7 @@
             <Preset name="6ch (BR,BL,LF,FR,FL)" options="-x 59"/>
         </Presets>
     </Format>
-    <Format id="AVSDEC_AVS_RAW" name="Decode AVS to RAW - avsdec" template="$EXE -d $INFILE $OUTFILE" input="false" output="false" function="progress\GetProgress_AvsDec.progress" path="tools/AvsDec-2.2-Win32-UNICODE/AvsDec.exe" success="0" type="1" formats="AVS" extension="RAW" default="0">
+    <Format id="AVSDEC_AVS_RAW" name="Decode AVS to RAW - avsdec" template="$EXE -d $INFILE $OUTFILE" input="false" output="false" function="progress\GetProgress_AvsDec.progress" path="tools/AvsDec-2.3-Win32-UNICODE/AvsDec.exe" success="0" type="1" formats="AVS" extension="RAW" default="0">
         <Presets>
             <Preset name="Default" options=""/>
         </Presets>

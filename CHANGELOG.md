@@ -5,6 +5,7 @@
 - Added refalac support.
 - Updated rewavi tool.
 - Added $OUTPATH variable to format template.
+- Added support for split multi-channel WAV files.
 
 ### Version 2.2
 

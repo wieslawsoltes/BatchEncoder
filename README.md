@@ -192,7 +192,7 @@ adds input and output file paths. For specific options for each format use help 
 | FFMPEG       | DTSHD      | 3.4             | ffmpeg.exe        | yes      | yes      | - none -                          |
 | FFMPEG       | TRUEHD     | 3.4             | ffmpeg.exe        | yes      | yes      | - none -                          |
 | FFMPEG       | MKA        | 3.4             | ffmpeg.exe        | yes      | yes      | - none -                          |
-| AVSDEC       | AVS        | 2.2             | AvsDec.exe        | no       | no       | GetProgress_AvsDec.progress       |
+| AVSDEC       | AVS        | 2.3             | AvsDec.exe        | no       | no       | GetProgress_AvsDec.progress       |
 | REWAVI       | AVS        | 0.06            | rewavi.exe        | no       | yes      | GetProgress_ReWaviDec.progress    |
 | REWAVI       | AVI        | 0.06            | rewavi.exe        | no       | yes      | GetProgress_ReWaviDec.progress    |
 
