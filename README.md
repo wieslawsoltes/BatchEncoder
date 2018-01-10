@@ -312,6 +312,7 @@ Valid `output path` configurations:
 | $OPTIONS        | Executable command-line options replaced with preset `options` attribute.                          |
 | $INFILE         | Input file path (if pipes are supported `-` is automatically used).                                |
 | $OUTFILE        | Output file path (if pipes are supported `-` is automatically used).                               |
+| $OUTPATH        | Output path.                                                                                       |
 
 The output file name is generated from the combination of output path, item `name` attribute and output format `extension` attribute.
 
