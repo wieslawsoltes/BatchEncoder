@@ -26,6 +26,7 @@ public:
         GetAttributeValue(element, "extension", &m_Item.szExtension);
         GetAttributeValue(element, "format", &m_Item.szFormatId);
         GetAttributeValue(element, "preset", &m_Item.nPreset);
+        GetAttributeValue(element, "options", &m_Item.szOptions);
         GetAttributeValue(element, "checked", &m_Item.bChecked);
         GetAttributeValue(element, "time", &m_Item.szTime);
         GetAttributeValue(element, "status", &m_Item.szStatus);
@@ -44,6 +45,7 @@ public:
         SetAttributeValue(element, "extension", m_Item.szExtension);
         SetAttributeValue(element, "format", m_Item.szFormatId);
         SetAttributeValue(element, "preset", m_Item.nPreset);
+        SetAttributeValue(element, "options", m_Item.szOptions);
         SetAttributeValue(element, "checked", m_Item.bChecked);
         SetAttributeValue(element, "time", m_Item.szTime);
         SetAttributeValue(element, "status", m_Item.szStatus);

@@ -23,8 +23,9 @@
 #define ITEM_COLUMN_SIZE    2
 #define ITEM_COLUMN_OUTPUT  3
 #define ITEM_COLUMN_PRESET  4
-#define ITEM_COLUMN_TIME    5
-#define ITEM_COLUMN_STATUS  6
+#define ITEM_COLUMN_OPTIONS 5
+#define ITEM_COLUMN_TIME    6
+#define ITEM_COLUMN_STATUS  7
 
 class CMainDlg;
 

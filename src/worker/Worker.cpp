@@ -988,7 +988,8 @@ bool CWorker::ConvertItem(CItemContext* pContext)
             szDecInputFile,
             szDecOutputFile,
             pDecFormat->bPipeInput,
-            pDecFormat->bPipeOutput);
+            pDecFormat->bPipeOutput,
+            _T(""));
     }
 
     CFileContext encoderContext;
@@ -1000,7 +1001,8 @@ bool CWorker::ConvertItem(CItemContext* pContext)
         bIsValidEncoderInput == true ? szEncInputFile : szDecOutputFile,
         szEncOutputFile,
         pEncFormat->bPipeInput,
-        pEncFormat->bPipeOutput);
+        pEncFormat->bPipeOutput,
+        pContext->item->szOptions);
 
     if (bIsValidEncoderInput == false
         && decoderContext.bUseReadPipes == true

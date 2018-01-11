@@ -7,6 +7,7 @@
 - Updated rewavi tool.
 - Updated AvsDec tool.
 - Added $OUTPATH variable to format template.
+- Added additional preset options per item
 - Added support for split multi-channel WAV files.
 
 ### Version 2.2

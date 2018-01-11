@@ -17,11 +17,12 @@ public:
     TCHAR pszCommandLine[65536];
     bool bUseReadPipes;
     bool bUseWritePipes;
+    CString szOptions;
 public:
     CFileContext() { }
     virtual ~CFileContext() { }
 public:
-    void Init(CWorkerContext *pWorkerContext, CFormat *pFormat, int nPreset, int nItemId, CString szInputFile, CString szOutputFile, bool bUseReadPipes, bool bUseWritePipes)
+    void Init(CWorkerContext *pWorkerContext, CFormat *pFormat, int nPreset, int nItemId, CString szInputFile, CString szOutputFile, bool bUseReadPipes, bool bUseWritePipes, CString szOptions)
     {
         CPreset& preset = pFormat->m_Presets.Get(nPreset);
 
@@ -33,12 +34,14 @@ public:
         this->szOutputFile = szOutputFile;
         this->bUseReadPipes = bUseReadPipes;
         this->bUseWritePipes = bUseWritePipes;
+        this->szOptions = szOptions.GetLength() > 0 ?
+            preset.szOptions + _T(" ") + szOptions : szOptions;
 
         CString szCommandLine = pFormat->szTemplate;
 
         szCommandLine = ReplaceNoCase(szCommandLine, _T("$EXE"), _T("\"$EXE\""));
         szCommandLine = ReplaceNoCase(szCommandLine, _T("$EXE"), pFormat->szPath);
-        szCommandLine = ReplaceNoCase(szCommandLine, _T("$OPTIONS"), preset.szOptions);
+        szCommandLine = ReplaceNoCase(szCommandLine, _T("$OPTIONS"), szOptions);
 
         szCommandLine = ReplaceNoCase(szCommandLine, _T("$INFILE"), _T("\"$INFILE\""));
         if (bUseReadPipes == true)

@@ -16,6 +16,7 @@ public:
     CString szExtension;
     CString szFormatId;
     int nPreset;
+	CString szOptions;
     bool bChecked;
     CString szTime;
     CString szStatus;
@@ -48,6 +49,7 @@ public:
         this->szExtension = other.szExtension;
         this->szFormatId = other.szFormatId;
         this->nPreset = other.nPreset;
+        this->szOptions = other.szOptions;
         this->bChecked = other.bChecked;
         this->szTime = other.szTime;
         this->szStatus = other.szStatus;

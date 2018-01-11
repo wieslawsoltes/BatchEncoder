@@ -330,17 +330,18 @@ BOOL CMainDlg::OnInitDialog()
 
     // list style
     DWORD dwExStyle = m_LstInputItems.GetExtendedStyle();
-    dwExStyle |= LVS_EX_FULLROWSELECT | LVS_EX_CHECKBOXES | LVS_EX_DOUBLEBUFFER | LVS_EX_GRIDLINES;
+    dwExStyle |= LVS_EDITLABELS | LVS_EX_FULLROWSELECT | LVS_EX_CHECKBOXES | LVS_EX_DOUBLEBUFFER | LVS_EX_GRIDLINES;
     m_LstInputItems.SetExtendedStyle(dwExStyle);
 
     // list columns
-    m_LstInputItems.InsertColumn(ITEM_COLUMN_NAME, _T("Name"), LVCFMT_LEFT, 225);
+    m_LstInputItems.InsertColumn(ITEM_COLUMN_NAME, _T("Name"), LVCFMT_LEFT, 200);
     m_LstInputItems.InsertColumn(ITEM_COLUMN_INPUT, _T("Input"), LVCFMT_LEFT, 50);
     m_LstInputItems.InsertColumn(ITEM_COLUMN_SIZE, _T("Size (bytes)"), LVCFMT_LEFT, 80);
-    m_LstInputItems.InsertColumn(ITEM_COLUMN_OUTPUT, _T("Output"), LVCFMT_LEFT, 100);
+    m_LstInputItems.InsertColumn(ITEM_COLUMN_OUTPUT, _T("Output"), LVCFMT_LEFT, 70);
     m_LstInputItems.InsertColumn(ITEM_COLUMN_PRESET, _T("Preset#"), LVCFMT_LEFT, 55);
-    m_LstInputItems.InsertColumn(ITEM_COLUMN_TIME, _T("Time"), LVCFMT_LEFT, 95);
-    m_LstInputItems.InsertColumn(ITEM_COLUMN_STATUS, _T("Status"), LVCFMT_LEFT, 85);
+    m_LstInputItems.InsertColumn(ITEM_COLUMN_OPTIONS, _T("Options"), LVCFMT_LEFT, 65);
+    m_LstInputItems.InsertColumn(ITEM_COLUMN_TIME, _T("Time"), LVCFMT_LEFT, 90);
+    m_LstInputItems.InsertColumn(ITEM_COLUMN_STATUS, _T("Status"), LVCFMT_LEFT, 80);
 
     m_StcFormat.SetBold(true);
     m_StcPreset.SetBold(true);
@@ -1556,6 +1557,7 @@ void CMainDlg::SetLanguage()
     helper.SetColumnText(m_LstInputItems, ITEM_COLUMN_SIZE, 0x000A0003);
     helper.SetColumnText(m_LstInputItems, ITEM_COLUMN_OUTPUT, 0x000A0004);
     helper.SetColumnText(m_LstInputItems, ITEM_COLUMN_PRESET, 0x000A0005);
+    helper.SetColumnText(m_LstInputItems, ITEM_COLUMN_OPTIONS, 0x000B0002);
     helper.SetColumnText(m_LstInputItems, ITEM_COLUMN_TIME, 0x000A0006);
     helper.SetColumnText(m_LstInputItems, ITEM_COLUMN_STATUS, 0x000A0007);
 
@@ -1603,6 +1605,7 @@ void CMainDlg::GetItems()
         CItem& item = m_Config.m_Items.Get(i);
         item.nId = i;
         item.bChecked = this->m_LstInputItems.GetCheck(i) == TRUE;
+        item.szOptions = this->m_LstInputItems.GetItemText(i, ITEM_COLUMN_OPTIONS);
         item.szTime = this->m_LstInputItems.GetItemText(i, ITEM_COLUMN_TIME);
         item.szStatus = this->m_LstInputItems.GetItemText(i, ITEM_COLUMN_STATUS);
     }
@@ -1668,17 +1671,18 @@ void CMainDlg::GetOptions()
     m_Config.m_Options.szMainWindowResize = this->GetWindowRectStr();
 
     // option: FileListColumns
-    int nColWidth[7];
-    for (int i = 0; i < 7; i++)
+    int nColWidth[8];
+    for (int i = 0; i < 8; i++)
         nColWidth[i] = m_LstInputItems.GetColumnWidth(i);
-    m_Config.m_Options.szFileListColumns.Format(_T("%d %d %d %d %d %d %d"),
+    m_Config.m_Options.szFileListColumns.Format(_T("%d %d %d %d %d %d %d %d"),
         nColWidth[0],
         nColWidth[1],
         nColWidth[2],
         nColWidth[3],
         nColWidth[4],
         nColWidth[5],
-        nColWidth[6]);
+        nColWidth[6],
+        nColWidth[7]);
 }
 
 void CMainDlg::SetOptions()
@@ -1778,17 +1782,18 @@ void CMainDlg::SetOptions()
     // option: FileListColumns
     if (m_Config.m_Options.szFileListColumns.CompareNoCase(_T("")) != 0)
     {
-        int nColWidth[7];
-        if (_stscanf(m_Config.m_Options.szFileListColumns, _T("%d %d %d %d %d %d %d"),
+        int nColWidth[8];
+        if (_stscanf(m_Config.m_Options.szFileListColumns, _T("%d %d %d %d %d %d %d %d"),
             &nColWidth[0],
             &nColWidth[1],
             &nColWidth[2],
             &nColWidth[3],
             &nColWidth[4],
             &nColWidth[5],
-            &nColWidth[6]) == 7)
+            &nColWidth[6],
+            &nColWidth[7]) == 8)
         {
-            for (int i = 0; i < 7; i++)
+            for (int i = 0; i < 8; i++)
                 m_LstInputItems.SetColumnWidth(i, nColWidth[i]);
         }
     }
@@ -2097,6 +2102,12 @@ void CMainDlg::AddToList(CItem &item, int nItem)
     lvi.iSubItem = ITEM_COLUMN_PRESET;
     lvi.pszText = (LPTSTR)(LPCTSTR)(tmpBuf);
     m_LstInputItems.SetItemText(lvi.iItem, ITEM_COLUMN_PRESET, lvi.pszText);
+
+    // [Options] : additional options
+    tmpBuf.Format(_T("%s"), item.szOptions);
+    lvi.iSubItem = ITEM_COLUMN_OPTIONS;
+    lvi.pszText = (LPTSTR)(LPCTSTR)(tmpBuf);
+    m_LstInputItems.SetItemText(lvi.iItem, ITEM_COLUMN_OPTIONS, lvi.pszText);
 
     // [Time] : encoder/decoder conversion time
     tmpBuf.Format(_T("%s"), (item.szTime.CompareNoCase(_T("")) == 0) ? pszDefaulTime : item.szTime);
