@@ -160,6 +160,7 @@ adds input and output file paths. For specific options for each format use help 
 | EAC3TO       | AC3        | 3.34            | eac3to.exe        | no       | no       | GetProgress_Eac3toEnc             |
 | EAC3TO       | DTS        | 3.34            | eac3to.exe        | no       | no       | GetProgress_Eac3toEnc             |
 | REFALAC      | M4A        | 1.64            | refalac.exe       | yes      | no       | GetProgress_RefalacEnc.progress   |
+| TWOLAME      | MP2        | 0.3.13          | twolame.exe       | no       | no       | GetProgress_TwoLAME.progress      |
 
 ### Decoders
 
@@ -243,6 +244,7 @@ If you having problems running the PowerShell `download.ps1` script see this [in
 | AVSDEC          | [https://github.com/wieslawsoltes/AvsDec/releases](https://github.com/wieslawsoltes/AvsDec/releases)                                |
 | REWAVI          | [https://github.com/wieslawsoltes/rewavi/releases](https://github.com/wieslawsoltes/rewavi/releases)                                |
 | REFALAC         | [https://sites.google.com/site/qaacpage/cabinet](https://sites.google.com/site/qaacpage/cabinet)                                    |
+| TWOLAME         | http://www.rarewares.org/mp3-others.php#twolame                                                                                     |
 
 ## Configuration files
 
