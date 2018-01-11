@@ -3,7 +3,9 @@
 ### Version 2.3
 
 - Added refalac support.
+- Added twolame support.
 - Updated rewavi tool.
+- Updated AvsDec tool.
 - Added $OUTPATH variable to format template.
 - Added support for split multi-channel WAV files.
 
