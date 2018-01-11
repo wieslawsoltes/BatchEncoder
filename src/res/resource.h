@@ -24,6 +24,7 @@
 #define IDC_SPIN_THREADCOUNT            1012
 #define IDC_BUTTON_CONVERT              1013
 #define IDC_PROGRESS_CONVERT            1014
+#define IDC_EDIT_ITEM                   1015
 #define IDC_COMBO_PRESET_FORMAT         1020
 #define IDC_LIST_PRESETS                1021
 #define IDC_STATIC_PRESET_NAME          1022

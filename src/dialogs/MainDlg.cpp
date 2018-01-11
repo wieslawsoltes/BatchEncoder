@@ -224,6 +224,8 @@ BEGIN_MESSAGE_MAP(CMainDlg, CMyDialogEx)
     ON_MESSAGE(WM_ITEMCHANGED, OnListItemChaged)
     ON_MESSAGE(WM_NOTIFYFORMAT, OnNotifyFormat)
     ON_NOTIFY(NM_CLICK, IDC_LIST_ITEMS, OnNMClickListItems)
+    ON_EN_KILLFOCUS(IDC_EDIT_ITEM, OnEnKillfocusEditItem)
+    ON_NOTIFY(LVN_KEYDOWN, IDC_EDIT_ITEM, OnLvnKeydownEditItem)
     ON_NOTIFY(LVN_KEYDOWN, IDC_LIST_ITEMS, OnLvnKeydownListInputItems)
     ON_NOTIFY(NM_RCLICK, IDC_LIST_ITEMS, OnNMRclickListInputItems)
     ON_NOTIFY(LVN_ITEMCHANGING, IDC_LIST_ITEMS, OnLvnItemchangingListInputItems)
@@ -344,7 +346,7 @@ BOOL CMainDlg::OnInitDialog()
     m_LstInputItems.InsertColumn(ITEM_COLUMN_TIME, _T("Time"), LVCFMT_LEFT, 90);
     m_LstInputItems.InsertColumn(ITEM_COLUMN_STATUS, _T("Status"), LVCFMT_LEFT, 80);
 
-    m_EdtItem.Create(WS_CHILD, CRect(0, 0, 1, 1), &m_LstInputItems, 1);
+    m_EdtItem.Create(WS_CHILD, CRect(0, 0, 1, 1), &m_LstInputItems, IDC_EDIT_ITEM);
     m_EdtItem.SetFont(this->GetFont());
 
     m_StcFormat.SetBold(true);
@@ -510,20 +512,50 @@ LRESULT CMainDlg::OnNotifyFormat(WPARAM wParam, LPARAM lParam)
 void CMainDlg::OnNMClickListItems(NMHDR *pNMHDR, LRESULT *pResult)
 {
     LPNMITEMACTIVATE pNMItemActivate = reinterpret_cast<LPNMITEMACTIVATE>(pNMHDR);
-    if (pNMItemActivate->iSubItem == 0 || pNMItemActivate->iSubItem == -1 || pNMItemActivate->iItem == -1)
+    if (pNMItemActivate->iSubItem == -1 || pNMItemActivate->iItem == -1)
     {
+        UpdateEdtItem();
+        *pResult = 0;
+        return;
+    }
+    if (pNMItemActivate->iSubItem == 0 || pNMItemActivate->iSubItem != ITEM_COLUMN_OPTIONS)
+    {
+        UpdateEdtItem();
         *pResult = 0;
         return;
     }
 
-    CString szText = m_LstInputItems.GetItemText(pNMItemActivate->iItem, pNMItemActivate->iSubItem);
+    nEdtItem = pNMItemActivate->iItem;
+    nEdtSubItem = pNMItemActivate->iSubItem;
+    szEdtText = m_LstInputItems.GetItemText(nEdtItem, nEdtSubItem);
 
     CRect rect;
-    m_LstInputItems.GetSubItemRect(pNMItemActivate->iItem, pNMItemActivate->iSubItem, LVIR_BOUNDS, rect);
-
-    m_EdtItem.SetWindowText(szText);
+    m_LstInputItems.GetSubItemRect(nEdtItem, nEdtSubItem, LVIR_BOUNDS, rect);
+    m_EdtItem.SetWindowText(szEdtText);
     m_EdtItem.MoveWindow(rect, 1);
     m_EdtItem.ShowWindow(SW_SHOW);
+
+    *pResult = 0;
+}
+
+void CMainDlg::OnEnKillfocusEditItem()
+{
+    UpdateEdtItem();
+}
+
+void CMainDlg::OnLvnKeydownEditItem(NMHDR *pNMHDR, LRESULT *pResult)
+{
+    if (this->pWorkerContext->bRunning == false)
+    {
+        LPNMLVKEYDOWN pLVKeyDow = reinterpret_cast<LPNMLVKEYDOWN>(pNMHDR);
+        switch (pLVKeyDow->wVKey)
+        {
+        case VK_RETURN:
+            UpdateEdtItem();
+            break;
+        default: break;
+        };
+    }
 
     *pResult = 0;
 }
@@ -2167,6 +2199,17 @@ bool CMainDlg::AddToList(CString szPath)
     this->AddToList(item, nItem);
 
     return true;
+}
+
+void CMainDlg::UpdateEdtItem()
+{
+    if (m_EdtItem.IsWindowVisible())
+    {
+        m_EdtItem.GetWindowText(szEdtText);
+        m_LstInputItems.SetItemText(nEdtItem, nEdtSubItem, szEdtText);
+        m_EdtItem.ShowWindow(SW_HIDE);
+        m_LstInputItems.SetFocus();
+    }
 }
 
 void CMainDlg::HandleDropFiles(HDROP hDropInfo)

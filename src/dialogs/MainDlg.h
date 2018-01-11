@@ -66,6 +66,11 @@ public:
     CWorkerContext* pWorkerContext;
     CWorker m_Worker;
 public:
+    int nEdtItem;
+    int nEdtSubItem;
+    CString szEdtText;
+    CMyEdit m_EdtItem;
+public:
     CMyStatic m_GrpOutput;
     CMyStatic m_StcPreset;
     CMyStatic m_StcFormat;
@@ -75,7 +80,6 @@ public:
     CMyComboBox m_CmbFormat;
     CMyComboBox m_CmbOutPath;
     CMyListCtrl m_LstInputItems;
-    CMyEdit m_EdtItem;
     CMyButton m_BtnBrowse;
     CMyEdit m_EdtThreads;
     CMySpinButtonCtrl m_SpinThreads;
@@ -90,6 +94,8 @@ public:
     afx_msg LRESULT OnListItemChaged(WPARAM wParam, LPARAM lParam);
     afx_msg LRESULT OnNotifyFormat(WPARAM wParam, LPARAM lParam);
     afx_msg void OnNMClickListItems(NMHDR *pNMHDR, LRESULT *pResult);
+    afx_msg void OnEnKillfocusEditItem();
+    afx_msg void OnLvnKeydownEditItem(NMHDR *pNMHDR, LRESULT *pResult);
     afx_msg void OnLvnKeydownListInputItems(NMHDR *pNMHDR, LRESULT *pResult);
     afx_msg void OnNMRclickListInputItems(NMHDR *pNMHDR, LRESULT *pResult);
     afx_msg void OnLvnItemchangingListInputItems(NMHDR* pNMHDR, LRESULT* pResult);
@@ -161,6 +167,7 @@ public:
     int AddToItems(CString szPath);
     bool AddToList(CString szPath);
     void AddToList(CItem &item, int nItem);
+    void UpdateEdtItem();
     void HandleDropFiles(HDROP hDropInfo);
     void SearchFolderForFiles(CString szFile, const bool bRecurse);
     void UpdateFormatComboBox();
