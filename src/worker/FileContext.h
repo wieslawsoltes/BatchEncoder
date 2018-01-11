@@ -8,7 +8,7 @@
 class CFileContext
 {
 public:
-    CWorkerContext* pWorkerContext;
+    CWorkerContext * pWorkerContext;
     CFormat *pFormat;
     int nPreset;
     int nItemId;
