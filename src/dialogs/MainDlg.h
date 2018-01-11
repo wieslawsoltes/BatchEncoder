@@ -75,6 +75,7 @@ public:
     CMyComboBox m_CmbFormat;
     CMyComboBox m_CmbOutPath;
     CMyListCtrl m_LstInputItems;
+    CMyEdit m_EdtItem;
     CMyButton m_BtnBrowse;
     CMyEdit m_EdtThreads;
     CMySpinButtonCtrl m_SpinThreads;
@@ -88,6 +89,7 @@ public:
     afx_msg BOOL OnHelpInfo(HELPINFO* pHelpInfo);
     afx_msg LRESULT OnListItemChaged(WPARAM wParam, LPARAM lParam);
     afx_msg LRESULT OnNotifyFormat(WPARAM wParam, LPARAM lParam);
+    afx_msg void OnNMClickListItems(NMHDR *pNMHDR, LRESULT *pResult);
     afx_msg void OnLvnKeydownListInputItems(NMHDR *pNMHDR, LRESULT *pResult);
     afx_msg void OnNMRclickListInputItems(NMHDR *pNMHDR, LRESULT *pResult);
     afx_msg void OnLvnItemchangingListInputItems(NMHDR* pNMHDR, LRESULT* pResult);

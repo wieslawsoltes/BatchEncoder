@@ -223,6 +223,7 @@ BEGIN_MESSAGE_MAP(CMainDlg, CMyDialogEx)
     ON_WM_HELPINFO()
     ON_MESSAGE(WM_ITEMCHANGED, OnListItemChaged)
     ON_MESSAGE(WM_NOTIFYFORMAT, OnNotifyFormat)
+    ON_NOTIFY(NM_CLICK, IDC_LIST_ITEMS, OnNMClickListItems)
     ON_NOTIFY(LVN_KEYDOWN, IDC_LIST_ITEMS, OnLvnKeydownListInputItems)
     ON_NOTIFY(NM_RCLICK, IDC_LIST_ITEMS, OnNMRclickListInputItems)
     ON_NOTIFY(LVN_ITEMCHANGING, IDC_LIST_ITEMS, OnLvnItemchangingListInputItems)
@@ -342,6 +343,9 @@ BOOL CMainDlg::OnInitDialog()
     m_LstInputItems.InsertColumn(ITEM_COLUMN_OPTIONS, _T("Options"), LVCFMT_LEFT, 65);
     m_LstInputItems.InsertColumn(ITEM_COLUMN_TIME, _T("Time"), LVCFMT_LEFT, 90);
     m_LstInputItems.InsertColumn(ITEM_COLUMN_STATUS, _T("Status"), LVCFMT_LEFT, 80);
+
+    m_EdtItem.Create(WS_CHILD, CRect(0, 0, 1, 1), &m_LstInputItems, 1);
+    m_EdtItem.SetFont(this->GetFont());
 
     m_StcFormat.SetBold(true);
     m_StcPreset.SetBold(true);
@@ -501,6 +505,27 @@ LRESULT CMainDlg::OnNotifyFormat(WPARAM wParam, LPARAM lParam)
 #else
     return NFR_ANSI;
 #endif
+}
+
+void CMainDlg::OnNMClickListItems(NMHDR *pNMHDR, LRESULT *pResult)
+{
+    LPNMITEMACTIVATE pNMItemActivate = reinterpret_cast<LPNMITEMACTIVATE>(pNMHDR);
+    if (pNMItemActivate->iSubItem == 0 || pNMItemActivate->iSubItem == -1 || pNMItemActivate->iItem == -1)
+    {
+        *pResult = 0;
+        return;
+    }
+
+    CString szText = m_LstInputItems.GetItemText(pNMItemActivate->iItem, pNMItemActivate->iSubItem);
+
+    CRect rect;
+    m_LstInputItems.GetSubItemRect(pNMItemActivate->iItem, pNMItemActivate->iSubItem, LVIR_BOUNDS, rect);
+
+    m_EdtItem.SetWindowText(szText);
+    m_EdtItem.MoveWindow(rect, 1);
+    m_EdtItem.ShowWindow(SW_SHOW);
+
+    *pResult = 0;
 }
 
 void CMainDlg::OnLvnKeydownListInputItems(NMHDR *pNMHDR, LRESULT *pResult)
