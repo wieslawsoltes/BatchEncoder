@@ -244,7 +244,7 @@ If you having problems running the PowerShell `download.ps1` script see this [in
 | AVSDEC          | [https://github.com/wieslawsoltes/AvsDec/releases](https://github.com/wieslawsoltes/AvsDec/releases)                                |
 | REWAVI          | [https://github.com/wieslawsoltes/rewavi/releases](https://github.com/wieslawsoltes/rewavi/releases)                                |
 | REFALAC         | [https://sites.google.com/site/qaacpage/cabinet](https://sites.google.com/site/qaacpage/cabinet)                                    |
-| TWOLAME         | http://www.rarewares.org/mp3-others.php#twolame                                                                                     |
+| TWOLAME         | [http://www.rarewares.org/mp3-others.php#twolame](http://www.rarewares.org/mp3-others.php#twolame)                                  |
 
 ## Configuration files
 
