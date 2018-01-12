@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8" ?>
 <Options>
     <SelectedLanguage>en-US</SelectedLanguage>
-    <SelectedFormat>14</SelectedFormat>
+    <SelectedFormat>16</SelectedFormat>
     <OutputPath>$SourceDirectory$\$Name$.$Ext$</OutputPath>
     <DeleteSourceFiles>false</DeleteSourceFiles>
     <RecurseChecked>true</RecurseChecked>
