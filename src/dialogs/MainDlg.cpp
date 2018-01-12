@@ -332,7 +332,7 @@ BOOL CMainDlg::OnInitDialog()
 
     // list style
     DWORD dwExStyle = m_LstInputItems.GetExtendedStyle();
-    dwExStyle |= LVS_EDITLABELS | LVS_EX_FULLROWSELECT | LVS_EX_CHECKBOXES | LVS_EX_DOUBLEBUFFER | LVS_EX_GRIDLINES;
+    dwExStyle |= LVS_EX_FULLROWSELECT | LVS_EX_CHECKBOXES | LVS_EX_DOUBLEBUFFER | LVS_EX_GRIDLINES;
     m_LstInputItems.SetExtendedStyle(dwExStyle);
 
     // list columns
@@ -406,6 +406,14 @@ void CMainDlg::OnCancel()
 
 BOOL CMainDlg::PreTranslateMessage(MSG* pMsg)
 {
+    if (pMsg->message == WM_KEYDOWN && pMsg->hwnd == m_EdtItem.m_hWnd)
+    {
+        if (pMsg->wParam == VK_RETURN || pMsg->wParam == VK_ESCAPE)
+        {
+            UpdateEdtItem(pMsg->wParam == VK_RETURN);
+            return TRUE;
+        }
+    }
     if (m_hAccel != nullptr)
     {
         if (::TranslateAccelerator(this->GetSafeHwnd(), m_hAccel, pMsg))
@@ -515,13 +523,13 @@ void CMainDlg::OnNMClickListItems(NMHDR *pNMHDR, LRESULT *pResult)
     LPNMITEMACTIVATE pNMItemActivate = reinterpret_cast<LPNMITEMACTIVATE>(pNMHDR);
     if (pNMItemActivate->iSubItem == -1 || pNMItemActivate->iItem == -1)
     {
-        UpdateEdtItem();
+        UpdateEdtItem(TRUE);
         *pResult = 0;
         return;
     }
     if (pNMItemActivate->iSubItem == 0 || pNMItemActivate->iSubItem != ITEM_COLUMN_OPTIONS)
     {
-        UpdateEdtItem();
+        UpdateEdtItem(TRUE);
         *pResult = 0;
         return;
     }
@@ -532,16 +540,18 @@ void CMainDlg::OnNMClickListItems(NMHDR *pNMHDR, LRESULT *pResult)
 
     CRect rect;
     m_LstInputItems.GetSubItemRect(nEdtItem, nEdtSubItem, LVIR_BOUNDS, rect);
+
     m_EdtItem.SetWindowText(szEdtText);
     m_EdtItem.MoveWindow(rect, TRUE);
     m_EdtItem.ShowWindow(SW_SHOW);
+    m_EdtItem.SetFocus();
 
     *pResult = 0;
 }
 
 void CMainDlg::OnEnKillfocusEditItem()
 {
-    UpdateEdtItem();
+    UpdateEdtItem(TRUE);
 }
 
 void CMainDlg::OnLvnKeydownListInputItems(NMHDR *pNMHDR, LRESULT *pResult)
@@ -556,9 +566,6 @@ void CMainDlg::OnLvnKeydownListInputItems(NMHDR *pNMHDR, LRESULT *pResult)
             break;
         case VK_DELETE:
             this->OnEditRemove();
-            break;
-        case VK_RETURN:
-            UpdateEdtItem();
             break;
         default: break;
         };
@@ -2188,12 +2195,15 @@ bool CMainDlg::AddToList(CString szPath)
     return true;
 }
 
-void CMainDlg::UpdateEdtItem()
+void CMainDlg::UpdateEdtItem(BOOL bUpdateText)
 {
     if (m_EdtItem.IsWindowVisible())
     {
-        m_EdtItem.GetWindowText(szEdtText);
-        m_LstInputItems.SetItemText(nEdtItem, nEdtSubItem, szEdtText);
+        if (bUpdateText == TRUE)
+        {
+            m_EdtItem.GetWindowText(szEdtText);
+            m_LstInputItems.SetItemText(nEdtItem, nEdtSubItem, szEdtText);
+        }
         m_EdtItem.ShowWindow(SW_HIDE);
         m_LstInputItems.SetFocus();
     }

@@ -166,7 +166,7 @@ public:
     int AddToItems(CString szPath);
     bool AddToList(CString szPath);
     void AddToList(CItem &item, int nItem);
-    void UpdateEdtItem();
+    void UpdateEdtItem(BOOL bUpdateText);
     void HandleDropFiles(HDROP hDropInfo);
     void SearchFolderForFiles(CString szFile, const bool bRecurse);
     void UpdateFormatComboBox();
