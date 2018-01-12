@@ -540,13 +540,7 @@ void CMainDlg::OnNMClickListItems(NMHDR *pNMHDR, LRESULT *pResult)
     nEdtSubItem = pNMItemActivate->iSubItem;
     szEdtText = m_LstInputItems.GetItemText(nEdtItem, nEdtSubItem);
 
-    CRect rect;
-    m_LstInputItems.GetSubItemRect(nEdtItem, nEdtSubItem, LVIR_BOUNDS, rect);
-
-    m_EdtItem.SetWindowText(szEdtText);
-    m_EdtItem.MoveWindow(rect, TRUE);
-    m_EdtItem.ShowWindow(SW_SHOW);
-    m_EdtItem.SetFocus();
+    ShowEdtItem();
 
     *pResult = 0;
 }
@@ -2195,6 +2189,19 @@ bool CMainDlg::AddToList(CString szPath)
     this->AddToList(item, nItem);
 
     return true;
+}
+
+void CMainDlg::ShowEdtItem()
+{
+    CRect rect;
+    m_LstInputItems.GetSubItemRect(nEdtItem, nEdtSubItem, LVIR_BOUNDS, rect);
+    rect.InflateRect(-6, -2, -2, -2);
+
+    m_EdtItem.SetWindowText(szEdtText);
+    m_EdtItem.MoveWindow(rect, TRUE);
+    m_EdtItem.SetSel(0, szEdtText.GetLength(), TRUE);
+    m_EdtItem.ShowWindow(SW_SHOW);
+    m_EdtItem.SetFocus();
 }
 
 void CMainDlg::UpdateEdtItem(BOOL bUpdateText)
