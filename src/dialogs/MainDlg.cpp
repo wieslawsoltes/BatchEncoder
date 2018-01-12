@@ -225,7 +225,6 @@ BEGIN_MESSAGE_MAP(CMainDlg, CMyDialogEx)
     ON_MESSAGE(WM_NOTIFYFORMAT, OnNotifyFormat)
     ON_NOTIFY(NM_CLICK, IDC_LIST_ITEMS, OnNMClickListItems)
     ON_EN_KILLFOCUS(IDC_EDIT_ITEM, OnEnKillfocusEditItem)
-    ON_NOTIFY(LVN_KEYDOWN, IDC_EDIT_ITEM, OnLvnKeydownEditItem)
     ON_NOTIFY(LVN_KEYDOWN, IDC_LIST_ITEMS, OnLvnKeydownListInputItems)
     ON_NOTIFY(NM_RCLICK, IDC_LIST_ITEMS, OnNMRclickListInputItems)
     ON_NOTIFY(LVN_ITEMCHANGING, IDC_LIST_ITEMS, OnLvnItemchangingListInputItems)
@@ -545,23 +544,6 @@ void CMainDlg::OnEnKillfocusEditItem()
     UpdateEdtItem();
 }
 
-void CMainDlg::OnLvnKeydownEditItem(NMHDR *pNMHDR, LRESULT *pResult)
-{
-    if (this->pWorkerContext->bRunning == false)
-    {
-        LPNMLVKEYDOWN pLVKeyDow = reinterpret_cast<LPNMLVKEYDOWN>(pNMHDR);
-        switch (pLVKeyDow->wVKey)
-        {
-        case VK_RETURN:
-            UpdateEdtItem();
-            break;
-        default: break;
-        };
-    }
-
-    *pResult = 0;
-}
-
 void CMainDlg::OnLvnKeydownListInputItems(NMHDR *pNMHDR, LRESULT *pResult)
 {
     if (this->pWorkerContext->bRunning == false)
@@ -574,6 +556,9 @@ void CMainDlg::OnLvnKeydownListInputItems(NMHDR *pNMHDR, LRESULT *pResult)
             break;
         case VK_DELETE:
             this->OnEditRemove();
+            break;
+        case VK_RETURN:
+            UpdateEdtItem();
             break;
         default: break;
         };
