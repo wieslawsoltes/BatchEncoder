@@ -346,7 +346,7 @@ BOOL CMainDlg::OnInitDialog()
     m_LstInputItems.InsertColumn(ITEM_COLUMN_TIME, _T("Time"), LVCFMT_LEFT, 90);
     m_LstInputItems.InsertColumn(ITEM_COLUMN_STATUS, _T("Status"), LVCFMT_LEFT, 80);
 
-    m_EdtItem.Create(WS_CHILD, CRect(0, 0, 1, 1), &m_LstInputItems, IDC_EDIT_ITEM);
+    m_EdtItem.Create(ES_CENTER | ES_AUTOHSCROLL | WS_CHILD, CRect(0, 0, 1, 1), &m_LstInputItems, IDC_EDIT_ITEM);
     m_EdtItem.SetFont(this->GetFont());
 
     m_StcFormat.SetBold(true);
