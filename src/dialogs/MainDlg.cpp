@@ -534,6 +534,8 @@ void CMainDlg::OnNMClickListItems(NMHDR *pNMHDR, LRESULT *pResult)
         return;
     }
 
+    UpdateEdtItem(TRUE);
+
     nEdtItem = pNMItemActivate->iItem;
     nEdtSubItem = pNMItemActivate->iSubItem;
     szEdtText = m_LstInputItems.GetItemText(nEdtItem, nEdtSubItem);
