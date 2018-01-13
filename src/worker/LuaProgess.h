@@ -4,116 +4,68 @@
 #pragma once
 
 #include <afxwin.h>
-#include "lua\lua\src\lua.hpp"
+#include <lua.hpp>
 
 #define _SILENCE_ALL_CXX17_DEPRECATION_WARNINGS
 #include "sol.hpp"
 
 class CLuaProgess
 {
-    lua_State *L = nullptr;
+    sol::state lua;
+    sol::protected_function f;
 public:
     const char *name = "GetProgress";
 public:
-    CLuaProgess()
-    {
+    CLuaProgess() 
+    { 
+        lua.open_libraries(sol::lib::base, sol::lib::string, sol::lib::math);
+        lua.open_libraries(sol::lib::base);
     }
-    virtual ~CLuaProgess()
-    {
-        Close();
-    }
-private:
-    void OutputError(lua_State* L)
-    {
-        const char* message = lua_tostring(L, -1);
-#ifdef DEBUG
-        OutputDebugStringA(message);
-#endif
-        lua_pop(L, 1);
-    }
+    virtual ~CLuaProgess() { }
 public:
     bool Open(const char *filename)
     {
-        L = luaL_newstate();
-        if (L == nullptr)
-            return false;
-
-        luaL_openlibs(L); // [-0, +0, e]
-
-        if (luaL_loadfile(L, filename) || lua_pcall(L, 0, 0, 0)) // [-0, +1, m], [-(nargs + 1), +(nresults|1), –]
+        auto result = lua.script_file(filename);
+        if (result.valid())
         {
-            OutputError(L);
+            return true;
+        }
+        else
+        {
+            sol::error err = result;
+            OutputDebugStringA(err.what());
             return false;
         }
-
-        return true;
     }
-    bool HaveGetProgress()
+    bool Valid()
     {
-        if (L == nullptr)
+        f = lua[name];
+        if (f.valid())
+        {
+            return true;
+        }
+        else
+        {
+            OutputDebugStringA("Failed to get progress function from script.");
             return false;
-
-        lua_getglobal(L, name); // [-0, +1, e]
-        if (!lua_isfunction(L, -1)) // [-0, +0, –]
-        {
-            OutputError(L);
-            lua_pop(L, 1); // lua_getglobal
-            return false;
         }
-
-        lua_pop(L, 1); // lua_getglobal
-
-        return true;
     }
-    double GetProgress(const char *szLineBuff, size_t nLineLen)
+    double GetProgress(const char *szLine)
     {
-        if (L == nullptr)
-            return -1;
-
-        lua_getglobal(L, name); // [-0, +1, e]
-        if (!lua_isfunction(L, -1)) // [-0, +0, –]
+        auto result = f(szLine);
+        if (result.valid()) 
         {
-            OutputError(L);
-            lua_pop(L, 1); // lua_getglobal
-            return -1;
+            auto type = result.get_type();
+            if (type == sol::type::string)
+                return (double)result;
+            else
+                return -1;
         }
-
-        lua_pushlstring(L, szLineBuff, nLineLen); // [-0, +1, m]
-
-        if (lua_pcall(L, 1, 1, 0) != LUA_OK) // [-(nargs + 1), +(nresults|1), –]
+        else 
         {
-            OutputError(L);
+            sol::error err = result;
+            OutputDebugStringA(err.what());
             return -1;
-        }
-
-        if (lua_isnil(L, -1) == 1)  // [-0, +0, –]
-        {
-            OutputError(L);
-            return -1;
-        }
-
-        if (!lua_isstring(L, -1))  // [-0, +0, –]
-        {
-            OutputError(L);
-            return -1;
-        }
-
-        int isnum;
-        double result = lua_tonumberx(L, -1, &isnum); // [-0, +0, –]
-        if (isnum != 1)
-        {
-            OutputError(L);
-            return -1;
-        }
-
-        return result;
-    }
-    void Close()
-    {
-        if (L != nullptr)
-        {
-            lua_close(L);
-            L = nullptr;
         }
     }
 };

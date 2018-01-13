@@ -34,7 +34,7 @@ bool CWorker::ProgresssLoop(CFileContext* pContext, CPipe &Stderr, int &nProgres
         return false; // ERROR
     }
 
-    if (luaProgress.HaveGetProgress() == false)
+    if (luaProgress.Valid() == false)
     {
         pWorkerContext->Status(pContext->nItemId, pszDefaulTime, pWorkerContext->GetString(0x00110002, pszProgresssLoop[1]));
         pWorkerContext->Callback(pContext->nItemId, -1, true, true);
@@ -106,7 +106,7 @@ bool CWorker::ProgresssLoop(CFileContext* pContext, CPipe &Stderr, int &nProgres
                 if (strlen(szLineBuff) > 0)
                 {
                     //OutputDebugStringA(szLineBuff); OutputDebugStringA("\n");
-                    int nRet = (int)luaProgress.GetProgress(szLineBuff, nLineLen);
+                    int nRet = (int)luaProgress.GetProgress(szLineBuff);
                     if (nRet != -1)
                         nProgress = nRet;
 
@@ -134,8 +134,6 @@ bool CWorker::ProgresssLoop(CFileContext* pContext, CPipe &Stderr, int &nProgres
         if (bRunning == false)
             break;
     } while (bRes);
-
-    luaProgress.Close();
 
     return true;
 }
