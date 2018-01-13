@@ -176,6 +176,9 @@
     <ClInclude Include="contexts\MainDlgWorkerContext.h">
       <Filter>Header Files\Contexts</Filter>
     </ClInclude>
+    <ClInclude Include="worker\sol.hpp">
+      <Filter>Header Files\Worker</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="res\BatchEncoder.rc2">
