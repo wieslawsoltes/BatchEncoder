@@ -3,10 +3,8 @@
 
 #pragma once
 
-#include <afxwin.h>
-#include <lua.hpp>
-
 #define _SILENCE_ALL_CXX17_DEPRECATION_WARNINGS
+#define SOL_CHECK_ARGUMENTS 1
 #include "sol.hpp"
 
 class CLuaProgess
@@ -26,45 +24,24 @@ public:
     {
         auto result = lua.script_file(filename);
         if (result.valid())
-        {
             return true;
-        }
-        else
-        {
-            sol::error err = result;
-            OutputDebugStringA(err.what());
-            return false;
-        }
+        return false;
     }
     bool Valid()
     {
         f = lua[name];
         if (f.valid())
-        {
             return true;
-        }
-        else
-        {
-            OutputDebugStringA("Failed to get progress function from script.");
-            return false;
-        }
+        return false;
     }
     double GetProgress(const char *szLine)
     {
         auto result = f(szLine);
         if (result.valid()) 
         {
-            auto type = result.get_type();
-            if (type == sol::type::string)
+            if (result.get_type() == sol::type::string)
                 return (double)result;
-            else
-                return -1;
         }
-        else 
-        {
-            sol::error err = result;
-            OutputDebugStringA(err.what());
-            return -1;
-        }
+        return -1;
     }
 };
