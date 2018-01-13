@@ -12,8 +12,6 @@ class CLuaProgess
     sol::state lua;
     sol::protected_function f;
 public:
-    const char *name = "GetProgress";
-public:
     CLuaProgess() 
     { 
         lua.open_libraries(sol::lib::base, sol::lib::string, sol::lib::math);
@@ -27,9 +25,9 @@ public:
             return true;
         return false;
     }
-    bool Valid()
+    bool Init()
     {
-        f = lua[name];
+        f = lua["GetProgress"];
         if (f.valid())
             return true;
         return false;

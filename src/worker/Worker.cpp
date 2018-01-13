@@ -34,7 +34,7 @@ bool CWorker::ProgresssLoop(CFileContext* pContext, CPipe &Stderr, int &nProgres
         return false; // ERROR
     }
 
-    if (luaProgress.Valid() == false)
+    if (luaProgress.Init() == false)
     {
         pWorkerContext->Status(pContext->nItemId, pszDefaulTime, pWorkerContext->GetString(0x00110002, pszProgresssLoop[1]));
         pWorkerContext->Callback(pContext->nItemId, -1, true, true);
