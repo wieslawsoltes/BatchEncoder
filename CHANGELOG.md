@@ -9,6 +9,7 @@
 - Added $OUTPATH variable to format template.
 - Added additional preset options per item.
 - Added support for split multi-channel WAV files.
+- Using sol2 to for lua scripting.
 
 ### Version 2.2
 

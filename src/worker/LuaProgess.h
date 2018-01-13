@@ -6,6 +6,9 @@
 #include <afxwin.h>
 #include "lua\lua\src\lua.hpp"
 
+#define _SILENCE_ALL_CXX17_DEPRECATION_WARNINGS
+#include "sol.hpp"
+
 class CLuaProgess
 {
     lua_State *L = nullptr;

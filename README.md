@@ -437,6 +437,7 @@ Open BatchEncoder.sln in Visual Studios 2017 or above.
 * [AvsDec](https://github.com/wieslawsoltes/AvsDec)
 * [TinyXml-2 v5.0.1](https://github.com/leethomason/tinyxml2)
 * [Lua v5.3.4](http://www.lua.org/ftp/)
+* [sol2 v2.18.7](https://github.com/ThePhD/sol2)
 
 ## License
 
