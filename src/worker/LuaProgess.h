@@ -19,7 +19,6 @@ public:
     CLuaProgess() 
     { 
         lua.open_libraries(sol::lib::base, sol::lib::string, sol::lib::math);
-        lua.open_libraries(sol::lib::base);
     }
     virtual ~CLuaProgess() { }
 public:
