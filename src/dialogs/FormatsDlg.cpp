@@ -220,9 +220,9 @@ void CFormatsDlg::OnBnClickedButtonImport()
 {
     CString szFilter;
     szFilter.Format(_T("%s (*.format)|*.format|%s (*.xml)|*.xml|%s (*.*)|*.*||"),
-        pConfig->GetString(0x00310008, pszFileDialogs[7]),
-        pConfig->GetString(0x00310002, pszFileDialogs[1]),
-        pConfig->GetString(0x00310001, pszFileDialogs[0]));
+        pConfig->m_Language.GetString(0x00310008, pszFileDialogs[7]),
+        pConfig->m_Language.GetString(0x00310002, pszFileDialogs[1]),
+        pConfig->m_Language.GetString(0x00310001, pszFileDialogs[0]));
 
     CFileDialog fd(TRUE, _T("format"), _T(""),
         OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER,
@@ -247,9 +247,9 @@ void CFormatsDlg::OnBnClickedButtonExport()
 
             CString szFilter;
             szFilter.Format(_T("%s (*.format)|*.format|%s (*.xml)|*.xml|%s (*.*)|*.*||"),
-                pConfig->GetString(0x00310008, pszFileDialogs[7]),
-                pConfig->GetString(0x00310002, pszFileDialogs[1]),
-                pConfig->GetString(0x00310001, pszFileDialogs[0]));
+                pConfig->m_Language.GetString(0x00310008, pszFileDialogs[7]),
+                pConfig->m_Language.GetString(0x00310002, pszFileDialogs[1]),
+                pConfig->m_Language.GetString(0x00310001, pszFileDialogs[0]));
 
             CFileDialog fd(FALSE, _T("format"), format.szId,
                 OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER | OFN_OVERWRITEPROMPT,
@@ -364,7 +364,7 @@ void CFormatsDlg::OnBnClickedButtonAddFormat()
 
     CFormat format;
     format.szId = _T("ID");
-    format.szName = pConfig->GetString(0x00230004, pszFormatsDialog[3]);
+    format.szName = pConfig->m_Language.GetString(0x00230004, pszFormatsDialog[3]);
     format.szTemplate = _T("$EXE $OPTIONS $INFILE $OUTFILE");
     format.bPipeInput = true;
     format.bPipeOutput = false;
@@ -377,7 +377,7 @@ void CFormatsDlg::OnBnClickedButtonAddFormat()
     format.nDefaultPreset = 0;
 
     CPreset preset;
-    preset.szName = pConfig->GetString(0x00230005, pszFormatsDialog[4]);
+    preset.szName = pConfig->m_Language.GetString(0x00230005, pszFormatsDialog[4]);
     preset.szOptions = _T("");
     format.m_Presets.Insert(preset);
 
@@ -636,9 +636,9 @@ void CFormatsDlg::OnBnClickedButtonLoadFormats()
 {
     CString szFilter;
     szFilter.Format(_T("%s (*.formats)|*.formats|%s (*.xml)|*.xml|%s (*.*)|*.*||"),
-        pConfig->GetString(0x00310005, pszFileDialogs[4]),
-        pConfig->GetString(0x00310002, pszFileDialogs[1]),
-        pConfig->GetString(0x00310001, pszFileDialogs[0]));
+        pConfig->m_Language.GetString(0x00310005, pszFileDialogs[4]),
+        pConfig->m_Language.GetString(0x00310002, pszFileDialogs[1]),
+        pConfig->m_Language.GetString(0x00310001, pszFileDialogs[0]));
 
     CFileDialog fd(TRUE, _T("formats"), _T(""),
         OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER,
@@ -655,9 +655,9 @@ void CFormatsDlg::OnBnClickedButtonSaveFormats()
 {
     CString szFilter;
     szFilter.Format(_T("%s (*.formats)|*.formats|%s (*.xml)|*.xml|%s (*.*)|*.*||"),
-        pConfig->GetString(0x00310005, pszFileDialogs[4]),
-        pConfig->GetString(0x00310002, pszFileDialogs[1]),
-        pConfig->GetString(0x00310001, pszFileDialogs[0]));
+        pConfig->m_Language.GetString(0x00310005, pszFileDialogs[4]),
+        pConfig->m_Language.GetString(0x00310002, pszFileDialogs[1]),
+        pConfig->m_Language.GetString(0x00310001, pszFileDialogs[0]));
 
     CFileDialog fd(FALSE, _T("formats"), _T("formats"),
         OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER | OFN_OVERWRITEPROMPT,
@@ -772,7 +772,7 @@ void CFormatsDlg::SaveWindowSettings()
 
 void CFormatsDlg::SetLanguage()
 {
-    CLanguageHelper helper(pConfig);
+    CLanguageHelper helper(&pConfig->m_Language);
 
     helper.SetColumnText(m_LstFormats, FORMAT_COLUMN_NAME, 0x000C0001);
     helper.SetColumnText(m_LstFormats, FORMAT_COLUMN_TEMPLATE, 0x000C0002);
@@ -1055,8 +1055,8 @@ void CFormatsDlg::LoadFormat(CString szFileXml)
     else
     {
         MessageBox(
-            pConfig->GetString(0x00230002, pszFormatsDialog[1]),
-            pConfig->GetString(0x00230001, pszFormatsDialog[0]),
+            pConfig->m_Language.GetString(0x00230002, pszFormatsDialog[1]),
+            pConfig->m_Language.GetString(0x00230001, pszFormatsDialog[0]),
             MB_OK | MB_ICONERROR);
     }
 }
@@ -1070,8 +1070,8 @@ void CFormatsDlg::SaveFormat(CString szFileXml, CFormat &format)
     if (xmlFormats.Save(szFileXml) != true)
     {
         MessageBox(
-            pConfig->GetString(0x00230003, pszFormatsDialog[2]),
-            pConfig->GetString(0x00230001, pszFormatsDialog[0]),
+            pConfig->m_Language.GetString(0x00230003, pszFormatsDialog[2]),
+            pConfig->m_Language.GetString(0x00230001, pszFormatsDialog[0]),
             MB_OK | MB_ICONERROR);
     }
 }
@@ -1096,8 +1096,8 @@ void CFormatsDlg::LoadFormats(CString szFileXml)
     else
     {
         MessageBox(
-            pConfig->GetString(0x00230002, pszFormatsDialog[1]),
-            pConfig->GetString(0x00230001, pszFormatsDialog[0]),
+            pConfig->m_Language.GetString(0x00230002, pszFormatsDialog[1]),
+            pConfig->m_Language.GetString(0x00230001, pszFormatsDialog[0]),
             MB_OK | MB_ICONERROR);
     }
 }
@@ -1111,8 +1111,8 @@ void CFormatsDlg::SaveFormats(CString szFileXml)
     if (xmlFormats.Save(szFileXml) != true)
     {
         MessageBox(
-            pConfig->GetString(0x00230003, pszFormatsDialog[2]),
-            pConfig->GetString(0x00230001, pszFormatsDialog[0]),
+            pConfig->m_Language.GetString(0x00230003, pszFormatsDialog[2]),
+            pConfig->m_Language.GetString(0x00230001, pszFormatsDialog[0]),
             MB_OK | MB_ICONERROR);
     }
 }
@@ -1121,8 +1121,8 @@ bool CFormatsDlg::BrowseForPath(CString szDefaultFName, CEdit *pEdit, int nID)
 {
     CString szFilter;
     szFilter.Format(_T("%s (*.exe)|*.exe|%s (*.*)|*.*||"),
-        pConfig->GetString(0x00310006, pszFileDialogs[5]),
-        pConfig->GetString(0x00310001, pszFileDialogs[0]));
+        pConfig->m_Language.GetString(0x00310006, pszFileDialogs[5]),
+        pConfig->m_Language.GetString(0x00310001, pszFileDialogs[0]));
 
     CFileDialog fd(TRUE, _T("exe"), szDefaultFName,
         OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER,
@@ -1141,8 +1141,8 @@ bool CFormatsDlg::BrowseForFunction(CString szDefaultFName, CEdit *pEdit, int nI
 {
     CString szFilter;
     szFilter.Format(_T("%s (*.progress)|*.progress|%s (*.*)|*.*||"),
-        pConfig->GetString(0x00310007, pszFileDialogs[6]),
-        pConfig->GetString(0x00310001, pszFileDialogs[0]));
+        pConfig->m_Language.GetString(0x00310007, pszFileDialogs[6]),
+        pConfig->m_Language.GetString(0x00310001, pszFileDialogs[0]));
 
     CFileDialog fd(TRUE, _T("progress"), szDefaultFName,
         OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER,

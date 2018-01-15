@@ -287,7 +287,7 @@ void CPresetsDlg::OnBnClickedButtonAddPreset()
 
         CFormat& format = m_Formats.Get(nSelectedFormat);
         CPreset preset;
-        preset.szName = pConfig->GetString(0x00220004, pszPresetsDialog[3]);
+        preset.szName = pConfig->m_Language.GetString(0x00220004, pszPresetsDialog[3]);
         preset.szOptions = _T("");
         format.m_Presets.Insert(preset);
 
@@ -448,9 +448,9 @@ void CPresetsDlg::OnBnClickedButtonLoadPresets()
 {
     CString szFilter;
     szFilter.Format(_T("%s (*.presets)|*.presets|%s (*.xml)|*.xml|%s (*.*)|*.*||"),
-        pConfig->GetString(0x00310004, pszFileDialogs[3]),
-        pConfig->GetString(0x00310002, pszFileDialogs[1]),
-        pConfig->GetString(0x00310001, pszFileDialogs[0]));
+        pConfig->m_Language.GetString(0x00310004, pszFileDialogs[3]),
+        pConfig->m_Language.GetString(0x00310002, pszFileDialogs[1]),
+        pConfig->m_Language.GetString(0x00310001, pszFileDialogs[0]));
 
     CFileDialog fd(TRUE, _T("presets"), _T(""),
         OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER,
@@ -469,9 +469,9 @@ void CPresetsDlg::OnBnClickedButtonSavePresets()
 
     CString szFilter;
     szFilter.Format(_T("%s (*.presets)|*.presets|%s (*.xml)|*.xml|%s (*.*)|*.*||"),
-        pConfig->GetString(0x00310004, pszFileDialogs[3]),
-        pConfig->GetString(0x00310002, pszFileDialogs[1]),
-        pConfig->GetString(0x00310001, pszFileDialogs[0]));
+        pConfig->m_Language.GetString(0x00310004, pszFileDialogs[3]),
+        pConfig->m_Language.GetString(0x00310002, pszFileDialogs[1]),
+        pConfig->m_Language.GetString(0x00310001, pszFileDialogs[0]));
 
     CFileDialog fd(FALSE, _T("presets"), format.szId,
         OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER | OFN_OVERWRITEPROMPT,
@@ -527,7 +527,7 @@ void CPresetsDlg::SaveWindowSettings()
 
 void CPresetsDlg::SetLanguage()
 {
-    CLanguageHelper helper(pConfig);
+    CLanguageHelper helper(&pConfig->m_Language);
 
     helper.SetColumnText(m_LstPresets, PRESET_COLUMN_NAME, 0x000B0001);
     helper.SetColumnText(m_LstPresets, PRESET_COLUMN_OPTIONS, 0x000B0002);
@@ -661,8 +661,8 @@ void CPresetsDlg::LoadPresets(CString szFileXml)
     else
     {
         MessageBox(
-            pConfig->GetString(0x00220002, pszPresetsDialog[1]),
-            pConfig->GetString(0x00220001, pszPresetsDialog[0]),
+            pConfig->m_Language.GetString(0x00220002, pszPresetsDialog[1]),
+            pConfig->m_Language.GetString(0x00220001, pszPresetsDialog[0]),
             MB_OK | MB_ICONERROR);
     }
 }
@@ -676,8 +676,8 @@ void CPresetsDlg::SavePresets(CString szFileXml, CFormat &format)
     if (xmlPresets.Save(szFileXml) != true)
     {
         MessageBox(
-            pConfig->GetString(0x00220003, pszPresetsDialog[2]),
-            pConfig->GetString(0x00220001, pszPresetsDialog[0]),
+            pConfig->m_Language.GetString(0x00220003, pszPresetsDialog[2]),
+            pConfig->m_Language.GetString(0x00220001, pszPresetsDialog[0]),
             MB_OK | MB_ICONERROR);
     }
 }

@@ -227,9 +227,9 @@ void CToolsDlg::OnBnClickedButtonImport()
 
     CString szFilter;
     szFilter.Format(_T("%s (*.tool)|*.tool|%s (*.xml)|*.xml|%s (*.*)|*.*||"),
-        pConfig->GetString(0x00310010, pszFileDialogs[9]),
-        pConfig->GetString(0x00310002, pszFileDialogs[1]),
-        pConfig->GetString(0x00310001, pszFileDialogs[0]));
+        pConfig->m_Language.GetString(0x00310010, pszFileDialogs[9]),
+        pConfig->m_Language.GetString(0x00310002, pszFileDialogs[1]),
+        pConfig->m_Language.GetString(0x00310001, pszFileDialogs[0]));
 
     CFileDialog fd(TRUE, _T("tool"), _T(""),
         OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER,
@@ -257,9 +257,9 @@ void CToolsDlg::OnBnClickedButtonExport()
 
             CString szFilter;
             szFilter.Format(_T("%s (*.tool)|*.tool|%s (*.xml)|*.xml|%s (*.*)|*.*||"),
-                pConfig->GetString(0x00310010, pszFileDialogs[9]),
-                pConfig->GetString(0x00310002, pszFileDialogs[1]),
-                pConfig->GetString(0x00310001, pszFileDialogs[0]));
+                pConfig->m_Language.GetString(0x00310010, pszFileDialogs[9]),
+                pConfig->m_Language.GetString(0x00310002, pszFileDialogs[1]),
+                pConfig->m_Language.GetString(0x00310001, pszFileDialogs[0]));
 
             CFileDialog fd(FALSE, _T("tool"), tool.szName,
                 OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER | OFN_OVERWRITEPROMPT,
@@ -385,7 +385,7 @@ void CToolsDlg::OnBnClickedButtonAddTool()
     int nItem = m_LstTools.GetItemCount();
 
     CTool tool;
-    tool.szName = pConfig->GetString(0x00240004, pszToolsDialog[3]);
+    tool.szName = pConfig->m_Language.GetString(0x00240004, pszToolsDialog[3]);
     tool.szPlatform = _T("");
     tool.szFormats = _T("");
     tool.szUrl = _T("");
@@ -618,9 +618,9 @@ void CToolsDlg::OnBnClickedButtonLoadTools()
 
     CString szFilter;
     szFilter.Format(_T("%s (*.tools)|*.tools|%s (*.xml)|*.xml|%s (*.*)|*.*||"),
-        pConfig->GetString(0x00310009, pszFileDialogs[8]),
-        pConfig->GetString(0x00310002, pszFileDialogs[1]),
-        pConfig->GetString(0x00310001, pszFileDialogs[0]));
+        pConfig->m_Language.GetString(0x00310009, pszFileDialogs[8]),
+        pConfig->m_Language.GetString(0x00310002, pszFileDialogs[1]),
+        pConfig->m_Language.GetString(0x00310001, pszFileDialogs[0]));
 
     CFileDialog fd(TRUE, _T("tools"), _T(""),
         OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER,
@@ -640,9 +640,9 @@ void CToolsDlg::OnBnClickedButtonSaveTools()
 
     CString szFilter;
     szFilter.Format(_T("%s (*.tools)|*.tools|%s (*.xml)|*.xml|%s (*.*)|*.*||"),
-        pConfig->GetString(0x00310009, pszFileDialogs[8]),
-        pConfig->GetString(0x00310002, pszFileDialogs[1]),
-        pConfig->GetString(0x00310001, pszFileDialogs[0]));
+        pConfig->m_Language.GetString(0x00310009, pszFileDialogs[8]),
+        pConfig->m_Language.GetString(0x00310002, pszFileDialogs[1]),
+        pConfig->m_Language.GetString(0x00310001, pszFileDialogs[0]));
 
     CFileDialog fd(FALSE, _T("tools"), _T("tools"),
         OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER | OFN_OVERWRITEPROMPT,
@@ -661,7 +661,7 @@ void CToolsDlg::OnBnClickedButtonDownloadSelected()
     {
         m_Thread.Terminate();
 
-        CLanguageHelper helper(pConfig);
+        CLanguageHelper helper(&pConfig->m_Language);
         helper.SetWndText(&m_BtnDownload, 0x000E0023);
 
         EnableUserInterface(TRUE);
@@ -763,7 +763,7 @@ void CToolsDlg::SaveWindowSettings()
 
 void CToolsDlg::SetLanguage()
 {
-    CLanguageHelper helper(pConfig);
+    CLanguageHelper helper(&pConfig->m_Language);
 
     helper.SetColumnText(m_LstTools, TOOL_COLUMN_NAME, 0x000E0001);
     helper.SetColumnText(m_LstTools, TOOL_COLUMN_URL, 0x000E0002);
@@ -934,8 +934,8 @@ void CToolsDlg::LoadTool(CString szFileXml)
     else
     {
         MessageBox(
-            pConfig->GetString(0x00240002, pszToolsDialog[1]),
-            pConfig->GetString(0x00240001, pszToolsDialog[0]),
+            pConfig->m_Language.GetString(0x00240002, pszToolsDialog[1]),
+            pConfig->m_Language.GetString(0x00240001, pszToolsDialog[0]),
             MB_OK | MB_ICONERROR);
     }
 }
@@ -949,8 +949,8 @@ void CToolsDlg::SaveTool(CString szFileXml, CTool &tool)
     if (xmlTools.Save(szFileXml) != true)
     {
         MessageBox(
-            pConfig->GetString(0x00240003, pszToolsDialog[2]),
-            pConfig->GetString(0x00240001, pszToolsDialog[0]),
+            pConfig->m_Language.GetString(0x00240003, pszToolsDialog[2]),
+            pConfig->m_Language.GetString(0x00240001, pszToolsDialog[0]),
             MB_OK | MB_ICONERROR);
     }
 }
@@ -975,8 +975,8 @@ void CToolsDlg::LoadTools(CString szFileXml)
     else
     {
         MessageBox(
-            pConfig->GetString(0x00240002, pszToolsDialog[1]),
-            pConfig->GetString(0x00240001, pszToolsDialog[0]),
+            pConfig->m_Language.GetString(0x00240002, pszToolsDialog[1]),
+            pConfig->m_Language.GetString(0x00240001, pszToolsDialog[0]),
             MB_OK | MB_ICONERROR);
     }
 }
@@ -990,8 +990,8 @@ void CToolsDlg::SaveTools(CString szFileXml)
     if (xmlTools.Save(szFileXml) != true)
     {
         MessageBox(
-            pConfig->GetString(0x00240003, pszToolsDialog[2]),
-            pConfig->GetString(0x00240001, pszToolsDialog[0]),
+            pConfig->m_Language.GetString(0x00240003, pszToolsDialog[2]),
+            pConfig->m_Language.GetString(0x00240001, pszToolsDialog[0]),
             MB_OK | MB_ICONERROR);
     }
 }
@@ -1036,7 +1036,7 @@ void CToolsDlg::DownloadTools()
 
     ::SetCurrentDirectory(m_App.szToolsPath);
 
-    CLanguageHelper helper(pConfig);
+    CLanguageHelper helper(&pConfig->m_Language);
     helper.SetWndText(&m_BtnDownload, 0x000E0024);
 
     int nCount = m_LstTools.GetItemCount();
@@ -1069,7 +1069,7 @@ void CToolsDlg::DownloadTools()
                         {
                             if (szStatus.Find(pszDownloadStatus[s]) >= 0)
                             {
-                                CString szTranslation = pConfig->GetString(0x00400001 + s, pszDownloadStatus[s]);
+                                CString szTranslation = pConfig->m_Language.GetString(0x00400001 + s, pszDownloadStatus[s]);
                                 szStatus.Replace(pszDownloadStatus[s], szTranslation);
                             }
                         }
@@ -1093,7 +1093,7 @@ void CToolsDlg::DownloadTools()
                         {
                             if (::MakeFullPath(szFolderPath) == false)
                             {
-                                CString szStatus = pConfig->GetString(0x00410001, pszExtractStatus[0]);
+                                CString szStatus = pConfig->m_Language.GetString(0x00410001, pszExtractStatus[0]);
                                 m_LstTools.SetItemText(i, TOOL_COLUMN_STATUS, szStatus);
                             }
                         }
@@ -1103,12 +1103,12 @@ void CToolsDlg::DownloadTools()
                             bool bUnzipResult = ::Unzip2Folder(file, folder);
                             if (bUnzipResult == true)
                             {
-                                CString szStatus = pConfig->GetString(0x00410002, pszExtractStatus[1]);
+                                CString szStatus = pConfig->m_Language.GetString(0x00410002, pszExtractStatus[1]);
                                 m_LstTools.SetItemText(i, TOOL_COLUMN_STATUS, szStatus);
                             }
                             else
                             {
-                                CString szStatus = pConfig->GetString(0x00410003, pszExtractStatus[2]);
+                                CString szStatus = pConfig->m_Language.GetString(0x00410003, pszExtractStatus[2]);
                                 m_LstTools.SetItemText(i, TOOL_COLUMN_STATUS, szStatus);
                             }
                         }

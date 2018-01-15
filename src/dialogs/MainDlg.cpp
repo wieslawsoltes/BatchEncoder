@@ -84,7 +84,7 @@ int CALLBACK BrowseCallbackAddDir(HWND hWnd, UINT uMsg, LPARAM lp, LPARAM pData)
 
         hWndBtnRecurse = ::CreateWindowEx(0,
             _T("BUTTON"),
-            pDlg->m_Config.GetString(0x00210005, pszMainDialog[4]),
+            pDlg->m_Config.m_Language.GetString(0x00210005, pszMainDialog[4]),
             BS_CHECKBOX | BS_AUTOCHECKBOX | WS_CHILD | WS_TABSTOP | WS_VISIBLE,
             rc.left, rc.top,
             rc.right - rc.left, rc.bottom - rc.top,
@@ -679,7 +679,7 @@ void CMainDlg::OnBnClickedButtonBrowsePath()
         LPITEMIDLIST pidlBrowse;
         TCHAR *lpBuffer;
 
-        CString szTitle = m_Config.GetString(0x00210006, pszMainDialog[5]);
+        CString szTitle = m_Config.m_Language.GetString(0x00210006, pszMainDialog[5]);
 
         CString szTmp;
         this->m_CmbOutPath.GetWindowText(szTmp);
@@ -746,9 +746,9 @@ void CMainDlg::OnFileLoadList()
     {
         CString szFilter;
         szFilter.Format(_T("%s (*.items)|*.items|%s (*.xml)|*.xml|%s (*.*)|*.*||"),
-            m_Config.GetString(0x00310003, pszFileDialogs[2]),
-            m_Config.GetString(0x00310002, pszFileDialogs[1]),
-            m_Config.GetString(0x00310001, pszFileDialogs[0]));
+            m_Config.m_Language.GetString(0x00310003, pszFileDialogs[2]),
+            m_Config.m_Language.GetString(0x00310002, pszFileDialogs[1]),
+            m_Config.m_Language.GetString(0x00310001, pszFileDialogs[0]));
 
         CFileDialog fd(TRUE, _T("items"), _T(""),
             OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER,
@@ -758,7 +758,7 @@ void CMainDlg::OnFileLoadList()
         {
             CString szFileXml = fd.GetPathName();
             if (this->LoadItems(szFileXml) == false)
-                m_StatusBar.SetText(m_Config.GetString(0x00210007, pszMainDialog[6]), 1, 0);
+                m_StatusBar.SetText(m_Config.m_Language.GetString(0x00210007, pszMainDialog[6]), 1, 0);
             else
                 this->UpdateStatusBar();
         }
@@ -771,9 +771,9 @@ void CMainDlg::OnFileSaveList()
     {
         CString szFilter;
         szFilter.Format(_T("%s (*.items)|*.items|%s (*.xml)|*.xml|%s (*.*)|*.*||"),
-            m_Config.GetString(0x00310003, pszFileDialogs[2]),
-            m_Config.GetString(0x00310002, pszFileDialogs[1]),
-            m_Config.GetString(0x00310001, pszFileDialogs[0]));
+            m_Config.m_Language.GetString(0x00310003, pszFileDialogs[2]),
+            m_Config.m_Language.GetString(0x00310002, pszFileDialogs[1]),
+            m_Config.m_Language.GetString(0x00310001, pszFileDialogs[0]));
 
         CFileDialog fd(FALSE, _T("items"), _T("items"),
             OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER | OFN_OVERWRITEPROMPT,
@@ -783,7 +783,7 @@ void CMainDlg::OnFileSaveList()
         {
             CString szFileXml = fd.GetPathName();
             if (this->SaveItems(szFileXml) == false)
-                m_StatusBar.SetText(m_Config.GetString(0x00210008, pszMainDialog[7]), 1, 0);
+                m_StatusBar.SetText(m_Config.m_Language.GetString(0x00210008, pszMainDialog[7]), 1, 0);
         }
     }
 }
@@ -820,14 +820,14 @@ void CMainDlg::OnEditAddFiles()
             pFiles = (TCHAR *)malloc(dwMaxSize);
             if (pFiles == nullptr)
             {
-                m_StatusBar.SetText(m_Config.GetString(0x00210009, pszMainDialog[8]), 1, 0);
+                m_StatusBar.SetText(m_Config.m_Language.GetString(0x00210009, pszMainDialog[8]), 1, 0);
                 return;
             }
 
             ZeroMemory(pFiles, dwMaxSize);
 
             CString szFilter;
-            szFilter.Format(_T("%s (*.*)|*.*||"), m_Config.GetString(0x00310001, pszFileDialogs[0]));
+            szFilter.Format(_T("%s (*.*)|*.*||"), m_Config.m_Language.GetString(0x00310001, pszFileDialogs[0]));
 
             CFileDialog fd(TRUE, _T(""), _T(""),
                 OFN_ALLOWMULTISELECT | OFN_HIDEREADONLY | OFN_ENABLESIZING,
@@ -882,7 +882,7 @@ void CMainDlg::OnEditAddDir()
         LPITEMIDLIST pidlBrowse;
         TCHAR *lpBuffer;
 
-        CString szTitle = m_Config.GetString(0x0021000A, pszMainDialog[9]);
+        CString szTitle = m_Config.m_Language.GetString(0x0021000A, pszMainDialog[9]);
 
         if (SHGetMalloc(&pMalloc) == E_FAIL)
             return;
@@ -1377,14 +1377,14 @@ void CMainDlg::OnLanguageDefault()
 void CMainDlg::OnLanguageChange(UINT nID)
 {
     int nSelectedLanguage = nID - ID_LANGUAGE_MIN;
-    CLanguage& language = m_Config.m_Languages.Get(nSelectedLanguage);
+    CLanguage& language = m_Config.m_Language.m_Languages.Get(nSelectedLanguage);
     m_Config.m_Options.szSelectedLanguage = language.szId;
-    m_Config.pLanguage = &language;
+    m_Config.m_Language.pLanguage = &language;
 
     CMenu *m_hMenu = this->GetMenu();
     CMenu *m_hLangMenu = m_hMenu->GetSubMenu(4);
 
-    int nLanguages = m_Config.m_Languages.Count();
+    int nLanguages = m_Config.m_Language.m_Languages.Count();
     for (int i = 0; i < nLanguages; i++)
     {
         UINT nLangID = ID_LANGUAGE_MIN + i;
@@ -1450,7 +1450,7 @@ bool CMainDlg::SearchFolderForLanguages(CString szFile)
                 {
                     CLanguage language;
                     xmlLanguages.GetLanguage(language);
-                    this->m_Config.m_Languages.Insert(language);
+                    this->m_Config.m_Language.m_Languages.Insert(language);
                 }
             }
 
@@ -1468,7 +1468,7 @@ bool CMainDlg::SearchFolderForLanguages(CString szFile)
     }
     catch (...)
     {
-        m_StatusBar.SetText(m_Config.GetString(0x0021000B, pszMainDialog[10]), 1, 0);
+        m_StatusBar.SetText(m_Config.m_Language.GetString(0x0021000B, pszMainDialog[10]), 1, 0);
     }
     return true;
 }
@@ -1478,14 +1478,14 @@ void CMainDlg::InitLanguageMenu()
     CMenu *m_hMenu = this->GetMenu();
     CMenu *m_hLangMenu = m_hMenu->GetSubMenu(4);
 
-    int nLanguages = m_Config.m_Languages.Count();
+    int nLanguages = m_Config.m_Language.m_Languages.Count();
     if (nLanguages > 0 && nLanguages <= (ID_LANGUAGE_MAX - ID_LANGUAGE_MIN))
     {
         m_hLangMenu->DeleteMenu(ID_LANGUAGE_DEFAULT, 0);
 
         for (int i = 0; i < nLanguages; i++)
         {
-            CLanguage language = m_Config.m_Languages.Get(i);
+            CLanguage language = m_Config.m_Language.m_Languages.Get(i);
 
             CString szBuff;
             szBuff.Format(_T("%s (%s)"), language.szOriginalName, language.szTranslatedName);
@@ -1495,21 +1495,21 @@ void CMainDlg::InitLanguageMenu()
             m_hLangMenu->CheckMenuItem(nLangID, MF_UNCHECKED);
         }
 
-        int nSelectedLanguage = m_Config.m_Languages.GetLanguageById(m_Config.m_Options.szSelectedLanguage);
+        int nSelectedLanguage = m_Config.m_Language.m_Languages.GetLanguageById(m_Config.m_Options.szSelectedLanguage);
         if (nSelectedLanguage >= 0)
         {
             m_hLangMenu->CheckMenuItem(ID_LANGUAGE_MIN + nSelectedLanguage, MF_CHECKED);
 
-            CLanguage& language = m_Config.m_Languages.Get(nSelectedLanguage);
-            m_Config.pLanguage = &language;
+            CLanguage& language = m_Config.m_Language.m_Languages.Get(nSelectedLanguage);
+            m_Config.m_Language.pLanguage = &language;
         }
         else
         {
             m_hLangMenu->CheckMenuItem(ID_LANGUAGE_MIN, MF_CHECKED);
 
-            CLanguage& language = m_Config.m_Languages.Get(0);
+            CLanguage& language = m_Config.m_Language.m_Languages.Get(0);
             m_Config.m_Options.szSelectedLanguage = language.szId;
-            m_Config.pLanguage = &language;
+            m_Config.m_Language.pLanguage = &language;
         }
     }
     else
@@ -1521,7 +1521,7 @@ void CMainDlg::InitLanguageMenu()
 
 void CMainDlg::SetLanguage()
 {
-    CLanguageHelper helper(&m_Config);
+    CLanguageHelper helper(&m_Config.m_Language);
     CMenu *m_hMenu = this->GetMenu();
 
     // File Menu
@@ -1611,12 +1611,12 @@ void CMainDlg::LoadLanguage(CString szFileXml)
         CLanguage language;
         xmlLanguages.GetLanguage(language);
 
-        this->m_Config.m_Languages.Insert(language);
+        this->m_Config.m_Language.m_Languages.Insert(language);
 
         // insert to languages menu
         CMenu *m_hMenu = this->GetMenu();
         CMenu *m_hLangMenu = m_hMenu->GetSubMenu(4);
-        int nLanguages = m_Config.m_Languages.Count();
+        int nLanguages = m_Config.m_Language.m_Languages.Count();
 
         CString szBuff;
         szBuff.Format(_T("%s (%s)"), language.szOriginalName, language.szTranslatedName);
@@ -2146,7 +2146,7 @@ void CMainDlg::AddToList(CItem &item, int nItem)
     m_LstInputItems.SetItemText(lvi.iItem, ITEM_COLUMN_TIME, lvi.pszText);
 
     // [Status] : encoder/decoder progress status
-    tmpBuf.Format(_T("%s"), (item.szStatus.CompareNoCase(_T("")) == 0) ? m_Config.GetString(0x00210001, pszMainDialog[0]) : item.szStatus);
+    tmpBuf.Format(_T("%s"), (item.szStatus.CompareNoCase(_T("")) == 0) ? m_Config.m_Language.GetString(0x00210001, pszMainDialog[0]) : item.szStatus);
     lvi.iSubItem = ITEM_COLUMN_STATUS;
     lvi.pszText = (LPTSTR)(LPCTSTR)(tmpBuf);
     m_LstInputItems.SetItemText(lvi.iItem, ITEM_COLUMN_STATUS, lvi.pszText);
@@ -2340,7 +2340,7 @@ void CMainDlg::SearchFolderForFiles(CString szFile, const bool bRecurse)
     }
     catch (...)
     {
-        m_StatusBar.SetText(m_Config.GetString(0x0021000C, pszMainDialog[11]), 1, 0);
+        m_StatusBar.SetText(m_Config.m_Language.GetString(0x0021000C, pszMainDialog[11]), 1, 0);
     }
 }
 
@@ -2490,7 +2490,7 @@ void CMainDlg::ResetConvertionStatus()
         {
             if (m_LstInputItems.GetItemState(i, LVIS_SELECTED) == LVIS_SELECTED)
             {
-                this->m_LstInputItems.SetItemText(i, ITEM_COLUMN_STATUS, m_Config.GetString(0x00210001, pszMainDialog[0]));
+                this->m_LstInputItems.SetItemText(i, ITEM_COLUMN_STATUS, m_Config.m_Language.GetString(0x00210001, pszMainDialog[0]));
                 nSelected++;
             }
         }
@@ -2498,7 +2498,7 @@ void CMainDlg::ResetConvertionStatus()
         if (nSelected == 0)
         {
             for (int i = 0; i < nCount; i++)
-                this->m_LstInputItems.SetItemText(i, ITEM_COLUMN_STATUS, m_Config.GetString(0x00210001, pszMainDialog[0]));
+                this->m_LstInputItems.SetItemText(i, ITEM_COLUMN_STATUS, m_Config.m_Language.GetString(0x00210001, pszMainDialog[0]));
         }
     }
 }
@@ -2512,13 +2512,13 @@ void CMainDlg::UpdateStatusBar()
         szText.Format(_T("%d %s"),
             nCount,
             (nCount > 1) ?
-            m_Config.GetString(0x00210003, pszMainDialog[2]) :
-            m_Config.GetString(0x00210002, pszMainDialog[1]));
+            m_Config.m_Language.GetString(0x00210003, pszMainDialog[2]) :
+            m_Config.m_Language.GetString(0x00210002, pszMainDialog[1]));
         m_StatusBar.SetText(szText, 0, 0);
     }
     else
     {
-        m_StatusBar.SetText(m_Config.GetString(0x00210004, pszMainDialog[3]), 0, 0);
+        m_StatusBar.SetText(m_Config.m_Language.GetString(0x00210004, pszMainDialog[3]), 0, 0);
         m_StatusBar.SetText(_T(""), 1, 0);
     }
 }
@@ -2610,7 +2610,7 @@ void CMainDlg::StartConvert()
             if (item.bChecked == true)
             {
                 this->m_LstInputItems.SetItemText(i, ITEM_COLUMN_TIME, pszDefaulTime);
-                this->m_LstInputItems.SetItemText(i, ITEM_COLUMN_STATUS, m_Config.GetString(0x00210001, pszMainDialog[0]));
+                this->m_LstInputItems.SetItemText(i, ITEM_COLUMN_STATUS, m_Config.m_Language.GetString(0x00210001, pszMainDialog[0]));
                 nChecked++;
             }
         }
@@ -2626,7 +2626,7 @@ void CMainDlg::StartConvert()
         CString szOutput = this->m_Config.m_Options.szOutputPath;
         if (m_Output.Validate(szOutput) == false)
         {
-            m_StatusBar.SetText(m_Config.GetString(0x0021000F, pszMainDialog[14]), 1, 0);
+            m_StatusBar.SetText(m_Config.m_Language.GetString(0x0021000F, pszMainDialog[14]), 1, 0);
             bSafeCheck = false;
             this->pWorkerContext->bDone = true;
             return;
@@ -2634,7 +2634,7 @@ void CMainDlg::StartConvert()
 
         if (this->m_Worker.m_Thread.Start([this]() { this->m_Worker.Convert(this->pWorkerContext); }, true) == false)
         {
-            m_StatusBar.SetText(m_Config.GetString(0x0021000E, pszMainDialog[13]), 1, 0);
+            m_StatusBar.SetText(m_Config.m_Language.GetString(0x0021000E, pszMainDialog[13]), 1, 0);
             this->pWorkerContext->bDone = true;
             bSafeCheck = false;
             return;
@@ -2643,8 +2643,8 @@ void CMainDlg::StartConvert()
         this->EnableUserInterface(FALSE);
 
         m_StatusBar.SetText(_T(""), 1, 0);
-        m_BtnConvert.SetWindowText(m_Config.GetString(0x000A0018, _T("S&top")));
-        this->GetMenu()->ModifyMenu(ID_ACTION_CONVERT, MF_BYCOMMAND, ID_ACTION_CONVERT, m_Config.GetString(0x00030003, _T("S&top\tF9")));
+        m_BtnConvert.SetWindowText(m_Config.m_Language.GetString(0x000A0018, _T("S&top")));
+        this->GetMenu()->ModifyMenu(ID_ACTION_CONVERT, MF_BYCOMMAND, ID_ACTION_CONVERT, m_Config.m_Language.GetString(0x00030003, _T("S&top\tF9")));
 
         this->pWorkerContext->bRunning = true;
         this->m_Worker.m_Thread.Resume();
@@ -2655,8 +2655,8 @@ void CMainDlg::StartConvert()
     {
         bSafeCheck = true;
 
-        m_BtnConvert.SetWindowText(m_Config.GetString(0x000A0017, _T("Conve&rt")));
-        this->GetMenu()->ModifyMenu(ID_ACTION_CONVERT, MF_BYCOMMAND, ID_ACTION_CONVERT, m_Config.GetString(0x00030002, _T("Conve&rt\tF9")));
+        m_BtnConvert.SetWindowText(m_Config.m_Language.GetString(0x000A0017, _T("Conve&rt")));
+        this->GetMenu()->ModifyMenu(ID_ACTION_CONVERT, MF_BYCOMMAND, ID_ACTION_CONVERT, m_Config.m_Language.GetString(0x00030002, _T("Conve&rt\tF9")));
         this->EnableUserInterface(TRUE);
 
         this->pWorkerContext->bRunning = false;
@@ -2666,8 +2666,8 @@ void CMainDlg::StartConvert()
 
 void CMainDlg::FinishConvert()
 {
-    this->m_BtnConvert.SetWindowText(m_Config.GetString(0x000A0017, _T("Conve&rt")));
-    this->GetMenu()->ModifyMenu(ID_ACTION_CONVERT, MF_BYCOMMAND, ID_ACTION_CONVERT, m_Config.GetString(0x00030002, _T("Conve&rt\tF9")));
+    this->m_BtnConvert.SetWindowText(m_Config.m_Language.GetString(0x000A0017, _T("Conve&rt")));
+    this->GetMenu()->ModifyMenu(ID_ACTION_CONVERT, MF_BYCOMMAND, ID_ACTION_CONVERT, m_Config.m_Language.GetString(0x00030002, _T("Conve&rt\tF9")));
     this->EnableUserInterface(TRUE);
 
     this->m_Progress.SetPos(0);
