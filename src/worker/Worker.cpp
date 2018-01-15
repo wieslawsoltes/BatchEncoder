@@ -894,6 +894,7 @@ bool CWorker::ConvertItem(CWorkerContext* pWorkerContext, CItem& item, CSynchron
 
     bool bIsValidEncoderInput = pEncFormat->IsValidInputExtension(::GetFileExtension(szEncInputFile));
 
+    m_Output.Validate(pWorkerContext->pConfig->m_Options.szOutputPath);
     szEncOutputFile = m_Output.CreateFilePath(
         pWorkerContext->pConfig->m_Options.szOutputPath,
         szEncInputFile,
