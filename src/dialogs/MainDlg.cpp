@@ -970,21 +970,22 @@ void CMainDlg::OnEditRemove()
 {
     if (this->pWorkerContext->bRunning == false)
     {
-        int nItem = -1;
         int nItemLastRemoved = -1;
-        do
-        {
-            nItem = m_LstInputItems.GetNextItem(-1, LVIS_SELECTED);
-            if (nItem != -1)
-            {
-                m_Config.m_Items.Remove(nItem);
-                m_LstInputItems.DeleteItem(nItem);
-
-                nItemLastRemoved = nItem;
-            }
-        } while (nItem != -1);
-
         int nItems = m_LstInputItems.GetItemCount();
+        if (nItems <= 0)
+            return;
+
+        for (int i = (nItems - 1); i >= 0; i--)
+        {
+            if (m_LstInputItems.GetItemState(i, LVIS_SELECTED) == LVIS_SELECTED)
+            {
+                m_Config.m_Items.Remove(i);
+                m_LstInputItems.DeleteItem(i);
+                nItemLastRemoved = i;
+            }
+        }
+
+        nItems = m_LstInputItems.GetItemCount();
         if (nItemLastRemoved != -1)
         {
             if (nItemLastRemoved < nItems && nItems >= 0)
@@ -1013,7 +1014,6 @@ void CMainDlg::OnEditCrop()
 {
     if (this->pWorkerContext->bRunning == false)
     {
-        // invert selection
         int nFiles = m_LstInputItems.GetItemCount();
         for (int i = 0; i < nFiles; i++)
         {
@@ -1023,25 +1023,7 @@ void CMainDlg::OnEditCrop()
                 m_LstInputItems.SetItemState(i, LVIS_SELECTED, LVIS_SELECTED);
         }
 
-        // delete selected
-        int nItem = -1;
-        do
-        {
-            nItem = m_LstInputItems.GetNextItem(-1, LVIS_SELECTED);
-            if (nItem != -1)
-            {
-                m_Config.m_Items.Remove(nItem);
-                m_LstInputItems.DeleteItem(nItem);
-            }
-        } while (nItem != -1);
-
-        if (m_LstInputItems.GetItemCount() == 0)
-        {
-            m_Config.m_Items.RemoveAll();
-            m_LstInputItems.DeleteAllItems();
-        }
-
-        this->UpdateStatusBar();
+        OnEditRemove();
     }
 }
 
