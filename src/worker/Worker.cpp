@@ -868,9 +868,9 @@ bool CWorker::ConvertFileUsingOnlyPipes(CFileContext* pDecoderContext, CFileCont
     }
 }
 
-bool CWorker::ConvertItem(CItemContext* pContext)
+bool CWorker::ConvertItem(CItemContext& context)
 {
-    auto pWorkerContext = pContext->pWorkerContext;
+    auto pWorkerContext = context.pWorkerContext;
     CFormat *pEncFormat = nullptr;
     CFormat *pDecFormat = nullptr;
     CString szEncInputFile;
@@ -879,27 +879,27 @@ bool CWorker::ConvertItem(CItemContext* pContext)
     CString szDecOutputFile;
 
     // prepare encoder
-    CPath& path = pContext->item->m_Paths.Get(0);
+    CPath& path = context.item->m_Paths.Get(0);
 
     szEncInputFile = path.szPath;
     if (::FileExists(szEncInputFile) == false)
     {
-        pWorkerContext->Status(pContext->item->nId, pszDefaulTime, pWorkerContext->GetString(0x00140001, pszConvertItem[0]));
+        pWorkerContext->Status(context.item->nId, pszDefaulTime, pWorkerContext->GetString(0x00140001, pszConvertItem[0]));
         return false;
     }
 
-    int nEncoder = pWorkerContext->pConfig->m_Formats.GetFormatById(pContext->item->szFormatId);
+    int nEncoder = pWorkerContext->pConfig->m_Formats.GetFormatById(context.item->szFormatId);
     if (nEncoder == -1)
     {
-        pWorkerContext->Status(pContext->item->nId, pszDefaulTime, pWorkerContext->GetString(0x00140002, pszConvertItem[1]));
+        pWorkerContext->Status(context.item->nId, pszDefaulTime, pWorkerContext->GetString(0x00140002, pszConvertItem[1]));
         return false;
     }
 
     pEncFormat = &pWorkerContext->pConfig->m_Formats.Get(nEncoder);
 
-    if (pContext->item->nPreset >= pEncFormat->m_Presets.Count())
+    if (context.item->nPreset >= pEncFormat->m_Presets.Count())
     {
-        pWorkerContext->Status(pContext->item->nId, pszDefaulTime, pWorkerContext->GetString(0x00140003, pszConvertItem[2]));
+        pWorkerContext->Status(context.item->nId, pszDefaulTime, pWorkerContext->GetString(0x00140003, pszConvertItem[2]));
         return false;
     }
 
@@ -908,14 +908,14 @@ bool CWorker::ConvertItem(CItemContext* pContext)
     szEncOutputFile = pWorkerContext->m_Output.CreateFilePath(
         pWorkerContext->pConfig->m_Options.szOutputPath,
         szEncInputFile,
-        pContext->item->szName,
+        context.item->szName,
         pEncFormat->szOutputExtension);
 
     if (pWorkerContext->pConfig->m_Options.bOverwriteExistingFiles == false)
     {
         if (::FileExists(szEncOutputFile) == true)
         {
-            pWorkerContext->Status(pContext->item->nId, pszDefaulTime, pWorkerContext->GetString(0x00140010, pszConvertItem[15]));
+            pWorkerContext->Status(context.item->nId, pszDefaulTime, pWorkerContext->GetString(0x00140010, pszConvertItem[15]));
             return false;
         }
     }
@@ -925,19 +925,19 @@ bool CWorker::ConvertItem(CItemContext* pContext)
     {
         if (pWorkerContext->m_Output.CreateOutputPath(szEncOutputFile) == false)
         {
-            pWorkerContext->Status(pContext->item->nId, pszDefaulTime, pWorkerContext->GetString(0x0014000F, pszConvertItem[14]));
+            pWorkerContext->Status(context.item->nId, pszDefaulTime, pWorkerContext->GetString(0x0014000F, pszConvertItem[14]));
             return false;
         }
     }
     else
     {
-        pWorkerContext->Status(pContext->item->nId, pszDefaulTime, pWorkerContext->GetString(0x0014000F, pszConvertItem[14]));
+        pWorkerContext->Status(context.item->nId, pszDefaulTime, pWorkerContext->GetString(0x0014000F, pszConvertItem[14]));
         return false;
     }
 
     if (pWorkerContext->pSyncDir->Release() == false)
     {
-        pWorkerContext->Status(pContext->item->nId, pszDefaulTime, pWorkerContext->GetString(0x0014000F, pszConvertItem[14]));
+        pWorkerContext->Status(context.item->nId, pszDefaulTime, pWorkerContext->GetString(0x0014000F, pszConvertItem[14]));
         return false;
     }
 
@@ -946,10 +946,10 @@ bool CWorker::ConvertItem(CItemContext* pContext)
     // prepare decoder
     if (bIsValidEncoderInput == false)
     {
-        int nDecoder = pWorkerContext->pConfig->m_Formats.GetDecoderByExtensionAndFormat(pContext->item->szExtension, pEncFormat);
+        int nDecoder = pWorkerContext->pConfig->m_Formats.GetDecoderByExtensionAndFormat(context.item->szExtension, pEncFormat);
         if (nDecoder == -1)
         {
-            pWorkerContext->Status(pContext->item->nId, pszDefaulTime, pWorkerContext->GetString(0x00140004, pszConvertItem[3]));
+            pWorkerContext->Status(context.item->nId, pszDefaulTime, pWorkerContext->GetString(0x00140004, pszConvertItem[3]));
             return false;
         }
 
@@ -957,14 +957,14 @@ bool CWorker::ConvertItem(CItemContext* pContext)
 
         if (pDecFormat->nDefaultPreset >= pDecFormat->m_Presets.Count())
         {
-            pWorkerContext->Status(pContext->item->nId, pszDefaulTime, pWorkerContext->GetString(0x00140005, pszConvertItem[4]));
+            pWorkerContext->Status(context.item->nId, pszDefaulTime, pWorkerContext->GetString(0x00140005, pszConvertItem[4]));
             return false;
         }
 
         bool bIsValidDecoderOutput = pEncFormat->IsValidInputExtension(pDecFormat->szOutputExtension);
         if (bIsValidDecoderOutput == false)
         {
-            pWorkerContext->Status(pContext->item->nId, pszDefaulTime, pWorkerContext->GetString(0x00140006, pszConvertItem[5]));
+            pWorkerContext->Status(context.item->nId, pszDefaulTime, pWorkerContext->GetString(0x00140006, pszConvertItem[5]));
             return false;
         }
 
@@ -982,7 +982,7 @@ bool CWorker::ConvertItem(CItemContext* pContext)
             pWorkerContext,
             pDecFormat,
             pDecFormat->nDefaultPreset,
-            pContext->item->nId,
+            context.item->nId,
             szDecInputFile,
             szDecOutputFile,
             pDecFormat->bPipeInput,
@@ -994,13 +994,13 @@ bool CWorker::ConvertItem(CItemContext* pContext)
     encoderContext.Init(
         pWorkerContext,
         pEncFormat,
-        pContext->item->nPreset,
-        pContext->item->nId,
+        context.item->nPreset,
+        context.item->nId,
         bIsValidEncoderInput == true ? szEncInputFile : szDecOutputFile,
         szEncOutputFile,
         pEncFormat->bPipeInput,
         pEncFormat->bPipeOutput,
-        pContext->item->szOptions);
+        context.item->szOptions);
 
     if (bIsValidEncoderInput == false
         && decoderContext.bUseReadPipes == true
@@ -1011,9 +1011,9 @@ bool CWorker::ConvertItem(CItemContext* pContext)
         // trans-code
         try
         {
-            pWorkerContext->Status(pContext->item->nId, pszDefaulTime, pWorkerContext->GetString(0x0014000C, pszConvertItem[11]));
+            pWorkerContext->Status(context.item->nId, pszDefaulTime, pWorkerContext->GetString(0x0014000C, pszConvertItem[11]));
 
-            pContext->item->ResetProgress();
+            context.item->ResetProgress();
 
             bool bResult = ConvertFileUsingOnlyPipes(&decoderContext, &encoderContext);
             if (bResult == true)
@@ -1028,7 +1028,7 @@ bool CWorker::ConvertItem(CItemContext* pContext)
                             ::DeleteFile(szEncInputFile);
                     }
 
-                    pWorkerContext->Status(pContext->item->nId, pszDefaulTime, pWorkerContext->GetString(0x0014000D, pszConvertItem[12]));
+                    pWorkerContext->Status(context.item->nId, pszDefaulTime, pWorkerContext->GetString(0x0014000D, pszConvertItem[12]));
                     return false;
                 }
                 */
@@ -1051,8 +1051,8 @@ bool CWorker::ConvertItem(CItemContext* pContext)
             if (pWorkerContext->pConfig->m_Options.bDeleteOnErrors == true)
                 ::DeleteFile(szEncOutputFile);
 
-            pWorkerContext->Status(pContext->item->nId, pszDefaulTime, pWorkerContext->GetString(0x0014000E, pszConvertItem[13]));
-            pWorkerContext->Callback(pContext->item->nId, -1, true, true);
+            pWorkerContext->Status(context.item->nId, pszDefaulTime, pWorkerContext->GetString(0x0014000E, pszConvertItem[13]));
+            pWorkerContext->Callback(context.item->nId, -1, true, true);
         }
     }
     else
@@ -1062,9 +1062,9 @@ bool CWorker::ConvertItem(CItemContext* pContext)
         {
             try
             {
-                pWorkerContext->Status(pContext->item->nId, pszDefaulTime, pWorkerContext->GetString(0x00140007, pszConvertItem[6]));
+                pWorkerContext->Status(context.item->nId, pszDefaulTime, pWorkerContext->GetString(0x00140007, pszConvertItem[6]));
 
-                pContext->item->ResetProgress();
+                context.item->ResetProgress();
 
                 bool bResult = false;
                 if ((decoderContext.bUseReadPipes == false) && (decoderContext.bUseWritePipes == false))
@@ -1081,7 +1081,7 @@ bool CWorker::ConvertItem(CItemContext* pContext)
 
                 if (::FileExists(szDecOutputFile) == false)
                 {
-                    pWorkerContext->Status(pContext->item->nId, pszDefaulTime, pWorkerContext->GetString(0x00140008, pszConvertItem[7]));
+                    pWorkerContext->Status(context.item->nId, pszDefaulTime, pWorkerContext->GetString(0x00140008, pszConvertItem[7]));
                     return false;
                 }
             }
@@ -1090,8 +1090,8 @@ bool CWorker::ConvertItem(CItemContext* pContext)
                 if (pWorkerContext->pConfig->m_Options.bDeleteOnErrors == true)
                     ::DeleteFile(szEncOutputFile);
 
-                pWorkerContext->Status(pContext->item->nId, pszDefaulTime, pWorkerContext->GetString(0x00140009, pszConvertItem[8]));
-                pWorkerContext->Callback(pContext->item->nId, -1, true, true);
+                pWorkerContext->Status(context.item->nId, pszDefaulTime, pWorkerContext->GetString(0x00140009, pszConvertItem[8]));
+                pWorkerContext->Callback(context.item->nId, -1, true, true);
             }
         }
 
@@ -1102,11 +1102,11 @@ bool CWorker::ConvertItem(CItemContext* pContext)
         try
         {
             if (pEncFormat->nType == 0)
-                pWorkerContext->Status(pContext->item->nId, pszDefaulTime, pWorkerContext->GetString(0x0014000A, pszConvertItem[9]));
+                pWorkerContext->Status(context.item->nId, pszDefaulTime, pWorkerContext->GetString(0x0014000A, pszConvertItem[9]));
             else if (pEncFormat->nType == 1)
-                pWorkerContext->Status(pContext->item->nId, pszDefaulTime, pWorkerContext->GetString(0x0014000B, pszConvertItem[10]));
+                pWorkerContext->Status(context.item->nId, pszDefaulTime, pWorkerContext->GetString(0x0014000B, pszConvertItem[10]));
 
-            pContext->item->ResetProgress();
+            context.item->ResetProgress();
 
             bool bResult = false;
             if ((encoderContext.bUseReadPipes == false) && (encoderContext.bUseWritePipes == false))
@@ -1125,7 +1125,7 @@ bool CWorker::ConvertItem(CItemContext* pContext)
                             ::DeleteFile(szEncInputFile);
                     }
 
-                    pWorkerContext->Status(pContext->item->nId, pszDefaulTime, pWorkerContext->GetString(0x0014000D, pszConvertItem[12]));
+                    pWorkerContext->Status(context.item->nId, pszDefaulTime, pWorkerContext->GetString(0x0014000D, pszConvertItem[12]));
                     return false;
                 }
                 */
@@ -1157,8 +1157,8 @@ bool CWorker::ConvertItem(CItemContext* pContext)
             if (pWorkerContext->pConfig->m_Options.bDeleteOnErrors == true)
                 ::DeleteFile(szEncOutputFile);
 
-            pWorkerContext->Status(pContext->item->nId, pszDefaulTime, pWorkerContext->GetString(0x0014000E, pszConvertItem[13]));
-            pWorkerContext->Callback(pContext->item->nId, -1, true, true);
+            pWorkerContext->Status(context.item->nId, pszDefaulTime, pWorkerContext->GetString(0x0014000E, pszConvertItem[13]));
+            pWorkerContext->Callback(context.item->nId, -1, true, true);
         }
     }
 
@@ -1171,60 +1171,58 @@ bool CWorker::ConvertLoop(CWorkerContext* pWorkerContext)
     {
         try
         {
-            CItemContext* pContext = nullptr;
             if (pWorkerContext->pSync->Wait() == true)
             {
-                if (!pWorkerContext->pQueue->IsEmpty())
-                    pContext = (CItemContext*)pWorkerContext->pQueue->RemoveHead();
-            }
-            else
-                return false;
-
-            if (pWorkerContext->pSync->Release() == false)
-                return false;
-
-            if (pContext != nullptr)
-            {
-                if (pWorkerContext->bRunning == false)
-                    return false;
-
-                pWorkerContext->Next(pContext->item->nId);
-                if (ConvertItem(pContext) == true)
+                if (!pWorkerContext->pQueue->empty())
                 {
-                    pWorkerContext->nDoneWithoutError++;
-                }
-                else
-                {
-                    if (pWorkerContext->pConfig->m_Options.bStopOnErrors == true)
+                    auto& context = pWorkerContext->pQueue->pop();
+                    if (pWorkerContext->pSync->Release() == false)
                         return false;
+
+                    if (pWorkerContext->bRunning == false)
+                        return false;
+
+                    pWorkerContext->Next(context.item->nId);
+                    if (ConvertItem(context) == true)
+                    {
+                        pWorkerContext->nDoneWithoutError++;
+                    }
+                    else
+                    {
+                        if (pWorkerContext->pConfig->m_Options.bStopOnErrors == true)
+                            return false;
+                    }
+
+                    if (pWorkerContext->bRunning == false)
+                        return false;
+
+                    return true;
                 }
 
-                if (pWorkerContext->bRunning == false)
+                if (pWorkerContext->pSync->Release() == false)
                     return false;
-            }
-            else
-            {
+
                 return true;
             }
+            else
+                return false;
         }
         catch (...)
         {
             return false;
         }
     }
-    return true;
 }
 
 void CWorker::Convert(CWorkerContext* pWorkerContext)
 {
     int nItems = pWorkerContext->pConfig->m_Items.Count();
-    auto pItemsContext = new CItemContext[nItems];
 
     pWorkerContext->nTotalFiles = 0;
     pWorkerContext->nProcessedFiles = 0;
     pWorkerContext->nDoneWithoutError = 0;
     pWorkerContext->nErrors = 0;
-    pWorkerContext->pQueue = new CObList(nItems);
+    pWorkerContext->pQueue = new std::queue<CItemContext>;
     pWorkerContext->nLastItemId = -1;
 
     for (int i = 0; i < nItems; i++)
@@ -1233,9 +1231,10 @@ void CWorker::Convert(CWorkerContext* pWorkerContext)
         if (item.bChecked == true)
         {
             item.ResetProgress();
-            pItemsContext[i].pWorkerContext = pWorkerContext;
-            pItemsContext[i].item = &item;
-            pWorkerContext->pQueue->AddTail(&pItemsContext[i]);
+
+            CItemContext context { pWorkerContext, &item };
+            pWorkerContext->pQueue->push(context);
+
             pWorkerContext->nTotalFiles++;
         }
         else
@@ -1292,7 +1291,6 @@ void CWorker::Convert(CWorkerContext* pWorkerContext)
     delete pWorkerContext->pSync;
     delete pWorkerContext->pSyncDir;
     delete pWorkerContext->pQueue;
-    delete[] pItemsContext;
 
     pWorkerContext->Done();
     pWorkerContext->bDone = true;
