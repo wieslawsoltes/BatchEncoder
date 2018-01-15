@@ -1150,7 +1150,7 @@ bool CWorker::ConvertItem(CWorkerContext* pWorkerContext, CItem& item)
     return false;
 }
 
-bool CWorker::ConvertLoop(CWorkerContext* pWorkerContext)
+bool CWorker::ConvertLoop(CWorkerContext* pWorkerContext, std::queue<CItem> &queue)
 {
     while (TRUE)
     {
@@ -1158,12 +1158,11 @@ bool CWorker::ConvertLoop(CWorkerContext* pWorkerContext)
         {
             if (pWorkerContext->pSync->Wait() == true)
             {
-                if (!pWorkerContext->pQueue->empty())
+                if (!queue.empty())
                 {
-                    CItem& item = pWorkerContext->pQueue->front();
+                    CItem& item = queue.front();
+                    queue.pop();
 
-                    pWorkerContext->pQueue->pop();
-                    
                     if (pWorkerContext->pSync->Release() == false)
                         return false;
 
@@ -1210,8 +1209,9 @@ void CWorker::Convert(CWorkerContext* pWorkerContext)
     pWorkerContext->nProcessedFiles = 0;
     pWorkerContext->nDoneWithoutError = 0;
     pWorkerContext->nErrors = 0;
-    pWorkerContext->pQueue = new std::queue<CItem>;
     pWorkerContext->nLastItemId = -1;
+
+    std::queue<CItem> queue;
 
     for (int i = 0; i < nItems; i++)
     {
@@ -1219,7 +1219,7 @@ void CWorker::Convert(CWorkerContext* pWorkerContext)
         if (item.bChecked == true)
         {
             item.ResetProgress();
-            pWorkerContext->pQueue->push(item);
+            queue.push(item);
             pWorkerContext->nTotalFiles++;
         }
         else
@@ -1246,7 +1246,7 @@ void CWorker::Convert(CWorkerContext* pWorkerContext)
     // single-threaded
     if (pWorkerContext->nThreadCount == 1)
     {
-        ConvertLoop(pWorkerContext);
+        ConvertLoop(pWorkerContext, queue);
     }
 
     // multi-threaded
@@ -1256,7 +1256,7 @@ void CWorker::Convert(CWorkerContext* pWorkerContext)
 
         for (int i = 0; i < pWorkerContext->nThreadCount; i++)
         {
-            if (pConvertThreads[i].Start([this, pWorkerContext]() { this->ConvertLoop(pWorkerContext); }, true) == false)
+            if (pConvertThreads[i].Start([this, pWorkerContext, &queue]() { this->ConvertLoop(pWorkerContext, queue); }, true) == false)
                 break;
 
             if (pConvertThreads[i].Resume() == false)
@@ -1274,7 +1274,6 @@ void CWorker::Convert(CWorkerContext* pWorkerContext)
 
     delete pWorkerContext->pSync;
     delete pWorkerContext->pSyncDir;
-    delete pWorkerContext->pQueue;
 
     pWorkerContext->Done();
     pWorkerContext->bDone = true;
