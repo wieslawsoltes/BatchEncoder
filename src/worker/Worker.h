@@ -18,12 +18,12 @@ public:
     CWorker() { }
     virtual ~CWorker() { }
 public:
-    bool ProgresssLoop(CFileContext* pContext, CPipe &Stderr, int &nProgress);
-    bool ReadLoop(CPipeContext* pContext);
-    bool WriteLoop(CPipeContext* pContext);
-    bool ConvertFileUsingConsole(CFileContext* pContext);
-    bool ConvertFileUsingPipes(CFileContext* pContext);
-    bool ConvertFileUsingOnlyPipes(CFileContext* pDecoderContext, CFileContext* pEncoderContext);
+    bool ProgresssLoop(CWorkerContext* pWorkerContext, CFileContext* pContext, CPipe &Stderr, int &nProgress);
+    bool ReadLoop(CWorkerContext* pWorkerContext, CPipeContext* pContext);
+    bool WriteLoop(CWorkerContext* pWorkerContext, CPipeContext* pContext);
+    bool ConvertFileUsingConsole(CWorkerContext* pWorkerContext, CFileContext* pContext);
+    bool ConvertFileUsingPipes(CWorkerContext* pWorkerContext, CFileContext* pContext);
+    bool ConvertFileUsingOnlyPipes(CWorkerContext* pWorkerContext, CFileContext* pDecoderContext, CFileContext* pEncoderContext);
     bool ConvertItem(CWorkerContext* pWorkerContext, CItem& item);
     bool ConvertLoop(CWorkerContext* pWorkerContext);
     void Convert(CWorkerContext* pWorkerContext);
