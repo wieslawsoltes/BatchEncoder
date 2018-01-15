@@ -1184,26 +1184,26 @@ bool CWorker::ConvertLoop(CWorkerContext* pWorkerContext, std::queue<CItem> &que
                     }
 
                     if (pWorkerContext->bRunning == false)
-                        return false;
-
-                    return true;
+                        return false; 
                 }
                 else
                 {
                     if (sync.Release() == false)
                         return false;
                 }
-
-                return true;
             }
             else
+            {
                 return false;
+            }
         }
         catch (...)
         {
             return false;
         }
     }
+
+    return true;
 }
 
 void CWorker::Convert(CWorkerContext* pWorkerContext)
