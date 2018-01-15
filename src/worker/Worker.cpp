@@ -1163,7 +1163,7 @@ bool CWorker::ConvertLoop(CWorkerContext* pWorkerContext, std::queue<CItem> &que
             {
                 if (!queue.empty())
                 {
-                    CItem& item = queue.front();
+                    CItem item = queue.front();
                     queue.pop();
 
                     if (sync.Release() == false)
