@@ -24,17 +24,10 @@ public:
         : pConfig(pConfig) { }
     virtual ~CWorkerContext() { }
 public:
-    CString GetString(int nKey, const TCHAR* szDefault)
-    {
-        CString rValue;
-        if (this->pConfig->LookupString(nKey, rValue))
-            return rValue;
-        return szDefault;
-    }
-public:
     virtual void Init() = 0;
     virtual void Next(int nItemId) = 0;
     virtual void Done() = 0;
     virtual bool Callback(int nItemId, int nProgress, bool bFinished, bool bError = false) = 0;
     virtual void Status(int nItemId, CString szTime, CString szStatus) = 0;
+    virtual CString GetString(int nKey, const TCHAR* szDefault) = 0;
 };

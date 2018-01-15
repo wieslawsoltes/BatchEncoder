@@ -160,4 +160,11 @@ public:
         pDlg->m_LstInputItems.SetItemText(nItemId, ITEM_COLUMN_TIME, szTime); // Time
         pDlg->m_LstInputItems.SetItemText(nItemId, ITEM_COLUMN_STATUS, szStatus); // Status
     }
+    CString GetString(int nKey, const TCHAR* szDefault)
+    {
+        CString rValue;
+        if (this->pConfig->LookupString(nKey, rValue))
+            return rValue;
+        return szDefault;
+    }
 };
