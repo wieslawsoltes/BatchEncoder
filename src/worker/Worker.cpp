@@ -1160,7 +1160,10 @@ bool CWorker::ConvertLoop(CWorkerContext* pWorkerContext)
             {
                 if (!pWorkerContext->pQueue->empty())
                 {
-                    CItem& item = pWorkerContext->pQueue->pop();
+                    CItem& item = pWorkerContext->pQueue->front();
+
+                    pWorkerContext->pQueue->pop();
+                    
                     if (pWorkerContext->pSync->Release() == false)
                         return false;
 
