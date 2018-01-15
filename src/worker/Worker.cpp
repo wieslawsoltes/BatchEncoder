@@ -1259,7 +1259,11 @@ void CWorker::Convert(CWorkerContext* pWorkerContext)
         auto threads = std::make_unique<CThread[]>(pWorkerContext->nThreadCount);
         for (int i = 0; i < pWorkerContext->nThreadCount; i++)
         {
-            if (threads[i].Start([this, pWorkerContext, &queue, &sync, &syncDir]() { this->ConvertLoop(pWorkerContext, queue, sync, syncDir); }, true) == false)
+            auto entry = [this, pWorkerContext, &queue, &sync, &syncDir]() 
+            { 
+                this->ConvertLoop(pWorkerContext, queue, sync, syncDir); 
+            };
+            if (threads[i].Start(entry, true) == false)
                 break;
 
             if (threads[i].Resume() == false)
