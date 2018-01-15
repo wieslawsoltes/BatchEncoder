@@ -1283,5 +1283,5 @@ void CWorker::Convert(CWorkerContext* pWorkerContext)
     pWorkerContext->Done();
     pWorkerContext->bDone = true;
 
-    pWorkerContext->m_Thread.Close();
+    this->m_Thread.Close();
 }

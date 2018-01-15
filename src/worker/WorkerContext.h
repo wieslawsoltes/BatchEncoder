@@ -3,7 +3,6 @@
 
 #pragma once
 
-#include "utilities\Thread.h"
 #include "configuration\Configuration.h"
 
 class CWorkerContext
@@ -18,7 +17,6 @@ public:
     volatile int nErrors;
     volatile int nLastItemId;
     CConfiguration* pConfig;
-    CThread m_Thread;
 public:
     CWorkerContext(CConfiguration* pConfig) 
         : pConfig(pConfig) { }

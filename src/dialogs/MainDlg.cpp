@@ -2632,7 +2632,7 @@ void CMainDlg::StartConvert()
             return;
         }
 
-        if (this->pWorkerContext->m_Thread.Start([this]() { this->m_Worker.Convert(this->pWorkerContext); }, true) == false)
+        if (this->m_Worker.m_Thread.Start([this]() { this->m_Worker.Convert(this->pWorkerContext); }, true) == false)
         {
             m_StatusBar.SetText(m_Config.GetString(0x0021000E, pszMainDialog[13]), 1, 0);
             this->pWorkerContext->bDone = true;
@@ -2647,7 +2647,7 @@ void CMainDlg::StartConvert()
         this->GetMenu()->ModifyMenu(ID_ACTION_CONVERT, MF_BYCOMMAND, ID_ACTION_CONVERT, m_Config.GetString(0x00030003, _T("S&top\tF9")));
 
         this->pWorkerContext->bRunning = true;
-        this->pWorkerContext->m_Thread.Resume();
+        this->m_Worker.m_Thread.Resume();
 
         bSafeCheck = false;
     }
