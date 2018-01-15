@@ -5,6 +5,7 @@
 #include "MainApp.h"
 #include "Strings.h"
 #include "language\LanguageHelper.h"
+#include "utilities\OutputPath.h"
 #include "utilities\Utilities.h"
 #include "xml\XmlFormats.h"
 #include "xml\XmlItems.h"
@@ -2639,8 +2640,9 @@ void CMainDlg::StartConvert()
             return;
         }
 
+        COutputPath m_Output;
         CString szOutput = this->m_Config.m_Options.szOutputPath;
-        if (this->pWorkerContext->m_Output.Validate(szOutput) == false)
+        if (m_Output.Validate(szOutput) == false)
         {
             m_StatusBar.SetText(m_Config.GetString(0x0021000F, pszMainDialog[14]), 1, 0);
             bSafeCheck = false;
