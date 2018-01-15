@@ -3,7 +3,6 @@
 
 #pragma once
 
-#include "utilities\OutputPath.h"
 #include "utilities\Thread.h"
 #include "configuration\Configuration.h"
 
@@ -18,10 +17,7 @@ public:
     volatile int nDoneWithoutError;
     volatile int nErrors;
     volatile int nLastItemId;
-public:
     CConfiguration* pConfig;
-public:
-    COutputPath m_Output;
     CThread m_Thread;
 public:
     CWorkerContext(CConfiguration* pConfig)
