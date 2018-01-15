@@ -868,9 +868,8 @@ bool CWorker::ConvertFileUsingOnlyPipes(CFileContext* pDecoderContext, CFileCont
     }
 }
 
-bool CWorker::ConvertItem(CItemContext& context)
+bool CWorker::ConvertItem(CWorkerContext* pWorkerContext, CItem& item)
 {
-    auto pWorkerContext = context.pWorkerContext;
     CFormat *pEncFormat = nullptr;
     CFormat *pDecFormat = nullptr;
     CString szEncInputFile;
@@ -879,12 +878,12 @@ bool CWorker::ConvertItem(CItemContext& context)
     CString szDecOutputFile;
 
     // prepare encoder
-    CPath& path = context.item->m_Paths.Get(0);
+    CPath& path = item->m_Paths.Get(0);
 
     szEncInputFile = path.szPath;
     if (::FileExists(szEncInputFile) == false)
     {
-        pWorkerContext->Status(context.item->nId, pszDefaulTime, pWorkerContext->GetString(0x00140001, pszConvertItem[0]));
+        pWorkerContext->Status(item->nId, pszDefaulTime, pWorkerContext->GetString(0x00140001, pszConvertItem[0]));
         return false;
     }
 
@@ -1222,7 +1221,7 @@ void CWorker::Convert(CWorkerContext* pWorkerContext)
     pWorkerContext->nProcessedFiles = 0;
     pWorkerContext->nDoneWithoutError = 0;
     pWorkerContext->nErrors = 0;
-    pWorkerContext->pQueue = new std::queue<CItemContext>;
+    pWorkerContext->pQueue = new std::queue<CItem>;
     pWorkerContext->nLastItemId = -1;
 
     for (int i = 0; i < nItems; i++)
