@@ -6,13 +6,13 @@
 class CItemContext
 {
 public:
-    CWorkerContext *pWorkerContext;
+    CWorkerContext* pWorkerContext;
     CItem* item;
 public:
     CItemContext()
     {
     }
-    CItemContext(CWorkerContext *pWorkerContext, CItem* item)
+    CItemContext(CWorkerContext* pWorkerContext, CItem* item)
     {
         this->pWorkerContext = pWorkerContext;
         this->item = item;
