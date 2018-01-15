@@ -235,25 +235,26 @@ void CPresetsDlg::OnBnClickedButtonRemovePreset()
 
     bUpdate = true;
 
-    int nItem = -1;
     int nItemLastRemoved = -1;
-    do
+    int nItems = m_LstPresets.GetItemCount();
+    if (nItems <= 0)
+        return;
+
+    CFormat& format = m_Formats.Get(nSelectedFormat);
+
+    for (int i = (nItems - 1); i >= 0; i--)
     {
-        nItem = m_LstPresets.GetNextItem(-1, LVIS_SELECTED);
-        if (nItem != -1)
+        if (m_LstPresets.GetItemState(i, LVIS_SELECTED) == LVIS_SELECTED)
         {
-            CFormat& format = m_Formats.Get(nSelectedFormat);
-            format.m_Presets.Remove(nItem);
-
-            m_LstPresets.DeleteItem(nItem);
-
-            nItemLastRemoved = nItem;
+            format.m_Presets.Remove(i);
+            m_LstPresets.DeleteItem(i);
+            nItemLastRemoved = i;
         }
-    } while (nItem != -1);
+    }
 
     m_LstPresets.SetItemState(-1, 0, LVIS_SELECTED);
 
-    int nItems = m_LstPresets.GetItemCount();
+    nItems = m_LstPresets.GetItemCount();
     if (nItemLastRemoved != -1)
     {
         if (nItemLastRemoved < nItems && nItems >= 0)
