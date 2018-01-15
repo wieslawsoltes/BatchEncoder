@@ -1190,6 +1190,8 @@ bool CWorker::ConvertLoop(CWorkerContext* pWorkerContext, std::queue<CItem> &que
                 {
                     if (sync.Release() == false)
                         return false;
+
+                    return true;
                 }
             }
             else
