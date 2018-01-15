@@ -14,7 +14,6 @@
 
 class CWorker
 {
-    CWorkerContext *pWorkerContext;
 public:
     CWorker() { }
     virtual ~CWorker() { }
