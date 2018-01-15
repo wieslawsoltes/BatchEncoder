@@ -9,9 +9,8 @@
 #include "LuaProgess.h"
 #include "Worker.h"
 
-bool CWorker::ProgresssLoop(CFileContext* pContext, CPipe &Stderr, int &nProgress)
+bool CWorker::ProgresssLoop(CWorkerContext* pWorkerContext, CFileContext* pContext, CPipe &Stderr, int &nProgress)
 {
-    auto pWorkerContext = pContext->pWorkerContext;
     const int nBuffSize = 4096;
     char szReadBuff[nBuffSize];
     char szLineBuff[nBuffSize];
@@ -138,9 +137,8 @@ bool CWorker::ProgresssLoop(CFileContext* pContext, CPipe &Stderr, int &nProgres
     return true;
 }
 
-bool CWorker::ReadLoop(CPipeContext* pContext)
+bool CWorker::ReadLoop(CWorkerContext* pWorkerContext, CPipeContext* pContext)
 {
-    auto pWorkerContext = pContext->pWorkerContext;
     HANDLE hFile = INVALID_HANDLE_VALUE;
     BYTE pReadBuff[4096];
     BOOL bRes = FALSE;
@@ -222,9 +220,8 @@ bool CWorker::ReadLoop(CPipeContext* pContext)
     }
 }
 
-bool CWorker::WriteLoop(CPipeContext* pContext)
+bool CWorker::WriteLoop(CWorkerContext* pWorkerContext, CPipeContext* pContext)
 {
-    auto pWorkerContext = pContext->pWorkerContext;
     HANDLE hFile = INVALID_HANDLE_VALUE;
     BYTE pReadBuff[4096];
     BOOL bRes = FALSE;
@@ -292,10 +289,8 @@ bool CWorker::WriteLoop(CPipeContext* pContext)
     }
 }
 
-bool CWorker::ConvertFileUsingConsole(CFileContext* pContext)
+bool CWorker::ConvertFileUsingConsole(CWorkerContext* pWorkerContext, CFileContext* pContext)
 {
-    auto pWorkerContext = pContext->pWorkerContext;
-
     if ((pContext->bUseReadPipes == true) || (pContext->bUseWritePipes == true))
     {
         pWorkerContext->Status(pContext->nItemId, pszDefaulTime, pWorkerContext->GetString(0x00120001, pszConvertConsole[0]));
@@ -349,7 +344,7 @@ bool CWorker::ConvertFileUsingConsole(CFileContext* pContext)
     Stderr.CloseWrite();
 
     // console progress loop
-    if (ProgresssLoop(pContext, Stderr, nProgress) == false)
+    if (ProgresssLoop(pWorkerContext, pContext, Stderr, nProgress) == false)
     {
         timer.Stop();
         Stderr.CloseRead();
@@ -376,10 +371,8 @@ bool CWorker::ConvertFileUsingConsole(CFileContext* pContext)
     }
 }
 
-bool CWorker::ConvertFileUsingPipes(CFileContext* pContext)
+bool CWorker::ConvertFileUsingPipes(CWorkerContext* pWorkerContext, CFileContext* pContext)
 {
-    auto pWorkerContext = pContext->pWorkerContext;
-
     if ((pContext->bUseReadPipes == false) && (pContext->bUseWritePipes == false))
     {
         pWorkerContext->Status(pContext->nItemId, pszDefaulTime, pWorkerContext->GetString(0x00130001, pszConvertPipes[0]));
@@ -507,12 +500,11 @@ bool CWorker::ConvertFileUsingPipes(CFileContext* pContext)
     {
         readContext.bError = false;
         readContext.bFinished = false;
-        readContext.pWorkerContext = pWorkerContext;
         readContext.szFileName = pContext->szInputFile;
         readContext.hPipe = Stdin.hWrite;
         readContext.nIndex = pContext->nItemId;
 
-        if (readThread.Start([this, &readContext]() { this->ReadLoop(&readContext); }) == false)
+        if (readThread.Start([this, pWorkerContext, &readContext]() { this->ReadLoop(pWorkerContext, &readContext); }) == false)
         {
             timer.Stop();
 
@@ -547,12 +539,11 @@ bool CWorker::ConvertFileUsingPipes(CFileContext* pContext)
     {
         writeContext.bError = false;
         writeContext.bFinished = false;
-        writeContext.pWorkerContext = pWorkerContext;
         writeContext.szFileName = pContext->szOutputFile;
         writeContext.hPipe = Stdout.hRead;
         writeContext.nIndex = pContext->nItemId;
 
-        if (writeThread.Start([this, &writeContext]() { this->WriteLoop(&writeContext); }) == false)
+        if (writeThread.Start([this, pWorkerContext, &writeContext]() { this->WriteLoop(pWorkerContext, &writeContext); }) == false)
         {
             timer.Stop();
 
@@ -639,9 +630,8 @@ bool CWorker::ConvertFileUsingPipes(CFileContext* pContext)
     }
 }
 
-bool CWorker::ConvertFileUsingOnlyPipes(CFileContext* pDecoderContext, CFileContext* pEncoderContext)
+bool CWorker::ConvertFileUsingOnlyPipes(CWorkerContext* pWorkerContext, CFileContext* pDecoderContext, CFileContext* pEncoderContext)
 {
-    auto pWorkerContext = pDecoderContext->pWorkerContext;
     CProcess decoderProcess;
     CProcess encoderProcess;
     CPipe Stdin(true);
@@ -776,12 +766,11 @@ bool CWorker::ConvertFileUsingOnlyPipes(CFileContext* pDecoderContext, CFileCont
     // create read thread
     readContext.bError = false;
     readContext.bFinished = false;
-    readContext.pWorkerContext = pWorkerContext;
     readContext.szFileName = pDecoderContext->szInputFile;
     readContext.hPipe = Stdin.hWrite;
     readContext.nIndex = pDecoderContext->nItemId;
 
-    if (readThread.Start([this, &readContext]() { this->ReadLoop(&readContext); }) == false)
+    if (readThread.Start([this, pWorkerContext, &readContext]() { this->ReadLoop(pWorkerContext, &readContext); }) == false)
     {
         timer.Stop();
 
@@ -800,7 +789,7 @@ bool CWorker::ConvertFileUsingOnlyPipes(CFileContext* pDecoderContext, CFileCont
     writeContext.hPipe = Stdout.hRead;
     writeContext.nIndex = pEncoderContext->nItemId;
 
-    if (writeThread.Start([this, &writeContext]() { this->WriteLoop(&writeContext); }) == false)
+    if (writeThread.Start([this, pWorkerContext, &writeContext]() { this->WriteLoop(pWorkerContext, &writeContext); }) == false)
     {
         timer.Stop();
 
@@ -878,27 +867,27 @@ bool CWorker::ConvertItem(CWorkerContext* pWorkerContext, CItem& item)
     CString szDecOutputFile;
 
     // prepare encoder
-    CPath& path = item->m_Paths.Get(0);
+    CPath& path = item.m_Paths.Get(0);
 
     szEncInputFile = path.szPath;
     if (::FileExists(szEncInputFile) == false)
     {
-        pWorkerContext->Status(item->nId, pszDefaulTime, pWorkerContext->GetString(0x00140001, pszConvertItem[0]));
+        pWorkerContext->Status(item.nId, pszDefaulTime, pWorkerContext->GetString(0x00140001, pszConvertItem[0]));
         return false;
     }
 
-    int nEncoder = pWorkerContext->pConfig->m_Formats.GetFormatById(context.item->szFormatId);
+    int nEncoder = pWorkerContext->pConfig->m_Formats.GetFormatById(item.szFormatId);
     if (nEncoder == -1)
     {
-        pWorkerContext->Status(context.item->nId, pszDefaulTime, pWorkerContext->GetString(0x00140002, pszConvertItem[1]));
+        pWorkerContext->Status(item.nId, pszDefaulTime, pWorkerContext->GetString(0x00140002, pszConvertItem[1]));
         return false;
     }
 
     pEncFormat = &pWorkerContext->pConfig->m_Formats.Get(nEncoder);
 
-    if (context.item->nPreset >= pEncFormat->m_Presets.Count())
+    if (item.nPreset >= pEncFormat->m_Presets.Count())
     {
-        pWorkerContext->Status(context.item->nId, pszDefaulTime, pWorkerContext->GetString(0x00140003, pszConvertItem[2]));
+        pWorkerContext->Status(item.nId, pszDefaulTime, pWorkerContext->GetString(0x00140003, pszConvertItem[2]));
         return false;
     }
 
@@ -907,14 +896,14 @@ bool CWorker::ConvertItem(CWorkerContext* pWorkerContext, CItem& item)
     szEncOutputFile = pWorkerContext->m_Output.CreateFilePath(
         pWorkerContext->pConfig->m_Options.szOutputPath,
         szEncInputFile,
-        context.item->szName,
+        item.szName,
         pEncFormat->szOutputExtension);
 
     if (pWorkerContext->pConfig->m_Options.bOverwriteExistingFiles == false)
     {
         if (::FileExists(szEncOutputFile) == true)
         {
-            pWorkerContext->Status(context.item->nId, pszDefaulTime, pWorkerContext->GetString(0x00140010, pszConvertItem[15]));
+            pWorkerContext->Status(item.nId, pszDefaulTime, pWorkerContext->GetString(0x00140010, pszConvertItem[15]));
             return false;
         }
     }
@@ -924,19 +913,19 @@ bool CWorker::ConvertItem(CWorkerContext* pWorkerContext, CItem& item)
     {
         if (pWorkerContext->m_Output.CreateOutputPath(szEncOutputFile) == false)
         {
-            pWorkerContext->Status(context.item->nId, pszDefaulTime, pWorkerContext->GetString(0x0014000F, pszConvertItem[14]));
+            pWorkerContext->Status(item.nId, pszDefaulTime, pWorkerContext->GetString(0x0014000F, pszConvertItem[14]));
             return false;
         }
     }
     else
     {
-        pWorkerContext->Status(context.item->nId, pszDefaulTime, pWorkerContext->GetString(0x0014000F, pszConvertItem[14]));
+        pWorkerContext->Status(item.nId, pszDefaulTime, pWorkerContext->GetString(0x0014000F, pszConvertItem[14]));
         return false;
     }
 
     if (pWorkerContext->pSyncDir->Release() == false)
     {
-        pWorkerContext->Status(context.item->nId, pszDefaulTime, pWorkerContext->GetString(0x0014000F, pszConvertItem[14]));
+        pWorkerContext->Status(item.nId, pszDefaulTime, pWorkerContext->GetString(0x0014000F, pszConvertItem[14]));
         return false;
     }
 
@@ -945,10 +934,10 @@ bool CWorker::ConvertItem(CWorkerContext* pWorkerContext, CItem& item)
     // prepare decoder
     if (bIsValidEncoderInput == false)
     {
-        int nDecoder = pWorkerContext->pConfig->m_Formats.GetDecoderByExtensionAndFormat(context.item->szExtension, pEncFormat);
+        int nDecoder = pWorkerContext->pConfig->m_Formats.GetDecoderByExtensionAndFormat(item.szExtension, pEncFormat);
         if (nDecoder == -1)
         {
-            pWorkerContext->Status(context.item->nId, pszDefaulTime, pWorkerContext->GetString(0x00140004, pszConvertItem[3]));
+            pWorkerContext->Status(item.nId, pszDefaulTime, pWorkerContext->GetString(0x00140004, pszConvertItem[3]));
             return false;
         }
 
@@ -956,14 +945,14 @@ bool CWorker::ConvertItem(CWorkerContext* pWorkerContext, CItem& item)
 
         if (pDecFormat->nDefaultPreset >= pDecFormat->m_Presets.Count())
         {
-            pWorkerContext->Status(context.item->nId, pszDefaulTime, pWorkerContext->GetString(0x00140005, pszConvertItem[4]));
+            pWorkerContext->Status(item.nId, pszDefaulTime, pWorkerContext->GetString(0x00140005, pszConvertItem[4]));
             return false;
         }
 
         bool bIsValidDecoderOutput = pEncFormat->IsValidInputExtension(pDecFormat->szOutputExtension);
         if (bIsValidDecoderOutput == false)
         {
-            pWorkerContext->Status(context.item->nId, pszDefaulTime, pWorkerContext->GetString(0x00140006, pszConvertItem[5]));
+            pWorkerContext->Status(item.nId, pszDefaulTime, pWorkerContext->GetString(0x00140006, pszConvertItem[5]));
             return false;
         }
 
@@ -978,10 +967,9 @@ bool CWorker::ConvertItem(CWorkerContext* pWorkerContext, CItem& item)
     if (bIsValidEncoderInput == false)
     {
         decoderContext.Init(
-            pWorkerContext,
             pDecFormat,
             pDecFormat->nDefaultPreset,
-            context.item->nId,
+            item.nId,
             szDecInputFile,
             szDecOutputFile,
             pDecFormat->bPipeInput,
@@ -991,15 +979,14 @@ bool CWorker::ConvertItem(CWorkerContext* pWorkerContext, CItem& item)
 
     CFileContext encoderContext;
     encoderContext.Init(
-        pWorkerContext,
         pEncFormat,
-        context.item->nPreset,
-        context.item->nId,
+        item.nPreset,
+        item.nId,
         bIsValidEncoderInput == true ? szEncInputFile : szDecOutputFile,
         szEncOutputFile,
         pEncFormat->bPipeInput,
         pEncFormat->bPipeOutput,
-        context.item->szOptions);
+        item.szOptions);
 
     if (bIsValidEncoderInput == false
         && decoderContext.bUseReadPipes == true
@@ -1010,11 +997,11 @@ bool CWorker::ConvertItem(CWorkerContext* pWorkerContext, CItem& item)
         // trans-code
         try
         {
-            pWorkerContext->Status(context.item->nId, pszDefaulTime, pWorkerContext->GetString(0x0014000C, pszConvertItem[11]));
+            pWorkerContext->Status(item.nId, pszDefaulTime, pWorkerContext->GetString(0x0014000C, pszConvertItem[11]));
 
-            context.item->ResetProgress();
+            item.ResetProgress();
 
-            bool bResult = ConvertFileUsingOnlyPipes(&decoderContext, &encoderContext);
+            bool bResult = ConvertFileUsingOnlyPipes(pWorkerContext, &decoderContext, &encoderContext);
             if (bResult == true)
             {
                 // check if output file exists
@@ -1027,7 +1014,7 @@ bool CWorker::ConvertItem(CWorkerContext* pWorkerContext, CItem& item)
                             ::DeleteFile(szEncInputFile);
                     }
 
-                    pWorkerContext->Status(context.item->nId, pszDefaulTime, pWorkerContext->GetString(0x0014000D, pszConvertItem[12]));
+                    pWorkerContext->Status(item.nId, pszDefaulTime, pWorkerContext->GetString(0x0014000D, pszConvertItem[12]));
                     return false;
                 }
                 */
@@ -1050,8 +1037,8 @@ bool CWorker::ConvertItem(CWorkerContext* pWorkerContext, CItem& item)
             if (pWorkerContext->pConfig->m_Options.bDeleteOnErrors == true)
                 ::DeleteFile(szEncOutputFile);
 
-            pWorkerContext->Status(context.item->nId, pszDefaulTime, pWorkerContext->GetString(0x0014000E, pszConvertItem[13]));
-            pWorkerContext->Callback(context.item->nId, -1, true, true);
+            pWorkerContext->Status(item.nId, pszDefaulTime, pWorkerContext->GetString(0x0014000E, pszConvertItem[13]));
+            pWorkerContext->Callback(item.nId, -1, true, true);
         }
     }
     else
@@ -1061,15 +1048,15 @@ bool CWorker::ConvertItem(CWorkerContext* pWorkerContext, CItem& item)
         {
             try
             {
-                pWorkerContext->Status(context.item->nId, pszDefaulTime, pWorkerContext->GetString(0x00140007, pszConvertItem[6]));
+                pWorkerContext->Status(item.nId, pszDefaulTime, pWorkerContext->GetString(0x00140007, pszConvertItem[6]));
 
-                context.item->ResetProgress();
+                item.ResetProgress();
 
                 bool bResult = false;
                 if ((decoderContext.bUseReadPipes == false) && (decoderContext.bUseWritePipes == false))
-                    bResult = ConvertFileUsingConsole(&decoderContext);
+                    bResult = ConvertFileUsingConsole(pWorkerContext, &decoderContext);
                 else
-                    bResult = ConvertFileUsingPipes(&decoderContext);
+                    bResult = ConvertFileUsingPipes(pWorkerContext, &decoderContext);
                 if (bResult == false)
                 {
                     if (pWorkerContext->pConfig->m_Options.bDeleteOnErrors == true)
@@ -1080,7 +1067,7 @@ bool CWorker::ConvertItem(CWorkerContext* pWorkerContext, CItem& item)
 
                 if (::FileExists(szDecOutputFile) == false)
                 {
-                    pWorkerContext->Status(context.item->nId, pszDefaulTime, pWorkerContext->GetString(0x00140008, pszConvertItem[7]));
+                    pWorkerContext->Status(item.nId, pszDefaulTime, pWorkerContext->GetString(0x00140008, pszConvertItem[7]));
                     return false;
                 }
             }
@@ -1089,8 +1076,8 @@ bool CWorker::ConvertItem(CWorkerContext* pWorkerContext, CItem& item)
                 if (pWorkerContext->pConfig->m_Options.bDeleteOnErrors == true)
                     ::DeleteFile(szEncOutputFile);
 
-                pWorkerContext->Status(context.item->nId, pszDefaulTime, pWorkerContext->GetString(0x00140009, pszConvertItem[8]));
-                pWorkerContext->Callback(context.item->nId, -1, true, true);
+                pWorkerContext->Status(item.nId, pszDefaulTime, pWorkerContext->GetString(0x00140009, pszConvertItem[8]));
+                pWorkerContext->Callback(item.nId, -1, true, true);
             }
         }
 
@@ -1101,17 +1088,17 @@ bool CWorker::ConvertItem(CWorkerContext* pWorkerContext, CItem& item)
         try
         {
             if (pEncFormat->nType == 0)
-                pWorkerContext->Status(context.item->nId, pszDefaulTime, pWorkerContext->GetString(0x0014000A, pszConvertItem[9]));
+                pWorkerContext->Status(item.nId, pszDefaulTime, pWorkerContext->GetString(0x0014000A, pszConvertItem[9]));
             else if (pEncFormat->nType == 1)
-                pWorkerContext->Status(context.item->nId, pszDefaulTime, pWorkerContext->GetString(0x0014000B, pszConvertItem[10]));
+                pWorkerContext->Status(item.nId, pszDefaulTime, pWorkerContext->GetString(0x0014000B, pszConvertItem[10]));
 
-            context.item->ResetProgress();
+            item.ResetProgress();
 
             bool bResult = false;
             if ((encoderContext.bUseReadPipes == false) && (encoderContext.bUseWritePipes == false))
-                bResult = ConvertFileUsingConsole(&encoderContext);
+                bResult = ConvertFileUsingConsole(pWorkerContext, &encoderContext);
             else
-                bResult = ConvertFileUsingPipes(&encoderContext);
+                bResult = ConvertFileUsingPipes(pWorkerContext, &encoderContext);
             if (bResult == true)
             {
                 // check if output file exists
@@ -1124,7 +1111,7 @@ bool CWorker::ConvertItem(CWorkerContext* pWorkerContext, CItem& item)
                             ::DeleteFile(szEncInputFile);
                     }
 
-                    pWorkerContext->Status(context.item->nId, pszDefaulTime, pWorkerContext->GetString(0x0014000D, pszConvertItem[12]));
+                    pWorkerContext->Status(item.nId, pszDefaulTime, pWorkerContext->GetString(0x0014000D, pszConvertItem[12]));
                     return false;
                 }
                 */
@@ -1156,8 +1143,8 @@ bool CWorker::ConvertItem(CWorkerContext* pWorkerContext, CItem& item)
             if (pWorkerContext->pConfig->m_Options.bDeleteOnErrors == true)
                 ::DeleteFile(szEncOutputFile);
 
-            pWorkerContext->Status(context.item->nId, pszDefaulTime, pWorkerContext->GetString(0x0014000E, pszConvertItem[13]));
-            pWorkerContext->Callback(context.item->nId, -1, true, true);
+            pWorkerContext->Status(item.nId, pszDefaulTime, pWorkerContext->GetString(0x0014000E, pszConvertItem[13]));
+            pWorkerContext->Callback(item.nId, -1, true, true);
         }
     }
 
@@ -1182,7 +1169,7 @@ bool CWorker::ConvertLoop(CWorkerContext* pWorkerContext)
                         return false;
 
                     pWorkerContext->Next(context.item->nId);
-                    if (ConvertItem(context) == true)
+                    if (ConvertItem(pWorkerContext, context) == true)
                     {
                         pWorkerContext->nDoneWithoutError++;
                     }
@@ -1270,7 +1257,6 @@ void CWorker::Convert(CWorkerContext* pWorkerContext)
 
         for (int i = 0; i < pWorkerContext->nThreadCount; i++)
         {
-
             if (pConvertThreads[i].Start([this, pWorkerContext]() { this->ConvertLoop(pWorkerContext); }, true) == false)
                 break;
 
