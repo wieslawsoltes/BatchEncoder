@@ -137,9 +137,6 @@
     <ClInclude Include="worker\FileContext.h">
       <Filter>Header Files\Worker</Filter>
     </ClInclude>
-    <ClInclude Include="worker\ItemContext.h">
-      <Filter>Header Files\Worker</Filter>
-    </ClInclude>
     <ClInclude Include="worker\WorkerContext.h">
       <Filter>Header Files\Worker</Filter>
     </ClInclude>
