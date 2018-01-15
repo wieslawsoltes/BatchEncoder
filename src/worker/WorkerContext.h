@@ -20,13 +20,9 @@ public:
     CConfiguration* pConfig;
     CThread m_Thread;
 public:
-    CWorkerContext(CConfiguration* pConfig)
-    {
-        this->pConfig = pConfig;
-    }
-    virtual ~CWorkerContext()
-    {
-    }
+    CWorkerContext(CConfiguration* pConfig) 
+        : pConfig(pConfig) { }
+    virtual ~CWorkerContext() { }
 public:
     CString GetString(int nKey, const TCHAR* szDefault)
     {
