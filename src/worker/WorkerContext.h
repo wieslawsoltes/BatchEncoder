@@ -4,7 +4,6 @@
 #pragma once
 
 #include "utilities\OutputPath.h"
-
 #include "utilities\Thread.h"
 #include "configuration\Configuration.h"
 
