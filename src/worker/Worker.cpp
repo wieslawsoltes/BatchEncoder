@@ -4,6 +4,7 @@
 #include "StdAfx.h"
 #include "MainApp.h"
 #include "Strings.h"
+#include "utilities\OutputPath.h"
 #include "utilities\TimeCount.h"
 #include "utilities\Utilities.h"
 #include "LuaProgess.h"
@@ -864,6 +865,7 @@ bool CWorker::ConvertItem(CWorkerContext* pWorkerContext, CItem& item, CSynchron
     CString szEncOutputFile;
     CString szDecInputFile;
     CString szDecOutputFile;
+    COutputPath m_Output;
 
     // prepare encoder
     CPath& path = item.m_Paths.Get(0);
@@ -892,7 +894,7 @@ bool CWorker::ConvertItem(CWorkerContext* pWorkerContext, CItem& item, CSynchron
 
     bool bIsValidEncoderInput = pEncFormat->IsValidInputExtension(::GetFileExtension(szEncInputFile));
 
-    szEncOutputFile = pWorkerContext->m_Output.CreateFilePath(
+    szEncOutputFile = m_Output.CreateFilePath(
         pWorkerContext->pConfig->m_Options.szOutputPath,
         szEncInputFile,
         item.szName,
@@ -910,7 +912,7 @@ bool CWorker::ConvertItem(CWorkerContext* pWorkerContext, CItem& item, CSynchron
     // create output path
     if (syncDir.Wait() == true)
     {
-        if (pWorkerContext->m_Output.CreateOutputPath(szEncOutputFile) == false)
+        if (m_Output.CreateOutputPath(szEncOutputFile) == false)
         {
             pWorkerContext->Status(item.nId, pszDefaulTime, pWorkerContext->GetString(0x0014000F, pszConvertItem[14]));
             return false;
