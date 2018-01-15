@@ -24,7 +24,7 @@ public:
     bool ConvertFileUsingConsole(CFileContext* pContext);
     bool ConvertFileUsingPipes(CFileContext* pContext);
     bool ConvertFileUsingOnlyPipes(CFileContext* pDecoderContext, CFileContext* pEncoderContext);
-    bool ConvertItem(CItemContext* pContext);
+    bool ConvertItem(CWorkerContext* pWorkerContext, CItem& item);
     bool ConvertLoop(CWorkerContext* pWorkerContext);
     void Convert(CWorkerContext* pWorkerContext);
 };
