@@ -345,7 +345,6 @@ copy /Y ..\setup\*.portable $(OutDir)</Command>
     <ClInclude Include="dialogs\PresetsDlg.h" />
     <ClInclude Include="dialogs\ToolsDlg.h" />
     <ClInclude Include="worker\FileContext.h" />
-    <ClInclude Include="worker\ItemContext.h" />
     <ClInclude Include="worker\LuaProgess.h" />
     <ClInclude Include="worker\PipeContext.h" />
     <ClInclude Include="worker\sol.hpp" />
