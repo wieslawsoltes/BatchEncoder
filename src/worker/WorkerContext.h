@@ -4,7 +4,7 @@
 #pragma once
 
 #include "utilities\OutputPath.h"
-#include "utilities\Synchronize.h"
+
 #include "utilities\Thread.h"
 #include "configuration\Configuration.h"
 
@@ -13,20 +13,17 @@ class CWorkerContext
 public:
     volatile bool bRunning;
     volatile bool bDone;
-    CConfiguration* pConfig;
-    COutputPath m_Output;
-public:
-    CThread m_Thread;
-    CSynchronize *pSync;
-    CSynchronize *pSyncDir;
     volatile int nThreadCount;
-public:
     volatile int nTotalFiles;
     volatile int nProcessedFiles;
     volatile int nDoneWithoutError;
     volatile int nErrors;
-public:
     volatile int nLastItemId;
+public:
+    CConfiguration* pConfig;
+public:
+    COutputPath m_Output;
+    CThread m_Thread;
 public:
     CWorkerContext(CConfiguration* pConfig)
     {
