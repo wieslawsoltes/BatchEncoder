@@ -3,6 +3,7 @@
 
 #pragma once
 
+#include <queue>
 #include "utilities\OutputPath.h"
 #include "utilities\Pipe.h"
 #include "utilities\Thread.h"
@@ -24,6 +25,6 @@ public:
     bool ConvertFileUsingPipes(CWorkerContext* pWorkerContext, CFileContext* pContext);
     bool ConvertFileUsingOnlyPipes(CWorkerContext* pWorkerContext, CFileContext* pDecoderContext, CFileContext* pEncoderContext);
     bool ConvertItem(CWorkerContext* pWorkerContext, CItem& item);
-    bool ConvertLoop(CWorkerContext* pWorkerContext);
+    bool ConvertLoop(CWorkerContext* pWorkerContext, std::queue<CItem> &queue);
     void Convert(CWorkerContext* pWorkerContext);
 };
