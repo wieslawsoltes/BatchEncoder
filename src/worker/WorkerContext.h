@@ -3,10 +3,12 @@
 
 #pragma once
 
+#include <queue>
 #include "utilities\OutputPath.h"
 #include "utilities\Synchronize.h"
 #include "utilities\Thread.h"
 #include "configuration\Configuration.h"
+#include "ItemContext.h"
 
 class CWorkerContext
 {
@@ -26,7 +28,7 @@ public:
     volatile int nDoneWithoutError;
     volatile int nErrors;
 public:
-    CObList* pQueue;
+    std::queue<CItemContext>* pQueue;
     volatile int nLastItemId;
 public:
     CWorkerContext(CConfiguration* pConfig)
