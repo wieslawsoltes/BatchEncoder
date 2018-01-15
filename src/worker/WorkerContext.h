@@ -3,7 +3,6 @@
 
 #pragma once
 
-#include <queue>
 #include "utilities\OutputPath.h"
 #include "utilities\Synchronize.h"
 #include "utilities\Thread.h"
