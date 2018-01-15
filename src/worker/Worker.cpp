@@ -784,7 +784,6 @@ bool CWorker::ConvertFileUsingOnlyPipes(CWorkerContext* pWorkerContext, CFileCon
     // create write thread
     writeContext.bError = false;
     writeContext.bFinished = false;
-    writeContext.pWorkerContext = pWorkerContext;
     writeContext.szFileName = pEncoderContext->szOutputFile;
     writeContext.hPipe = Stdout.hRead;
     writeContext.nIndex = pEncoderContext->nItemId;
@@ -1161,15 +1160,15 @@ bool CWorker::ConvertLoop(CWorkerContext* pWorkerContext)
             {
                 if (!pWorkerContext->pQueue->empty())
                 {
-                    auto& context = pWorkerContext->pQueue->pop();
+                    CItem& item = pWorkerContext->pQueue->pop();
                     if (pWorkerContext->pSync->Release() == false)
                         return false;
 
                     if (pWorkerContext->bRunning == false)
                         return false;
 
-                    pWorkerContext->Next(context.item->nId);
-                    if (ConvertItem(pWorkerContext, context) == true)
+                    pWorkerContext->Next(item.nId);
+                    if (ConvertItem(pWorkerContext, item) == true)
                     {
                         pWorkerContext->nDoneWithoutError++;
                     }
@@ -1217,10 +1216,7 @@ void CWorker::Convert(CWorkerContext* pWorkerContext)
         if (item.bChecked == true)
         {
             item.ResetProgress();
-
-            CItemContext context { pWorkerContext, &item };
-            pWorkerContext->pQueue->push(context);
-
+            pWorkerContext->pQueue->push(item);
             pWorkerContext->nTotalFiles++;
         }
         else
