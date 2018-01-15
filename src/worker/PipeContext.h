@@ -11,4 +11,7 @@ public:
     int nIndex;
     volatile bool bError;
     volatile bool bFinished;
+public:
+    CPipeContext() { }
+    virtual ~CPipeContext() { }
 };
