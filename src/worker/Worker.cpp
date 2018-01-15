@@ -856,7 +856,7 @@ bool CWorker::ConvertFileUsingOnlyPipes(CWorkerContext* pWorkerContext, CFileCon
     }
 }
 
-bool CWorker::ConvertItem(CWorkerContext* pWorkerContext, CItem& item)
+bool CWorker::ConvertItem(CWorkerContext* pWorkerContext, CItem& item, CSynchronize &syncDir)
 {
     CFormat *pEncFormat = nullptr;
     CFormat *pDecFormat = nullptr;
@@ -908,7 +908,7 @@ bool CWorker::ConvertItem(CWorkerContext* pWorkerContext, CItem& item)
     }
 
     // create output path
-    if (pWorkerContext->pSyncDir->Wait() == true)
+    if (syncDir.Wait() == true)
     {
         if (pWorkerContext->m_Output.CreateOutputPath(szEncOutputFile) == false)
         {
@@ -922,7 +922,7 @@ bool CWorker::ConvertItem(CWorkerContext* pWorkerContext, CItem& item)
         return false;
     }
 
-    if (pWorkerContext->pSyncDir->Release() == false)
+    if (syncDir.Release() == false)
     {
         pWorkerContext->Status(item.nId, pszDefaulTime, pWorkerContext->GetString(0x0014000F, pszConvertItem[14]));
         return false;
@@ -1150,27 +1150,27 @@ bool CWorker::ConvertItem(CWorkerContext* pWorkerContext, CItem& item)
     return false;
 }
 
-bool CWorker::ConvertLoop(CWorkerContext* pWorkerContext, std::queue<CItem> &queue)
+bool CWorker::ConvertLoop(CWorkerContext* pWorkerContext, std::queue<CItem> &queue, CSynchronize &sync, CSynchronize &syncDir)
 {
     while (TRUE)
     {
         try
         {
-            if (pWorkerContext->pSync->Wait() == true)
+            if (sync.Wait() == true)
             {
                 if (!queue.empty())
                 {
                     CItem& item = queue.front();
                     queue.pop();
 
-                    if (pWorkerContext->pSync->Release() == false)
+                    if (sync.Release() == false)
                         return false;
 
                     if (pWorkerContext->bRunning == false)
                         return false;
 
                     pWorkerContext->Next(item.nId);
-                    if (ConvertItem(pWorkerContext, item) == true)
+                    if (ConvertItem(pWorkerContext, item, syncDir) == true)
                     {
                         pWorkerContext->nDoneWithoutError++;
                     }
@@ -1185,9 +1185,11 @@ bool CWorker::ConvertLoop(CWorkerContext* pWorkerContext, std::queue<CItem> &que
 
                     return true;
                 }
-
-                if (pWorkerContext->pSync->Release() == false)
-                    return false;
+                else
+                {
+                    if (sync.Release() == false)
+                        return false;
+                }
 
                 return true;
             }
@@ -1212,6 +1214,8 @@ void CWorker::Convert(CWorkerContext* pWorkerContext)
     pWorkerContext->nLastItemId = -1;
 
     std::queue<CItem> queue;
+    CSynchronize sync;
+    CSynchronize syncDir;
 
     for (int i = 0; i < nItems; i++)
     {
@@ -1239,41 +1243,33 @@ void CWorker::Convert(CWorkerContext* pWorkerContext)
             pWorkerContext->nThreadCount = 1;
     }
 
-    pWorkerContext->pSync = new CSynchronize();
-    pWorkerContext->pSyncDir = new CSynchronize();
     pWorkerContext->Init();
 
     // single-threaded
     if (pWorkerContext->nThreadCount == 1)
     {
-        ConvertLoop(pWorkerContext, queue);
+        ConvertLoop(pWorkerContext, queue, sync, syncDir);
     }
 
     // multi-threaded
     if (pWorkerContext->nThreadCount > 1)
     {
-        CThread *pConvertThreads = new CThread[pWorkerContext->nThreadCount];
-
+        auto threads = make_unique<CThread[]>(pWorkerContext->nThreadCount);
         for (int i = 0; i < pWorkerContext->nThreadCount; i++)
         {
-            if (pConvertThreads[i].Start([this, pWorkerContext, &queue]() { this->ConvertLoop(pWorkerContext, queue); }, true) == false)
+            if (threads[i].Start([this, pWorkerContext, &queue, &sync, &syncDir]() { this->ConvertLoop(pWorkerContext, queue, sync, syncDir); }, true) == false)
                 break;
 
-            if (pConvertThreads[i].Resume() == false)
+            if (threads[i].Resume() == false)
                 break;
         }
 
         for (int i = 0; i < pWorkerContext->nThreadCount; i++)
-            pConvertThreads[i].Wait();
+            threads[i].Wait();
 
         for (int i = 0; i < pWorkerContext->nThreadCount; i++)
-            pConvertThreads[i].Close();
-
-        delete[] pConvertThreads;
+            threads[i].Close();
     }
-
-    delete pWorkerContext->pSync;
-    delete pWorkerContext->pSyncDir;
 
     pWorkerContext->Done();
     pWorkerContext->bDone = true;
