@@ -8,7 +8,6 @@
 class CFileContext
 {
 public:
-    CWorkerContext * pWorkerContext;
     CFormat *pFormat;
     int nPreset;
     int nItemId;
@@ -22,11 +21,10 @@ public:
     CFileContext() { }
     virtual ~CFileContext() { }
 public:
-    void Init(CWorkerContext *pWorkerContext, CFormat *pFormat, int nPreset, int nItemId, CString szInputFile, CString szOutputFile, bool bUseReadPipes, bool bUseWritePipes, CString szOptions)
+    void Init(CFormat *pFormat, int nPreset, int nItemId, CString szInputFile, CString szOutputFile, bool bUseReadPipes, bool bUseWritePipes, CString szOptions)
     {
         CPreset& preset = pFormat->m_Presets.Get(nPreset);
 
-        this->pWorkerContext = pWorkerContext;
         this->pFormat = pFormat;
         this->nPreset = nPreset;
         this->nItemId = nItemId;
