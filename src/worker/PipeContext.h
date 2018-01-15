@@ -6,7 +6,6 @@
 class CPipeContext
 {
 public:
-    CWorkerContext* pWorkerContext;
     CString szFileName;
     HANDLE hPipe;
     int nIndex;
