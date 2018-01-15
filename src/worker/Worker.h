@@ -21,8 +21,8 @@ public:
     virtual ~CWorker() { }
 public:
     bool ProgresssLoop(CWorkerContext* pWorkerContext, CFileContext &context, CPipe &Stderr, int &nProgress);
-    bool ReadLoop(CWorkerContext* pWorkerContext, CPipeContextt &context);
-    bool WriteLoop(CWorkerContext* pWorkerContext, CPipeContextt &context);
+    bool ReadLoop(CWorkerContext* pWorkerContext, CPipeContext &context);
+    bool WriteLoop(CWorkerContext* pWorkerContext, CPipeContext &context);
     bool ConvertFileUsingConsole(CWorkerContext* pWorkerContext, CFileContextt &context);
     bool ConvertFileUsingPipes(CWorkerContext* pWorkerContext, CFileContextt &context);
     bool ConvertFileUsingOnlyPipes(CWorkerContext* pWorkerContext, CFileContext &decoderContext, CFileContext &encoderContext);
