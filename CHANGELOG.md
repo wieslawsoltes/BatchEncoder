@@ -10,6 +10,7 @@
 - Added additional preset options per item.
 - Added support for split multi-channel WAV files.
 - Using sol2 to for lua scripting.
+- Fixed convert loop crushing with more than 64 threads active.
 
 ### Version 2.2
 
