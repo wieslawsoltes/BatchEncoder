@@ -27,7 +27,6 @@ public:
     volatile int nDoneWithoutError;
     volatile int nErrors;
 public:
-    std::queue<CItem>* pQueue;
     volatile int nLastItemId;
 public:
     CWorkerContext(CConfiguration* pConfig)
