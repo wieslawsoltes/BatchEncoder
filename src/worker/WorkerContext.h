@@ -8,7 +8,6 @@
 #include "utilities\Synchronize.h"
 #include "utilities\Thread.h"
 #include "configuration\Configuration.h"
-#include "ItemContext.h"
 
 class CWorkerContext
 {
