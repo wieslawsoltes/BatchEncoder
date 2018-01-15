@@ -163,7 +163,7 @@ public:
     CString GetString(int nKey, const TCHAR* szDefault)
     {
         CString rValue;
-        if (this->pConfig->LookupString(nKey, rValue))
+        if (this->pConfig->m_Language.LookupString(nKey, rValue))
             return rValue;
         return szDefault;
     }

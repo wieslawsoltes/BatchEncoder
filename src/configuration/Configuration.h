@@ -9,17 +9,17 @@
 #include "ToolsList.h"
 #include "language\LanguageContext.h"
 
-class CConfiguration : public CLanguageContext
+class CConfiguration
 {
 public:
     COptions m_Options;
     CFormatsList m_Formats;
     CItemsList m_Items;
     CToolsList m_Tools;
+    CLanguageContext m_Language;
 public:
     CConfiguration()
     {
-        this->pLanguage = nullptr;
     }
     CConfiguration(const CConfiguration &other)
     {
@@ -40,7 +40,6 @@ public:
         this->m_Formats = other.m_Formats;
         this->m_Items = other.m_Items;
         this->m_Tools = other.m_Tools;
-        this->m_Languages = other.m_Languages;
-        this->pLanguage = nullptr;
+        this->m_Language = other.m_Language;
     }
 };
