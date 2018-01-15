@@ -1254,7 +1254,7 @@ void CWorker::Convert(CWorkerContext* pWorkerContext)
     // multi-threaded
     if (pWorkerContext->nThreadCount > 1)
     {
-        auto threads = make_unique<CThread[]>(pWorkerContext->nThreadCount);
+        auto threads = std::make_unique<CThread[]>(pWorkerContext->nThreadCount);
         for (int i = 0; i < pWorkerContext->nThreadCount; i++)
         {
             if (threads[i].Start([this, pWorkerContext, &queue, &sync, &syncDir]() { this->ConvertLoop(pWorkerContext, queue, sync, syncDir); }, true) == false)
