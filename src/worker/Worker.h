@@ -23,8 +23,8 @@ public:
     bool ProgresssLoop(CWorkerContext* pWorkerContext, CFileContext &context, CPipe &Stderr, int &nProgress);
     bool ReadLoop(CWorkerContext* pWorkerContext, CPipeContext &context);
     bool WriteLoop(CWorkerContext* pWorkerContext, CPipeContext &context);
-    bool ConvertFileUsingConsole(CWorkerContext* pWorkerContext, CFileContextt &context);
-    bool ConvertFileUsingPipes(CWorkerContext* pWorkerContext, CFileContextt &context);
+    bool ConvertFileUsingConsole(CWorkerContext* pWorkerContext, CFileContext &context);
+    bool ConvertFileUsingPipes(CWorkerContext* pWorkerContext, CFileContext &context);
     bool ConvertFileUsingOnlyPipes(CWorkerContext* pWorkerContext, CFileContext &decoderContext, CFileContext &encoderContext);
     bool ConvertItem(CWorkerContext* pWorkerContext, CItem& item, CSynchronize &syncDir);
     bool ConvertLoop(CWorkerContext* pWorkerContext, std::queue<CItem> &queue, CSynchronize &sync, CSynchronize &syncDir);
