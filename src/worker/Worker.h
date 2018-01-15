@@ -4,10 +4,12 @@
 #pragma once
 
 #include <queue>
+#include <memory>
 #include "utilities\OutputPath.h"
 #include "utilities\Pipe.h"
 #include "utilities\Thread.h"
 #include "utilities\Process.h"
+#include "utilities\Synchronize.h"
 #include "WorkerContext.h"
 #include "PipeContext.h"
 #include "FileContext.h"
@@ -24,7 +26,7 @@ public:
     bool ConvertFileUsingConsole(CWorkerContext* pWorkerContext, CFileContext* pContext);
     bool ConvertFileUsingPipes(CWorkerContext* pWorkerContext, CFileContext* pContext);
     bool ConvertFileUsingOnlyPipes(CWorkerContext* pWorkerContext, CFileContext* pDecoderContext, CFileContext* pEncoderContext);
-    bool ConvertItem(CWorkerContext* pWorkerContext, CItem& item);
-    bool ConvertLoop(CWorkerContext* pWorkerContext, std::queue<CItem> &queue);
+    bool ConvertItem(CWorkerContext* pWorkerContext, CItem& item, CSynchronize &syncDir);
+    bool ConvertLoop(CWorkerContext* pWorkerContext, std::queue<CItem> &queue, CSynchronize &sync, CSynchronize &syncDir);
     void Convert(CWorkerContext* pWorkerContext);
 };
