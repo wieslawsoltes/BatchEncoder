@@ -3,7 +3,7 @@
 
 #pragma once
 
-class CItemContext : public CObject
+class CItemContext
 {
 public:
     CWorkerContext *pWorkerContext;
