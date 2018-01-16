@@ -1,3 +1,4 @@
+-- You can run tests in the browser: https://www.lua.org/demo.html
 
 -- GetProgress_AftenEnc
 
