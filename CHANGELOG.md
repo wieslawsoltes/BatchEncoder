@@ -13,7 +13,7 @@
 - Fixed convert loop crushing with more than 64 threads active.
 - Improved performance of remove item from the list.
 - Changed script file extension to .lua for progress functions.
-- Changed download script to use BatchEncoder.tools urls for downloads.
+- Using BatchEncoder.tools for download url in download.ps1 script.
 
 ### Version 2.2
 
