@@ -143,7 +143,7 @@ if not exist $(OutDir)tools\ mkdir $(OutDir)tools\
 copy /Y ..\config\formats\*.format $(OutDir)formats\
 copy /Y ..\config\presets\*.presets $(OutDir)presets\
 copy /Y ..\config\lang\*.language $(OutDir)lang\
-copy /Y ..\config\progress\*.progress $(OutDir)progress\
+copy /Y ..\config\progress\*.lua $(OutDir)progress\
 copy /Y ..\config\tools\*.tool $(OutDir)tools\
 copy /Y ..\setup\*.portable $(OutDir)</Command>
     </PostBuildEvent>
@@ -194,7 +194,7 @@ if not exist $(OutDir)tools\ mkdir $(OutDir)tools\
 copy /Y ..\config\formats\*.format $(OutDir)formats\
 copy /Y ..\config\presets\*.presets $(OutDir)presets\
 copy /Y ..\config\lang\*.language $(OutDir)lang\
-copy /Y ..\config\progress\*.progress $(OutDir)progress\
+copy /Y ..\config\progress\*.lua $(OutDir)progress\
 copy /Y ..\config\tools\*.tool $(OutDir)tools\
 copy /Y ..\setup\*.portable $(OutDir)</Command>
     </PostBuildEvent>
@@ -246,7 +246,7 @@ if not exist $(OutDir)tools\ mkdir $(OutDir)tools\
 copy /Y ..\config\formats\*.format $(OutDir)formats\
 copy /Y ..\config\presets\*.presets $(OutDir)presets\
 copy /Y ..\config\lang\*.language $(OutDir)lang\
-copy /Y ..\config\progress\*.progress $(OutDir)progress\
+copy /Y ..\config\progress\*.lua $(OutDir)progress\
 copy /Y ..\config\tools\*.tool $(OutDir)tools\
 copy /Y ..\setup\*.portable $(OutDir)</Command>
     </PostBuildEvent>
@@ -299,7 +299,7 @@ if not exist $(OutDir)tools\ mkdir $(OutDir)tools\
 copy /Y ..\config\formats\*.format $(OutDir)formats\
 copy /Y ..\config\presets\*.presets $(OutDir)presets\
 copy /Y ..\config\lang\*.language $(OutDir)lang\
-copy /Y ..\config\progress\*.progress $(OutDir)progress\
+copy /Y ..\config\progress\*.lua $(OutDir)progress\
 copy /Y ..\config\tools\*.tool $(OutDir)tools\
 copy /Y ..\setup\*.portable $(OutDir)</Command>
     </PostBuildEvent>
