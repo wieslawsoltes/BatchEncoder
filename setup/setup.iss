@@ -71,7 +71,7 @@ Source: {#BasePath}\config\presets\*.xml; DestDir: {userappdata}\{#ProgramName}\
 Source: {#BasePath}\config\lang\*.xml; DestDir: {userappdata}\{#ProgramName}\lang; Flags: ignoreversion; Components: lang
 Source: {#BasePath}\config\progress\*.lua; DestDir: {userappdata}\{#ProgramName}\progress; Flags: ignoreversion; Components: progress
 Source: {#BasePath}\config\tools\*.xml; DestDir: {userappdata}\{#ProgramName}\tools; Flags: ignoreversion; Components: tools
-Source: {#BasePath}\scripts\*.ps1; DestDir: {userappdata}\{#ProgramName}; Flags: ignoreversion; Components: scripts
+Source: {#BasePath}\config\*.ps1; DestDir: {userappdata}\{#ProgramName}; Flags: ignoreversion; Components: scripts
 
 [INI]
 

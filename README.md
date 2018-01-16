@@ -203,12 +203,14 @@ To get required command-line tools use `Configure Tools` dialog. Use the `Downlo
 
 For more information about tools please see the [wiki page](https://github.com/wieslawsoltes/BatchEncoder/wiki/Tools).
 
-There is also available PowerShell [download script](https://github.com/wieslawsoltes/BatchEncoder/blob/master/scripts/download.ps1) for all supported tools.
+There is also available PowerShell [download script](https://github.com/wieslawsoltes/BatchEncoder/blob/master/config/download.ps1) for all supported tools.
 
 Open up a Powershell prompt and execute the download script:
 ```PowerShell
 PS> .\download.ps1 -Path "Tools"
 ```
+
+For `download.ps1` script to work you need to place in the same directory `Tools.xml` file.
 
 The `-Path` parameter is optional and if not provided the script will download to the current directory.
 
