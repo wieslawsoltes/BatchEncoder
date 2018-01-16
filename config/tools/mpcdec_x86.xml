@@ -1,2 +1,2 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
-<Tool name="mpcdec_x86" platform="x86" formats="MPCDEC_MP+_WAV,MPCDEC_MPC_WAV,MPCDEC_MPP_WAV" url="https://files.musepack.net/windows/musepack_windows_2009-04-02.zip" file="musepack_windows_2009-04-02.zip" extract="zip" path="tools/musepack_windows_2009-04-02/32bit/mpcdec.exe"/>
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Tool name="mpcdec_x86" platform="x86" formats="MPCDEC_MP+_WAV,MPCDEC_MPC_WAV,MPCDEC_MPP_WAV" url="https://files.musepack.net/windows/musepack_windows_2009-04-02.zip" file="musepack_windows_2009-04-02.zip" extract="zip" path="tools/musepack_windows_2009-04-02/32bit/mpcdec.exe" />

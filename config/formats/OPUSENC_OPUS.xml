@@ -1,62 +1,62 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Format id="OPUSENC_OPUS" name="OPUS (Opus Audio Codec) - opusenc" template="$EXE $OPTIONS $INFILE $OUTFILE" input="true" output="false" function="progress\GetProgress_OpusEnc.lua" path="tools/opus-tools.2017-12-04/opusenc.i686.exe" success="0" type="0" formats="WAV" extension="OPUS" default="12">
     <Presets>
-        <Preset name="VBR 6 kbit/sec" options="--vbr --comp 10 --bitrate 6"/>
-        <Preset name="VBR 8 kbit/sec" options="--vbr --comp 10 --bitrate 8"/>
-        <Preset name="VBR 12 kbit/sec" options="--vbr --comp 10 --bitrate 12"/>
-        <Preset name="VBR 16 kbit/sec" options="--vbr --comp 10 --bitrate 16"/>
-        <Preset name="VBR 24 kbit/sec" options="--vbr --comp 10 --bitrate 24"/>
-        <Preset name="VBR 32 kbit/sec" options="--vbr --comp 10 --bitrate 32"/>
-        <Preset name="VBR 40 kbit/sec" options="--vbr --comp 10 --bitrate 40"/>
-        <Preset name="VBR 48 kbit/sec" options="--vbr --comp 10 --bitrate 48"/>
-        <Preset name="VBR 64 kbit/sec" options="--vbr --comp 10 --bitrate 64"/>
-        <Preset name="VBR 96 kbit/sec" options="--vbr --comp 10 --bitrate 96"/>
-        <Preset name="VBR 112 kbit/sec" options="--vbr --comp 10 --bitrate 112"/>
-        <Preset name="VBR 128 kbit/sec" options="--vbr --comp 10 --bitrate 128"/>
-        <Preset name="VBR 192 kbit/sec" options="--vbr --comp 10 --bitrate 192"/>
-        <Preset name="VBR 224 kbit/sec" options="--vbr --comp 10 --bitrate 224"/>
-        <Preset name="VBR 256 kbit/sec" options="--vbr --comp 10 --bitrate 256"/>
-        <Preset name="VBR 320 kbit/sec" options="--vbr --comp 10 --bitrate 320"/>
-        <Preset name="VBR 400 kbit/sec" options="--vbr --comp 10 --bitrate 400"/>
-        <Preset name="VBR 465 kbit/sec" options="--vbr --comp 10 --bitrate 465"/>
-        <Preset name="VBR 510 kbit/sec" options="--vbr --comp 10 --bitrate 510"/>
-        <Preset name="CVBR 6 kbit/sec" options="--cvbr --comp 10 --bitrate 6"/>
-        <Preset name="CVBR 8 kbit/sec" options="--cvbr --comp 10 --bitrate 8"/>
-        <Preset name="CVBR 12 kbit/sec" options="--cvbr --comp 10 --bitrate 12"/>
-        <Preset name="CVBR 16 kbit/sec" options="--cvbr --comp 10 --bitrate 16"/>
-        <Preset name="CVBR 24 kbit/sec" options="--cvbr --comp 10 --bitrate 24"/>
-        <Preset name="CVBR 32 kbit/sec" options="--cvbr --comp 10 --bitrate 32"/>
-        <Preset name="CVBR 40 kbit/sec" options="--cvbr --comp 10 --bitrate 40"/>
-        <Preset name="CVBR 48 kbit/sec" options="--cvbr --comp 10 --bitrate 48"/>
-        <Preset name="CVBR 64 kbit/sec" options="--cvbr --comp 10 --bitrate 64"/>
-        <Preset name="CVBR 96 kbit/sec" options="--cvbr --comp 10 --bitrate 96"/>
-        <Preset name="CVBR 112 kbit/sec" options="--cvbr --comp 10 --bitrate 112"/>
-        <Preset name="CVBR 128 kbit/sec" options="--cvbr --comp 10 --bitrate 128"/>
-        <Preset name="CVBR 192 kbit/sec" options="--cvbr --comp 10 --bitrate 192"/>
-        <Preset name="CVBR 224 kbit/sec" options="--cvbr --comp 10 --bitrate 224"/>
-        <Preset name="CVBR 256 kbit/sec" options="--cvbr --comp 10 --bitrate 256"/>
-        <Preset name="CVBR 320 kbit/sec" options="--cvbr --comp 10 --bitrate 320"/>
-        <Preset name="CVBR 400 kbit/sec" options="--cvbr --comp 10 --bitrate 400"/>
-        <Preset name="CVBR 465 kbit/sec" options="--cvbr --comp 10 --bitrate 465"/>
-        <Preset name="CVBR 510 kbit/sec" options="--cvbr --comp 10 --bitrate 510"/>
-        <Preset name="CBR 6 kbit/sec" options="--hard-cbr --comp 10 --bitrate 6"/>
-        <Preset name="CBR 8 kbit/sec" options="--hard-cbr --comp 10 --bitrate 8"/>
-        <Preset name="CBR 12 kbit/sec" options="--hard-cbr --comp 10 --bitrate 12"/>
-        <Preset name="CBR 16 kbit/sec" options="--hard-cbr --comp 10 --bitrate 16"/>
-        <Preset name="CBR 24 kbit/sec" options="--hard-cbr --comp 10 --bitrate 24"/>
-        <Preset name="CBR 32 kbit/sec" options="--hard-cbr --comp 10 --bitrate 32"/>
-        <Preset name="CBR 40 kbit/sec" options="--hard-cbr --comp 10 --bitrate 40"/>
-        <Preset name="CBR 48 kbit/sec" options="--hard-cbr --comp 10 --bitrate 48"/>
-        <Preset name="CBR 64 kbit/sec" options="--hard-cbr --comp 10 --bitrate 64"/>
-        <Preset name="CBR 96 kbit/sec" options="--hard-cbr --comp 10 --bitrate 96"/>
-        <Preset name="CBR 112 kbit/sec" options="--hard-cbr --comp 10 --bitrate 112"/>
-        <Preset name="CBR 128 kbit/sec" options="--hard-cbr --comp 10 --bitrate 128"/>
-        <Preset name="CBR 192 kbit/sec" options="--hard-cbr --comp 10 --bitrate 192"/>
-        <Preset name="CBR 224 kbit/sec" options="--hard-cbr --comp 10 --bitrate 224"/>
-        <Preset name="CBR 256 kbit/sec" options="--hard-cbr --comp 10 --bitrate 256"/>
-        <Preset name="CBR 320 kbit/sec" options="--hard-cbr --comp 10 --bitrate 320"/>
-        <Preset name="CBR 400 kbit/sec" options="--hard-cbr --comp 10 --bitrate 400"/>
-        <Preset name="CBR 465 kbit/sec" options="--hard-cbr --comp 10 --bitrate 465"/>
-        <Preset name="CBR 510 kbit/sec" options="--hard-cbr --comp 10 --bitrate 510"/>
+        <Preset name="VBR 6 kbit/sec" options="--vbr --comp 10 --bitrate 6" />
+        <Preset name="VBR 8 kbit/sec" options="--vbr --comp 10 --bitrate 8" />
+        <Preset name="VBR 12 kbit/sec" options="--vbr --comp 10 --bitrate 12" />
+        <Preset name="VBR 16 kbit/sec" options="--vbr --comp 10 --bitrate 16" />
+        <Preset name="VBR 24 kbit/sec" options="--vbr --comp 10 --bitrate 24" />
+        <Preset name="VBR 32 kbit/sec" options="--vbr --comp 10 --bitrate 32" />
+        <Preset name="VBR 40 kbit/sec" options="--vbr --comp 10 --bitrate 40" />
+        <Preset name="VBR 48 kbit/sec" options="--vbr --comp 10 --bitrate 48" />
+        <Preset name="VBR 64 kbit/sec" options="--vbr --comp 10 --bitrate 64" />
+        <Preset name="VBR 96 kbit/sec" options="--vbr --comp 10 --bitrate 96" />
+        <Preset name="VBR 112 kbit/sec" options="--vbr --comp 10 --bitrate 112" />
+        <Preset name="VBR 128 kbit/sec" options="--vbr --comp 10 --bitrate 128" />
+        <Preset name="VBR 192 kbit/sec" options="--vbr --comp 10 --bitrate 192" />
+        <Preset name="VBR 224 kbit/sec" options="--vbr --comp 10 --bitrate 224" />
+        <Preset name="VBR 256 kbit/sec" options="--vbr --comp 10 --bitrate 256" />
+        <Preset name="VBR 320 kbit/sec" options="--vbr --comp 10 --bitrate 320" />
+        <Preset name="VBR 400 kbit/sec" options="--vbr --comp 10 --bitrate 400" />
+        <Preset name="VBR 465 kbit/sec" options="--vbr --comp 10 --bitrate 465" />
+        <Preset name="VBR 510 kbit/sec" options="--vbr --comp 10 --bitrate 510" />
+        <Preset name="CVBR 6 kbit/sec" options="--cvbr --comp 10 --bitrate 6" />
+        <Preset name="CVBR 8 kbit/sec" options="--cvbr --comp 10 --bitrate 8" />
+        <Preset name="CVBR 12 kbit/sec" options="--cvbr --comp 10 --bitrate 12" />
+        <Preset name="CVBR 16 kbit/sec" options="--cvbr --comp 10 --bitrate 16" />
+        <Preset name="CVBR 24 kbit/sec" options="--cvbr --comp 10 --bitrate 24" />
+        <Preset name="CVBR 32 kbit/sec" options="--cvbr --comp 10 --bitrate 32" />
+        <Preset name="CVBR 40 kbit/sec" options="--cvbr --comp 10 --bitrate 40" />
+        <Preset name="CVBR 48 kbit/sec" options="--cvbr --comp 10 --bitrate 48" />
+        <Preset name="CVBR 64 kbit/sec" options="--cvbr --comp 10 --bitrate 64" />
+        <Preset name="CVBR 96 kbit/sec" options="--cvbr --comp 10 --bitrate 96" />
+        <Preset name="CVBR 112 kbit/sec" options="--cvbr --comp 10 --bitrate 112" />
+        <Preset name="CVBR 128 kbit/sec" options="--cvbr --comp 10 --bitrate 128" />
+        <Preset name="CVBR 192 kbit/sec" options="--cvbr --comp 10 --bitrate 192" />
+        <Preset name="CVBR 224 kbit/sec" options="--cvbr --comp 10 --bitrate 224" />
+        <Preset name="CVBR 256 kbit/sec" options="--cvbr --comp 10 --bitrate 256" />
+        <Preset name="CVBR 320 kbit/sec" options="--cvbr --comp 10 --bitrate 320" />
+        <Preset name="CVBR 400 kbit/sec" options="--cvbr --comp 10 --bitrate 400" />
+        <Preset name="CVBR 465 kbit/sec" options="--cvbr --comp 10 --bitrate 465" />
+        <Preset name="CVBR 510 kbit/sec" options="--cvbr --comp 10 --bitrate 510" />
+        <Preset name="CBR 6 kbit/sec" options="--hard-cbr --comp 10 --bitrate 6" />
+        <Preset name="CBR 8 kbit/sec" options="--hard-cbr --comp 10 --bitrate 8" />
+        <Preset name="CBR 12 kbit/sec" options="--hard-cbr --comp 10 --bitrate 12" />
+        <Preset name="CBR 16 kbit/sec" options="--hard-cbr --comp 10 --bitrate 16" />
+        <Preset name="CBR 24 kbit/sec" options="--hard-cbr --comp 10 --bitrate 24" />
+        <Preset name="CBR 32 kbit/sec" options="--hard-cbr --comp 10 --bitrate 32" />
+        <Preset name="CBR 40 kbit/sec" options="--hard-cbr --comp 10 --bitrate 40" />
+        <Preset name="CBR 48 kbit/sec" options="--hard-cbr --comp 10 --bitrate 48" />
+        <Preset name="CBR 64 kbit/sec" options="--hard-cbr --comp 10 --bitrate 64" />
+        <Preset name="CBR 96 kbit/sec" options="--hard-cbr --comp 10 --bitrate 96" />
+        <Preset name="CBR 112 kbit/sec" options="--hard-cbr --comp 10 --bitrate 112" />
+        <Preset name="CBR 128 kbit/sec" options="--hard-cbr --comp 10 --bitrate 128" />
+        <Preset name="CBR 192 kbit/sec" options="--hard-cbr --comp 10 --bitrate 192" />
+        <Preset name="CBR 224 kbit/sec" options="--hard-cbr --comp 10 --bitrate 224" />
+        <Preset name="CBR 256 kbit/sec" options="--hard-cbr --comp 10 --bitrate 256" />
+        <Preset name="CBR 320 kbit/sec" options="--hard-cbr --comp 10 --bitrate 320" />
+        <Preset name="CBR 400 kbit/sec" options="--hard-cbr --comp 10 --bitrate 400" />
+        <Preset name="CBR 465 kbit/sec" options="--hard-cbr --comp 10 --bitrate 465" />
+        <Preset name="CBR 510 kbit/sec" options="--hard-cbr --comp 10 --bitrate 510" />
     </Presets>
 </Format>

@@ -1,70 +1,70 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Presets>
-    <Preset name="No Resampling" options=""/>
-    <Preset name="8 Bit 8000 Hz" options="--rate 8000 --bits 8 --normalize"/>
-    <Preset name="8 Bit 8000 Hz (2 Pass)" options="--rate 8000 --bits 8 --twopass"/>
-    <Preset name="8 Bit 11025 Hz" options="--rate 11025 --bits 8 --normalize"/>
-    <Preset name="8 Bit 11025 Hz (2 Pass)" options="--rate 11025 --bits 8 --twopass"/>
-    <Preset name="8 Bit 16000 Hz" options="--rate 16000 --bits 8 --normalize"/>
-    <Preset name="8 Bit 16000 Hz (2 Pass)" options="--rate 16000 --bits 8 --twopass"/>
-    <Preset name="8 Bit 22050 Hz" options="--rate 22050 --bits 8 --normalize"/>
-    <Preset name="8 Bit 22050 Hz (2 Pass)" options="--rate 22050 --bits 8 --twopass"/>
-    <Preset name="8 Bit 24000 Hz" options="--rate 24000 --bits 8 --normalize"/>
-    <Preset name="8 Bit 24000 Hz (2 Pass)" options="--rate 24000 --bits 8 --twopass"/>
-    <Preset name="8 Bit 32000 Hz" options="--rate 32000 --bits 8 --normalize"/>
-    <Preset name="8 Bit 32000 Hz (2 Pass)" options="--rate 32000 --bits 8 --twopass"/>
-    <Preset name="8 Bit 44100 Hz" options="--rate 44100 --bits 8 --normalize"/>
-    <Preset name="8 Bit 44100 Hz (2 Pass)" options="--rate 44100 --bits 8 --twopass"/>
-    <Preset name="8 Bit 48000 Hz" options="--rate 48000 --bits 8 --normalize"/>
-    <Preset name="8 Bit 48000 Hz (2 Pass)" options="--rate 48000 --bits 8 --twopass"/>
-    <Preset name="8 Bit 64000 Hz" options="--rate 64000 --bits 8 --normalize"/>
-    <Preset name="8 Bit 64000 Hz (2 Pass)" options="--rate 64000 --bits 8 --twopass"/>
-    <Preset name="8 Bit 88200 Hz" options="--rate 88200 --bits 8 --normalize"/>
-    <Preset name="8 Bit 88200 Hz (2 Pass)" options="--rate 88200 --bits 8 --twopass"/>
-    <Preset name="8 Bit 96000 Hz" options="--rate 96000 --bits 8 --normalize"/>
-    <Preset name="8 Bit 96000 Hz (2 Pass)" options="--rate 96000 --bits 8 --twopass"/>
-    <Preset name="16 Bit 8000 Hz" options="--rate 8000 --bits 16 --normalize"/>
-    <Preset name="16 Bit 8000 Hz (2 Pass)" options="--rate 8000 --bits 16 --twopass"/>
-    <Preset name="16 Bit 11025 Hz" options="--rate 11025 --bits 16 --normalize"/>
-    <Preset name="16 Bit 11025 Hz (2 Pass)" options="--rate 11025 --bits 16 --twopass"/>
-    <Preset name="16 Bit 16000 Hz" options="--rate 16000 --bits 16 --normalize"/>
-    <Preset name="16 Bit 16000 Hz (2 Pass)" options="--rate 16000 --bits 16 --twopass"/>
-    <Preset name="16 Bit 22050 Hz" options="--rate 22050 --bits 16 --normalize"/>
-    <Preset name="16 Bit 22050 Hz (2 Pass)" options="--rate 22050 --bits 16 --twopass"/>
-    <Preset name="16 Bit 24000 Hz" options="--rate 24000 --bits 16 --normalize"/>
-    <Preset name="16 Bit 24000 Hz (2 Pass)" options="--rate 24000 --bits 16 --twopass"/>
-    <Preset name="16 Bit 32000 Hz" options="--rate 32000 --bits 16 --normalize"/>
-    <Preset name="16 Bit 32000 Hz (2 Pass)" options="--rate 32000 --bits 16 --twopass"/>
-    <Preset name="16 Bit 44100 Hz" options="--rate 44100 --bits 16 --normalize"/>
-    <Preset name="16 Bit 44100 Hz (2 Pass)" options="--rate 44100 --bits 16 --twopass"/>
-    <Preset name="16 Bit 48000 Hz" options="--rate 48000 --bits 16 --normalize"/>
-    <Preset name="16 Bit 48000 Hz (2 Pass)" options="--rate 48000 --bits 16 --twopass"/>
-    <Preset name="16 Bit 64000 Hz" options="--rate 64000 --bits 16 --normalize"/>
-    <Preset name="16 Bit 64000 Hz (2 Pass)" options="--rate 64000 --bits 16 --twopass"/>
-    <Preset name="16 Bit 88200 Hz" options="--rate 88200 --bits 16 --normalize"/>
-    <Preset name="16 Bit 88200 Hz (2 Pass)" options="--rate 88200 --bits 16 --twopass"/>
-    <Preset name="16 Bit 96000 Hz" options="--rate 96000 --bits 16 --normalize"/>
-    <Preset name="16 Bit 96000 Hz (2 Pass)" options="--rate 96000 --bits 16 --twopass"/>
-    <Preset name="24 Bit 8000 Hz" options="--rate 8000 --bits 24 --normalize"/>
-    <Preset name="24 Bit 8000 Hz (2 Pass)" options="--rate 8000 --bits 24 --twopass"/>
-    <Preset name="24 Bit 11025 Hz" options="--rate 11025 --bits 24 --normalize"/>
-    <Preset name="24 Bit 11025 Hz (2 Pass)" options="--rate 11025 --bits 24 --twopass"/>
-    <Preset name="24 Bit 16000 Hz" options="--rate 16000 --bits 24 --normalize"/>
-    <Preset name="24 Bit 16000 Hz (2 Pass)" options="--rate 16000 --bits 24 --twopass"/>
-    <Preset name="24 Bit 22050 Hz" options="--rate 22050 --bits 24 --normalize"/>
-    <Preset name="24 Bit 22050 Hz (2 Pass)" options="--rate 22050 --bits 24 --twopass"/>
-    <Preset name="24 Bit 24000 Hz" options="--rate 24000 --bits 24 --normalize"/>
-    <Preset name="24 Bit 24000 Hz (2 Pass)" options="--rate 24000 --bits 24 --twopass"/>
-    <Preset name="24 Bit 32000 Hz" options="--rate 32000 --bits 24 --normalize"/>
-    <Preset name="24 Bit 32000 Hz (2 Pass)" options="--rate 32000 --bits 24 --twopass"/>
-    <Preset name="24 Bit 44100 Hz" options="--rate 44100 --bits 24 --normalize"/>
-    <Preset name="24 Bit 44100 Hz (2 Pass)" options="--rate 44100 --bits 24 --twopass"/>
-    <Preset name="24 Bit 48000 Hz" options="--rate 48000 --bits 24 --normalize"/>
-    <Preset name="24 Bit 48000 Hz (2 Pass)" options="--rate 48000 --bits 24 --twopass"/>
-    <Preset name="24 Bit 64000 Hz" options="--rate 64000 --bits 24 --normalize"/>
-    <Preset name="24 Bit 64000 Hz (2 Pass)" options="--rate 64000 --bits 24 --twopass"/>
-    <Preset name="24 Bit 88200 Hz" options="--rate 88200 --bits 24 --normalize"/>
-    <Preset name="24 Bit 88200 Hz (2 Pass)" options="--rate 88200 --bits 24 --twopass"/>
-    <Preset name="24 Bit 96000 Hz" options="--rate 96000 --bits 24 --normalize"/>
-    <Preset name="24 Bit 96000 Hz (2 Pass)" options="--rate 96000 --bits 24 --twopass"/>
+    <Preset name="No Resampling" options="" />
+    <Preset name="8 Bit 8000 Hz" options="--rate 8000 --bits 8 --normalize" />
+    <Preset name="8 Bit 8000 Hz (2 Pass)" options="--rate 8000 --bits 8 --twopass" />
+    <Preset name="8 Bit 11025 Hz" options="--rate 11025 --bits 8 --normalize" />
+    <Preset name="8 Bit 11025 Hz (2 Pass)" options="--rate 11025 --bits 8 --twopass" />
+    <Preset name="8 Bit 16000 Hz" options="--rate 16000 --bits 8 --normalize" />
+    <Preset name="8 Bit 16000 Hz (2 Pass)" options="--rate 16000 --bits 8 --twopass" />
+    <Preset name="8 Bit 22050 Hz" options="--rate 22050 --bits 8 --normalize" />
+    <Preset name="8 Bit 22050 Hz (2 Pass)" options="--rate 22050 --bits 8 --twopass" />
+    <Preset name="8 Bit 24000 Hz" options="--rate 24000 --bits 8 --normalize" />
+    <Preset name="8 Bit 24000 Hz (2 Pass)" options="--rate 24000 --bits 8 --twopass" />
+    <Preset name="8 Bit 32000 Hz" options="--rate 32000 --bits 8 --normalize" />
+    <Preset name="8 Bit 32000 Hz (2 Pass)" options="--rate 32000 --bits 8 --twopass" />
+    <Preset name="8 Bit 44100 Hz" options="--rate 44100 --bits 8 --normalize" />
+    <Preset name="8 Bit 44100 Hz (2 Pass)" options="--rate 44100 --bits 8 --twopass" />
+    <Preset name="8 Bit 48000 Hz" options="--rate 48000 --bits 8 --normalize" />
+    <Preset name="8 Bit 48000 Hz (2 Pass)" options="--rate 48000 --bits 8 --twopass" />
+    <Preset name="8 Bit 64000 Hz" options="--rate 64000 --bits 8 --normalize" />
+    <Preset name="8 Bit 64000 Hz (2 Pass)" options="--rate 64000 --bits 8 --twopass" />
+    <Preset name="8 Bit 88200 Hz" options="--rate 88200 --bits 8 --normalize" />
+    <Preset name="8 Bit 88200 Hz (2 Pass)" options="--rate 88200 --bits 8 --twopass" />
+    <Preset name="8 Bit 96000 Hz" options="--rate 96000 --bits 8 --normalize" />
+    <Preset name="8 Bit 96000 Hz (2 Pass)" options="--rate 96000 --bits 8 --twopass" />
+    <Preset name="16 Bit 8000 Hz" options="--rate 8000 --bits 16 --normalize" />
+    <Preset name="16 Bit 8000 Hz (2 Pass)" options="--rate 8000 --bits 16 --twopass" />
+    <Preset name="16 Bit 11025 Hz" options="--rate 11025 --bits 16 --normalize" />
+    <Preset name="16 Bit 11025 Hz (2 Pass)" options="--rate 11025 --bits 16 --twopass" />
+    <Preset name="16 Bit 16000 Hz" options="--rate 16000 --bits 16 --normalize" />
+    <Preset name="16 Bit 16000 Hz (2 Pass)" options="--rate 16000 --bits 16 --twopass" />
+    <Preset name="16 Bit 22050 Hz" options="--rate 22050 --bits 16 --normalize" />
+    <Preset name="16 Bit 22050 Hz (2 Pass)" options="--rate 22050 --bits 16 --twopass" />
+    <Preset name="16 Bit 24000 Hz" options="--rate 24000 --bits 16 --normalize" />
+    <Preset name="16 Bit 24000 Hz (2 Pass)" options="--rate 24000 --bits 16 --twopass" />
+    <Preset name="16 Bit 32000 Hz" options="--rate 32000 --bits 16 --normalize" />
+    <Preset name="16 Bit 32000 Hz (2 Pass)" options="--rate 32000 --bits 16 --twopass" />
+    <Preset name="16 Bit 44100 Hz" options="--rate 44100 --bits 16 --normalize" />
+    <Preset name="16 Bit 44100 Hz (2 Pass)" options="--rate 44100 --bits 16 --twopass" />
+    <Preset name="16 Bit 48000 Hz" options="--rate 48000 --bits 16 --normalize" />
+    <Preset name="16 Bit 48000 Hz (2 Pass)" options="--rate 48000 --bits 16 --twopass" />
+    <Preset name="16 Bit 64000 Hz" options="--rate 64000 --bits 16 --normalize" />
+    <Preset name="16 Bit 64000 Hz (2 Pass)" options="--rate 64000 --bits 16 --twopass" />
+    <Preset name="16 Bit 88200 Hz" options="--rate 88200 --bits 16 --normalize" />
+    <Preset name="16 Bit 88200 Hz (2 Pass)" options="--rate 88200 --bits 16 --twopass" />
+    <Preset name="16 Bit 96000 Hz" options="--rate 96000 --bits 16 --normalize" />
+    <Preset name="16 Bit 96000 Hz (2 Pass)" options="--rate 96000 --bits 16 --twopass" />
+    <Preset name="24 Bit 8000 Hz" options="--rate 8000 --bits 24 --normalize" />
+    <Preset name="24 Bit 8000 Hz (2 Pass)" options="--rate 8000 --bits 24 --twopass" />
+    <Preset name="24 Bit 11025 Hz" options="--rate 11025 --bits 24 --normalize" />
+    <Preset name="24 Bit 11025 Hz (2 Pass)" options="--rate 11025 --bits 24 --twopass" />
+    <Preset name="24 Bit 16000 Hz" options="--rate 16000 --bits 24 --normalize" />
+    <Preset name="24 Bit 16000 Hz (2 Pass)" options="--rate 16000 --bits 24 --twopass" />
+    <Preset name="24 Bit 22050 Hz" options="--rate 22050 --bits 24 --normalize" />
+    <Preset name="24 Bit 22050 Hz (2 Pass)" options="--rate 22050 --bits 24 --twopass" />
+    <Preset name="24 Bit 24000 Hz" options="--rate 24000 --bits 24 --normalize" />
+    <Preset name="24 Bit 24000 Hz (2 Pass)" options="--rate 24000 --bits 24 --twopass" />
+    <Preset name="24 Bit 32000 Hz" options="--rate 32000 --bits 24 --normalize" />
+    <Preset name="24 Bit 32000 Hz (2 Pass)" options="--rate 32000 --bits 24 --twopass" />
+    <Preset name="24 Bit 44100 Hz" options="--rate 44100 --bits 24 --normalize" />
+    <Preset name="24 Bit 44100 Hz (2 Pass)" options="--rate 44100 --bits 24 --twopass" />
+    <Preset name="24 Bit 48000 Hz" options="--rate 48000 --bits 24 --normalize" />
+    <Preset name="24 Bit 48000 Hz (2 Pass)" options="--rate 48000 --bits 24 --twopass" />
+    <Preset name="24 Bit 64000 Hz" options="--rate 64000 --bits 24 --normalize" />
+    <Preset name="24 Bit 64000 Hz (2 Pass)" options="--rate 64000 --bits 24 --twopass" />
+    <Preset name="24 Bit 88200 Hz" options="--rate 88200 --bits 24 --normalize" />
+    <Preset name="24 Bit 88200 Hz (2 Pass)" options="--rate 88200 --bits 24 --twopass" />
+    <Preset name="24 Bit 96000 Hz" options="--rate 96000 --bits 24 --normalize" />
+    <Preset name="24 Bit 96000 Hz (2 Pass)" options="--rate 96000 --bits 24 --twopass" />
 </Presets>

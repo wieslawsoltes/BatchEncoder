@@ -1,29 +1,29 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Format id="QAAC_M4A_HE" name="M4A (MPEG-4/HE-AAC) - qaac" template="$EXE $OPTIONS --ignorelength $INFILE -o $OUTFILE" input="true" output="false" function="progress\GetProgress_QaacEnc.lua" path="tools/qaac_2.64/qaac_2.64/x86/qaac.exe" success="0" type="0" formats="WAV" extension="M4A" default="7">
     <Presets>
-        <Preset name="Constrained VBR 8 kbps" options="--cvbr 8 --he"/>
-        <Preset name="Constrained VBR 16 kbps" options="--cvbr 16 --he"/>
-        <Preset name="Constrained VBR 24 kbps" options="--cvbr 24 --he"/>
-        <Preset name="Constrained VBR 32 kbps" options="--cvbr 32 --he"/>
-        <Preset name="Constrained VBR 40 kbps" options="--cvbr 40 --he"/>
-        <Preset name="Constrained VBR 48 kbps" options="--cvbr 48 --he"/>
-        <Preset name="Constrained VBR 56 kbps" options="--cvbr 56 --he"/>
-        <Preset name="Constrained VBR 64 kbps" options="--cvbr 64 --he"/>
-        <Preset name="ABR 8 kbps" options="--abr 8 --he"/>
-        <Preset name="ABR 16 kbps" options="--abr 16 --he"/>
-        <Preset name="ABR 24 kbps" options="--abr 24 --he"/>
-        <Preset name="ABR 32 kbps" options="--abr 32 --he"/>
-        <Preset name="ABR 40 kbps" options="--abr 40 --he"/>
-        <Preset name="ABR 48 kbps" options="--abr 48 --he"/>
-        <Preset name="ABR 56 kbps" options="--abr 56 --he"/>
-        <Preset name="ABR 64 kbps" options="--abr 64 --he"/>
-        <Preset name="CBR 8 kbps" options="--cbr 8 --he"/>
-        <Preset name="CBR 16 kbps" options="--cbr 16 --he"/>
-        <Preset name="CBR 24 kbps" options="--cbr 24 --he"/>
-        <Preset name="CBR 32 kbps" options="--cbr 32 --he"/>
-        <Preset name="CBR 40 kbps" options="--cbr 40 --he"/>
-        <Preset name="CBR 48 kbps" options="--cbr 48 --he"/>
-        <Preset name="CBR 56 kbps" options="--cbr 56 --he"/>
-        <Preset name="CBR 64 kbps" options="--cbr 64 --he"/>
+        <Preset name="Constrained VBR 8 kbps" options="--cvbr 8 --he" />
+        <Preset name="Constrained VBR 16 kbps" options="--cvbr 16 --he" />
+        <Preset name="Constrained VBR 24 kbps" options="--cvbr 24 --he" />
+        <Preset name="Constrained VBR 32 kbps" options="--cvbr 32 --he" />
+        <Preset name="Constrained VBR 40 kbps" options="--cvbr 40 --he" />
+        <Preset name="Constrained VBR 48 kbps" options="--cvbr 48 --he" />
+        <Preset name="Constrained VBR 56 kbps" options="--cvbr 56 --he" />
+        <Preset name="Constrained VBR 64 kbps" options="--cvbr 64 --he" />
+        <Preset name="ABR 8 kbps" options="--abr 8 --he" />
+        <Preset name="ABR 16 kbps" options="--abr 16 --he" />
+        <Preset name="ABR 24 kbps" options="--abr 24 --he" />
+        <Preset name="ABR 32 kbps" options="--abr 32 --he" />
+        <Preset name="ABR 40 kbps" options="--abr 40 --he" />
+        <Preset name="ABR 48 kbps" options="--abr 48 --he" />
+        <Preset name="ABR 56 kbps" options="--abr 56 --he" />
+        <Preset name="ABR 64 kbps" options="--abr 64 --he" />
+        <Preset name="CBR 8 kbps" options="--cbr 8 --he" />
+        <Preset name="CBR 16 kbps" options="--cbr 16 --he" />
+        <Preset name="CBR 24 kbps" options="--cbr 24 --he" />
+        <Preset name="CBR 32 kbps" options="--cbr 32 --he" />
+        <Preset name="CBR 40 kbps" options="--cbr 40 --he" />
+        <Preset name="CBR 48 kbps" options="--cbr 48 --he" />
+        <Preset name="CBR 56 kbps" options="--cbr 56 --he" />
+        <Preset name="CBR 64 kbps" options="--cbr 64 --he" />
     </Presets>
 </Format>

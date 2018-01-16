@@ -1,9 +1,9 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Presets>
-    <Preset name="192 kbit/s" options="-192"/>
-    <Preset name="224 kbit/s" options="-224"/>
-    <Preset name="384 kbit/s" options="-384"/>
-    <Preset name="448 kbit/s" options="-448"/>
-    <Preset name="640 kbit/s" options="-640"/>
-    <Preset name="Extract the AC3 core of a TrueHD track" options="-core"/>
+    <Preset name="192 kbit/s" options="-192" />
+    <Preset name="224 kbit/s" options="-224" />
+    <Preset name="384 kbit/s" options="-384" />
+    <Preset name="448 kbit/s" options="-448" />
+    <Preset name="640 kbit/s" options="-640" />
+    <Preset name="Extract the AC3 core of a TrueHD track" options="-core" />
 </Presets>

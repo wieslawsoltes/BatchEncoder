@@ -1,6 +1,6 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Presets>
-    <Preset name="768 kbit/s" options="-768"/>
-    <Preset name="1536 kbit/s" options="-1536"/>
-    <Preset name="Extract the DTS core of a DTS-HD track" options="-core"/>
+    <Preset name="768 kbit/s" options="-768" />
+    <Preset name="1536 kbit/s" options="-1536" />
+    <Preset name="Extract the DTS core of a DTS-HD track" options="-core" />
 </Presets>

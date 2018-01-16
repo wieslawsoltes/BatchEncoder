@@ -1,27 +1,27 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Format id="AFTEN_AC3" name="AC3 (ATSC A/52) - aften" template="$EXE $OPTIONS $INFILE $OUTFILE" input="true" output="false" function="progress\GetProgress_AftenEnc.lua" path="tools/aften-git-20091226-icl11_1_054-win32-bin/aften-git-20091226-icl11_1_054-win32-bin/aften_x86/aften.exe" success="0" type="0" formats="WAV" extension="AC3" default="15">
     <Presets>
-        <Preset name="CBR 32 kbit/s" options="-b 32"/>
-        <Preset name="CBR 40 kbit/s" options="-b 40"/>
-        <Preset name="CBR 48 kbit/s" options="-b 48"/>
-        <Preset name="CBR 56 kbit/s" options="-b 56"/>
-        <Preset name="CBR 64 kbit/s" options="-b 64"/>
-        <Preset name="CBR 80 kbit/s" options="-b 80"/>
-        <Preset name="CBR 96 kbit/s" options="-b 96"/>
-        <Preset name="CBR 112 kbit/s" options="-b 112"/>
-        <Preset name="CBR 128 kbit/s" options="-b 128"/>
-        <Preset name="CBR 160 kbit/s" options="-b 160"/>
-        <Preset name="CBR 192 kbit/s" options="-b 192"/>
-        <Preset name="CBR 224 kbit/s" options="-b 224"/>
-        <Preset name="CBR 256 kbit/s" options="-b 256"/>
-        <Preset name="CBR 320 kbit/s" options="-b 320"/>
-        <Preset name="CBR 384 kbit/s" options="-b 384"/>
-        <Preset name="CBR 448 kbit/s" options="-b 448"/>
-        <Preset name="CBR 512 kbit/s" options="-b 512"/>
-        <Preset name="CBR 576 kbit/s" options="-b 576"/>
-        <Preset name="CBR 640 kbit/s" options="-b 640"/>
-        <Preset name="VBR Quality 0 (min)" options="-q 0"/>
-        <Preset name="VBR Quality 240 (default)" options="-q 240"/>
-        <Preset name="VBR Quality 1023 (max)" options="-q 1023"/>
+        <Preset name="CBR 32 kbit/s" options="-b 32" />
+        <Preset name="CBR 40 kbit/s" options="-b 40" />
+        <Preset name="CBR 48 kbit/s" options="-b 48" />
+        <Preset name="CBR 56 kbit/s" options="-b 56" />
+        <Preset name="CBR 64 kbit/s" options="-b 64" />
+        <Preset name="CBR 80 kbit/s" options="-b 80" />
+        <Preset name="CBR 96 kbit/s" options="-b 96" />
+        <Preset name="CBR 112 kbit/s" options="-b 112" />
+        <Preset name="CBR 128 kbit/s" options="-b 128" />
+        <Preset name="CBR 160 kbit/s" options="-b 160" />
+        <Preset name="CBR 192 kbit/s" options="-b 192" />
+        <Preset name="CBR 224 kbit/s" options="-b 224" />
+        <Preset name="CBR 256 kbit/s" options="-b 256" />
+        <Preset name="CBR 320 kbit/s" options="-b 320" />
+        <Preset name="CBR 384 kbit/s" options="-b 384" />
+        <Preset name="CBR 448 kbit/s" options="-b 448" />
+        <Preset name="CBR 512 kbit/s" options="-b 512" />
+        <Preset name="CBR 576 kbit/s" options="-b 576" />
+        <Preset name="CBR 640 kbit/s" options="-b 640" />
+        <Preset name="VBR Quality 0 (min)" options="-q 0" />
+        <Preset name="VBR Quality 240 (default)" options="-q 240" />
+        <Preset name="VBR Quality 1023 (max)" options="-q 1023" />
     </Presets>
 </Format>

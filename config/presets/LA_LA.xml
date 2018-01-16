@@ -1,5 +1,5 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Presets>
-    <Preset name="Normal Mode" options=""/>
-    <Preset name="High Mode" options="-high"/>
+    <Preset name="Normal Mode" options="" />
+    <Preset name="High Mode" options="-high" />
 </Presets>
