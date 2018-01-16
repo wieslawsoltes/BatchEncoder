@@ -1140,11 +1140,11 @@ bool CFormatsDlg::BrowseForPath(CString szDefaultFName, CEdit *pEdit, int nID)
 bool CFormatsDlg::BrowseForFunction(CString szDefaultFName, CEdit *pEdit, int nID)
 {
     CString szFilter;
-    szFilter.Format(_T("%s (*.progress)|*.progress|%s (*.*)|*.*||"),
+    szFilter.Format(_T("%s (*.lua)|*.lua|%s (*.*)|*.*||"),
         pConfig->m_Language.GetString(0x00310007, pszFileDialogs[6]),
         pConfig->m_Language.GetString(0x00310001, pszFileDialogs[0]));
 
-    CFileDialog fd(TRUE, _T("progress"), szDefaultFName,
+    CFileDialog fd(TRUE, _T("lua"), szDefaultFName,
         OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER,
         szFilter, this);
 
