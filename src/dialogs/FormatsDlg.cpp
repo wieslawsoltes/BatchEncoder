@@ -907,7 +907,7 @@ void CFormatsDlg::HandleDropFiles(HDROP hDropInfo)
                         this->m_EdtPath.SetWindowText(format.szPath);
                     }
                 }
-                else if (szExt.CompareNoCase(_T("progress")) == 0)
+                else if (szExt.CompareNoCase(_T("lua")) == 0)
                 {
                     // Set current format progress path.
                     POSITION pos = m_LstFormats.GetFirstSelectedItemPosition();
