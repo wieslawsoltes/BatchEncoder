@@ -1,5 +1,5 @@
 ﻿# This is BatchEncoder tools download script for PowerShell.
-# This file was downloaded from https://github.com/wieslawsoltes/BatchEncoder/blob/master/scripts/download.ps1
+# This file was downloaded from https://github.com/wieslawsoltes/BatchEncoder/blob/master/config/download.ps1
 # Detailed list of tools can be found here https://github.com/wieslawsoltes/BatchEncoder/wiki/Tools
 
 <#

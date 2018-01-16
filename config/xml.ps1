@@ -1,5 +1,5 @@
 ﻿# This is BatchEncoder xml generator script for PowerShell.
-# This file was downloaded from https://github.com/wieslawsoltes/BatchEncoder/blob/master/scripts/xml.ps1
+# This file was downloaded from https://github.com/wieslawsoltes/BatchEncoder/blob/master/config/xml.ps1
 
 function Write-Xml($node, $file)
 {
