@@ -15,6 +15,7 @@
 #include "controls\MyProgressCtrl.h"
 #include "controls\MyDialogEx.h"
 #include "utilities\TimeCount.h"
+#include "xml\XmlDoc.h"
 #include "worker\WorkerContext.h"
 #include "worker\Worker.h"
 
@@ -145,23 +146,31 @@ public:
     bool SearchFolderForLanguages(CString szPath);
     void InitLanguageMenu();
     void SetLanguage();
-    void LoadLanguage(CString szFileXml);
+    bool LoadLanguage(CString szFileXml);
+    bool LoadLanguage(XmlDocumnent &doc);
     void GetItems();
     void SetItems();
     void GetOptions();
     void SetOptions();
     bool LoadOptions(CString szFileXml);
+    bool LoadOptions(XmlDocumnent &doc);
     bool SaveOptions(CString szFileXml);
     bool LoadFormats(CString szFileXml);
+    bool LoadFormats(XmlDocumnent &doc);
     bool SaveFormats(CString szFileXml);
     bool LoadFormat(CString szFileXml);
+    bool LoadFormat(XmlDocumnent &doc);
     bool SaveFormat(CString szFileXml);
     bool LoadPresets(CString szFileXml);
+    bool LoadPresets(XmlDocumnent &doc);
     bool SavePresets(CString szFileXml);
     bool LoadTools(CString szFileXml);
+    bool LoadTools(XmlDocumnent &doc);
     bool SaveTools(CString szFileXml);
     bool LoadTool(CString szFileXml);
+    bool LoadTool(XmlDocumnent &doc);
     bool LoadItems(CString szFileXml);
+    bool LoadItems(XmlDocumnent &doc);
     bool SaveItems(CString szFileXml);
     int AddToItems(CString szPath);
     bool AddToList(CString szPath);

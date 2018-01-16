@@ -226,12 +226,11 @@ void CToolsDlg::OnBnClickedButtonImport()
         return;
 
     CString szFilter;
-    szFilter.Format(_T("%s (*.tool)|*.tool|%s (*.xml)|*.xml|%s (*.*)|*.*||"),
+    szFilter.Format(_T("%s (*.xml)|*.xml|%s (*.*)|*.*||"),
         pConfig->m_Language.GetString(0x00310010, pszFileDialogs[9]),
-        pConfig->m_Language.GetString(0x00310002, pszFileDialogs[1]),
         pConfig->m_Language.GetString(0x00310001, pszFileDialogs[0]));
 
-    CFileDialog fd(TRUE, _T("tool"), _T(""),
+    CFileDialog fd(TRUE, _T("xml"), _T(""),
         OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER,
         szFilter, this);
 
@@ -256,12 +255,11 @@ void CToolsDlg::OnBnClickedButtonExport()
             CTool& tool = m_Tools.Get(nSelected);
 
             CString szFilter;
-            szFilter.Format(_T("%s (*.tool)|*.tool|%s (*.xml)|*.xml|%s (*.*)|*.*||"),
+            szFilter.Format(_T("%s (*.xml)|*.xml|%s (*.*)|*.*||"),
                 pConfig->m_Language.GetString(0x00310010, pszFileDialogs[9]),
-                pConfig->m_Language.GetString(0x00310002, pszFileDialogs[1]),
                 pConfig->m_Language.GetString(0x00310001, pszFileDialogs[0]));
 
-            CFileDialog fd(FALSE, _T("tool"), tool.szName,
+            CFileDialog fd(FALSE, _T("xml"), tool.szName,
                 OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER | OFN_OVERWRITEPROMPT,
                 szFilter, this);
 
@@ -617,12 +615,11 @@ void CToolsDlg::OnBnClickedButtonLoadTools()
         return;
 
     CString szFilter;
-    szFilter.Format(_T("%s (*.tools)|*.tools|%s (*.xml)|*.xml|%s (*.*)|*.*||"),
+    szFilter.Format(_T("%s (*.xml)|*.xml|%s (*.*)|*.*||"),
         pConfig->m_Language.GetString(0x00310009, pszFileDialogs[8]),
-        pConfig->m_Language.GetString(0x00310002, pszFileDialogs[1]),
         pConfig->m_Language.GetString(0x00310001, pszFileDialogs[0]));
 
-    CFileDialog fd(TRUE, _T("tools"), _T(""),
+    CFileDialog fd(TRUE, _T("xml"), _T(""),
         OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER,
         szFilter, this);
 
@@ -639,12 +636,11 @@ void CToolsDlg::OnBnClickedButtonSaveTools()
         return;
 
     CString szFilter;
-    szFilter.Format(_T("%s (*.tools)|*.tools|%s (*.xml)|*.xml|%s (*.*)|*.*||"),
+    szFilter.Format(_T("%s (*.xml)|*.xml|%s (*.*)|*.*||"),
         pConfig->m_Language.GetString(0x00310009, pszFileDialogs[8]),
-        pConfig->m_Language.GetString(0x00310002, pszFileDialogs[1]),
         pConfig->m_Language.GetString(0x00310001, pszFileDialogs[0]));
 
-    CFileDialog fd(FALSE, _T("tools"), _T("tools"),
+    CFileDialog fd(FALSE, _T("xml"), _T("Tools"),
         OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER | OFN_OVERWRITEPROMPT,
         szFilter, this);
 
@@ -846,23 +842,20 @@ void CToolsDlg::HandleDropFiles(HDROP hDropInfo)
                 CString szPath = szFile;
                 CString szExt = ::GetFileExtension(szPath);
 
-                if (szExt.CompareNoCase(_T("tools")) == 0)
+                if (szExt.CompareNoCase(_T("xml")) == 0)
                 {
-                    this->LoadTools(szPath);
-                }
-                else if (szExt.CompareNoCase(_T("tool")) == 0)
-                {
-                    // Add tool to tools list.
                     XmlDocumnent doc;
-                    XmlTools xmlTools(doc);
-                    if (xmlTools.Open(szPath) == true)
+                    if (XmlDoc::Open(szPath, doc) == true)
                     {
-                        CTool tool;
-                        xmlTools.GetTool(tool);
-                        m_Tools.Insert(tool);
-
-                        int nItem = m_Tools.Count() - 1;
-                        this->AddToList(tool, nItem);
+                        CString szName = CString(XmlDoc::GetRootName(doc));
+                        if (szName.CompareNoCase(_T("Tools")) == 0)
+                        {
+                            this->LoadTools(doc);
+                        }
+                        else if (szName.CompareNoCase(_T("Tool")) == 0)
+                        {
+                            this->LoadTool(doc);
+                        }
                     }
                 }
             }
@@ -921,15 +914,9 @@ void CToolsDlg::ListSelectionChange()
 void CToolsDlg::LoadTool(CString szFileXml)
 {
     XmlDocumnent doc;
-    XmlTools xmlTools(doc);
-    if (xmlTools.Open(szFileXml) == true)
+    if (XmlDoc::Open(szFileXml, doc) == true)
     {
-        CTool tool;
-        xmlTools.GetTool(tool);
-        m_Tools.Insert(tool);
-
-        int nItem = m_Tools.Count() - 1;
-        this->AddToList(tool, nItem);
+        return LoadTool(doc);
     }
     else
     {
@@ -938,6 +925,18 @@ void CToolsDlg::LoadTool(CString szFileXml)
             pConfig->m_Language.GetString(0x00240001, pszToolsDialog[0]),
             MB_OK | MB_ICONERROR);
     }
+}
+
+void CToolsDlg::LoadTool(XmlDocumnent &doc)
+{
+    XmlTools xmlTools(doc);
+
+    CTool tool;
+    xmlTools.GetTool(tool);
+    m_Tools.Insert(tool);
+
+    int nItem = m_Tools.Count() - 1;
+    this->AddToList(tool, nItem);
 }
 
 void CToolsDlg::SaveTool(CString szFileXml, CTool &tool)
@@ -958,19 +957,9 @@ void CToolsDlg::SaveTool(CString szFileXml, CTool &tool)
 void CToolsDlg::LoadTools(CString szFileXml)
 {
     XmlDocumnent doc;
-    XmlTools xmlTools(doc);
-    if (xmlTools.Open(szFileXml) == true)
+    if (XmlDoc::Open(szFileXml, doc) == true)
     {
-        this->m_Tools.RemoveAll();
-        this->m_LstTools.DeleteAllItems();
-
-        xmlTools.GetTools(this->m_Tools);
-
-        if (this->m_Tools.Count() > 0)
-            nSelectedTool = 0;
-
-        this->InsertToolsToListCtrl();
-        this->ListSelectionChange();
+        return LoadTools(doc);
     }
     else
     {
@@ -979,6 +968,22 @@ void CToolsDlg::LoadTools(CString szFileXml)
             pConfig->m_Language.GetString(0x00240001, pszToolsDialog[0]),
             MB_OK | MB_ICONERROR);
     }
+}
+
+void CToolsDlg::LoadTools(XmlDocumnent &doc)
+{
+    XmlTools xmlTools(doc);
+
+    this->m_Tools.RemoveAll();
+    this->m_LstTools.DeleteAllItems();
+
+    xmlTools.GetTools(this->m_Tools);
+
+    if (this->m_Tools.Count() > 0)
+        nSelectedTool = 0;
+
+    this->InsertToolsToListCtrl();
+    this->ListSelectionChange();
 }
 
 void CToolsDlg::SaveTools(CString szFileXml)

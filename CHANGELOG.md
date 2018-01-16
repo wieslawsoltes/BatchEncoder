@@ -1,6 +1,6 @@
 ﻿# Changelog
 
-### Version 2.3
+### Version 3.0
 
 - Added refalac support.
 - Added twolame support.
@@ -13,7 +13,9 @@
 - Fixed convert loop crushing with more than 64 threads active.
 - Improved performance of remove item from the list.
 - Changed script file extension to .lua for progress functions.
-- Using BatchEncoder.tools for download url in download.ps1 script.
+- Using xml extensions for configuration.
+- Using auto detection of xml file type for drag and drop.
+- Using Tools.xml for download url in download.ps1 script.
 
 ### Version 2.2
 

@@ -133,9 +133,12 @@ public:
     void UpdateDefaultComboBox(CFormat &format);
     void ListSelectionChange();
     void LoadFormat(CString szFileXml);
+    void LoadFormat(XmlDocumnent &doc);
     void SaveFormat(CString szFileXml, CFormat &format);
     void LoadFormats(CString szFileXml);
+    void LoadFormats(XmlDocumnent &doc);
     void SaveFormats(CString szFileXml);
+    void LoadPresets(XmlDocumnent &doc);
     bool BrowseForPath(CString szDefaultFName, CEdit *pEdit, int nID);
     bool BrowseForFunction(CString szDefaultFName, CEdit *pEdit, int nID);
 };

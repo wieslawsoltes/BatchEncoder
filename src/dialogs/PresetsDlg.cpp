@@ -447,12 +447,11 @@ void CPresetsDlg::OnEnChangeEditPresetOptions()
 void CPresetsDlg::OnBnClickedButtonLoadPresets()
 {
     CString szFilter;
-    szFilter.Format(_T("%s (*.presets)|*.presets|%s (*.xml)|*.xml|%s (*.*)|*.*||"),
+    szFilter.Format(_T("%s (*.xml)|*.xml|%s (*.*)|*.*||"),
         pConfig->m_Language.GetString(0x00310004, pszFileDialogs[3]),
-        pConfig->m_Language.GetString(0x00310002, pszFileDialogs[1]),
         pConfig->m_Language.GetString(0x00310001, pszFileDialogs[0]));
 
-    CFileDialog fd(TRUE, _T("presets"), _T(""),
+    CFileDialog fd(TRUE, _T("xml"), _T(""),
         OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER,
         szFilter, this);
 
@@ -468,12 +467,11 @@ void CPresetsDlg::OnBnClickedButtonSavePresets()
     CFormat& format = this->m_Formats.Get(this->nSelectedFormat);
 
     CString szFilter;
-    szFilter.Format(_T("%s (*.presets)|*.presets|%s (*.xml)|*.xml|%s (*.*)|*.*||"),
+    szFilter.Format(_T("%s (*.xml)|*.xml|%s (*.*)|*.*||"),
         pConfig->m_Language.GetString(0x00310004, pszFileDialogs[3]),
-        pConfig->m_Language.GetString(0x00310002, pszFileDialogs[1]),
         pConfig->m_Language.GetString(0x00310001, pszFileDialogs[0]));
 
-    CFileDialog fd(FALSE, _T("presets"), format.szId,
+    CFileDialog fd(FALSE, _T("xml"), format.szId,
         OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER | OFN_OVERWRITEPROMPT,
         szFilter, this);
 
@@ -598,9 +596,17 @@ void CPresetsDlg::HandleDropFiles(HDROP hDropInfo)
                 CString szPath = szFile;
                 CString szExt = ::GetFileExtension(szPath);
 
-                if (szExt.CompareNoCase(_T("presets")) == 0)
+                if (szExt.CompareNoCase(_T("xml")) == 0)
                 {
-                    this->LoadPresets(szPath);
+                    XmlDocumnent doc;
+                    if (XmlDoc::Open(szPath, doc) == true)
+                    {
+                        CString szName = CString(XmlDoc::GetRootName(doc));
+                        if (szName.CompareNoCase(_T("Presets")) == 0)
+                        {
+                            LoadPresets(doc);
+                        }
+                    }
                 }
             }
             szFile.ReleaseBuffer();
@@ -646,17 +652,9 @@ void CPresetsDlg::ListSelectionChange()
 void CPresetsDlg::LoadPresets(CString szFileXml)
 {
     XmlDocumnent doc;
-    XmlPresets xmlPresets(doc);
-    if (xmlPresets.Open(szFileXml) == true)
+    if (XmlDoc::Open(szFileXml, doc) == true)
     {
-        this->m_LstPresets.DeleteAllItems();
-
-        CFormat& format = this->m_Formats.Get(this->nSelectedFormat);
-        format.m_Presets.RemoveAll();
-
-        xmlPresets.GetPresets(format.m_Presets);
-
-        this->InsertPresetsToListCtrl();
+        return LoadPresets(doc);
     }
     else
     {
@@ -665,6 +663,20 @@ void CPresetsDlg::LoadPresets(CString szFileXml)
             pConfig->m_Language.GetString(0x00220001, pszPresetsDialog[0]),
             MB_OK | MB_ICONERROR);
     }
+}
+
+void CPresetsDlg::LoadPresets(XmlDocumnent &doc)
+{
+    XmlPresets xmlPresets(doc);
+
+    this->m_LstPresets.DeleteAllItems();
+
+    CFormat& format = this->m_Formats.Get(this->nSelectedFormat);
+    format.m_Presets.RemoveAll();
+
+    xmlPresets.GetPresets(format.m_Presets);
+
+    this->InsertPresetsToListCtrl();
 }
 
 void CPresetsDlg::SavePresets(CString szFileXml, CFormat &format)

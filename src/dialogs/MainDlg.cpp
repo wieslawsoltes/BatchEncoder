@@ -13,12 +13,12 @@
 #include "xml\XmlOptions.h"
 #include "xml\XmlPresets.h"
 #include "xml\XmlTools.h"
+#include "contexts\MainDlgWorkerContext.h"
 #include "MainDlg.h"
 #include "PresetsDlg.h"
 #include "AboutDlg.h"
 #include "FormatsDlg.h"
 #include "ToolsDlg.h"
-#include "contexts\MainDlgWorkerContext.h"
 
 #define WM_TRAY (WM_USER + 0x10)
 #define IDC_STATUSBAR 1500
@@ -397,12 +397,10 @@ BOOL CMainDlg::OnInitDialog()
 
 void CMainDlg::OnOK()
 {
-
 }
 
 void CMainDlg::OnCancel()
 {
-
 }
 
 BOOL CMainDlg::PreTranslateMessage(MSG* pMsg)
@@ -745,12 +743,11 @@ void CMainDlg::OnFileLoadList()
     if (this->pWorkerContext->bRunning == false)
     {
         CString szFilter;
-        szFilter.Format(_T("%s (*.items)|*.items|%s (*.xml)|*.xml|%s (*.*)|*.*||"),
+        szFilter.Format(_T("%s (*.xml)|*.xml|%s (*.*)|*.*||"),
             m_Config.m_Language.GetString(0x00310003, pszFileDialogs[2]),
-            m_Config.m_Language.GetString(0x00310002, pszFileDialogs[1]),
             m_Config.m_Language.GetString(0x00310001, pszFileDialogs[0]));
 
-        CFileDialog fd(TRUE, _T("items"), _T(""),
+        CFileDialog fd(TRUE, _T("xml"), _T(""),
             OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER,
             szFilter, this);
 
@@ -770,12 +767,11 @@ void CMainDlg::OnFileSaveList()
     if (this->pWorkerContext->bRunning == false)
     {
         CString szFilter;
-        szFilter.Format(_T("%s (*.items)|*.items|%s (*.xml)|*.xml|%s (*.*)|*.*||"),
+        szFilter.Format(_T("%s (*.xml)|*.xml|%s (*.*)|*.*||"),
             m_Config.m_Language.GetString(0x00310003, pszFileDialogs[2]),
-            m_Config.m_Language.GetString(0x00310002, pszFileDialogs[1]),
             m_Config.m_Language.GetString(0x00310001, pszFileDialogs[0]));
 
-        CFileDialog fd(FALSE, _T("items"), _T("items"),
+        CFileDialog fd(FALSE, _T("xml"), _T("Items"),
             OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER | OFN_OVERWRITEPROMPT,
             szFilter, this);
 
@@ -1430,7 +1426,7 @@ bool CMainDlg::SearchFolderForLanguages(CString szFile)
 
         szFile.TrimRight(_T("\\"));
         szFile.TrimRight(_T("/"));
-        wsprintf(cTempBuf, _T("%s\\*.language\0"), szFile);
+        wsprintf(cTempBuf, _T("%s\\*.xml\0"), szFile);
 
         hSearch = FindFirstFile(cTempBuf, &w32FileData);
         if (hSearch == INVALID_HANDLE_VALUE)
@@ -1445,12 +1441,16 @@ bool CMainDlg::SearchFolderForLanguages(CString szFile)
                 szFileXml.Format(_T("%s\\%s\0"), szFile, w32FileData.cFileName);
 
                 XmlDocumnent doc;
-                XmlLanguages xmlLanguages(doc);
-                if (xmlLanguages.Open(szFileXml) == true)
+                if (XmlDoc::Open(szFileXml, doc) == true)
                 {
-                    CLanguage language;
-                    xmlLanguages.GetLanguage(language);
-                    this->m_Config.m_Language.m_Languages.Insert(language);
+                    CString szName = CString(XmlDoc::GetRootName(doc));
+                    if (szName.CompareNoCase(_T("Language")) == 0)
+                    {
+                        XmlLanguages xmlLanguages(doc);
+                        CLanguage language;
+                        xmlLanguages.GetLanguage(language);
+                        this->m_Config.m_Language.m_Languages.Insert(language);
+                    }
                 }
             }
 
@@ -1601,30 +1601,39 @@ void CMainDlg::SetLanguage()
     helper.SetWndText(&m_BtnConvert, 0x000A0017);
 }
 
-void CMainDlg::LoadLanguage(CString szFileXml)
+bool CMainDlg::LoadLanguage(CString szFileXml)
 {
     XmlDocumnent doc;
-    XmlLanguages xmlLanguages(doc);
-    if (xmlLanguages.Open(szFileXml) == true)
+    if (XmlDoc::Open(szFileXml, doc) == true)
     {
-        // insert to languages list
-        CLanguage language;
-        xmlLanguages.GetLanguage(language);
-
-        this->m_Config.m_Language.m_Languages.Insert(language);
-
-        // insert to languages menu
-        CMenu *m_hMenu = this->GetMenu();
-        CMenu *m_hLangMenu = m_hMenu->GetSubMenu(4);
-        int nLanguages = m_Config.m_Language.m_Languages.Count();
-
-        CString szBuff;
-        szBuff.Format(_T("%s (%s)"), language.szOriginalName, language.szTranslatedName);
-
-        UINT nLangID = ID_LANGUAGE_MIN + nLanguages - 1;
-        m_hLangMenu->AppendMenu(MF_STRING, nLangID, szBuff);
-        m_hLangMenu->CheckMenuItem(nLangID, MF_UNCHECKED);
+        return LoadLanguage(doc);
     }
+    return false;
+}
+
+bool CMainDlg::LoadLanguage(XmlDocumnent &doc)
+{
+    XmlLanguages xmlLanguages(doc);
+
+    // insert to languages list
+    CLanguage language;
+    xmlLanguages.GetLanguage(language);
+
+    this->m_Config.m_Language.m_Languages.Insert(language);
+
+    // insert to languages menu
+    CMenu *m_hMenu = this->GetMenu();
+    CMenu *m_hLangMenu = m_hMenu->GetSubMenu(4);
+    int nLanguages = m_Config.m_Language.m_Languages.Count();
+
+    CString szBuff;
+    szBuff.Format(_T("%s (%s)"), language.szOriginalName, language.szTranslatedName);
+
+    UINT nLangID = ID_LANGUAGE_MIN + nLanguages - 1;
+    m_hLangMenu->AppendMenu(MF_STRING, nLangID, szBuff);
+    m_hLangMenu->CheckMenuItem(nLangID, MF_UNCHECKED);
+
+    return true;
 }
 
 void CMainDlg::GetItems()
@@ -1844,9 +1853,16 @@ void CMainDlg::SetOptions()
 bool CMainDlg::LoadOptions(CString szFileXml)
 {
     XmlDocumnent doc;
+    if (XmlDoc::Open(szFileXml, doc) == true)
+    {
+        return LoadOptions(doc);
+    }
+    return false;
+}
+
+bool CMainDlg::LoadOptions(XmlDocumnent &doc)
+{
     XmlOptions xmlOptions(doc);
-    if (xmlOptions.Open(szFileXml) == false)
-        return false;
 
     xmlOptions.GetOptions(this->m_Config.m_Options);
 
@@ -1871,9 +1887,16 @@ bool CMainDlg::SaveOptions(CString szFileXml)
 bool CMainDlg::LoadFormats(CString szFileXml)
 {
     XmlDocumnent doc;
+    if (XmlDoc::Open(szFileXml, doc) == true)
+    {
+        return LoadFormats(doc);
+    }
+    return false;
+}
+
+bool CMainDlg::LoadFormats(XmlDocumnent &doc)
+{
     XmlFormats xmlFormats(doc);
-    if (xmlFormats.Open(szFileXml) == false)
-        return false;
 
     this->m_Config.m_Formats.RemoveAll();
 
@@ -1897,9 +1920,16 @@ bool CMainDlg::SaveFormats(CString szFileXml)
 bool CMainDlg::LoadFormat(CString szFileXml)
 {
     XmlDocumnent doc;
+    if (XmlDoc::Open(szFileXml, doc) == true)
+    {
+        return LoadFormat(doc);
+    }
+    return false;
+}
+
+bool CMainDlg::LoadFormat(XmlDocumnent &doc)
+{
     XmlFormats xmlFormats(doc);
-    if (xmlFormats.Open(szFileXml) == false)
-        return false;
 
     CFormat format;
     xmlFormats.GetFormat(format);
@@ -1928,15 +1958,22 @@ bool CMainDlg::SaveFormat(CString szFileXml)
 
 bool CMainDlg::LoadPresets(CString szFileXml)
 {
+    XmlDocumnent doc;
+    if (XmlDoc::Open(szFileXml, doc) == true)
+    {
+        return LoadPresets(doc);
+    }
+    return false;
+}
+
+bool CMainDlg::LoadPresets(XmlDocumnent &doc)
+{
     int nFormat = this->m_CmbFormat.GetCurSel();
     if (nFormat != -1)
     {
         CFormat& format = m_Config.m_Formats.Get(nFormat);
 
-        XmlDocumnent doc;
         XmlPresets xmlPresets(doc);
-        if (xmlPresets.Open(szFileXml) == false)
-            return false;
 
         format.m_Presets.RemoveAll();
         xmlPresets.GetPresets(format.m_Presets);
@@ -1967,9 +2004,16 @@ bool CMainDlg::SavePresets(CString szFileXml)
 bool CMainDlg::LoadTools(CString szFileXml)
 {
     XmlDocumnent doc;
+    if (XmlDoc::Open(szFileXml, doc) == true)
+    {
+        return LoadTools(doc);
+    }
+    return false;
+}
+
+bool CMainDlg::LoadTools(XmlDocumnent &doc)
+{
     XmlTools xmlTools(doc);
-    if (xmlTools.Open(szFileXml) == false)
-        return false;
 
     this->m_Config.m_Tools.RemoveAll();
 
@@ -1990,9 +2034,16 @@ bool CMainDlg::SaveTools(CString szFileXml)
 bool CMainDlg::LoadTool(CString szFileXml)
 {
     XmlDocumnent doc;
+    if (XmlDoc::Open(szFileXml, doc) == true)
+    {
+        return LoadTool(doc);
+    }
+    return false;
+}
+
+bool CMainDlg::LoadTool(XmlDocumnent &doc)
+{
     XmlTools xmlTools(doc);
-    if (xmlTools.Open(szFileXml) == false)
-        return false;
 
     CTool tool;
     xmlTools.GetTool(tool);
@@ -2004,9 +2055,16 @@ bool CMainDlg::LoadTool(CString szFileXml)
 bool CMainDlg::LoadItems(CString szFileXml)
 {
     XmlDocumnent doc;
+    if (XmlDoc::Open(szFileXml, doc) == true)
+    {
+        return LoadItems(doc);
+    }
+    return false;
+}
+
+bool CMainDlg::LoadItems(XmlDocumnent &doc)
+{
     XmlItems xmlItems(doc);
-    if (xmlItems.Open(szFileXml) == false)
-        return false;
 
     this->m_LstInputItems.DeleteAllItems();
     this->m_Config.m_Items.RemoveAll();
@@ -2221,33 +2279,45 @@ void CMainDlg::HandleDropFiles(HDROP hDropInfo)
                 CString szPath = szFile;
                 CString szExt = ::GetFileExtension(szPath);
 
-                if (szExt.CompareNoCase(_T("items")) == 0)
+                if (szExt.CompareNoCase(_T("xml")) == 0)
                 {
-                    this->LoadItems(szPath);
-                }
-                else if (szExt.CompareNoCase(_T("formats")) == 0)
-                {
-                    this->LoadFormats(szPath);
-                }
-                else if (szExt.CompareNoCase(_T("format")) == 0)
-                {
-                    this->LoadFormat(szPath);
-                }
-                else if (szExt.CompareNoCase(_T("presets")) == 0)
-                {
-                    this->LoadPresets(szPath);
-                }
-                else if (szExt.CompareNoCase(_T("options")) == 0)
-                {
-                    this->LoadOptions(szPath);
-                }
-                else if (szExt.CompareNoCase(_T("tools")) == 0)
-                {
-                    this->LoadTools(szPath);
-                }
-                else if (szExt.CompareNoCase(_T("tool")) == 0)
-                {
-                    this->LoadTool(szPath);
+                    XmlDocumnent doc;
+                    if (XmlDoc::Open(szPath, doc) == true)
+                    {
+                        CString szName = CString(XmlDoc::GetRootName(doc));
+                        if (szName.CompareNoCase(_T("Items")) == 0)
+                        {
+                            this->LoadItems(doc);
+                        }
+                        else if (szName.CompareNoCase(_T("Formats")) == 0)
+                        {
+                            this->LoadFormats(doc);
+                        }
+                        else if (szName.CompareNoCase(_T("Format")) == 0)
+                        {
+                            this->LoadFormat(doc);
+                        }
+                        else if (szName.CompareNoCase(_T("Presets")) == 0)
+                        {
+                            this->LoadPresets(doc);
+                        }
+                        else if (szName.CompareNoCase(_T("Options")) == 0)
+                        {
+                            this->LoadOptions(doc);
+                        }
+                        else if (szName.CompareNoCase(_T("Tools")) == 0)
+                        {
+                            this->LoadTools(doc);
+                        }
+                        else if (szName.CompareNoCase(_T("Tool")) == 0)
+                        {
+                            this->LoadTool(doc);
+                        }
+                        else if (szName.CompareNoCase(_T("Language")) == 0)
+                        {
+                            this->LoadLanguage(doc);
+                        }
+                    }
                 }
                 else if (szExt.CompareNoCase(_T("exe")) == 0)
                 {
@@ -2268,10 +2338,6 @@ void CMainDlg::HandleDropFiles(HDROP hDropInfo)
                         CFormat& format = m_Config.m_Formats.Get(nFormat);
                         format.szFunction = szPath;
                     }
-                }
-                else if (szExt.CompareNoCase(_T("language")) == 0)
-                {
-                    LoadLanguage(szPath);
                 }
                 else
                 {

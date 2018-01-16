@@ -219,12 +219,11 @@ void CFormatsDlg::OnLvnItemchangedListFormats(NMHDR *pNMHDR, LRESULT *pResult)
 void CFormatsDlg::OnBnClickedButtonImport()
 {
     CString szFilter;
-    szFilter.Format(_T("%s (*.format)|*.format|%s (*.xml)|*.xml|%s (*.*)|*.*||"),
+    szFilter.Format(_T("%s (*.xml)|*.xml|%s (*.*)|*.*||"),
         pConfig->m_Language.GetString(0x00310008, pszFileDialogs[7]),
-        pConfig->m_Language.GetString(0x00310002, pszFileDialogs[1]),
         pConfig->m_Language.GetString(0x00310001, pszFileDialogs[0]));
 
-    CFileDialog fd(TRUE, _T("format"), _T(""),
+    CFileDialog fd(TRUE, _T("xml"), _T(""),
         OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER,
         szFilter, this);
 
@@ -246,12 +245,11 @@ void CFormatsDlg::OnBnClickedButtonExport()
             CFormat& format = m_Formats.Get(nSelected);
 
             CString szFilter;
-            szFilter.Format(_T("%s (*.format)|*.format|%s (*.xml)|*.xml|%s (*.*)|*.*||"),
+            szFilter.Format(_T("%s (*.xml)|*.xml|%s (*.*)|*.*||"),
                 pConfig->m_Language.GetString(0x00310008, pszFileDialogs[7]),
-                pConfig->m_Language.GetString(0x00310002, pszFileDialogs[1]),
                 pConfig->m_Language.GetString(0x00310001, pszFileDialogs[0]));
 
-            CFileDialog fd(FALSE, _T("format"), format.szId,
+            CFileDialog fd(FALSE, _T("xml"), format.szId,
                 OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER | OFN_OVERWRITEPROMPT,
                 szFilter, this);
 
@@ -635,12 +633,11 @@ void CFormatsDlg::OnEnChangeEditFormatFunction()
 void CFormatsDlg::OnBnClickedButtonLoadFormats()
 {
     CString szFilter;
-    szFilter.Format(_T("%s (*.formats)|*.formats|%s (*.xml)|*.xml|%s (*.*)|*.*||"),
+    szFilter.Format(_T("%s (*.xml)|*.xml|%s (*.*)|*.*||"),
         pConfig->m_Language.GetString(0x00310005, pszFileDialogs[4]),
-        pConfig->m_Language.GetString(0x00310002, pszFileDialogs[1]),
         pConfig->m_Language.GetString(0x00310001, pszFileDialogs[0]));
 
-    CFileDialog fd(TRUE, _T("formats"), _T(""),
+    CFileDialog fd(TRUE, _T("xml"), _T(""),
         OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER,
         szFilter, this);
 
@@ -654,12 +651,11 @@ void CFormatsDlg::OnBnClickedButtonLoadFormats()
 void CFormatsDlg::OnBnClickedButtonSaveFormats()
 {
     CString szFilter;
-    szFilter.Format(_T("%s (*.formats)|*.formats|%s (*.xml)|*.xml|%s (*.*)|*.*||"),
+    szFilter.Format(_T("%s (*.xml)|*.xml|%s (*.*)|*.*||"),
         pConfig->m_Language.GetString(0x00310005, pszFileDialogs[4]),
-        pConfig->m_Language.GetString(0x00310002, pszFileDialogs[1]),
         pConfig->m_Language.GetString(0x00310001, pszFileDialogs[0]));
 
-    CFileDialog fd(FALSE, _T("formats"), _T("formats"),
+    CFileDialog fd(FALSE, _T("xml"), _T("Formats"),
         OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER | OFN_OVERWRITEPROMPT,
         szFilter, this);
 
@@ -857,41 +853,23 @@ void CFormatsDlg::HandleDropFiles(HDROP hDropInfo)
                 CString szPath = szFile;
                 CString szExt = ::GetFileExtension(szPath);
 
-                if (szExt.CompareNoCase(_T("formats")) == 0)
+                if (szExt.CompareNoCase(_T("xml")) == 0)
                 {
-                    this->LoadFormats(szPath);
-                }
-                else if (szExt.CompareNoCase(_T("format")) == 0)
-                {
-                    // Add format to formats list.
                     XmlDocumnent doc;
-                    XmlFormats xmlFormats(doc);
-                    if (xmlFormats.Open(szPath) == true)
+                    if (XmlDoc::Open(szPath, doc) == true)
                     {
-                        CFormat format;
-                        xmlFormats.GetFormat(format);
-                        m_Formats.Insert(format);
-
-                        int nItem = m_Formats.Count() - 1;
-                        this->AddToList(format, nItem);
-                    }
-                }
-                else if (szExt.CompareNoCase(_T("presets")) == 0)
-                {
-                    // Add presets to current format presets list.
-                    POSITION pos = m_LstFormats.GetFirstSelectedItemPosition();
-                    if (pos != nullptr)
-                    {
-                        int nItem = m_LstFormats.GetNextSelectedItem(pos);
-                        CFormat& format = this->m_Formats.Get(nItem);
-
-                        XmlDocumnent doc;
-                        XmlPresets xmlPresets(doc);
-                        if (xmlPresets.Open(szPath) == true)
+                        CString szName = CString(XmlDoc::GetRootName(doc));
+                        if (szName.CompareNoCase(_T("Formats")) == 0)
                         {
-                            CFormat& format = this->m_Formats.Get(this->nSelectedFormat);
-                            format.m_Presets.RemoveAll();
-                            xmlPresets.GetPresets(format.m_Presets);
+                            this->LoadFormats(doc);
+                        }
+                        else if (szName.CompareNoCase(_T("Format")) == 0)
+                        {
+                            this->LoadFormat(doc);
+                        }
+                        else if (szName.CompareNoCase(_T("Presets")) == 0)
+                        {
+                            this->LoadPresets(doc);
                         }
                     }
                 }
@@ -1042,15 +1020,9 @@ void CFormatsDlg::ListSelectionChange()
 void CFormatsDlg::LoadFormat(CString szFileXml)
 {
     XmlDocumnent doc;
-    XmlFormats xmlFormats(doc);
-    if (xmlFormats.Open(szFileXml) == true)
+    if (XmlDoc::Open(szFileXml, doc) == true)
     {
-        CFormat format;
-        xmlFormats.GetFormat(format);
-        m_Formats.Insert(format);
-
-        int nItem = m_Formats.Count() - 1;
-        this->AddToList(format, nItem);
+        return LoadFormat(doc);
     }
     else
     {
@@ -1059,6 +1031,18 @@ void CFormatsDlg::LoadFormat(CString szFileXml)
             pConfig->m_Language.GetString(0x00230001, pszFormatsDialog[0]),
             MB_OK | MB_ICONERROR);
     }
+}
+
+void CFormatsDlg::LoadFormat(XmlDocumnent &doc)
+{
+    XmlFormats xmlFormats(doc);
+
+    CFormat format;
+    xmlFormats.GetFormat(format);
+    m_Formats.Insert(format);
+
+    int nItem = m_Formats.Count() - 1;
+    this->AddToList(format, nItem);
 }
 
 void CFormatsDlg::SaveFormat(CString szFileXml, CFormat &format)
@@ -1079,19 +1063,9 @@ void CFormatsDlg::SaveFormat(CString szFileXml, CFormat &format)
 void CFormatsDlg::LoadFormats(CString szFileXml)
 {
     XmlDocumnent doc;
-    XmlFormats xmlFormats(doc);
-    if (xmlFormats.Open(szFileXml) == true)
+    if (XmlDoc::Open(szFileXml, doc) == true)
     {
-        this->m_Formats.RemoveAll();
-        this->m_LstFormats.DeleteAllItems();
-
-        xmlFormats.GetFormats(this->m_Formats);
-
-        if (this->m_Formats.Count() > 0)
-            nSelectedFormat = 0;
-
-        this->InsertFormatsToListCtrl();
-        this->ListSelectionChange();
+        return LoadFormats(doc);
     }
     else
     {
@@ -1100,6 +1074,22 @@ void CFormatsDlg::LoadFormats(CString szFileXml)
             pConfig->m_Language.GetString(0x00230001, pszFormatsDialog[0]),
             MB_OK | MB_ICONERROR);
     }
+}
+
+void CFormatsDlg::LoadFormats(XmlDocumnent &doc)
+{
+    XmlFormats xmlFormats(doc);
+
+    this->m_Formats.RemoveAll();
+    this->m_LstFormats.DeleteAllItems();
+
+    xmlFormats.GetFormats(this->m_Formats);
+
+    if (this->m_Formats.Count() > 0)
+        nSelectedFormat = 0;
+
+    this->InsertFormatsToListCtrl();
+    this->ListSelectionChange();
 }
 
 void CFormatsDlg::SaveFormats(CString szFileXml)
@@ -1114,6 +1104,23 @@ void CFormatsDlg::SaveFormats(CString szFileXml)
             pConfig->m_Language.GetString(0x00230003, pszFormatsDialog[2]),
             pConfig->m_Language.GetString(0x00230001, pszFormatsDialog[0]),
             MB_OK | MB_ICONERROR);
+    }
+}
+
+void CFormatsDlg::LoadPresets(XmlDocumnent &doc)
+{
+    POSITION pos = m_LstFormats.GetFirstSelectedItemPosition();
+    if (pos != nullptr)
+    {
+        XmlPresets xmlPresets(doc);
+
+        int nItem = m_LstFormats.GetNextSelectedItem(pos);
+        CFormat& format = this->m_Formats.Get(nItem);
+        format.m_Presets.RemoveAll();
+
+        xmlPresets.GetPresets(format.m_Presets);
+
+        this->UpdateDefaultComboBox(format);
     }
 }
 

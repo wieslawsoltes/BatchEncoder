@@ -131,8 +131,10 @@ public:
     void UpdateFields(CTool &format);
     void ListSelectionChange();
     void LoadTool(CString szFileXml);
+    void LoadTool(XmlDocumnent &doc);
     void SaveTool(CString szFileXml, CTool &tool);
     void LoadTools(CString szFileXml);
+    void LoadTools(XmlDocumnent &doc);
     void SaveTools(CString szFileXml);
     void EnableUserInterface(BOOL bEnable = TRUE);
     void DownloadTools();

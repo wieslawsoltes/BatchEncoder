@@ -15,7 +15,6 @@ END_MESSAGE_MAP()
 
 CMainApp::CMainApp()
 {
-
 }
 
 CString CMainApp::CombinePath(CString szPath, CString szFile)
@@ -65,10 +64,10 @@ BOOL CMainApp::InitInstance()
         }
         catch (...) {}
 
-        this->szOptionsFile = this->szSettingsPath + _T("Options.options");
-        this->szFormatsFile = this->szSettingsPath + _T("BatchEncoder.formats");
-        this->szItemsFile = this->szSettingsPath + _T("BatchEncoder.items");
-        this->szToolsFile = this->szSettingsPath + _T("BatchEncoder.tools");
+        this->szOptionsFile = this->szSettingsPath + _T("Options.xml");
+        this->szFormatsFile = this->szSettingsPath + _T("formats.xml");
+        this->szItemsFile = this->szSettingsPath + _T("Items.xml");
+        this->szToolsFile = this->szSettingsPath + _T("Tools.xml");
     }
     else
     {
@@ -93,10 +92,10 @@ BOOL CMainApp::InitInstance()
         }
         catch (...) {}
 
-        this->szOptionsFile = ::GetSettingsFilePath(_T("BatchEncoder.options"), szConfigDir);
-        this->szFormatsFile = ::GetSettingsFilePath(_T("BatchEncoder.formats"), szConfigDir);
-        this->szItemsFile = ::GetSettingsFilePath(_T("BatchEncoder.items"), szConfigDir);
-        this->szToolsFile = ::GetSettingsFilePath(_T("BatchEncoder.tools"), szConfigDir);
+        this->szOptionsFile = ::GetSettingsFilePath(_T("Options.xml"), szConfigDir);
+        this->szFormatsFile = ::GetSettingsFilePath(_T("Formats.xml"), szConfigDir);
+        this->szItemsFile = ::GetSettingsFilePath(_T("Items.xml"), szConfigDir);
+        this->szToolsFile = ::GetSettingsFilePath(_T("Tools.xml"), szConfigDir);
     }
 
     CMainDlg dlg;
