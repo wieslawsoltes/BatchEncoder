@@ -72,7 +72,7 @@ Source: {#BasePath}\config\*.tools; DestDir: {userappdata}\{#ProgramName}; Flags
 Source: {#BasePath}\config\formats\*.format; DestDir: {userappdata}\{#ProgramName}\formats; Flags: ignoreversion; Components: formats
 Source: {#BasePath}\config\presets\*.presets; DestDir: {userappdata}\{#ProgramName}\presets; Flags: ignoreversion; Components: presets
 Source: {#BasePath}\config\lang\*.language; DestDir: {userappdata}\{#ProgramName}\lang; Flags: ignoreversion; Components: lang
-Source: {#BasePath}\config\progress\*.progress; DestDir: {userappdata}\{#ProgramName}\progress; Flags: ignoreversion; Components: progress
+Source: {#BasePath}\config\progress\*.lua; DestDir: {userappdata}\{#ProgramName}\progress; Flags: ignoreversion; Components: progress
 Source: {#BasePath}\config\tools\*.tool; DestDir: {userappdata}\{#ProgramName}\tools; Flags: ignoreversion; Components: tools
 Source: {#BasePath}\scripts\*.ps1; DestDir: {userappdata}\{#ProgramName}; Flags: ignoreversion; Components: scripts
 
