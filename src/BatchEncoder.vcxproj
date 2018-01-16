@@ -131,20 +131,17 @@
       <AdditionalDependencies>Rpcrt4.lib</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>copy /-Y ..\config\*.formats $(OutDir)
-copy /-Y ..\config\*.options $(OutDir)
-copy /-Y ..\config\*.items $(OutDir)
-copy /-Y ..\config\*.tools $(OutDir)
+      <Command>copy /-Y ..\config\*.xml $(OutDir)
 if not exist $(OutDir)formats\ mkdir $(OutDir)formats\
 if not exist $(OutDir)presets\ mkdir $(OutDir)presets\
 if not exist $(OutDir)lang\ mkdir $(OutDir)lang\
 if not exist $(OutDir)progress\ mkdir $(OutDir)progress\
 if not exist $(OutDir)tools\ mkdir $(OutDir)tools\
-copy /Y ..\config\formats\*.format $(OutDir)formats\
-copy /Y ..\config\presets\*.presets $(OutDir)presets\
-copy /Y ..\config\lang\*.language $(OutDir)lang\
+copy /Y ..\config\formats\*.xml $(OutDir)formats\
+copy /Y ..\config\presets\*.xml $(OutDir)presets\
+copy /Y ..\config\lang\*.xml $(OutDir)lang\
 copy /Y ..\config\progress\*.lua $(OutDir)progress\
-copy /Y ..\config\tools\*.tool $(OutDir)tools\
+copy /Y ..\config\tools\*.xml $(OutDir)tools\
 copy /Y ..\setup\*.portable $(OutDir)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -182,20 +179,17 @@ copy /Y ..\setup\*.portable $(OutDir)</Command>
       <AdditionalDependencies>Rpcrt4.lib</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>copy /-Y ..\config\*.formats $(OutDir)
-copy /-Y ..\config\*.options $(OutDir)
-copy /-Y ..\config\*.items $(OutDir)
-copy /-Y ..\config\*.tools $(OutDir)
+      <Command>copy /-Y ..\config\*.xml $(OutDir)
 if not exist $(OutDir)formats\ mkdir $(OutDir)formats\
 if not exist $(OutDir)presets\ mkdir $(OutDir)presets\
 if not exist $(OutDir)lang\ mkdir $(OutDir)lang\
 if not exist $(OutDir)progress\ mkdir $(OutDir)progress\
 if not exist $(OutDir)tools\ mkdir $(OutDir)tools\
-copy /Y ..\config\formats\*.format $(OutDir)formats\
-copy /Y ..\config\presets\*.presets $(OutDir)presets\
-copy /Y ..\config\lang\*.language $(OutDir)lang\
+copy /Y ..\config\formats\*.xml $(OutDir)formats\
+copy /Y ..\config\presets\*.xml $(OutDir)presets\
+copy /Y ..\config\lang\*.xml $(OutDir)lang\
 copy /Y ..\config\progress\*.lua $(OutDir)progress\
-copy /Y ..\config\tools\*.tool $(OutDir)tools\
+copy /Y ..\config\tools\*.xml $(OutDir)tools\
 copy /Y ..\setup\*.portable $(OutDir)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -234,20 +228,17 @@ copy /Y ..\setup\*.portable $(OutDir)</Command>
       <AdditionalDependencies>Rpcrt4.lib</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>copy /-Y ..\config\*.formats $(OutDir)
-copy /-Y ..\config\*.options $(OutDir)
-copy /-Y ..\config\*.items $(OutDir)
-copy /-Y ..\config\*.tools $(OutDir)
+      <Command>copy /-Y ..\config\*.xml $(OutDir)
 if not exist $(OutDir)formats\ mkdir $(OutDir)formats\
 if not exist $(OutDir)presets\ mkdir $(OutDir)presets\
 if not exist $(OutDir)lang\ mkdir $(OutDir)lang\
 if not exist $(OutDir)progress\ mkdir $(OutDir)progress\
 if not exist $(OutDir)tools\ mkdir $(OutDir)tools\
-copy /Y ..\config\formats\*.format $(OutDir)formats\
-copy /Y ..\config\presets\*.presets $(OutDir)presets\
-copy /Y ..\config\lang\*.language $(OutDir)lang\
+copy /Y ..\config\formats\*.xml $(OutDir)formats\
+copy /Y ..\config\presets\*.xml $(OutDir)presets\
+copy /Y ..\config\lang\*.xml $(OutDir)lang\
 copy /Y ..\config\progress\*.lua $(OutDir)progress\
-copy /Y ..\config\tools\*.tool $(OutDir)tools\
+copy /Y ..\config\tools\*.xml $(OutDir)tools\
 copy /Y ..\setup\*.portable $(OutDir)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -287,20 +278,17 @@ copy /Y ..\setup\*.portable $(OutDir)</Command>
       <AdditionalDependencies>Rpcrt4.lib</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>copy /-Y ..\config\*.formats $(OutDir)
-copy /-Y ..\config\*.options $(OutDir)
-copy /-Y ..\config\*.items $(OutDir)
-copy /-Y ..\config\*.tools $(OutDir)
+      <Command>copy /-Y ..\config\*.xml $(OutDir)
 if not exist $(OutDir)formats\ mkdir $(OutDir)formats\
 if not exist $(OutDir)presets\ mkdir $(OutDir)presets\
 if not exist $(OutDir)lang\ mkdir $(OutDir)lang\
 if not exist $(OutDir)progress\ mkdir $(OutDir)progress\
 if not exist $(OutDir)tools\ mkdir $(OutDir)tools\
-copy /Y ..\config\formats\*.format $(OutDir)formats\
-copy /Y ..\config\presets\*.presets $(OutDir)presets\
-copy /Y ..\config\lang\*.language $(OutDir)lang\
+copy /Y ..\config\formats\*.xml $(OutDir)formats\
+copy /Y ..\config\presets\*.xml $(OutDir)presets\
+copy /Y ..\config\lang\*.xml $(OutDir)lang\
 copy /Y ..\config\progress\*.lua $(OutDir)progress\
-copy /Y ..\config\tools\*.tool $(OutDir)tools\
+copy /Y ..\config\tools\*.xml $(OutDir)tools\
 copy /Y ..\setup\*.portable $(OutDir)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
