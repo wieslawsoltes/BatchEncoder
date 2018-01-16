@@ -259,15 +259,15 @@ If you having problems running the PowerShell `download.ps1` script see this [in
 Files extensions:
 
 * .xml - Any configuration file
-* .options - Program options
-* .formats - Encoder and decoder formats definition
-* .format - Encoder and decoder format definition
-* .presets - Predefined format presets definition
-* .tools - Encoder and decoder tools definition
-* .tool - Encoder and decoder tool definition
-* .items - Input file items
+* .xml - Program options
+* .xml - Encoder and decoder formats definition
+* .xml - Encoder and decoder format definition
+* .xml - Predefined format presets definition
+* .xml - Encoder and decoder tools definition
+* .xml - Encoder and decoder tool definition
+* .xml - Input file items
+* .xml - Language translation strings
 * .lua - Lua scripts (e.g. progress function)
-* .language - Language translation strings
 
 Use only `UTF-8` compatible text editors (e.g. Notepad) to edit xml configuration files.
 

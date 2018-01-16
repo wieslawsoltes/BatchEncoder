@@ -21,13 +21,13 @@ function Write-Xml($node, $file)
 # Extract Formats
 
 $outputPathFormats = "$pwd\formats\"
-$pathFormats = 'BatchEncoder.formats'
+$pathFormats = 'Formats.xml'
 [xml]$xmlFormats = Get-Content -Path $pathFormats
 
 foreach($format in $xmlFormats.Formats.Format)
 {
     $name = $format.id
-    $file = $outputPathFormats + $name + ".format"
+    $file = $outputPathFormats + $name + ".xml"
     "File: $file"
     Write-Xml $format $file
 }
@@ -39,7 +39,7 @@ $outputPathPresets = "$pwd\presets\"
 foreach($format in $xmlFormats.Formats.Format)
 {
     $name = $format.id
-    $file = $outputPathPresets + $name + ".presets"
+    $file = $outputPathPresets + $name + ".xml"
     "File: $file"
     Write-Xml $format.Presets $file
 }
@@ -47,13 +47,13 @@ foreach($format in $xmlFormats.Formats.Format)
 # Extract Tools
 
 $outputPathTools = "$pwd\tools\"
-$pathTools = 'BatchEncoder.tools'
+$pathTools = 'Tools.xml'
 [xml]$xmlTools = Get-Content -Path $pathTools
 
 foreach($tool in $xmlTools.Tools.Tool)
 {
     $name = $tool.name
-    $file = $outputPathTools + $name + ".tool"
+    $file = $outputPathTools + $name + ".xml"
     "File: $file"
     Write-Xml $tool $file
 }

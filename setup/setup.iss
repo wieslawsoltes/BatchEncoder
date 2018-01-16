@@ -65,15 +65,12 @@ Name: quicklaunchicon; Description: {cm:CreateQuickLaunchIcon}; GroupDescription
 Source: {#BasePath}\src\bin\{#ProgramConfiguration}\{#ProgramBuild}\{#ProgramExe}; DestDir: {app}; Flags: ignoreversion; Components: main
 Source: {#BasePath}\*.txt; DestDir: {app}; Flags: ignoreversion; Components: docs
 Source: {#BasePath}\*.md; DestDir: {app}; Flags: ignoreversion; Components: docs
-Source: {#BasePath}\config\*.formats; DestDir: {userappdata}\{#ProgramName}; Flags: ignoreversion; Components: config
-Source: {#BasePath}\config\*.items; DestDir: {userappdata}\{#ProgramName}; Flags: ignoreversion; Components: config
-Source: {#BasePath}\config\*.options; DestDir: {userappdata}\{#ProgramName}; Flags: ignoreversion; Components: config
-Source: {#BasePath}\config\*.tools; DestDir: {userappdata}\{#ProgramName}; Flags: ignoreversion; Components: config
-Source: {#BasePath}\config\formats\*.format; DestDir: {userappdata}\{#ProgramName}\formats; Flags: ignoreversion; Components: formats
-Source: {#BasePath}\config\presets\*.presets; DestDir: {userappdata}\{#ProgramName}\presets; Flags: ignoreversion; Components: presets
-Source: {#BasePath}\config\lang\*.language; DestDir: {userappdata}\{#ProgramName}\lang; Flags: ignoreversion; Components: lang
+Source: {#BasePath}\config\*.xml; DestDir: {userappdata}\{#ProgramName}; Flags: ignoreversion; Components: config
+Source: {#BasePath}\config\formats\*.xml; DestDir: {userappdata}\{#ProgramName}\formats; Flags: ignoreversion; Components: formats
+Source: {#BasePath}\config\presets\*.xml; DestDir: {userappdata}\{#ProgramName}\presets; Flags: ignoreversion; Components: presets
+Source: {#BasePath}\config\lang\*.xml; DestDir: {userappdata}\{#ProgramName}\lang; Flags: ignoreversion; Components: lang
 Source: {#BasePath}\config\progress\*.lua; DestDir: {userappdata}\{#ProgramName}\progress; Flags: ignoreversion; Components: progress
-Source: {#BasePath}\config\tools\*.tool; DestDir: {userappdata}\{#ProgramName}\tools; Flags: ignoreversion; Components: tools
+Source: {#BasePath}\config\tools\*.xml; DestDir: {userappdata}\{#ProgramName}\tools; Flags: ignoreversion; Components: tools
 Source: {#BasePath}\scripts\*.ps1; DestDir: {userappdata}\{#ProgramName}; Flags: ignoreversion; Components: scripts
 
 [INI]

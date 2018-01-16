@@ -65,7 +65,7 @@ BOOL CMainApp::InitInstance()
         }
         catch (...) {}
 
-        this->szOptionsFile = this->szSettingsPath + _T("BatchEncoder.options");
+        this->szOptionsFile = this->szSettingsPath + _T("Options.options");
         this->szFormatsFile = this->szSettingsPath + _T("BatchEncoder.formats");
         this->szItemsFile = this->szSettingsPath + _T("BatchEncoder.items");
         this->szToolsFile = this->szSettingsPath + _T("BatchEncoder.tools");

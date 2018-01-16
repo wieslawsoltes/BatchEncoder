@@ -27,7 +27,7 @@ $FullPath = (Get-Item -Path $FullPath -Verbose).FullName
 
 "Ddownload Path: " + $FullPath
 
-$PathTools = 'BatchEncoder.tools'
+$PathTools = 'Tools.xml'
 [xml]$Xml = Get-Content -Path $PathTools
 
 foreach ($Tool in $Xml.Tools.Tool) {
