@@ -2259,7 +2259,7 @@ void CMainDlg::HandleDropFiles(HDROP hDropInfo)
                         format.szPath = szPath;
                     }
                 }
-                else if (szExt.CompareNoCase(_T("progress")) == 0)
+                else if (szExt.CompareNoCase(_T("lua")) == 0)
                 {
                     // Set current format progress path.
                     int nFormat = this->m_CmbFormat.GetCurSel();
