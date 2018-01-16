@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<Format id="LAME_MP3" name="MP3 (MPEG Layer-3) - lame" template="$EXE $OPTIONS $INFILE $OUTFILE" input="true" output="false" function="progress\GetProgress_LameEnc.progress" path="tools/lame3.100/lame.exe" success="0" type="0" formats="WAV" extension="MP3" default="10">
+<Format id="LAME_MP3" name="MP3 (MPEG Layer-3) - lame" template="$EXE $OPTIONS $INFILE $OUTFILE" input="true" output="false" function="progress\GetProgress_LameEnc.lua" path="tools/lame3.100/lame.exe" success="0" type="0" formats="WAV" extension="MP3" default="10">
     <Presets>
         <Preset name="ABR 56 kbit/s Mono" options="--abr 56 -mm"/>
         <Preset name="VBR ~65 kbit/s (V9)" options="-V 9 --vbr-new"/>
