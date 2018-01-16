@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<Format id="OPUSENC_OPUS" name="OPUS (Opus Audio Codec) - opusenc" template="$EXE $OPTIONS $INFILE $OUTFILE" input="true" output="false" function="progress\GetProgress_OpusEnc.progress" path="tools/opus-tools.2017-12-04/opusenc.i686.exe" success="0" type="0" formats="WAV" extension="OPUS" default="12">
+<Format id="OPUSENC_OPUS" name="OPUS (Opus Audio Codec) - opusenc" template="$EXE $OPTIONS $INFILE $OUTFILE" input="true" output="false" function="progress\GetProgress_OpusEnc.lua" path="tools/opus-tools.2017-12-04/opusenc.i686.exe" success="0" type="0" formats="WAV" extension="OPUS" default="12">
     <Presets>
         <Preset name="VBR 6 kbit/sec" options="--vbr --comp 10 --bitrate 6"/>
         <Preset name="VBR 8 kbit/sec" options="--vbr --comp 10 --bitrate 8"/>
