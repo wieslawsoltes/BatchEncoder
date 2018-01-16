@@ -132,6 +132,7 @@
     </Link>
     <PostBuildEvent>
       <Command>copy /-Y ..\config\*.xml $(OutDir)
+copy /Y ..\config\*.ps1 $(OutDir)
 if not exist $(OutDir)formats\ mkdir $(OutDir)formats\
 if not exist $(OutDir)presets\ mkdir $(OutDir)presets\
 if not exist $(OutDir)lang\ mkdir $(OutDir)lang\
@@ -180,6 +181,7 @@ copy /Y ..\setup\*.portable $(OutDir)</Command>
     </Link>
     <PostBuildEvent>
       <Command>copy /-Y ..\config\*.xml $(OutDir)
+copy /Y ..\config\*.ps1 $(OutDir)
 if not exist $(OutDir)formats\ mkdir $(OutDir)formats\
 if not exist $(OutDir)presets\ mkdir $(OutDir)presets\
 if not exist $(OutDir)lang\ mkdir $(OutDir)lang\
@@ -229,6 +231,7 @@ copy /Y ..\setup\*.portable $(OutDir)</Command>
     </Link>
     <PostBuildEvent>
       <Command>copy /-Y ..\config\*.xml $(OutDir)
+copy /Y ..\config\*.ps1 $(OutDir)
 if not exist $(OutDir)formats\ mkdir $(OutDir)formats\
 if not exist $(OutDir)presets\ mkdir $(OutDir)presets\
 if not exist $(OutDir)lang\ mkdir $(OutDir)lang\
@@ -279,6 +282,7 @@ copy /Y ..\setup\*.portable $(OutDir)</Command>
     </Link>
     <PostBuildEvent>
       <Command>copy /-Y ..\config\*.xml $(OutDir)
+copy /Y ..\config\*.ps1 $(OutDir)
 if not exist $(OutDir)formats\ mkdir $(OutDir)formats\
 if not exist $(OutDir)presets\ mkdir $(OutDir)presets\
 if not exist $(OutDir)lang\ mkdir $(OutDir)lang\
