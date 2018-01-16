@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<Format id="FFDCAENC_DTS" name="DTS (Coherent Acoustics codec) - ffdcaenc" template="$EXE -i $INFILE -o $OUTFILE $OPTIONS" input="true" output="false" function="progress\GetProgress_FFdcaEnc.progress" path="tools/ffdcaenc/ffdcaenc/release/ffdcaenc.exe" success="0" type="0" formats="WAV" extension="DTS" default="1">
+<Format id="FFDCAENC_DTS" name="DTS (Coherent Acoustics codec) - ffdcaenc" template="$EXE -i $INFILE -o $OUTFILE $OPTIONS" input="true" output="false" function="progress\GetProgress_FFdcaEnc.lua" path="tools/ffdcaenc/ffdcaenc/release/ffdcaenc.exe" success="0" type="0" formats="WAV" extension="DTS" default="1">
     <Presets>
         <Preset name="1411.2 kbps (CD-compatible)" options="-b 1411.2"/>
         <Preset name="1509.75 kbps (DVD-compatible)" options="-b 1509.75"/>
