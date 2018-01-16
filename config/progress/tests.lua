@@ -129,7 +129,7 @@ assert(p == "41")
 function GetProgress(s) 
   r = string.match(s, '%*+');
   if r == nil then return "-1";
-  else return (string.len(r) * 100) / 24; end;
+  else return tostring((string.len(r) * 100) / 24); end;
 end
 
 p = GetProgress("Decoding 01 Beach House - Myth.la [........................]")
@@ -149,7 +149,7 @@ assert(p == "100.0")
 function GetProgress(s) 
   r = string.match(s, '%*+');
   if r == nil then return "-1";
-  else return (string.len(r) * 100) / 24; end;
+  else return tostring((string.len(r) * 100) / 24); end;
 end
 
 p = GetProgress("Encoding 01 Beach House - Myth.wav [........................] (42.4%)")
@@ -493,7 +493,7 @@ assert(p == "100")
 
 p = GetProgress("creating 1.wv,  77% done...")
 print(p)
-assert(p == "70")
+assert(p == "77")
 
 -- GetProgress_WvUnpackDec
 
