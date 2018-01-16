@@ -12,6 +12,7 @@
 - Using sol2 to for lua scripting.
 - Fixed convert loop crushing with more than 64 threads active.
 - Improved performance of remove item from the list.
+- Changed script file extension to .lua for progress functions.
 
 ### Version 2.2
 
