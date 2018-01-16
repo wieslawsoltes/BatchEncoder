@@ -7,8 +7,6 @@ function Write-Xml($node, $file)
     $inserted = $doc.ImportNode($node, $true)
     $child = $doc.AppendChild($inserted)
 
-    $child
-
     $settings = New-Object System.Xml.XmlWriterSettings
     $settings.Encoding = New-Object System.Text.UTF8Encoding($true)
     $settings.Indent = $true
