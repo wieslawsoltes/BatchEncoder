@@ -98,7 +98,7 @@ var packageBinariesAction = new Action<string,string> ((configuration, platform)
     CopyFiles("./config/formats/*.format", formatsDir);
     CopyFiles("./config/presets/*.presets", presetsDir);
     CopyFiles("./config/lang/*.language", langDir);
-    CopyFiles("./config/progress/*.progress", progressDir);
+    CopyFiles("./config/progress/*.lua", progressDir);
     CopyFiles("./config/tools/*.tool", toolsDir);
     CopyFiles("./scripts/*.ps1", outputDir);
     Zip(outputDir, outputZip);
