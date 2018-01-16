@@ -137,55 +137,55 @@ adds input and output file paths. For specific options for each format use help 
 
 | Name         | Extension  | Version         | Executable        | In Pipe  | Out Pipe | Progress function                 |
 |--------------|------------|-----------------|-------------------|----------|----------|-----------------------------------|
-| SSRC         | WAV        | 1.33            | ssrc.exe          | no       | no       | GetProgress_SsrcEnc.progress      |
-| LAME         | MP3        | 3.100           | lame.exe          | yes      | yes      | GetProgress_LameEnc.progress      |
-| MPCENC       | MPC        | 1.30.0          | mpcenc.exe        | yes      | no       | GetProgress_MpcEnc.progress       |
-| FAAC         | AAC        | 1.28-mod        | faac.exe          | yes      | no       | GetProgress_FaacEnc.progress      |
-| QAAC         | AAC        | 2.64            | qaac.exe          | yes      | no       | GetProgress_QaacEnc.progress      |
-| QAAC         | M4A        | 2.64            | qaac.exe          | yes      | no       | GetProgress_QaacEnc.progress      |
+| SSRC         | WAV        | 1.33            | ssrc.exe          | no       | no       | GetProgress_SsrcEnc.lua           |
+| LAME         | MP3        | 3.100           | lame.exe          | yes      | yes      | GetProgress_LameEnc.lua           |
+| MPCENC       | MPC        | 1.30.0          | mpcenc.exe        | yes      | no       | GetProgress_MpcEnc.lua            |
+| FAAC         | AAC        | 1.28-mod        | faac.exe          | yes      | no       | GetProgress_FaacEnc.lua           |
+| QAAC         | AAC        | 2.64            | qaac.exe          | yes      | no       | GetProgress_QaacEnc.lua           |
+| QAAC         | M4A        | 2.64            | qaac.exe          | yes      | no       | GetProgress_QaacEnc.lua           |
 | NEROAACENC   | M4A        | 1.5.4           | neroAacEnc.exe    | yes      | no       | - none -                          |
 | NEROAACENC   | MP4        | 1.5.4           | neroAacEnc.exe    | yes      | no       | - none -                          |
-| OPUSENC      | OPUS       | 1.2.1-35        | opusenc.exe       | yes      | no       | GetProgress_OpusEnc.progress      |
-| OGGENC       | OGG        | 2.88            | oggenc2.exe       | yes      | no       | GetProgress_OggEnc.progress       |
-| AFTEN        | AC3        | git-2009122     | aften.exe         | yes      | no       | GetProgress_AftenEnc.progress     |
+| OPUSENC      | OPUS       | 1.2.1-35        | opusenc.exe       | yes      | no       | GetProgress_OpusEnc.lua           |
+| OGGENC       | OGG        | 2.88            | oggenc2.exe       | yes      | no       | GetProgress_OggEnc.lua            |
+| AFTEN        | AC3        | git-2009122     | aften.exe         | yes      | no       | GetProgress_AftenEnc.lua          |
 | FFMPEG       | AC3        | 3.4             | ffmpeg.exe        | yes      | yes      | - none -                          |
-| FLAC         | FLAC       | 1.3.2           | flac.exe          | yes      | no       | GetProgress_FlacEnc.progress      |
-| WAVPACK      | WV         | 5.1.0           | wavpack.exe       | no       | no       | GetProgress_WavPackEnc.progress   |
-| LA           | LA         | 0.4b            | la.exe            | yes      | no       | GetProgress_LaEnc.progress        |
-| MAC          | APE        | 4.18            | mac.exe           | no       | no       | GetProgress_MacEnc.progress       |
-| OFR          | OFR        | 5.100           | ofr.exe           | yes      | no       | GetProgress_OfrEnc.progress       |
-| TTA          | TTA        | 2.3             | tta.exe           | yes      | no       | GetProgress_TtaEnc.progress       |
+| FLAC         | FLAC       | 1.3.2           | flac.exe          | yes      | no       | GetProgress_FlacEnc.lua           |
+| WAVPACK      | WV         | 5.1.0           | wavpack.exe       | no       | no       | GetProgress_WavPackEnc.lua        |
+| LA           | LA         | 0.4b            | la.exe            | yes      | no       | GetProgress_LaEnc.lua             |
+| MAC          | APE        | 4.18            | mac.exe           | no       | no       | GetProgress_MacEnc.lua            |
+| OFR          | OFR        | 5.100           | ofr.exe           | yes      | no       | GetProgress_OfrEnc.lua            |
+| TTA          | TTA        | 2.3             | tta.exe           | yes      | no       | GetProgress_TtaEnc.lua            |
 | TAKC         | TAK        | 2.3.0           | takc.exe          | yes      | no       | - none -                          |
-| FFDCAENC     | DTS        | 2.1.3           | ffdcaenc.exe      | yes      | yes      | GetProgress_FFdcaEnc.progress     |
+| FFDCAENC     | DTS        | 2.1.3           | ffdcaenc.exe      | yes      | yes      | GetProgress_FFdcaEnc.lua          |
 | EAC3TO       | AC3        | 3.34            | eac3to.exe        | no       | no       | GetProgress_Eac3toEnc             |
 | EAC3TO       | DTS        | 3.34            | eac3to.exe        | no       | no       | GetProgress_Eac3toEnc             |
-| REFALAC      | M4A        | 1.64            | refalac.exe       | yes      | no       | GetProgress_RefalacEnc.progress   |
-| TWOLAME      | MP2        | 0.3.13          | twolame.exe       | no       | no       | GetProgress_TwoLAME.progress      |
+| REFALAC      | M4A        | 1.64            | refalac.exe       | yes      | no       | GetProgress_RefalacEnc.lua        |
+| TWOLAME      | MP2        | 0.3.13          | twolame.exe       | no       | no       | GetProgress_TwoLAME.lua           |
 
 ### Decoders
 
 | Name         | Extension  | Version         | Executable        | In Pipe  | Out Pipe | Progress function                 |
 |--------------|------------|-----------------|-------------------|----------|----------|-----------------------------------|
-| LAME         | MP1        | 3.100           | lame.exe          | yes      | yes      | GetProgress_LameDec.progress      |
-| LAME         | MP2        | 3.100           | lame.exe          | yes      | yes      | GetProgress_LameDec.progress      |
-| LAME         | MP3        | 3.100           | lame.exe          | yes      | yes      | GetProgress_LameDec.progress      |
-| MPCDEC       | MPC        | 1.0             | mpcdec.exe        | no       | no       | GetProgress_MpcDec.progress       |
-| MPCDEC       | MPP        | 1.0             | mpcdec.exe        | no       | no       | GetProgress_MpcDec.progress       |
-| MPCDEC       | MP+        | 1.0             | mpcdec.exe        | no       | no       | GetProgress_MpcDec.progress       |
-| FAAD         | AAC        | faad2-20100614  | faad.exe          | no       | yes      | GetProgress_FaadDec.progress      |
-| QAAC         | AAC        | 2.64            | qaac.exe          | no       | no       | GetProgress_QaacDec.progress      |
-| QAAC         | M4A        | 2.64            | qaac.exe          | no       | no       | GetProgress_QaacDec.progress      |
+| LAME         | MP1        | 3.100           | lame.exe          | yes      | yes      | GetProgress_LameDec.lua           |
+| LAME         | MP2        | 3.100           | lame.exe          | yes      | yes      | GetProgress_LameDec.lua           |
+| LAME         | MP3        | 3.100           | lame.exe          | yes      | yes      | GetProgress_LameDec.lua           |
+| MPCDEC       | MPC        | 1.0             | mpcdec.exe        | no       | no       | GetProgress_MpcDec.lua            |
+| MPCDEC       | MPP        | 1.0             | mpcdec.exe        | no       | no       | GetProgress_MpcDec.lua            |
+| MPCDEC       | MP+        | 1.0             | mpcdec.exe        | no       | no       | GetProgress_MpcDec.lua            |
+| FAAD         | AAC        | faad2-20100614  | faad.exe          | no       | yes      | GetProgress_FaadDec.lua           |
+| QAAC         | AAC        | 2.64            | qaac.exe          | no       | no       | GetProgress_QaacDec.lua           |
+| QAAC         | M4A        | 2.64            | qaac.exe          | no       | no       | GetProgress_QaacDec.lua           |
 | NEROAACDEC   | MP4        | 1.5.1           | neroAacDec.exe    | no       | yes      | - none -                          |
 | NEROAACDEC   | M4A        | 1.5.1           | neroAacDec.exe    | no       | yes      | - none -                          |
-| OPUSDEC      | OPUS       | 1.2.1-35        | opusdec.exe       | yes      | no       | GetProgress_OpusDec.progress      |
-| OGGDEC       | OGG        | 1.10.1          | oggdec.exe        | no       | no       | GetProgress_OggDec.progress       |
-| FLAC         | FLAC       | 1.3.2           | flac.exe          | yes      | no       | GetProgress_FlacDec.progress      |
-| WVUNPACK     | WV         | 5.1.0           | wvunpack.exe      | no       | no       | GetProgress_WvUnpackDec.progress  |
-| LA           | LA         | 0.4b            | la.exe            | yes      | no       | GetProgress_LaDec.progress        |
-| MAC          | APE        | 4.18            | mac.exe           | no       | no       | GetProgress_MacDec.progress       |
-| MAC          | MAC        | 4.18            | mac.exe           | no       | no       | GetProgress_MacDec.progress       |
-| OFR          | OFR        | 5.100           | ofr.exe           | yes      | no       | GetProgress_OfrDec.progress       |
-| TTA          | TTA        | 2.3             | tta.exe           | no       | yes      | GetProgress_TtaDec.progress       |
+| OPUSDEC      | OPUS       | 1.2.1-35        | opusdec.exe       | yes      | no       | GetProgress_OpusDec.lua           |
+| OGGDEC       | OGG        | 1.10.1          | oggdec.exe        | no       | no       | GetProgress_OggDec.lua            |
+| FLAC         | FLAC       | 1.3.2           | flac.exe          | yes      | no       | GetProgress_FlacDec.lua           |
+| WVUNPACK     | WV         | 5.1.0           | wvunpack.exe      | no       | no       | GetProgress_WvUnpackDec.lua       |
+| LA           | LA         | 0.4b            | la.exe            | yes      | no       | GetProgress_LaDec.lua             |
+| MAC          | APE        | 4.18            | mac.exe           | no       | no       | GetProgress_MacDec.lua            |
+| MAC          | MAC        | 4.18            | mac.exe           | no       | no       | GetProgress_MacDec.lua            |
+| OFR          | OFR        | 5.100           | ofr.exe           | yes      | no       | GetProgress_OfrDec.lua            |
+| TTA          | TTA        | 2.3             | tta.exe           | no       | yes      | GetProgress_TtaDec.lua            |
 | TAKC         | TAK        | 2.3.0           | takc.exe          | no       | yes      | - none -                          |
 | FFMPEG       | AC3        | 3.4             | ffmpeg.exe        | yes      | yes      | - none -                          |
 | FFMPEG       | EAC3       | 3.4             | ffmpeg.exe        | yes      | yes      | - none -                          |
@@ -193,9 +193,9 @@ adds input and output file paths. For specific options for each format use help 
 | FFMPEG       | DTSHD      | 3.4             | ffmpeg.exe        | yes      | yes      | - none -                          |
 | FFMPEG       | TRUEHD     | 3.4             | ffmpeg.exe        | yes      | yes      | - none -                          |
 | FFMPEG       | MKA        | 3.4             | ffmpeg.exe        | yes      | yes      | - none -                          |
-| AVSDEC       | AVS        | 2.3             | AvsDec.exe        | no       | no       | GetProgress_AvsDec.progress       |
-| REWAVI       | AVS        | 0.06            | rewavi.exe        | no       | yes      | GetProgress_ReWaviDec.progress    |
-| REWAVI       | AVI        | 0.06            | rewavi.exe        | no       | yes      | GetProgress_ReWaviDec.progress    |
+| AVSDEC       | AVS        | 2.3             | AvsDec.exe        | no       | no       | GetProgress_AvsDec.lua            |
+| REWAVI       | AVS        | 0.06            | rewavi.exe        | no       | yes      | GetProgress_ReWaviDec.lua         |
+| REWAVI       | AVI        | 0.06            | rewavi.exe        | no       | yes      | GetProgress_ReWaviDec.lua         |
 
 ### Tool downloads
 
@@ -266,7 +266,7 @@ Files extensions:
 * .tools - Encoder and decoder tools definition
 * .tool - Encoder and decoder tool definition
 * .items - Input file items
-* .progress - Progress function Lua scripts
+* .lua - Lua scripts (e.g. progress function)
 * .language - Language translation strings
 
 Use only `UTF-8` compatible text editors (e.g. Notepad) to edit xml configuration files.
@@ -363,7 +363,7 @@ Sometimes you will not get nice progress during conversion, nonetheless you will
 
 ### Progress function format
 
-Progress function are simple [Lua](http://www.lua.org/manual/5.3/) scripts with defined `GetProgress` function. The `progress` file extension is used instead of `lua`.
+Progress function are simple [Lua](http://www.lua.org/manual/5.3/) scripts with defined `GetProgress` function. The `lua` file extension is used.
 
 The progress function signature:
 
@@ -373,7 +373,7 @@ function GetProgress(s)
 
 Most of the Lua progress scripts are using [string manipulation](http://www.lua.org/manual/5.3/manual.html#6.4) with [patterns](http://lua-users.org/wiki/PatternsTutorial).
 
-For a quick start use one of the [existing](https://github.com/wieslawsoltes/BatchEncoder/tree/master/config/progress) progress scripts.
+For a quick start use one of the [existing](https://github.com/wieslawsoltes/BatchEncoder/tree/master/config/progress) Lua progress scripts.
 
 ### Default progress functions
 
