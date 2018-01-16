@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<Format id="FLAC_FLAC_WAV" name="Decode FLAC to WAV - flac" template="$EXE -d -f -o $OUTFILE $INFILE" input="true" output="false" function="progress\GetProgress_FlacDec.progress" path="tools/flac-1.3.2-win/flac-1.3.2-win/win32/flac.exe" success="0" type="1" formats="FLAC" extension="WAV" default="0">
+<Format id="FLAC_FLAC_WAV" name="Decode FLAC to WAV - flac" template="$EXE -d -f -o $OUTFILE $INFILE" input="true" output="false" function="progress\GetProgress_FlacDec.lua" path="tools/flac-1.3.2-win/flac-1.3.2-win/win32/flac.exe" success="0" type="1" formats="FLAC" extension="WAV" default="0">
     <Presets>
         <Preset name="Default" options=""/>
     </Presets>
