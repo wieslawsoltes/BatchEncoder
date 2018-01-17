@@ -1,6 +1,8 @@
 # Auto detect text files and perform LF normalization
 * text eol=crlf
 *.sh text eol=lf
+*.png -text
+*.ico -text
 
 # Custom for Visual Studio
 *.cs     diff=csharp
