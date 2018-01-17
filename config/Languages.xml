@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Languages>
+    <Language id="en-US" original="English" translated="English"/>
+    <Language id="es-ES" original="Spanish" translated="Español"/>
+    <Language id="ja-JP" original="Japanese" translated="日本語"/>
+    <Language id="ko-KR" original="Korean" translated="한국어"/>
+    <Language id="pl-PL" original="Polish" translated="Polski"/>
+</Languages>
