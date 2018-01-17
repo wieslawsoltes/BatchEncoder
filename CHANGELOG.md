@@ -18,6 +18,7 @@
 - Using Tools.xml for download url in download.ps1 script.
 - Added generate-xml.ps1 PowerShell script.
 - Added validate-tools.ps1 PowerShell script.
+- Added update-config.ps1 PowerShell script.
 
 ### Version 2.2
 
