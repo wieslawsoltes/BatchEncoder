@@ -1,4 +1,4 @@
-﻿# This is BatchEncoder download config script for PowerShell.
+﻿# This is BatchEncoder update config script for PowerShell.
 # This file was downloaded from https://github.com/wieslawsoltes/BatchEncoder/blob/master/config/update-config.ps1
 
 function Download-File($prefix, $file)
