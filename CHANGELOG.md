@@ -1,5 +1,9 @@
 ﻿# Changelog
 
+### Version 3.1
+
+- Auto select tool in configure tools dialog.
+
 ### Version 3.0
 
 - Added refalac support.
