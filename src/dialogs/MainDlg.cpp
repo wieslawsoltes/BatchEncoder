@@ -1241,7 +1241,7 @@ void CMainDlg::OnOptionsConfigureTools()
     if (this->pWorkerContext->bRunning == false)
     {
         int nSelectedTool = 0;
-        int nFormat = this->m_CmbFormat.GetCurSel()
+        int nFormat = this->m_CmbFormat.GetCurSel();
         if (nFormat >= 0)
         {
 #if defined(_WIN32) & !defined(_WIN64)
