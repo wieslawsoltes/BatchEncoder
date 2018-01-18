@@ -414,12 +414,12 @@ BOOL CMainDlg::PreTranslateMessage(MSG* pMsg)
         }
     }
 
-    if (pMsg->message == WM_VSCROLL && pMsg->hwnd == m_LstInputItems.m_hWnd)
+    if (pMsg->message == WM_VSCROLL && pMsg->hwnd == m_EdtItem.m_hWnd)
     {
         UpdateEdtItem(FALSE);
     }
 
-    if (pMsg->message == WM_MOUSEWHEEL && pMsg->hwnd == m_LstInputItems.m_hWnd)
+    if (pMsg->message == WM_MOUSEWHEEL && pMsg->hwnd == m_EdtItem.m_hWnd)
     {
         UpdateEdtItem(FALSE);
     }
