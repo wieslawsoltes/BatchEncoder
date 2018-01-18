@@ -1240,9 +1240,24 @@ void CMainDlg::OnOptionsConfigureTools()
 {
     if (this->pWorkerContext->bRunning == false)
     {
+        int nSelectedTool = 0;
+        int nFormat = this->m_CmbFormat.GetCurSel()
+        if (nFormat >= 0)
+        {
+#if defined(_WIN32) & !defined(_WIN64)
+            CString szPlatform = _T("x86");
+#else
+            CString szPlatform = _T("x64");
+#endif
+            CFormat& format = m_Config.m_Formats.Get(nFormat);
+            int nTool = m_Config.m_Tools.GetToolByFormatAndPlatform(format.szId, szPlatform);
+            if (nTool >= 0)
+                nSelectedTool = nTool
+        }
+
         CToolsDlg dlg;
         dlg.pConfig = &m_Config;
-        dlg.nSelectedTool = 0;
+        dlg.nSelectedTool = nSelectedTool;
         dlg.m_Tools = m_Config.m_Tools;
         dlg.m_Formats = m_Config.m_Formats;
         dlg.szToolsDialogResize = m_Config.m_Options.szToolsDialogResize;
