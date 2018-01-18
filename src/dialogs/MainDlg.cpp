@@ -1252,7 +1252,7 @@ void CMainDlg::OnOptionsConfigureTools()
             CFormat& format = m_Config.m_Formats.Get(nFormat);
             int nTool = m_Config.m_Tools.GetToolByFormatAndPlatform(format.szId, szPlatform);
             if (nTool >= 0)
-                nSelectedTool = nTool
+                nSelectedTool = nTool;
         }
 
         CToolsDlg dlg;
