@@ -413,11 +413,23 @@ BOOL CMainDlg::PreTranslateMessage(MSG* pMsg)
             return TRUE;
         }
     }
+
+    if (pMsg->message == WM_VSCROLL && pMsg->hwnd == m_LstInputItems.m_hWnd)
+    {
+        UpdateEdtItem(FALSE);
+    }
+
+    if (pMsg->message == WM_MOUSEWHEEL && pMsg->hwnd == m_LstInputItems.m_hWnd)
+    {
+        UpdateEdtItem(FALSE);
+    }
+
     if (m_hAccel != nullptr)
     {
         if (::TranslateAccelerator(this->GetSafeHwnd(), m_hAccel, pMsg))
             return TRUE;
     }
+
     return CMyDialogEx::PreTranslateMessage(pMsg);
 }
 
