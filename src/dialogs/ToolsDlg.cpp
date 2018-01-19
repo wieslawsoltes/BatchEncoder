@@ -8,7 +8,7 @@
 #include "utilities\Utilities.h"
 #include "utilities\UnicodeUtf8.h"
 #include "utilities\Utf8String.h"
-#include "xml\XmlTools.h"
+#include "xml\XmlConfig.h"
 #include "ToolsDlg.h"
 
 DWORD WINAPI ToolsDlgDropThread(LPVOID lpParam)
@@ -33,7 +33,6 @@ CToolsDlg::CToolsDlg(CWnd* pParent /*=nullptr*/)
 
 CToolsDlg::~CToolsDlg()
 {
-
 }
 
 void CToolsDlg::DoDataExchange(CDataExchange* pDX)
@@ -913,55 +912,57 @@ void CToolsDlg::ListSelectionChange()
 
 bool CToolsDlg::LoadTool(CString szFileXml)
 {
-    XmlDocumnent doc;
-    if (XmlDoc::Open(szFileXml, doc) == true)
-    {
-        return LoadTool(doc);
-    }
-    return false;
+    CTool tool;
+
+    CXmlConfig::LoadTool(szFileXml, tool);
+
+    m_Tools.Insert(tool);
+    int nItem = m_Tools.Count() - 1;
+    this->AddToList(tool, nItem);
+
+    return true;
 }
 
 bool CToolsDlg::LoadTool(XmlDocumnent &doc)
 {
-    XmlTools xmlTools(doc);
-
     CTool tool;
-    xmlTools.GetTool(tool);
-    m_Tools.Insert(tool);
 
+    CXmlConfig::LoadTool(doc, tool);
+
+    m_Tools.Insert(tool);
     int nItem = m_Tools.Count() - 1;
     this->AddToList(tool, nItem);
-    
+
     return true;
 }
 
 bool CToolsDlg::SaveTool(CString szFileXml, CTool &tool)
 {
-    XmlDocumnent doc;
-    XmlTools xmlTools(doc);
-    xmlTools.Create();
-    xmlTools.SetTool(tool);
-    return xmlTools.Save(szFileXml);
+    return CXmlConfig::SaveTool(szFileXml, tool);
 }
 
 bool CToolsDlg::LoadTools(CString szFileXml)
 {
-    XmlDocumnent doc;
-    if (XmlDoc::Open(szFileXml, doc) == true)
-    {
-        return LoadTools(doc);
-    }
-    return false;
+    this->m_Tools.RemoveAll();
+    this->m_LstTools.DeleteAllItems();
+
+    CXmlConfig::LoadTools(szFileXml, this->m_Tools);
+
+    if (this->m_Tools.Count() > 0)
+        nSelectedTool = 0;
+
+    this->InsertToolsToListCtrl();
+    this->ListSelectionChange();
+    
+    return true;
 }
 
 bool CToolsDlg::LoadTools(XmlDocumnent &doc)
 {
-    XmlTools xmlTools(doc);
-
     this->m_Tools.RemoveAll();
     this->m_LstTools.DeleteAllItems();
 
-    xmlTools.GetTools(this->m_Tools);
+    CXmlConfig::LoadTools(doc, this->m_Tools);
 
     if (this->m_Tools.Count() > 0)
         nSelectedTool = 0;
@@ -974,11 +975,7 @@ bool CToolsDlg::LoadTools(XmlDocumnent &doc)
 
 bool CToolsDlg::SaveTools(CString szFileXml)
 {
-    XmlDocumnent doc;
-    XmlTools xmlTools(doc);
-    xmlTools.Create();
-    xmlTools.SetTools(this->m_Tools);
-    return xmlTools.Save(szFileXml);
+    return CXmlConfig::SaveTools(szFileXml, this->m_Tools);
 }
 
 void CToolsDlg::EnableUserInterface(BOOL bEnable)
