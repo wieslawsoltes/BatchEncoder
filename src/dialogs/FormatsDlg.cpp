@@ -8,8 +8,7 @@
 #include "utilities\Utilities.h"
 #include "utilities\UnicodeUtf8.h"
 #include "utilities\Utf8String.h"
-#include "xml\XmlFormats.h"
-#include "xml\XmlPresets.h"
+#include "xml\XmlConfig.h"
 #include "FormatsDlg.h"
 #include "PresetsDlg.h"
 
@@ -1018,55 +1017,57 @@ void CFormatsDlg::ListSelectionChange()
 
 bool CFormatsDlg::LoadFormat(CString szFileXml)
 {
-    XmlDocumnent doc;
-    if (XmlDoc::Open(szFileXml, doc) == true)
-    {
-        return LoadFormat(doc);
-    }
-    return false;
+    CFormat format;
+
+    CXmlConfig::LoadFormat(szFileXml, format);
+
+    m_Formats.Insert(format);
+    int nItem = m_Formats.Count() - 1;
+    this->AddToList(format, nItem);
+
+    return true;
 }
 
 bool CFormatsDlg::LoadFormat(XmlDocumnent &doc)
 {
-    XmlFormats xmlFormats(doc);
-
     CFormat format;
-    xmlFormats.GetFormat(format);
-    m_Formats.Insert(format);
 
+    CXmlConfig::LoadFormat(doc, format);
+
+    m_Formats.Insert(format);
     int nItem = m_Formats.Count() - 1;
     this->AddToList(format, nItem);
-    
+
     return true;
 }
 
 bool CFormatsDlg::SaveFormat(CString szFileXml, CFormat &format)
 {
-    XmlDocumnent doc;
-    XmlFormats xmlFormats(doc);
-    xmlFormats.Create();
-    xmlFormats.SetFormat(format);
-    return xmlFormats.Save(szFileXml);
+    return CXmlConfig::SaveFormat(szFileXml, format);
 }
 
 bool CFormatsDlg::LoadFormats(CString szFileXml)
 {
-    XmlDocumnent doc;
-    if (XmlDoc::Open(szFileXml, doc) == true)
-    {
-        return LoadFormats(doc);
-    }
-    return false;
+    this->m_Formats.RemoveAll();
+    this->m_LstFormats.DeleteAllItems();
+
+    CXmlConfig::LoadFormats(szFileXml, this->m_Formats);
+
+    if (this->m_Formats.Count() > 0)
+        nSelectedFormat = 0;
+
+    this->InsertFormatsToListCtrl();
+    this->ListSelectionChange();
+    
+    return true;
 }
 
 bool CFormatsDlg::LoadFormats(XmlDocumnent &doc)
 {
-    XmlFormats xmlFormats(doc);
-
     this->m_Formats.RemoveAll();
     this->m_LstFormats.DeleteAllItems();
 
-    xmlFormats.GetFormats(this->m_Formats);
+    CXmlConfig::LoadFormats(doc, this->m_Formats);
 
     if (this->m_Formats.Count() > 0)
         nSelectedFormat = 0;
@@ -1079,11 +1080,7 @@ bool CFormatsDlg::LoadFormats(XmlDocumnent &doc)
 
 bool CFormatsDlg::SaveFormats(CString szFileXml)
 {
-    XmlDocumnent doc;
-    XmlFormats xmlFormats(doc);
-    xmlFormats.Create();
-    xmlFormats.SetFormats(this->m_Formats);
-    return xmlFormats.Save(szFileXml);
+    return CXmlConfig::SaveFormats(szFileXml, this->m_Formats);
 }
 
 bool CFormatsDlg::LoadPresets(XmlDocumnent &doc)
@@ -1091,16 +1088,13 @@ bool CFormatsDlg::LoadPresets(XmlDocumnent &doc)
     POSITION pos = m_LstFormats.GetFirstSelectedItemPosition();
     if (pos != nullptr)
     {
-        XmlPresets xmlPresets(doc);
-
         int nItem = m_LstFormats.GetNextSelectedItem(pos);
         CFormat& format = this->m_Formats.Get(nItem);
         format.m_Presets.RemoveAll();
 
-        xmlPresets.GetPresets(format.m_Presets);
+        CXmlConfig::LoadPresets(doc, format.m_Presets);
 
         this->UpdateDefaultComboBox(format);
-        
         return true;
     }
     return false;
