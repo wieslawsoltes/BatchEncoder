@@ -130,12 +130,12 @@ public:
     void HandleDropFiles(HDROP hDropInfo);
     void UpdateFields(CTool &format);
     void ListSelectionChange();
-    void LoadTool(CString szFileXml);
-    void LoadTool(XmlDocumnent &doc);
-    void SaveTool(CString szFileXml, CTool &tool);
-    void LoadTools(CString szFileXml);
-    void LoadTools(XmlDocumnent &doc);
-    void SaveTools(CString szFileXml);
+    bool LoadTool(CString szFileXml);
+    bool LoadTool(XmlDocumnent &doc);
+    bool SaveTool(CString szFileXml, CTool &tool);
+    bool LoadTools(CString szFileXml);
+    bool LoadTools(XmlDocumnent &doc);
+    bool SaveTools(CString szFileXml);
     void EnableUserInterface(BOOL bEnable = TRUE);
     void DownloadTools();
     void SetFormatPaths(CString szPlatform);
