@@ -2122,22 +2122,7 @@ int CMainDlg::AddToItems(CString szPath)
         }
     }
 
-    WIN32_FIND_DATA w32FileData;
-    HANDLE hFind;
-    ULARGE_INTEGER ulSize;
-    ULONGLONG nFileSize;
-
-    ZeroMemory(&w32FileData, sizeof(WIN32_FIND_DATA));
-    hFind = ::FindFirstFile(szPath, &w32FileData);
-    if (hFind == INVALID_HANDLE_VALUE)
-        return -1;
-
-    ::FindClose(hFind);
-
-    ulSize.HighPart = w32FileData.nFileSizeHigh;
-    ulSize.LowPart = w32FileData.nFileSizeLow;
-    nFileSize = ulSize.QuadPart;
-
+    ULONGLONG nFileSize = GetFileSize64(szPath);
     CString szFileSize;
     szFileSize.Format(_T("%I64d"), nFileSize);
 
