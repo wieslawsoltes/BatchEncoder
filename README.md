@@ -9,10 +9,6 @@
 
 BatchEncoder is an audio files conversion software.
 
-## Support BatchEncoder
-
-[![PayPal - The safer, easier way to pay online!](https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=GFQMG36HPYT6W)
-
 ## Download BatchEncoder
 
 | Platform              | Type        | Version       | Download                                                                                                                               |
@@ -21,6 +17,10 @@ BatchEncoder is an audio files conversion software.
 | Windows 64-bit        | Installer   | 3.0           | [BatchEncoder-3.0-x64.exe](https://github.com/wieslawsoltes/BatchEncoder/releases/download/3.0/BatchEncoder-3.0-x64.exe)               |
 | Windows 32-bit        | Portable    | 3.0           | [BatchEncoder-3.0-Win32.zip](https://github.com/wieslawsoltes/BatchEncoder/releases/download/3.0/BatchEncoder-3.0-Win32.zip)           |
 | Windows 64-bit        | Portable    | 3.0           | [BatchEncoder-3.0-x64.zip](https://github.com/wieslawsoltes/BatchEncoder/releases/download/3.0/BatchEncoder-3.0-x64.zip)               |
+
+## Support BatchEncoder
+
+[![PayPal - The safer, easier way to pay online!](https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=GFQMG36HPYT6W)
 
 ## About
 
