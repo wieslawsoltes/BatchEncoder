@@ -681,5 +681,5 @@ bool CPresetsDlg::SavePresets(CString szFileXml, CFormat &format)
     XmlPresets xmlPresets(doc);
     xmlPresets.Create();
     xmlPresets.SetPresets(format.m_Presets);
-    return xmlPresets.Save(szFileXml)
+    return xmlPresets.Save(szFileXml);
 }
