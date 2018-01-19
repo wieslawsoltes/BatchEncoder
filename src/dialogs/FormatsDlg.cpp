@@ -34,7 +34,6 @@ CFormatsDlg::CFormatsDlg(CWnd* pParent /*=nullptr*/)
 
 CFormatsDlg::~CFormatsDlg()
 {
-
 }
 
 void CFormatsDlg::DoDataExchange(CDataExchange* pDX)
@@ -1017,23 +1016,17 @@ void CFormatsDlg::ListSelectionChange()
     bUpdate = false;
 }
 
-void CFormatsDlg::LoadFormat(CString szFileXml)
+bool CFormatsDlg::LoadFormat(CString szFileXml)
 {
     XmlDocumnent doc;
     if (XmlDoc::Open(szFileXml, doc) == true)
     {
         return LoadFormat(doc);
     }
-    else
-    {
-        MessageBox(
-            pConfig->m_Language.GetString(0x00230002, pszFormatsDialog[1]),
-            pConfig->m_Language.GetString(0x00230001, pszFormatsDialog[0]),
-            MB_OK | MB_ICONERROR);
-    }
+    return false;
 }
 
-void CFormatsDlg::LoadFormat(XmlDocumnent &doc)
+bool CFormatsDlg::LoadFormat(XmlDocumnent &doc)
 {
     XmlFormats xmlFormats(doc);
 
@@ -1043,40 +1036,30 @@ void CFormatsDlg::LoadFormat(XmlDocumnent &doc)
 
     int nItem = m_Formats.Count() - 1;
     this->AddToList(format, nItem);
+    
+    return true;
 }
 
-void CFormatsDlg::SaveFormat(CString szFileXml, CFormat &format)
+bool CFormatsDlg::SaveFormat(CString szFileXml, CFormat &format)
 {
     XmlDocumnent doc;
     XmlFormats xmlFormats(doc);
     xmlFormats.Create();
     xmlFormats.SetFormat(format);
-    if (xmlFormats.Save(szFileXml) != true)
-    {
-        MessageBox(
-            pConfig->m_Language.GetString(0x00230003, pszFormatsDialog[2]),
-            pConfig->m_Language.GetString(0x00230001, pszFormatsDialog[0]),
-            MB_OK | MB_ICONERROR);
-    }
+    return xmlFormats.Save(szFileXml);
 }
 
-void CFormatsDlg::LoadFormats(CString szFileXml)
+bool CFormatsDlg::LoadFormats(CString szFileXml)
 {
     XmlDocumnent doc;
     if (XmlDoc::Open(szFileXml, doc) == true)
     {
         return LoadFormats(doc);
     }
-    else
-    {
-        MessageBox(
-            pConfig->m_Language.GetString(0x00230002, pszFormatsDialog[1]),
-            pConfig->m_Language.GetString(0x00230001, pszFormatsDialog[0]),
-            MB_OK | MB_ICONERROR);
-    }
+    return false;
 }
 
-void CFormatsDlg::LoadFormats(XmlDocumnent &doc)
+bool CFormatsDlg::LoadFormats(XmlDocumnent &doc)
 {
     XmlFormats xmlFormats(doc);
 
@@ -1090,24 +1073,20 @@ void CFormatsDlg::LoadFormats(XmlDocumnent &doc)
 
     this->InsertFormatsToListCtrl();
     this->ListSelectionChange();
+    
+    return true;
 }
 
-void CFormatsDlg::SaveFormats(CString szFileXml)
+bool CFormatsDlg::SaveFormats(CString szFileXml)
 {
     XmlDocumnent doc;
     XmlFormats xmlFormats(doc);
     xmlFormats.Create();
     xmlFormats.SetFormats(this->m_Formats);
-    if (xmlFormats.Save(szFileXml) != true)
-    {
-        MessageBox(
-            pConfig->m_Language.GetString(0x00230003, pszFormatsDialog[2]),
-            pConfig->m_Language.GetString(0x00230001, pszFormatsDialog[0]),
-            MB_OK | MB_ICONERROR);
-    }
+    return xmlFormats.Save(szFileXml);
 }
 
-void CFormatsDlg::LoadPresets(XmlDocumnent &doc)
+bool CFormatsDlg::LoadPresets(XmlDocumnent &doc)
 {
     POSITION pos = m_LstFormats.GetFirstSelectedItemPosition();
     if (pos != nullptr)
@@ -1121,7 +1100,10 @@ void CFormatsDlg::LoadPresets(XmlDocumnent &doc)
         xmlPresets.GetPresets(format.m_Presets);
 
         this->UpdateDefaultComboBox(format);
+        
+        return true;
     }
+    return false;
 }
 
 bool CFormatsDlg::BrowseForPath(CString szDefaultFName, CEdit *pEdit, int nID)
