@@ -8,7 +8,7 @@
 #include "utilities\Utilities.h"
 #include "utilities\UnicodeUtf8.h"
 #include "utilities\Utf8String.h"
-#include "xml\XmlPresets.h"
+#include "xml\XmlConfig.h"
 #include "PresetsDlg.h"
 
 DWORD WINAPI PresetsDlgDropThread(LPVOID lpParam)
@@ -32,7 +32,6 @@ CPresetsDlg::CPresetsDlg(CWnd* pParent /*=nullptr*/)
 
 CPresetsDlg::~CPresetsDlg()
 {
-
 }
 
 void CPresetsDlg::DoDataExchange(CDataExchange* pDX)
@@ -651,35 +650,29 @@ void CPresetsDlg::ListSelectionChange()
 
 bool CPresetsDlg::LoadPresets(CString szFileXml)
 {
-    XmlDocumnent doc;
-    if (XmlDoc::Open(szFileXml, doc) == true)
-    {
-        return LoadPresets(doc);
-    }
-    return false;
+    this->m_LstPresets.DeleteAllItems();
+    CFormat& format = this->m_Formats.Get(this->nSelectedFormat);
+    format.m_Presets.RemoveAll();
+
+    CXmlConfig::LoadPresets(doc, format.m_Presets);
+
+    this->InsertPresetsToListCtrl();
+    return true;
 }
 
 bool CPresetsDlg::LoadPresets(XmlDocumnent &doc)
 {
-    XmlPresets xmlPresets(doc);
-
     this->m_LstPresets.DeleteAllItems();
-
     CFormat& format = this->m_Formats.Get(this->nSelectedFormat);
     format.m_Presets.RemoveAll();
 
-    xmlPresets.GetPresets(format.m_Presets);
+    CXmlConfig::LoadPresets(doc, format.m_Presets);
 
     this->InsertPresetsToListCtrl();
-    
     return true;
 }
 
 bool CPresetsDlg::SavePresets(CString szFileXml, CFormat &format)
 {
-    XmlDocumnent doc;
-    XmlPresets xmlPresets(doc);
-    xmlPresets.Create();
-    xmlPresets.SetPresets(format.m_Presets);
-    return xmlPresets.Save(szFileXml);
+    return CXmlConfig::SavePresets(format.m_Presets);
 }
