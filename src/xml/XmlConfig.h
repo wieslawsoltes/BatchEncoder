@@ -15,6 +15,8 @@
 class CXmlConfig
 {
 public:
+    static CString GetRootName(CString szFileXml);
+public:
     static bool LoadOptions(XmlDocumnent &doc, COptions &options);
     static bool LoadOptions(CString szFileXml, COptions &options);
     static bool SaveOptions(CString szFileXml, COptions &options);
