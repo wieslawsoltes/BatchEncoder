@@ -2271,9 +2271,9 @@ void CMainDlg::HandleDropFiles(HDROP hDropInfo)
                 if (szExt.CompareNoCase(_T("xml")) == 0)
                 {
                     XmlDocumnent doc;
-                    if (XmlDoc::Open(szPath, doc) == true)
+                    CString szName = CXmlConfig::GetRootName(szPath, doc);
+                    if (!szName.IsEmpty())
                     {
-                        CString szName = CString(XmlDoc::GetRootName(doc));
                         if (szName.CompareNoCase(_T("Items")) == 0)
                         {
                             this->LoadItems(doc);

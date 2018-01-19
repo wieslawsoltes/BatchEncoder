@@ -5,14 +5,15 @@
 #include "MainApp.h"
 #include "XmlConfig.h"
 
-CString CXmlConfig::GetRootName(CString szFileXml)
+CString CXmlConfig::GetRootName(CString szFileXml, XmlDocumnent &doc)
 {
-    XmlDocumnent doc;
     if (XmlDoc::Open(szFileXml, doc) == true)
     {
-        return CString(XmlDoc::GetRootName(doc));
+        const char *name = XmlDoc::GetRootName(doc);
+        if (name != nullptr)
+            return CString(name);
     }
-    return nullptr;
+    return CString();
 }
 
 bool CXmlConfig::LoadOptions(XmlDocumnent &doc, COptions &options)
