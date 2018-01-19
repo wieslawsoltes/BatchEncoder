@@ -1091,14 +1091,14 @@ bool CToolsDlg::LoadTool(CString szFileXml)
 bool CToolsDlg::LoadTool(XmlDocumnent &doc)
 {
     CTool tool;
-
-    CXmlConfig::LoadTool(doc, tool);
-
-    m_Tools.Insert(tool);
-    int nItem = m_Tools.Count() - 1;
-    this->AddToList(tool, nItem);
-
-    return true;
+    if (CXmlConfig::LoadTool(doc, tool))
+    {
+        m_Tools.Insert(tool);
+        int nItem = m_Tools.Count() - 1;
+        this->AddToList(tool, nItem);
+        return true;
+    }
+    return false;
 }
 
 bool CToolsDlg::SaveTool(CString szFileXml, CTool &tool)
@@ -1119,18 +1119,20 @@ bool CToolsDlg::LoadTools(CString szFileXml)
 
 bool CToolsDlg::LoadTools(XmlDocumnent &doc)
 {
-    this->m_Tools.RemoveAll();
-    this->m_LstTools.DeleteAllItems();
+    CToolsList tools;
+    if (CXmlConfig::LoadTools(doc, tools))
+    {
+        this->m_LstTools.DeleteAllItems();
 
-    CXmlConfig::LoadTools(doc, this->m_Tools);
+        this->m_Tools = tools;
+        if (this->m_Tools.Count() > 0)
+            nSelectedTool = 0;
 
-    if (this->m_Tools.Count() > 0)
-        nSelectedTool = 0;
-
-    this->InsertToolsToListCtrl();
-    this->ListSelectionChange();
-    
-    return true;
+        this->InsertToolsToListCtrl();
+        this->ListSelectionChange();
+        return true;
+    }
+    return false;
 }
 
 bool CToolsDlg::SaveTools(CString szFileXml)

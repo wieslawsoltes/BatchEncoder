@@ -1070,14 +1070,14 @@ bool CFormatsDlg::LoadFormat(CString szFileXml)
 bool CFormatsDlg::LoadFormat(XmlDocumnent &doc)
 {
     CFormat format;
-
-    CXmlConfig::LoadFormat(doc, format);
-
-    m_Formats.Insert(format);
-    int nItem = m_Formats.Count() - 1;
-    this->AddToList(format, nItem);
-
-    return true;
+    if (CXmlConfig::LoadFormat(doc, format))
+    {
+        m_Formats.Insert(format);
+        int nItem = m_Formats.Count() - 1;
+        this->AddToList(format, nItem);
+        return true;
+    }
+    return false;
 }
 
 bool CFormatsDlg::SaveFormat(CString szFileXml, CFormat &format)
@@ -1098,18 +1098,21 @@ bool CFormatsDlg::LoadFormats(CString szFileXml)
 
 bool CFormatsDlg::LoadFormats(XmlDocumnent &doc)
 {
-    this->m_Formats.RemoveAll();
-    this->m_LstFormats.DeleteAllItems();
+    CFormatsList formats;
+    if (CXmlConfig::LoadFormats(doc, formats))
+    {
+        this->m_LstFormats.DeleteAllItems();
 
-    CXmlConfig::LoadFormats(doc, this->m_Formats);
+        this->m_Formats = formats;
+        if (this->m_Formats.Count() > 0)
+            nSelectedFormat = 0;
 
-    if (this->m_Formats.Count() > 0)
-        nSelectedFormat = 0;
+        this->InsertFormatsToListCtrl();
+        this->ListSelectionChange();
 
-    this->InsertFormatsToListCtrl();
-    this->ListSelectionChange();
-    
-    return true;
+        return true;
+    }
+    return false;
 }
 
 bool CFormatsDlg::SaveFormats(CString szFileXml)
@@ -1119,17 +1122,18 @@ bool CFormatsDlg::SaveFormats(CString szFileXml)
 
 bool CFormatsDlg::LoadPresets(XmlDocumnent &doc)
 {
-    POSITION pos = m_LstFormats.GetFirstSelectedItemPosition();
-    if (pos != nullptr)
+    CPresetsList presets;
+    if (CXmlConfig::LoadPresets(doc, presets))
     {
-        int nItem = m_LstFormats.GetNextSelectedItem(pos);
-        CFormat& format = this->m_Formats.Get(nItem);
-        format.m_Presets.RemoveAll();
-
-        CXmlConfig::LoadPresets(doc, format.m_Presets);
-
-        this->UpdateDefaultComboBox(format);
-        return true;
+        POSITION pos = m_LstFormats.GetFirstSelectedItemPosition();
+        if (pos != nullptr)
+        {
+            int nItem = m_LstFormats.GetNextSelectedItem(pos);
+            CFormat& format = this->m_Formats.Get(nItem);
+            format.m_Presets = presets;
+            this->UpdateDefaultComboBox(format);
+            return true;
+        }
     }
     return false;
 }

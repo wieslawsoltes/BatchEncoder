@@ -661,14 +661,16 @@ bool CPresetsDlg::LoadPresets(CString szFileXml)
 
 bool CPresetsDlg::LoadPresets(XmlDocumnent &doc)
 {
-    this->m_LstPresets.DeleteAllItems();
-    CFormat& format = this->m_Formats.Get(this->nSelectedFormat);
-    format.m_Presets.RemoveAll();
-
-    CXmlConfig::LoadPresets(doc, format.m_Presets);
-
-    this->InsertPresetsToListCtrl();
-    return true;
+    CPresetsList presets;
+    if (CXmlConfig::LoadPresets(doc, presets))
+    {
+        this->m_LstPresets.DeleteAllItems();
+        CFormat& format = this->m_Formats.Get(this->nSelectedFormat);
+        format.m_Presets = presets;
+        this->InsertPresetsToListCtrl();
+        return true;
+    }
+    return false;
 }
 
 bool CPresetsDlg::SavePresets(CString szFileXml, CFormat &format)
