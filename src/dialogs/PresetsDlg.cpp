@@ -649,23 +649,17 @@ void CPresetsDlg::ListSelectionChange()
     bUpdate = false;
 }
 
-void CPresetsDlg::LoadPresets(CString szFileXml)
+bool CPresetsDlg::LoadPresets(CString szFileXml)
 {
     XmlDocumnent doc;
     if (XmlDoc::Open(szFileXml, doc) == true)
     {
         return LoadPresets(doc);
     }
-    else
-    {
-        MessageBox(
-            pConfig->m_Language.GetString(0x00220002, pszPresetsDialog[1]),
-            pConfig->m_Language.GetString(0x00220001, pszPresetsDialog[0]),
-            MB_OK | MB_ICONERROR);
-    }
+    return false;
 }
 
-void CPresetsDlg::LoadPresets(XmlDocumnent &doc)
+bool CPresetsDlg::LoadPresets(XmlDocumnent &doc)
 {
     XmlPresets xmlPresets(doc);
 
@@ -677,19 +671,15 @@ void CPresetsDlg::LoadPresets(XmlDocumnent &doc)
     xmlPresets.GetPresets(format.m_Presets);
 
     this->InsertPresetsToListCtrl();
+    
+    return true;
 }
 
-void CPresetsDlg::SavePresets(CString szFileXml, CFormat &format)
+bool CPresetsDlg::SavePresets(CString szFileXml, CFormat &format)
 {
     XmlDocumnent doc;
     XmlPresets xmlPresets(doc);
     xmlPresets.Create();
     xmlPresets.SetPresets(format.m_Presets);
-    if (xmlPresets.Save(szFileXml) != true)
-    {
-        MessageBox(
-            pConfig->m_Language.GetString(0x00220003, pszPresetsDialog[2]),
-            pConfig->m_Language.GetString(0x00220001, pszPresetsDialog[0]),
-            MB_OK | MB_ICONERROR);
-    }
+    return xmlPresets.Save(szFileXml)
 }
