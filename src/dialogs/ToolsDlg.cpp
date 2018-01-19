@@ -910,67 +910,6 @@ void CToolsDlg::ListSelectionChange()
     bUpdate = false;
 }
 
-bool CToolsDlg::LoadTool(CString szFileXml)
-{
-    XmlDocumnent doc;
-    CString szName = CXmlConfig::GetRootName(szFileXml, doc);
-    if (!szName.IsEmpty() && szName.CompareNoCase(_T("Tool")) == 0)
-    {
-        return this->LoadTool(doc);
-    }
-    return false;
-}
-
-bool CToolsDlg::LoadTool(XmlDocumnent &doc)
-{
-    CTool tool;
-
-    CXmlConfig::LoadTool(doc, tool);
-
-    m_Tools.Insert(tool);
-    int nItem = m_Tools.Count() - 1;
-    this->AddToList(tool, nItem);
-
-    return true;
-}
-
-bool CToolsDlg::SaveTool(CString szFileXml, CTool &tool)
-{
-    return CXmlConfig::SaveTool(szFileXml, tool);
-}
-
-bool CToolsDlg::LoadTools(CString szFileXml)
-{
-    XmlDocumnent doc;
-    CString szName = CXmlConfig::GetRootName(szFileXml, doc);
-    if (!szName.IsEmpty() && szName.CompareNoCase(_T("Tools")) == 0)
-    {
-        return this->LoadTools(doc);
-    }
-    return false;
-}
-
-bool CToolsDlg::LoadTools(XmlDocumnent &doc)
-{
-    this->m_Tools.RemoveAll();
-    this->m_LstTools.DeleteAllItems();
-
-    CXmlConfig::LoadTools(doc, this->m_Tools);
-
-    if (this->m_Tools.Count() > 0)
-        nSelectedTool = 0;
-
-    this->InsertToolsToListCtrl();
-    this->ListSelectionChange();
-    
-    return true;
-}
-
-bool CToolsDlg::SaveTools(CString szFileXml)
-{
-    return CXmlConfig::SaveTools(szFileXml, this->m_Tools);
-}
-
 void CToolsDlg::EnableUserInterface(BOOL bEnable)
 {
     CMenu* pSysMenu = GetSystemMenu(FALSE);
@@ -1136,4 +1075,65 @@ void CToolsDlg::SetFormatPaths()
             }
         }
     }
+}
+
+bool CToolsDlg::LoadTool(CString szFileXml)
+{
+    XmlDocumnent doc;
+    CString szName = CXmlConfig::GetRootName(szFileXml, doc);
+    if (!szName.IsEmpty() && szName.CompareNoCase(_T("Tool")) == 0)
+    {
+        return this->LoadTool(doc);
+    }
+    return false;
+}
+
+bool CToolsDlg::LoadTool(XmlDocumnent &doc)
+{
+    CTool tool;
+
+    CXmlConfig::LoadTool(doc, tool);
+
+    m_Tools.Insert(tool);
+    int nItem = m_Tools.Count() - 1;
+    this->AddToList(tool, nItem);
+
+    return true;
+}
+
+bool CToolsDlg::SaveTool(CString szFileXml, CTool &tool)
+{
+    return CXmlConfig::SaveTool(szFileXml, tool);
+}
+
+bool CToolsDlg::LoadTools(CString szFileXml)
+{
+    XmlDocumnent doc;
+    CString szName = CXmlConfig::GetRootName(szFileXml, doc);
+    if (!szName.IsEmpty() && szName.CompareNoCase(_T("Tools")) == 0)
+    {
+        return this->LoadTools(doc);
+    }
+    return false;
+}
+
+bool CToolsDlg::LoadTools(XmlDocumnent &doc)
+{
+    this->m_Tools.RemoveAll();
+    this->m_LstTools.DeleteAllItems();
+
+    CXmlConfig::LoadTools(doc, this->m_Tools);
+
+    if (this->m_Tools.Count() > 0)
+        nSelectedTool = 0;
+
+    this->InsertToolsToListCtrl();
+    this->ListSelectionChange();
+    
+    return true;
+}
+
+bool CToolsDlg::SaveTools(CString szFileXml)
+{
+    return CXmlConfig::SaveTools(szFileXml, this->m_Tools);
 }

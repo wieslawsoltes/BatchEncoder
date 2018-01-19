@@ -132,6 +132,9 @@ public:
     void UpdateFields(CFormat &format);
     void UpdateDefaultComboBox(CFormat &format);
     void ListSelectionChange();
+    bool BrowseForPath(CString szDefaultFName, CEdit *pEdit, int nID);
+    bool BrowseForFunction(CString szDefaultFName, CEdit *pEdit, int nID);
+public:
     bool LoadFormat(CString szFileXml);
     bool LoadFormat(XmlDocumnent &doc);
     bool SaveFormat(CString szFileXml, CFormat &format);
@@ -139,6 +142,4 @@ public:
     bool LoadFormats(XmlDocumnent &doc);
     bool SaveFormats(CString szFileXml);
     bool LoadPresets(XmlDocumnent &doc);
-    bool BrowseForPath(CString szDefaultFName, CEdit *pEdit, int nID);
-    bool BrowseForFunction(CString szDefaultFName, CEdit *pEdit, int nID);
 };

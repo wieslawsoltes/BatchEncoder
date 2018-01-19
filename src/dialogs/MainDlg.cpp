@@ -1624,50 +1624,6 @@ void CMainDlg::SetLanguage()
     helper.SetWndText(&m_BtnConvert, 0x000A0017);
 }
 
-bool CMainDlg::LoadLanguage(CString szFileXml)
-{
-    CLanguage language;
-
-    CXmlConfig::LoadLanguage(szFileXml, language);
-
-    this->m_Config.m_Language.m_Languages.Insert(language);
-
-    CMenu *m_hMenu = this->GetMenu();
-    CMenu *m_hLangMenu = m_hMenu->GetSubMenu(4);
-    int nLanguages = m_Config.m_Language.m_Languages.Count();
-
-    CString szBuff;
-    szBuff.Format(_T("%s (%s)"), language.szOriginalName, language.szTranslatedName);
-
-    UINT nLangID = ID_LANGUAGE_MIN + nLanguages - 1;
-    m_hLangMenu->AppendMenu(MF_STRING, nLangID, szBuff);
-    m_hLangMenu->CheckMenuItem(nLangID, MF_UNCHECKED);
-
-    return true;
-}
-
-bool CMainDlg::LoadLanguage(XmlDocumnent &doc)
-{
-    CLanguage language;
-
-    CXmlConfig::LoadLanguage(doc, language);
-
-    this->m_Config.m_Language.m_Languages.Insert(language);
-
-    CMenu *m_hMenu = this->GetMenu();
-    CMenu *m_hLangMenu = m_hMenu->GetSubMenu(4);
-    int nLanguages = m_Config.m_Language.m_Languages.Count();
-
-    CString szBuff;
-    szBuff.Format(_T("%s (%s)"), language.szOriginalName, language.szTranslatedName);
-
-    UINT nLangID = ID_LANGUAGE_MIN + nLanguages - 1;
-    m_hLangMenu->AppendMenu(MF_STRING, nLangID, szBuff);
-    m_hLangMenu->CheckMenuItem(nLangID, MF_UNCHECKED);
-
-    return true;
-}
-
 void CMainDlg::GetItems()
 {
     int nItems = this->m_LstInputItems.GetItemCount();
@@ -1880,212 +1836,6 @@ void CMainDlg::SetOptions()
     // option: ToolsDialogResize
 
     // option: ToolsListColumns
-}
-
-bool CMainDlg::LoadOptions(CString szFileXml)
-{
-    XmlDocumnent doc;
-    CString szName = CXmlConfig::GetRootName(szFileXml, doc);
-    if (!szName.IsEmpty() && szName.CompareNoCase(_T("Options")) == 0)
-    {
-        return this->LoadOptions(doc);
-    }
-    return false;
-}
-
-bool CMainDlg::LoadOptions(XmlDocumnent &doc)
-{
-    CXmlConfig::LoadOptions(doc, this->m_Config.m_Options);
-
-    this->SetOptions();
-    this->UpdateFormatComboBox();
-    this->UpdatePresetComboBox();
-
-    return true;
-}
-
-bool CMainDlg::SaveOptions(CString szFileXml)
-{
-    this->GetOptions();
-
-    return CXmlConfig::SaveOptions(szFileXml, this->m_Config.m_Options);
-}
-
-bool CMainDlg::LoadFormats(CString szFileXml)
-{
-    XmlDocumnent doc;
-    CString szName = CXmlConfig::GetRootName(szFileXml, doc);
-    if (!szName.IsEmpty() && szName.CompareNoCase(_T("Formats")) == 0)
-    {
-        return this->LoadFormats(doc);
-    }
-    return false;
-}
-
-bool CMainDlg::LoadFormats(XmlDocumnent &doc)
-{
-    this->m_Config.m_Formats.RemoveAll();
-
-    CXmlConfig::LoadFormats(doc, this->m_Config.m_Formats);
-
-    this->UpdateFormatComboBox();
-    this->UpdatePresetComboBox();
-
-    return true;
-}
-
-bool CMainDlg::SaveFormats(CString szFileXml)
-{
-    return CXmlConfig::SaveFormats(szFileXml, this->m_Config.m_Formats);
-}
-
-bool CMainDlg::LoadFormat(CString szFileXml)
-{
-    XmlDocumnent doc;
-    CString szName = CXmlConfig::GetRootName(szFileXml, doc);
-    if (!szName.IsEmpty() && szName.CompareNoCase(_T("Format")) == 0)
-    {
-        return this->LoadFormat(doc);
-    }
-    return false;
-}
-
-bool CMainDlg::LoadFormat(XmlDocumnent &doc)
-{
-    CFormat format;
-
-    CXmlConfig::LoadFormat(doc, format);
-
-    m_Config.m_Formats.Insert(format);
-    this->UpdateFormatComboBox();
-    this->UpdatePresetComboBox();
-    return true;
-}
-
-bool CMainDlg::SaveFormat(CString szFileXml)
-{
-    int nFormat = this->m_CmbFormat.GetCurSel();
-    if (nFormat != -1)
-    {
-        CFormat& format = m_Config.m_Formats.Get(nFormat);
-
-        return CXmlConfig::SaveFormat(szFileXml, format);
-    }
-    return false;
-}
-
-bool CMainDlg::LoadPresets(CString szFileXml)
-{
-    XmlDocumnent doc;
-    CString szName = CXmlConfig::GetRootName(szFileXml, doc);
-    if (!szName.IsEmpty() && szName.CompareNoCase(_T("Presets")) == 0)
-    {
-        return this->LoadPresets(doc);
-    }
-    return false;
-}
-
-bool CMainDlg::LoadPresets(XmlDocumnent &doc)
-{
-    int nFormat = this->m_CmbFormat.GetCurSel();
-    if (nFormat != -1)
-    {
-        CFormat& format = m_Config.m_Formats.Get(nFormat);
-        format.m_Presets.RemoveAll();
-
-        CXmlConfig::LoadPresets(doc, format.m_Presets);
-
-        this->UpdatePresetComboBox();
-        return true;
-    }
-    return false;
-}
-
-bool CMainDlg::SavePresets(CString szFileXml)
-{
-    int nFormat = this->m_CmbFormat.GetCurSel();
-    if (nFormat != -1)
-    {
-        CFormat& format = m_Config.m_Formats.Get(nFormat);
-
-        CXmlConfig::SavePresets(szFileXml, format.m_Presets);
-    }
-    return false;
-}
-
-bool CMainDlg::LoadTools(CString szFileXml)
-{
-    XmlDocumnent doc;
-    CString szName = CXmlConfig::GetRootName(szFileXml, doc);
-    if (!szName.IsEmpty() && szName.CompareNoCase(_T("Tools")) == 0)
-    {
-        return this->LoadTools(doc);
-    }
-    return false;
-}
-
-bool CMainDlg::LoadTools(XmlDocumnent &doc)
-{
-    this->m_Config.m_Tools.RemoveAll();
-
-    return CXmlConfig::LoadTools(doc, this->m_Config.m_Tools);
-}
-
-bool CMainDlg::SaveTools(CString szFileXml)
-{
-    return CXmlConfig::SaveTools(szFileXml, this->m_Config.m_Tools);
-}
-
-bool CMainDlg::LoadTool(CString szFileXml)
-{
-    XmlDocumnent doc;
-    CString szName = CXmlConfig::GetRootName(szFileXml, doc);
-    if (!szName.IsEmpty() && szName.CompareNoCase(_T("Tool")) == 0)
-    {
-        return this->LoadTool(doc);
-    }
-    return false;
-}
-
-bool CMainDlg::LoadTool(XmlDocumnent &doc)
-{
-    CTool tool;
-
-    CXmlConfig::LoadTool(doc, tool);
-
-    m_Config.m_Tools.Insert(tool);
-    return true;
-}
-
-bool CMainDlg::LoadItems(CString szFileXml)
-{
-    XmlDocumnent doc;
-    CString szName = CXmlConfig::GetRootName(szFileXml, doc);
-    if (!szName.IsEmpty() && szName.CompareNoCase(_T("Items")) == 0)
-    {
-        return this->LoadItems(doc);
-    }
-    return false;
-}
-
-bool CMainDlg::LoadItems(XmlDocumnent &doc)
-{
-    this->m_LstInputItems.DeleteAllItems();
-    this->m_Config.m_Items.RemoveAll();
-
-    CXmlConfig::LoadItems(doc, this->m_Config.m_Items);
-
-    this->SetItems();
-    this->UpdateStatusBar();
-
-    return true;
-}
-
-bool CMainDlg::SaveItems(CString szFileXml)
-{
-    this->GetItems();
-
-    return CXmlConfig::SaveItems(szFileXml, this->m_Config.m_Items);
 }
 
 int CMainDlg::AddToItems(CString szPath)
@@ -2739,4 +2489,254 @@ void CMainDlg::FinishConvert()
 
         ::ShutdownWindows();
     }
+}
+
+bool CMainDlg::LoadOptions(CString szFileXml)
+{
+    XmlDocumnent doc;
+    CString szName = CXmlConfig::GetRootName(szFileXml, doc);
+    if (!szName.IsEmpty() && szName.CompareNoCase(_T("Options")) == 0)
+    {
+        return this->LoadOptions(doc);
+    }
+    return false;
+}
+
+bool CMainDlg::LoadOptions(XmlDocumnent &doc)
+{
+    CXmlConfig::LoadOptions(doc, this->m_Config.m_Options);
+
+    this->SetOptions();
+    this->UpdateFormatComboBox();
+    this->UpdatePresetComboBox();
+
+    return true;
+}
+
+bool CMainDlg::SaveOptions(CString szFileXml)
+{
+    this->GetOptions();
+
+    return CXmlConfig::SaveOptions(szFileXml, this->m_Config.m_Options);
+}
+
+bool CMainDlg::LoadFormats(CString szFileXml)
+{
+    XmlDocumnent doc;
+    CString szName = CXmlConfig::GetRootName(szFileXml, doc);
+    if (!szName.IsEmpty() && szName.CompareNoCase(_T("Formats")) == 0)
+    {
+        return this->LoadFormats(doc);
+    }
+    return false;
+}
+
+bool CMainDlg::LoadFormats(XmlDocumnent &doc)
+{
+    this->m_Config.m_Formats.RemoveAll();
+
+    CXmlConfig::LoadFormats(doc, this->m_Config.m_Formats);
+
+    this->UpdateFormatComboBox();
+    this->UpdatePresetComboBox();
+
+    return true;
+}
+
+bool CMainDlg::SaveFormats(CString szFileXml)
+{
+    return CXmlConfig::SaveFormats(szFileXml, this->m_Config.m_Formats);
+}
+
+bool CMainDlg::LoadFormat(CString szFileXml)
+{
+    XmlDocumnent doc;
+    CString szName = CXmlConfig::GetRootName(szFileXml, doc);
+    if (!szName.IsEmpty() && szName.CompareNoCase(_T("Format")) == 0)
+    {
+        return this->LoadFormat(doc);
+    }
+    return false;
+}
+
+bool CMainDlg::LoadFormat(XmlDocumnent &doc)
+{
+    CFormat format;
+
+    CXmlConfig::LoadFormat(doc, format);
+
+    m_Config.m_Formats.Insert(format);
+    this->UpdateFormatComboBox();
+    this->UpdatePresetComboBox();
+    return true;
+}
+
+bool CMainDlg::SaveFormat(CString szFileXml)
+{
+    int nFormat = this->m_CmbFormat.GetCurSel();
+    if (nFormat != -1)
+    {
+        CFormat& format = m_Config.m_Formats.Get(nFormat);
+
+        return CXmlConfig::SaveFormat(szFileXml, format);
+    }
+    return false;
+}
+
+bool CMainDlg::LoadPresets(CString szFileXml)
+{
+    XmlDocumnent doc;
+    CString szName = CXmlConfig::GetRootName(szFileXml, doc);
+    if (!szName.IsEmpty() && szName.CompareNoCase(_T("Presets")) == 0)
+    {
+        return this->LoadPresets(doc);
+    }
+    return false;
+}
+
+bool CMainDlg::LoadPresets(XmlDocumnent &doc)
+{
+    int nFormat = this->m_CmbFormat.GetCurSel();
+    if (nFormat != -1)
+    {
+        CFormat& format = m_Config.m_Formats.Get(nFormat);
+        format.m_Presets.RemoveAll();
+
+        CXmlConfig::LoadPresets(doc, format.m_Presets);
+
+        this->UpdatePresetComboBox();
+        return true;
+    }
+    return false;
+}
+
+bool CMainDlg::SavePresets(CString szFileXml)
+{
+    int nFormat = this->m_CmbFormat.GetCurSel();
+    if (nFormat != -1)
+    {
+        CFormat& format = m_Config.m_Formats.Get(nFormat);
+
+        CXmlConfig::SavePresets(szFileXml, format.m_Presets);
+    }
+    return false;
+}
+
+bool CMainDlg::LoadTools(CString szFileXml)
+{
+    XmlDocumnent doc;
+    CString szName = CXmlConfig::GetRootName(szFileXml, doc);
+    if (!szName.IsEmpty() && szName.CompareNoCase(_T("Tools")) == 0)
+    {
+        return this->LoadTools(doc);
+    }
+    return false;
+}
+
+bool CMainDlg::LoadTools(XmlDocumnent &doc)
+{
+    this->m_Config.m_Tools.RemoveAll();
+
+    return CXmlConfig::LoadTools(doc, this->m_Config.m_Tools);
+}
+
+bool CMainDlg::SaveTools(CString szFileXml)
+{
+    return CXmlConfig::SaveTools(szFileXml, this->m_Config.m_Tools);
+}
+
+bool CMainDlg::LoadTool(CString szFileXml)
+{
+    XmlDocumnent doc;
+    CString szName = CXmlConfig::GetRootName(szFileXml, doc);
+    if (!szName.IsEmpty() && szName.CompareNoCase(_T("Tool")) == 0)
+    {
+        return this->LoadTool(doc);
+    }
+    return false;
+}
+
+bool CMainDlg::LoadTool(XmlDocumnent &doc)
+{
+    CTool tool;
+
+    CXmlConfig::LoadTool(doc, tool);
+
+    m_Config.m_Tools.Insert(tool);
+    return true;
+}
+
+bool CMainDlg::LoadItems(CString szFileXml)
+{
+    XmlDocumnent doc;
+    CString szName = CXmlConfig::GetRootName(szFileXml, doc);
+    if (!szName.IsEmpty() && szName.CompareNoCase(_T("Items")) == 0)
+    {
+        return this->LoadItems(doc);
+    }
+    return false;
+}
+
+bool CMainDlg::LoadItems(XmlDocumnent &doc)
+{
+    this->m_LstInputItems.DeleteAllItems();
+    this->m_Config.m_Items.RemoveAll();
+
+    CXmlConfig::LoadItems(doc, this->m_Config.m_Items);
+
+    this->SetItems();
+    this->UpdateStatusBar();
+
+    return true;
+}
+
+bool CMainDlg::SaveItems(CString szFileXml)
+{
+    this->GetItems();
+
+    return CXmlConfig::SaveItems(szFileXml, this->m_Config.m_Items);
+}
+
+bool CMainDlg::LoadLanguage(CString szFileXml)
+{
+    CLanguage language;
+
+    CXmlConfig::LoadLanguage(szFileXml, language);
+
+    this->m_Config.m_Language.m_Languages.Insert(language);
+
+    CMenu *m_hMenu = this->GetMenu();
+    CMenu *m_hLangMenu = m_hMenu->GetSubMenu(4);
+    int nLanguages = m_Config.m_Language.m_Languages.Count();
+
+    CString szBuff;
+    szBuff.Format(_T("%s (%s)"), language.szOriginalName, language.szTranslatedName);
+
+    UINT nLangID = ID_LANGUAGE_MIN + nLanguages - 1;
+    m_hLangMenu->AppendMenu(MF_STRING, nLangID, szBuff);
+    m_hLangMenu->CheckMenuItem(nLangID, MF_UNCHECKED);
+
+    return true;
+}
+
+bool CMainDlg::LoadLanguage(XmlDocumnent &doc)
+{
+    CLanguage language;
+
+    CXmlConfig::LoadLanguage(doc, language);
+
+    this->m_Config.m_Language.m_Languages.Insert(language);
+
+    CMenu *m_hMenu = this->GetMenu();
+    CMenu *m_hLangMenu = m_hMenu->GetSubMenu(4);
+    int nLanguages = m_Config.m_Language.m_Languages.Count();
+
+    CString szBuff;
+    szBuff.Format(_T("%s (%s)"), language.szOriginalName, language.szTranslatedName);
+
+    UINT nLangID = ID_LANGUAGE_MIN + nLanguages - 1;
+    m_hLangMenu->AppendMenu(MF_STRING, nLangID, szBuff);
+    m_hLangMenu->CheckMenuItem(nLangID, MF_UNCHECKED);
+
+    return true;
 }

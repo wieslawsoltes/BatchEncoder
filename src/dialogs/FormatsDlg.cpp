@@ -1015,6 +1015,47 @@ void CFormatsDlg::ListSelectionChange()
     bUpdate = false;
 }
 
+bool CFormatsDlg::BrowseForPath(CString szDefaultFName, CEdit *pEdit, int nID)
+{
+    CString szFilter;
+    szFilter.Format(_T("%s (*.exe)|*.exe|%s (*.*)|*.*||"),
+        pConfig->m_Language.GetString(0x00310006, pszFileDialogs[5]),
+        pConfig->m_Language.GetString(0x00310001, pszFileDialogs[0]));
+
+    CFileDialog fd(TRUE, _T("exe"), szDefaultFName,
+        OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER,
+        szFilter, this);
+
+    if (fd.DoModal() == IDOK)
+    {
+        CString szPath = fd.GetPathName();
+        pEdit->SetWindowText(szPath);
+        return true;
+    }
+    return false;
+}
+
+bool CFormatsDlg::BrowseForFunction(CString szDefaultFName, CEdit *pEdit, int nID)
+{
+    CString szFilter;
+    szFilter.Format(_T("%s (*.lua)|*.lua|%s (*.*)|*.*||"),
+        pConfig->m_Language.GetString(0x00310007, pszFileDialogs[6]),
+        pConfig->m_Language.GetString(0x00310001, pszFileDialogs[0]));
+
+    CFileDialog fd(TRUE, _T("lua"), szDefaultFName,
+        OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER,
+        szFilter, this);
+
+    if (fd.DoModal() == IDOK)
+    {
+        CString szPath;
+        szPath = fd.GetPathName();
+        pEdit->SetWindowText(szPath);
+        return true;
+    }
+    return false;
+}
+
 bool CFormatsDlg::LoadFormat(CString szFileXml)
 {
     XmlDocumnent doc;
@@ -1088,47 +1129,6 @@ bool CFormatsDlg::LoadPresets(XmlDocumnent &doc)
         CXmlConfig::LoadPresets(doc, format.m_Presets);
 
         this->UpdateDefaultComboBox(format);
-        return true;
-    }
-    return false;
-}
-
-bool CFormatsDlg::BrowseForPath(CString szDefaultFName, CEdit *pEdit, int nID)
-{
-    CString szFilter;
-    szFilter.Format(_T("%s (*.exe)|*.exe|%s (*.*)|*.*||"),
-        pConfig->m_Language.GetString(0x00310006, pszFileDialogs[5]),
-        pConfig->m_Language.GetString(0x00310001, pszFileDialogs[0]));
-
-    CFileDialog fd(TRUE, _T("exe"), szDefaultFName,
-        OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER,
-        szFilter, this);
-
-    if (fd.DoModal() == IDOK)
-    {
-        CString szPath = fd.GetPathName();
-        pEdit->SetWindowText(szPath);
-        return true;
-    }
-    return false;
-}
-
-bool CFormatsDlg::BrowseForFunction(CString szDefaultFName, CEdit *pEdit, int nID)
-{
-    CString szFilter;
-    szFilter.Format(_T("%s (*.lua)|*.lua|%s (*.*)|*.*||"),
-        pConfig->m_Language.GetString(0x00310007, pszFileDialogs[6]),
-        pConfig->m_Language.GetString(0x00310001, pszFileDialogs[0]));
-
-    CFileDialog fd(TRUE, _T("lua"), szDefaultFName,
-        OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER,
-        szFilter, this);
-
-    if (fd.DoModal() == IDOK)
-    {
-        CString szPath;
-        szPath = fd.GetPathName();
-        pEdit->SetWindowText(szPath);
         return true;
     }
     return false;
