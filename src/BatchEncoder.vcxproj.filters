@@ -36,7 +36,7 @@
     </Filter>
     <Filter Include="Source Files\Xml">
       <UniqueIdentifier>{bd76e190-40b0-4cbd-a637-da1e338ec61b}</UniqueIdentifier>
-    </Filter
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="StdAfx.cpp">
