@@ -33,7 +33,7 @@ public:
         this->bUseReadPipes = bUseReadPipes;
         this->bUseWritePipes = bUseWritePipes;
         this->szOptions = szOptions.GetLength() > 0 ?
-            preset.szOptions + _T(" ") + szOptions : szOptions;
+            (preset.szOptions + _T(" ") + szOptions) : preset.szOptions;
 
         CString szCommandLine = pFormat->szTemplate;
 
