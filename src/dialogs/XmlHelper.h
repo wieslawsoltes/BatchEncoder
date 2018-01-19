@@ -19,33 +19,34 @@ public:
     CXmlHelper();
     virtual ~CXmlHelper();
 public:
-    bool LoadOptions(XmlDocumnent &doc);
-    bool LoadOptions(CString szFileXml);
-    bool SaveOptions(CString szFileXml);
+    bool LoadOptions(XmlDocumnent &doc, COptions &options);
+    bool LoadOptions(CString szFileXml, COptions &options);
+    bool SaveOptions(CString szFileXml, COptions &options);
 public:
-    bool LoadItems(XmlDocumnent &doc);
-    bool LoadItems(CString szFileXml);
-    bool SaveItems(CString szFileXml);
+    bool LoadItems(XmlDocumnent &doc, CItemsList &items);
+    bool LoadItems(CString szFileXml, CItemsList &items);
+    bool SaveItems(CString szFileXml, CItemsList &items);
 public:
-    bool LoadLanguage(XmlDocumnent &doc);
-    bool LoadLanguage(CString szFileXml);
+    bool LoadLanguage(XmlDocumnent &doc, CLanguage &language);
+    bool LoadLanguage(CString szFileXml, CLanguage &language);
 public:
-    bool LoadPresets(XmlDocumnent &doc);
-    bool LoadPresets(CString szFileXml);
-    bool SavePresets(CString szFileXml);
+    bool LoadPresets(XmlDocumnent &doc, CPresetsList &presets);
+    bool LoadPresets(CString szFileXml, CPresetsList &presets);
+    bool SavePresets(CString szFileXml, CPresetsList &presets);
 public:
-    bool LoadFormat(XmlDocumnent &doc);
-    bool LoadFormat(CString szFileXml);
-    bool SaveFormat(CString szFileXml);
+    bool LoadFormat(XmlDocumnent &doc, CFormat &format);
+    bool LoadFormat(CString szFileXml, CFormat &format);
+    bool SaveFormat(CString szFileXml, CFormat &format);
 public:
-    bool LoadFormats(XmlDocumnent &doc);
-    bool LoadFormats(CString szFileXml);
-    bool SaveFormats(CString szFileXml);
+    bool LoadFormats(XmlDocumnent &doc, CFormatsList &formats);
+    bool LoadFormats(CString szFileXml, CFormatsList &formats);
+    bool SaveFormats(CString szFileXml, CFormatsList &formats);
 public:
-    bool LoadTool(XmlDocumnent &doc);
-    bool LoadTool(CString szFileXml);
+    bool LoadTool(XmlDocumnent &doc, CTool &tool);
+    bool LoadTool(CString szFileXml, CTool &tool);
+    bool SaveTool(CString szFileXml, CTool &tool);
 public:
-    bool LoadTools(XmlDocumnent &doc);
-    bool LoadTools(CString szFileXml);
-    bool SaveTools(CString szFileXml);
+    bool LoadTools(XmlDocumnent &doc, CToolsList &tools);
+    bool LoadTools(CString szFileXml, CToolsList &tools);
+    bool SaveTools(CString szFileXml, CToolsList &tools);
 };
