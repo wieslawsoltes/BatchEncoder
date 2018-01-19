@@ -19,12 +19,25 @@ public:
     static bool LoadOptions(CString szFileXml, COptions &options);
     static bool SaveOptions(CString szFileXml, COptions &options);
 public:
+    static bool LoadItem(XmlDocumnent &doc, CItem &item);
+    static bool LoadItem(CString szFileXml, CItem &item);
+    static bool SaveItem(CString szFileXml, CItem &item);
+public:
     static bool LoadItems(XmlDocumnent &doc, CItemsList &items);
     static bool LoadItems(CString szFileXml, CItemsList &items);
     static bool SaveItems(CString szFileXml, CItemsList &items);
 public:
     static bool LoadLanguage(XmlDocumnent &doc, CLanguage &language);
     static bool LoadLanguage(CString szFileXml, CLanguage &language);
+    static bool SaveLanguage(CString szFileXml, CLanguage &language);
+public:
+    static bool LoadLanguages(XmlDocumnent &doc, CLanguagesList &languages);
+    static bool LoadLanguages(CString szFileXml, CLanguagesList &languages);
+    static bool SaveLanguages(CString szFileXml, CLanguagesList &languages);
+public:
+    static bool LoadPreset(XmlDocumnent &doc, CPreset &preset);
+    static bool LoadPreset(CString szFileXml, CPreset &preset);
+    static bool SavePreset(CString szFileXml, CPreset &preset);
 public:
     static bool LoadPresets(XmlDocumnent &doc, CPresetsList &presets);
     static bool LoadPresets(CString szFileXml, CPresetsList &presets);
