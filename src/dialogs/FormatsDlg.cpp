@@ -1017,15 +1017,13 @@ void CFormatsDlg::ListSelectionChange()
 
 bool CFormatsDlg::LoadFormat(CString szFileXml)
 {
-    CFormat format;
-
-    CXmlConfig::LoadFormat(szFileXml, format);
-
-    m_Formats.Insert(format);
-    int nItem = m_Formats.Count() - 1;
-    this->AddToList(format, nItem);
-
-    return true;
+    XmlDocumnent doc;
+    CString szName = CXmlConfig::GetRootName(szFileXml, doc);
+    if (!szName.IsEmpty() && szName.CompareNoCase(_T("Format")) == 0)
+    {
+        return this->LoadFormat(doc);
+    }
+    return false;
 }
 
 bool CFormatsDlg::LoadFormat(XmlDocumnent &doc)
@@ -1048,18 +1046,13 @@ bool CFormatsDlg::SaveFormat(CString szFileXml, CFormat &format)
 
 bool CFormatsDlg::LoadFormats(CString szFileXml)
 {
-    this->m_Formats.RemoveAll();
-    this->m_LstFormats.DeleteAllItems();
-
-    CXmlConfig::LoadFormats(szFileXml, this->m_Formats);
-
-    if (this->m_Formats.Count() > 0)
-        nSelectedFormat = 0;
-
-    this->InsertFormatsToListCtrl();
-    this->ListSelectionChange();
-    
-    return true;
+    XmlDocumnent doc;
+    CString szName = CXmlConfig::GetRootName(szFileXml, doc);
+    if (!szName.IsEmpty() && szName.CompareNoCase(_T("Formats")) == 0)
+    {
+        return this->LoadFormats(doc);
+    }
+    return false;
 }
 
 bool CFormatsDlg::LoadFormats(XmlDocumnent &doc)

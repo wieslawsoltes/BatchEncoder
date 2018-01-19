@@ -650,14 +650,13 @@ void CPresetsDlg::ListSelectionChange()
 
 bool CPresetsDlg::LoadPresets(CString szFileXml)
 {
-    this->m_LstPresets.DeleteAllItems();
-    CFormat& format = this->m_Formats.Get(this->nSelectedFormat);
-    format.m_Presets.RemoveAll();
-
-    CXmlConfig::LoadPresets(szFileXml, format.m_Presets);
-
-    this->InsertPresetsToListCtrl();
-    return true;
+    XmlDocumnent doc;
+    CString szName = CXmlConfig::GetRootName(szFileXml, doc);
+    if (!szName.IsEmpty() && szName.CompareNoCase(_T("Presets")) == 0)
+    {
+        return this->LoadPresets(doc);
+    }
+    return false;
 }
 
 bool CPresetsDlg::LoadPresets(XmlDocumnent &doc)

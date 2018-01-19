@@ -912,15 +912,13 @@ void CToolsDlg::ListSelectionChange()
 
 bool CToolsDlg::LoadTool(CString szFileXml)
 {
-    CTool tool;
-
-    CXmlConfig::LoadTool(szFileXml, tool);
-
-    m_Tools.Insert(tool);
-    int nItem = m_Tools.Count() - 1;
-    this->AddToList(tool, nItem);
-
-    return true;
+    XmlDocumnent doc;
+    CString szName = CXmlConfig::GetRootName(szFileXml, doc);
+    if (!szName.IsEmpty() && szName.CompareNoCase(_T("Tool")) == 0)
+    {
+        return this->LoadTool(doc);
+    }
+    return false;
 }
 
 bool CToolsDlg::LoadTool(XmlDocumnent &doc)
@@ -943,18 +941,13 @@ bool CToolsDlg::SaveTool(CString szFileXml, CTool &tool)
 
 bool CToolsDlg::LoadTools(CString szFileXml)
 {
-    this->m_Tools.RemoveAll();
-    this->m_LstTools.DeleteAllItems();
-
-    CXmlConfig::LoadTools(szFileXml, this->m_Tools);
-
-    if (this->m_Tools.Count() > 0)
-        nSelectedTool = 0;
-
-    this->InsertToolsToListCtrl();
-    this->ListSelectionChange();
-    
-    return true;
+    XmlDocumnent doc;
+    CString szName = CXmlConfig::GetRootName(szFileXml, doc);
+    if (!szName.IsEmpty() && szName.CompareNoCase(_T("Tools")) == 0)
+    {
+        return this->LoadTools(doc);
+    }
+    return false;
 }
 
 bool CToolsDlg::LoadTools(XmlDocumnent &doc)

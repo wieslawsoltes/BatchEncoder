@@ -1884,13 +1884,13 @@ void CMainDlg::SetOptions()
 
 bool CMainDlg::LoadOptions(CString szFileXml)
 {
-    CXmlConfig::LoadOptions(szFileXml, this->m_Config.m_Options);
-
-    this->SetOptions();
-    this->UpdateFormatComboBox();
-    this->UpdatePresetComboBox();
-
-    return true;
+    XmlDocumnent doc;
+    CString szName = CXmlConfig::GetRootName(szFileXml, doc);
+    if (!szName.IsEmpty() && szName.CompareNoCase(_T("Options")) == 0)
+    {
+        return this->LoadOptions(doc);
+    }
+    return false;
 }
 
 bool CMainDlg::LoadOptions(XmlDocumnent &doc)
@@ -1913,14 +1913,13 @@ bool CMainDlg::SaveOptions(CString szFileXml)
 
 bool CMainDlg::LoadFormats(CString szFileXml)
 {
-    this->m_Config.m_Formats.RemoveAll();
-
-    CXmlConfig::LoadFormats(szFileXml, this->m_Config.m_Formats);
-
-    this->UpdateFormatComboBox();
-    this->UpdatePresetComboBox();
-
-    return true;
+    XmlDocumnent doc;
+    CString szName = CXmlConfig::GetRootName(szFileXml, doc);
+    if (!szName.IsEmpty() && szName.CompareNoCase(_T("Formats")) == 0)
+    {
+        return this->LoadFormats(doc);
+    }
+    return false;
 }
 
 bool CMainDlg::LoadFormats(XmlDocumnent &doc)
@@ -1942,14 +1941,13 @@ bool CMainDlg::SaveFormats(CString szFileXml)
 
 bool CMainDlg::LoadFormat(CString szFileXml)
 {
-    CFormat format;
-
-    CXmlConfig::LoadFormat(szFileXml, format);
-
-    m_Config.m_Formats.Insert(format);
-    this->UpdateFormatComboBox();
-    this->UpdatePresetComboBox();
-    return true;
+    XmlDocumnent doc;
+    CString szName = CXmlConfig::GetRootName(szFileXml, doc);
+    if (!szName.IsEmpty() && szName.CompareNoCase(_T("Format")) == 0)
+    {
+        return this->LoadFormat(doc);
+    }
+    return false;
 }
 
 bool CMainDlg::LoadFormat(XmlDocumnent &doc)
@@ -1978,16 +1976,11 @@ bool CMainDlg::SaveFormat(CString szFileXml)
 
 bool CMainDlg::LoadPresets(CString szFileXml)
 {
-    int nFormat = this->m_CmbFormat.GetCurSel();
-    if (nFormat != -1)
+    XmlDocumnent doc;
+    CString szName = CXmlConfig::GetRootName(szFileXml, doc);
+    if (!szName.IsEmpty() && szName.CompareNoCase(_T("Presets")) == 0)
     {
-        CFormat& format = m_Config.m_Formats.Get(nFormat);
-        format.m_Presets.RemoveAll();
-
-        CXmlConfig::LoadPresets(szFileXml, format.m_Presets);
-
-        this->UpdatePresetComboBox();
-        return true;
+        return this->LoadPresets(doc);
     }
     return false;
 }
@@ -2022,9 +2015,13 @@ bool CMainDlg::SavePresets(CString szFileXml)
 
 bool CMainDlg::LoadTools(CString szFileXml)
 {
-    this->m_Config.m_Tools.RemoveAll();
-
-    return CXmlConfig::LoadTools(szFileXml, this->m_Config.m_Tools);
+    XmlDocumnent doc;
+    CString szName = CXmlConfig::GetRootName(szFileXml, doc);
+    if (!szName.IsEmpty() && szName.CompareNoCase(_T("Tools")) == 0)
+    {
+        return this->LoadTools(doc);
+    }
+    return false;
 }
 
 bool CMainDlg::LoadTools(XmlDocumnent &doc)
@@ -2041,12 +2038,13 @@ bool CMainDlg::SaveTools(CString szFileXml)
 
 bool CMainDlg::LoadTool(CString szFileXml)
 {
-    CTool tool;
-
-    CXmlConfig::LoadTool(szFileXml, tool);
-
-    m_Config.m_Tools.Insert(tool);
-    return true;
+    XmlDocumnent doc;
+    CString szName = CXmlConfig::GetRootName(szFileXml, doc);
+    if (!szName.IsEmpty() && szName.CompareNoCase(_T("Tool")) == 0)
+    {
+        return this->LoadTool(doc);
+    }
+    return false;
 }
 
 bool CMainDlg::LoadTool(XmlDocumnent &doc)
@@ -2061,15 +2059,13 @@ bool CMainDlg::LoadTool(XmlDocumnent &doc)
 
 bool CMainDlg::LoadItems(CString szFileXml)
 {
-    this->m_LstInputItems.DeleteAllItems();
-    this->m_Config.m_Items.RemoveAll();
-    
-    CXmlConfig::LoadItems(szFileXml, this->m_Config.m_Items);
-
-    this->SetItems();
-    this->UpdateStatusBar();
-
-    return true;
+    XmlDocumnent doc;
+    CString szName = CXmlConfig::GetRootName(szFileXml, doc);
+    if (!szName.IsEmpty() && szName.CompareNoCase(_T("Items")) == 0)
+    {
+        return this->LoadItems(doc);
+    }
+    return false;
 }
 
 bool CMainDlg::LoadItems(XmlDocumnent &doc)
