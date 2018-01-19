@@ -311,6 +311,7 @@ copy /Y ..\setup\*.portable $(OutDir)</Command>
     <ClCompile Include="dialogs\PresetsDlg.cpp" />
     <ClCompile Include="dialogs\ToolsDlg.cpp" />
     <ClCompile Include="worker\Worker.cpp" />
+    <ClCompile Include="xml\XmlConfig.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="configuration\Path.h" />
@@ -349,6 +350,7 @@ copy /Y ..\setup\*.portable $(OutDir)</Command>
     <ClInclude Include="xml\XmlPaths.h" />
     <ClInclude Include="xml\XmlPresets.h" />
     <ClInclude Include="xml\XmlTools.h" />
+    <ClInclude Include="xml\XmlConfig.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\BatchEncoder.ico" />
