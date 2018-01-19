@@ -34,6 +34,9 @@
     <Filter Include="Header Files\Xml">
       <UniqueIdentifier>{8f6b2fbd-d6d7-4e5d-b494-8309102637bc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Xml">
+      <UniqueIdentifier>{bd76e190-40b0-4cbd-a637-da1e338ec61b}</UniqueIdentifier>
+    </Filter
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="StdAfx.cpp">
@@ -59,6 +62,9 @@
     </ClCompile>
     <ClCompile Include="dialogs\ToolsDlg.cpp">
       <Filter>Source Files\Dialogs</Filter>
+    </ClCompile>
+    <ClCompile Include="xml\XmlConfig.cpp">
+      <Filter>Source Files\Xml</Filter>
     </ClCompile>
     <ClCompile Include="worker\Worker.cpp">
       <Filter>Source Files\Worker</Filter>
@@ -152,10 +158,16 @@
     <ClInclude Include="xml\XmlOptions.h">
       <Filter>Header Files\Xml</Filter>
     </ClInclude>
+    <ClInclude Include="xml\XmlPaths.h">
+      <Filter>Header Files\Xml</Filter>
+    </ClInclude>
     <ClInclude Include="xml\XmlPresets.h">
       <Filter>Header Files\Xml</Filter>
     </ClInclude>
     <ClInclude Include="xml\XmlTools.h">
+      <Filter>Header Files\Xml</Filter>
+    </ClInclude>
+    <ClInclude Include="xml\XmlConfig.h">
       <Filter>Header Files\Xml</Filter>
     </ClInclude>
     <ClInclude Include="worker\Worker.h">
@@ -166,9 +178,6 @@
     </ClInclude>
     <ClInclude Include="configuration\PathsList.h">
       <Filter>Header Files\Configuration</Filter>
-    </ClInclude>
-    <ClInclude Include="xml\XmlPaths.h">
-      <Filter>Header Files\Xml</Filter>
     </ClInclude>
     <ClInclude Include="contexts\MainDlgWorkerContext.h">
       <Filter>Header Files\Contexts</Filter>
