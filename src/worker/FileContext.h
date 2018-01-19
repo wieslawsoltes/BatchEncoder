@@ -47,7 +47,7 @@ public:
         if (bUseReadPipes == true)
             szCommandLine = ReplaceNoCase(szCommandLine, _T("$INFILE"), _T("-"));
         else
-            szCommandLine = ReplaceNoCase(szCommandLine, _T("$INFILE"), thos->szInputFile);
+            szCommandLine = ReplaceNoCase(szCommandLine, _T("$INFILE"), this->szInputFile);
 
         szCommandLine = ReplaceNoCase(szCommandLine, _T("$OUTFILE"), _T("\"$OUTFILE\""));
         if (bUseWritePipes == true)
