@@ -911,23 +911,17 @@ void CToolsDlg::ListSelectionChange()
     bUpdate = false;
 }
 
-void CToolsDlg::LoadTool(CString szFileXml)
+bool CToolsDlg::LoadTool(CString szFileXml)
 {
     XmlDocumnent doc;
     if (XmlDoc::Open(szFileXml, doc) == true)
     {
         return LoadTool(doc);
     }
-    else
-    {
-        MessageBox(
-            pConfig->m_Language.GetString(0x00240002, pszToolsDialog[1]),
-            pConfig->m_Language.GetString(0x00240001, pszToolsDialog[0]),
-            MB_OK | MB_ICONERROR);
-    }
+    return false;
 }
 
-void CToolsDlg::LoadTool(XmlDocumnent &doc)
+bool CToolsDlg::LoadTool(XmlDocumnent &doc)
 {
     XmlTools xmlTools(doc);
 
@@ -937,40 +931,30 @@ void CToolsDlg::LoadTool(XmlDocumnent &doc)
 
     int nItem = m_Tools.Count() - 1;
     this->AddToList(tool, nItem);
+    
+    return true;
 }
 
-void CToolsDlg::SaveTool(CString szFileXml, CTool &tool)
+bool CToolsDlg::SaveTool(CString szFileXml, CTool &tool)
 {
     XmlDocumnent doc;
     XmlTools xmlTools(doc);
     xmlTools.Create();
     xmlTools.SetTool(tool);
-    if (xmlTools.Save(szFileXml) != true)
-    {
-        MessageBox(
-            pConfig->m_Language.GetString(0x00240003, pszToolsDialog[2]),
-            pConfig->m_Language.GetString(0x00240001, pszToolsDialog[0]),
-            MB_OK | MB_ICONERROR);
-    }
+    return xmlTools.Save(szFileXml);
 }
 
-void CToolsDlg::LoadTools(CString szFileXml)
+bool CToolsDlg::LoadTools(CString szFileXml)
 {
     XmlDocumnent doc;
     if (XmlDoc::Open(szFileXml, doc) == true)
     {
         return LoadTools(doc);
     }
-    else
-    {
-        MessageBox(
-            pConfig->m_Language.GetString(0x00240002, pszToolsDialog[1]),
-            pConfig->m_Language.GetString(0x00240001, pszToolsDialog[0]),
-            MB_OK | MB_ICONERROR);
-    }
+    return false;
 }
 
-void CToolsDlg::LoadTools(XmlDocumnent &doc)
+bool CToolsDlg::LoadTools(XmlDocumnent &doc)
 {
     XmlTools xmlTools(doc);
 
@@ -984,21 +968,17 @@ void CToolsDlg::LoadTools(XmlDocumnent &doc)
 
     this->InsertToolsToListCtrl();
     this->ListSelectionChange();
+    
+    return true;
 }
 
-void CToolsDlg::SaveTools(CString szFileXml)
+bool CToolsDlg::SaveTools(CString szFileXml)
 {
     XmlDocumnent doc;
     XmlTools xmlTools(doc);
     xmlTools.Create();
     xmlTools.SetTools(this->m_Tools);
-    if (xmlTools.Save(szFileXml) != true)
-    {
-        MessageBox(
-            pConfig->m_Language.GetString(0x00240003, pszToolsDialog[2]),
-            pConfig->m_Language.GetString(0x00240001, pszToolsDialog[0]),
-            MB_OK | MB_ICONERROR);
-    }
+    return xmlTools.Save(szFileXml);
 }
 
 void CToolsDlg::EnableUserInterface(BOOL bEnable)
