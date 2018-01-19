@@ -97,7 +97,7 @@ public:
     void HandleDropFiles(HDROP hDropInfo);
     void UpdateFields(CPreset &preset);
     void ListSelectionChange();
-    void LoadPresets(CString szFileXml);
-    void LoadPresets(XmlDocumnent &doc);
-    void SavePresets(CString szFileXml, CFormat &format);
+    bool LoadPresets(CString szFileXml);
+    bool LoadPresets(XmlDocumnent &doc);
+    bool SavePresets(CString szFileXml, CFormat &format);
 };
