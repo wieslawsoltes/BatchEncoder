@@ -8,6 +8,8 @@
 #include "configuration\Item.h"
 #include "configuration\ItemsList.h"
 
+#define VALIDATE(value) if (!value) return false
+
 class XmlItems : public XmlDoc
 {
 public:
@@ -18,24 +20,26 @@ public:
     {
     }
 public:
-    void GetItem(const XmlElement *element, CItem &m_Item)
+    bool GetItem(const XmlElement *element, CItem &m_Item)
     {
-        GetAttributeValue(element, "id", &m_Item.nId);
-        GetAttributeValue(element, "size", &m_Item.szSize);
-        GetAttributeValue(element, "name", &m_Item.szName);
-        GetAttributeValue(element, "extension", &m_Item.szExtension);
-        GetAttributeValue(element, "format", &m_Item.szFormatId);
-        GetAttributeValue(element, "preset", &m_Item.nPreset);
-        GetAttributeValue(element, "options", &m_Item.szOptions);
-        GetAttributeValue(element, "checked", &m_Item.bChecked);
-        GetAttributeValue(element, "time", &m_Item.szTime);
-        GetAttributeValue(element, "status", &m_Item.szStatus);
+        VALIDATE(GetAttributeValue(element, "id", &m_Item.nId));
+        VALIDATE(GetAttributeValue(element, "size", &m_Item.szSize));
+        VALIDATE(GetAttributeValue(element, "name", &m_Item.szName));
+        VALIDATE(GetAttributeValue(element, "extension", &m_Item.szExtension));
+        VALIDATE(GetAttributeValue(element, "format", &m_Item.szFormatId));
+        VALIDATE(GetAttributeValue(element, "preset", &m_Item.nPreset));
+        VALIDATE(GetAttributeValue(element, "options", &m_Item.szOptions));
+        VALIDATE(GetAttributeValue(element, "checked", &m_Item.bChecked));
+        VALIDATE(GetAttributeValue(element, "time", &m_Item.szTime));
+        VALIDATE(GetAttributeValue(element, "status", &m_Item.szStatus));
 
         auto parent = element->FirstChildElement("Paths");
         if (parent != nullptr)
         {
-            XmlPaths(m_Document).GetPaths(parent, m_Item.m_Paths);
+            VALIDATE(XmlPaths(m_Document).GetPaths(parent, m_Item.m_Paths));
+            return true;
         }
+        return false;
     }
     void SetItem(XmlElement *element, CItem &m_Item, int nId)
     {
@@ -54,7 +58,7 @@ public:
         element->LinkEndChild(parent);
         XmlPaths(m_Document).SetPaths(parent, m_Item.m_Paths);
     }
-    void GetItems(const XmlElement *parent, CItemsList &m_Items)
+    bool GetItems(const XmlElement *parent, CItemsList &m_Items)
     {
         auto element = parent->FirstChildElement("Item");
         if (element != nullptr)
@@ -62,10 +66,12 @@ public:
             for (element; element; element = element->NextSiblingElement())
             {
                 CItem item;
-                this->GetItem(element, item);
+                VALIDATE(this->GetItem(element, item));
                 m_Items.Insert(item);
             }
+            return true;
         }
+        return false;
     }
     void SetItems(XmlElement *parent, CItemsList &m_Items)
     {
@@ -79,13 +85,15 @@ public:
         }
     }
 public:
-    void GetItem(CItem &m_Item)
+    bool GetItem(CItem &m_Item)
     {
         auto element = this->FirstChildElement("Item");
         if (element != nullptr)
         {
-            this->GetItem(element, m_Item);
+            VALIDATE(this->GetItem(element, m_Item));
+            return true;
         }
+        return false;
     }
     void SetItem(CItem &m_Item)
     {
@@ -93,13 +101,15 @@ public:
         this->LinkEndChild(element);
         this->SetItem(element, m_Item, -1);
     }
-    void GetItems(CItemsList &m_Items)
+    bool GetItems(CItemsList &m_Items)
     {
         auto element = this->FirstChildElement("Items");
         if (element != nullptr)
         {
-            this->GetItems(element, m_Items);
+            VALIDATE(this->GetItems(element, m_Items));
+            return true;
         }
+        return false;
     }
     void SetItems(CItemsList &m_Items)
     {

@@ -45,8 +45,7 @@ bool CXmlConfig::SaveOptions(CString szFileXml, COptions &options)
 bool CXmlConfig::LoadItem(XmlDocumnent &doc, CItem &item)
 {
     XmlItems xml(doc);
-    xml.GetItem(item);
-    return true;
+    return xml.GetItem(item);
 }
 
 bool CXmlConfig::LoadItem(CString szFileXml, CItem &item)
@@ -71,8 +70,7 @@ bool CXmlConfig::SaveItem(CString szFileXml, CItem &item)
 bool CXmlConfig::LoadItems(XmlDocumnent &doc, CItemsList &items)
 {
     XmlItems xml(doc);
-    xml.GetItems(items);
-    return true;
+    return xml.GetItems(items);
 }
 
 bool CXmlConfig::LoadItems(CString szFileXml, CItemsList &items)
