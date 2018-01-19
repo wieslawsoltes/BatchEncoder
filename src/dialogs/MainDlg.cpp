@@ -1944,7 +1944,7 @@ bool CMainDlg::LoadFormat(CString szFileXml)
 {
     CFormat format;
 
-    CXmlConfig::LoadFormat(szFileXml, format)
+    CXmlConfig::LoadFormat(szFileXml, format);
 
     m_Config.m_Formats.Insert(format);
     this->UpdateFormatComboBox();
@@ -1956,7 +1956,7 @@ bool CMainDlg::LoadFormat(XmlDocumnent &doc)
 {
     CFormat format;
 
-    CXmlConfig::LoadFormat(doc, format)
+    CXmlConfig::LoadFormat(doc, format);
 
     m_Config.m_Formats.Insert(format);
     this->UpdateFormatComboBox();
@@ -1984,7 +1984,7 @@ bool CMainDlg::LoadPresets(CString szFileXml)
         CFormat& format = m_Config.m_Formats.Get(nFormat);
         format.m_Presets.RemoveAll();
 
-        CXmlConfig::LoadPresets(szFileXml, format.m_Presets)
+        CXmlConfig::LoadPresets(szFileXml, format.m_Presets);
 
         this->UpdatePresetComboBox();
         return true;
@@ -2000,7 +2000,7 @@ bool CMainDlg::LoadPresets(XmlDocumnent &doc)
         CFormat& format = m_Config.m_Formats.Get(nFormat);
         format.m_Presets.RemoveAll();
 
-        CXmlConfig::LoadPresets(doc, format.m_Presets)
+        CXmlConfig::LoadPresets(doc, format.m_Presets);
 
         this->UpdatePresetComboBox();
         return true;
