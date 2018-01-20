@@ -194,6 +194,9 @@
     <ClInclude Include="worker\CommandLine.h">
       <Filter>Header Files\Worker</Filter>
     </ClInclude>
+    <ClInclude Include="worker\PipeToStringWriter.h">
+      <Filter>Header Files\Worker\Pipes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="res\BatchEncoder.rc2">

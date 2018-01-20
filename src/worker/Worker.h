@@ -23,7 +23,6 @@ public:
     CWorker() { }
     virtual ~CWorker() { }
 public:
-    bool OutputLoop(IWorkerContext* pWorkerContext, CCommandLine &commandLine, CPipe &Stderr, IOutputParser &parser);
     bool ConvertFileUsingConsole(IWorkerContext* pWorkerContext, CCommandLine &commandLine);
     bool ConvertFileUsingPipes(IWorkerContext* pWorkerContext, CCommandLine &commandLine);
     bool ConvertFileUsingOnlyPipes(IWorkerContext* pWorkerContext, CCommandLine &decoderCommandLine, CCommandLine &encoderCommandLine);
