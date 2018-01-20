@@ -313,11 +313,8 @@ void CToolsDlg::OnBnClickedButtonRemoveAllTools()
 
     if (m_Tools.Count() > 0)
     {
-        CTool& tool = m_Tools.Get(nSelectedTool);
         m_Tools.RemoveAll();
-
         m_LstTools.DeleteAllItems();
-
         this->ListSelectionChange();
     }
 }

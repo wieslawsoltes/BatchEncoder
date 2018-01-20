@@ -296,11 +296,8 @@ void CFormatsDlg::OnBnClickedButtonRemoveAllFormats()
 {
     if (m_Formats.Count() > 0)
     {
-        CFormat& format = m_Formats.Get(nSelectedFormat);
         m_Formats.RemoveAll();
-
         m_LstFormats.DeleteAllItems();
-
         this->ListSelectionChange();
     }
 }
