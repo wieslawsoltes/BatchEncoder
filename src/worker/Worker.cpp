@@ -10,8 +10,6 @@
 #include "LuaProgess.h"
 #include "Worker.h"
 
-
-
 class CLuaProgressParser : public IProgressParser
 {
     CLuaProgess luaProgress;
