@@ -8,21 +8,21 @@
 class CFileContext
 {
 public:
-    CFormat *pFormat;
+    CFormat * pFormat;
     int nPreset;
     int nItemId;
     CString szInputFile;
     CString szOutputFile;
     CString szOutputPath;
-    TCHAR pszCommandLine[65536];
     bool bUseReadPipes;
     bool bUseWritePipes;
     CString szOptions;
+    TCHAR pszCommandLine[65536];
 public:
     CFileContext() { }
     virtual ~CFileContext() { }
 public:
-    void Init(CFormat *pFormat, int nPreset, int nItemId, CString szInputFile, CString szOutputFile, bool bUseReadPipes, bool bUseWritePipes, CString szAdditionalOptions)
+    void Create(CFormat *pFormat, int nPreset, int nItemId, CString szInputFile, CString szOutputFile, bool bUseReadPipes, bool bUseWritePipes, CString szAdditionalOptions)
     {
         CPreset& preset = pFormat->m_Presets.Get(nPreset);
 
@@ -34,8 +34,10 @@ public:
         this->bUseReadPipes = bUseReadPipes;
         this->bUseWritePipes = bUseWritePipes;
 
-        this->szOptions = szAdditionalOptions.GetLength() > 0 ?
-            (preset.szOptions + _T(" ") + szAdditionalOptions) : preset.szOptions;
+        if (szAdditionalOptions.GetLength() > 0)
+            this->szOptions = preset.szOptions + _T(" ") + szAdditionalOptions;
+        else
+            this->szOptions = preset.szOptions;
 
         CString szCommandLine = pFormat->szTemplate;
 
