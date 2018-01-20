@@ -64,7 +64,7 @@ protected:
 public:
     MainDlgDropContext m_DD;
     CConfiguration m_Config;
-    CWorkerContext* pWorkerContext;
+    IWorkerContext* pWorkerContext;
     CWorker m_Worker;
 public:
     int nEdtItem;

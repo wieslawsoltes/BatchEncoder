@@ -17,7 +17,7 @@
 class IOutputParser
 {
 public:
-    virtual bool Init(CWorkerContext* pWorkerContext, CFileContext* pFileContext) = 0;
+    virtual bool Init(IWorkerContext* pWorkerContext, CFileContext* pFileContext) = 0;
     virtual bool Parse(const char *szLine) = 0;
 };
 
@@ -29,13 +29,13 @@ public:
     CWorker() { }
     virtual ~CWorker() { }
 public:
-    bool OutputLoop(CWorkerContext* pWorkerContext, CFileContext &context, CPipe &Stderr, IOutputParser &parser);
-    bool ReadLoop(CWorkerContext* pWorkerContext, CPipeContext &context);
-    bool WriteLoop(CWorkerContext* pWorkerContext, CPipeContext &context);
-    bool ConvertFileUsingConsole(CWorkerContext* pWorkerContext, CFileContext &context);
-    bool ConvertFileUsingPipes(CWorkerContext* pWorkerContext, CFileContext &context);
-    bool ConvertFileUsingOnlyPipes(CWorkerContext* pWorkerContext, CFileContext &decoderContext, CFileContext &encoderContext);
-    bool ConvertItem(CWorkerContext* pWorkerContext, CItem& item, CSynchronize &syncDir);
-    bool ConvertLoop(CWorkerContext* pWorkerContext, std::queue<CItem> &queue, CSynchronize &sync, CSynchronize &syncDir);
-    void Convert(CWorkerContext* pWorkerContext);
+    bool OutputLoop(IWorkerContext* pWorkerContext, CFileContext &context, CPipe &Stderr, IOutputParser &parser);
+    bool ReadLoop(IWorkerContext* pWorkerContext, CPipeContext &context);
+    bool WriteLoop(IWorkerContext* pWorkerContext, CPipeContext &context);
+    bool ConvertFileUsingConsole(IWorkerContext* pWorkerContext, CFileContext &context);
+    bool ConvertFileUsingPipes(IWorkerContext* pWorkerContext, CFileContext &context);
+    bool ConvertFileUsingOnlyPipes(IWorkerContext* pWorkerContext, CFileContext &decoderContext, CFileContext &encoderContext);
+    bool ConvertItem(IWorkerContext* pWorkerContext, CItem& item, CSynchronize &syncDir);
+    bool ConvertLoop(IWorkerContext* pWorkerContext, std::queue<CItem> &queue, CSynchronize &sync, CSynchronize &syncDir);
+    void Convert(IWorkerContext* pWorkerContext);
 };

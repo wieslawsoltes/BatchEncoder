@@ -5,7 +5,7 @@
 
 #include "configuration\Configuration.h"
 
-class CWorkerContext
+class IWorkerContext
 {
 public:
     volatile bool bRunning;
@@ -18,9 +18,9 @@ public:
     volatile int nLastItemId;
     CConfiguration* pConfig;
 public:
-    CWorkerContext(CConfiguration* pConfig) 
+    IWorkerContext(CConfiguration* pConfig) 
         : pConfig(pConfig) { }
-    virtual ~CWorkerContext() { }
+    virtual ~IWorkerContext() { }
 public:
     virtual void Init() = 0;
     virtual void Next(int nItemId) = 0;

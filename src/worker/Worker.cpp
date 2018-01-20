@@ -16,7 +16,7 @@ class CLuaOutputParser : public IOutputParser
 {
     CLuaProgess luaProgress;
 public:
-    CWorkerContext *pWorkerContext;
+    IWorkerContext *pWorkerContext;
     CFileContext *pFileContext;
     int nProgress;
     int nPreviousProgress;
@@ -24,7 +24,7 @@ public:
     CLuaOutputParser(){ }
     virtual ~CLuaOutputParser() { }
 public:
-    bool Init(CWorkerContext* pWorkerContext, CFileContext* pFileContext)
+    bool Init(IWorkerContext* pWorkerContext, CFileContext* pFileContext)
     {
         this->pWorkerContext = pWorkerContext;
         this->pFileContext = pFileContext;
@@ -74,13 +74,13 @@ public:
 class CDebugOutputParser : public IOutputParser
 {
 public:
-    CWorkerContext * pWorkerContext;
+    IWorkerContext * pWorkerContext;
     CFileContext *pFileContext;
 public:
     CDebugOutputParser() { }
     virtual ~CDebugOutputParser() { }
 public:
-    bool Init(CWorkerContext* pWorkerContext, CFileContext* pFileContext)
+    bool Init(IWorkerContext* pWorkerContext, CFileContext* pFileContext)
     {
         this->pWorkerContext = pWorkerContext;
         this->pFileContext = pFileContext;
@@ -94,7 +94,7 @@ public:
     }
 };
 
-bool CWorker::OutputLoop(CWorkerContext* pWorkerContext, CFileContext &context, CPipe &Stderr, IOutputParser &parser)
+bool CWorker::OutputLoop(IWorkerContext* pWorkerContext, CFileContext &context, CPipe &Stderr, IOutputParser &parser)
 {
     const int nBuffSize = 4096;
     char szReadBuff[nBuffSize];
@@ -197,7 +197,7 @@ bool CWorker::OutputLoop(CWorkerContext* pWorkerContext, CFileContext &context, 
     return true;
 }
 
-bool CWorker::ReadLoop(CWorkerContext* pWorkerContext, CPipeContext &context)
+bool CWorker::ReadLoop(IWorkerContext* pWorkerContext, CPipeContext &context)
 {
     HANDLE hFile = INVALID_HANDLE_VALUE;
     BYTE pReadBuff[4096];
@@ -274,7 +274,7 @@ bool CWorker::ReadLoop(CWorkerContext* pWorkerContext, CPipeContext &context)
     }
 }
 
-bool CWorker::WriteLoop(CWorkerContext* pWorkerContext, CPipeContext &context)
+bool CWorker::WriteLoop(IWorkerContext* pWorkerContext, CPipeContext &context)
 {
     HANDLE hFile = INVALID_HANDLE_VALUE;
     BYTE pReadBuff[4096];
@@ -337,7 +337,7 @@ bool CWorker::WriteLoop(CWorkerContext* pWorkerContext, CPipeContext &context)
     }
 }
 
-bool CWorker::ConvertFileUsingConsole(CWorkerContext* pWorkerContext, CFileContext &context)
+bool CWorker::ConvertFileUsingConsole(IWorkerContext* pWorkerContext, CFileContext &context)
 {
     if ((context.bUseReadPipes == true) || (context.bUseWritePipes == true))
     {
@@ -419,7 +419,7 @@ bool CWorker::ConvertFileUsingConsole(CWorkerContext* pWorkerContext, CFileConte
     }
 }
 
-bool CWorker::ConvertFileUsingPipes(CWorkerContext* pWorkerContext, CFileContext &context)
+bool CWorker::ConvertFileUsingPipes(IWorkerContext* pWorkerContext, CFileContext &context)
 {
     if ((context.bUseReadPipes == false) && (context.bUseWritePipes == false))
     {
@@ -760,7 +760,7 @@ bool CWorker::ConvertFileUsingPipes(CWorkerContext* pWorkerContext, CFileContext
     }
 }
 
-bool CWorker::ConvertFileUsingOnlyPipes(CWorkerContext* pWorkerContext, CFileContext &decoderContext, CFileContext &encoderContext)
+bool CWorker::ConvertFileUsingOnlyPipes(IWorkerContext* pWorkerContext, CFileContext &decoderContext, CFileContext &encoderContext)
 {
     CProcess decoderProcess;
     CProcess encoderProcess;
@@ -986,7 +986,7 @@ bool CWorker::ConvertFileUsingOnlyPipes(CWorkerContext* pWorkerContext, CFileCon
     }
 }
 
-bool CWorker::ConvertItem(CWorkerContext* pWorkerContext, CItem& item, CSynchronize &syncDir)
+bool CWorker::ConvertItem(IWorkerContext* pWorkerContext, CItem& item, CSynchronize &syncDir)
 {
     CFormat *pEncFormat = nullptr;
     CFormat *pDecFormat = nullptr;
@@ -1282,7 +1282,7 @@ bool CWorker::ConvertItem(CWorkerContext* pWorkerContext, CItem& item, CSynchron
     return false;
 }
 
-bool CWorker::ConvertLoop(CWorkerContext* pWorkerContext, std::queue<CItem> &queue, CSynchronize &sync, CSynchronize &syncDir)
+bool CWorker::ConvertLoop(IWorkerContext* pWorkerContext, std::queue<CItem> &queue, CSynchronize &sync, CSynchronize &syncDir)
 {
     while (TRUE)
     {
@@ -1337,7 +1337,7 @@ bool CWorker::ConvertLoop(CWorkerContext* pWorkerContext, std::queue<CItem> &que
     return true;
 }
 
-void CWorker::Convert(CWorkerContext* pWorkerContext)
+void CWorker::Convert(IWorkerContext* pWorkerContext)
 {
     int nItems = pWorkerContext->pConfig->m_Items.Count();
 

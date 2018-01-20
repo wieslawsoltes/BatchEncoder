@@ -11,14 +11,14 @@
 #include "dialogs\MainDlg.h"
 #include "Strings.h"
 
-class CMainDlgWorkerContext : public CWorkerContext
+class CMainDlgWorkerContext : public IWorkerContext
 {
 private:
     CTimeCount timer;
     CMainDlg *pDlg;
 public:
     CMainDlgWorkerContext(CConfiguration* pConfig, CMainDlg* pDlg)
-        : CWorkerContext(pConfig)
+        : IWorkerContext(pConfig)
     {
         this->bDone = true;
         this->pDlg = pDlg;
