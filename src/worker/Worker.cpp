@@ -112,12 +112,12 @@ bool CWorker::OutputLoop(IWorkerContext* pWorkerContext, CFileContext &context, 
     }
 
     // initialize buffers
-    ZeroMemory(szReadBuff, sizeof(szReadBuff));
-    ZeroMemory(szLineBuff, sizeof(szLineBuff));
+    std::memset(szReadBuff, 0, sizeof(szReadBuff));
+    std::memset(szLineBuff, 0, sizeof(szLineBuff));
 
     do
     {
-        ZeroMemory(szReadBuff, sizeof(szReadBuff));
+        std::memset(szReadBuff, 0, sizeof(szReadBuff));
         bRes = ::ReadFile(Stderr.hRead, szReadBuff, 100, &dwReadBytes, 0);
         if (bRes == FALSE || dwReadBytes == 0)
             break;
@@ -176,7 +176,7 @@ bool CWorker::OutputLoop(IWorkerContext* pWorkerContext, CFileContext &context, 
                 if (strlen(szLineBuff) > 0)
                 {
                     bRunning = parser.Parse(szLineBuff);
-                    ZeroMemory(szLineBuff, sizeof(szLineBuff));
+                    std::memset(szLineBuff, 0, sizeof(szLineBuff));
                     if ((pWorkerContext->bRunning == false) || (bRunning == false))
                         break;
                 }

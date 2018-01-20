@@ -3,6 +3,7 @@
 
 #pragma once
 
+#include <cstring>
 #include "utilities\Utilities.h"
 
 class CFileContext
@@ -62,7 +63,7 @@ public:
         szCommandLine = ReplaceNoCase(szCommandLine, _T("$OUTPATH"), _T("\"$OUTPATH\""));
         szCommandLine = ReplaceNoCase(szCommandLine, _T("$OUTPATH"), this->szOutputPath);
 
-        ZeroMemory(this->pszCommandLine, sizeof(this->pszCommandLine));
+        std::memset(this->pszCommandLine, 0, sizeof(this->pszCommandLine));
         lstrcpy(this->pszCommandLine, szCommandLine.GetBuffer(szCommandLine.GetLength()));
     }
 };
