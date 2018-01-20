@@ -54,8 +54,6 @@ bool CWorker::ProgresssLoop(CWorkerContext* pWorkerContext, CFileContext &contex
     int nLineLen = 0;
     int nPreviousProgress = 0;
 
-    ::SetCurrentDirectory(m_App.szSettingsPath);
-
     CProgressParser progress;
     if (progress.Init(pWorkerContext, context) == false)
     {
