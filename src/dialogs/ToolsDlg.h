@@ -14,8 +14,7 @@
 #include "configuration\ToolsList.h"
 #include "configuration\FormatsList.h"
 #include "configuration\Configuration.h"
-#include "utilities\Download.h"
-#include "utilities\Thread.h"
+#include "worker\ToolUtilities.h"
 
 #define TOOL_COLUMN_NAME      0
 #define TOOL_COLUMN_URL       1
@@ -54,11 +53,11 @@ public:
     CString szToolsDialogResize;
     CString szToolsListColumns;
     volatile bool bUpdate;
-    volatile bool bDownload;
     int nSelectedTool;
     CToolsList m_Tools;
     CFormatsList m_Formats;
     CThread m_Thread;
+    CToolUtilities m_Utilities;
 public:
     CMyStatic m_StcName;
     CMyStatic m_StcPlatform;
@@ -132,8 +131,6 @@ public:
     void ListSelectionChange();
     void EnableUserInterface(BOOL bEnable = TRUE);
     void DownloadTools();
-    void SetFormatPaths(CString szPlatform);
-    void SetFormatPaths();
 public:
     bool LoadTool(CString szFileXml);
     bool LoadTool(XmlDocumnent &doc);

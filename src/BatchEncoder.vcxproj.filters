@@ -40,6 +40,9 @@
     <Filter Include="Header Files\Worker\Pipes">
       <UniqueIdentifier>{abce6057-0596-48c1-94f3-163c835e4786}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Worker\Tools">
+      <UniqueIdentifier>{20112d9d-a723-458b-8c8a-a960c9a2d5af}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="StdAfx.cpp">
@@ -196,6 +199,9 @@
     </ClInclude>
     <ClInclude Include="worker\PipeToStringWriter.h">
       <Filter>Header Files\Worker\Pipes</Filter>
+    </ClInclude>
+    <ClInclude Include="worker\ToolUtilities.h">
+      <Filter>Header Files\Worker\Tools</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
