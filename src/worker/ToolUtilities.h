@@ -18,33 +18,41 @@ public:
     CToolUtilities() { }
     virtual ~CToolUtilities() { }
 public:
-    void Download(CTool& tool, bool bExtract, bool bInstall, int nIndex, CConfiguration *pConfig, std::function<void(int, CString)> callback)
+    bool Download(CTool& tool, bool bExtract, bool bInstall, int nIndex, CConfiguration *pConfig, std::function<void(int, CString)> callback = nullptr)
     {
         CDownload m_Download;
         CString szUrl = tool.szUrl;
         CString szFilePath = m_App.CombinePath(m_App.szToolsPath, tool.szFile);
         CString szFolderPath = m_App.CombinePath(m_App.szToolsPath, ::GetOnlyFileName(tool.szFile));
 
-        m_Download.Download(szUrl, szFilePath,
+        bool bResult = m_Download.Download(szUrl, szFilePath,
             [nIndex, pConfig, callback](int nProgress, CString szStatus)
         {
-            for (int s = 0; s < 8; s++)
+            if (callback != nullptr)
             {
-                if (szStatus.Find(pszDownloadStatus[s]) >= 0)
+                for (int s = 0; s < 8; s++)
                 {
-                    CString szTranslation = pConfig->m_Language.GetString(0x00400001 + s, pszDownloadStatus[s]);
-                    szStatus.Replace(pszDownloadStatus[s], szTranslation);
+                    if (szStatus.Find(pszDownloadStatus[s]) >= 0)
+                    {
+                        CString szTranslation = pConfig->m_Language.GetString(0x00400001 + s, pszDownloadStatus[s]);
+                        szStatus.Replace(pszDownloadStatus[s], szTranslation);
+                    }
                 }
+                callback(nIndex, szStatus);
             }
-
-            callback(nIndex, szStatus);
         });
+
+        if (bResult == false)
+        {
+            return false;
+        }
 
         if (tool.szExtract.CompareNoCase(_T("install")) == 0)
         {
             if (bInstall == true)
             {
                 ::LaunchAndWait(szFilePath, _T(""), TRUE);
+                return true;
             }
         }
 
@@ -59,8 +67,12 @@ public:
                 {
                     if (::MakeFullPath(szFolderPath) == false)
                     {
-                        CString szStatus = pConfig->m_Language.GetString(0x00410001, pszExtractStatus[0]);
-                        callback(nIndex, szStatus);
+                        if (callback != nullptr)
+                        {
+                            CString szStatus = pConfig->m_Language.GetString(0x00410001, pszExtractStatus[0]);
+                            callback(nIndex, szStatus);
+                        }
+                        return false;
                     }
                 }
 
@@ -69,17 +81,43 @@ public:
                     bool bUnzipResult = ::Unzip2Folder(file, folder);
                     if (bUnzipResult == true)
                     {
-                        CString szStatus = pConfig->m_Language.GetString(0x00410002, pszExtractStatus[1]);
-                        callback(nIndex, szStatus);
+                        if (callback != nullptr)
+                        {
+                            CString szStatus = pConfig->m_Language.GetString(0x00410002, pszExtractStatus[1]);
+                            callback(nIndex, szStatus);
+                        }
+                        return true;
                     }
                     else
                     {
-                        CString szStatus = pConfig->m_Language.GetString(0x00410003, pszExtractStatus[2]);
-                        callback(nIndex, szStatus);
+                        if (callback != nullptr)
+                        {
+                            CString szStatus = pConfig->m_Language.GetString(0x00410003, pszExtractStatus[2]);
+                            callback(nIndex, szStatus);
+                        }
+                        return false;
                     }
                 }
             }
         }
+    }
+    int FindTool(CToolsList& m_Tools, CString szPlatform, CString szFormatId)
+    {
+        int nTool = m_Tools.GetToolByFormatAndPlatform(szFormatId, szPlatform);
+        if (nTool >= 0)
+        {
+            return nTool;
+        }
+        return -1;
+    }
+    int FindTool(CToolsList& m_Tools, CString szFormatId)
+    {
+#if defined(_WIN32) & !defined(_WIN64)
+        CString szPlatform = _T("x86");
+#else
+        CString szPlatform = _T("x64");
+#endif
+        return FindTool(m_Tools, szFormatId);
     }
     void SetFormatPaths(CFormatsList& m_Formats, CToolsList& m_Tools, CString szPlatform)
     {
