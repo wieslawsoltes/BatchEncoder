@@ -34,6 +34,9 @@
     <Filter Include="Source Files\Xml">
       <UniqueIdentifier>{bd76e190-40b0-4cbd-a637-da1e338ec61b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Worker\Parser">
+      <UniqueIdentifier>{28f04ed3-4116-4991-94ad-e2a3d720a465}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="StdAfx.cpp">
@@ -131,9 +134,6 @@
     <ClInclude Include="dialogs\ToolsDlg.h">
       <Filter>Header Files\Dialogs</Filter>
     </ClInclude>
-    <ClInclude Include="worker\LuaProgess.h">
-      <Filter>Header Files\Worker</Filter>
-    </ClInclude>
     <ClInclude Include="worker\FileContext.h">
       <Filter>Header Files\Worker</Filter>
     </ClInclude>
@@ -180,13 +180,16 @@
       <Filter>Header Files\Worker</Filter>
     </ClInclude>
     <ClInclude Include="worker\DebugOutputParser.h">
-      <Filter>Header Files\Worker</Filter>
-    </ClInclude>
-    <ClInclude Include="worker\LuaOutputParser.h">
-      <Filter>Header Files\Worker</Filter>
+      <Filter>Header Files\Worker\Parser</Filter>
     </ClInclude>
     <ClInclude Include="worker\OutputParser.h">
-      <Filter>Header Files\Worker</Filter>
+      <Filter>Header Files\Worker\Parser</Filter>
+    </ClInclude>
+    <ClInclude Include="worker\LuaOutputParser.h">
+      <Filter>Header Files\Worker\Parser</Filter>
+    </ClInclude>
+    <ClInclude Include="worker\LuaProgess.h">
+      <Filter>Header Files\Worker\Parser</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
