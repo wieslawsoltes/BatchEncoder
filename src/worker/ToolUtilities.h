@@ -100,6 +100,8 @@ public:
                 }
             }
         }
+
+        return true;
     }
     int FindTool(CToolsList& m_Tools, CString szPlatform, CString szFormatId)
     {
