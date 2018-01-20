@@ -119,7 +119,7 @@ public:
 #else
         CString szPlatform = _T("x64");
 #endif
-        return FindTool(m_Tools, szFormatId);
+        return FindTool(m_Tools, szPlatform, szFormatId);
     }
     void SetFormatPaths(CFormatsList& m_Formats, CToolsList& m_Tools, CString szPlatform)
     {
