@@ -32,7 +32,10 @@ const TCHAR* pszConvertPipes[] = {
     /* 07 */ _T("Error: can not create write thread."),
     /* 08 */ _T("Error: progress did not reach 100%."),
     /* 09 */ _T("Error: can not create pipes for process connection."),
-    /* 10 */ _T("Done")
+    /* 10 */ _T("Done"),
+    /* 11 */ _T("Error: can not create pipes for stderr."),
+    /* 12 */ _T("Error: can not set stderr pipe inherit flag."),
+    /* 13 */ _T("Error: can not create output thread.")
 };
 
 const TCHAR* pszConvertItem[] = {
