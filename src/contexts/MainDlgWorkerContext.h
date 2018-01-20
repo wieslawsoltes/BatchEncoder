@@ -74,6 +74,10 @@ public:
 
         pDlg->FinishConvert();
     }
+    bool IsRunning()
+    {
+        return this->bRunning;
+    }
     bool Callback(int nItemId, int nProgress, bool bFinished, bool bError = false)
     {
         if (bError == true)
