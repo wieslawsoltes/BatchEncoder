@@ -31,8 +31,6 @@ public:
     virtual ~CWorker() { }
 public:
     bool OutputLoop(IWorkerContext* pWorkerContext, CFileContext &context, CPipe &Stderr, IOutputParser &parser);
-    bool ReadLoop(IWorkerContext* pWorkerContext, CPipeContext &context);
-    bool WriteLoop(IWorkerContext* pWorkerContext, CPipeContext &context);
     bool ConvertFileUsingConsole(IWorkerContext* pWorkerContext, CFileContext &context);
     bool ConvertFileUsingPipes(IWorkerContext* pWorkerContext, CFileContext &context);
     bool ConvertFileUsingOnlyPipes(IWorkerContext* pWorkerContext, CFileContext &decoderContext, CFileContext &encoderContext);

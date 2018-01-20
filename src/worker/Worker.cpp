@@ -197,146 +197,6 @@ bool CWorker::OutputLoop(IWorkerContext* pWorkerContext, CFileContext &context, 
     return true;
 }
 
-bool CWorker::ReadLoop(IWorkerContext* pWorkerContext, CPipeContext &context)
-{
-    HANDLE hFile = INVALID_HANDLE_VALUE;
-    BYTE pReadBuff[4096];
-    BOOL bRes = FALSE;
-    DWORD dwReadBytes = 0;
-    DWORD dwWriteBytes = 0;
-    ULONGLONG nTotalBytesRead = 0;
-    ULONGLONG nFileSize = 0;
-    int nProgress = -1;
-    int nPreviousProgress = -1;
-    bool bRunning = true;
-
-    context.bError = false;
-    context.bFinished = false;
-
-    hFile = ::CreateFile(context.szFileName, GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_EXISTING, 0, nullptr);
-    if (hFile == INVALID_HANDLE_VALUE)
-    {
-        context.bError = true;
-        context.bFinished = true;
-        ::CloseHandle(context.hPipe);
-        return false;
-    }
-
-    nFileSize = ::GetFileSize64(hFile);
-    if (nFileSize == 0)
-    {
-        context.bError = true;
-        context.bFinished = true;
-        ::CloseHandle(hFile);
-        ::CloseHandle(context.hPipe);
-        return false;
-    }
-
-    do
-    {
-        bRes = ::ReadFile(hFile, pReadBuff, 4096, &dwReadBytes, 0);
-        if ((bRes == FALSE) || (dwReadBytes == 0))
-            break;
-
-        ::Sleep(0);
-
-        bRes = ::WriteFile(context.hPipe, pReadBuff, dwReadBytes, &dwWriteBytes, 0);
-        if ((bRes == FALSE) || (dwWriteBytes == 0) || (dwReadBytes != dwWriteBytes))
-            break;
-
-        nTotalBytesRead += dwReadBytes;
-        nProgress = (int)((nTotalBytesRead * 100) / nFileSize);
-
-        if (nProgress != nPreviousProgress)
-        {
-            bRunning = pWorkerContext->Callback(context.nIndex, nProgress, false);
-            nPreviousProgress = nProgress;
-        }
-
-        if ((pWorkerContext->bRunning == false) || (bRunning == false))
-            break;
-    } while (bRes != FALSE);
-
-    ::CloseHandle(hFile);
-    ::CloseHandle(context.hPipe);
-
-    if (nTotalBytesRead != nFileSize)
-    {
-        context.bError = true;
-        context.bFinished = true;
-        return false;
-    }
-    else
-    {
-        context.bError = false;
-        context.bFinished = true;
-        return true;
-    }
-}
-
-bool CWorker::WriteLoop(IWorkerContext* pWorkerContext, CPipeContext &context)
-{
-    HANDLE hFile = INVALID_HANDLE_VALUE;
-    BYTE pReadBuff[4096];
-    BOOL bRes = FALSE;
-    DWORD dwReadBytes = 0;
-    DWORD dwWriteBytes = 0;
-    ULONGLONG nTotalBytesWrite = 0;
-
-    context.bError = false;
-    context.bFinished = false;
-
-    hFile = ::CreateFile(context.szFileName, GENERIC_READ | GENERIC_WRITE, 0, nullptr, CREATE_ALWAYS, 0, nullptr);
-    if (hFile == INVALID_HANDLE_VALUE)
-    {
-        context.bError = true;
-        context.bFinished = true;
-        return false;
-    }
-
-    do
-    {
-        ::Sleep(0);
-
-        DWORD dwAvailableBytes;
-        if (FALSE == PeekNamedPipe(context.hPipe, 0, 0, 0, &dwAvailableBytes, 0))
-            break;
-
-        if (dwAvailableBytes > 0)
-        {
-            bRes = ::ReadFile(context.hPipe, pReadBuff, 4096, &dwReadBytes, 0);
-            if ((bRes == FALSE) || (dwReadBytes == 0))
-                break;
-
-            bRes = ::WriteFile(hFile, pReadBuff, dwReadBytes, &dwWriteBytes, 0);
-            if ((bRes == FALSE) || (dwWriteBytes == 0) || (dwReadBytes != dwWriteBytes))
-                break;
-
-            nTotalBytesWrite += dwReadBytes;
-        }
-        else
-            bRes = TRUE;
-
-        if (pWorkerContext->bRunning == false)
-            break;
-    } while (bRes != FALSE);
-
-    ::CloseHandle(hFile);
-
-    if (nTotalBytesWrite <= 0)
-    {
-        context.bError = true;
-        context.bFinished = true;
-        return false;
-    }
-    else
-    {
-        context.bError = false;
-        context.bFinished = true;
-        return true;
-    }
-}
-
 bool CWorker::ConvertFileUsingConsole(IWorkerContext* pWorkerContext, CFileContext &context)
 {
     if ((context.bUseReadPipes == true) || (context.bUseWritePipes == true))
@@ -613,7 +473,7 @@ bool CWorker::ConvertFileUsingPipes(IWorkerContext* pWorkerContext, CFileContext
         readContext.hPipe = Stdin.hWrite;
         readContext.nIndex = context.nItemId;
 
-        if (readThread.Start([this, pWorkerContext, &readContext]() { this->ReadLoop(pWorkerContext, readContext); }) == false)
+        if (readThread.Start([this, pWorkerContext, &readContext]() { readContext.ReadLoop(pWorkerContext); }) == false)
         {
             timer.Stop();
 
@@ -662,7 +522,7 @@ bool CWorker::ConvertFileUsingPipes(IWorkerContext* pWorkerContext, CFileContext
         writeContext.hPipe = Stdout.hRead;
         writeContext.nIndex = context.nItemId;
 
-        if (writeThread.Start([this, pWorkerContext, &writeContext]() { this->WriteLoop(pWorkerContext, writeContext); }) == false)
+        if (writeThread.Start([this, pWorkerContext, &writeContext]() { writeContext.WriteLoop(pWorkerContext); }) == false)
         {
             timer.Stop();
 
@@ -900,7 +760,7 @@ bool CWorker::ConvertFileUsingOnlyPipes(IWorkerContext* pWorkerContext, CFileCon
     readContext.hPipe = Stdin.hWrite;
     readContext.nIndex = decoderContext.nItemId;
 
-    if (readThread.Start([this, pWorkerContext, &readContext]() { this->ReadLoop(pWorkerContext, readContext); }) == false)
+    if (readThread.Start([this, pWorkerContext, &readContext]() { readContext.ReadLoop(pWorkerContext); }) == false)
     {
         timer.Stop();
 
@@ -918,7 +778,7 @@ bool CWorker::ConvertFileUsingOnlyPipes(IWorkerContext* pWorkerContext, CFileCon
     writeContext.hPipe = Stdout.hRead;
     writeContext.nIndex = encoderContext.nItemId;
 
-    if (writeThread.Start([this, pWorkerContext, &writeContext]() { this->WriteLoop(pWorkerContext, writeContext); }) == false)
+    if (writeThread.Start([this, pWorkerContext, &writeContext]() { writeContext.WriteLoop(pWorkerContext); }) == false)
     {
         timer.Stop();
 
