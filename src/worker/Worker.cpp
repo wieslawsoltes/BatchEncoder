@@ -472,10 +472,9 @@ bool CWorker::ConvertFileUsingPipes(IWorkerContext* pWorkerContext, CFileContext
         readContext.bError = false;
         readContext.bFinished = false;
         readContext.szFileName = context.szInputFile;
-        readContext.hPipe = Stdin.hWrite;
         readContext.nIndex = context.nItemId;
 
-        if (readThread.Start([this, pWorkerContext, &readContext]() { readContext.ReadLoop(pWorkerContext); }) == false)
+        if (readThread.Start([this, pWorkerContext, &readContext, &Stdin]() { readContext.ReadLoop(pWorkerContext, Stdin); }) == false)
         {
             timer.Stop();
 
@@ -521,10 +520,9 @@ bool CWorker::ConvertFileUsingPipes(IWorkerContext* pWorkerContext, CFileContext
         writeContext.bError = false;
         writeContext.bFinished = false;
         writeContext.szFileName = context.szOutputFile;
-        writeContext.hPipe = Stdout.hRead;
         writeContext.nIndex = context.nItemId;
 
-        if (writeThread.Start([this, pWorkerContext, &writeContext]() { writeContext.WriteLoop(pWorkerContext); }) == false)
+        if (writeThread.Start([this, pWorkerContext, &writeContext, &Stdout]() { writeContext.WriteLoop(pWorkerContext, Stdout); }) == false)
         {
             timer.Stop();
 
@@ -759,10 +757,9 @@ bool CWorker::ConvertFileUsingOnlyPipes(IWorkerContext* pWorkerContext, CFileCon
     readContext.bError = false;
     readContext.bFinished = false;
     readContext.szFileName = decoderContext.szInputFile;
-    readContext.hPipe = Stdin.hWrite;
     readContext.nIndex = decoderContext.nItemId;
 
-    if (readThread.Start([this, pWorkerContext, &readContext]() { readContext.ReadLoop(pWorkerContext); }) == false)
+    if (readThread.Start([this, pWorkerContext, &readContext, &Stdin]() { readContext.ReadLoop(pWorkerContext, Stdin); }) == false)
     {
         timer.Stop();
 
@@ -777,10 +774,9 @@ bool CWorker::ConvertFileUsingOnlyPipes(IWorkerContext* pWorkerContext, CFileCon
     writeContext.bError = false;
     writeContext.bFinished = false;
     writeContext.szFileName = encoderContext.szOutputFile;
-    writeContext.hPipe = Stdout.hRead;
     writeContext.nIndex = encoderContext.nItemId;
 
-    if (writeThread.Start([this, pWorkerContext, &writeContext]() { writeContext.WriteLoop(pWorkerContext); }) == false)
+    if (writeThread.Start([this, pWorkerContext, &writeContext, &Stdout]() { writeContext.WriteLoop(pWorkerContext, Stdout); }) == false)
     {
         timer.Stop();
 

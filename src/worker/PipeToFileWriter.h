@@ -3,22 +3,24 @@
 
 #pragma once
 
+#include "utilities\Pipe.h"
 #include "WorkerContext.h"
 
 class CPipeToFileWriter
 {
 public:
     CString szFileName;
-    HANDLE hPipe;
     int nIndex;
+public:
     volatile bool bError;
     volatile bool bFinished;
 public:
     CPipeToFileWriter() { }
     virtual ~CPipeToFileWriter() { }
 public:
-    bool WriteLoop(IWorkerContext* pWorkerContext)
+    bool WriteLoop(IWorkerContext* pWorkerContext, CPipe &Stdout)
     {
+        HANDLE hPipe = Stdout.hRead;
         HANDLE hFile = INVALID_HANDLE_VALUE;
         BYTE pReadBuff[4096];
         BOOL bRes = FALSE;
