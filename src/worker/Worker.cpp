@@ -10,12 +10,14 @@
 #include "LuaProgess.h"
 #include "Worker.h"
 
-class CProgressParser
+
+
+class CLuaProgressParser : public IProgressParser
 {
     CLuaProgess luaProgress;
 public:
-    CProgressParser(){ }
-    virtual ~CProgressParser() { }
+    CLuaProgressParser(){ }
+    virtual ~CLuaProgressParser() { }
 public:
     bool Init(CWorkerContext* pWorkerContext, CFileContext &context)
     {
@@ -41,7 +43,7 @@ public:
     }
 };
 
-bool CWorker::ProgresssLoop(CWorkerContext* pWorkerContext, CFileContext &context, CPipe &Stderr, int &nProgress)
+bool CWorker::ProgresssLoop(CWorkerContext* pWorkerContext, CFileContext &context, CPipe &Stderr, int &nProgress, IProgressParser &progress)
 {
     const int nBuffSize = 4096;
     char szReadBuff[nBuffSize];
@@ -54,7 +56,6 @@ bool CWorker::ProgresssLoop(CWorkerContext* pWorkerContext, CFileContext &contex
     int nLineLen = 0;
     int nPreviousProgress = 0;
 
-    CProgressParser progress;
     if (progress.Init(pWorkerContext, context) == false)
     {
         return false; // ERROR
@@ -364,7 +365,8 @@ bool CWorker::ConvertFileUsingConsole(CWorkerContext* pWorkerContext, CFileConte
     Stderr.CloseWrite();
 
     // console progress loop
-    if (ProgresssLoop(pWorkerContext, context, Stderr, nProgress) == false)
+    CLuaProgressParser progress;
+    if (ProgresssLoop(pWorkerContext, context, Stderr, nProgress, progress) == false)
     {
         timer.Stop();
         Stderr.CloseRead();

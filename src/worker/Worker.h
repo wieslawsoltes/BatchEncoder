@@ -14,6 +14,13 @@
 #include "PipeContext.h"
 #include "FileContext.h"
 
+class IProgressParser
+{
+public:
+    virtual bool Init(CWorkerContext* pWorkerContext, CFileContext &context) = 0;
+    virtual double GetProgress(const char *szLine) = 0;
+};
+
 class CWorker
 {
 public:
@@ -22,7 +29,7 @@ public:
     CWorker() { }
     virtual ~CWorker() { }
 public:
-    bool ProgresssLoop(CWorkerContext* pWorkerContext, CFileContext &context, CPipe &Stderr, int &nProgress);
+    bool ProgresssLoop(CWorkerContext* pWorkerContext, CFileContext &context, CPipe &Stderr, int &nProgress, IProgressParser &progress);
     bool ReadLoop(CWorkerContext* pWorkerContext, CPipeContext &context);
     bool WriteLoop(CWorkerContext* pWorkerContext, CPipeContext &context);
     bool ConvertFileUsingConsole(CWorkerContext* pWorkerContext, CFileContext &context);
