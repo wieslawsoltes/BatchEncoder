@@ -1972,6 +1972,7 @@ void CMainDlg::ShowEdtItem()
     m_EdtItem.MoveWindow(rect, TRUE);
     m_EdtItem.SetSel(0, szEdtText.GetLength(), TRUE);
     m_EdtItem.ShowWindow(SW_SHOW);
+    m_EdtItem.ShowCaret();
     m_EdtItem.SetFocus();
 }
 
@@ -1984,6 +1985,7 @@ void CMainDlg::UpdateEdtItem(BOOL bUpdateText)
             m_EdtItem.GetWindowText(szEdtText);
             m_LstInputItems.SetItemText(nEdtItem, nEdtSubItem, szEdtText);
         }
+        m_EdtItem.HideCaret();
         m_EdtItem.ShowWindow(SW_HIDE);
         m_LstInputItems.SetFocus();
     }
