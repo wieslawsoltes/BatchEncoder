@@ -71,7 +71,6 @@ public:
     }
 };
 
-#ifdef PIPES_STDERR_DEBUG
 class CDebugOutputParser : public IOutputParser
 {
 public:
@@ -94,7 +93,6 @@ public:
         return this->pWorkerContext->IsRunning();
     }
 };
-#endif
 
 bool CWorker::OutputLoop(CWorkerContext* pWorkerContext, CFileContext &context, CPipe &Stderr, IOutputParser &parser)
 {
