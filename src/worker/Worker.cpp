@@ -8,6 +8,8 @@
 #include "utilities\TimeCount.h"
 #include "utilities\Utilities.h"
 #include "LuaProgess.h"
+#include "FileToPipeWriter.h"
+#include "PipeToFileWriter.h"
 #include "Worker.h"
 
 //#define PIPES_STDERR_DEBUG

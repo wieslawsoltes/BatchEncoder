@@ -134,9 +134,6 @@
     <ClInclude Include="worker\LuaProgess.h">
       <Filter>Header Files\Worker</Filter>
     </ClInclude>
-    <ClInclude Include="worker\PipeContext.h">
-      <Filter>Header Files\Worker</Filter>
-    </ClInclude>
     <ClInclude Include="worker\FileContext.h">
       <Filter>Header Files\Worker</Filter>
     </ClInclude>
@@ -175,6 +172,12 @@
     </ClInclude>
     <ClInclude Include="configuration\PathsList.h">
       <Filter>Header Files\Configuration</Filter>
+    </ClInclude>
+    <ClInclude Include="worker\FileToPipeWriter.h">
+      <Filter>Header Files\Worker</Filter>
+    </ClInclude>
+    <ClInclude Include="worker\PipeToFileWriter.h">
+      <Filter>Header Files\Worker</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

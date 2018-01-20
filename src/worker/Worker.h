@@ -12,7 +12,6 @@
 #include "utilities\Process.h"
 #include "utilities\Synchronize.h"
 #include "WorkerContext.h"
-#include "PipeContext.h"
 #include "FileContext.h"
 
 class IOutputParser
