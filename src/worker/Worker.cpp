@@ -69,6 +69,29 @@ public:
     }
 };
 
+class CDebugOutputParser : public IOutputParser
+{
+public:
+    CWorkerContext * pWorkerContext;
+    CFileContext *pFileContext;
+public:
+    CDebugOutputParser() { }
+    virtual ~CDebugOutputParser() { }
+public:
+    bool Init(CWorkerContext* pWorkerContext, CFileContext* pFileContext)
+    {
+        this->pWorkerContext = pWorkerContext;
+        this->pFileContext = pFileContext;
+        return true;
+    }
+    bool Parse(const char *szLine)
+    {
+        OutputDebugStringA(szLine);
+        OutputDebugStringA("\n");
+        return this->pWorkerContext->IsRunning();
+    }
+};
+
 bool CWorker::OutputLoop(CWorkerContext* pWorkerContext, CFileContext &context, CPipe &Stderr, IOutputParser &parser)
 {
     const int nBuffSize = 4096;
@@ -85,6 +108,9 @@ bool CWorker::OutputLoop(CWorkerContext* pWorkerContext, CFileContext &context, 
     {
         return false; // ERROR
     }
+
+    //CDebugOutputParser debug;
+    //debug.Init(pWorkerContext, &context);
 
     // initialize buffers
     ZeroMemory(szReadBuff, sizeof(szReadBuff));
@@ -150,7 +176,7 @@ bool CWorker::OutputLoop(CWorkerContext* pWorkerContext, CFileContext &context, 
                 // don't include empty lines
                 if (strlen(szLineBuff) > 0)
                 {
-                    //OutputDebugStringA(szLineBuff); OutputDebugStringA("\n");
+                    //debug.Parse(szLineBuff);
                     bRunning = parser.Parse(szLineBuff);
                     ZeroMemory(szLineBuff, sizeof(szLineBuff));
                     if ((pWorkerContext->bRunning == false) || (bRunning == false))
