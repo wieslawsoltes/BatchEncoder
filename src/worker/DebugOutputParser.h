@@ -9,15 +9,15 @@ class CDebugOutputParser : public IOutputParser
 {
 public:
     IWorkerContext * pWorkerContext;
-    CFileContext *pFileContext;
+    CCommandLine *pCommandLine;
 public:
     CDebugOutputParser() { }
     virtual ~CDebugOutputParser() { }
 public:
-    bool Init(IWorkerContext* pWorkerContext, CFileContext* pFileContext)
+    bool Init(IWorkerContext* pWorkerContext, CCommandLine* pCommandLine)
     {
         this->pWorkerContext = pWorkerContext;
-        this->pFileContext = pFileContext;
+        this->pCommandLine = pCommandLine;
         return true;
     }
     bool Parse(const char *szLine)

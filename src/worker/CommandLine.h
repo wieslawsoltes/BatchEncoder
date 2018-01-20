@@ -6,7 +6,7 @@
 #include <cstring>
 #include "utilities\Utilities.h"
 
-class CFileContext
+class CCommandLine
 {
 public:
     CFormat * pFormat;
@@ -20,8 +20,8 @@ public:
     CString szOptions;
     TCHAR pszCommandLine[65536];
 public:
-    CFileContext() { }
-    virtual ~CFileContext() { }
+    CCommandLine() { }
+    virtual ~CCommandLine() { }
 public:
     void Build(CFormat *pFormat, int nPreset, int nItemId, CString szInputFile, CString szOutputFile, bool bUseReadPipes, bool bUseWritePipes, CString szAdditionalOptions)
     {

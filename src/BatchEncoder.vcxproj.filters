@@ -137,9 +137,6 @@
     <ClInclude Include="dialogs\ToolsDlg.h">
       <Filter>Header Files\Dialogs</Filter>
     </ClInclude>
-    <ClInclude Include="worker\FileContext.h">
-      <Filter>Header Files\Worker</Filter>
-    </ClInclude>
     <ClInclude Include="worker\WorkerContext.h">
       <Filter>Header Files\Worker</Filter>
     </ClInclude>
@@ -193,6 +190,9 @@
     </ClInclude>
     <ClInclude Include="worker\PipeToFileWriter.h">
       <Filter>Header Files\Worker\Pipes</Filter>
+    </ClInclude>
+    <ClInclude Include="worker\CommandLine.h">
+      <Filter>Header Files\Worker</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

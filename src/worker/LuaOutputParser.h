@@ -11,31 +11,31 @@ class CLuaOutputParser : public IOutputParser
     CLuaProgess luaProgress;
 public:
     IWorkerContext * pWorkerContext;
-    CFileContext *pFileContext;
+    CCommandLine *pCommandLine;
     int nProgress;
     int nPreviousProgress;
 public:
     CLuaOutputParser() { }
     virtual ~CLuaOutputParser() { }
 public:
-    bool Init(IWorkerContext* pWorkerContext, CFileContext* pFileContext)
+    bool Init(IWorkerContext* pWorkerContext, CCommandLine* pCommandLine)
     {
         this->pWorkerContext = pWorkerContext;
-        this->pFileContext = pFileContext;
+        this->pCommandLine = pCommandLine;
         this->nProgress = 0;
         this->nPreviousProgress = 0;
 
-        if (this->luaProgress.Open(CT2CA(this->pFileContext->pFormat->szFunction)) == false)
+        if (this->luaProgress.Open(CT2CA(this->pCommandLine->pFormat->szFunction)) == false)
         {
-            this->pWorkerContext->Status(this->pFileContext->nItemId, pszDefaulTime, this->pWorkerContext->GetString(0x00110001, pszProgresssLoop[0]));
-            this->pWorkerContext->Callback(this->pFileContext->nItemId, -1, true, true);
+            this->pWorkerContext->Status(this->pCommandLine->nItemId, pszDefaulTime, this->pWorkerContext->GetString(0x00110001, pszProgresssLoop[0]));
+            this->pWorkerContext->Callback(this->pCommandLine->nItemId, -1, true, true);
             return false;
         }
 
         if (this->luaProgress.Init() == false)
         {
-            this->pWorkerContext->Status(this->pFileContext->nItemId, pszDefaulTime, this->pWorkerContext->GetString(0x00110002, pszProgresssLoop[1]));
-            this->pWorkerContext->Callback(this->pFileContext->nItemId, -1, true, true);
+            this->pWorkerContext->Status(this->pCommandLine->nItemId, pszDefaulTime, this->pWorkerContext->GetString(0x00110002, pszProgresssLoop[1]));
+            this->pWorkerContext->Callback(this->pCommandLine->nItemId, -1, true, true);
             return false;
         }
 
@@ -52,7 +52,7 @@ public:
         if (this->nProgress != this->nPreviousProgress)
         {
             nPreviousProgress = nProgress;
-            bool bRunning = this->pWorkerContext->Callback(this->pFileContext->nItemId, nProgress, false);
+            bool bRunning = this->pWorkerContext->Callback(this->pCommandLine->nItemId, nProgress, false);
             return bRunning;
         }
         else

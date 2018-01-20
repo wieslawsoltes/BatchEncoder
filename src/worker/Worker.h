@@ -12,7 +12,7 @@
 #include "utilities\Process.h"
 #include "utilities\Synchronize.h"
 #include "WorkerContext.h"
-#include "FileContext.h"
+#include "CommandLine.h"
 #include "OutputParser.h"
 
 class CWorker
@@ -23,10 +23,10 @@ public:
     CWorker() { }
     virtual ~CWorker() { }
 public:
-    bool OutputLoop(IWorkerContext* pWorkerContext, CFileContext &context, CPipe &Stderr, IOutputParser &parser);
-    bool ConvertFileUsingConsole(IWorkerContext* pWorkerContext, CFileContext &context);
-    bool ConvertFileUsingPipes(IWorkerContext* pWorkerContext, CFileContext &context);
-    bool ConvertFileUsingOnlyPipes(IWorkerContext* pWorkerContext, CFileContext &decoderContext, CFileContext &encoderContext);
+    bool OutputLoop(IWorkerContext* pWorkerContext, CCommandLine &commandLine, CPipe &Stderr, IOutputParser &parser);
+    bool ConvertFileUsingConsole(IWorkerContext* pWorkerContext, CCommandLine &commandLine);
+    bool ConvertFileUsingPipes(IWorkerContext* pWorkerContext, CCommandLine &commandLine);
+    bool ConvertFileUsingOnlyPipes(IWorkerContext* pWorkerContext, CCommandLine &decoderCommandLine, CCommandLine &encoderCommandLine);
     bool ConvertItem(IWorkerContext* pWorkerContext, CItem& item, CSynchronize &syncDir);
     bool ConvertLoop(IWorkerContext* pWorkerContext, std::queue<CItem> &queue, CSynchronize &sync, CSynchronize &syncDir);
     void Convert(IWorkerContext* pWorkerContext);

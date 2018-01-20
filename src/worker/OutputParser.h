@@ -4,11 +4,11 @@
 #pragma once
 
 #include "WorkerContext.h"
-#include "FileContext.h"
+#include "CommandLine.h"
 
 class IOutputParser
 {
 public:
-    virtual bool Init(IWorkerContext* pWorkerContext, CFileContext* pFileContext) = 0;
+    virtual bool Init(IWorkerContext* pWorkerContext, CCommandLine* pCommandLine) = 0;
     virtual bool Parse(const char *szLine) = 0;
 };
