@@ -179,6 +179,15 @@
     <ClInclude Include="worker\PipeToFileWriter.h">
       <Filter>Header Files\Worker</Filter>
     </ClInclude>
+    <ClInclude Include="worker\DebugOutputParser.h">
+      <Filter>Header Files\Worker</Filter>
+    </ClInclude>
+    <ClInclude Include="worker\LuaOutputParser.h">
+      <Filter>Header Files\Worker</Filter>
+    </ClInclude>
+    <ClInclude Include="worker\OutputParser.h">
+      <Filter>Header Files\Worker</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="res\BatchEncoder.rc2">

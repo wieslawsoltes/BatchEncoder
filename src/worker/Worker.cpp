@@ -7,94 +7,13 @@
 #include "utilities\OutputPath.h"
 #include "utilities\TimeCount.h"
 #include "utilities\Utilities.h"
-#include "LuaProgess.h"
 #include "FileToPipeWriter.h"
 #include "PipeToFileWriter.h"
+#include "LuaOutputParser.h"
+#include "DebugOutputParser.h"
 #include "Worker.h"
 
 //#define PIPES_STDERR_DEBUG
-
-class CLuaOutputParser : public IOutputParser
-{
-    CLuaProgess luaProgress;
-public:
-    IWorkerContext *pWorkerContext;
-    CFileContext *pFileContext;
-    int nProgress;
-    int nPreviousProgress;
-public:
-    CLuaOutputParser(){ }
-    virtual ~CLuaOutputParser() { }
-public:
-    bool Init(IWorkerContext* pWorkerContext, CFileContext* pFileContext)
-    {
-        this->pWorkerContext = pWorkerContext;
-        this->pFileContext = pFileContext;
-        this->nProgress = 0;
-        this->nPreviousProgress = 0;
-
-        if (this->luaProgress.Open(CT2CA(this->pFileContext->pFormat->szFunction)) == false)
-        {
-            this->pWorkerContext->Status(this->pFileContext->nItemId, pszDefaulTime, this->pWorkerContext->GetString(0x00110001, pszProgresssLoop[0]));
-            this->pWorkerContext->Callback(this->pFileContext->nItemId, -1, true, true);
-            return false;
-        }
-
-        if (this->luaProgress.Init() == false)
-        {
-            this->pWorkerContext->Status(this->pFileContext->nItemId, pszDefaulTime, this->pWorkerContext->GetString(0x00110002, pszProgresssLoop[1]));
-            this->pWorkerContext->Callback(this->pFileContext->nItemId, -1, true, true);
-            return false;
-        }
-
-        return true;
-    }
-    bool Parse(const char *szLine)
-    {
-        int nRet = (int)this->luaProgress.GetProgress(szLine);
-        if (nRet != -1)
-        {
-            this->nProgress = nRet;
-        }
-
-        if (this->nProgress != this->nPreviousProgress)
-        {
-            nPreviousProgress = nProgress;
-            bool bRunning = this->pWorkerContext->Callback(this->pFileContext->nItemId, nProgress, false);
-            return bRunning;
-        }
-        else
-        {
-            bool bRunning = this->pWorkerContext->IsRunning();
-            return bRunning;
-        }
-
-        return true;
-    }
-};
-
-class CDebugOutputParser : public IOutputParser
-{
-public:
-    IWorkerContext * pWorkerContext;
-    CFileContext *pFileContext;
-public:
-    CDebugOutputParser() { }
-    virtual ~CDebugOutputParser() { }
-public:
-    bool Init(IWorkerContext* pWorkerContext, CFileContext* pFileContext)
-    {
-        this->pWorkerContext = pWorkerContext;
-        this->pFileContext = pFileContext;
-        return true;
-    }
-    bool Parse(const char *szLine)
-    {
-        OutputDebugStringA(szLine);
-        OutputDebugStringA("\n");
-        return this->pWorkerContext->IsRunning();
-    }
-};
 
 bool CWorker::OutputLoop(IWorkerContext* pWorkerContext, CFileContext &context, CPipe &Stderr, IOutputParser &parser)
 {

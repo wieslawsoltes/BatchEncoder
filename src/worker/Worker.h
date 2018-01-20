@@ -13,13 +13,7 @@
 #include "utilities\Synchronize.h"
 #include "WorkerContext.h"
 #include "FileContext.h"
-
-class IOutputParser
-{
-public:
-    virtual bool Init(IWorkerContext* pWorkerContext, CFileContext* pFileContext) = 0;
-    virtual bool Parse(const char *szLine) = 0;
-};
+#include "OutputParser.h"
 
 class CWorker
 {

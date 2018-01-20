@@ -3,7 +3,6 @@
 
 #pragma once
 
-#define _SILENCE_ALL_CXX17_DEPRECATION_WARNINGS
 #define SOL_CHECK_ARGUMENTS 1
 #include <sol.hpp>
 
