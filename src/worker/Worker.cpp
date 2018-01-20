@@ -12,6 +12,7 @@
 #include "PipeToStringWriter.h"
 #include "LuaOutputParser.h"
 #include "DebugOutputParser.h"
+#include "ToolUtilities.h"
 #include "Worker.h"
 
 //#define PIPES_STDERR_DEBUG
@@ -53,17 +54,45 @@ bool CWorker::ConvertFileUsingConsole(IWorkerContext* pWorkerContext, CCommandLi
     timer.Start();
     if (process.Start(commandLine.pszCommandLine, pWorkerContext->pConfig->m_Options.bHideConsoleWindow) == false)
     {
-        timer.Stop();
+        bool bFailed = true;
 
-        Stderr.CloseRead();
-        Stderr.CloseWrite();
+        if (pWorkerContext->pConfig->m_Options.bTryToDownloadTools == true)
+        {
+            CToolUtilities m_Utilities;
+            int nTool = m_Utilities.FindTool(pWorkerContext->pConfig->m_Tools, commandLine.pFormat->szId);
+            if (nTool >= 0)
+            {
+                CTool& tool = pWorkerContext->pConfig->m_Tools.Get(nTool);
+                bool bResult = m_Utilities.Download(tool, true, true, nTool, pWorkerContext->pConfig,
+                    [this, pWorkerContext, &commandLine](int nIndex, CString szStatus)
+                {
+                    pWorkerContext->Status(commandLine.nItemId, pszDefaulTime, szStatus);
+                });
 
-        CString szStatus;
-        szStatus.Format(pWorkerContext->GetString(0x00120004, pszConvertConsole[3]), ::GetLastError());
+                if (bResult == true)
+                {
+                    if (process.Start(commandLine.pszCommandLine, pWorkerContext->pConfig->m_Options.bHideConsoleWindow) == true)
+                    {
+                        bFailed = false;
+                    }
+                }
+            }
+        }
 
-        pWorkerContext->Status(commandLine.nItemId, pszDefaulTime, szStatus);
-        pWorkerContext->Callback(commandLine.nItemId, -1, true, true);
-        return false;
+        if (bFailed == true)
+        {
+            timer.Stop();
+
+            Stderr.CloseRead();
+            Stderr.CloseWrite();
+
+            CString szStatus;
+            szStatus.Format(pWorkerContext->GetString(0x00120004, pszConvertConsole[3]), ::GetLastError());
+
+            pWorkerContext->Status(commandLine.nItemId, pszDefaulTime, szStatus);
+            pWorkerContext->Callback(commandLine.nItemId, -1, true, true);
+            return false;
+        }
     }
 
     // close unused pipe handle
@@ -230,31 +259,59 @@ bool CWorker::ConvertFileUsingPipes(IWorkerContext* pWorkerContext, CCommandLine
     timer.Start();
     if (process.Start(commandLine.pszCommandLine, pWorkerContext->pConfig->m_Options.bHideConsoleWindow) == false)
     {
-        timer.Stop();
+        bool bFailed = true;
 
-        if (commandLine.bUseReadPipes == true)
+        if (pWorkerContext->pConfig->m_Options.bTryToDownloadTools == true)
         {
-            Stdin.CloseRead();
-            Stdin.CloseWrite();
+            CToolUtilities m_Utilities;
+            int nTool = m_Utilities.FindTool(pWorkerContext->pConfig->m_Tools, commandLine.pFormat->szId);
+            if (nTool >= 0)
+            {
+                CTool& tool = pWorkerContext->pConfig->m_Tools.Get(nTool);
+                bool bResult = m_Utilities.Download(tool, true, true, nTool, pWorkerContext->pConfig,
+                    [this, pWorkerContext, &commandLine](int nIndex, CString szStatus)
+                {
+                    pWorkerContext->Status(commandLine.nItemId, pszDefaulTime, szStatus);
+                });
+
+                if (bResult == true)
+                {
+                    if (process.Start(commandLine.pszCommandLine, pWorkerContext->pConfig->m_Options.bHideConsoleWindow) == true)
+                    {
+                        bFailed = false;
+                    }
+                }
+            }
         }
 
-        if (commandLine.bUseWritePipes == true)
+        if (bFailed == true)
         {
-            Stdout.CloseRead();
-            Stdout.CloseWrite();
-        }
+            timer.Stop();
+
+            if (commandLine.bUseReadPipes == true)
+            {
+                Stdin.CloseRead();
+                Stdin.CloseWrite();
+            }
+
+            if (commandLine.bUseWritePipes == true)
+            {
+                Stdout.CloseRead();
+                Stdout.CloseWrite();
+            }
 
 #ifdef PIPES_STDERR_DEBUG
-        Stderr.CloseRead();
-        Stderr.CloseWrite();
+            Stderr.CloseRead();
+            Stderr.CloseWrite();
 #endif
 
-        CString szStatus;
-        szStatus.Format(pWorkerContext->GetString(0x00130006, pszConvertPipes[5]), ::GetLastError());
+            CString szStatus;
+            szStatus.Format(pWorkerContext->GetString(0x00130006, pszConvertPipes[5]), ::GetLastError());
 
-        pWorkerContext->Status(commandLine.nItemId, pszDefaulTime, szStatus);
-        pWorkerContext->Callback(commandLine.nItemId, -1, true, true);
-        return false;
+            pWorkerContext->Status(commandLine.nItemId, pszDefaulTime, szStatus);
+            pWorkerContext->Callback(commandLine.nItemId, -1, true, true);
+            return false;
+        }
     }
 
     // close unused pipe handles
@@ -523,47 +580,103 @@ bool CWorker::ConvertFileUsingOnlyPipes(IWorkerContext* pWorkerContext, CCommand
     // create decoder process
     if (decoderProcess.Start(decoderCommandLine.pszCommandLine, pWorkerContext->pConfig->m_Options.bHideConsoleWindow) == false)
     {
-        timer.Stop();
+        bool bFailed = true;
 
-        Stdin.CloseRead();
-        Stdin.CloseWrite();
+        if (pWorkerContext->pConfig->m_Options.bTryToDownloadTools == true)
+        {
+            CToolUtilities m_Utilities;
+            int nTool = m_Utilities.FindTool(pWorkerContext->pConfig->m_Tools, decoderCommandLine.pFormat->szId);
+            if (nTool >= 0)
+            {
+                CTool& tool = pWorkerContext->pConfig->m_Tools.Get(nTool);
+                bool bResult = m_Utilities.Download(tool, true, true, nTool, pWorkerContext->pConfig,
+                    [this, pWorkerContext, &decoderCommandLine](int nIndex, CString szStatus)
+                {
+                    pWorkerContext->Status(decoderCommandLine.nItemId, pszDefaulTime, szStatus);
+                });
 
-        Stdout.CloseRead();
-        Stdout.CloseWrite();
+                if (bResult == true)
+                {
+                    if (decoderProcess.Start(decoderCommandLine.pszCommandLine, pWorkerContext->pConfig->m_Options.bHideConsoleWindow) == true)
+                    {
+                        bFailed = false;
+                    }
+                }
+            }
+        }
 
-        Bridge.CloseRead();
-        Bridge.CloseWrite();
+        if (bFailed == true)
+        {
+            timer.Stop();
 
-        CString szStatus;
-        szStatus.Format(pWorkerContext->GetString(0x00130006, pszConvertPipes[5]), ::GetLastError());
+            Stdin.CloseRead();
+            Stdin.CloseWrite();
 
-        pWorkerContext->Status(decoderCommandLine.nItemId, pszDefaulTime, szStatus);
-        pWorkerContext->Callback(decoderCommandLine.nItemId, -1, true, true);
-        return false;
+            Stdout.CloseRead();
+            Stdout.CloseWrite();
+
+            Bridge.CloseRead();
+            Bridge.CloseWrite();
+
+            CString szStatus;
+            szStatus.Format(pWorkerContext->GetString(0x00130006, pszConvertPipes[5]), ::GetLastError());
+
+            pWorkerContext->Status(decoderCommandLine.nItemId, pszDefaulTime, szStatus);
+            pWorkerContext->Callback(decoderCommandLine.nItemId, -1, true, true);
+            return false;
+        }
     }
 
     // create encoder process
     if (encoderProcess.Start(encoderCommandLine.pszCommandLine, pWorkerContext->pConfig->m_Options.bHideConsoleWindow) == false)
     {
-        timer.Stop();
+        bool bFailed = true;
 
-        decoderProcess.Stop(false, decoderCommandLine.pFormat->nExitCodeSuccess);
+        if (pWorkerContext->pConfig->m_Options.bTryToDownloadTools == true)
+        {
+            CToolUtilities m_Utilities;
+            int nTool = m_Utilities.FindTool(pWorkerContext->pConfig->m_Tools, encoderCommandLine.pFormat->szId);
+            if (nTool >= 0)
+            {
+                CTool& tool = pWorkerContext->pConfig->m_Tools.Get(nTool);
+                bool bResult = m_Utilities.Download(tool, true, true, nTool, pWorkerContext->pConfig,
+                    [this, pWorkerContext, &encoderCommandLine](int nIndex, CString szStatus)
+                {
+                    pWorkerContext->Status(encoderCommandLine.nItemId, pszDefaulTime, szStatus);
+                });
 
-        Stdin.CloseRead();
-        Stdin.CloseWrite();
+                if (bResult == true)
+                {
+                    if (encoderProcess.Start(encoderCommandLine.pszCommandLine, pWorkerContext->pConfig->m_Options.bHideConsoleWindow) == true)
+                    {
+                        bFailed = false;
+                    }
+                }
+            }
+        }
 
-        Stdout.CloseRead();
-        Stdout.CloseWrite();
+        if (bFailed == true)
+        {
+            timer.Stop();
 
-        Bridge.CloseRead();
-        Bridge.CloseWrite();
+            decoderProcess.Stop(false, decoderCommandLine.pFormat->nExitCodeSuccess);
 
-        CString szStatus;
-        szStatus.Format(pWorkerContext->GetString(0x00130006, pszConvertPipes[5]), ::GetLastError());
+            Stdin.CloseRead();
+            Stdin.CloseWrite();
 
-        pWorkerContext->Status(decoderCommandLine.nItemId, pszDefaulTime, szStatus);
-        pWorkerContext->Callback(decoderCommandLine.nItemId, -1, true, true);
-        return false;
+            Stdout.CloseRead();
+            Stdout.CloseWrite();
+
+            Bridge.CloseRead();
+            Bridge.CloseWrite();
+
+            CString szStatus;
+            szStatus.Format(pWorkerContext->GetString(0x00130006, pszConvertPipes[5]), ::GetLastError());
+
+            pWorkerContext->Status(decoderCommandLine.nItemId, pszDefaulTime, szStatus);
+            pWorkerContext->Callback(decoderCommandLine.nItemId, -1, true, true);
+            return false;
+        }
     }
 
     // close unused pipe handles

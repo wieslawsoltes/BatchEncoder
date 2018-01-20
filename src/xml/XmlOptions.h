@@ -34,6 +34,7 @@ public:
         VALIDATE(GetChildValue(element, "EnsureItemIsVisible", &m_Options.bEnsureItemIsVisible));
         VALIDATE(GetChildValue(element, "ValidateInputFiles", &m_Options.bValidateInputFiles));
         VALIDATE(GetChildValue(element, "OverwriteExistingFiles", &m_Options.bOverwriteExistingFiles));
+        VALIDATE(GetChildValue(element, "TryToDownloadTools", &m_Options.bTryToDownloadTools));
         VALIDATE(GetChildValue(element, "ThreadCount", &m_Options.nThreadCount));
         VALIDATE(GetChildValue(element, "MainWindowResize", &m_Options.szMainWindowResize));
         VALIDATE(GetChildValue(element, "FileListColumns", &m_Options.szFileListColumns));
@@ -61,6 +62,7 @@ public:
         SetChildValue(element, "EnsureItemIsVisible", m_Options.bEnsureItemIsVisible);
         SetChildValue(element, "ValidateInputFiles", m_Options.bValidateInputFiles);
         SetChildValue(element, "OverwriteExistingFiles", m_Options.bOverwriteExistingFiles);
+        SetChildValue(element, "TryToDownloadTools", m_Options.bTryToDownloadTools);
         SetChildValue(element, "ThreadCount", m_Options.nThreadCount);
         SetChildValue(element, "MainWindowResize", m_Options.szMainWindowResize);
         SetChildValue(element, "FileListColumns", m_Options.szFileListColumns);

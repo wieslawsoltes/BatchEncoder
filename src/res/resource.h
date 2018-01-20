@@ -147,6 +147,7 @@
 #define ID_OPTIONS_FIND_DECODER         32820
 #define ID_OPTIONS_VALIDATE_FILES       32821
 #define ID_OPTIONS_OVERWRITE_FILES      32822
+#define ID_OPTIONS_DOWNLOAD_TOOLS       32823
 #define ID_HELP_ABOUT                   32830
 #define ID_HELP_WEBSITE                 32831
 #define ID_ACCELERATOR_F5               32840

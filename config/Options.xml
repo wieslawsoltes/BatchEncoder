@@ -14,5 +14,6 @@
     <EnsureItemIsVisible>true</EnsureItemIsVisible>
     <ValidateInputFiles>true</ValidateInputFiles>
     <OverwriteExistingFiles>true</OverwriteExistingFiles>
+    <TryToDownloadTools>true</TryToDownloadTools>
     <ThreadCount>0</ThreadCount>
 </Options>

@@ -51,6 +51,7 @@
     <String key="0x0004000C" value="入力ファイルの正当性を確認(&amp;V)" />
     <String key="0x0004000D" value="既存のファイルを上書き(&amp;R)" />
     <String key="0x0004000E" value="ツールの設定(&amp;L)...	F10" />
+    <String key="0x0004000F" value="Tr&amp;y To Download Tools" />
 
     <!-- Language Menu -->
 

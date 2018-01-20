@@ -308,6 +308,8 @@ BEGIN
         MENUITEM "&Validate Input Files",       ID_OPTIONS_VALIDATE_FILES
         MENUITEM SEPARATOR
         MENUITEM "Ove&rwrite Existing Files",   ID_OPTIONS_OVERWRITE_FILES
+        MENUITEM SEPARATOR
+        MENUITEM "Tr&y To Download Tools",      ID_OPTIONS_DOWNLOAD_TOOLS
     END
     POPUP "&Language"
     BEGIN
