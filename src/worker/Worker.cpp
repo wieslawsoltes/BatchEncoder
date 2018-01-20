@@ -109,9 +109,6 @@ bool CWorker::OutputLoop(CWorkerContext* pWorkerContext, CFileContext &context, 
         return false; // ERROR
     }
 
-    //CDebugOutputParser debug;
-    //debug.Init(pWorkerContext, &context);
-
     // initialize buffers
     ZeroMemory(szReadBuff, sizeof(szReadBuff));
     ZeroMemory(szLineBuff, sizeof(szLineBuff));
@@ -176,7 +173,6 @@ bool CWorker::OutputLoop(CWorkerContext* pWorkerContext, CFileContext &context, 
                 // don't include empty lines
                 if (strlen(szLineBuff) > 0)
                 {
-                    //debug.Parse(szLineBuff);
                     bRunning = parser.Parse(szLineBuff);
                     ZeroMemory(szLineBuff, sizeof(szLineBuff));
                     if ((pWorkerContext->bRunning == false) || (bRunning == false))
