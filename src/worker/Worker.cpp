@@ -19,6 +19,8 @@
 
 bool CWorker::ConvertFileUsingConsole(IWorkerContext* pWorkerContext, CCommandLine &commandLine)
 {
+    ::SetCurrentDirectory(m_App.szSettingsPath);
+
     if ((commandLine.bUseReadPipes == true) || (commandLine.bUseWritePipes == true))
     {
         pWorkerContext->Status(commandLine.nItemId, pszDefaulTime, pWorkerContext->GetString(0x00120001, pszConvertConsole[0]));
@@ -71,6 +73,8 @@ bool CWorker::ConvertFileUsingConsole(IWorkerContext* pWorkerContext, CCommandLi
 
                 if (bResult == true)
                 {
+                    ::SetCurrentDirectory(m_App.szSettingsPath);
+
                     if (process.Start(commandLine.pszCommandLine, pWorkerContext->pConfig->m_Options.bHideConsoleWindow) == true)
                     {
                         bFailed = false;
@@ -130,6 +134,8 @@ bool CWorker::ConvertFileUsingConsole(IWorkerContext* pWorkerContext, CCommandLi
 
 bool CWorker::ConvertFileUsingPipes(IWorkerContext* pWorkerContext, CCommandLine &commandLine)
 {
+    ::SetCurrentDirectory(m_App.szSettingsPath);
+
     if ((commandLine.bUseReadPipes == false) && (commandLine.bUseWritePipes == false))
     {
         pWorkerContext->Status(commandLine.nItemId, pszDefaulTime, pWorkerContext->GetString(0x00130001, pszConvertPipes[0]));
@@ -276,6 +282,8 @@ bool CWorker::ConvertFileUsingPipes(IWorkerContext* pWorkerContext, CCommandLine
 
                 if (bResult == true)
                 {
+                    ::SetCurrentDirectory(m_App.szSettingsPath);
+
                     if (process.Start(commandLine.pszCommandLine, pWorkerContext->pConfig->m_Options.bHideConsoleWindow) == true)
                     {
                         bFailed = false;
@@ -510,6 +518,8 @@ bool CWorker::ConvertFileUsingOnlyPipes(IWorkerContext* pWorkerContext, CCommand
     int nProgress = 0;
     CTimeCount timer;
 
+    ::SetCurrentDirectory(m_App.szSettingsPath);
+
     // create pipes for stdin
     if (Stdin.Create() == false)
     {
@@ -597,6 +607,8 @@ bool CWorker::ConvertFileUsingOnlyPipes(IWorkerContext* pWorkerContext, CCommand
 
                 if (bResult == true)
                 {
+                    ::SetCurrentDirectory(m_App.szSettingsPath);
+
                     if (decoderProcess.Start(decoderCommandLine.pszCommandLine, pWorkerContext->pConfig->m_Options.bHideConsoleWindow) == true)
                     {
                         bFailed = false;
@@ -647,6 +659,8 @@ bool CWorker::ConvertFileUsingOnlyPipes(IWorkerContext* pWorkerContext, CCommand
 
                 if (bResult == true)
                 {
+                    ::SetCurrentDirectory(m_App.szSettingsPath);
+
                     if (encoderProcess.Start(encoderCommandLine.pszCommandLine, pWorkerContext->pConfig->m_Options.bHideConsoleWindow) == true)
                     {
                         bFailed = false;
