@@ -215,13 +215,7 @@ bool CWorker::ReadLoop(CWorkerContext* pWorkerContext, CPipeContext &context)
     context.bError = false;
     context.bFinished = false;
 
-    hFile = ::CreateFile(context.szFileName,
-        GENERIC_READ,
-        FILE_SHARE_READ,
-        nullptr,
-        OPEN_EXISTING,
-        0,
-        nullptr);
+    hFile = ::CreateFile(context.szFileName, GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_EXISTING, 0, nullptr);
     if (hFile == INVALID_HANDLE_VALUE)
     {
         context.bError = true;
@@ -294,13 +288,7 @@ bool CWorker::WriteLoop(CWorkerContext* pWorkerContext, CPipeContext &context)
     context.bError = false;
     context.bFinished = false;
 
-    hFile = ::CreateFile(context.szFileName,
-        GENERIC_READ | GENERIC_WRITE,
-        0,
-        nullptr,
-        CREATE_ALWAYS,
-        0,
-        nullptr);
+    hFile = ::CreateFile(context.szFileName, GENERIC_READ | GENERIC_WRITE, 0, nullptr, CREATE_ALWAYS, 0, nullptr);
     if (hFile == INVALID_HANDLE_VALUE)
     {
         context.bError = true;
