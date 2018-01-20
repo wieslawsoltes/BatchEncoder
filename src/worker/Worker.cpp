@@ -17,7 +17,7 @@
 
 //#define PIPES_STDERR_DEBUG
 
-bool CWorker::ConvertFileUsingConsole(IWorkerContext* pWorkerContext, CCommandLine &commandLine)
+bool CWorker::ConvertFileUsingConsole(IWorkerContext* pWorkerContext, CCommandLine &commandLine, CSynchronize &syncDown)
 {
     ::SetCurrentDirectory(m_App.szSettingsPath);
 
@@ -132,7 +132,7 @@ bool CWorker::ConvertFileUsingConsole(IWorkerContext* pWorkerContext, CCommandLi
     }
 }
 
-bool CWorker::ConvertFileUsingPipes(IWorkerContext* pWorkerContext, CCommandLine &commandLine)
+bool CWorker::ConvertFileUsingPipes(IWorkerContext* pWorkerContext, CCommandLine &commandLine, CSynchronize &syncDown)
 {
     ::SetCurrentDirectory(m_App.szSettingsPath);
 
@@ -504,7 +504,7 @@ bool CWorker::ConvertFileUsingPipes(IWorkerContext* pWorkerContext, CCommandLine
     }
 }
 
-bool CWorker::ConvertFileUsingOnlyPipes(IWorkerContext* pWorkerContext, CCommandLine &decoderCommandLine, CCommandLine &encoderCommandLine)
+bool CWorker::ConvertFileUsingOnlyPipes(IWorkerContext* pWorkerContext, CCommandLine &decoderCommandLine, CCommandLine &encoderCommandLine, CSynchronize &syncDown)
 {
     CProcess decoderProcess;
     CProcess encoderProcess;
@@ -790,7 +790,7 @@ bool CWorker::ConvertFileUsingOnlyPipes(IWorkerContext* pWorkerContext, CCommand
     }
 }
 
-bool CWorker::ConvertItem(IWorkerContext* pWorkerContext, CItem& item, CSynchronize &syncDir)
+bool CWorker::ConvertItem(IWorkerContext* pWorkerContext, CItem& item, CSynchronize &syncDir, CSynchronize &syncDown)
 {
     CFormat *pEncFormat = nullptr;
     CFormat *pDecFormat = nullptr;
@@ -936,7 +936,7 @@ bool CWorker::ConvertItem(IWorkerContext* pWorkerContext, CItem& item, CSynchron
 
             item.ResetProgress();
 
-            bool bResult = ConvertFileUsingOnlyPipes(pWorkerContext, decoderCommandLine, encoderCommandLine);
+            bool bResult = ConvertFileUsingOnlyPipes(pWorkerContext, decoderCommandLine, encoderCommandLine, syncDown);
             if (bResult == true)
             {
                 // check if output file exists
@@ -989,9 +989,9 @@ bool CWorker::ConvertItem(IWorkerContext* pWorkerContext, CItem& item, CSynchron
 
                 bool bResult = false;
                 if ((decoderCommandLine.bUseReadPipes == false) && (decoderCommandLine.bUseWritePipes == false))
-                    bResult = ConvertFileUsingConsole(pWorkerContext, decoderCommandLine);
+                    bResult = ConvertFileUsingConsole(pWorkerContext, decoderCommandLine, syncDown);
                 else
-                    bResult = ConvertFileUsingPipes(pWorkerContext, decoderCommandLine);
+                    bResult = ConvertFileUsingPipes(pWorkerContext, decoderCommandLine, syncDown);
                 if (bResult == false)
                 {
                     if (pWorkerContext->pConfig->m_Options.bDeleteOnErrors == true)
@@ -1031,9 +1031,9 @@ bool CWorker::ConvertItem(IWorkerContext* pWorkerContext, CItem& item, CSynchron
 
             bool bResult = false;
             if ((encoderCommandLine.bUseReadPipes == false) && (encoderCommandLine.bUseWritePipes == false))
-                bResult = ConvertFileUsingConsole(pWorkerContext, encoderCommandLine);
+                bResult = ConvertFileUsingConsole(pWorkerContext, encoderCommandLine, syncDown);
             else
-                bResult = ConvertFileUsingPipes(pWorkerContext, encoderCommandLine);
+                bResult = ConvertFileUsingPipes(pWorkerContext, encoderCommandLine, syncDown);
             if (bResult == true)
             {
                 // check if output file exists
@@ -1086,7 +1086,7 @@ bool CWorker::ConvertItem(IWorkerContext* pWorkerContext, CItem& item, CSynchron
     return false;
 }
 
-bool CWorker::ConvertLoop(IWorkerContext* pWorkerContext, std::queue<CItem> &queue, CSynchronize &sync, CSynchronize &syncDir)
+bool CWorker::ConvertLoop(IWorkerContext* pWorkerContext, std::queue<CItem> &queue, CSynchronize &sync, CSynchronize &syncDir, CSynchronize &syncDown)
 {
     while (TRUE)
     {
@@ -1106,7 +1106,7 @@ bool CWorker::ConvertLoop(IWorkerContext* pWorkerContext, std::queue<CItem> &que
                         return false;
 
                     pWorkerContext->Next(item.nId);
-                    if (ConvertItem(pWorkerContext, item, syncDir) == true)
+                    if (ConvertItem(pWorkerContext, item, syncDir, syncDown) == true)
                     {
                         pWorkerContext->nDoneWithoutError++;
                     }
@@ -1154,6 +1154,7 @@ void CWorker::Convert(IWorkerContext* pWorkerContext)
     std::queue<CItem> queue;
     CSynchronize sync;
     CSynchronize syncDir;
+    CSynchronize syncDown;
 
     for (int i = 0; i < nItems; i++)
     {
@@ -1186,7 +1187,7 @@ void CWorker::Convert(IWorkerContext* pWorkerContext)
     // single-threaded
     if (pWorkerContext->nThreadCount == 1)
     {
-        ConvertLoop(pWorkerContext, queue, sync, syncDir);
+        ConvertLoop(pWorkerContext, queue, sync, syncDir, syncDown);
     }
 
     // multi-threaded
@@ -1195,9 +1196,9 @@ void CWorker::Convert(IWorkerContext* pWorkerContext)
         auto threads = std::make_unique<CThread[]>(pWorkerContext->nThreadCount);
         for (int i = 0; i < pWorkerContext->nThreadCount; i++)
         {
-            auto entry = [this, pWorkerContext, &queue, &sync, &syncDir]() 
+            auto entry = [this, pWorkerContext, &queue, &sync, &syncDir, &syncDown]()
             { 
-                this->ConvertLoop(pWorkerContext, queue, sync, syncDir); 
+                this->ConvertLoop(pWorkerContext, queue, sync, syncDir, syncDown);
             };
             if (threads[i].Start(entry, true) == false)
                 break;
