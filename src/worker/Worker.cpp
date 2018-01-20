@@ -128,13 +128,13 @@ bool CWorker::ProgresssLoop(CWorkerContext* pWorkerContext, CFileContext &contex
                     if (nRet != -1)
                         nProgress = nRet;
 
-                    ZeroMemory(szLineBuff, sizeof(szLineBuff));
-
                     if (nProgress != nPreviousProgress)
                     {
                         bRunning = pWorkerContext->Callback(context.nItemId, nProgress, false);
                         nPreviousProgress = nProgress;
                     }
+
+                    ZeroMemory(szLineBuff, sizeof(szLineBuff));
 
                     if ((pWorkerContext->bRunning == false) || (bRunning == false))
                         break;
