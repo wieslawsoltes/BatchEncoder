@@ -204,6 +204,9 @@
     <String key="0x00130009" value="Error: el progreso no alcanzó el 100%." />
     <String key="0x0013000A" value="Error: no se pudo crear pipes para el proceso de conexión." />
     <String key="0x0013000B" value="Hecho" />
+    <String key="0x0013000C" value="Error: can not create pipes for stderr." />
+    <String key="0x0013000D" value="Error: can not set stderr pipe inherit flag." />
+    <String key="0x0013000E" value="Error: can not create output thread." />
 
     <String key="0x00140001" value="Error: no se pudo encontrar el archivo de entrada." />
     <String key="0x00140002" value="Error: no se pudo encontrar un codificador válido para ese id." />

@@ -10,11 +10,13 @@
 #include "LuaProgess.h"
 #include "Worker.h"
 
+//#define PIPES_STDERR_DEBUG
+
 class CLuaOutputParser : public IOutputParser
 {
     CLuaProgess luaProgress;
 public:
-    CWorkerContext *pWorkerContext;
+    IWorkerContext *pWorkerContext;
     CFileContext *pFileContext;
     int nProgress;
     int nPreviousProgress;
@@ -22,7 +24,7 @@ public:
     CLuaOutputParser(){ }
     virtual ~CLuaOutputParser() { }
 public:
-    bool Init(CWorkerContext* pWorkerContext, CFileContext* pFileContext)
+    bool Init(IWorkerContext* pWorkerContext, CFileContext* pFileContext)
     {
         this->pWorkerContext = pWorkerContext;
         this->pFileContext = pFileContext;
@@ -72,13 +74,13 @@ public:
 class CDebugOutputParser : public IOutputParser
 {
 public:
-    CWorkerContext * pWorkerContext;
+    IWorkerContext * pWorkerContext;
     CFileContext *pFileContext;
 public:
     CDebugOutputParser() { }
     virtual ~CDebugOutputParser() { }
 public:
-    bool Init(CWorkerContext* pWorkerContext, CFileContext* pFileContext)
+    bool Init(IWorkerContext* pWorkerContext, CFileContext* pFileContext)
     {
         this->pWorkerContext = pWorkerContext;
         this->pFileContext = pFileContext;
@@ -92,7 +94,7 @@ public:
     }
 };
 
-bool CWorker::OutputLoop(CWorkerContext* pWorkerContext, CFileContext &context, CPipe &Stderr, IOutputParser &parser)
+bool CWorker::OutputLoop(IWorkerContext* pWorkerContext, CFileContext &context, CPipe &Stderr, IOutputParser &parser)
 {
     const int nBuffSize = 4096;
     char szReadBuff[nBuffSize];
@@ -108,9 +110,6 @@ bool CWorker::OutputLoop(CWorkerContext* pWorkerContext, CFileContext &context, 
     {
         return false; // ERROR
     }
-
-    //CDebugOutputParser debug;
-    //debug.Init(pWorkerContext, &context);
 
     // initialize buffers
     ZeroMemory(szReadBuff, sizeof(szReadBuff));
@@ -176,7 +175,6 @@ bool CWorker::OutputLoop(CWorkerContext* pWorkerContext, CFileContext &context, 
                 // don't include empty lines
                 if (strlen(szLineBuff) > 0)
                 {
-                    //debug.Parse(szLineBuff);
                     bRunning = parser.Parse(szLineBuff);
                     ZeroMemory(szLineBuff, sizeof(szLineBuff));
                     if ((pWorkerContext->bRunning == false) || (bRunning == false))
@@ -199,7 +197,7 @@ bool CWorker::OutputLoop(CWorkerContext* pWorkerContext, CFileContext &context, 
     return true;
 }
 
-bool CWorker::ReadLoop(CWorkerContext* pWorkerContext, CPipeContext &context)
+bool CWorker::ReadLoop(IWorkerContext* pWorkerContext, CPipeContext &context)
 {
     HANDLE hFile = INVALID_HANDLE_VALUE;
     BYTE pReadBuff[4096];
@@ -215,13 +213,7 @@ bool CWorker::ReadLoop(CWorkerContext* pWorkerContext, CPipeContext &context)
     context.bError = false;
     context.bFinished = false;
 
-    hFile = ::CreateFile(context.szFileName,
-        GENERIC_READ,
-        FILE_SHARE_READ,
-        nullptr,
-        OPEN_EXISTING,
-        0,
-        nullptr);
+    hFile = ::CreateFile(context.szFileName, GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_EXISTING, 0, nullptr);
     if (hFile == INVALID_HANDLE_VALUE)
     {
         context.bError = true;
@@ -282,7 +274,7 @@ bool CWorker::ReadLoop(CWorkerContext* pWorkerContext, CPipeContext &context)
     }
 }
 
-bool CWorker::WriteLoop(CWorkerContext* pWorkerContext, CPipeContext &context)
+bool CWorker::WriteLoop(IWorkerContext* pWorkerContext, CPipeContext &context)
 {
     HANDLE hFile = INVALID_HANDLE_VALUE;
     BYTE pReadBuff[4096];
@@ -294,13 +286,7 @@ bool CWorker::WriteLoop(CWorkerContext* pWorkerContext, CPipeContext &context)
     context.bError = false;
     context.bFinished = false;
 
-    hFile = ::CreateFile(context.szFileName,
-        GENERIC_READ | GENERIC_WRITE,
-        0,
-        nullptr,
-        CREATE_ALWAYS,
-        0,
-        nullptr);
+    hFile = ::CreateFile(context.szFileName, GENERIC_READ | GENERIC_WRITE, 0, nullptr, CREATE_ALWAYS, 0, nullptr);
     if (hFile == INVALID_HANDLE_VALUE)
     {
         context.bError = true;
@@ -351,7 +337,7 @@ bool CWorker::WriteLoop(CWorkerContext* pWorkerContext, CPipeContext &context)
     }
 }
 
-bool CWorker::ConvertFileUsingConsole(CWorkerContext* pWorkerContext, CFileContext &context)
+bool CWorker::ConvertFileUsingConsole(IWorkerContext* pWorkerContext, CFileContext &context)
 {
     if ((context.bUseReadPipes == true) || (context.bUseWritePipes == true))
     {
@@ -433,7 +419,7 @@ bool CWorker::ConvertFileUsingConsole(CWorkerContext* pWorkerContext, CFileConte
     }
 }
 
-bool CWorker::ConvertFileUsingPipes(CWorkerContext* pWorkerContext, CFileContext &context)
+bool CWorker::ConvertFileUsingPipes(IWorkerContext* pWorkerContext, CFileContext &context)
 {
     if ((context.bUseReadPipes == false) && (context.bUseWritePipes == false))
     {
@@ -445,10 +431,16 @@ bool CWorker::ConvertFileUsingPipes(CWorkerContext* pWorkerContext, CFileContext
     CProcess process;
     CPipe Stdin(true);
     CPipe Stdout(true);
+#ifdef PIPES_STDERR_DEBUG
+    CPipe Stderr(true);
+#endif
     CPipeContext readContext;
     CPipeContext writeContext;
     CThread readThread;
     CThread writeThread;
+#ifdef PIPES_STDERR_DEBUG
+    CThread outputThread;
+#endif
     int nProgress = 0;
     CTimeCount timer;
 
@@ -505,24 +497,54 @@ bool CWorker::ConvertFileUsingPipes(CWorkerContext* pWorkerContext, CFileContext
         }
     }
 
+#ifdef PIPES_STDERR_DEBUG
+    // create pipes for stderr
+    if (Stderr.Create() == false)
+    {
+        pWorkerContext->Status(context.nItemId, pszDefaulTime, pWorkerContext->GetString(0x0013000C, pszConvertPipes[11]));
+        pWorkerContext->Callback(context.nItemId, -1, true, true);
+        return false;
+    }
+
+    // set stderr read pipe inherit flag
+    if (Stderr.InheritRead() == false)
+    {
+        pWorkerContext->Status(context.nItemId, pszDefaulTime, pWorkerContext->GetString(0x0013000D, pszConvertPipes[12]));
+        pWorkerContext->Callback(context.nItemId, -1, true, true);
+        return false;
+    }
+#endif
+
     // connect pipes to process
     if ((context.bUseReadPipes == true) && (context.bUseWritePipes == false))
     {
         process.ConnectStdInput(Stdin.hRead);
         process.ConnectStdOutput(GetStdHandle(STD_OUTPUT_HANDLE));
+#ifdef PIPES_STDERR_DEBUG
+        process.ConnectStdError(Stderr.hWrite);
+#else
         process.ConnectStdError(GetStdHandle(STD_ERROR_HANDLE));
+#endif
     }
     else if ((context.bUseReadPipes == false) && (context.bUseWritePipes == true))
     {
         process.ConnectStdInput(GetStdHandle(STD_INPUT_HANDLE));
         process.ConnectStdOutput(Stdout.hWrite);
+#ifdef PIPES_STDERR_DEBUG
+        process.ConnectStdError(Stderr.hWrite);
+#else
         process.ConnectStdError(GetStdHandle(STD_ERROR_HANDLE));
+#endif
     }
     else if ((context.bUseReadPipes == true) && (context.bUseWritePipes == true))
     {
         process.ConnectStdInput(Stdin.hRead);
         process.ConnectStdOutput(Stdout.hWrite);
+#ifdef PIPES_STDERR_DEBUG
+        process.ConnectStdError(Stderr.hWrite);
+#else
         process.ConnectStdError(GetStdHandle(STD_ERROR_HANDLE));
+#endif
     }
 
     timer.Start();
@@ -542,6 +564,11 @@ bool CWorker::ConvertFileUsingPipes(CWorkerContext* pWorkerContext, CFileContext
             Stdout.CloseWrite();
         }
 
+#ifdef PIPES_STDERR_DEBUG
+        Stderr.CloseRead();
+        Stderr.CloseWrite();
+#endif
+
         CString szStatus;
         szStatus.Format(pWorkerContext->GetString(0x00130006, pszConvertPipes[5]), ::GetLastError());
 
@@ -557,6 +584,26 @@ bool CWorker::ConvertFileUsingPipes(CWorkerContext* pWorkerContext, CFileContext
     if (context.bUseWritePipes == true)
         Stdout.CloseWrite();
 
+#ifdef PIPES_STDERR_DEBUG
+    Stderr.CloseWrite();
+
+    // create output thread
+    CDebugOutputParser debug;
+    if (outputThread.Start([this, pWorkerContext, &context, &Stderr, &debug]() { this->OutputLoop(pWorkerContext, context, Stderr, debug); }) == false)
+    {
+        timer.Stop();
+
+        process.Stop(false, context.pFormat->nExitCodeSuccess);
+
+        Stdin.CloseWrite();
+        Stderr.CloseRead();
+
+        pWorkerContext->Status(context.nItemId, pszDefaulTime, pWorkerContext->GetString(0x0013000E, pszConvertPipes[13]));
+        pWorkerContext->Callback(context.nItemId, -1, true, true);
+        return false;
+    }
+#endif
+
     // create read thread
     if (context.bUseReadPipes == true)
     {
@@ -570,7 +617,17 @@ bool CWorker::ConvertFileUsingPipes(CWorkerContext* pWorkerContext, CFileContext
         {
             timer.Stop();
 
+            process.Stop(false, context.pFormat->nExitCodeSuccess);
+
+#ifdef PIPES_STDERR_DEBUG
+            outputThread.Terminate();
+            outputThread.Close();
+#endif
             Stdin.CloseWrite();
+
+#ifdef PIPES_STDERR_DEBUG
+            Stderr.CloseRead();
+#endif
 
             pWorkerContext->Status(context.nItemId, pszDefaulTime, pWorkerContext->GetString(0x00130007, pszConvertPipes[6]));
             pWorkerContext->Callback(context.nItemId, -1, true, true);
@@ -608,6 +665,8 @@ bool CWorker::ConvertFileUsingPipes(CWorkerContext* pWorkerContext, CFileContext
         if (writeThread.Start([this, pWorkerContext, &writeContext]() { this->WriteLoop(pWorkerContext, writeContext); }) == false)
         {
             timer.Stop();
+
+            process.Stop(false, context.pFormat->nExitCodeSuccess);
 
             Stdout.CloseRead();
 
@@ -674,7 +733,16 @@ bool CWorker::ConvertFileUsingPipes(CWorkerContext* pWorkerContext, CFileContext
         }
     }
 
+#ifdef PIPES_STDERR_DEBUG
+    // wait for output thread to finish
+    outputThread.Wait();
+    outputThread.Close();
+#endif
+
     timer.Stop();
+#ifdef PIPES_STDERR_DEBUG
+    Stderr.CloseRead();
+#endif
     if (process.Stop(nProgress == 100, context.pFormat->nExitCodeSuccess) == false)
         nProgress = -1;
 
@@ -692,7 +760,7 @@ bool CWorker::ConvertFileUsingPipes(CWorkerContext* pWorkerContext, CFileContext
     }
 }
 
-bool CWorker::ConvertFileUsingOnlyPipes(CWorkerContext* pWorkerContext, CFileContext &decoderContext, CFileContext &encoderContext)
+bool CWorker::ConvertFileUsingOnlyPipes(IWorkerContext* pWorkerContext, CFileContext &decoderContext, CFileContext &encoderContext)
 {
     CProcess decoderProcess;
     CProcess encoderProcess;
@@ -918,7 +986,7 @@ bool CWorker::ConvertFileUsingOnlyPipes(CWorkerContext* pWorkerContext, CFileCon
     }
 }
 
-bool CWorker::ConvertItem(CWorkerContext* pWorkerContext, CItem& item, CSynchronize &syncDir)
+bool CWorker::ConvertItem(IWorkerContext* pWorkerContext, CItem& item, CSynchronize &syncDir)
 {
     CFormat *pEncFormat = nullptr;
     CFormat *pDecFormat = nullptr;
@@ -1214,7 +1282,7 @@ bool CWorker::ConvertItem(CWorkerContext* pWorkerContext, CItem& item, CSynchron
     return false;
 }
 
-bool CWorker::ConvertLoop(CWorkerContext* pWorkerContext, std::queue<CItem> &queue, CSynchronize &sync, CSynchronize &syncDir)
+bool CWorker::ConvertLoop(IWorkerContext* pWorkerContext, std::queue<CItem> &queue, CSynchronize &sync, CSynchronize &syncDir)
 {
     while (TRUE)
     {
@@ -1269,7 +1337,7 @@ bool CWorker::ConvertLoop(CWorkerContext* pWorkerContext, std::queue<CItem> &que
     return true;
 }
 
-void CWorker::Convert(CWorkerContext* pWorkerContext)
+void CWorker::Convert(IWorkerContext* pWorkerContext)
 {
     int nItems = pWorkerContext->pConfig->m_Items.Count();
 
