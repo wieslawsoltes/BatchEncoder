@@ -204,6 +204,9 @@
     <String key="0x00130009" value="Błąd: postęp nie osiągnął 100%." />
     <String key="0x0013000A" value="Błąd: nie można utworzyć potoku dla połączenia procesów." />
     <String key="0x0013000B" value="Wykonane" />
+    <String key="0x0013000C" value="Błąd: nie można utworzyć potoku dla stderr." />
+    <String key="0x0013000D" value="Błąd: nie można ustawić flagi dziedziczenia dla potoku stderr." />
+    <String key="0x0013000E" value="Błąd: nie można utworzyć wątka wyjścia." />
 
     <String key="0x00140001" value="Błąd: nie można znaleźć pliku wejściowego." />
     <String key="0x00140002" value="Błąd: nie można znaleźć poprawnego kodera poprzez id." />
