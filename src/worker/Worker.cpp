@@ -14,7 +14,7 @@ class CLuaOutputParser : public IOutputParser
 {
     CLuaProgess luaProgress;
 public:
-    CWorkerContext* pWorkerContext;
+    CWorkerContext *pWorkerContext;
     CFileContext *pFileContext;
     int nProgress;
     int nPreviousProgress;
@@ -69,7 +69,7 @@ public:
     }
 };
 
-bool CWorker::ProgresssLoop(CWorkerContext* pWorkerContext, CFileContext &context, CPipe &Stderr, IOutputParser &parser)
+bool CWorker::OutputLoop(CWorkerContext* pWorkerContext, CFileContext &context, CPipe &Stderr, IOutputParser &parser)
 {
     const int nBuffSize = 4096;
     char szReadBuff[nBuffSize];
@@ -380,7 +380,7 @@ bool CWorker::ConvertFileUsingConsole(CWorkerContext* pWorkerContext, CFileConte
 
     // console progress loop
     CLuaOutputParser parser;
-    if (ProgresssLoop(pWorkerContext, context, Stderr, parser) == false)
+    if (OutputLoop(pWorkerContext, context, Stderr, parser) == false)
     {
         timer.Stop();
         Stderr.CloseRead();

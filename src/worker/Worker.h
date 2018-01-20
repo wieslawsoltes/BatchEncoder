@@ -29,7 +29,7 @@ public:
     CWorker() { }
     virtual ~CWorker() { }
 public:
-    bool ProgresssLoop(CWorkerContext* pWorkerContext, CFileContext &context, CPipe &Stderr, IOutputParser &parser);
+    bool OutputLoop(CWorkerContext* pWorkerContext, CFileContext &context, CPipe &Stderr, IOutputParser &parser);
     bool ReadLoop(CWorkerContext* pWorkerContext, CPipeContext &context);
     bool WriteLoop(CWorkerContext* pWorkerContext, CPipeContext &context);
     bool ConvertFileUsingConsole(CWorkerContext* pWorkerContext, CFileContext &context);
