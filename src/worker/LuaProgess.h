@@ -19,26 +19,38 @@ public:
 public:
     bool Open(const char *filename)
     {
-        auto result = lua.script_file(filename);
-        if (result.valid())
-            return true;
+        try
+        {
+            auto result = lua.script_file(filename);
+            if (result.valid())
+                return true;
+        }
+        catch (...) { }
         return false;
     }
     bool Init()
     {
-        f = lua["GetProgress"];
-        if (f.valid())
-            return true;
+        try
+        {
+            f = lua["GetProgress"];
+            if (f.valid())
+                return true;
+        }
+        catch (...) { }
         return false;
     }
     double GetProgress(const char *szLine)
     {
-        auto result = f(szLine);
-        if (result.valid()) 
+        try
         {
-            if (result.get_type() == sol::type::string)
-                return (double)result;
+            auto result = f(szLine);
+            if (result.valid())
+            {
+                if (result.get_type() == sol::type::string)
+                    return (double)result;
+            }
         }
+        catch (...) { }
         return -1;
     }
 };
