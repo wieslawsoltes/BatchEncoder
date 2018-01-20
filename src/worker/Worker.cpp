@@ -294,8 +294,8 @@ bool CWorker::ConvertFileUsingPipes(IWorkerContext* pWorkerContext, CFileContext
 #ifdef PIPES_STDERR_DEBUG
     CPipe Stderr(true);
 #endif
-    CPipeContext readContext;
-    CPipeContext writeContext;
+    CFileToPipeWriter readContext;
+    CPipeToFileWriter writeContext;
     CThread readThread;
     CThread writeThread;
 #ifdef PIPES_STDERR_DEBUG
@@ -627,8 +627,8 @@ bool CWorker::ConvertFileUsingOnlyPipes(IWorkerContext* pWorkerContext, CFileCon
     CPipe Stdin(true);
     CPipe Stdout(true);
     CPipe Bridge(true);
-    CPipeContext readContext;
-    CPipeContext writeContext;
+    CFileToPipeWriter readContext;
+    CPipeToFileWriter writeContext;
     CThread readThread;
     CThread writeThread;
     int nProgress = 0;

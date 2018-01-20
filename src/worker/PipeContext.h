@@ -5,7 +5,7 @@
 
 #include "WorkerContext.h"
 
-class CPipeContext
+class CFileToPipeWriter
 {
 public:
     CString szFileName;
@@ -14,8 +14,8 @@ public:
     volatile bool bError;
     volatile bool bFinished;
 public:
-    CPipeContext() { }
-    virtual ~CPipeContext() { }
+    CFileToPipeWriter() { }
+    virtual ~CFileToPipeWriter() { }
 public:
     bool ReadLoop(IWorkerContext* pWorkerContext)
     {
@@ -93,6 +93,19 @@ public:
             return true;
         }
     }
+};
+
+class CPipeToFileWriter
+{
+public:
+    CString szFileName;
+    HANDLE hPipe;
+    int nIndex;
+    volatile bool bError;
+    volatile bool bFinished;
+public:
+    CPipeToFileWriter() { }
+    virtual ~CPipeToFileWriter() { }
 public:
     bool WriteLoop(IWorkerContext* pWorkerContext)
     {
