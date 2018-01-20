@@ -23,7 +23,7 @@ public:
     CFileContext() { }
     virtual ~CFileContext() { }
 public:
-    void Create(CFormat *pFormat, int nPreset, int nItemId, CString szInputFile, CString szOutputFile, bool bUseReadPipes, bool bUseWritePipes, CString szAdditionalOptions)
+    void Build(CFormat *pFormat, int nPreset, int nItemId, CString szInputFile, CString szOutputFile, bool bUseReadPipes, bool bUseWritePipes, CString szAdditionalOptions)
     {
         CPreset& preset = pFormat->m_Presets.Get(nPreset);
 

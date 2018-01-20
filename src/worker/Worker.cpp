@@ -874,7 +874,7 @@ bool CWorker::ConvertItem(IWorkerContext* pWorkerContext, CItem& item, CSynchron
     CFileContext decoderContext;
     if (bIsValidEncoderInput == false)
     {
-        decoderContext.Create(
+        decoderContext.Build(
             pDecFormat,
             pDecFormat->nDefaultPreset,
             item.nId,
@@ -886,7 +886,7 @@ bool CWorker::ConvertItem(IWorkerContext* pWorkerContext, CItem& item, CSynchron
     }
 
     CFileContext encoderContext;
-    encoderContext.Create(
+    encoderContext.Build(
         pEncFormat,
         item.nPreset,
         item.nId,
