@@ -10,38 +10,66 @@
 #include "LuaProgess.h"
 #include "Worker.h"
 
-class CLuaProgressParser : public IProgressParser
+class CLuaOutputParser : public IOutputParser
 {
     CLuaProgess luaProgress;
 public:
-    CLuaProgressParser(){ }
-    virtual ~CLuaProgressParser() { }
+    CWorkerContext* pWorkerContext;
+    CFileContext *pFileContext;
+    int nProgress;
+    int nPreviousProgress;
 public:
-    bool Init(CWorkerContext* pWorkerContext, CFileContext &context)
+    CLuaOutputParser(){ }
+    virtual ~CLuaOutputParser() { }
+public:
+    bool Init(CWorkerContext* pWorkerContext, CFileContext* pFileContext)
     {
-        if (luaProgress.Open(CT2CA(context.pFormat->szFunction)) == false)
+        this->pWorkerContext = pWorkerContext;
+        this->pFileContext = pFileContext;
+        this->nProgress = 0;
+        this->nPreviousProgress = 0;
+
+        if (this->luaProgress.Open(CT2CA(this->pFileContext->pFormat->szFunction)) == false)
         {
-            pWorkerContext->Status(context.nItemId, pszDefaulTime, pWorkerContext->GetString(0x00110001, pszProgresssLoop[0]));
-            pWorkerContext->Callback(context.nItemId, -1, true, true);
+            this->pWorkerContext->Status(this->pFileContext->nItemId, pszDefaulTime, this->pWorkerContext->GetString(0x00110001, pszProgresssLoop[0]));
+            this->pWorkerContext->Callback(this->pFileContext->nItemId, -1, true, true);
             return false;
         }
 
-        if (luaProgress.Init() == false)
+        if (this->luaProgress.Init() == false)
         {
-            pWorkerContext->Status(context.nItemId, pszDefaulTime, pWorkerContext->GetString(0x00110002, pszProgresssLoop[1]));
-            pWorkerContext->Callback(context.nItemId, -1, true, true);
+            this->pWorkerContext->Status(this->pFileContext->nItemId, pszDefaulTime, this->pWorkerContext->GetString(0x00110002, pszProgresssLoop[1]));
+            this->pWorkerContext->Callback(this->pFileContext->nItemId, -1, true, true);
             return false;
         }
 
         return true;
     }
-    double GetProgress(const char *szLine)
+    bool Parse(const char *szLine)
     {
-        return luaProgress.GetProgress(szLine);
+        int nRet = (int)this->luaProgress.GetProgress(szLine);
+        if (nRet != -1)
+        {
+            this->nProgress = nRet;
+        }
+
+        if (this->nProgress != this->nPreviousProgress)
+        {
+            nPreviousProgress = nProgress;
+            bool bRunning = this->pWorkerContext->Callback(this->pFileContext->nItemId, nProgress, false);
+            return bRunning;
+        }
+        else
+        {
+            bool bRunning = this->pWorkerContext->IsRunning();
+            return bRunning;
+        }
+
+        return true;
     }
 };
 
-bool CWorker::ProgresssLoop(CWorkerContext* pWorkerContext, CFileContext &context, CPipe &Stderr, int &nProgress, IProgressParser &progress)
+bool CWorker::ProgresssLoop(CWorkerContext* pWorkerContext, CFileContext &context, CPipe &Stderr, IOutputParser &parser)
 {
     const int nBuffSize = 4096;
     char szReadBuff[nBuffSize];
@@ -52,9 +80,8 @@ bool CWorker::ProgresssLoop(CWorkerContext* pWorkerContext, CFileContext &contex
     bool bLineEnd = false;
     bool bRunning = true;
     int nLineLen = 0;
-    int nPreviousProgress = 0;
 
-    if (progress.Init(pWorkerContext, context) == false)
+    if (parser.Init(pWorkerContext, &context) == false)
     {
         return false; // ERROR
     }
@@ -124,18 +151,8 @@ bool CWorker::ProgresssLoop(CWorkerContext* pWorkerContext, CFileContext &contex
                 if (strlen(szLineBuff) > 0)
                 {
                     //OutputDebugStringA(szLineBuff); OutputDebugStringA("\n");
-                    int nRet = (int)progress.GetProgress(szLineBuff);
-                    if (nRet != -1)
-                        nProgress = nRet;
-
-                    if (nProgress != nPreviousProgress)
-                    {
-                        bRunning = pWorkerContext->Callback(context.nItemId, nProgress, false);
-                        nPreviousProgress = nProgress;
-                    }
-
+                    bRunning = parser.Parse(szLineBuff);
                     ZeroMemory(szLineBuff, sizeof(szLineBuff));
-
                     if ((pWorkerContext->bRunning == false) || (bRunning == false))
                         break;
                 }
@@ -319,7 +336,6 @@ bool CWorker::ConvertFileUsingConsole(CWorkerContext* pWorkerContext, CFileConte
 
     CProcess process;
     CPipe Stderr(true);
-    int nProgress = 0;
     CTimeCount timer;
 
     // create pipes for stderr
@@ -363,8 +379,8 @@ bool CWorker::ConvertFileUsingConsole(CWorkerContext* pWorkerContext, CFileConte
     Stderr.CloseWrite();
 
     // console progress loop
-    CLuaProgressParser progress;
-    if (ProgresssLoop(pWorkerContext, context, Stderr, nProgress, progress) == false)
+    CLuaOutputParser parser;
+    if (ProgresssLoop(pWorkerContext, context, Stderr, parser) == false)
     {
         timer.Stop();
         Stderr.CloseRead();
@@ -374,10 +390,10 @@ bool CWorker::ConvertFileUsingConsole(CWorkerContext* pWorkerContext, CFileConte
 
     timer.Stop();
     Stderr.CloseRead();
-    if (process.Stop(nProgress == 100, context.pFormat->nExitCodeSuccess) == false)
-        nProgress = -1;
+    if (process.Stop(parser.nProgress == 100, context.pFormat->nExitCodeSuccess) == false)
+        parser.nProgress = -1;
 
-    if (nProgress != 100)
+    if (parser.nProgress != 100)
     {
         pWorkerContext->Status(context.nItemId, pszDefaulTime, pWorkerContext->GetString(0x00120005, pszConvertConsole[4]));
         pWorkerContext->Callback(context.nItemId, -1, true, true);
