@@ -7,6 +7,8 @@
 #include "language\Language.h"
 #include "language\LanguagesList.h"
 
+#define VALIDATE(value) if (!value) return false
+
 class XmlLanguages : public XmlDoc
 {
 public:
@@ -17,11 +19,11 @@ public:
     {
     }
 public:
-    void GetLanguage(const XmlElement *parent, CLanguage &m_Language)
+    bool GetLanguage(const XmlElement *parent, CLanguage &m_Language)
     {
-        GetAttributeValue(parent, "id", &m_Language.szId);
-        GetAttributeValue(parent, "original", &m_Language.szOriginalName);
-        GetAttributeValue(parent, "translated", &m_Language.szTranslatedName);
+        VALIDATE(GetAttributeValue(parent, "id", &m_Language.szId));
+        VALIDATE(GetAttributeValue(parent, "original", &m_Language.szOriginalName));
+        VALIDATE(GetAttributeValue(parent, "translated", &m_Language.szTranslatedName));
 
         auto element = parent->FirstChildElement("String");
         if (element != nullptr)
@@ -31,14 +33,16 @@ public:
                 CString szKey;
                 CString szValue;
 
-                GetAttributeValue(element, "key", &szKey);
-                GetAttributeValue(element, "value", &szValue);
+                VALIDATE(GetAttributeValue(element, "key", &szKey));
+                VALIDATE(GetAttributeValue(element, "value", &szValue));
 
                 int nKey;
                 _stscanf(szKey, _T("%x"), &nKey);
                 m_Language.m_Strings.Insert(nKey, szValue);
             }
+            return true;
         }
+        return false;
     }
     void SetLanguage(XmlElement *parent, CLanguage &m_Language)
     {
@@ -62,7 +66,7 @@ public:
             SetAttributeValue(element, "", rValue);
         }
     }
-    void GetLanguages(const XmlElement *parent, CLanguagesList &m_Languages)
+    bool GetLanguages(const XmlElement *parent, CLanguagesList &m_Languages)
     {
         auto element = parent->FirstChildElement("Language");
         if (element != nullptr)
@@ -70,10 +74,12 @@ public:
             for (element; element; element = element->NextSiblingElement())
             {
                 CLanguage language;
-                this->GetLanguage(element, language);
+                VALIDATE(this->GetLanguage(element, language));
                 m_Languages.Insert(language);
             }
+            return true;
         }
+        return false;
     }
     void SetLanguages(XmlElement *parent, CLanguagesList &m_Languages)
     {
@@ -87,13 +93,15 @@ public:
         }
     }
 public:
-    void GetLanguage(CLanguage &m_Language)
+    bool GetLanguage(CLanguage &m_Language)
     {
         auto element = this->FirstChildElement("Language");
         if (element != nullptr)
         {
-            this->GetLanguage(element, m_Language);
+            VALIDATE(this->GetLanguage(element, m_Language));
+            return true;
         }
+        return false;
     }
     void SetLanguage(CLanguage &m_Language)
     {
@@ -101,13 +109,15 @@ public:
         this->LinkEndChild(element);
         this->SetLanguage(element, m_Language);
     }
-    void GetLanguages(CLanguagesList &m_Languages)
+    bool GetLanguages(CLanguagesList &m_Languages)
     {
         auto element = this->FirstChildElement("Languages");
         if (element != nullptr)
         {
-            this->GetLanguages(element, m_Languages);
+            VALIDATE(this->GetLanguages(element, m_Languages));
+            return true;
         }
+        return false;
     }
     void SetLanguages(CLanguagesList &m_Languages)
     {

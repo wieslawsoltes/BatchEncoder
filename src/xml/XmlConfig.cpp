@@ -19,8 +19,7 @@ CString CXmlConfig::GetRootName(CString szFileXml, XmlDocumnent &doc)
 bool CXmlConfig::LoadOptions(XmlDocumnent &doc, COptions &options)
 {
     XmlOptions xml(doc);
-    xml.GetOptions(options);
-    return true;
+    return xml.GetOptions(options);
 }
 
 bool CXmlConfig::LoadOptions(CString szFileXml, COptions &options)
@@ -95,8 +94,7 @@ bool CXmlConfig::SaveItems(CString szFileXml, CItemsList &items)
 bool CXmlConfig::LoadLanguage(XmlDocumnent &doc, CLanguage &language)
 {
     XmlLanguages xml(doc);
-    xml.GetLanguage(language);
-    return true;
+    return xml.GetLanguage(language);
 }
 
 bool CXmlConfig::LoadLanguage(CString szFileXml, CLanguage &language)
@@ -121,8 +119,7 @@ bool CXmlConfig::SaveLanguage(CString szFileXml, CLanguage &language)
 bool CXmlConfig::LoadLanguages(XmlDocumnent &doc, CLanguagesList &languages)
 {
     XmlLanguages xml(doc);
-    xml.GetLanguages(languages);
-    return true;
+    return xml.GetLanguages(languages);
 }
 
 bool CXmlConfig::LoadLanguages(CString szFileXml, CLanguagesList &languages)
@@ -147,8 +144,7 @@ bool CXmlConfig::SaveLanguages(CString szFileXml, CLanguagesList &languages)
 bool CXmlConfig::LoadPreset(XmlDocumnent &doc, CPreset &preset)
 {
     XmlPresets xml(doc);
-    xml.GetPreset(preset);
-    return true;
+    return xml.GetPreset(preset);
 }
 
 bool CXmlConfig::LoadPreset(CString szFileXml, CPreset &preset)
@@ -173,8 +169,7 @@ bool CXmlConfig::SavePreset(CString szFileXml, CPreset &preset)
 bool CXmlConfig::LoadPresets(XmlDocumnent &doc, CPresetsList &presets)
 {
     XmlPresets xml(doc);
-    xml.GetPresets(presets);
-    return true;
+    return xml.GetPresets(presets);
 }
 
 bool CXmlConfig::LoadPresets(CString szFileXml, CPresetsList &presets)
@@ -199,8 +194,7 @@ bool CXmlConfig::SavePresets(CString szFileXml, CPresetsList &presets)
 bool CXmlConfig::LoadFormat(XmlDocumnent &doc, CFormat &format)
 {
     XmlFormats xml(doc);
-    xml.GetFormat(format);
-    return true;
+    return xml.GetFormat(format);
 }
 
 bool CXmlConfig::LoadFormat(CString szFileXml, CFormat &format)
@@ -225,8 +219,7 @@ bool CXmlConfig::SaveFormat(CString szFileXml, CFormat &format)
 bool CXmlConfig::LoadFormats(XmlDocumnent &doc, CFormatsList &formats)
 {
     XmlFormats xml(doc);
-    xml.GetFormats(formats);
-    return true;
+    return xml.GetFormats(formats);
 }
 
 bool CXmlConfig::LoadFormats(CString szFileXml, CFormatsList &formats)
@@ -251,8 +244,7 @@ bool CXmlConfig::SaveFormats(CString szFileXml, CFormatsList &formats)
 bool CXmlConfig::LoadTool(XmlDocumnent &doc, CTool &tool)
 {
     XmlTools xml(doc);
-    xml.GetTool(tool);
-    return true;
+    return xml.GetTool(tool);
 }
 
 bool CXmlConfig::LoadTool(CString szFileXml, CTool &tool)
@@ -277,8 +269,7 @@ bool CXmlConfig::SaveTool(CString szFileXml, CTool &tool)
 bool CXmlConfig::LoadTools(XmlDocumnent &doc, CToolsList &tools)
 {
     XmlTools xml(doc);
-    xml.GetTools(tools);
-    return true;
+    return xml.GetTools(tools);
 }
 
 bool CXmlConfig::LoadTools(CString szFileXml, CToolsList &tools)

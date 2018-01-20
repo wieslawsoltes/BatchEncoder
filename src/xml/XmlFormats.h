@@ -8,6 +8,8 @@
 #include "configuration\Format.h"
 #include "configuration\FormatsList.h"
 
+#define VALIDATE(value) if (!value) return false
+
 class XmlFormats : public XmlDoc
 {
 public:
@@ -18,26 +20,28 @@ public:
     {
     }
 public:
-    void GetFormat(const XmlElement *element, CFormat &m_Format)
+    bool GetFormat(const XmlElement *element, CFormat &m_Format)
     {
-        GetAttributeValue(element, "id", &m_Format.szId);
-        GetAttributeValue(element, "name", &m_Format.szName);
-        GetAttributeValue(element, "template", &m_Format.szTemplate);
-        GetAttributeValue(element, "input", &m_Format.bPipeInput);
-        GetAttributeValue(element, "output", &m_Format.bPipeOutput);
-        GetAttributeValue(element, "function", &m_Format.szFunction);
-        GetAttributeValue(element, "path", &m_Format.szPath);
-        GetAttributeValue(element, "success", &m_Format.nExitCodeSuccess);
-        GetAttributeValue(element, "type", &m_Format.nType);
-        GetAttributeValue(element, "formats", &m_Format.szInputExtensions);
-        GetAttributeValue(element, "extension", &m_Format.szOutputExtension);
-        GetAttributeValue(element, "default", &m_Format.nDefaultPreset);
+        VALIDATE(GetAttributeValue(element, "id", &m_Format.szId));
+        VALIDATE(GetAttributeValue(element, "name", &m_Format.szName));
+        VALIDATE(GetAttributeValue(element, "template", &m_Format.szTemplate));
+        VALIDATE(GetAttributeValue(element, "input", &m_Format.bPipeInput));
+        VALIDATE(GetAttributeValue(element, "output", &m_Format.bPipeOutput));
+        VALIDATE(GetAttributeValue(element, "function", &m_Format.szFunction));
+        VALIDATE(GetAttributeValue(element, "path", &m_Format.szPath));
+        VALIDATE(GetAttributeValue(element, "success", &m_Format.nExitCodeSuccess));
+        VALIDATE(GetAttributeValue(element, "type", &m_Format.nType));
+        VALIDATE(GetAttributeValue(element, "formats", &m_Format.szInputExtensions));
+        VALIDATE(GetAttributeValue(element, "extension", &m_Format.szOutputExtension));
+        VALIDATE(GetAttributeValue(element, "default", &m_Format.nDefaultPreset));
 
         auto parent = element->FirstChildElement("Presets");
         if (parent != nullptr)
         {
-            XmlPresets(m_Document).GetPresets(parent, m_Format.m_Presets);
+            VALIDATE(XmlPresets(m_Document).GetPresets(parent, m_Format.m_Presets));
+            return true;
         }
+        return false;
     }
     void SetFormat(XmlElement *element, CFormat &m_Format)
     {
@@ -58,7 +62,7 @@ public:
         element->LinkEndChild(parent);
         XmlPresets(m_Document).SetPresets(parent, m_Format.m_Presets);
     }
-    void GetFormats(const XmlElement *parent, CFormatsList &m_Formats)
+    bool GetFormats(const XmlElement *parent, CFormatsList &m_Formats)
     {
         auto element = parent->FirstChildElement("Format");
         if (element != nullptr)
@@ -66,10 +70,12 @@ public:
             for (element; element; element = element->NextSiblingElement())
             {
                 CFormat format;
-                this->GetFormat(element, format);
+                VALIDATE(this->GetFormat(element, format));
                 m_Formats.Insert(format);
             }
+            return true;
         }
+        return false;
     }
     void SetFormats(XmlElement *parent, CFormatsList &m_Formats)
     {
@@ -83,13 +89,15 @@ public:
         }
     }
 public:
-    void GetFormat(CFormat &m_Format)
+    bool GetFormat(CFormat &m_Format)
     {
         auto element = this->FirstChildElement("Format");
         if (element != nullptr)
         {
-            this->GetFormat(element, m_Format);
+            VALIDATE(this->GetFormat(element, m_Format));
+            return true;
         }
+        return false;
     }
     void SetFormat(CFormat &m_Format)
     {
@@ -97,13 +105,15 @@ public:
         this->LinkEndChild(element);
         this->SetFormat(element, m_Format);
     }
-    void GetFormats(CFormatsList &m_Formats)
+    bool GetFormats(CFormatsList &m_Formats)
     {
         auto element = this->FirstChildElement("Formats");
         if (element != nullptr)
         {
-            this->GetFormats(element, m_Formats);
+            VALIDATE(this->GetFormats(element, m_Formats));
+            return true;
         }
+        return false;
     }
     void SetFormats(CFormatsList &m_Formats)
     {

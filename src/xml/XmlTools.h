@@ -7,6 +7,8 @@
 #include "configuration\Tool.h"
 #include "configuration\ToolsList.h"
 
+#define VALIDATE(value) if (!value) return false
+
 class XmlTools : public XmlDoc
 {
 public:
@@ -17,15 +19,16 @@ public:
     {
     }
 public:
-    void GetTool(const XmlElement *element, CTool &m_Tool)
+    bool GetTool(const XmlElement *element, CTool &m_Tool)
     {
-        GetAttributeValue(element, "name", &m_Tool.szName);
-        GetAttributeValue(element, "platform", &m_Tool.szPlatform);
-        GetAttributeValue(element, "formats", &m_Tool.szFormats);
-        GetAttributeValue(element, "url", &m_Tool.szUrl);
-        GetAttributeValue(element, "file", &m_Tool.szFile);
-        GetAttributeValue(element, "extract", &m_Tool.szExtract);
-        GetAttributeValue(element, "path", &m_Tool.szPath);
+        VALIDATE(GetAttributeValue(element, "name", &m_Tool.szName));
+        VALIDATE(GetAttributeValue(element, "platform", &m_Tool.szPlatform));
+        VALIDATE(GetAttributeValue(element, "formats", &m_Tool.szFormats));
+        VALIDATE(GetAttributeValue(element, "url", &m_Tool.szUrl));
+        VALIDATE(GetAttributeValue(element, "file", &m_Tool.szFile));
+        VALIDATE(GetAttributeValue(element, "extract", &m_Tool.szExtract));
+        VALIDATE(GetAttributeValue(element, "path", &m_Tool.szPath));
+        return true;
     }
     void SetTool(XmlElement *element, CTool &m_Tool)
     {
@@ -37,7 +40,7 @@ public:
         SetAttributeValue(element, "extract", m_Tool.szExtract);
         SetAttributeValue(element, "path", m_Tool.szPath);
     }
-    void GetTools(const XmlElement *parent, CToolsList &m_Tools)
+    bool GetTools(const XmlElement *parent, CToolsList &m_Tools)
     {
         auto element = parent->FirstChildElement("Tool");
         if (element != nullptr)
@@ -45,10 +48,12 @@ public:
             for (element; element; element = element->NextSiblingElement())
             {
                 CTool tool;
-                this->GetTool(element, tool);
+                VALIDATE(this->GetTool(element, tool));
                 m_Tools.Insert(tool);
             }
+            return true;
         }
+        return false;
     }
     void SetTools(XmlElement *parent, CToolsList &m_Tools)
     {
@@ -62,13 +67,15 @@ public:
         }
     }
 public:
-    void GetTool(CTool &m_Tool)
+    bool GetTool(CTool &m_Tool)
     {
         auto element = this->FirstChildElement("Tool");
         if (element != nullptr)
         {
-            this->GetTool(element, m_Tool);
+            VALIDATE(this->GetTool(element, m_Tool));
+            return true;
         }
+        return false;
     }
     void SetTool(CTool &m_Tool)
     {
@@ -76,13 +83,15 @@ public:
         this->LinkEndChild(element);
         this->SetTool(element, m_Tool);
     }
-    void GetTools(CToolsList &m_Tools)
+    bool GetTools(CToolsList &m_Tools)
     {
         auto element = this->FirstChildElement("Tools");
         if (element != nullptr)
         {
-            this->GetTools(element, m_Tools);
+            VALIDATE(this->GetTools(element, m_Tools));
+            return true;
         }
+        return false;
     }
     void SetTools(CToolsList &m_Tools)
     {

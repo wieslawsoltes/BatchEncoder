@@ -7,6 +7,8 @@
 #include "configuration\Preset.h"
 #include "configuration\PresetsList.h"
 
+#define VALIDATE(value) if (!value) return false
+
 class XmlPresets : public XmlDoc
 {
 public:
@@ -17,17 +19,18 @@ public:
     {
     }
 public:
-    void GetPreset(const XmlElement *element, CPreset &m_Preset)
+    bool GetPreset(const XmlElement *element, CPreset &m_Preset)
     {
-        GetAttributeValue(element, "name", &m_Preset.szName);
-        GetAttributeValue(element, "options", &m_Preset.szOptions);
+        VALIDATE(GetAttributeValue(element, "name", &m_Preset.szName));
+        VALIDATE(GetAttributeValue(element, "options", &m_Preset.szOptions));
+        return true;
     }
     void SetPreset(XmlElement *element, CPreset &m_Preset)
     {
         SetAttributeValue(element, "name", m_Preset.szName);
         SetAttributeValue(element, "options", m_Preset.szOptions);
     }
-    void GetPresets(const XmlElement *parent, CPresetsList &m_Presets)
+    bool GetPresets(const XmlElement *parent, CPresetsList &m_Presets)
     {
         auto element = parent->FirstChildElement("Preset");
         if (element != nullptr)
@@ -35,10 +38,12 @@ public:
             for (element; element; element = element->NextSiblingElement())
             {
                 CPreset preset;
-                this->GetPreset(element, preset);
+                VALIDATE(this->GetPreset(element, preset));
                 m_Presets.Insert(preset);
             }
+            return true;
         }
+        return false;
     }
     void SetPresets(XmlElement *parent, CPresetsList &m_Presets)
     {
@@ -52,13 +57,15 @@ public:
         }
     }
 public:
-    void GetPreset(CPreset &m_Preset)
+    bool GetPreset(CPreset &m_Preset)
     {
         auto element = this->FirstChildElement("Preset");
         if (element != nullptr)
         {
-            this->GetPreset(element, m_Preset);
+            VALIDATE(this->GetPreset(element, m_Preset));
+            return true;
         }
+        return false;
     }
     void SetPreset(CPreset &m_Preset)
     {
@@ -66,13 +73,15 @@ public:
         this->LinkEndChild(element);
         this->SetPreset(element, m_Preset);
     }
-    void GetPresets(CPresetsList &m_Presets)
+    bool GetPresets(CPresetsList &m_Presets)
     {
         auto element = this->FirstChildElement("Presets");
         if (element != nullptr)
         {
-            this->GetPresets(element, m_Presets);
+            VALIDATE(this->GetPresets(element, m_Presets));
+            return true;
         }
+        return false;
     }
     void SetPresets(CPresetsList &m_Presets)
     {
