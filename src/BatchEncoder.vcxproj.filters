@@ -28,9 +28,6 @@
     <Filter Include="Header Files\Configuration">
       <UniqueIdentifier>{1e005ea3-fc6a-4599-a2d3-a5ba272d5366}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Contexts">
-      <UniqueIdentifier>{d579bfb7-6e6c-4ff4-9356-af2ff7701d2d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Xml">
       <UniqueIdentifier>{8f6b2fbd-d6d7-4e5d-b494-8309102637bc}</UniqueIdentifier>
     </Filter>
@@ -178,9 +175,6 @@
     </ClInclude>
     <ClInclude Include="configuration\PathsList.h">
       <Filter>Header Files\Configuration</Filter>
-    </ClInclude>
-    <ClInclude Include="contexts\MainDlgWorkerContext.h">
-      <Filter>Header Files\Contexts</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
