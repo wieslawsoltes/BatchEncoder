@@ -13,10 +13,10 @@ BatchEncoder is an audio files conversion software.
 
 | Platform              | Type        | Version       | Download                                                                                                                               |
 |-----------------------|-------------|---------------|----------------------------------------------------------------------------------------------------------------------------------------|
-| Windows 32-bit        | Installer   | 3.0           | [BatchEncoder-3.0-Win32.exe](https://github.com/wieslawsoltes/BatchEncoder/releases/download/3.0/BatchEncoder-3.0-Win32.exe)           |
-| Windows 64-bit        | Installer   | 3.0           | [BatchEncoder-3.0-x64.exe](https://github.com/wieslawsoltes/BatchEncoder/releases/download/3.0/BatchEncoder-3.0-x64.exe)               |
-| Windows 32-bit        | Portable    | 3.0           | [BatchEncoder-3.0-Win32.zip](https://github.com/wieslawsoltes/BatchEncoder/releases/download/3.0/BatchEncoder-3.0-Win32.zip)           |
-| Windows 64-bit        | Portable    | 3.0           | [BatchEncoder-3.0-x64.zip](https://github.com/wieslawsoltes/BatchEncoder/releases/download/3.0/BatchEncoder-3.0-x64.zip)               |
+| Windows 32-bit        | Installer   | 3.1           | [BatchEncoder-3.1-Win32.exe](https://github.com/wieslawsoltes/BatchEncoder/releases/download/3.1/BatchEncoder-3.1-Win32.exe)           |
+| Windows 64-bit        | Installer   | 3.1           | [BatchEncoder-3.1-x64.exe](https://github.com/wieslawsoltes/BatchEncoder/releases/download/3.1/BatchEncoder-3.1-x64.exe)               |
+| Windows 32-bit        | Portable    | 3.1           | [BatchEncoder-3.1-Win32.zip](https://github.com/wieslawsoltes/BatchEncoder/releases/download/3.1/BatchEncoder-3.1-Win32.zip)           |
+| Windows 64-bit        | Portable    | 3.1           | [BatchEncoder-3.1-x64.zip](https://github.com/wieslawsoltes/BatchEncoder/releases/download/3.1/BatchEncoder-3.1-x64.zip)               |
 
 ## Support BatchEncoder
 
