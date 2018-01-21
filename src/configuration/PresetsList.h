@@ -7,6 +7,9 @@
 #include "utilities\ListT.h"
 #include "Preset.h"
 
-class CPresetsList : public CListT<CPreset>
+namespace config
 {
-};
+    class CPresetsList : public CListT<CPreset>
+    {
+    };
+}

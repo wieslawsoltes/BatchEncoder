@@ -5,31 +5,34 @@
 
 #include <afxstr.h>
 
-class CPath
+namespace config
 {
-public:
-    CString szPath;
-    CString szSize;
-public:
-    CPath()
+    class CPath
     {
-    }
-    CPath(const CPath &other)
-    {
-        Copy(other);
-    }
-    CPath& operator=(const CPath &other)
-    {
-        Copy(other);
-        return *this;
-    }
-    virtual ~CPath()
-    {
-    }
-public:
-    void Copy(const CPath &other)
-    {
-        this->szPath = other.szPath;
-        this->szSize = other.szSize;
-    }
-};
+    public:
+        CString szPath;
+        CString szSize;
+    public:
+        CPath()
+        {
+        }
+        CPath(const CPath &other)
+        {
+            Copy(other);
+        }
+        CPath& operator=(const CPath &other)
+        {
+            Copy(other);
+            return *this;
+        }
+        virtual ~CPath()
+        {
+        }
+    public:
+        void Copy(const CPath &other)
+        {
+            this->szPath = other.szPath;
+            this->szSize = other.szSize;
+        }
+    };
+}

@@ -7,57 +7,60 @@
 #include "utilities\ListT.h"
 #include "Format.h"
 
-class CFormatsList : public CListT<CFormat>
+namespace config
 {
-public:
-    int GetFormatById(CString szFormatId)
+    class CFormatsList : public CListT<CFormat>
     {
-        int nFormats = this->Count();
-        for (int i = 0; i < nFormats; i++)
+    public:
+        int GetFormatById(CString szFormatId)
         {
-            CFormat& format = this->Get(i);
-            if (szFormatId.CompareNoCase(format.szId) == 0)
-                return i;
-        }
-        return -1;
-    }
-    int GetDecoderByExtension(CString szExt)
-    {
-        int nFormats = this->Count();
-        for (int i = 0; i < nFormats; i++)
-        {
-            CFormat& format = this->Get(i);
-            if (format.nType == 1 && format.IsValidInputExtension(szExt) == true)
+            int nFormats = this->Count();
+            for (int i = 0; i < nFormats; i++)
             {
-                return i;
-            }
-        }
-        return -1;
-    }
-    int GetDecoderByExtensionAndFormat(CString szExt, CFormat *pEncoderFormat)
-    {
-        int nFormats = this->Count();
-        for (int i = 0; i < nFormats; i++)
-        {
-            CFormat& format = this->Get(i);
-            if (format.nType == 1 && format.IsValidInputExtension(szExt) == true)
-            {
-                bool bIsValidEncoderInput = pEncoderFormat->IsValidInputExtension(format.szOutputExtension);
-                if (bIsValidEncoderInput == true)
+                CFormat& format = this->Get(i);
+                if (szFormatId.CompareNoCase(format.szId) == 0)
                     return i;
             }
+            return -1;
         }
-        return -1;
-    }
-    bool IsValidInputExtension(CString szExt)
-    {
-        int nFormats = this->Count();
-        for (int i = 0; i < nFormats; i++)
+        int GetDecoderByExtension(CString szExt)
         {
-            CFormat& format = this->Get(i);
-            if (format.IsValidInputExtension(szExt) == true)
-                return true;
+            int nFormats = this->Count();
+            for (int i = 0; i < nFormats; i++)
+            {
+                CFormat& format = this->Get(i);
+                if (format.nType == 1 && format.IsValidInputExtension(szExt) == true)
+                {
+                    return i;
+                }
+            }
+            return -1;
         }
-        return false;
-    }
-};
+        int GetDecoderByExtensionAndFormat(CString szExt, CFormat *pEncoderFormat)
+        {
+            int nFormats = this->Count();
+            for (int i = 0; i < nFormats; i++)
+            {
+                CFormat& format = this->Get(i);
+                if (format.nType == 1 && format.IsValidInputExtension(szExt) == true)
+                {
+                    bool bIsValidEncoderInput = pEncoderFormat->IsValidInputExtension(format.szOutputExtension);
+                    if (bIsValidEncoderInput == true)
+                        return i;
+                }
+            }
+            return -1;
+        }
+        bool IsValidInputExtension(CString szExt)
+        {
+            int nFormats = this->Count();
+            for (int i = 0; i < nFormats; i++)
+            {
+                CFormat& format = this->Get(i);
+                if (format.IsValidInputExtension(szExt) == true)
+                    return true;
+            }
+            return false;
+        }
+    };
+}

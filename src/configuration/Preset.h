@@ -5,31 +5,34 @@
 
 #include <afxstr.h>
 
-class CPreset
+namespace config
 {
-public:
-    CString szName;
-    CString szOptions;
-public:
-    CPreset()
+    class CPreset
     {
-    }
-    CPreset(const CPreset &other)
-    {
-        Copy(other);
-    }
-    CPreset& operator=(const CPreset &other)
-    {
-        Copy(other);
-        return *this;
-    }
-    virtual ~CPreset()
-    {
-    }
-public:
-    void Copy(const CPreset &other)
-    {
-        this->szName = other.szName;
-        this->szOptions = other.szOptions;
-    }
-};
+    public:
+        CString szName;
+        CString szOptions;
+    public:
+        CPreset()
+        {
+        }
+        CPreset(const CPreset &other)
+        {
+            Copy(other);
+        }
+        CPreset& operator=(const CPreset &other)
+        {
+            Copy(other);
+            return *this;
+        }
+        virtual ~CPreset()
+        {
+        }
+    public:
+        void Copy(const CPreset &other)
+        {
+            this->szName = other.szName;
+            this->szOptions = other.szOptions;
+        }
+    };
+}

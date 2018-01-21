@@ -16,13 +16,13 @@ CString CXmlConfig::GetRootName(CString szFileXml, XmlDocumnent &doc)
     return CString();
 }
 
-bool CXmlConfig::LoadOptions(XmlDocumnent &doc, COptions &options)
+bool CXmlConfig::LoadOptions(XmlDocumnent &doc, config::COptions &options)
 {
     XmlOptions xml(doc);
     return xml.GetOptions(options);
 }
 
-bool CXmlConfig::LoadOptions(CString szFileXml, COptions &options)
+bool CXmlConfig::LoadOptions(CString szFileXml, config::COptions &options)
 {
     XmlDocumnent doc;
     if (XmlDoc::Open(szFileXml, doc) == true)
@@ -32,7 +32,7 @@ bool CXmlConfig::LoadOptions(CString szFileXml, COptions &options)
     return false;
 }
 
-bool CXmlConfig::SaveOptions(CString szFileXml, COptions &options)
+bool CXmlConfig::SaveOptions(CString szFileXml, config::COptions &options)
 {
     XmlDocumnent doc;
     XmlOptions xml(doc);
@@ -41,13 +41,13 @@ bool CXmlConfig::SaveOptions(CString szFileXml, COptions &options)
     return xml.Save(szFileXml);
 }
 
-bool CXmlConfig::LoadItem(XmlDocumnent &doc, CItem &item)
+bool CXmlConfig::LoadItem(XmlDocumnent &doc, config::CItem &item)
 {
     XmlItems xml(doc);
     return xml.GetItem(item);
 }
 
-bool CXmlConfig::LoadItem(CString szFileXml, CItem &item)
+bool CXmlConfig::LoadItem(CString szFileXml, config::CItem &item)
 {
     XmlDocumnent doc;
     if (XmlDoc::Open(szFileXml, doc) == true)
@@ -57,7 +57,7 @@ bool CXmlConfig::LoadItem(CString szFileXml, CItem &item)
     return false;
 }
 
-bool CXmlConfig::SaveItem(CString szFileXml, CItem &item)
+bool CXmlConfig::SaveItem(CString szFileXml, config::CItem &item)
 {
     XmlDocumnent doc;
     XmlItems xml(doc);
@@ -66,13 +66,13 @@ bool CXmlConfig::SaveItem(CString szFileXml, CItem &item)
     return xml.Save(szFileXml);
 }
 
-bool CXmlConfig::LoadItems(XmlDocumnent &doc, CItemsList &items)
+bool CXmlConfig::LoadItems(XmlDocumnent &doc, config::CItemsList &items)
 {
     XmlItems xml(doc);
     return xml.GetItems(items);
 }
 
-bool CXmlConfig::LoadItems(CString szFileXml, CItemsList &items)
+bool CXmlConfig::LoadItems(CString szFileXml, config::CItemsList &items)
 {
     XmlDocumnent doc;
     if (XmlDoc::Open(szFileXml, doc) == true)
@@ -82,7 +82,7 @@ bool CXmlConfig::LoadItems(CString szFileXml, CItemsList &items)
     return false;
 }
 
-bool CXmlConfig::SaveItems(CString szFileXml, CItemsList &items)
+bool CXmlConfig::SaveItems(CString szFileXml, config::CItemsList &items)
 {
     XmlDocumnent doc;
     XmlItems xml(doc);
@@ -141,13 +141,13 @@ bool CXmlConfig::SaveLanguages(CString szFileXml, CLanguagesList &languages)
     return xml.Save(szFileXml);
 }
 
-bool CXmlConfig::LoadPreset(XmlDocumnent &doc, CPreset &preset)
+bool CXmlConfig::LoadPreset(XmlDocumnent &doc, config::CPreset &preset)
 {
     XmlPresets xml(doc);
     return xml.GetPreset(preset);
 }
 
-bool CXmlConfig::LoadPreset(CString szFileXml, CPreset &preset)
+bool CXmlConfig::LoadPreset(CString szFileXml, config::CPreset &preset)
 {
     XmlDocumnent doc;
     if (XmlDoc::Open(szFileXml, doc) == true)
@@ -157,7 +157,7 @@ bool CXmlConfig::LoadPreset(CString szFileXml, CPreset &preset)
     return false;
 }
 
-bool CXmlConfig::SavePreset(CString szFileXml, CPreset &preset)
+bool CXmlConfig::SavePreset(CString szFileXml, config::CPreset &preset)
 {
     XmlDocumnent doc;
     XmlPresets xml(doc);
@@ -166,13 +166,13 @@ bool CXmlConfig::SavePreset(CString szFileXml, CPreset &preset)
     return xml.Save(szFileXml);
 }
 
-bool CXmlConfig::LoadPresets(XmlDocumnent &doc, CPresetsList &presets)
+bool CXmlConfig::LoadPresets(XmlDocumnent &doc, config::CPresetsList &presets)
 {
     XmlPresets xml(doc);
     return xml.GetPresets(presets);
 }
 
-bool CXmlConfig::LoadPresets(CString szFileXml, CPresetsList &presets)
+bool CXmlConfig::LoadPresets(CString szFileXml, config::CPresetsList &presets)
 {
     XmlDocumnent doc;
     if (XmlDoc::Open(szFileXml, doc) == true)
@@ -182,7 +182,7 @@ bool CXmlConfig::LoadPresets(CString szFileXml, CPresetsList &presets)
     return false;
 }
 
-bool CXmlConfig::SavePresets(CString szFileXml, CPresetsList &presets)
+bool CXmlConfig::SavePresets(CString szFileXml, config::CPresetsList &presets)
 {
     XmlDocumnent doc;
     XmlPresets xml(doc);
@@ -191,13 +191,13 @@ bool CXmlConfig::SavePresets(CString szFileXml, CPresetsList &presets)
     return xml.Save(szFileXml);
 }
 
-bool CXmlConfig::LoadFormat(XmlDocumnent &doc, CFormat &format)
+bool CXmlConfig::LoadFormat(XmlDocumnent &doc, config::CFormat &format)
 {
     XmlFormats xml(doc);
     return xml.GetFormat(format);
 }
 
-bool CXmlConfig::LoadFormat(CString szFileXml, CFormat &format)
+bool CXmlConfig::LoadFormat(CString szFileXml, config::CFormat &format)
 {
     XmlDocumnent doc;
     if (XmlDoc::Open(szFileXml, doc) == true)
@@ -207,7 +207,7 @@ bool CXmlConfig::LoadFormat(CString szFileXml, CFormat &format)
     return false;
 }
 
-bool CXmlConfig::SaveFormat(CString szFileXml, CFormat &format)
+bool CXmlConfig::SaveFormat(CString szFileXml, config::CFormat &format)
 {
     XmlDocumnent doc;
     XmlFormats xml(doc);
@@ -216,13 +216,13 @@ bool CXmlConfig::SaveFormat(CString szFileXml, CFormat &format)
     return xml.Save(szFileXml);
 }
 
-bool CXmlConfig::LoadFormats(XmlDocumnent &doc, CFormatsList &formats)
+bool CXmlConfig::LoadFormats(XmlDocumnent &doc, config::CFormatsList &formats)
 {
     XmlFormats xml(doc);
     return xml.GetFormats(formats);
 }
 
-bool CXmlConfig::LoadFormats(CString szFileXml, CFormatsList &formats)
+bool CXmlConfig::LoadFormats(CString szFileXml, config::CFormatsList &formats)
 {
     XmlDocumnent doc;
     if (XmlDoc::Open(szFileXml, doc) == true)
@@ -232,7 +232,7 @@ bool CXmlConfig::LoadFormats(CString szFileXml, CFormatsList &formats)
     return false;
 }
 
-bool CXmlConfig::SaveFormats(CString szFileXml, CFormatsList &formats)
+bool CXmlConfig::SaveFormats(CString szFileXml, config::CFormatsList &formats)
 {
     XmlDocumnent doc;
     XmlFormats xml(doc);
@@ -241,13 +241,13 @@ bool CXmlConfig::SaveFormats(CString szFileXml, CFormatsList &formats)
     return xml.Save(szFileXml);
 }
 
-bool CXmlConfig::LoadTool(XmlDocumnent &doc, CTool &tool)
+bool CXmlConfig::LoadTool(XmlDocumnent &doc, config::CTool &tool)
 {
     XmlTools xml(doc);
     return xml.GetTool(tool);
 }
 
-bool CXmlConfig::LoadTool(CString szFileXml, CTool &tool)
+bool CXmlConfig::LoadTool(CString szFileXml, config::CTool &tool)
 {
     XmlDocumnent doc;
     if (XmlDoc::Open(szFileXml, doc) == true)
@@ -257,7 +257,7 @@ bool CXmlConfig::LoadTool(CString szFileXml, CTool &tool)
     return false;
 }
 
-bool CXmlConfig::SaveTool(CString szFileXml, CTool &tool)
+bool CXmlConfig::SaveTool(CString szFileXml, config::CTool &tool)
 {
     XmlDocumnent doc;
     XmlTools xml(doc);
@@ -266,13 +266,13 @@ bool CXmlConfig::SaveTool(CString szFileXml, CTool &tool)
     return xml.Save(szFileXml);
 }
 
-bool CXmlConfig::LoadTools(XmlDocumnent &doc, CToolsList &tools)
+bool CXmlConfig::LoadTools(XmlDocumnent &doc, config::CToolsList &tools)
 {
     XmlTools xml(doc);
     return xml.GetTools(tools);
 }
 
-bool CXmlConfig::LoadTools(CString szFileXml, CToolsList &tools)
+bool CXmlConfig::LoadTools(CString szFileXml, config::CToolsList &tools)
 {
     XmlDocumnent doc;
     if (XmlDoc::Open(szFileXml, doc) == true)
@@ -282,7 +282,7 @@ bool CXmlConfig::LoadTools(CString szFileXml, CToolsList &tools)
     return false;
 }
 
-bool CXmlConfig::SaveTools(CString szFileXml, CToolsList &tools)
+bool CXmlConfig::SaveTools(CString szFileXml, config::CToolsList &tools)
 {
     XmlDocumnent doc;
     XmlTools xml(doc);

@@ -180,7 +180,7 @@ private:
     CTimeCount timer;
     CMainDlg *pDlg;
 public:
-    CMainDlgWorkerContext(CConfiguration* pConfig, CMainDlg* pDlg)
+    CMainDlgWorkerContext(config::CConfiguration* pConfig, CMainDlg* pDlg)
         : IWorkerContext(pConfig)
     {
         this->bDone = true;
@@ -245,7 +245,7 @@ public:
     {
         if (bError == true)
         {
-            CItem &item = pConfig->m_Items.Get(nItemId);
+            config::CItem &item = pConfig->m_Items.Get(nItemId);
             item.bFinished = true;
 
             if (pConfig->m_Options.bStopOnErrors == true)
@@ -259,13 +259,13 @@ public:
 
         if (bFinished == true)
         {
-            CItem &item = pConfig->m_Items.Get(nItemId);
+            config::CItem &item = pConfig->m_Items.Get(nItemId);
             item.bFinished = true;
         }
 
         if ((bFinished == false) && (this->bRunning == true))
         {
-            CItem &current = pConfig->m_Items.Get(nItemId);
+            config::CItem &current = pConfig->m_Items.Get(nItemId);
             current.nProgress = nProgress;
             if (current.nPreviousProgress > nProgress)
                 current.nPreviousProgress = nProgress;
@@ -286,7 +286,7 @@ public:
                 int nItems = pConfig->m_Items.Count();
                 for (int i = 0; i < nItems; i++)
                 {
-                    CItem &item = pConfig->m_Items.Get(i);
+                    config::CItem &item = pConfig->m_Items.Get(i);
                     if (item.bChecked == true)
                     {
                         int nItemProgress = item.nProgress;
@@ -665,7 +665,7 @@ LRESULT CMainDlg::OnListItemChaged(WPARAM wParam, LPARAM lParam)
         LPTSTR szText = (LPTSTR)lParam;
         if ((nIndex >= 0) && szText != nullptr)
         {
-            CItem& item = m_Config.m_Items.Get(nIndex);
+            config::CItem& item = m_Config.m_Items.Get(nIndex);
             item.szName = szText;
         }
     }
@@ -770,10 +770,10 @@ void CMainDlg::OnLvnItemchangedListInputItems(NMHDR *pNMHDR, LRESULT *pResult)
                 int nItem = this->m_LstInputItems.GetNextSelectedItem(pos);
                 if (nItem < m_Config.m_Items.Count())
                 {
-                    CItem& item = m_Config.m_Items.Get(nItem);
+                    config::CItem& item = m_Config.m_Items.Get(nItem);
                     if (m_Config.m_Formats.Count() > 0)
                     {
-                        CFormat& format = m_Config.m_Formats.Get(this->m_CmbFormat.GetCurSel());
+                        config::CFormat& format = m_Config.m_Formats.Get(this->m_CmbFormat.GetCurSel());
                         if (item.szFormatId.CompareNoCase(format.szId) == 0)
                         {
                             format.nDefaultPreset = item.nPreset;
@@ -784,7 +784,7 @@ void CMainDlg::OnLvnItemchangedListInputItems(NMHDR *pNMHDR, LRESULT *pResult)
                             int nFormat = m_Config.m_Formats.GetFormatById(item.szFormatId);
                             if (nFormat >= 0)
                             {
-                                CFormat& format = m_Config.m_Formats.Get(nFormat);
+                                config::CFormat& format = m_Config.m_Formats.Get(nFormat);
 
                                 m_Config.m_Options.nSelectedFormat = nFormat;
                                 format.nDefaultPreset = item.nPreset;
@@ -809,7 +809,7 @@ void CMainDlg::OnCbnSelchangeComboPresets()
         int nFormat = this->m_CmbFormat.GetCurSel();
         int nPreset = this->m_CmbPresets.GetCurSel();
 
-        CFormat& format = m_Config.m_Formats.Get(nFormat);
+        config::CFormat& format = m_Config.m_Formats.Get(nFormat);
         format.nDefaultPreset = nPreset;
 
         this->UpdateFormatAndPreset();
@@ -1317,8 +1317,8 @@ void CMainDlg::OnEditOpen()
         if (pos != nullptr)
         {
             int nItem = m_LstInputItems.GetNextSelectedItem(pos);
-            CItem& item = m_Config.m_Items.Get(nItem);
-            CPath& path = item.m_Paths.Get(0);
+            config::CItem& item = m_Config.m_Items.Get(nItem);
+            config::CPath& path = item.m_Paths.Get(0);
             ::LaunchAndWait(path.szPath, _T(""), FALSE);
         }
     }
@@ -1332,8 +1332,8 @@ void CMainDlg::OnEditExplore()
         if (pos != nullptr)
         {
             int nItem = m_LstInputItems.GetNextSelectedItem(pos);
-            CItem& item = m_Config.m_Items.Get(nItem);
-            CPath& path = item.m_Paths.Get(0);
+            config::CItem& item = m_Config.m_Items.Get(nItem);
+            config::CPath& path = item.m_Paths.Get(0);
             CString szPath = path.szPath;
             szPath.TrimRight(::GetFileName(path.szPath));
             ::LaunchAndWait(szPath, _T(""), FALSE);
@@ -1413,7 +1413,7 @@ void CMainDlg::OnOptionsConfigureTools()
 #else
             CString szPlatform = _T("x64");
 #endif
-            CFormat& format = m_Config.m_Formats.Get(nFormat);
+            config::CFormat& format = m_Config.m_Formats.Get(nFormat);
             int nTool = m_Config.m_Tools.GetToolByFormatAndPlatform(format.szId, szPlatform);
             if (nTool >= 0)
                 nSelectedTool = nTool;
@@ -1797,7 +1797,7 @@ void CMainDlg::GetItems()
     int nItems = this->m_LstInputItems.GetItemCount();
     for (int i = 0; i < nItems; i++)
     {
-        CItem& item = m_Config.m_Items.Get(i);
+        config::CItem& item = m_Config.m_Items.Get(i);
         item.nId = i;
         item.bChecked = this->m_LstInputItems.GetCheck(i) == TRUE;
         item.szOptions = this->m_LstInputItems.GetItemText(i, ITEM_COLUMN_OPTIONS);
@@ -1811,7 +1811,7 @@ void CMainDlg::SetItems()
     int nItems = m_Config.m_Items.Count();
     for (int i = 0; i < nItems; i++)
     {
-        CItem& item = m_Config.m_Items.Get(i);
+        config::CItem& item = m_Config.m_Items.Get(i);
         this->AddToList(item, i);
     }
 }
@@ -2028,19 +2028,19 @@ int CMainDlg::AddToItems(CString szPath)
             int nDecoder = m_Config.m_Formats.GetDecoderByExtension(::GetFileExtension(szPath));
             if (nDecoder == -1)
             {
-                CFormat &format = m_Config.m_Formats.Get(nFormat);
+                config::CFormat &format = m_Config.m_Formats.Get(nFormat);
                 szFormatId = format.szId;
             }
             else
             {
-                CFormat &format = m_Config.m_Formats.Get(nDecoder);
+                config::CFormat &format = m_Config.m_Formats.Get(nDecoder);
                 szFormatId = format.szId;
                 nPreset = format.nDefaultPreset;
             }
         }
         else
         {
-            CFormat &format = m_Config.m_Formats.Get(nFormat);
+            config::CFormat &format = m_Config.m_Formats.Get(nFormat);
             szFormatId = format.szId;
         }
     }
@@ -2049,8 +2049,8 @@ int CMainDlg::AddToItems(CString szPath)
     CString szFileSize;
     szFileSize.Format(_T("%I64d"), nFileSize);
 
-    CItem item;
-    CPath path;
+    config::CItem item;
+    config::CPath path;
     path.szPath = szPath;
     path.szSize = szFileSize;
     item.m_Paths.Insert(path);
@@ -2066,7 +2066,7 @@ int CMainDlg::AddToItems(CString szPath)
     return (int)m_Config.m_Items.Count() - 1;
 }
 
-void CMainDlg::AddToList(CItem &item, int nItem)
+void CMainDlg::AddToList(config::CItem &item, int nItem)
 {
     CString tmpBuf;
     LVITEM lvi;
@@ -2138,7 +2138,7 @@ bool CMainDlg::AddToList(CString szPath)
     if (nItem == -1)
         return false;
 
-    CItem& item = m_Config.m_Items.Get(nItem);
+    config::CItem& item = m_Config.m_Items.Get(nItem);
     this->AddToList(item, nItem);
 
     return true;
@@ -2239,7 +2239,7 @@ void CMainDlg::HandleDropFiles(HDROP hDropInfo)
                     int nFormat = this->m_CmbFormat.GetCurSel();
                     if (nFormat != -1)
                     {
-                        CFormat& format = m_Config.m_Formats.Get(nFormat);
+                        config::CFormat& format = m_Config.m_Formats.Get(nFormat);
                         format.szPath = szPath;
                     }
                 }
@@ -2249,7 +2249,7 @@ void CMainDlg::HandleDropFiles(HDROP hDropInfo)
                     int nFormat = this->m_CmbFormat.GetCurSel();
                     if (nFormat != -1)
                     {
-                        CFormat& format = m_Config.m_Formats.Get(nFormat);
+                        config::CFormat& format = m_Config.m_Formats.Get(nFormat);
                         format.szFunction = szPath;
                     }
                 }
@@ -2333,7 +2333,7 @@ void CMainDlg::UpdateFormatComboBox()
         int nFormats = m_Config.m_Formats.Count();
         for (int i = 0; i < nFormats; i++)
         {
-            CFormat& format = m_Config.m_Formats.Get(i);
+            config::CFormat& format = m_Config.m_Formats.Get(i);
             this->m_CmbFormat.InsertString(i, format.szName);
         }
 
@@ -2361,11 +2361,11 @@ void CMainDlg::UpdatePresetComboBox()
 
         if (m_Config.m_Options.nSelectedFormat >= 0 && m_Config.m_Formats.Count() > 0)
         {
-            CFormat& format = m_Config.m_Formats.Get(m_Config.m_Options.nSelectedFormat);
+            config::CFormat& format = m_Config.m_Formats.Get(m_Config.m_Options.nSelectedFormat);
             int nPresets = format.m_Presets.Count();
             for (int i = 0; i < nPresets; i++)
             {
-                CPreset& preset = format.m_Presets.Get(i);
+                config::CPreset& preset = format.m_Presets.Get(i);
                 this->m_CmbPresets.InsertString(i, preset.szName);
             }
 
@@ -2389,8 +2389,8 @@ void CMainDlg::UpdateFormatAndPreset()
     int nPreset = this->m_CmbPresets.GetCurSel();
     if ((nFormat >= 0) && (nPreset >= 0))
     {
-        CFormat& format = m_Config.m_Formats.Get(nFormat);
-        CPreset& preset = format.m_Presets.Get(nPreset);
+        config::CFormat& format = m_Config.m_Formats.Get(nFormat);
+        config::CPreset& preset = format.m_Presets.Get(nPreset);
         int nCount = m_LstInputItems.GetItemCount();
         if (nCount > 0)
         {
@@ -2399,7 +2399,7 @@ void CMainDlg::UpdateFormatAndPreset()
             {
                 if (m_LstInputItems.GetItemState(i, LVIS_SELECTED) == LVIS_SELECTED)
                 {
-                    CItem& item = m_Config.m_Items.Get(i);
+                    config::CItem& item = m_Config.m_Items.Get(i);
                     item.szFormatId = format.szId;
                     item.nPreset = nPreset;
 
@@ -2417,7 +2417,7 @@ void CMainDlg::UpdateFormatAndPreset()
             {
                 for (int i = 0; i < nCount; i++)
                 {
-                    CItem& item = m_Config.m_Items.Get(i);
+                    config::CItem& item = m_Config.m_Items.Get(i);
                     item.szFormatId = format.szId;
                     item.nPreset = nPreset;
 
@@ -2586,7 +2586,7 @@ void CMainDlg::StartConvert()
 
         for (int i = 0; i < nItems; i++)
         {
-            CItem& item = this->m_Config.m_Items.Get(i);
+            config::CItem& item = this->m_Config.m_Items.Get(i);
             if (item.bChecked == true)
             {
                 this->m_LstInputItems.SetItemText(i, ITEM_COLUMN_TIME, pszDefaulTime);
@@ -2683,7 +2683,7 @@ bool CMainDlg::LoadOptions(CString szFileXml)
 
 bool CMainDlg::LoadOptions(XmlDocumnent &doc)
 {
-    COptions options;
+    config::COptions options;
     if (CXmlConfig::LoadOptions(doc, options))
     {
         this->m_Config.m_Options = options;
@@ -2714,7 +2714,7 @@ bool CMainDlg::LoadFormats(CString szFileXml)
 
 bool CMainDlg::LoadFormats(XmlDocumnent &doc)
 {
-    CFormatsList formats;
+    config::CFormatsList formats;
     if (CXmlConfig::LoadFormats(doc, formats))
     {
         this->m_Config.m_Formats = formats;
@@ -2743,7 +2743,7 @@ bool CMainDlg::LoadFormat(CString szFileXml)
 
 bool CMainDlg::LoadFormat(XmlDocumnent &doc)
 {
-    CFormat format;
+    config::CFormat format;
     if (CXmlConfig::LoadFormat(doc, format))
     {
         m_Config.m_Formats.Insert(format);
@@ -2759,7 +2759,7 @@ bool CMainDlg::SaveFormat(CString szFileXml)
     int nFormat = this->m_CmbFormat.GetCurSel();
     if (nFormat != -1)
     {
-        CFormat& format = m_Config.m_Formats.Get(nFormat);
+        config::CFormat& format = m_Config.m_Formats.Get(nFormat);
         return CXmlConfig::SaveFormat(szFileXml, format);
     }
     return false;
@@ -2778,13 +2778,13 @@ bool CMainDlg::LoadPresets(CString szFileXml)
 
 bool CMainDlg::LoadPresets(XmlDocumnent &doc)
 {
-    CPresetsList presets;
+    config::CPresetsList presets;
     if (CXmlConfig::LoadPresets(doc, presets))
     {
         int nFormat = this->m_CmbFormat.GetCurSel();
         if (nFormat != -1)
         {
-            CFormat& format = m_Config.m_Formats.Get(nFormat);
+            config::CFormat& format = m_Config.m_Formats.Get(nFormat);
             format.m_Presets = presets;
             this->UpdatePresetComboBox();
             return true;
@@ -2798,7 +2798,7 @@ bool CMainDlg::SavePresets(CString szFileXml)
     int nFormat = this->m_CmbFormat.GetCurSel();
     if (nFormat != -1)
     {
-        CFormat& format = m_Config.m_Formats.Get(nFormat);
+        config::CFormat& format = m_Config.m_Formats.Get(nFormat);
         return CXmlConfig::SavePresets(szFileXml, format.m_Presets);
     }
     return false;
@@ -2817,7 +2817,7 @@ bool CMainDlg::LoadTools(CString szFileXml)
 
 bool CMainDlg::LoadTools(XmlDocumnent &doc)
 {
-    CToolsList tools;
+    config::CToolsList tools;
     if (CXmlConfig::LoadTools(doc, tools))
     {
         this->m_Config.m_Tools = tools;
@@ -2844,7 +2844,7 @@ bool CMainDlg::LoadTool(CString szFileXml)
 
 bool CMainDlg::LoadTool(XmlDocumnent &doc)
 {
-    CTool tool;
+    config::CTool tool;
     if (CXmlConfig::LoadTool(doc, tool))
     {
         m_Config.m_Tools.Insert(tool);
@@ -2866,7 +2866,7 @@ bool CMainDlg::LoadItems(CString szFileXml)
 
 bool CMainDlg::LoadItems(XmlDocumnent &doc)
 {
-    CItemsList items;
+    config::CItemsList items;
     if (CXmlConfig::LoadItems(doc, items))
     {
         this->m_LstInputItems.DeleteAllItems();

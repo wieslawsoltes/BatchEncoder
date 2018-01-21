@@ -20,7 +20,7 @@ namespace worker
         CToolUtilities() { }
         virtual ~CToolUtilities() { }
     public:
-        bool Download(CTool& tool, bool bExtract, bool bInstall, int nIndex, CConfiguration *pConfig, std::function<void(int, CString)> callback = nullptr)
+        bool Download(config::CTool& tool, bool bExtract, bool bInstall, int nIndex, config::CConfiguration *pConfig, std::function<void(int, CString)> callback = nullptr)
         {
             CDownload m_Download;
             CString szUrl = tool.szUrl;
@@ -105,7 +105,7 @@ namespace worker
 
             return true;
         }
-        int FindTool(CToolsList& m_Tools, CString szPlatform, CString szFormatId)
+        int FindTool(config::CToolsList& m_Tools, CString szPlatform, CString szFormatId)
         {
             int nTool = m_Tools.GetToolByFormatAndPlatform(szFormatId, szPlatform);
             if (nTool >= 0)
@@ -114,7 +114,7 @@ namespace worker
             }
             return -1;
         }
-        int FindTool(CToolsList& m_Tools, CString szFormatId)
+        int FindTool(config::CToolsList& m_Tools, CString szFormatId)
         {
 #if defined(_WIN32) & !defined(_WIN64)
             CString szPlatform = _T("x86");
@@ -123,21 +123,21 @@ namespace worker
 #endif
             return FindTool(m_Tools, szPlatform, szFormatId);
         }
-        void SetFormatPaths(CFormatsList& m_Formats, CToolsList& m_Tools, CString szPlatform)
+        void SetFormatPaths(config::CFormatsList& m_Formats, config::CToolsList& m_Tools, CString szPlatform)
         {
             int nFormats = m_Formats.Count();
             for (int i = 0; i < nFormats; i++)
             {
-                CFormat& format = m_Formats.Get(i);
+                config::CFormat& format = m_Formats.Get(i);
                 int nTool = m_Tools.GetToolByFormatAndPlatform(format.szId, szPlatform);
                 if (nTool >= 0)
                 {
-                    CTool& tool = m_Tools.Get(nTool);
+                    config::CTool& tool = m_Tools.Get(nTool);
                     format.szPath = tool.szPath;
                 }
             }
         }
-        void SetFormatPaths(CFormatsList& m_Formats, CToolsList& m_Tools, std::function<bool(int, CTool&)> filter)
+        void SetFormatPaths(config::CFormatsList& m_Formats, config::CToolsList& m_Tools, std::function<bool(int, config::CTool&)> filter)
         {
             int nTools = m_Tools.Count();
             int nFormats = m_Formats.Count();
@@ -145,12 +145,12 @@ namespace worker
             {
                 for (int i = 0; i < nTools; i++)
                 {
-                    CTool& tool = m_Tools.Get(i);
+                    config::CTool& tool = m_Tools.Get(i);
                     if (filter(i, tool) == true)
                     {
                         for (int i = 0; i < nFormats; i++)
                         {
-                            CFormat& format = m_Formats.Get(i);
+                            config::CFormat& format = m_Formats.Get(i);
                             if (tool.IsValidFormat(format.szId))
                             {
                                 format.szPath = tool.szPath;

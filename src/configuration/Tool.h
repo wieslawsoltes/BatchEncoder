@@ -5,59 +5,62 @@
 
 #include <afxstr.h>
 
-class CTool
+namespace config
 {
-public:
-    const CString szFormatsTokens = _T(",");
-public:
-    CString szName;
-    CString szPlatform;
-    CString szFormats;
-    CString szUrl;
-    CString szFile;
-    CString szExtract;
-    CString szPath;
-    CString szStatus;
-public:
-    CTool()
+    class CTool
     {
-    }
-    CTool(const CTool &other)
-    {
-        Copy(other);
-    }
-    CTool& operator=(const CTool &other)
-    {
-        Copy(other);
-        return *this;
-    }
-    virtual ~CTool()
-    {
-    }
-public:
-    void Copy(const CTool &other)
-    {
-        this->szName = other.szName;
-        this->szPlatform = other.szPlatform;
-        this->szFormats = other.szFormats;
-        this->szUrl = other.szUrl;
-        this->szFile = other.szFile;
-        this->szExtract = other.szExtract;
-        this->szPath = other.szPath;
-        this->szStatus = other.szStatus;
-    }
-public:
-    bool IsValidFormat(CString szFormat)
-    {
-        int nTokenPos = 0;
-        CString strToken = this->szFormats.Tokenize(szFormatsTokens, nTokenPos);
-        while (!strToken.IsEmpty())
+    public:
+        const CString szFormatsTokens = _T(",");
+    public:
+        CString szName;
+        CString szPlatform;
+        CString szFormats;
+        CString szUrl;
+        CString szFile;
+        CString szExtract;
+        CString szPath;
+        CString szStatus;
+    public:
+        CTool()
         {
-            if (strToken.CompareNoCase(szFormat) == 0)
-                return true;
-
-            strToken = this->szFormats.Tokenize(szFormatsTokens, nTokenPos);
         }
-        return false;
-    }
-};
+        CTool(const CTool &other)
+        {
+            Copy(other);
+        }
+        CTool& operator=(const CTool &other)
+        {
+            Copy(other);
+            return *this;
+        }
+        virtual ~CTool()
+        {
+        }
+    public:
+        void Copy(const CTool &other)
+        {
+            this->szName = other.szName;
+            this->szPlatform = other.szPlatform;
+            this->szFormats = other.szFormats;
+            this->szUrl = other.szUrl;
+            this->szFile = other.szFile;
+            this->szExtract = other.szExtract;
+            this->szPath = other.szPath;
+            this->szStatus = other.szStatus;
+        }
+    public:
+        bool IsValidFormat(CString szFormat)
+        {
+            int nTokenPos = 0;
+            CString strToken = this->szFormats.Tokenize(szFormatsTokens, nTokenPos);
+            while (!strToken.IsEmpty())
+            {
+                if (strToken.CompareNoCase(szFormat) == 0)
+                    return true;
+
+                strToken = this->szFormats.Tokenize(szFormatsTokens, nTokenPos);
+            }
+            return false;
+        }
+    };
+}

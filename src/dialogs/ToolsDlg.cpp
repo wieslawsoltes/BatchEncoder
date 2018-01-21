@@ -251,7 +251,7 @@ void CToolsDlg::OnBnClickedButtonExport()
         int nSelected = m_LstTools.GetNextSelectedItem(pos);
         if (nSelected >= 0)
         {
-            CTool& tool = m_Tools.Get(nSelected);
+            config::CTool& tool = m_Tools.Get(nSelected);
 
             CString szFilter;
             szFilter.Format(_T("%s (*.xml)|*.xml|%s (*.*)|*.*||"),
@@ -287,8 +287,8 @@ void CToolsDlg::OnBnClickedButtonDuplicate()
         int nSelected = m_LstTools.GetNextSelectedItem(pos);
         if (nSelected >= 0)
         {
-            CTool& tool = m_Tools.Get(nSelected);
-            CTool copy = tool;
+            config::CTool& tool = m_Tools.Get(nSelected);
+            config::CTool copy = tool;
 
             m_Tools.Insert(copy);
 
@@ -378,7 +378,7 @@ void CToolsDlg::OnBnClickedButtonAddTool()
 
     int nItem = m_LstTools.GetItemCount();
 
-    CTool tool;
+    config::CTool tool;
     tool.szName = pConfig->m_Language.GetString(0x00240004, pszToolsDialog[3]);
     tool.szPlatform = _T("");
     tool.szFormats = _T("");
@@ -417,8 +417,8 @@ void CToolsDlg::OnBnClickedButtonToolUp()
         int nItem = m_LstTools.GetNextSelectedItem(pos);
         if (nItem > 0)
         {
-            CTool& tool1 = m_Tools.Get(nItem);
-            CTool& tool2 = m_Tools.Get(nItem - 1);
+            config::CTool& tool1 = m_Tools.Get(nItem);
+            config::CTool& tool2 = m_Tools.Get(nItem - 1);
 
             m_LstTools.SetItemText(nItem, TOOL_COLUMN_NAME, tool2.szName);
             m_LstTools.SetItemText(nItem, TOOL_COLUMN_URL, tool2.szUrl);
@@ -455,8 +455,8 @@ void CToolsDlg::OnBnClickedButtonToolDown()
         int nItems = m_LstTools.GetItemCount();
         if (nItem != (nItems - 1) && nItem >= 0)
         {
-            CTool& tool1 = m_Tools.Get(nItem);
-            CTool& tool2 = m_Tools.Get(nItem + 1);
+            config::CTool& tool1 = m_Tools.Get(nItem);
+            config::CTool& tool2 = m_Tools.Get(nItem + 1);
 
             m_LstTools.SetItemText(nItem, TOOL_COLUMN_NAME, tool2.szName);
             m_LstTools.SetItemText(nItem, TOOL_COLUMN_URL, tool2.szUrl);
@@ -507,7 +507,7 @@ void CToolsDlg::OnBnClickedButtonUpdateTool()
         this->m_EdtExtract.GetWindowText(szExtract);
         this->m_EdtPath.GetWindowText(szPath);
 
-        CTool& tool = m_Tools.Get(nItem);
+        config::CTool& tool = m_Tools.Get(nItem);
         tool.szName = szName;
         tool.szPlatform = szPlatform;
         tool.szFormats = szFormats;
@@ -687,7 +687,7 @@ void CToolsDlg::OnBnClickedButtonDownloadSelected()
 void CToolsDlg::OnBnClickedButtonToolSetFormat()
 {
     m_Utilities.SetFormatPaths(m_Formats, m_Tools, 
-        [this](int nIndex, CTool& tool) -> bool
+        [this](int nIndex, config::CTool& tool) -> bool
         {
             return (this->m_LstTools.GetItemState(nIndex, LVIS_SELECTED) == LVIS_SELECTED);
         });
@@ -792,7 +792,7 @@ void CToolsDlg::SetLanguage()
     helper.SetWndText(&m_BtnOK, 0x000E0029);
 }
 
-void CToolsDlg::AddToList(CTool &tool, int nItem)
+void CToolsDlg::AddToList(config::CTool &tool, int nItem)
 {
     LVITEM lvi;
 
@@ -821,7 +821,7 @@ void CToolsDlg::InsertToolsToListCtrl()
     int nTools = m_Tools.Count();
     for (int i = 0; i < nTools; i++)
     {
-        CTool& tool = m_Tools.Get(i);
+        config::CTool& tool = m_Tools.Get(i);
         this->AddToList(tool, i);
     }
 }
@@ -867,7 +867,7 @@ void CToolsDlg::HandleDropFiles(HDROP hDropInfo)
     ::DragFinish(hDropInfo);
 }
 
-void CToolsDlg::UpdateFields(CTool &tool)
+void CToolsDlg::UpdateFields(config::CTool &tool)
 {
     this->m_EdtName.SetWindowText(tool.szName);
     this->m_EdtPlatform.SetWindowText(tool.szPlatform);
@@ -893,7 +893,7 @@ void CToolsDlg::ListSelectionChange()
     {
         int nItem = m_LstTools.GetNextSelectedItem(pos);
 
-        CTool& tool = this->m_Tools.Get(nItem);
+        config::CTool& tool = this->m_Tools.Get(nItem);
 
         this->UpdateFields(tool);
     }
@@ -962,7 +962,7 @@ void CToolsDlg::DownloadTools()
             if (m_LstTools.GetItemState(i, LVIS_SELECTED) == LVIS_SELECTED)
             {
                 m_LstTools.EnsureVisible(i, FALSE);
-                CTool& tool = m_Tools.Get(i);
+                config::CTool& tool = m_Tools.Get(i);
                 m_Utilities.Download(tool, true, true, i, pConfig, 
                     [this](int nIndex, CString szStatus)
                     {
@@ -991,7 +991,7 @@ bool CToolsDlg::LoadTool(CString szFileXml)
 
 bool CToolsDlg::LoadTool(XmlDocumnent &doc)
 {
-    CTool tool;
+    config::CTool tool;
     if (CXmlConfig::LoadTool(doc, tool))
     {
         m_Tools.Insert(tool);
@@ -1002,7 +1002,7 @@ bool CToolsDlg::LoadTool(XmlDocumnent &doc)
     return false;
 }
 
-bool CToolsDlg::SaveTool(CString szFileXml, CTool &tool)
+bool CToolsDlg::SaveTool(CString szFileXml, config::CTool &tool)
 {
     return CXmlConfig::SaveTool(szFileXml, tool);
 }
@@ -1020,7 +1020,7 @@ bool CToolsDlg::LoadTools(CString szFileXml)
 
 bool CToolsDlg::LoadTools(XmlDocumnent &doc)
 {
-    CToolsList tools;
+    config::CToolsList tools;
     if (CXmlConfig::LoadTools(doc, tools))
     {
         this->m_LstTools.DeleteAllItems();

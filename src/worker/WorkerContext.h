@@ -16,9 +16,9 @@ public:
     volatile int nDoneWithoutError;
     volatile int nErrors;
     volatile int nLastItemId;
-    CConfiguration* pConfig;
+    config::CConfiguration* pConfig;
 public:
-    IWorkerContext(CConfiguration* pConfig) 
+    IWorkerContext(config::CConfiguration* pConfig)
         : pConfig(pConfig) { }
     virtual ~IWorkerContext() { }
 public:

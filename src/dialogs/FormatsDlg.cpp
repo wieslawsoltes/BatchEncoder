@@ -240,7 +240,7 @@ void CFormatsDlg::OnBnClickedButtonExport()
         int nSelected = m_LstFormats.GetNextSelectedItem(pos);
         if (nSelected >= 0)
         {
-            CFormat& format = m_Formats.Get(nSelected);
+            config::CFormat& format = m_Formats.Get(nSelected);
 
             CString szFilter;
             szFilter.Format(_T("%s (*.xml)|*.xml|%s (*.*)|*.*||"),
@@ -273,8 +273,8 @@ void CFormatsDlg::OnBnClickedButtonDuplicate()
         int nSelected = m_LstFormats.GetNextSelectedItem(pos);
         if (nSelected >= 0)
         {
-            CFormat& format = m_Formats.Get(nSelected);
-            CFormat copy = format;
+            config::CFormat& format = m_Formats.Get(nSelected);
+            config::CFormat copy = format;
 
             m_Formats.Insert(copy);
 
@@ -355,7 +355,7 @@ void CFormatsDlg::OnBnClickedButtonAddFormat()
 
     int nItem = m_LstFormats.GetItemCount();
 
-    CFormat format;
+    config::CFormat format;
     format.szId = _T("ID");
     format.szName = pConfig->m_Language.GetString(0x00230004, pszFormatsDialog[3]);
     format.szTemplate = _T("$EXE $OPTIONS $INFILE $OUTFILE");
@@ -369,7 +369,7 @@ void CFormatsDlg::OnBnClickedButtonAddFormat()
     format.szOutputExtension = _T("EXT");
     format.nDefaultPreset = 0;
 
-    CPreset preset;
+    config::CPreset preset;
     preset.szName = pConfig->m_Language.GetString(0x00230005, pszFormatsDialog[4]);
     preset.szOptions = _T("");
     format.m_Presets.Insert(preset);
@@ -400,8 +400,8 @@ void CFormatsDlg::OnBnClickedButtonFormatUp()
         int nItem = m_LstFormats.GetNextSelectedItem(pos);
         if (nItem > 0)
         {
-            CFormat& format1 = m_Formats.Get(nItem);
-            CFormat& format2 = m_Formats.Get(nItem - 1);
+            config::CFormat& format1 = m_Formats.Get(nItem);
+            config::CFormat& format2 = m_Formats.Get(nItem - 1);
 
             m_LstFormats.SetItemText(nItem, FORMAT_COLUMN_NAME, format2.szName);
             m_LstFormats.SetItemText(nItem, FORMAT_COLUMN_TEMPLATE, format2.szTemplate);
@@ -433,8 +433,8 @@ void CFormatsDlg::OnBnClickedButtonFormatDown()
         int nItems = m_LstFormats.GetItemCount();
         if (nItem != (nItems - 1) && nItem >= 0)
         {
-            CFormat& format1 = m_Formats.Get(nItem);
-            CFormat& format2 = m_Formats.Get(nItem + 1);
+            config::CFormat& format1 = m_Formats.Get(nItem);
+            config::CFormat& format2 = m_Formats.Get(nItem + 1);
 
             m_LstFormats.SetItemText(nItem, FORMAT_COLUMN_NAME, format2.szName);
             m_LstFormats.SetItemText(nItem, FORMAT_COLUMN_TEMPLATE, format2.szTemplate);
@@ -505,7 +505,7 @@ void CFormatsDlg::OnBnClickedButtonUpdateFormat()
         this->m_EdtPath.GetWindowText(szPath);
         this->m_EdtFunction.GetWindowText(szFunction);
 
-        CFormat& format = m_Formats.Get(nItem);
+        config::CFormat& format = m_Formats.Get(nItem);
         format.szId = szId;
         format.szName = szName;
         format.szOutputExtension = szExtension;
@@ -802,7 +802,7 @@ void CFormatsDlg::SetLanguage()
     helper.SetWndText(&m_BtnOK, 0x000C002A);
 }
 
-void CFormatsDlg::AddToList(CFormat &format, int nItem)
+void CFormatsDlg::AddToList(config::CFormat &format, int nItem)
 {
     LVITEM lvi;
 
@@ -827,7 +827,7 @@ void CFormatsDlg::InsertFormatsToListCtrl()
     int nFormats = m_Formats.Count();
     for (int i = 0; i < nFormats; i++)
     {
-        CFormat& format = m_Formats.Get(i);
+        config::CFormat& format = m_Formats.Get(i);
         this->AddToList(format, i);
     }
 }
@@ -875,7 +875,7 @@ void CFormatsDlg::HandleDropFiles(HDROP hDropInfo)
                     if (pos != nullptr)
                     {
                         int nItem = m_LstFormats.GetNextSelectedItem(pos);
-                        CFormat& format = this->m_Formats.Get(nItem);
+                        config::CFormat& format = this->m_Formats.Get(nItem);
                         format.szPath = szPath;
                         this->m_EdtPath.SetWindowText(format.szPath);
                     }
@@ -887,7 +887,7 @@ void CFormatsDlg::HandleDropFiles(HDROP hDropInfo)
                     if (pos != nullptr)
                     {
                         int nItem = m_LstFormats.GetNextSelectedItem(pos);
-                        CFormat& format = this->m_Formats.Get(nItem);
+                        config::CFormat& format = this->m_Formats.Get(nItem);
                         format.szFunction = szPath;
                         this->m_EdtFunction.SetWindowText(format.szFunction);
                     }
@@ -901,7 +901,7 @@ void CFormatsDlg::HandleDropFiles(HDROP hDropInfo)
     ::DragFinish(hDropInfo);
 }
 
-void CFormatsDlg::UpdateFields(CFormat &format)
+void CFormatsDlg::UpdateFields(config::CFormat &format)
 {
     this->m_EdtId.SetWindowText(format.szId);
     this->m_EdtName.SetWindowText(format.szName);
@@ -947,7 +947,7 @@ void CFormatsDlg::UpdateFields(CFormat &format)
     this->m_EdtFunction.SetWindowText(format.szFunction);
 }
 
-void CFormatsDlg::UpdateDefaultComboBox(CFormat &format)
+void CFormatsDlg::UpdateDefaultComboBox(config::CFormat &format)
 {
     this->m_CmbDefault.ResetContent();
 
@@ -956,7 +956,7 @@ void CFormatsDlg::UpdateDefaultComboBox(CFormat &format)
     int nPresets = format.m_Presets.Count();
     for (int i = 0; i < nPresets; i++)
     {
-        CPreset& preset = format.m_Presets.Get(i);
+        config::CPreset& preset = format.m_Presets.Get(i);
         this->m_CmbDefault.InsertString(i, preset.szName);
     }
 
@@ -984,7 +984,7 @@ void CFormatsDlg::ListSelectionChange()
     {
         int nItem = m_LstFormats.GetNextSelectedItem(pos);
 
-        CFormat& format = this->m_Formats.Get(nItem);
+        config::CFormat& format = this->m_Formats.Get(nItem);
 
         this->UpdateFields(format);
         this->UpdateDefaultComboBox(format);
@@ -1066,7 +1066,7 @@ bool CFormatsDlg::LoadFormat(CString szFileXml)
 
 bool CFormatsDlg::LoadFormat(XmlDocumnent &doc)
 {
-    CFormat format;
+    config::CFormat format;
     if (CXmlConfig::LoadFormat(doc, format))
     {
         m_Formats.Insert(format);
@@ -1077,7 +1077,7 @@ bool CFormatsDlg::LoadFormat(XmlDocumnent &doc)
     return false;
 }
 
-bool CFormatsDlg::SaveFormat(CString szFileXml, CFormat &format)
+bool CFormatsDlg::SaveFormat(CString szFileXml, config::CFormat &format)
 {
     return CXmlConfig::SaveFormat(szFileXml, format);
 }
@@ -1095,7 +1095,7 @@ bool CFormatsDlg::LoadFormats(CString szFileXml)
 
 bool CFormatsDlg::LoadFormats(XmlDocumnent &doc)
 {
-    CFormatsList formats;
+    config::CFormatsList formats;
     if (CXmlConfig::LoadFormats(doc, formats))
     {
         this->m_LstFormats.DeleteAllItems();
@@ -1119,14 +1119,14 @@ bool CFormatsDlg::SaveFormats(CString szFileXml)
 
 bool CFormatsDlg::LoadPresets(XmlDocumnent &doc)
 {
-    CPresetsList presets;
+    config::CPresetsList presets;
     if (CXmlConfig::LoadPresets(doc, presets))
     {
         POSITION pos = m_LstFormats.GetFirstSelectedItemPosition();
         if (pos != nullptr)
         {
             int nItem = m_LstFormats.GetNextSelectedItem(pos);
-            CFormat& format = this->m_Formats.Get(nItem);
+            config::CFormat& format = this->m_Formats.Get(nItem);
             format.m_Presets = presets;
             this->UpdateDefaultComboBox(format);
             return true;

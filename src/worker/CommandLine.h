@@ -9,7 +9,7 @@
 class CCommandLine
 {
 public:
-    CFormat * pFormat;
+    config::CFormat * pFormat;
     int nPreset;
     int nItemId;
     CString szInputFile;
@@ -23,9 +23,9 @@ public:
     CCommandLine() { }
     virtual ~CCommandLine() { }
 public:
-    void Build(CFormat *pFormat, int nPreset, int nItemId, CString szInputFile, CString szOutputFile, bool bUseReadPipes, bool bUseWritePipes, CString szAdditionalOptions)
+    void Build(config::CFormat *pFormat, int nPreset, int nItemId, CString szInputFile, CString szOutputFile, bool bUseReadPipes, bool bUseWritePipes, CString szAdditionalOptions)
     {
-        CPreset& preset = pFormat->m_Presets.Get(nPreset);
+        config::CPreset& preset = pFormat->m_Presets.Get(nPreset);
 
         this->pFormat = pFormat;
         this->nPreset = nPreset;

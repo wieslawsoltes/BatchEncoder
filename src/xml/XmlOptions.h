@@ -18,7 +18,7 @@ public:
     {
     }
 public:
-    bool GetOptions(const XmlElement *element, COptions &m_Options)
+    bool GetOptions(const XmlElement *element, config::COptions &m_Options)
     {
         VALIDATE(GetChildValue(element, "SelectedLanguage", &m_Options.szSelectedLanguage));
         VALIDATE(GetChildValue(element, "SelectedFormat", &m_Options.nSelectedFormat));
@@ -46,7 +46,7 @@ public:
         VALIDATE(GetChildValue(element, "ToolsListColumns", &m_Options.szToolsListColumns));
         return true;
     }
-    void SetOptions(XmlElement *element, COptions &m_Options)
+    void SetOptions(XmlElement *element, config::COptions &m_Options)
     {
         SetChildValue(element, "SelectedLanguage", m_Options.szSelectedLanguage);
         SetChildValue(element, "SelectedFormat", m_Options.nSelectedFormat);
@@ -74,7 +74,7 @@ public:
         SetChildValue(element, "ToolsListColumns", m_Options.szToolsListColumns);
     }
 public:
-    bool GetOptions(COptions &m_Options)
+    bool GetOptions(config::COptions &m_Options)
     {
         auto element = this->FirstChildElement("Options");
         if (element != nullptr)
@@ -84,7 +84,7 @@ public:
         }
         return false;
     }
-    void SetOptions(COptions &m_Options)
+    void SetOptions(config::COptions &m_Options)
     {
         auto pOptionsElem = this->NewElement("Options");
         this->LinkEndChild(pOptionsElem);

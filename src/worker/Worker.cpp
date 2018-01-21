@@ -67,7 +67,7 @@ namespace worker
                 int nTool = m_Utilities.FindTool(pWorkerContext->pConfig->m_Tools, commandLine.pFormat->szId);
                 if (nTool >= 0)
                 {
-                    CTool& tool = pWorkerContext->pConfig->m_Tools.Get(nTool);
+                    config::CTool& tool = pWorkerContext->pConfig->m_Tools.Get(nTool);
                     bool bResult = m_Utilities.Download(tool, true, true, nTool, pWorkerContext->pConfig,
                         [this, pWorkerContext, &commandLine](int nIndex, CString szStatus)
                     {
@@ -287,7 +287,7 @@ namespace worker
                 int nTool = m_Utilities.FindTool(pWorkerContext->pConfig->m_Tools, commandLine.pFormat->szId);
                 if (nTool >= 0)
                 {
-                    CTool& tool = pWorkerContext->pConfig->m_Tools.Get(nTool);
+                    config::CTool& tool = pWorkerContext->pConfig->m_Tools.Get(nTool);
                     bool bResult = m_Utilities.Download(tool, true, true, nTool, pWorkerContext->pConfig,
                         [this, pWorkerContext, &commandLine](int nIndex, CString szStatus)
                     {
@@ -617,7 +617,7 @@ namespace worker
                 int nTool = m_Utilities.FindTool(pWorkerContext->pConfig->m_Tools, decoderCommandLine.pFormat->szId);
                 if (nTool >= 0)
                 {
-                    CTool& tool = pWorkerContext->pConfig->m_Tools.Get(nTool);
+                    config::CTool& tool = pWorkerContext->pConfig->m_Tools.Get(nTool);
                     bool bResult = m_Utilities.Download(tool, true, true, nTool, pWorkerContext->pConfig,
                         [this, pWorkerContext, &decoderCommandLine](int nIndex, CString szStatus)
                     {
@@ -673,7 +673,7 @@ namespace worker
                 int nTool = m_Utilities.FindTool(pWorkerContext->pConfig->m_Tools, encoderCommandLine.pFormat->szId);
                 if (nTool >= 0)
                 {
-                    CTool& tool = pWorkerContext->pConfig->m_Tools.Get(nTool);
+                    config::CTool& tool = pWorkerContext->pConfig->m_Tools.Get(nTool);
                     bool bResult = m_Utilities.Download(tool, true, true, nTool, pWorkerContext->pConfig,
                         [this, pWorkerContext, &encoderCommandLine](int nIndex, CString szStatus)
                     {
@@ -817,10 +817,10 @@ namespace worker
         }
     }
 
-    bool CWorker::ConvertItem(IWorkerContext* pWorkerContext, CItem& item, CSynchronize &syncDir, CSynchronize &syncDown)
+    bool CWorker::ConvertItem(IWorkerContext* pWorkerContext, config::CItem& item, CSynchronize &syncDir, CSynchronize &syncDown)
     {
-        CFormat *pEncFormat = nullptr;
-        CFormat *pDecFormat = nullptr;
+        config::CFormat *pEncFormat = nullptr;
+        config::CFormat *pDecFormat = nullptr;
         CString szEncInputFile;
         CString szEncOutputFile;
         CString szDecInputFile;
@@ -828,7 +828,7 @@ namespace worker
         COutputPath m_Output;
 
         // prepare encoder
-        CPath& path = item.m_Paths.Get(0);
+        config::CPath& path = item.m_Paths.Get(0);
 
         szEncInputFile = path.szPath;
         if (::FileExists(szEncInputFile) == false)
@@ -1083,7 +1083,7 @@ namespace worker
         return false;
     }
 
-    bool CWorker::ConvertLoop(IWorkerContext* pWorkerContext, std::queue<CItem> &queue, CSynchronize &sync, CSynchronize &syncDir, CSynchronize &syncDown)
+    bool CWorker::ConvertLoop(IWorkerContext* pWorkerContext, std::queue<config::CItem> &queue, CSynchronize &sync, CSynchronize &syncDir, CSynchronize &syncDown)
     {
         while (TRUE)
         {
@@ -1093,7 +1093,7 @@ namespace worker
                 {
                     if (!queue.empty())
                     {
-                        CItem item = queue.front();
+                        config::CItem item = queue.front();
                         queue.pop();
 
                         if (sync.Release() == false)
@@ -1148,14 +1148,14 @@ namespace worker
         pWorkerContext->nErrors = 0;
         pWorkerContext->nLastItemId = -1;
 
-        std::queue<CItem> queue;
+        std::queue<config::CItem> queue;
         CSynchronize sync;
         CSynchronize syncDir;
         CSynchronize syncDown;
 
         for (int i = 0; i < nItems; i++)
         {
-            CItem& item = pWorkerContext->pConfig->m_Items.Get(i);
+            config::CItem& item = pWorkerContext->pConfig->m_Items.Get(i);
             if (item.bChecked == true)
             {
                 item.ResetProgress();

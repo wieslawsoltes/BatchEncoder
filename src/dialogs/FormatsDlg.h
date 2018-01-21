@@ -46,12 +46,12 @@ public:
     virtual BOOL OnInitDialog();
 public:
     FormatsDlgDropContext m_DD;
-    CConfiguration *pConfig;
+    config::CConfiguration *pConfig;
     CString szFormatsDialogResize;
     CString szFormatsListColumns;
     volatile bool bUpdate;
     int nSelectedFormat;
-    CFormatsList m_Formats;
+    config::CFormatsList m_Formats;
 public:
     CMyStatic m_GrpPipes;
     CMyStatic m_GrpTypes;
@@ -126,18 +126,18 @@ public:
     void LoadWindowSettings();
     void SaveWindowSettings();
     void SetLanguage();
-    void AddToList(CFormat &format, int nItem);
+    void AddToList(config::CFormat &format, int nItem);
     void InsertFormatsToListCtrl();
     void HandleDropFiles(HDROP hDropInfo);
-    void UpdateFields(CFormat &format);
-    void UpdateDefaultComboBox(CFormat &format);
+    void UpdateFields(config::CFormat &format);
+    void UpdateDefaultComboBox(config::CFormat &format);
     void ListSelectionChange();
     bool BrowseForPath(CString szDefaultFName, CEdit *pEdit, int nID);
     bool BrowseForFunction(CString szDefaultFName, CEdit *pEdit, int nID);
 public:
     bool LoadFormat(CString szFileXml);
     bool LoadFormat(XmlDocumnent &doc);
-    bool SaveFormat(CString szFileXml, CFormat &format);
+    bool SaveFormat(CString szFileXml, config::CFormat &format);
     bool LoadFormats(CString szFileXml);
     bool LoadFormats(XmlDocumnent &doc);
     bool SaveFormats(CString szFileXml);

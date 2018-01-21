@@ -49,13 +49,13 @@ public:
     virtual BOOL OnInitDialog();
 public:
     ToolsDlgDropContext m_DD;
-    CConfiguration *pConfig;
+    config::CConfiguration *pConfig;
     CString szToolsDialogResize;
     CString szToolsListColumns;
     volatile bool bUpdate;
     int nSelectedTool;
-    CToolsList m_Tools;
-    CFormatsList m_Formats;
+    config::CToolsList m_Tools;
+    config::CFormatsList m_Formats;
     CThread m_Thread;
     worker::CToolUtilities m_Utilities;
 public:
@@ -124,17 +124,17 @@ public:
     void LoadWindowSettings();
     void SaveWindowSettings();
     void SetLanguage();
-    void AddToList(CTool &tool, int nItem);
+    void AddToList(config::CTool &tool, int nItem);
     void InsertToolsToListCtrl();
     void HandleDropFiles(HDROP hDropInfo);
-    void UpdateFields(CTool &format);
+    void UpdateFields(config::CTool &format);
     void ListSelectionChange();
     void EnableUserInterface(BOOL bEnable = TRUE);
     void DownloadTools();
 public:
     bool LoadTool(CString szFileXml);
     bool LoadTool(XmlDocumnent &doc);
-    bool SaveTool(CString szFileXml, CTool &tool);
+    bool SaveTool(CString szFileXml, config::CTool &tool);
     bool LoadTools(CString szFileXml);
     bool LoadTools(XmlDocumnent &doc);
     bool SaveTools(CString szFileXml);

@@ -7,6 +7,9 @@
 #include "utilities\ListT.h"
 #include "Path.h"
 
-class CPathsList : public CListT<CPath>
+namespace config
 {
-};
+    class CPathsList : public CListT<CPath>
+    {
+    };
+}

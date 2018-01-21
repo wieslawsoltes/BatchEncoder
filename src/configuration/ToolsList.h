@@ -7,44 +7,47 @@
 #include "utilities\ListT.h"
 #include "Tool.h"
 
-class CToolsList : public CListT<CTool>
+namespace config
 {
-public:
-    int GetToolByFormat(CString szFormat)
+    class CToolsList : public CListT<CTool>
     {
-        int nTools = this->Count();
-        for (int i = 0; i < nTools; i++)
+    public:
+        int GetToolByFormat(CString szFormat)
         {
-            CTool& tool = this->Get(i);
-            if (tool.IsValidFormat(szFormat) == true)
+            int nTools = this->Count();
+            for (int i = 0; i < nTools; i++)
             {
-                return i;
+                CTool& tool = this->Get(i);
+                if (tool.IsValidFormat(szFormat) == true)
+                {
+                    return i;
+                }
             }
+            return -1;
         }
-        return -1;
-    }
-    int GetToolByFormatAndPlatform(CString szFormat, CString szPlatform)
-    {
-        int nTools = this->Count();
-        for (int i = 0; i < nTools; i++)
+        int GetToolByFormatAndPlatform(CString szFormat, CString szPlatform)
         {
-            CTool& tool = this->Get(i);
-            if ((tool.IsValidFormat(szFormat) == true) && (tool.szPlatform.CompareNoCase(szPlatform) == 0))
+            int nTools = this->Count();
+            for (int i = 0; i < nTools; i++)
             {
-                return i;
+                CTool& tool = this->Get(i);
+                if ((tool.IsValidFormat(szFormat) == true) && (tool.szPlatform.CompareNoCase(szPlatform) == 0))
+                {
+                    return i;
+                }
             }
+            return -1;
         }
-        return -1;
-    }
-    bool IsValidFormat(CString szFormat)
-    {
-        int nTools = this->Count();
-        for (int i = 0; i < nTools; i++)
+        bool IsValidFormat(CString szFormat)
         {
-            CTool& tool = this->Get(i);
-            if (tool.IsValidFormat(szFormat) == true)
-                return true;
+            int nTools = this->Count();
+            for (int i = 0; i < nTools; i++)
+            {
+                CTool& tool = this->Get(i);
+                if (tool.IsValidFormat(szFormat) == true)
+                    return true;
+            }
+            return false;
         }
-        return false;
-    }
-};
+    };
+}

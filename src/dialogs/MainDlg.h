@@ -63,7 +63,7 @@ protected:
     BOOL PreTranslateMessage(MSG* pMsg);
 public:
     MainDlgDropContext m_DD;
-    CConfiguration m_Config;
+    config::CConfiguration m_Config;
     IWorkerContext* pWorkerContext;
     worker::CWorker m_Worker;
 public:
@@ -153,7 +153,7 @@ public:
     void SetOptions();
     int AddToItems(CString szPath);
     bool AddToList(CString szPath);
-    void AddToList(CItem &item, int nItem);
+    void AddToList(config::CItem &item, int nItem);
     void ShowEdtItem();
     void UpdateEdtItem(BOOL bUpdateText);
     void HandleDropFiles(HDROP hDropInfo);

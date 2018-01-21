@@ -7,6 +7,9 @@
 #include "utilities\ListT.h"
 #include "Item.h"
 
-class CItemsList : public CListT<CItem>
+namespace config
 {
-};
+    class CItemsList : public CListT<CItem>
+    {
+    };
+}

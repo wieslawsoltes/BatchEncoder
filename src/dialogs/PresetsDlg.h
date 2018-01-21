@@ -46,12 +46,12 @@ public:
     virtual BOOL OnInitDialog();
 public:
     PresetsDlgDropContext m_DD;
-    CConfiguration *pConfig;
+    config::CConfiguration *pConfig;
     CString szPresetsDialogResize;
     CString szPresetsListColumns;
     volatile bool bUpdate;
     int nSelectedFormat;
-    CFormatsList m_Formats;
+    config::CFormatsList m_Formats;
 public:
     CMyStatic m_StcName;
     CMyStatic m_StcOptions;
@@ -92,13 +92,13 @@ public:
     void LoadWindowSettings();
     void SaveWindowSettings();
     void SetLanguage();
-    void AddToList(CPreset &preset, int nItem);
+    void AddToList(config::CPreset &preset, int nItem);
     void InsertPresetsToListCtrl();
     void HandleDropFiles(HDROP hDropInfo);
-    void UpdateFields(CPreset &preset);
+    void UpdateFields(config::CPreset &preset);
     void ListSelectionChange();
 public:
     bool LoadPresets(CString szFileXml);
     bool LoadPresets(XmlDocumnent &doc);
-    bool SavePresets(CString szFileXml, CFormat &format);
+    bool SavePresets(CString szFileXml, config::CFormat &format);
 };

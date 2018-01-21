@@ -11,12 +11,10 @@ IMPLEMENT_DYNAMIC(CAboutDlg, CDialog)
 CAboutDlg::CAboutDlg(CWnd* pParent /*=nullptr*/)
     : CMyDialogEx(CAboutDlg::IDD, pParent)
 {
-
 }
 
 CAboutDlg::~CAboutDlg()
 {
-
 }
 
 void CAboutDlg::DoDataExchange(CDataExchange* pDX)

@@ -27,7 +27,7 @@ protected:
     virtual void OnOK();
     virtual void OnCancel();
 public:
-    CConfiguration *pConfig;
+    config::CConfiguration *pConfig;
 public:
     CMyButton m_BtnOK;
     CMyStatic m_StcMainAppName;
