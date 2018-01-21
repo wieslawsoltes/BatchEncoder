@@ -19,8 +19,6 @@
 
 bool CWorker::ConvertFileUsingConsole(IWorkerContext* pWorkerContext, CCommandLine &commandLine, CSynchronize &syncDown)
 {
-    ::SetCurrentDirectory(m_App.szSettingsPath);
-
     if ((commandLine.bUseReadPipes == true) || (commandLine.bUseWritePipes == true))
     {
         pWorkerContext->Status(commandLine.nItemId, pszDefaulTime, pWorkerContext->GetString(0x00120001, pszConvertConsole[0]));
@@ -53,6 +51,9 @@ bool CWorker::ConvertFileUsingConsole(IWorkerContext* pWorkerContext, CCommandLi
     process.ConnectStdOutput(Stderr.hWrite);
     process.ConnectStdError(Stderr.hWrite);
 
+    syncDown.Wait();
+    ::SetCurrentDirectory(m_App.szSettingsPath);
+
     timer.Start();
     if (process.Start(commandLine.pszCommandLine, pWorkerContext->pConfig->m_Options.bHideConsoleWindow) == false)
     {
@@ -83,6 +84,8 @@ bool CWorker::ConvertFileUsingConsole(IWorkerContext* pWorkerContext, CCommandLi
             }
         }
 
+        syncDown.Release();
+
         if (bFailed == true)
         {
             timer.Stop();
@@ -99,19 +102,27 @@ bool CWorker::ConvertFileUsingConsole(IWorkerContext* pWorkerContext, CCommandLi
         }
     }
 
+    syncDown.Release();
+
     // close unused pipe handle
     Stderr.CloseWrite();
+
+    syncDown.Wait();
+    ::SetCurrentDirectory(m_App.szSettingsPath);
 
     // console progress loop
     CLuaOutputParser parser;
     CPipeToStringWriter writer;
     if (writer.ReadLoop(pWorkerContext, commandLine, Stderr, parser) == false)
     {
+        syncDown.Release();
         timer.Stop();
         Stderr.CloseRead();
         process.Stop(false, commandLine.pFormat->nExitCodeSuccess);
         return false;
     }
+
+    syncDown.Release();
 
     timer.Stop();
     Stderr.CloseRead();
@@ -134,8 +145,6 @@ bool CWorker::ConvertFileUsingConsole(IWorkerContext* pWorkerContext, CCommandLi
 
 bool CWorker::ConvertFileUsingPipes(IWorkerContext* pWorkerContext, CCommandLine &commandLine, CSynchronize &syncDown)
 {
-    ::SetCurrentDirectory(m_App.szSettingsPath);
-
     if ((commandLine.bUseReadPipes == false) && (commandLine.bUseWritePipes == false))
     {
         pWorkerContext->Status(commandLine.nItemId, pszDefaulTime, pWorkerContext->GetString(0x00130001, pszConvertPipes[0]));
@@ -262,6 +271,9 @@ bool CWorker::ConvertFileUsingPipes(IWorkerContext* pWorkerContext, CCommandLine
 #endif
     }
 
+    syncDown.Wait();
+    ::SetCurrentDirectory(m_App.szSettingsPath);
+
     timer.Start();
     if (process.Start(commandLine.pszCommandLine, pWorkerContext->pConfig->m_Options.bHideConsoleWindow) == false)
     {
@@ -292,6 +304,8 @@ bool CWorker::ConvertFileUsingPipes(IWorkerContext* pWorkerContext, CCommandLine
             }
         }
 
+        syncDown.Release();
+
         if (bFailed == true)
         {
             timer.Stop();
@@ -321,6 +335,8 @@ bool CWorker::ConvertFileUsingPipes(IWorkerContext* pWorkerContext, CCommandLine
             return false;
         }
     }
+
+    syncDown.Release();
 
     // close unused pipe handles
     if (commandLine.bUseReadPipes == true)
@@ -518,8 +534,6 @@ bool CWorker::ConvertFileUsingOnlyPipes(IWorkerContext* pWorkerContext, CCommand
     int nProgress = 0;
     CTimeCount timer;
 
-    ::SetCurrentDirectory(m_App.szSettingsPath);
-
     // create pipes for stdin
     if (Stdin.Create() == false)
     {
@@ -587,6 +601,9 @@ bool CWorker::ConvertFileUsingOnlyPipes(IWorkerContext* pWorkerContext, CCommand
 
     timer.Start();
 
+    syncDown.Wait();
+    ::SetCurrentDirectory(m_App.szSettingsPath);
+
     // create decoder process
     if (decoderProcess.Start(decoderCommandLine.pszCommandLine, pWorkerContext->pConfig->m_Options.bHideConsoleWindow) == false)
     {
@@ -617,6 +634,8 @@ bool CWorker::ConvertFileUsingOnlyPipes(IWorkerContext* pWorkerContext, CCommand
             }
         }
 
+        syncDown.Release();
+
         if (bFailed == true)
         {
             timer.Stop();
@@ -638,6 +657,8 @@ bool CWorker::ConvertFileUsingOnlyPipes(IWorkerContext* pWorkerContext, CCommand
             return false;
         }
     }
+
+    ::SetCurrentDirectory(m_App.szSettingsPath);
 
     // create encoder process
     if (encoderProcess.Start(encoderCommandLine.pszCommandLine, pWorkerContext->pConfig->m_Options.bHideConsoleWindow) == false)
@@ -669,6 +690,8 @@ bool CWorker::ConvertFileUsingOnlyPipes(IWorkerContext* pWorkerContext, CCommand
             }
         }
 
+        syncDown.Release();
+
         if (bFailed == true)
         {
             timer.Stop();
@@ -692,6 +715,8 @@ bool CWorker::ConvertFileUsingOnlyPipes(IWorkerContext* pWorkerContext, CCommand
             return false;
         }
     }
+
+    syncDown.Release();
 
     // close unused pipe handles
     Stdin.CloseRead();
