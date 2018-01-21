@@ -9,84 +9,87 @@
 
 #define VALIDATE(value) if (!value) return false
 
-class XmlPaths : public XmlDoc
+namespace xml
 {
-public:
-    XmlPaths(XmlDocumnent &doc) : XmlDoc(doc)
+    class XmlPaths : public XmlDoc
     {
-    }
-    virtual ~XmlPaths()
-    {
-    }
-public:
-    bool GetPath(const XmlElement *element, config::CPath &m_Path)
-    {
-        VALIDATE(GetAttributeValue(element, "path", &m_Path.szPath));
-        VALIDATE(GetAttributeValue(element, "size", &m_Path.szSize));
-        return true;
-    }
-    void SetPath(XmlElement *element, config::CPath &m_Path)
-    {
-        SetAttributeValue(element, "path", m_Path.szPath);
-        SetAttributeValue(element, "size", m_Path.szSize);
-    }
-    bool GetPaths(const XmlElement *parent, config::CPathsList &m_Paths)
-    {
-        auto element = parent->FirstChildElement("Path");
-        if (element != nullptr)
+    public:
+        XmlPaths(XmlDocumnent &doc) : XmlDoc(doc)
         {
-            for (element; element; element = element->NextSiblingElement())
+        }
+        virtual ~XmlPaths()
+        {
+        }
+    public:
+        bool GetPath(const XmlElement *element, config::CPath &m_Path)
+        {
+            VALIDATE(GetAttributeValue(element, "path", &m_Path.szPath));
+            VALIDATE(GetAttributeValue(element, "size", &m_Path.szSize));
+            return true;
+        }
+        void SetPath(XmlElement *element, config::CPath &m_Path)
+        {
+            SetAttributeValue(element, "path", m_Path.szPath);
+            SetAttributeValue(element, "size", m_Path.szSize);
+        }
+        bool GetPaths(const XmlElement *parent, config::CPathsList &m_Paths)
+        {
+            auto element = parent->FirstChildElement("Path");
+            if (element != nullptr)
             {
-                config::CPath path;
-                VALIDATE(this->GetPath(element, path));
-                m_Paths.Insert(path);
+                for (element; element; element = element->NextSiblingElement())
+                {
+                    config::CPath path;
+                    VALIDATE(this->GetPath(element, path));
+                    m_Paths.Insert(path);
+                }
+                return true;
             }
-            return true;
+            return false;
         }
-        return false;
-    }
-    void SetPaths(XmlElement *parent, config::CPathsList &m_Paths)
-    {
-        int nPaths = m_Paths.Count();
-        for (int i = 0; i < nPaths; i++)
+        void SetPaths(XmlElement *parent, config::CPathsList &m_Paths)
         {
-            config::CPath& path = m_Paths.Get(i);
+            int nPaths = m_Paths.Count();
+            for (int i = 0; i < nPaths; i++)
+            {
+                config::CPath& path = m_Paths.Get(i);
+                auto element = this->NewElement("Path");
+                parent->LinkEndChild(element);
+                this->SetPath(element, path);
+            }
+        }
+    public:
+        bool GetPath(config::CPath &m_Path)
+        {
+            auto element = this->FirstChildElement("Path");
+            if (element != nullptr)
+            {
+                VALIDATE(this->GetPath(element, m_Path));
+                return true;
+            }
+            return false;
+        }
+        void SetPath(config::CPath &m_Path)
+        {
             auto element = this->NewElement("Path");
-            parent->LinkEndChild(element);
-            this->SetPath(element, path);
+            this->LinkEndChild(element);
+            this->SetPath(element, m_Path);
         }
-    }
-public:
-    bool GetPath(config::CPath &m_Path)
-    {
-        auto element = this->FirstChildElement("Path");
-        if (element != nullptr)
+        bool GetPaths(config::CPathsList &m_Paths)
         {
-            VALIDATE(this->GetPath(element, m_Path));
-            return true;
+            auto element = this->FirstChildElement("Paths");
+            if (element != nullptr)
+            {
+                VALIDATE(this->GetPaths(element, m_Paths));
+                return true;
+            }
+            return false;
         }
-        return false;
-    }
-    void SetPath(config::CPath &m_Path)
-    {
-        auto element = this->NewElement("Path");
-        this->LinkEndChild(element);
-        this->SetPath(element, m_Path);
-    }
-    bool GetPaths(config::CPathsList &m_Paths)
-    {
-        auto element = this->FirstChildElement("Paths");
-        if (element != nullptr)
+        void SetPaths(config::CPathsList &m_Paths)
         {
-            VALIDATE(this->GetPaths(element, m_Paths));
-            return true;
+            auto element = this->NewElement("Paths");
+            this->LinkEndChild(element);
+            this->SetPaths(element, m_Paths);
         }
-        return false;
-    }
-    void SetPaths(config::CPathsList &m_Paths)
-    {
-        auto element = this->NewElement("Paths");
-        this->LinkEndChild(element);
-        this->SetPaths(element, m_Paths);
-    }
-};
+    };
+}

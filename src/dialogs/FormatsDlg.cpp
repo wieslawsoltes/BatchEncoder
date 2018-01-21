@@ -851,7 +851,7 @@ void CFormatsDlg::HandleDropFiles(HDROP hDropInfo)
                 if (szExt.CompareNoCase(_T("xml")) == 0)
                 {
                     XmlDocumnent doc;
-                    CString szName = CXmlConfig::GetRootName(szPath, doc);
+                    CString szName = xml::CXmlConfig::GetRootName(szPath, doc);
                     if (!szName.IsEmpty())
                     {
                         if (szName.CompareNoCase(_T("Formats")) == 0)
@@ -1056,7 +1056,7 @@ bool CFormatsDlg::BrowseForFunction(CString szDefaultFName, CEdit *pEdit, int nI
 bool CFormatsDlg::LoadFormat(CString szFileXml)
 {
     XmlDocumnent doc;
-    CString szName = CXmlConfig::GetRootName(szFileXml, doc);
+    CString szName = xml::CXmlConfig::GetRootName(szFileXml, doc);
     if (!szName.IsEmpty() && szName.CompareNoCase(_T("Format")) == 0)
     {
         return this->LoadFormat(doc);
@@ -1067,7 +1067,7 @@ bool CFormatsDlg::LoadFormat(CString szFileXml)
 bool CFormatsDlg::LoadFormat(XmlDocumnent &doc)
 {
     config::CFormat format;
-    if (CXmlConfig::LoadFormat(doc, format))
+    if (xml::CXmlConfig::LoadFormat(doc, format))
     {
         m_Formats.Insert(format);
         int nItem = m_Formats.Count() - 1;
@@ -1079,13 +1079,13 @@ bool CFormatsDlg::LoadFormat(XmlDocumnent &doc)
 
 bool CFormatsDlg::SaveFormat(CString szFileXml, config::CFormat &format)
 {
-    return CXmlConfig::SaveFormat(szFileXml, format);
+    return xml::CXmlConfig::SaveFormat(szFileXml, format);
 }
 
 bool CFormatsDlg::LoadFormats(CString szFileXml)
 {
     XmlDocumnent doc;
-    CString szName = CXmlConfig::GetRootName(szFileXml, doc);
+    CString szName = xml::CXmlConfig::GetRootName(szFileXml, doc);
     if (!szName.IsEmpty() && szName.CompareNoCase(_T("Formats")) == 0)
     {
         return this->LoadFormats(doc);
@@ -1096,7 +1096,7 @@ bool CFormatsDlg::LoadFormats(CString szFileXml)
 bool CFormatsDlg::LoadFormats(XmlDocumnent &doc)
 {
     config::CFormatsList formats;
-    if (CXmlConfig::LoadFormats(doc, formats))
+    if (xml::CXmlConfig::LoadFormats(doc, formats))
     {
         this->m_LstFormats.DeleteAllItems();
 
@@ -1114,13 +1114,13 @@ bool CFormatsDlg::LoadFormats(XmlDocumnent &doc)
 
 bool CFormatsDlg::SaveFormats(CString szFileXml)
 {
-    return CXmlConfig::SaveFormats(szFileXml, this->m_Formats);
+    return xml::CXmlConfig::SaveFormats(szFileXml, this->m_Formats);
 }
 
 bool CFormatsDlg::LoadPresets(XmlDocumnent &doc)
 {
     config::CPresetsList presets;
-    if (CXmlConfig::LoadPresets(doc, presets))
+    if (xml::CXmlConfig::LoadPresets(doc, presets))
     {
         POSITION pos = m_LstFormats.GetFirstSelectedItemPosition();
         if (pos != nullptr)

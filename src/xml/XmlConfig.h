@@ -12,52 +12,55 @@
 #include "XmlFormats.h"
 #include "XmlTools.h"
 
-class CXmlConfig
+namespace xml
 {
-public:
-    static CString GetRootName(CString szFileXml, XmlDocumnent &doc);
-public:
-    static bool LoadOptions(XmlDocumnent &doc, config::COptions &options);
-    static bool LoadOptions(CString szFileXml, config::COptions &options);
-    static bool SaveOptions(CString szFileXml, config::COptions &options);
-public:
-    static bool LoadItem(XmlDocumnent &doc, config::CItem &item);
-    static bool LoadItem(CString szFileXml, config::CItem &item);
-    static bool SaveItem(CString szFileXml, config::CItem &item);
-public:
-    static bool LoadItems(XmlDocumnent &doc, config::CItemsList &items);
-    static bool LoadItems(CString szFileXml, config::CItemsList &items);
-    static bool SaveItems(CString szFileXml, config::CItemsList &items);
-public:
-    static bool LoadLanguage(XmlDocumnent &doc, CLanguage &language);
-    static bool LoadLanguage(CString szFileXml, CLanguage &language);
-    static bool SaveLanguage(CString szFileXml, CLanguage &language);
-public:
-    static bool LoadLanguages(XmlDocumnent &doc, CLanguagesList &languages);
-    static bool LoadLanguages(CString szFileXml, CLanguagesList &languages);
-    static bool SaveLanguages(CString szFileXml, CLanguagesList &languages);
-public:
-    static bool LoadPreset(XmlDocumnent &doc, config::CPreset &preset);
-    static bool LoadPreset(CString szFileXml, config::CPreset &preset);
-    static bool SavePreset(CString szFileXml, config::CPreset &preset);
-public:
-    static bool LoadPresets(XmlDocumnent &doc, config::CPresetsList &presets);
-    static bool LoadPresets(CString szFileXml, config::CPresetsList &presets);
-    static bool SavePresets(CString szFileXml, config::CPresetsList &presets);
-public:
-    static bool LoadFormat(XmlDocumnent &doc, config::CFormat &format);
-    static bool LoadFormat(CString szFileXml, config::CFormat &format);
-    static bool SaveFormat(CString szFileXml, config::CFormat &format);
-public:
-    static bool LoadFormats(XmlDocumnent &doc, config::CFormatsList &formats);
-    static bool LoadFormats(CString szFileXml, config::CFormatsList &formats);
-    static bool SaveFormats(CString szFileXml, config::CFormatsList &formats);
-public:
-    static bool LoadTool(XmlDocumnent &doc, config::CTool &tool);
-    static bool LoadTool(CString szFileXml, config::CTool &tool);
-    static bool SaveTool(CString szFileXml, config::CTool &tool);
-public:
-    static bool LoadTools(XmlDocumnent &doc, config::CToolsList &tools);
-    static bool LoadTools(CString szFileXml, config::CToolsList &tools);
-    static bool SaveTools(CString szFileXml, config::CToolsList &tools);
-};
+    class CXmlConfig
+    {
+    public:
+        static CString GetRootName(CString szFileXml, XmlDocumnent &doc);
+    public:
+        static bool LoadOptions(XmlDocumnent &doc, config::COptions &options);
+        static bool LoadOptions(CString szFileXml, config::COptions &options);
+        static bool SaveOptions(CString szFileXml, config::COptions &options);
+    public:
+        static bool LoadItem(XmlDocumnent &doc, config::CItem &item);
+        static bool LoadItem(CString szFileXml, config::CItem &item);
+        static bool SaveItem(CString szFileXml, config::CItem &item);
+    public:
+        static bool LoadItems(XmlDocumnent &doc, config::CItemsList &items);
+        static bool LoadItems(CString szFileXml, config::CItemsList &items);
+        static bool SaveItems(CString szFileXml, config::CItemsList &items);
+    public:
+        static bool LoadLanguage(XmlDocumnent &doc, CLanguage &language);
+        static bool LoadLanguage(CString szFileXml, CLanguage &language);
+        static bool SaveLanguage(CString szFileXml, CLanguage &language);
+    public:
+        static bool LoadLanguages(XmlDocumnent &doc, CLanguagesList &languages);
+        static bool LoadLanguages(CString szFileXml, CLanguagesList &languages);
+        static bool SaveLanguages(CString szFileXml, CLanguagesList &languages);
+    public:
+        static bool LoadPreset(XmlDocumnent &doc, config::CPreset &preset);
+        static bool LoadPreset(CString szFileXml, config::CPreset &preset);
+        static bool SavePreset(CString szFileXml, config::CPreset &preset);
+    public:
+        static bool LoadPresets(XmlDocumnent &doc, config::CPresetsList &presets);
+        static bool LoadPresets(CString szFileXml, config::CPresetsList &presets);
+        static bool SavePresets(CString szFileXml, config::CPresetsList &presets);
+    public:
+        static bool LoadFormat(XmlDocumnent &doc, config::CFormat &format);
+        static bool LoadFormat(CString szFileXml, config::CFormat &format);
+        static bool SaveFormat(CString szFileXml, config::CFormat &format);
+    public:
+        static bool LoadFormats(XmlDocumnent &doc, config::CFormatsList &formats);
+        static bool LoadFormats(CString szFileXml, config::CFormatsList &formats);
+        static bool SaveFormats(CString szFileXml, config::CFormatsList &formats);
+    public:
+        static bool LoadTool(XmlDocumnent &doc, config::CTool &tool);
+        static bool LoadTool(CString szFileXml, config::CTool &tool);
+        static bool SaveTool(CString szFileXml, config::CTool &tool);
+    public:
+        static bool LoadTools(XmlDocumnent &doc, config::CToolsList &tools);
+        static bool LoadTools(CString szFileXml, config::CToolsList &tools);
+        static bool SaveTools(CString szFileXml, config::CToolsList &tools);
+    };
+}

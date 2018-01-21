@@ -1637,7 +1637,7 @@ bool CMainDlg::SearchFolderForLanguages(CString szFile)
                     {
                         CLanguage language;
 
-                        CXmlConfig::LoadLanguage(doc, language);
+                        xml::CXmlConfig::LoadLanguage(doc, language);
 
                         this->m_Config.m_Language.m_Languages.Insert(language);
                     }
@@ -2196,7 +2196,7 @@ void CMainDlg::HandleDropFiles(HDROP hDropInfo)
                 if (szExt.CompareNoCase(_T("xml")) == 0)
                 {
                     XmlDocumnent doc;
-                    CString szName = CXmlConfig::GetRootName(szPath, doc);
+                    CString szName = xml::CXmlConfig::GetRootName(szPath, doc);
                     if (!szName.IsEmpty())
                     {
                         if (szName.CompareNoCase(_T("Items")) == 0)
@@ -2673,7 +2673,7 @@ void CMainDlg::FinishConvert()
 bool CMainDlg::LoadOptions(CString szFileXml)
 {
     XmlDocumnent doc;
-    CString szName = CXmlConfig::GetRootName(szFileXml, doc);
+    CString szName = xml::CXmlConfig::GetRootName(szFileXml, doc);
     if (!szName.IsEmpty() && szName.CompareNoCase(_T("Options")) == 0)
     {
         return this->LoadOptions(doc);
@@ -2684,7 +2684,7 @@ bool CMainDlg::LoadOptions(CString szFileXml)
 bool CMainDlg::LoadOptions(XmlDocumnent &doc)
 {
     config::COptions options;
-    if (CXmlConfig::LoadOptions(doc, options))
+    if (xml::CXmlConfig::LoadOptions(doc, options))
     {
         this->m_Config.m_Options = options;
         this->SetOptions();
@@ -2698,13 +2698,13 @@ bool CMainDlg::LoadOptions(XmlDocumnent &doc)
 bool CMainDlg::SaveOptions(CString szFileXml)
 {
     this->GetOptions();
-    return CXmlConfig::SaveOptions(szFileXml, this->m_Config.m_Options);
+    return xml::CXmlConfig::SaveOptions(szFileXml, this->m_Config.m_Options);
 }
 
 bool CMainDlg::LoadFormats(CString szFileXml)
 {
     XmlDocumnent doc;
-    CString szName = CXmlConfig::GetRootName(szFileXml, doc);
+    CString szName = xml::CXmlConfig::GetRootName(szFileXml, doc);
     if (!szName.IsEmpty() && szName.CompareNoCase(_T("Formats")) == 0)
     {
         return this->LoadFormats(doc);
@@ -2715,7 +2715,7 @@ bool CMainDlg::LoadFormats(CString szFileXml)
 bool CMainDlg::LoadFormats(XmlDocumnent &doc)
 {
     config::CFormatsList formats;
-    if (CXmlConfig::LoadFormats(doc, formats))
+    if (xml::CXmlConfig::LoadFormats(doc, formats))
     {
         this->m_Config.m_Formats = formats;
         this->UpdateFormatComboBox();
@@ -2727,13 +2727,13 @@ bool CMainDlg::LoadFormats(XmlDocumnent &doc)
 
 bool CMainDlg::SaveFormats(CString szFileXml)
 {
-    return CXmlConfig::SaveFormats(szFileXml, this->m_Config.m_Formats);
+    return xml::CXmlConfig::SaveFormats(szFileXml, this->m_Config.m_Formats);
 }
 
 bool CMainDlg::LoadFormat(CString szFileXml)
 {
     XmlDocumnent doc;
-    CString szName = CXmlConfig::GetRootName(szFileXml, doc);
+    CString szName = xml::CXmlConfig::GetRootName(szFileXml, doc);
     if (!szName.IsEmpty() && szName.CompareNoCase(_T("Format")) == 0)
     {
         return this->LoadFormat(doc);
@@ -2744,7 +2744,7 @@ bool CMainDlg::LoadFormat(CString szFileXml)
 bool CMainDlg::LoadFormat(XmlDocumnent &doc)
 {
     config::CFormat format;
-    if (CXmlConfig::LoadFormat(doc, format))
+    if (xml::CXmlConfig::LoadFormat(doc, format))
     {
         m_Config.m_Formats.Insert(format);
         this->UpdateFormatComboBox();
@@ -2760,7 +2760,7 @@ bool CMainDlg::SaveFormat(CString szFileXml)
     if (nFormat != -1)
     {
         config::CFormat& format = m_Config.m_Formats.Get(nFormat);
-        return CXmlConfig::SaveFormat(szFileXml, format);
+        return xml::CXmlConfig::SaveFormat(szFileXml, format);
     }
     return false;
 }
@@ -2768,7 +2768,7 @@ bool CMainDlg::SaveFormat(CString szFileXml)
 bool CMainDlg::LoadPresets(CString szFileXml)
 {
     XmlDocumnent doc;
-    CString szName = CXmlConfig::GetRootName(szFileXml, doc);
+    CString szName = xml::CXmlConfig::GetRootName(szFileXml, doc);
     if (!szName.IsEmpty() && szName.CompareNoCase(_T("Presets")) == 0)
     {
         return this->LoadPresets(doc);
@@ -2779,7 +2779,7 @@ bool CMainDlg::LoadPresets(CString szFileXml)
 bool CMainDlg::LoadPresets(XmlDocumnent &doc)
 {
     config::CPresetsList presets;
-    if (CXmlConfig::LoadPresets(doc, presets))
+    if (xml::CXmlConfig::LoadPresets(doc, presets))
     {
         int nFormat = this->m_CmbFormat.GetCurSel();
         if (nFormat != -1)
@@ -2799,7 +2799,7 @@ bool CMainDlg::SavePresets(CString szFileXml)
     if (nFormat != -1)
     {
         config::CFormat& format = m_Config.m_Formats.Get(nFormat);
-        return CXmlConfig::SavePresets(szFileXml, format.m_Presets);
+        return xml::CXmlConfig::SavePresets(szFileXml, format.m_Presets);
     }
     return false;
 }
@@ -2807,7 +2807,7 @@ bool CMainDlg::SavePresets(CString szFileXml)
 bool CMainDlg::LoadTools(CString szFileXml)
 {
     XmlDocumnent doc;
-    CString szName = CXmlConfig::GetRootName(szFileXml, doc);
+    CString szName = xml::CXmlConfig::GetRootName(szFileXml, doc);
     if (!szName.IsEmpty() && szName.CompareNoCase(_T("Tools")) == 0)
     {
         return this->LoadTools(doc);
@@ -2818,7 +2818,7 @@ bool CMainDlg::LoadTools(CString szFileXml)
 bool CMainDlg::LoadTools(XmlDocumnent &doc)
 {
     config::CToolsList tools;
-    if (CXmlConfig::LoadTools(doc, tools))
+    if (xml::CXmlConfig::LoadTools(doc, tools))
     {
         this->m_Config.m_Tools = tools;
         return true;
@@ -2828,13 +2828,13 @@ bool CMainDlg::LoadTools(XmlDocumnent &doc)
 
 bool CMainDlg::SaveTools(CString szFileXml)
 {
-    return CXmlConfig::SaveTools(szFileXml, this->m_Config.m_Tools);
+    return xml::CXmlConfig::SaveTools(szFileXml, this->m_Config.m_Tools);
 }
 
 bool CMainDlg::LoadTool(CString szFileXml)
 {
     XmlDocumnent doc;
-    CString szName = CXmlConfig::GetRootName(szFileXml, doc);
+    CString szName = xml::CXmlConfig::GetRootName(szFileXml, doc);
     if (!szName.IsEmpty() && szName.CompareNoCase(_T("Tool")) == 0)
     {
         return this->LoadTool(doc);
@@ -2845,7 +2845,7 @@ bool CMainDlg::LoadTool(CString szFileXml)
 bool CMainDlg::LoadTool(XmlDocumnent &doc)
 {
     config::CTool tool;
-    if (CXmlConfig::LoadTool(doc, tool))
+    if (xml::CXmlConfig::LoadTool(doc, tool))
     {
         m_Config.m_Tools.Insert(tool);
         return true;
@@ -2856,7 +2856,7 @@ bool CMainDlg::LoadTool(XmlDocumnent &doc)
 bool CMainDlg::LoadItems(CString szFileXml)
 {
     XmlDocumnent doc;
-    CString szName = CXmlConfig::GetRootName(szFileXml, doc);
+    CString szName = xml::CXmlConfig::GetRootName(szFileXml, doc);
     if (!szName.IsEmpty() && szName.CompareNoCase(_T("Items")) == 0)
     {
         return this->LoadItems(doc);
@@ -2867,7 +2867,7 @@ bool CMainDlg::LoadItems(CString szFileXml)
 bool CMainDlg::LoadItems(XmlDocumnent &doc)
 {
     config::CItemsList items;
-    if (CXmlConfig::LoadItems(doc, items))
+    if (xml::CXmlConfig::LoadItems(doc, items))
     {
         this->m_LstInputItems.DeleteAllItems();
         this->m_Config.m_Items = items;
@@ -2881,13 +2881,13 @@ bool CMainDlg::LoadItems(XmlDocumnent &doc)
 bool CMainDlg::SaveItems(CString szFileXml)
 {
     this->GetItems();
-    return CXmlConfig::SaveItems(szFileXml, this->m_Config.m_Items);
+    return xml::CXmlConfig::SaveItems(szFileXml, this->m_Config.m_Items);
 }
 
 bool CMainDlg::LoadLanguage(CString szFileXml)
 {
     XmlDocumnent doc;
-    CString szName = CXmlConfig::GetRootName(szFileXml, doc);
+    CString szName = xml::CXmlConfig::GetRootName(szFileXml, doc);
     if (!szName.IsEmpty() && szName.CompareNoCase(_T("Language")) == 0)
     {
         return this->LoadLanguage(doc);
@@ -2898,7 +2898,7 @@ bool CMainDlg::LoadLanguage(CString szFileXml)
 bool CMainDlg::LoadLanguage(XmlDocumnent &doc)
 {
     CLanguage language;
-    if (CXmlConfig::LoadLanguage(doc, language))
+    if (xml::CXmlConfig::LoadLanguage(doc, language))
     {
         this->m_Config.m_Language.m_Languages.Insert(language);
 

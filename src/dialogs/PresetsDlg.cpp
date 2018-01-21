@@ -598,7 +598,7 @@ void CPresetsDlg::HandleDropFiles(HDROP hDropInfo)
                 if (szExt.CompareNoCase(_T("xml")) == 0)
                 {
                     XmlDocumnent doc;
-                    CString szName = CXmlConfig::GetRootName(szPath, doc);
+                    CString szName = xml::CXmlConfig::GetRootName(szPath, doc);
                     if (!szName.IsEmpty())
                     {
                         if (szName.CompareNoCase(_T("Presets")) == 0)
@@ -651,7 +651,7 @@ void CPresetsDlg::ListSelectionChange()
 bool CPresetsDlg::LoadPresets(CString szFileXml)
 {
     XmlDocumnent doc;
-    CString szName = CXmlConfig::GetRootName(szFileXml, doc);
+    CString szName = xml::CXmlConfig::GetRootName(szFileXml, doc);
     if (!szName.IsEmpty() && szName.CompareNoCase(_T("Presets")) == 0)
     {
         return this->LoadPresets(doc);
@@ -662,7 +662,7 @@ bool CPresetsDlg::LoadPresets(CString szFileXml)
 bool CPresetsDlg::LoadPresets(XmlDocumnent &doc)
 {
     config::CPresetsList presets;
-    if (CXmlConfig::LoadPresets(doc, presets))
+    if (xml::CXmlConfig::LoadPresets(doc, presets))
     {
         this->m_LstPresets.DeleteAllItems();
         config::CFormat& format = this->m_Formats.Get(this->nSelectedFormat);
@@ -675,5 +675,5 @@ bool CPresetsDlg::LoadPresets(XmlDocumnent &doc)
 
 bool CPresetsDlg::SavePresets(CString szFileXml, config::CFormat &format)
 {
-    return CXmlConfig::SavePresets(szFileXml, format.m_Presets);
+    return xml::CXmlConfig::SavePresets(szFileXml, format.m_Presets);
 }

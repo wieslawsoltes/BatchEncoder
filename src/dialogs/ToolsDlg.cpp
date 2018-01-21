@@ -845,7 +845,7 @@ void CToolsDlg::HandleDropFiles(HDROP hDropInfo)
                 if (szExt.CompareNoCase(_T("xml")) == 0)
                 {
                     XmlDocumnent doc;
-                    CString szName = CXmlConfig::GetRootName(szPath, doc);
+                    CString szName = xml::CXmlConfig::GetRootName(szPath, doc);
                     if (!szName.IsEmpty())
                     {
                         if (szName.CompareNoCase(_T("Tools")) == 0)
@@ -981,7 +981,7 @@ void CToolsDlg::DownloadTools()
 bool CToolsDlg::LoadTool(CString szFileXml)
 {
     XmlDocumnent doc;
-    CString szName = CXmlConfig::GetRootName(szFileXml, doc);
+    CString szName = xml::CXmlConfig::GetRootName(szFileXml, doc);
     if (!szName.IsEmpty() && szName.CompareNoCase(_T("Tool")) == 0)
     {
         return this->LoadTool(doc);
@@ -992,7 +992,7 @@ bool CToolsDlg::LoadTool(CString szFileXml)
 bool CToolsDlg::LoadTool(XmlDocumnent &doc)
 {
     config::CTool tool;
-    if (CXmlConfig::LoadTool(doc, tool))
+    if (xml::CXmlConfig::LoadTool(doc, tool))
     {
         m_Tools.Insert(tool);
         int nItem = m_Tools.Count() - 1;
@@ -1004,13 +1004,13 @@ bool CToolsDlg::LoadTool(XmlDocumnent &doc)
 
 bool CToolsDlg::SaveTool(CString szFileXml, config::CTool &tool)
 {
-    return CXmlConfig::SaveTool(szFileXml, tool);
+    return xml::CXmlConfig::SaveTool(szFileXml, tool);
 }
 
 bool CToolsDlg::LoadTools(CString szFileXml)
 {
     XmlDocumnent doc;
-    CString szName = CXmlConfig::GetRootName(szFileXml, doc);
+    CString szName = xml::CXmlConfig::GetRootName(szFileXml, doc);
     if (!szName.IsEmpty() && szName.CompareNoCase(_T("Tools")) == 0)
     {
         return this->LoadTools(doc);
@@ -1021,7 +1021,7 @@ bool CToolsDlg::LoadTools(CString szFileXml)
 bool CToolsDlg::LoadTools(XmlDocumnent &doc)
 {
     config::CToolsList tools;
-    if (CXmlConfig::LoadTools(doc, tools))
+    if (xml::CXmlConfig::LoadTools(doc, tools))
     {
         this->m_LstTools.DeleteAllItems();
 
@@ -1038,5 +1038,5 @@ bool CToolsDlg::LoadTools(XmlDocumnent &doc)
 
 bool CToolsDlg::SaveTools(CString szFileXml)
 {
-    return CXmlConfig::SaveTools(szFileXml, this->m_Tools);
+    return xml::CXmlConfig::SaveTools(szFileXml, this->m_Tools);
 }
