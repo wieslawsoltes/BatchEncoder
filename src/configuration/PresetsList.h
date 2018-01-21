@@ -9,7 +9,7 @@
 
 namespace config
 {
-    class CPresetsList : public CListT<CPreset>
+    class CPresetsList : public util::CListT<CPreset>
     {
     };
 }

@@ -9,7 +9,7 @@
 
 namespace config
 {
-    class CFormatsList : public CListT<CFormat>
+    class CFormatsList : public util::CListT<CFormat>
     {
     public:
         int GetFormatById(CString szFormatId)

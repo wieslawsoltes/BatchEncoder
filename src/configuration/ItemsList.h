@@ -9,7 +9,7 @@
 
 namespace config
 {
-    class CItemsList : public CListT<CItem>
+    class CItemsList : public util::CListT<CItem>
     {
     };
 }

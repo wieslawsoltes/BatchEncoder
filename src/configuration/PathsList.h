@@ -9,7 +9,7 @@
 
 namespace config
 {
-    class CPathsList : public CListT<CPath>
+    class CPathsList : public util::CListT<CPath>
     {
     };
 }

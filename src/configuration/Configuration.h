@@ -18,7 +18,7 @@ namespace config
         CFormatsList m_Formats;
         CItemsList m_Items;
         CToolsList m_Tools;
-        CLanguageContext m_Language;
+        lang::CLanguageContext m_Language;
     public:
         CConfiguration()
         {

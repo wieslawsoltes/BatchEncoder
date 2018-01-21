@@ -9,7 +9,7 @@
 
 namespace config
 {
-    class CToolsList : public CListT<CTool>
+    class CToolsList : public util::CListT<CTool>
     {
     public:
         int GetToolByFormat(CString szFormat)
