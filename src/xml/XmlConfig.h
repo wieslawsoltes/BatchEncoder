@@ -31,13 +31,13 @@ namespace xml
         static bool LoadItems(CString szFileXml, config::CItemsList &items);
         static bool SaveItems(CString szFileXml, config::CItemsList &items);
     public:
-        static bool LoadLanguage(XmlDocumnent &doc, CLanguage &language);
-        static bool LoadLanguage(CString szFileXml, CLanguage &language);
-        static bool SaveLanguage(CString szFileXml, CLanguage &language);
+        static bool LoadLanguage(XmlDocumnent &doc, lang::CLanguage &language);
+        static bool LoadLanguage(CString szFileXml, lang::CLanguage &language);
+        static bool SaveLanguage(CString szFileXml, lang::CLanguage &language);
     public:
-        static bool LoadLanguages(XmlDocumnent &doc, CLanguagesList &languages);
-        static bool LoadLanguages(CString szFileXml, CLanguagesList &languages);
-        static bool SaveLanguages(CString szFileXml, CLanguagesList &languages);
+        static bool LoadLanguages(XmlDocumnent &doc, lang::CLanguagesList &languages);
+        static bool LoadLanguages(CString szFileXml, lang::CLanguagesList &languages);
+        static bool SaveLanguages(CString szFileXml, lang::CLanguagesList &languages);
     public:
         static bool LoadPreset(XmlDocumnent &doc, config::CPreset &preset);
         static bool LoadPreset(CString szFileXml, config::CPreset &preset);

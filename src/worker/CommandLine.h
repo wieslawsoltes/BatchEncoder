@@ -42,26 +42,26 @@ public:
 
         CString szCommandLine = pFormat->szTemplate;
 
-        szCommandLine = ReplaceNoCase(szCommandLine, _T("$EXE"), _T("\"$EXE\""));
-        szCommandLine = ReplaceNoCase(szCommandLine, _T("$EXE"), pFormat->szPath);
-        szCommandLine = ReplaceNoCase(szCommandLine, _T("$OPTIONS"), this->szOptions);
+        szCommandLine = util::ReplaceNoCase(szCommandLine, _T("$EXE"), _T("\"$EXE\""));
+        szCommandLine = util::ReplaceNoCase(szCommandLine, _T("$EXE"), pFormat->szPath);
+        szCommandLine = util::ReplaceNoCase(szCommandLine, _T("$OPTIONS"), this->szOptions);
 
-        szCommandLine = ReplaceNoCase(szCommandLine, _T("$INFILE"), _T("\"$INFILE\""));
+        szCommandLine = util::ReplaceNoCase(szCommandLine, _T("$INFILE"), _T("\"$INFILE\""));
         if (bUseReadPipes == true)
-            szCommandLine = ReplaceNoCase(szCommandLine, _T("$INFILE"), _T("-"));
+            szCommandLine = util::ReplaceNoCase(szCommandLine, _T("$INFILE"), _T("-"));
         else
-            szCommandLine = ReplaceNoCase(szCommandLine, _T("$INFILE"), this->szInputFile);
+            szCommandLine = util::ReplaceNoCase(szCommandLine, _T("$INFILE"), this->szInputFile);
 
-        szCommandLine = ReplaceNoCase(szCommandLine, _T("$OUTFILE"), _T("\"$OUTFILE\""));
+        szCommandLine = util::ReplaceNoCase(szCommandLine, _T("$OUTFILE"), _T("\"$OUTFILE\""));
         if (bUseWritePipes == true)
-            szCommandLine = ReplaceNoCase(szCommandLine, _T("$OUTFILE"), _T("-"));
+            szCommandLine = util::ReplaceNoCase(szCommandLine, _T("$OUTFILE"), _T("-"));
         else
-            szCommandLine = ReplaceNoCase(szCommandLine, _T("$OUTFILE"), this->szOutputFile);
+            szCommandLine = util::ReplaceNoCase(szCommandLine, _T("$OUTFILE"), this->szOutputFile);
 
-        this->szOutputPath = ::GetFilePath(this->szOutputFile);
+        this->szOutputPath = util::GetFilePath(this->szOutputFile);
 
-        szCommandLine = ReplaceNoCase(szCommandLine, _T("$OUTPATH"), _T("\"$OUTPATH\""));
-        szCommandLine = ReplaceNoCase(szCommandLine, _T("$OUTPATH"), this->szOutputPath);
+        szCommandLine = util::ReplaceNoCase(szCommandLine, _T("$OUTPATH"), _T("\"$OUTPATH\""));
+        szCommandLine = util::ReplaceNoCase(szCommandLine, _T("$OUTPATH"), this->szOutputPath);
 
         std::memset(this->pszCommandLine, 0, sizeof(this->pszCommandLine));
         lstrcpy(this->pszCommandLine, szCommandLine.GetBuffer(szCommandLine.GetLength()));

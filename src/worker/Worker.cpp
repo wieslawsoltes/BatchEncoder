@@ -19,7 +19,7 @@
 
 namespace worker
 {
-    bool CWorker::ConvertFileUsingConsole(IWorkerContext* pWorkerContext, CCommandLine &commandLine, CSynchronize &syncDown)
+    bool CWorker::ConvertFileUsingConsole(IWorkerContext* pWorkerContext, CCommandLine &commandLine, util::CSynchronize &syncDown)
     {
         if ((commandLine.bUseReadPipes == true) || (commandLine.bUseWritePipes == true))
         {
@@ -28,9 +28,9 @@ namespace worker
             return false;
         }
 
-        CProcess process;
-        CPipe Stderr(true);
-        CTimeCount timer;
+        util::CProcess process;
+        util::CPipe Stderr(true);
+        util::CTimeCount timer;
 
         // create pipes for stderr
         if (Stderr.Create() == false)
@@ -145,7 +145,7 @@ namespace worker
         }
     }
 
-    bool CWorker::ConvertFileUsingPipes(IWorkerContext* pWorkerContext, CCommandLine &commandLine, CSynchronize &syncDown)
+    bool CWorker::ConvertFileUsingPipes(IWorkerContext* pWorkerContext, CCommandLine &commandLine, util::CSynchronize &syncDown)
     {
         if ((commandLine.bUseReadPipes == false) && (commandLine.bUseWritePipes == false))
         {
@@ -154,21 +154,21 @@ namespace worker
             return false;
         }
 
-        CProcess process;
-        CPipe Stdin(true);
-        CPipe Stdout(true);
+        util::CProcess process;
+        util::CPipe Stdin(true);
+        util::CPipe Stdout(true);
     #ifdef PIPES_STDERR_DEBUG
-        CPipe Stderr(true);
+        util::CPipe Stderr(true);
     #endif
         CFileToPipeWriter readContext;
         CPipeToFileWriter writeContext;
-        CThread readThread;
-        CThread writeThread;
+        util::CThread readThread;
+        util::CThread writeThread;
     #ifdef PIPES_STDERR_DEBUG
-        CThread outputThread;
+        util::CThread outputThread;
     #endif
         int nProgress = 0;
-        CTimeCount timer;
+        util::CTimeCount timer;
 
         if (commandLine.bUseReadPipes == true)
         {
@@ -522,19 +522,19 @@ namespace worker
         }
     }
 
-    bool CWorker::ConvertFileUsingOnlyPipes(IWorkerContext* pWorkerContext, CCommandLine &decoderCommandLine, CCommandLine &encoderCommandLine, CSynchronize &syncDown)
+    bool CWorker::ConvertFileUsingOnlyPipes(IWorkerContext* pWorkerContext, CCommandLine &decoderCommandLine, CCommandLine &encoderCommandLine, util::CSynchronize &syncDown)
     {
-        CProcess decoderProcess;
-        CProcess encoderProcess;
-        CPipe Stdin(true);
-        CPipe Stdout(true);
-        CPipe Bridge(true);
+        util::CProcess decoderProcess;
+        util::CProcess encoderProcess;
+        util::CPipe Stdin(true);
+        util::CPipe Stdout(true);
+        util::CPipe Bridge(true);
         CFileToPipeWriter readContext;
         CPipeToFileWriter writeContext;
-        CThread readThread;
-        CThread writeThread;
+        util::CThread readThread;
+        util::CThread writeThread;
         int nProgress = 0;
-        CTimeCount timer;
+        util::CTimeCount timer;
 
         // create pipes for stdin
         if (Stdin.Create() == false)
@@ -817,7 +817,7 @@ namespace worker
         }
     }
 
-    bool CWorker::ConvertItem(IWorkerContext* pWorkerContext, config::CItem& item, CSynchronize &syncDir, CSynchronize &syncDown)
+    bool CWorker::ConvertItem(IWorkerContext* pWorkerContext, config::CItem& item, util::CSynchronize &syncDir, util::CSynchronize &syncDown)
     {
         config::CFormat *pEncFormat = nullptr;
         config::CFormat *pDecFormat = nullptr;
@@ -825,13 +825,13 @@ namespace worker
         CString szEncOutputFile;
         CString szDecInputFile;
         CString szDecOutputFile;
-        COutputPath m_Output;
+        util::COutputPath m_Output;
 
         // prepare encoder
         config::CPath& path = item.m_Paths.Get(0);
 
         szEncInputFile = path.szPath;
-        if (::FileExists(szEncInputFile) == false)
+        if (util::FileExists(szEncInputFile) == false)
         {
             pWorkerContext->Status(item.nId, app::pszDefaulTime, pWorkerContext->GetString(0x00140001, app::pszConvertItem[0]));
             return false;
@@ -852,7 +852,7 @@ namespace worker
             return false;
         }
 
-        bool bIsValidEncoderInput = pEncFormat->IsValidInputExtension(::GetFileExtension(szEncInputFile));
+        bool bIsValidEncoderInput = pEncFormat->IsValidInputExtension(util::GetFileExtension(szEncInputFile));
 
         m_Output.Validate(pWorkerContext->pConfig->m_Options.szOutputPath);
         szEncOutputFile = m_Output.CreateFilePath(
@@ -863,7 +863,7 @@ namespace worker
 
         if (pWorkerContext->pConfig->m_Options.bOverwriteExistingFiles == false)
         {
-            if (::FileExists(szEncOutputFile) == true)
+            if (util::FileExists(szEncOutputFile) == true)
             {
                 pWorkerContext->Status(item.nId, app::pszDefaulTime, pWorkerContext->GetString(0x00140010, app::pszConvertItem[15]));
                 return false;
@@ -920,8 +920,8 @@ namespace worker
 
             szDecInputFile = szEncInputFile;
             szDecOutputFile.Format(_T("%s%s.%s"),
-                ::GetFilePath(szEncOutputFile),
-                GenerateUuidString(),
+                util::GetFilePath(szEncOutputFile),
+                util::GenerateUuidString(),
                 CString(pDecFormat->szOutputExtension).MakeLower());
         }
 
@@ -1012,7 +1012,7 @@ namespace worker
                         return false;
                     }
 
-                    if (::FileExists(szDecOutputFile) == false)
+                    if (util::FileExists(szDecOutputFile) == false)
                     {
                         pWorkerContext->Status(item.nId, app::pszDefaulTime, pWorkerContext->GetString(0x00140008, app::pszConvertItem[7]));
                         return false;
@@ -1083,7 +1083,7 @@ namespace worker
         return false;
     }
 
-    bool CWorker::ConvertLoop(IWorkerContext* pWorkerContext, std::queue<config::CItem> &queue, CSynchronize &sync, CSynchronize &syncDir, CSynchronize &syncDown)
+    bool CWorker::ConvertLoop(IWorkerContext* pWorkerContext, std::queue<config::CItem> &queue, util::CSynchronize &sync, util::CSynchronize &syncDir, util::CSynchronize &syncDown)
     {
         while (TRUE)
         {
@@ -1149,9 +1149,9 @@ namespace worker
         pWorkerContext->nLastItemId = -1;
 
         std::queue<config::CItem> queue;
-        CSynchronize sync;
-        CSynchronize syncDir;
-        CSynchronize syncDown;
+        util::CSynchronize sync;
+        util::CSynchronize syncDir;
+        util::CSynchronize syncDown;
 
         for (int i = 0; i < nItems; i++)
         {
@@ -1172,8 +1172,8 @@ namespace worker
         pWorkerContext->nThreadCount = pWorkerContext->pConfig->m_Options.nThreadCount;
         if (pWorkerContext->nThreadCount < 1)
         {
-            LogicalProcessorInformation info;
-            if (GetLogicalProcessorInformation(&info) == 0)
+            util::LogicalProcessorInformation info;
+            if (util::GetLogicalProcessorInformation(&info) == 0)
                 pWorkerContext->nThreadCount = info.processorCoreCount;
             else
                 pWorkerContext->nThreadCount = 1;
@@ -1190,7 +1190,7 @@ namespace worker
         // multi-threaded
         if (pWorkerContext->nThreadCount > 1)
         {
-            auto threads = std::make_unique<CThread[]>(pWorkerContext->nThreadCount);
+            auto threads = std::make_unique<util::CThread[]>(pWorkerContext->nThreadCount);
             for (int i = 0; i < pWorkerContext->nThreadCount; i++)
             {
                 auto entry = [this, pWorkerContext, &queue, &sync, &syncDir, &syncDown]()

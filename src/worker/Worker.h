@@ -23,11 +23,11 @@ namespace worker
         CWorker() { }
         virtual ~CWorker() { }
     public:
-        bool ConvertFileUsingConsole(IWorkerContext* pWorkerContext, CCommandLine &commandLine, CSynchronize &syncDown);
-        bool ConvertFileUsingPipes(IWorkerContext* pWorkerContext, CCommandLine &commandLine, CSynchronize &syncDown);
-        bool ConvertFileUsingOnlyPipes(IWorkerContext* pWorkerContext, CCommandLine &decoderCommandLine, CCommandLine &encoderCommandLine, CSynchronize &syncDown);
-        bool ConvertItem(IWorkerContext* pWorkerContext, config::CItem& item, CSynchronize &syncDir, CSynchronize &syncDown);
-        bool ConvertLoop(IWorkerContext* pWorkerContext, std::queue<config::CItem> &queue, CSynchronize &sync, CSynchronize &syncDir, CSynchronize &syncDown);
+        bool ConvertFileUsingConsole(IWorkerContext* pWorkerContext, CCommandLine &commandLine, util::CSynchronize &syncDown);
+        bool ConvertFileUsingPipes(IWorkerContext* pWorkerContext, CCommandLine &commandLine, util::CSynchronize &syncDown);
+        bool ConvertFileUsingOnlyPipes(IWorkerContext* pWorkerContext, CCommandLine &decoderCommandLine, CCommandLine &encoderCommandLine, util::CSynchronize &syncDown);
+        bool ConvertItem(IWorkerContext* pWorkerContext, config::CItem& item, util::CSynchronize &syncDir, util::CSynchronize &syncDown);
+        bool ConvertLoop(IWorkerContext* pWorkerContext, std::queue<config::CItem> &queue, util::CSynchronize &sync, util::CSynchronize &syncDir, util::CSynchronize &syncDown);
         void Convert(IWorkerContext* pWorkerContext);
     };
 }

@@ -33,7 +33,7 @@ namespace app
         volatile bool bHandled = true;
     } ToolsDlgDropContext;
 
-    class CToolsDlg : public CMyDialogEx
+    class CToolsDlg : public controls::CMyDialogEx
     {
         DECLARE_DYNAMIC(CToolsDlg)
     public:
@@ -58,41 +58,41 @@ namespace app
         int nSelectedTool;
         config::CToolsList m_Tools;
         config::CFormatsList m_Formats;
-        CThread m_Thread;
+        util::CThread m_Thread;
         worker::CToolUtilities m_Utilities;
     public:
-        CMyStatic m_StcName;
-        CMyStatic m_StcPlatform;
-        CMyStatic m_StcFormats;
-        CMyStatic m_StcUrl;
-        CMyStatic m_StcFile;
-        CMyStatic m_StcExtract;
-        CMyStatic m_StcPath;
-        CMyListCtrl m_LstTools;
-        CMyEdit m_EdtName;
-        CMyEdit m_EdtPlatform;
-        CMyEdit m_EdtFormats;
-        CMyEdit m_EdtUrl;
-        CMyEdit m_EdtFile;
-        CMyEdit m_EdtExtract;
-        CMyEdit m_EdtPath;
-        CMyButton m_BtnOK;
-        CMyButton m_BtnCancel;
-        CMyButton m_BtnImport;
-        CMyButton m_BtnExport;
-        CMyButton m_BtnDuplicate;
-        CMyButton m_BtnRemoveAll;
-        CMyButton m_BtnRemove;
-        CMyButton m_BtnAdd;
-        CMyButton m_BtnMoveUp;
-        CMyButton m_BtnMoveDown;
-        CMyButton m_BtnUpdate;
-        CMyButton m_BtnLoad;
-        CMyButton m_BtnSave;
-        CMyButton m_BtnDownload;
-        CMyButton m_BtnSetFormat;
-        CMyButton m_BtnSetFormatX86;
-        CMyButton m_BtnSetFormatX64;
+        controls::CMyStatic m_StcName;
+        controls::CMyStatic m_StcPlatform;
+        controls::CMyStatic m_StcFormats;
+        controls::CMyStatic m_StcUrl;
+        controls::CMyStatic m_StcFile;
+        controls::CMyStatic m_StcExtract;
+        controls::CMyStatic m_StcPath;
+        controls::CMyListCtrl m_LstTools;
+        controls::CMyEdit m_EdtName;
+        controls::CMyEdit m_EdtPlatform;
+        controls::CMyEdit m_EdtFormats;
+        controls::CMyEdit m_EdtUrl;
+        controls::CMyEdit m_EdtFile;
+        controls::CMyEdit m_EdtExtract;
+        controls::CMyEdit m_EdtPath;
+        controls::CMyButton m_BtnOK;
+        controls::CMyButton m_BtnCancel;
+        controls::CMyButton m_BtnImport;
+        controls::CMyButton m_BtnExport;
+        controls::CMyButton m_BtnDuplicate;
+        controls::CMyButton m_BtnRemoveAll;
+        controls::CMyButton m_BtnRemove;
+        controls::CMyButton m_BtnAdd;
+        controls::CMyButton m_BtnMoveUp;
+        controls::CMyButton m_BtnMoveDown;
+        controls::CMyButton m_BtnUpdate;
+        controls::CMyButton m_BtnLoad;
+        controls::CMyButton m_BtnSave;
+        controls::CMyButton m_BtnDownload;
+        controls::CMyButton m_BtnSetFormat;
+        controls::CMyButton m_BtnSetFormatX86;
+        controls::CMyButton m_BtnSetFormatX64;
     public:
         afx_msg void OnDropFiles(HDROP hDropInfo);
         afx_msg void OnBnClickedOk();
@@ -135,10 +135,10 @@ namespace app
         void DownloadTools();
     public:
         bool LoadTool(CString szFileXml);
-        bool LoadTool(XmlDocumnent &doc);
+        bool LoadTool(xml::XmlDocumnent &doc);
         bool SaveTool(CString szFileXml, config::CTool &tool);
         bool LoadTools(CString szFileXml);
-        bool LoadTools(XmlDocumnent &doc);
+        bool LoadTools(xml::XmlDocumnent &doc);
         bool SaveTools(CString szFileXml);
     };
 }

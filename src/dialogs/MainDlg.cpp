@@ -179,7 +179,7 @@ namespace app
     class CMainDlgWorkerContext : public IWorkerContext
     {
     private:
-        CTimeCount timer;
+        util::CTimeCount timer;
         CMainDlg *pDlg;
     public:
         CMainDlgWorkerContext(config::CConfiguration* pConfig, CMainDlg* pDlg)
@@ -526,7 +526,7 @@ namespace app
         this->m_CmbOutPath.InsertString(5, _T("C:\\Output\\$Name$.$Ext$"));
         this->m_CmbOutPath.InsertString(6, _T("C:\\Output\\$Name$_converted.$Ext$"));
 
-        ::SetComboBoxHeight(this->GetSafeHwnd(), IDC_COMBO_OUTPUT, 15);
+        util::SetComboBoxHeight(this->GetSafeHwnd(), IDC_COMBO_OUTPUT, 15);
         this->m_CmbOutPath.SetCurSel(1);
         this->m_CmbOutPath.SetFocus();
 
@@ -1321,7 +1321,7 @@ namespace app
                 int nItem = m_LstInputItems.GetNextSelectedItem(pos);
                 config::CItem& item = m_Config.m_Items.Get(nItem);
                 config::CPath& path = item.m_Paths.Get(0);
-                ::LaunchAndWait(path.szPath, _T(""), FALSE);
+                util::LaunchAndWait(path.szPath, _T(""), FALSE);
             }
         }
     }
@@ -1337,8 +1337,8 @@ namespace app
                 config::CItem& item = m_Config.m_Items.Get(nItem);
                 config::CPath& path = item.m_Paths.Get(0);
                 CString szPath = path.szPath;
-                szPath.TrimRight(::GetFileName(path.szPath));
-                ::LaunchAndWait(szPath, _T(""), FALSE);
+                szPath.TrimRight(util::GetFileName(path.szPath));
+                util::LaunchAndWait(szPath, _T(""), FALSE);
             }
         }
     }
@@ -1564,7 +1564,7 @@ namespace app
     void CMainDlg::OnLanguageChange(UINT nID)
     {
         int nSelectedLanguage = nID - ID_LANGUAGE_MIN;
-        CLanguage& language = m_Config.m_Language.m_Languages.Get(nSelectedLanguage);
+        lang::CLanguage& language = m_Config.m_Language.m_Languages.Get(nSelectedLanguage);
         m_Config.m_Options.szSelectedLanguage = language.szId;
         m_Config.m_Language.pLanguage = &language;
 
@@ -1589,7 +1589,7 @@ namespace app
     {
         if (this->pWorkerContext->bRunning == false)
         {
-            ::LaunchAndWait(_T("https://github.com/wieslawsoltes/BatchEncoder"), _T(""), FALSE);
+            util::LaunchAndWait(_T("https://github.com/wieslawsoltes/BatchEncoder"), _T(""), FALSE);
         }
     }
 
@@ -1631,13 +1631,13 @@ namespace app
                     CString szFileXml;
                     szFileXml.Format(_T("%s\\%s\0"), szFile, w32FileData.cFileName);
 
-                    XmlDocumnent doc;
-                    if (XmlDoc::Open(szFileXml, doc) == true)
+                    xml::XmlDocumnent doc;
+                    if (xml::XmlDoc::Open(szFileXml, doc) == true)
                     {
-                        CString szName = CString(XmlDoc::GetRootName(doc));
+                        CString szName = CString(xml::XmlDoc::GetRootName(doc));
                         if (szName.CompareNoCase(_T("Language")) == 0)
                         {
-                            CLanguage language;
+                            lang::CLanguage language;
 
                             xml::CXmlConfig::LoadLanguage(doc, language);
 
@@ -1677,7 +1677,7 @@ namespace app
 
             for (int i = 0; i < nLanguages; i++)
             {
-                CLanguage language = m_Config.m_Language.m_Languages.Get(i);
+                lang::CLanguage language = m_Config.m_Language.m_Languages.Get(i);
 
                 CString szBuff;
                 szBuff.Format(_T("%s (%s)"), language.szOriginalName, language.szTranslatedName);
@@ -1692,14 +1692,14 @@ namespace app
             {
                 m_hLangMenu->CheckMenuItem(ID_LANGUAGE_MIN + nSelectedLanguage, MF_CHECKED);
 
-                CLanguage& language = m_Config.m_Language.m_Languages.Get(nSelectedLanguage);
+                lang::CLanguage& language = m_Config.m_Language.m_Languages.Get(nSelectedLanguage);
                 m_Config.m_Language.pLanguage = &language;
             }
             else
             {
                 m_hLangMenu->CheckMenuItem(ID_LANGUAGE_MIN, MF_CHECKED);
 
-                CLanguage& language = m_Config.m_Language.m_Languages.Get(0);
+                lang::CLanguage& language = m_Config.m_Language.m_Languages.Get(0);
                 m_Config.m_Options.szSelectedLanguage = language.szId;
                 m_Config.m_Language.pLanguage = &language;
             }
@@ -1713,7 +1713,7 @@ namespace app
 
     void CMainDlg::SetLanguage()
     {
-        CLanguageHelper helper(&m_Config.m_Language);
+        lang::CLanguageHelper helper(&m_Config.m_Language);
         CMenu *m_hMenu = this->GetMenu();
 
         // File Menu
@@ -2027,7 +2027,7 @@ namespace app
         {
             if (m_Config.m_Options.bTryToFindDecoder == true)
             {
-                int nDecoder = m_Config.m_Formats.GetDecoderByExtension(::GetFileExtension(szPath));
+                int nDecoder = m_Config.m_Formats.GetDecoderByExtension(util::GetFileExtension(szPath));
                 if (nDecoder == -1)
                 {
                     config::CFormat &format = m_Config.m_Formats.Get(nFormat);
@@ -2047,7 +2047,7 @@ namespace app
             }
         }
 
-        ULONGLONG nFileSize = GetFileSize64(szPath);
+        ULONGLONG nFileSize = util::GetFileSize64(szPath);
         CString szFileSize;
         szFileSize.Format(_T("%I64d"), nFileSize);
 
@@ -2057,8 +2057,8 @@ namespace app
         path.szSize = szFileSize;
         item.m_Paths.Insert(path);
         item.szSize = szFileSize;
-        item.szName = ::GetOnlyFileName(szPath);
-        item.szExtension = ::GetFileExtension(szPath).MakeUpper();
+        item.szName = util::GetOnlyFileName(szPath);
+        item.szExtension = util::GetFileExtension(szPath).MakeUpper();
         item.szFormatId = szFormatId;
         item.nPreset = nPreset;
         item.bChecked = true;
@@ -2131,7 +2131,7 @@ namespace app
     {
         if (m_Config.m_Options.bValidateInputFiles == true)
         {
-            CString szExt = ::GetFileExtension(szPath);
+            CString szExt = util::GetFileExtension(szPath);
             if (m_Config.m_Formats.IsValidInputExtension(szExt) == false)
                 return false;
         }
@@ -2193,11 +2193,11 @@ namespace app
                 else
                 {
                     CString szPath = szFile;
-                    CString szExt = ::GetFileExtension(szPath);
+                    CString szExt = util::GetFileExtension(szPath);
 
                     if (szExt.CompareNoCase(_T("xml")) == 0)
                     {
-                        XmlDocumnent doc;
+                        xml::XmlDocumnent doc;
                         CString szName = xml::CXmlConfig::GetRootName(szPath, doc);
                         if (!szName.IsEmpty())
                         {
@@ -2342,7 +2342,7 @@ namespace app
             static bool bResizeFormatsComboBox = false;
             if (bResizeFormatsComboBox == false)
             {
-                ::SetComboBoxHeight(this->GetSafeHwnd(), IDC_COMBO_FORMAT, 15);
+                util::SetComboBoxHeight(this->GetSafeHwnd(), IDC_COMBO_FORMAT, 15);
                 bResizeFormatsComboBox = true;
             }
 
@@ -2377,7 +2377,7 @@ namespace app
             static bool bResizePresetsComboBox = false;
             if (bResizePresetsComboBox == false)
             {
-                ::SetComboBoxHeight(this->GetSafeHwnd(), IDC_COMBO_PRESETS, 15);
+                util::SetComboBoxHeight(this->GetSafeHwnd(), IDC_COMBO_PRESETS, 15);
                 bResizePresetsComboBox = true;
             }
 
@@ -2604,7 +2604,7 @@ namespace app
                 return;
             }
 
-            COutputPath m_Output;
+            util::COutputPath m_Output;
             CString szOutput = this->m_Config.m_Options.szOutputPath;
             if (m_Output.Validate(szOutput) == false)
             {
@@ -2674,13 +2674,13 @@ namespace app
                 catch (...) {}
             }
 
-            ::ShutdownWindows();
+            util::ShutdownWindows();
         }
     }
 
     bool CMainDlg::LoadOptions(CString szFileXml)
     {
-        XmlDocumnent doc;
+        xml::XmlDocumnent doc;
         CString szName = xml::CXmlConfig::GetRootName(szFileXml, doc);
         if (!szName.IsEmpty() && szName.CompareNoCase(_T("Options")) == 0)
         {
@@ -2689,7 +2689,7 @@ namespace app
         return false;
     }
 
-    bool CMainDlg::LoadOptions(XmlDocumnent &doc)
+    bool CMainDlg::LoadOptions(xml::XmlDocumnent &doc)
     {
         config::COptions options;
         if (xml::CXmlConfig::LoadOptions(doc, options))
@@ -2711,7 +2711,7 @@ namespace app
 
     bool CMainDlg::LoadFormats(CString szFileXml)
     {
-        XmlDocumnent doc;
+        xml::XmlDocumnent doc;
         CString szName = xml::CXmlConfig::GetRootName(szFileXml, doc);
         if (!szName.IsEmpty() && szName.CompareNoCase(_T("Formats")) == 0)
         {
@@ -2720,7 +2720,7 @@ namespace app
         return false;
     }
 
-    bool CMainDlg::LoadFormats(XmlDocumnent &doc)
+    bool CMainDlg::LoadFormats(xml::XmlDocumnent &doc)
     {
         config::CFormatsList formats;
         if (xml::CXmlConfig::LoadFormats(doc, formats))
@@ -2740,7 +2740,7 @@ namespace app
 
     bool CMainDlg::LoadFormat(CString szFileXml)
     {
-        XmlDocumnent doc;
+        xml::XmlDocumnent doc;
         CString szName = xml::CXmlConfig::GetRootName(szFileXml, doc);
         if (!szName.IsEmpty() && szName.CompareNoCase(_T("Format")) == 0)
         {
@@ -2749,7 +2749,7 @@ namespace app
         return false;
     }
 
-    bool CMainDlg::LoadFormat(XmlDocumnent &doc)
+    bool CMainDlg::LoadFormat(xml::XmlDocumnent &doc)
     {
         config::CFormat format;
         if (xml::CXmlConfig::LoadFormat(doc, format))
@@ -2775,7 +2775,7 @@ namespace app
 
     bool CMainDlg::LoadPresets(CString szFileXml)
     {
-        XmlDocumnent doc;
+        xml::XmlDocumnent doc;
         CString szName = xml::CXmlConfig::GetRootName(szFileXml, doc);
         if (!szName.IsEmpty() && szName.CompareNoCase(_T("Presets")) == 0)
         {
@@ -2784,7 +2784,7 @@ namespace app
         return false;
     }
 
-    bool CMainDlg::LoadPresets(XmlDocumnent &doc)
+    bool CMainDlg::LoadPresets(xml::XmlDocumnent &doc)
     {
         config::CPresetsList presets;
         if (xml::CXmlConfig::LoadPresets(doc, presets))
@@ -2814,7 +2814,7 @@ namespace app
 
     bool CMainDlg::LoadTools(CString szFileXml)
     {
-        XmlDocumnent doc;
+        xml::XmlDocumnent doc;
         CString szName = xml::CXmlConfig::GetRootName(szFileXml, doc);
         if (!szName.IsEmpty() && szName.CompareNoCase(_T("Tools")) == 0)
         {
@@ -2823,7 +2823,7 @@ namespace app
         return false;
     }
 
-    bool CMainDlg::LoadTools(XmlDocumnent &doc)
+    bool CMainDlg::LoadTools(xml::XmlDocumnent &doc)
     {
         config::CToolsList tools;
         if (xml::CXmlConfig::LoadTools(doc, tools))
@@ -2841,7 +2841,7 @@ namespace app
 
     bool CMainDlg::LoadTool(CString szFileXml)
     {
-        XmlDocumnent doc;
+        xml::XmlDocumnent doc;
         CString szName = xml::CXmlConfig::GetRootName(szFileXml, doc);
         if (!szName.IsEmpty() && szName.CompareNoCase(_T("Tool")) == 0)
         {
@@ -2850,7 +2850,7 @@ namespace app
         return false;
     }
 
-    bool CMainDlg::LoadTool(XmlDocumnent &doc)
+    bool CMainDlg::LoadTool(xml::XmlDocumnent &doc)
     {
         config::CTool tool;
         if (xml::CXmlConfig::LoadTool(doc, tool))
@@ -2863,7 +2863,7 @@ namespace app
 
     bool CMainDlg::LoadItems(CString szFileXml)
     {
-        XmlDocumnent doc;
+        xml::XmlDocumnent doc;
         CString szName = xml::CXmlConfig::GetRootName(szFileXml, doc);
         if (!szName.IsEmpty() && szName.CompareNoCase(_T("Items")) == 0)
         {
@@ -2872,7 +2872,7 @@ namespace app
         return false;
     }
 
-    bool CMainDlg::LoadItems(XmlDocumnent &doc)
+    bool CMainDlg::LoadItems(xml::XmlDocumnent &doc)
     {
         config::CItemsList items;
         if (xml::CXmlConfig::LoadItems(doc, items))
@@ -2894,7 +2894,7 @@ namespace app
 
     bool CMainDlg::LoadLanguage(CString szFileXml)
     {
-        XmlDocumnent doc;
+        xml::XmlDocumnent doc;
         CString szName = xml::CXmlConfig::GetRootName(szFileXml, doc);
         if (!szName.IsEmpty() && szName.CompareNoCase(_T("Language")) == 0)
         {
@@ -2903,9 +2903,9 @@ namespace app
         return false;
     }
 
-    bool CMainDlg::LoadLanguage(XmlDocumnent &doc)
+    bool CMainDlg::LoadLanguage(xml::XmlDocumnent &doc)
     {
-        CLanguage language;
+        lang::CLanguage language;
         if (xml::CXmlConfig::LoadLanguage(doc, language))
         {
             this->m_Config.m_Language.m_Languages.Insert(language);

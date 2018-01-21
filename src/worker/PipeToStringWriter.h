@@ -17,7 +17,7 @@ namespace worker
         CPipeToStringWriter() { }
         virtual ~CPipeToStringWriter() { }
     public:
-        bool ReadLoop(IWorkerContext* pWorkerContext, CCommandLine &commandLine, CPipe &Stderr, IOutputParser &parser)
+        bool ReadLoop(IWorkerContext* pWorkerContext, CCommandLine &commandLine, util::CPipe &Stderr, IOutputParser &parser)
         {
             const int nBuffSize = 4096;
             char szReadBuff[nBuffSize];

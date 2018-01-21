@@ -72,7 +72,7 @@ namespace app
 
     void CAboutDlg::SetLanguage()
     {
-        CLanguageHelper helper(&pConfig->m_Language);
+        lang::CLanguageHelper helper(&pConfig->m_Language);
 
         helper.SetWndText(this, 0x000D0010);
         helper.SetWndText(&m_BtnOK, 0x000D0011);

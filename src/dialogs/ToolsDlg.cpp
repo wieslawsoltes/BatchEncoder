@@ -655,7 +655,7 @@ namespace app
         {
             m_Thread.Terminate();
 
-            CLanguageHelper helper(&pConfig->m_Language);
+            lang::CLanguageHelper helper(&pConfig->m_Language);
             helper.SetWndText(&m_BtnDownload, 0x000E0023);
 
             EnableUserInterface(TRUE);
@@ -761,7 +761,7 @@ namespace app
 
     void CToolsDlg::SetLanguage()
     {
-        CLanguageHelper helper(&pConfig->m_Language);
+        lang::CLanguageHelper helper(&pConfig->m_Language);
 
         helper.SetColumnText(m_LstTools, TOOL_COLUMN_NAME, 0x000E0001);
         helper.SetColumnText(m_LstTools, TOOL_COLUMN_URL, 0x000E0002);
@@ -842,11 +842,11 @@ namespace app
                 if (!(::GetFileAttributes(szFile) & FILE_ATTRIBUTE_DIRECTORY))
                 {
                     CString szPath = szFile;
-                    CString szExt = ::GetFileExtension(szPath);
+                    CString szExt = util::GetFileExtension(szPath);
 
                     if (szExt.CompareNoCase(_T("xml")) == 0)
                     {
-                        XmlDocumnent doc;
+                        xml::XmlDocumnent doc;
                         CString szName = xml::CXmlConfig::GetRootName(szPath, doc);
                         if (!szName.IsEmpty())
                         {
@@ -953,7 +953,7 @@ namespace app
 
         ::SetCurrentDirectory(m_App.szToolsPath);
 
-        CLanguageHelper helper(&pConfig->m_Language);
+        lang::CLanguageHelper helper(&pConfig->m_Language);
         helper.SetWndText(&m_BtnDownload, 0x000E0024);
 
         int nCount = m_LstTools.GetItemCount();
@@ -982,7 +982,7 @@ namespace app
 
     bool CToolsDlg::LoadTool(CString szFileXml)
     {
-        XmlDocumnent doc;
+        xml::XmlDocumnent doc;
         CString szName = xml::CXmlConfig::GetRootName(szFileXml, doc);
         if (!szName.IsEmpty() && szName.CompareNoCase(_T("Tool")) == 0)
         {
@@ -991,7 +991,7 @@ namespace app
         return false;
     }
 
-    bool CToolsDlg::LoadTool(XmlDocumnent &doc)
+    bool CToolsDlg::LoadTool(xml::XmlDocumnent &doc)
     {
         config::CTool tool;
         if (xml::CXmlConfig::LoadTool(doc, tool))
@@ -1011,7 +1011,7 @@ namespace app
 
     bool CToolsDlg::LoadTools(CString szFileXml)
     {
-        XmlDocumnent doc;
+        xml::XmlDocumnent doc;
         CString szName = xml::CXmlConfig::GetRootName(szFileXml, doc);
         if (!szName.IsEmpty() && szName.CompareNoCase(_T("Tools")) == 0)
         {
@@ -1020,7 +1020,7 @@ namespace app
         return false;
     }
 
-    bool CToolsDlg::LoadTools(XmlDocumnent &doc)
+    bool CToolsDlg::LoadTools(xml::XmlDocumnent &doc)
     {
         config::CToolsList tools;
         if (xml::CXmlConfig::LoadTools(doc, tools))

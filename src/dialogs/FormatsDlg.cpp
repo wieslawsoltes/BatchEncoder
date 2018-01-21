@@ -765,7 +765,7 @@ namespace app
 
     void CFormatsDlg::SetLanguage()
     {
-        CLanguageHelper helper(&pConfig->m_Language);
+        lang::CLanguageHelper helper(&pConfig->m_Language);
 
         helper.SetColumnText(m_LstFormats, FORMAT_COLUMN_NAME, 0x000C0001);
         helper.SetColumnText(m_LstFormats, FORMAT_COLUMN_TEMPLATE, 0x000C0002);
@@ -848,11 +848,11 @@ namespace app
                 if (!(::GetFileAttributes(szFile) & FILE_ATTRIBUTE_DIRECTORY))
                 {
                     CString szPath = szFile;
-                    CString szExt = ::GetFileExtension(szPath);
+                    CString szExt = util::GetFileExtension(szPath);
 
                     if (szExt.CompareNoCase(_T("xml")) == 0)
                     {
-                        XmlDocumnent doc;
+                        xml::XmlDocumnent doc;
                         CString szName = xml::CXmlConfig::GetRootName(szPath, doc);
                         if (!szName.IsEmpty())
                         {
@@ -967,7 +967,7 @@ namespace app
         static bool bResizeDefaultComboBox = false;
         if (bResizeDefaultComboBox == false)
         {
-            ::SetComboBoxHeight(this->GetSafeHwnd(), IDC_COMBO_FORMAT_DEFAULT, 15);
+            util::SetComboBoxHeight(this->GetSafeHwnd(), IDC_COMBO_FORMAT_DEFAULT, 15);
             bResizeDefaultComboBox = true;
         }
 
@@ -1057,7 +1057,7 @@ namespace app
 
     bool CFormatsDlg::LoadFormat(CString szFileXml)
     {
-        XmlDocumnent doc;
+        xml::XmlDocumnent doc;
         CString szName = xml::CXmlConfig::GetRootName(szFileXml, doc);
         if (!szName.IsEmpty() && szName.CompareNoCase(_T("Format")) == 0)
         {
@@ -1066,7 +1066,7 @@ namespace app
         return false;
     }
 
-    bool CFormatsDlg::LoadFormat(XmlDocumnent &doc)
+    bool CFormatsDlg::LoadFormat(xml::XmlDocumnent &doc)
     {
         config::CFormat format;
         if (xml::CXmlConfig::LoadFormat(doc, format))
@@ -1086,7 +1086,7 @@ namespace app
 
     bool CFormatsDlg::LoadFormats(CString szFileXml)
     {
-        XmlDocumnent doc;
+        xml::XmlDocumnent doc;
         CString szName = xml::CXmlConfig::GetRootName(szFileXml, doc);
         if (!szName.IsEmpty() && szName.CompareNoCase(_T("Formats")) == 0)
         {
@@ -1095,7 +1095,7 @@ namespace app
         return false;
     }
 
-    bool CFormatsDlg::LoadFormats(XmlDocumnent &doc)
+    bool CFormatsDlg::LoadFormats(xml::XmlDocumnent &doc)
     {
         config::CFormatsList formats;
         if (xml::CXmlConfig::LoadFormats(doc, formats))
@@ -1119,7 +1119,7 @@ namespace app
         return xml::CXmlConfig::SaveFormats(szFileXml, this->m_Formats);
     }
 
-    bool CFormatsDlg::LoadPresets(XmlDocumnent &doc)
+    bool CFormatsDlg::LoadPresets(xml::XmlDocumnent &doc)
     {
         config::CPresetsList presets;
         if (xml::CXmlConfig::LoadPresets(doc, presets))

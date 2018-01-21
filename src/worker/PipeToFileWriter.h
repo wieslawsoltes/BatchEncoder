@@ -20,7 +20,7 @@ namespace worker
         CPipeToFileWriter() { }
         virtual ~CPipeToFileWriter() { }
     public:
-        bool WriteLoop(IWorkerContext* pWorkerContext, CPipe &Stdout)
+        bool WriteLoop(IWorkerContext* pWorkerContext, util::CPipe &Stdout)
         {
             HANDLE hPipe = Stdout.hRead;
             HANDLE hFile = INVALID_HANDLE_VALUE;

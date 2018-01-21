@@ -30,7 +30,7 @@ namespace app
         volatile bool bHandled = true;
     } PresetsDlgDropContext;
 
-    class CPresetsDlg : public CMyDialogEx
+    class CPresetsDlg : public controls::CMyDialogEx
     {
         DECLARE_DYNAMIC(CPresetsDlg)
     public:
@@ -55,23 +55,23 @@ namespace app
         int nSelectedFormat;
         config::CFormatsList m_Formats;
     public:
-        CMyStatic m_StcName;
-        CMyStatic m_StcOptions;
-        CMyListCtrl m_LstPresets;
-        CMyComboBox m_CmbFormat;
-        CMyEdit m_EdtName;
-        CMyEdit m_EdtOptions;
-        CMyButton m_BtnOK;
-        CMyButton m_BtnCancel;
-        CMyButton m_BtnDuplicate;
-        CMyButton m_BtnRemoveAll;
-        CMyButton m_BtnRemove;
-        CMyButton m_BtnAdd;
-        CMyButton m_BtnMoveUp;
-        CMyButton m_BtnMoveDown;
-        CMyButton m_BtnUpdate;
-        CMyButton m_BtnLoad;
-        CMyButton m_BtnSave;
+        controls::CMyStatic m_StcName;
+        controls::CMyStatic m_StcOptions;
+        controls::CMyListCtrl m_LstPresets;
+        controls::CMyComboBox m_CmbFormat;
+        controls::CMyEdit m_EdtName;
+        controls::CMyEdit m_EdtOptions;
+        controls::CMyButton m_BtnOK;
+        controls::CMyButton m_BtnCancel;
+        controls::CMyButton m_BtnDuplicate;
+        controls::CMyButton m_BtnRemoveAll;
+        controls::CMyButton m_BtnRemove;
+        controls::CMyButton m_BtnAdd;
+        controls::CMyButton m_BtnMoveUp;
+        controls::CMyButton m_BtnMoveDown;
+        controls::CMyButton m_BtnUpdate;
+        controls::CMyButton m_BtnLoad;
+        controls::CMyButton m_BtnSave;
     public:
         afx_msg void OnDropFiles(HDROP hDropInfo);
         afx_msg void OnBnClickedOk();
@@ -101,7 +101,7 @@ namespace app
         void ListSelectionChange();
     public:
         bool LoadPresets(CString szFileXml);
-        bool LoadPresets(XmlDocumnent &doc);
+        bool LoadPresets(xml::XmlDocumnent &doc);
         bool SavePresets(CString szFileXml, config::CFormat &format);
     };
 }

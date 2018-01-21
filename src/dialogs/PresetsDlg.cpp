@@ -106,7 +106,7 @@ namespace app
             m_CmbFormat.InsertString(i, format.szName);
         }
 
-        ::SetComboBoxHeight(this->GetSafeHwnd(), IDC_COMBO_PRESET_FORMAT, 15);
+        util::SetComboBoxHeight(this->GetSafeHwnd(), IDC_COMBO_PRESET_FORMAT, 15);
 
         m_CmbFormat.SetCurSel(nSelectedFormat);
 
@@ -526,7 +526,7 @@ namespace app
 
     void CPresetsDlg::SetLanguage()
     {
-        CLanguageHelper helper(&pConfig->m_Language);
+        lang::CLanguageHelper helper(&pConfig->m_Language);
 
         helper.SetColumnText(m_LstPresets, PRESET_COLUMN_NAME, 0x000B0001);
         helper.SetColumnText(m_LstPresets, PRESET_COLUMN_OPTIONS, 0x000B0002);
@@ -595,11 +595,11 @@ namespace app
                 if (!(::GetFileAttributes(szFile) & FILE_ATTRIBUTE_DIRECTORY))
                 {
                     CString szPath = szFile;
-                    CString szExt = ::GetFileExtension(szPath);
+                    CString szExt = util::GetFileExtension(szPath);
 
                     if (szExt.CompareNoCase(_T("xml")) == 0)
                     {
-                        XmlDocumnent doc;
+                        xml::XmlDocumnent doc;
                         CString szName = xml::CXmlConfig::GetRootName(szPath, doc);
                         if (!szName.IsEmpty())
                         {
@@ -652,7 +652,7 @@ namespace app
 
     bool CPresetsDlg::LoadPresets(CString szFileXml)
     {
-        XmlDocumnent doc;
+        xml::XmlDocumnent doc;
         CString szName = xml::CXmlConfig::GetRootName(szFileXml, doc);
         if (!szName.IsEmpty() && szName.CompareNoCase(_T("Presets")) == 0)
         {
@@ -661,7 +661,7 @@ namespace app
         return false;
     }
 
-    bool CPresetsDlg::LoadPresets(XmlDocumnent &doc)
+    bool CPresetsDlg::LoadPresets(xml::XmlDocumnent &doc)
     {
         config::CPresetsList presets;
         if (xml::CXmlConfig::LoadPresets(doc, presets))

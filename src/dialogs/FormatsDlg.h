@@ -30,7 +30,7 @@ namespace app
         volatile bool bHandled = true;
     } FormatsDlgDropContext;
 
-    class CFormatsDlg : public CMyDialogEx
+    class CFormatsDlg : public controls::CMyDialogEx
     {
         DECLARE_DYNAMIC(CFormatsDlg)
     public:
@@ -55,43 +55,43 @@ namespace app
         int nSelectedFormat;
         config::CFormatsList m_Formats;
     public:
-        CMyStatic m_GrpPipes;
-        CMyStatic m_GrpTypes;
-        CMyStatic m_StcId;
-        CMyStatic m_StcName;
-        CMyStatic m_StcExtension;
-        CMyStatic m_StcFormats;
-        CMyStatic m_StcCode;
-        CMyStatic m_StcDefault;
-        CMyStatic m_StcPath;
-        CMyStatic m_StcTemplate;
-        CMyStatic m_StcProgress;
-        CMyListCtrl m_LstFormats;
-        CMyComboBox m_CmbDefault;
-        CMyEdit m_EdtId;
-        CMyEdit m_EdtName;
-        CMyEdit m_EdtExtension;
-        CMyEdit m_EdtFormats;
-        CMyEdit m_EdtCode;
-        CMyEdit m_EdtPath;
-        CMyEdit m_EdtTemplate;
-        CMyEdit m_EdtFunction;
-        CMyButton m_BtnOK;
-        CMyButton m_BtnCancel;
-        CMyButton m_BtnImport;
-        CMyButton m_BtnExport;
-        CMyButton m_BtnDuplicate;
-        CMyButton m_BtnRemoveAll;
-        CMyButton m_BtnRemove;
-        CMyButton m_BtnAdd;
-        CMyButton m_BtnMoveUp;
-        CMyButton m_BtnMoveDown;
-        CMyButton m_BtnUpdate;
-        CMyButton m_BtnLoad;
-        CMyButton m_BtnSave;
-        CMyButton m_BtnEditPresets;
-        CMyButton m_BtnBrowsePath;
-        CMyButton m_BtnBrowseFunction;
+        controls::CMyStatic m_GrpPipes;
+        controls::CMyStatic m_GrpTypes;
+        controls::CMyStatic m_StcId;
+        controls::CMyStatic m_StcName;
+        controls::CMyStatic m_StcExtension;
+        controls::CMyStatic m_StcFormats;
+        controls::CMyStatic m_StcCode;
+        controls::CMyStatic m_StcDefault;
+        controls::CMyStatic m_StcPath;
+        controls::CMyStatic m_StcTemplate;
+        controls::CMyStatic m_StcProgress;
+        controls::CMyListCtrl m_LstFormats;
+        controls::CMyComboBox m_CmbDefault;
+        controls::CMyEdit m_EdtId;
+        controls::CMyEdit m_EdtName;
+        controls::CMyEdit m_EdtExtension;
+        controls::CMyEdit m_EdtFormats;
+        controls::CMyEdit m_EdtCode;
+        controls::CMyEdit m_EdtPath;
+        controls::CMyEdit m_EdtTemplate;
+        controls::CMyEdit m_EdtFunction;
+        controls::CMyButton m_BtnOK;
+        controls::CMyButton m_BtnCancel;
+        controls::CMyButton m_BtnImport;
+        controls::CMyButton m_BtnExport;
+        controls::CMyButton m_BtnDuplicate;
+        controls::CMyButton m_BtnRemoveAll;
+        controls::CMyButton m_BtnRemove;
+        controls::CMyButton m_BtnAdd;
+        controls::CMyButton m_BtnMoveUp;
+        controls::CMyButton m_BtnMoveDown;
+        controls::CMyButton m_BtnUpdate;
+        controls::CMyButton m_BtnLoad;
+        controls::CMyButton m_BtnSave;
+        controls::CMyButton m_BtnEditPresets;
+        controls::CMyButton m_BtnBrowsePath;
+        controls::CMyButton m_BtnBrowseFunction;
     public:
         afx_msg void OnDropFiles(HDROP hDropInfo);
         afx_msg void OnBnClickedOk();
@@ -138,11 +138,11 @@ namespace app
         bool BrowseForFunction(CString szDefaultFName, CEdit *pEdit, int nID);
     public:
         bool LoadFormat(CString szFileXml);
-        bool LoadFormat(XmlDocumnent &doc);
+        bool LoadFormat(xml::XmlDocumnent &doc);
         bool SaveFormat(CString szFileXml, config::CFormat &format);
         bool LoadFormats(CString szFileXml);
-        bool LoadFormats(XmlDocumnent &doc);
+        bool LoadFormats(xml::XmlDocumnent &doc);
         bool SaveFormats(CString szFileXml);
-        bool LoadPresets(XmlDocumnent &doc);
+        bool LoadPresets(xml::XmlDocumnent &doc);
     };
 }

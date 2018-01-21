@@ -22,10 +22,10 @@ namespace worker
     public:
         bool Download(config::CTool& tool, bool bExtract, bool bInstall, int nIndex, config::CConfiguration *pConfig, std::function<void(int, CString)> callback = nullptr)
         {
-            CDownload m_Download;
+            util::CDownload m_Download;
             CString szUrl = tool.szUrl;
             CString szFilePath = app::m_App.CombinePath(app::m_App.szToolsPath, tool.szFile);
-            CString szFolderPath = app::m_App.CombinePath(app::m_App.szToolsPath, ::GetOnlyFileName(tool.szFile));
+            CString szFolderPath = app::m_App.CombinePath(app::m_App.szToolsPath, util::GetOnlyFileName(tool.szFile));
 
             bool bResult = m_Download.Download(szUrl, szFilePath,
                 [nIndex, pConfig, callback](int nProgress, CString szStatus)
@@ -53,7 +53,7 @@ namespace worker
             {
                 if (bInstall == true)
                 {
-                    ::LaunchAndWait(szFilePath, _T(""), TRUE);
+                    util::LaunchAndWait(szFilePath, _T(""), TRUE);
                     return true;
                 }
             }
@@ -65,9 +65,9 @@ namespace worker
                     CComBSTR file(szFilePath);
                     CComBSTR folder(szFolderPath);
 
-                    if (!::DirectoryExists(szFolderPath))
+                    if (!util::DirectoryExists(szFolderPath))
                     {
-                        if (::MakeFullPath(szFolderPath) == false)
+                        if (util::MakeFullPath(szFolderPath) == false)
                         {
                             if (callback != nullptr)
                             {
@@ -78,9 +78,9 @@ namespace worker
                         }
                     }
 
-                    if (::DirectoryExists(szFolderPath) == TRUE)
+                    if (util::DirectoryExists(szFolderPath) == TRUE)
                     {
-                        bool bUnzipResult = ::Unzip2Folder(file, folder);
+                        bool bUnzipResult = util::Unzip2Folder(file, folder);
                         if (bUnzipResult == true)
                         {
                             if (callback != nullptr)

@@ -21,7 +21,7 @@ namespace xml
         {
         }
     public:
-        bool GetLanguage(const XmlElement *parent, CLanguage &m_Language)
+        bool GetLanguage(const XmlElement *parent, lang::CLanguage &m_Language)
         {
             VALIDATE(GetAttributeValue(parent, "id", &m_Language.szId));
             VALIDATE(GetAttributeValue(parent, "original", &m_Language.szOriginalName));
@@ -46,7 +46,7 @@ namespace xml
             }
             return false;
         }
-        void SetLanguage(XmlElement *parent, CLanguage &m_Language)
+        void SetLanguage(XmlElement *parent, lang::CLanguage &m_Language)
         {
             SetAttributeValue(parent, "id", m_Language.szId);
             SetAttributeValue(parent, "original", m_Language.szOriginalName);
@@ -68,14 +68,14 @@ namespace xml
                 SetAttributeValue(element, "", rValue);
             }
         }
-        bool GetLanguages(const XmlElement *parent, CLanguagesList &m_Languages)
+        bool GetLanguages(const XmlElement *parent, lang::CLanguagesList &m_Languages)
         {
             auto element = parent->FirstChildElement("Language");
             if (element != nullptr)
             {
                 for (element; element; element = element->NextSiblingElement())
                 {
-                    CLanguage language;
+                    lang::CLanguage language;
                     VALIDATE(this->GetLanguage(element, language));
                     m_Languages.Insert(language);
                 }
@@ -83,19 +83,19 @@ namespace xml
             }
             return false;
         }
-        void SetLanguages(XmlElement *parent, CLanguagesList &m_Languages)
+        void SetLanguages(XmlElement *parent, lang::CLanguagesList &m_Languages)
         {
             int nLanguages = m_Languages.Count();
             for (int i = 0; i < nLanguages; i++)
             {
-                CLanguage& language = m_Languages.Get(i);
+                lang::CLanguage& language = m_Languages.Get(i);
                 auto element = this->NewElement("Language");
                 parent->LinkEndChild(element);
                 this->SetLanguage(element, language);
             }
         }
     public:
-        bool GetLanguage(CLanguage &m_Language)
+        bool GetLanguage(lang::CLanguage &m_Language)
         {
             auto element = this->FirstChildElement("Language");
             if (element != nullptr)
@@ -105,13 +105,13 @@ namespace xml
             }
             return false;
         }
-        void SetLanguage(CLanguage &m_Language)
+        void SetLanguage(lang::CLanguage &m_Language)
         {
             auto element = this->NewElement("Language");
             this->LinkEndChild(element);
             this->SetLanguage(element, m_Language);
         }
-        bool GetLanguages(CLanguagesList &m_Languages)
+        bool GetLanguages(lang::CLanguagesList &m_Languages)
         {
             auto element = this->FirstChildElement("Languages");
             if (element != nullptr)
@@ -121,7 +121,7 @@ namespace xml
             }
             return false;
         }
-        void SetLanguages(CLanguagesList &m_Languages)
+        void SetLanguages(lang::CLanguagesList &m_Languages)
         {
             auto element = this->NewElement("Languages");
             this->LinkEndChild(element);

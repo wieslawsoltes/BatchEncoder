@@ -93,13 +93,13 @@ namespace xml
         return xml.Save(szFileXml);
     }
 
-    bool CXmlConfig::LoadLanguage(XmlDocumnent &doc, CLanguage &language)
+    bool CXmlConfig::LoadLanguage(XmlDocumnent &doc, lang::CLanguage &language)
     {
         XmlLanguages xml(doc);
         return xml.GetLanguage(language);
     }
 
-    bool CXmlConfig::LoadLanguage(CString szFileXml, CLanguage &language)
+    bool CXmlConfig::LoadLanguage(CString szFileXml, lang::CLanguage &language)
     {
         XmlDocumnent doc;
         if (XmlDoc::Open(szFileXml, doc) == true)
@@ -109,7 +109,7 @@ namespace xml
         return false;
     }
 
-    bool CXmlConfig::SaveLanguage(CString szFileXml, CLanguage &language)
+    bool CXmlConfig::SaveLanguage(CString szFileXml, lang::CLanguage &language)
     {
         XmlDocumnent doc;
         XmlLanguages xml(doc);
@@ -118,13 +118,13 @@ namespace xml
         return xml.Save(szFileXml);
     }
 
-    bool CXmlConfig::LoadLanguages(XmlDocumnent &doc, CLanguagesList &languages)
+    bool CXmlConfig::LoadLanguages(XmlDocumnent &doc, lang::CLanguagesList &languages)
     {
         XmlLanguages xml(doc);
         return xml.GetLanguages(languages);
     }
 
-    bool CXmlConfig::LoadLanguages(CString szFileXml, CLanguagesList &languages)
+    bool CXmlConfig::LoadLanguages(CString szFileXml, lang::CLanguagesList &languages)
     {
         XmlDocumnent doc;
         if (XmlDoc::Open(szFileXml, doc) == true)
@@ -134,7 +134,7 @@ namespace xml
         return false;
     }
 
-    bool CXmlConfig::SaveLanguages(CString szFileXml, CLanguagesList &languages)
+    bool CXmlConfig::SaveLanguages(CString szFileXml, lang::CLanguagesList &languages)
     {
         XmlDocumnent doc;
         XmlLanguages xml(doc);

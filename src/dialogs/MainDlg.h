@@ -42,7 +42,7 @@ namespace app
         volatile bool bHandled = true;
     } MainDlgDropContext;
 
-    class CMainDlg : public CMyDialogEx
+    class CMainDlg : public controls::CMyDialogEx
     {
         DECLARE_DYNAMIC(CMainDlg)
     public:
@@ -69,29 +69,29 @@ namespace app
         config::CConfiguration m_Config;
     public:
         IWorkerContext* pWorkerContext;
-        CThread m_WorkerThread;
+        util::CThread m_WorkerThread;
         worker::CWorker m_Worker;
     public:
         int nEdtItem;
         int nEdtSubItem;
         CString szEdtText;
-        CMyEdit m_EdtItem;
+        controls::CMyEdit m_EdtItem;
     public:
-        CMyStatic m_GrpOutput;
-        CMyStatic m_StcPreset;
-        CMyStatic m_StcFormat;
-        CMyStatic m_StcThreads;
-        CMyButton m_StcOutPath;
-        CMyComboBox m_CmbPresets;
-        CMyComboBox m_CmbFormat;
-        CMyComboBox m_CmbOutPath;
-        CMyListCtrl m_LstInputItems;
-        CMyButton m_BtnBrowse;
-        CMyEdit m_EdtThreads;
-        CMySpinButtonCtrl m_SpinThreads;
-        CMyProgressCtrl m_Progress;
-        CMyButton m_BtnConvert;
-        CMyStatusBarCtrl m_StatusBar;
+        controls::CMyStatic m_GrpOutput;
+        controls::CMyStatic m_StcPreset;
+        controls::CMyStatic m_StcFormat;
+        controls::CMyStatic m_StcThreads;
+        controls::CMyButton m_StcOutPath;
+        controls::CMyComboBox m_CmbPresets;
+        controls::CMyComboBox m_CmbFormat;
+        controls::CMyComboBox m_CmbOutPath;
+        controls::CMyListCtrl m_LstInputItems;
+        controls::CMyButton m_BtnBrowse;
+        controls::CMyEdit m_EdtThreads;
+        controls::CMySpinButtonCtrl m_SpinThreads;
+        controls::CMyProgressCtrl m_Progress;
+        controls::CMyButton m_BtnConvert;
+        controls::CMyStatusBarCtrl m_StatusBar;
     public:
         afx_msg void OnClose();
         afx_msg void OnDestroy();
@@ -175,26 +175,26 @@ namespace app
         void FinishConvert();
     public:
         bool LoadOptions(CString szFileXml);
-        bool LoadOptions(XmlDocumnent &doc);
+        bool LoadOptions(xml::XmlDocumnent &doc);
         bool SaveOptions(CString szFileXml);
         bool LoadFormats(CString szFileXml);
-        bool LoadFormats(XmlDocumnent &doc);
+        bool LoadFormats(xml::XmlDocumnent &doc);
         bool SaveFormats(CString szFileXml);
         bool LoadFormat(CString szFileXml);
-        bool LoadFormat(XmlDocumnent &doc);
+        bool LoadFormat(xml::XmlDocumnent &doc);
         bool SaveFormat(CString szFileXml);
         bool LoadPresets(CString szFileXml);
-        bool LoadPresets(XmlDocumnent &doc);
+        bool LoadPresets(xml::XmlDocumnent &doc);
         bool SavePresets(CString szFileXml);
         bool LoadTools(CString szFileXml);
-        bool LoadTools(XmlDocumnent &doc);
+        bool LoadTools(xml::XmlDocumnent &doc);
         bool SaveTools(CString szFileXml);
         bool LoadTool(CString szFileXml);
-        bool LoadTool(XmlDocumnent &doc);
+        bool LoadTool(xml::XmlDocumnent &doc);
         bool LoadItems(CString szFileXml);
-        bool LoadItems(XmlDocumnent &doc);
+        bool LoadItems(xml::XmlDocumnent &doc);
         bool SaveItems(CString szFileXml);
         bool LoadLanguage(CString szFileXml);
-        bool LoadLanguage(XmlDocumnent &doc);
+        bool LoadLanguage(xml::XmlDocumnent &doc);
     };
 }

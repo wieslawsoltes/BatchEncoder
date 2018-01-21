@@ -44,11 +44,11 @@ namespace app
         AfxEnableControlContainer();
         InitShellManager();
 
-        this->m_bIsPortable = PathFileExists(::GetExeFilePath() + "BatchEncoder.portable") == TRUE ? true : false;
+        this->m_bIsPortable = PathFileExists(util::GetExeFilePath() + "BatchEncoder.portable") == TRUE ? true : false;
 
         if (this->m_bIsPortable == true)
         {
-            this->szSettingsPath = ::GetExeFilePath();
+            this->szSettingsPath = util::GetExeFilePath();
 
             this->szFormatsPath = this->szSettingsPath + _T("formats");
             this->szPresetsPath = this->szSettingsPath + _T("presets");
@@ -75,13 +75,13 @@ namespace app
         {
             CString szConfigDir = _T("BatchEncoder");
 
-            this->szSettingsPath = GetSettingsFilePath(_T(""), szConfigDir);
+            this->szSettingsPath = util::GetSettingsFilePath(_T(""), szConfigDir);
 
-            this->szFormatsPath = GetSettingsFilePath(_T(""), szConfigDir + _T("\\formats"));
-            this->szPresetsPath = GetSettingsFilePath(_T(""), szConfigDir + _T("\\presets"));
-            this->szLanguagesPath = GetSettingsFilePath(_T(""), szConfigDir + _T("\\lang"));
-            this->szProgressPath = GetSettingsFilePath(_T(""), szConfigDir + _T("\\progress"));
-            this->szToolsPath = GetSettingsFilePath(_T(""), szConfigDir + _T("\\tools"));
+            this->szFormatsPath = util::GetSettingsFilePath(_T(""), szConfigDir + _T("\\formats"));
+            this->szPresetsPath = util::GetSettingsFilePath(_T(""), szConfigDir + _T("\\presets"));
+            this->szLanguagesPath = util::GetSettingsFilePath(_T(""), szConfigDir + _T("\\lang"));
+            this->szProgressPath = util::GetSettingsFilePath(_T(""), szConfigDir + _T("\\progress"));
+            this->szToolsPath = util::GetSettingsFilePath(_T(""), szConfigDir + _T("\\tools"));
 
             try
             {
@@ -94,10 +94,10 @@ namespace app
             }
             catch (...) {}
 
-            this->szOptionsFile = ::GetSettingsFilePath(_T("Options.xml"), szConfigDir);
-            this->szFormatsFile = ::GetSettingsFilePath(_T("Formats.xml"), szConfigDir);
-            this->szItemsFile = ::GetSettingsFilePath(_T("Items.xml"), szConfigDir);
-            this->szToolsFile = ::GetSettingsFilePath(_T("Tools.xml"), szConfigDir);
+            this->szOptionsFile = util::GetSettingsFilePath(_T("Options.xml"), szConfigDir);
+            this->szFormatsFile = util::GetSettingsFilePath(_T("Formats.xml"), szConfigDir);
+            this->szItemsFile = util::GetSettingsFilePath(_T("Items.xml"), szConfigDir);
+            this->szToolsFile = util::GetSettingsFilePath(_T("Tools.xml"), szConfigDir);
         }
 
         CMainDlg dlg;

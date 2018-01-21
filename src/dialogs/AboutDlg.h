@@ -13,7 +13,7 @@
 
 namespace app
 {
-    class CAboutDlg : public CMyDialogEx
+    class CAboutDlg : public controls::CMyDialogEx
     {
         DECLARE_DYNAMIC(CAboutDlg)
     public:
@@ -31,11 +31,11 @@ namespace app
     public:
         config::CConfiguration *pConfig;
     public:
-        CMyButton m_BtnOK;
-        CMyStatic m_StcMainAppName;
-        CMyHyperlink m_StcWebsite;
-        CMyHyperlink m_StcEmail;
-        CMyStatic m_StcLicense;
+        controls::CMyButton m_BtnOK;
+        controls::CMyStatic m_StcMainAppName;
+        controls::CMyHyperlink m_StcWebsite;
+        controls::CMyHyperlink m_StcEmail;
+        controls::CMyStatic m_StcLicense;
     public:
         afx_msg void OnClose();
         afx_msg void OnBnClickedOk();

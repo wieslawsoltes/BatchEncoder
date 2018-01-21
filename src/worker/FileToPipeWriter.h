@@ -20,7 +20,7 @@ namespace worker
         CFileToPipeWriter() { }
         virtual ~CFileToPipeWriter() { }
     public:
-        bool ReadLoop(IWorkerContext* pWorkerContext, CPipe &Stdin)
+        bool ReadLoop(IWorkerContext* pWorkerContext, util::CPipe &Stdin)
         {
             HANDLE hPipe = Stdin.hWrite;
             HANDLE hFile = INVALID_HANDLE_VALUE;
@@ -46,7 +46,7 @@ namespace worker
                 return false;
             }
 
-            nFileSize = ::GetFileSize64(hFile);
+            nFileSize = util::GetFileSize64(hFile);
             if (nFileSize == 0)
             {
                 bError = true;
