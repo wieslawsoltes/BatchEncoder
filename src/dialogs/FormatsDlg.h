@@ -17,129 +17,132 @@
 #define FORMAT_COLUMN_NAME      0
 #define FORMAT_COLUMN_TEMPLATE  1
 
-class CFormatsDlg;
-
-typedef struct tagFormatsDlgDropContext
+namespace app
 {
-    CFormatsDlg *pDlg = nullptr;
-    HDROP hDrop = nullptr;
-    HANDLE hThread = nullptr;
-    DWORD dwThreadID = -1;
-    volatile bool bHandled = true;
-} FormatsDlgDropContext;
+    class CFormatsDlg;
 
-class CFormatsDlg : public CMyDialogEx
-{
-    DECLARE_DYNAMIC(CFormatsDlg)
-public:
-    CFormatsDlg(CWnd* pParent = nullptr);
-    virtual ~CFormatsDlg();
-    enum { IDD = IDD_DIALOG_FORMATS };
-protected:
-    virtual void DoDataExchange(CDataExchange* pDX);
-    DECLARE_MESSAGE_MAP()
-protected:
-    HICON m_hIcon;
-    afx_msg void OnPaint();
-    afx_msg HCURSOR OnQueryDragIcon();
-public:
-    virtual BOOL OnInitDialog();
-public:
-    FormatsDlgDropContext m_DD;
-    config::CConfiguration *pConfig;
-    CString szFormatsDialogResize;
-    CString szFormatsListColumns;
-    volatile bool bUpdate;
-    int nSelectedFormat;
-    config::CFormatsList m_Formats;
-public:
-    CMyStatic m_GrpPipes;
-    CMyStatic m_GrpTypes;
-    CMyStatic m_StcId;
-    CMyStatic m_StcName;
-    CMyStatic m_StcExtension;
-    CMyStatic m_StcFormats;
-    CMyStatic m_StcCode;
-    CMyStatic m_StcDefault;
-    CMyStatic m_StcPath;
-    CMyStatic m_StcTemplate;
-    CMyStatic m_StcProgress;
-    CMyListCtrl m_LstFormats;
-    CMyComboBox m_CmbDefault;
-    CMyEdit m_EdtId;
-    CMyEdit m_EdtName;
-    CMyEdit m_EdtExtension;
-    CMyEdit m_EdtFormats;
-    CMyEdit m_EdtCode;
-    CMyEdit m_EdtPath;
-    CMyEdit m_EdtTemplate;
-    CMyEdit m_EdtFunction;
-    CMyButton m_BtnOK;
-    CMyButton m_BtnCancel;
-    CMyButton m_BtnImport;
-    CMyButton m_BtnExport;
-    CMyButton m_BtnDuplicate;
-    CMyButton m_BtnRemoveAll;
-    CMyButton m_BtnRemove;
-    CMyButton m_BtnAdd;
-    CMyButton m_BtnMoveUp;
-    CMyButton m_BtnMoveDown;
-    CMyButton m_BtnUpdate;
-    CMyButton m_BtnLoad;
-    CMyButton m_BtnSave;
-    CMyButton m_BtnEditPresets;
-    CMyButton m_BtnBrowsePath;
-    CMyButton m_BtnBrowseFunction;
-public:
-    afx_msg void OnDropFiles(HDROP hDropInfo);
-    afx_msg void OnBnClickedOk();
-    afx_msg void OnBnClickedCancel();
-    afx_msg void OnLvnItemchangedListFormats(NMHDR *pNMHDR, LRESULT *pResult);
-    afx_msg void OnBnClickedButtonImport();
-    afx_msg void OnBnClickedButtonExport();
-    afx_msg void OnBnClickedButtonDuplicate();
-    afx_msg void OnBnClickedButtonRemoveAllFormats();
-    afx_msg void OnBnClickedButtonRemoveFormat();
-    afx_msg void OnBnClickedButtonAddFormat();
-    afx_msg void OnBnClickedButtonFormatUp();
-    afx_msg void OnBnClickedButtonFormatDown();
-    afx_msg void OnBnClickedButtonUpdateFormat();
-    afx_msg void OnBnClickedRadioTypeEncoder();
-    afx_msg void OnBnClickedRadioTypeDecoder();
-    afx_msg void OnBnClickedCheckPipesInput();
-    afx_msg void OnBnClickedCheckPipesOutput();
-    afx_msg void OnEnChangeEditFormatId();
-    afx_msg void OnEnChangeEditFormatName();
-    afx_msg void OnEnChangeEditFormatExtension();
-    afx_msg void OnEnChangeEditFormatFormats();
-    afx_msg void OnCbnSelchangeComboDefault();
-    afx_msg void OnEnChangeEditFormatPath();
-    afx_msg void OnEnChangeEditFormatTemplate();
-    afx_msg void OnEnChangeEditFormatFunction();
-    afx_msg void OnBnClickedButtonLoadFormats();
-    afx_msg void OnBnClickedButtonSaveFormats();
-    afx_msg void OnBnClickedButtonEditPresets();
-    afx_msg void OnBnClickedButtonBrowsePath();
-    afx_msg void OnBnClickedButtonBrowseProgress();
-    afx_msg void OnClose();
-public:
-    void LoadWindowSettings();
-    void SaveWindowSettings();
-    void SetLanguage();
-    void AddToList(config::CFormat &format, int nItem);
-    void InsertFormatsToListCtrl();
-    void HandleDropFiles(HDROP hDropInfo);
-    void UpdateFields(config::CFormat &format);
-    void UpdateDefaultComboBox(config::CFormat &format);
-    void ListSelectionChange();
-    bool BrowseForPath(CString szDefaultFName, CEdit *pEdit, int nID);
-    bool BrowseForFunction(CString szDefaultFName, CEdit *pEdit, int nID);
-public:
-    bool LoadFormat(CString szFileXml);
-    bool LoadFormat(XmlDocumnent &doc);
-    bool SaveFormat(CString szFileXml, config::CFormat &format);
-    bool LoadFormats(CString szFileXml);
-    bool LoadFormats(XmlDocumnent &doc);
-    bool SaveFormats(CString szFileXml);
-    bool LoadPresets(XmlDocumnent &doc);
-};
+    typedef struct tagFormatsDlgDropContext
+    {
+        CFormatsDlg *pDlg = nullptr;
+        HDROP hDrop = nullptr;
+        HANDLE hThread = nullptr;
+        DWORD dwThreadID = -1;
+        volatile bool bHandled = true;
+    } FormatsDlgDropContext;
+
+    class CFormatsDlg : public CMyDialogEx
+    {
+        DECLARE_DYNAMIC(CFormatsDlg)
+    public:
+        CFormatsDlg(CWnd* pParent = nullptr);
+        virtual ~CFormatsDlg();
+        enum { IDD = IDD_DIALOG_FORMATS };
+    protected:
+        virtual void DoDataExchange(CDataExchange* pDX);
+        DECLARE_MESSAGE_MAP()
+    protected:
+        HICON m_hIcon;
+        afx_msg void OnPaint();
+        afx_msg HCURSOR OnQueryDragIcon();
+    public:
+        virtual BOOL OnInitDialog();
+    public:
+        FormatsDlgDropContext m_DD;
+        config::CConfiguration *pConfig;
+        CString szFormatsDialogResize;
+        CString szFormatsListColumns;
+        volatile bool bUpdate;
+        int nSelectedFormat;
+        config::CFormatsList m_Formats;
+    public:
+        CMyStatic m_GrpPipes;
+        CMyStatic m_GrpTypes;
+        CMyStatic m_StcId;
+        CMyStatic m_StcName;
+        CMyStatic m_StcExtension;
+        CMyStatic m_StcFormats;
+        CMyStatic m_StcCode;
+        CMyStatic m_StcDefault;
+        CMyStatic m_StcPath;
+        CMyStatic m_StcTemplate;
+        CMyStatic m_StcProgress;
+        CMyListCtrl m_LstFormats;
+        CMyComboBox m_CmbDefault;
+        CMyEdit m_EdtId;
+        CMyEdit m_EdtName;
+        CMyEdit m_EdtExtension;
+        CMyEdit m_EdtFormats;
+        CMyEdit m_EdtCode;
+        CMyEdit m_EdtPath;
+        CMyEdit m_EdtTemplate;
+        CMyEdit m_EdtFunction;
+        CMyButton m_BtnOK;
+        CMyButton m_BtnCancel;
+        CMyButton m_BtnImport;
+        CMyButton m_BtnExport;
+        CMyButton m_BtnDuplicate;
+        CMyButton m_BtnRemoveAll;
+        CMyButton m_BtnRemove;
+        CMyButton m_BtnAdd;
+        CMyButton m_BtnMoveUp;
+        CMyButton m_BtnMoveDown;
+        CMyButton m_BtnUpdate;
+        CMyButton m_BtnLoad;
+        CMyButton m_BtnSave;
+        CMyButton m_BtnEditPresets;
+        CMyButton m_BtnBrowsePath;
+        CMyButton m_BtnBrowseFunction;
+    public:
+        afx_msg void OnDropFiles(HDROP hDropInfo);
+        afx_msg void OnBnClickedOk();
+        afx_msg void OnBnClickedCancel();
+        afx_msg void OnLvnItemchangedListFormats(NMHDR *pNMHDR, LRESULT *pResult);
+        afx_msg void OnBnClickedButtonImport();
+        afx_msg void OnBnClickedButtonExport();
+        afx_msg void OnBnClickedButtonDuplicate();
+        afx_msg void OnBnClickedButtonRemoveAllFormats();
+        afx_msg void OnBnClickedButtonRemoveFormat();
+        afx_msg void OnBnClickedButtonAddFormat();
+        afx_msg void OnBnClickedButtonFormatUp();
+        afx_msg void OnBnClickedButtonFormatDown();
+        afx_msg void OnBnClickedButtonUpdateFormat();
+        afx_msg void OnBnClickedRadioTypeEncoder();
+        afx_msg void OnBnClickedRadioTypeDecoder();
+        afx_msg void OnBnClickedCheckPipesInput();
+        afx_msg void OnBnClickedCheckPipesOutput();
+        afx_msg void OnEnChangeEditFormatId();
+        afx_msg void OnEnChangeEditFormatName();
+        afx_msg void OnEnChangeEditFormatExtension();
+        afx_msg void OnEnChangeEditFormatFormats();
+        afx_msg void OnCbnSelchangeComboDefault();
+        afx_msg void OnEnChangeEditFormatPath();
+        afx_msg void OnEnChangeEditFormatTemplate();
+        afx_msg void OnEnChangeEditFormatFunction();
+        afx_msg void OnBnClickedButtonLoadFormats();
+        afx_msg void OnBnClickedButtonSaveFormats();
+        afx_msg void OnBnClickedButtonEditPresets();
+        afx_msg void OnBnClickedButtonBrowsePath();
+        afx_msg void OnBnClickedButtonBrowseProgress();
+        afx_msg void OnClose();
+    public:
+        void LoadWindowSettings();
+        void SaveWindowSettings();
+        void SetLanguage();
+        void AddToList(config::CFormat &format, int nItem);
+        void InsertFormatsToListCtrl();
+        void HandleDropFiles(HDROP hDropInfo);
+        void UpdateFields(config::CFormat &format);
+        void UpdateDefaultComboBox(config::CFormat &format);
+        void ListSelectionChange();
+        bool BrowseForPath(CString szDefaultFName, CEdit *pEdit, int nID);
+        bool BrowseForFunction(CString szDefaultFName, CEdit *pEdit, int nID);
+    public:
+        bool LoadFormat(CString szFileXml);
+        bool LoadFormat(XmlDocumnent &doc);
+        bool SaveFormat(CString szFileXml, config::CFormat &format);
+        bool LoadFormats(CString szFileXml);
+        bool LoadFormats(XmlDocumnent &doc);
+        bool SaveFormats(CString szFileXml);
+        bool LoadPresets(XmlDocumnent &doc);
+    };
+}

@@ -24,8 +24,8 @@ namespace worker
         {
             CDownload m_Download;
             CString szUrl = tool.szUrl;
-            CString szFilePath = m_App.CombinePath(m_App.szToolsPath, tool.szFile);
-            CString szFolderPath = m_App.CombinePath(m_App.szToolsPath, ::GetOnlyFileName(tool.szFile));
+            CString szFilePath = app::m_App.CombinePath(app::m_App.szToolsPath, tool.szFile);
+            CString szFolderPath = app::m_App.CombinePath(app::m_App.szToolsPath, ::GetOnlyFileName(tool.szFile));
 
             bool bResult = m_Download.Download(szUrl, szFilePath,
                 [nIndex, pConfig, callback](int nProgress, CString szStatus)
@@ -34,10 +34,10 @@ namespace worker
                 {
                     for (int s = 0; s < 8; s++)
                     {
-                        if (szStatus.Find(pszDownloadStatus[s]) >= 0)
+                        if (szStatus.Find(app::pszDownloadStatus[s]) >= 0)
                         {
-                            CString szTranslation = pConfig->m_Language.GetString(0x00400001 + s, pszDownloadStatus[s]);
-                            szStatus.Replace(pszDownloadStatus[s], szTranslation);
+                            CString szTranslation = pConfig->m_Language.GetString(0x00400001 + s, app::pszDownloadStatus[s]);
+                            szStatus.Replace(app::pszDownloadStatus[s], szTranslation);
                         }
                     }
                     callback(nIndex, szStatus);
@@ -71,7 +71,7 @@ namespace worker
                         {
                             if (callback != nullptr)
                             {
-                                CString szStatus = pConfig->m_Language.GetString(0x00410001, pszExtractStatus[0]);
+                                CString szStatus = pConfig->m_Language.GetString(0x00410001, app::pszExtractStatus[0]);
                                 callback(nIndex, szStatus);
                             }
                             return false;
@@ -85,7 +85,7 @@ namespace worker
                         {
                             if (callback != nullptr)
                             {
-                                CString szStatus = pConfig->m_Language.GetString(0x00410002, pszExtractStatus[1]);
+                                CString szStatus = pConfig->m_Language.GetString(0x00410002, app::pszExtractStatus[1]);
                                 callback(nIndex, szStatus);
                             }
                             return true;
@@ -94,7 +94,7 @@ namespace worker
                         {
                             if (callback != nullptr)
                             {
-                                CString szStatus = pConfig->m_Language.GetString(0x00410003, pszExtractStatus[2]);
+                                CString szStatus = pConfig->m_Language.GetString(0x00410003, app::pszExtractStatus[2]);
                                 callback(nIndex, szStatus);
                             }
                             return false;

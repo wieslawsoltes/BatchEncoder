@@ -23,7 +23,7 @@ namespace worker
     {
         if ((commandLine.bUseReadPipes == true) || (commandLine.bUseWritePipes == true))
         {
-            pWorkerContext->Status(commandLine.nItemId, pszDefaulTime, pWorkerContext->GetString(0x00120001, pszConvertConsole[0]));
+            pWorkerContext->Status(commandLine.nItemId, app::pszDefaulTime, pWorkerContext->GetString(0x00120001, app::pszConvertConsole[0]));
             pWorkerContext->Callback(commandLine.nItemId, -1, true, true);
             return false;
         }
@@ -35,7 +35,7 @@ namespace worker
         // create pipes for stderr
         if (Stderr.Create() == false)
         {
-            pWorkerContext->Status(commandLine.nItemId, pszDefaulTime, pWorkerContext->GetString(0x00120002, pszConvertConsole[1]));
+            pWorkerContext->Status(commandLine.nItemId, app::pszDefaulTime, pWorkerContext->GetString(0x00120002, app::pszConvertConsole[1]));
             pWorkerContext->Callback(commandLine.nItemId, -1, true, true);
             return false;
         }
@@ -43,7 +43,7 @@ namespace worker
         // duplicate stderr read pipe handle to prevent child process from closing the pipe
         if (Stderr.DuplicateRead() == false)
         {
-            pWorkerContext->Status(commandLine.nItemId, pszDefaulTime, pWorkerContext->GetString(0x00120003, pszConvertConsole[2]));
+            pWorkerContext->Status(commandLine.nItemId, app::pszDefaulTime, pWorkerContext->GetString(0x00120003, app::pszConvertConsole[2]));
             pWorkerContext->Callback(commandLine.nItemId, -1, true, true);
             return false;
         }
@@ -54,7 +54,7 @@ namespace worker
         process.ConnectStdError(Stderr.hWrite);
 
         syncDown.Wait();
-        ::SetCurrentDirectory(m_App.szSettingsPath);
+        ::SetCurrentDirectory(app::m_App.szSettingsPath);
 
         timer.Start();
         if (process.Start(commandLine.pszCommandLine, pWorkerContext->pConfig->m_Options.bHideConsoleWindow) == false)
@@ -71,12 +71,12 @@ namespace worker
                     bool bResult = m_Utilities.Download(tool, true, true, nTool, pWorkerContext->pConfig,
                         [this, pWorkerContext, &commandLine](int nIndex, CString szStatus)
                     {
-                        pWorkerContext->Status(commandLine.nItemId, pszDefaulTime, szStatus);
+                        pWorkerContext->Status(commandLine.nItemId, app::pszDefaulTime, szStatus);
                     });
 
                     if (bResult == true)
                     {
-                        ::SetCurrentDirectory(m_App.szSettingsPath);
+                        ::SetCurrentDirectory(app::m_App.szSettingsPath);
 
                         if (process.Start(commandLine.pszCommandLine, pWorkerContext->pConfig->m_Options.bHideConsoleWindow) == true)
                         {
@@ -96,9 +96,9 @@ namespace worker
                 Stderr.CloseWrite();
 
                 CString szStatus;
-                szStatus.Format(pWorkerContext->GetString(0x00120004, pszConvertConsole[3]), ::GetLastError());
+                szStatus.Format(pWorkerContext->GetString(0x00120004, app::pszConvertConsole[3]), ::GetLastError());
 
-                pWorkerContext->Status(commandLine.nItemId, pszDefaulTime, szStatus);
+                pWorkerContext->Status(commandLine.nItemId, app::pszDefaulTime, szStatus);
                 pWorkerContext->Callback(commandLine.nItemId, -1, true, true);
                 return false;
             }
@@ -110,7 +110,7 @@ namespace worker
         Stderr.CloseWrite();
 
         syncDown.Wait();
-        ::SetCurrentDirectory(m_App.szSettingsPath);
+        ::SetCurrentDirectory(app::m_App.szSettingsPath);
 
         // console progress loop
         CLuaOutputParser parser;
@@ -133,13 +133,13 @@ namespace worker
 
         if (parser.nProgress != 100)
         {
-            pWorkerContext->Status(commandLine.nItemId, pszDefaulTime, pWorkerContext->GetString(0x00120005, pszConvertConsole[4]));
+            pWorkerContext->Status(commandLine.nItemId, app::pszDefaulTime, pWorkerContext->GetString(0x00120005, app::pszConvertConsole[4]));
             pWorkerContext->Callback(commandLine.nItemId, -1, true, true);
             return false;
         }
         else
         {
-            pWorkerContext->Status(commandLine.nItemId, timer.Format(timer.ElapsedTime(), 1), pWorkerContext->GetString(0x00120006, pszConvertConsole[5]));
+            pWorkerContext->Status(commandLine.nItemId, timer.Format(timer.ElapsedTime(), 1), pWorkerContext->GetString(0x00120006, app::pszConvertConsole[5]));
             pWorkerContext->Callback(commandLine.nItemId, 100, true, false);
             return true;
         }
@@ -149,7 +149,7 @@ namespace worker
     {
         if ((commandLine.bUseReadPipes == false) && (commandLine.bUseWritePipes == false))
         {
-            pWorkerContext->Status(commandLine.nItemId, pszDefaulTime, pWorkerContext->GetString(0x00130001, pszConvertPipes[0]));
+            pWorkerContext->Status(commandLine.nItemId, app::pszDefaulTime, pWorkerContext->GetString(0x00130001, app::pszConvertPipes[0]));
             pWorkerContext->Callback(commandLine.nItemId, -1, true, true);
             return false;
         }
@@ -175,7 +175,7 @@ namespace worker
             // create pipes for stdin
             if (Stdin.Create() == false)
             {
-                pWorkerContext->Status(commandLine.nItemId, pszDefaulTime, pWorkerContext->GetString(0x00130002, pszConvertPipes[1]));
+                pWorkerContext->Status(commandLine.nItemId, app::pszDefaulTime, pWorkerContext->GetString(0x00130002, app::pszConvertPipes[1]));
                 pWorkerContext->Callback(commandLine.nItemId, -1, true, true);
                 return false;
             }
@@ -183,7 +183,7 @@ namespace worker
             // set stdin write pipe inherit flag
             if (Stdin.InheritWrite() == false)
             {
-                pWorkerContext->Status(commandLine.nItemId, pszDefaulTime, pWorkerContext->GetString(0x00130003, pszConvertPipes[2]));
+                pWorkerContext->Status(commandLine.nItemId, app::pszDefaulTime, pWorkerContext->GetString(0x00130003, app::pszConvertPipes[2]));
                 pWorkerContext->Callback(commandLine.nItemId, -1, true, true);
                 return false;
             }
@@ -200,7 +200,7 @@ namespace worker
                     Stdin.CloseWrite();
                 }
 
-                pWorkerContext->Status(commandLine.nItemId, pszDefaulTime, pWorkerContext->GetString(0x00130004, pszConvertPipes[3]));
+                pWorkerContext->Status(commandLine.nItemId, app::pszDefaulTime, pWorkerContext->GetString(0x00130004, app::pszConvertPipes[3]));
                 pWorkerContext->Callback(commandLine.nItemId, -1, true, true);
                 return false;
             }
@@ -217,7 +217,7 @@ namespace worker
                 Stdout.CloseRead();
                 Stdout.CloseWrite();
 
-                pWorkerContext->Status(commandLine.nItemId, pszDefaulTime, pWorkerContext->GetString(0x00130005, pszConvertPipes[4]));
+                pWorkerContext->Status(commandLine.nItemId, app::pszDefaulTime, pWorkerContext->GetString(0x00130005, app::pszConvertPipes[4]));
                 pWorkerContext->Callback(commandLine.nItemId, -1, true, true);
                 return false;
             }
@@ -227,7 +227,7 @@ namespace worker
         // create pipes for stderr
         if (Stderr.Create() == false)
         {
-            pWorkerContext->Status(commandLine.nItemId, pszDefaulTime, pWorkerContext->GetString(0x0013000C, pszConvertPipes[11]));
+            pWorkerContext->Status(commandLine.nItemId, app::pszDefaulTime, pWorkerContext->GetString(0x0013000C, app::pszConvertPipes[11]));
             pWorkerContext->Callback(commandLine.nItemId, -1, true, true);
             return false;
         }
@@ -235,7 +235,7 @@ namespace worker
         // set stderr read pipe inherit flag
         if (Stderr.InheritRead() == false)
         {
-            pWorkerContext->Status(commandLine.nItemId, pszDefaulTime, pWorkerContext->GetString(0x0013000D, pszConvertPipes[12]));
+            pWorkerContext->Status(commandLine.nItemId, app::pszDefaulTime, pWorkerContext->GetString(0x0013000D, app::pszConvertPipes[12]));
             pWorkerContext->Callback(commandLine.nItemId, -1, true, true);
             return false;
         }
@@ -274,7 +274,7 @@ namespace worker
         }
 
         syncDown.Wait();
-        ::SetCurrentDirectory(m_App.szSettingsPath);
+        ::SetCurrentDirectory(app::m_App.szSettingsPath);
 
         timer.Start();
         if (process.Start(commandLine.pszCommandLine, pWorkerContext->pConfig->m_Options.bHideConsoleWindow) == false)
@@ -291,12 +291,12 @@ namespace worker
                     bool bResult = m_Utilities.Download(tool, true, true, nTool, pWorkerContext->pConfig,
                         [this, pWorkerContext, &commandLine](int nIndex, CString szStatus)
                     {
-                        pWorkerContext->Status(commandLine.nItemId, pszDefaulTime, szStatus);
+                        pWorkerContext->Status(commandLine.nItemId, app::pszDefaulTime, szStatus);
                     });
 
                     if (bResult == true)
                     {
-                        ::SetCurrentDirectory(m_App.szSettingsPath);
+                        ::SetCurrentDirectory(app::m_App.szSettingsPath);
 
                         if (process.Start(commandLine.pszCommandLine, pWorkerContext->pConfig->m_Options.bHideConsoleWindow) == true)
                         {
@@ -330,9 +330,9 @@ namespace worker
     #endif
 
                 CString szStatus;
-                szStatus.Format(pWorkerContext->GetString(0x00130006, pszConvertPipes[5]), ::GetLastError());
+                szStatus.Format(pWorkerContext->GetString(0x00130006, app::pszConvertPipes[5]), ::GetLastError());
 
-                pWorkerContext->Status(commandLine.nItemId, pszDefaulTime, szStatus);
+                pWorkerContext->Status(commandLine.nItemId, app::pszDefaulTime, szStatus);
                 pWorkerContext->Callback(commandLine.nItemId, -1, true, true);
                 return false;
             }
@@ -362,7 +362,7 @@ namespace worker
             Stdin.CloseWrite();
             Stderr.CloseRead();
 
-            pWorkerContext->Status(commandLine.nItemId, pszDefaulTime, pWorkerContext->GetString(0x0013000E, pszConvertPipes[13]));
+            pWorkerContext->Status(commandLine.nItemId, app::pszDefaulTime, pWorkerContext->GetString(0x0013000E, app::pszConvertPipes[13]));
             pWorkerContext->Callback(commandLine.nItemId, -1, true, true);
             return false;
         }
@@ -392,7 +392,7 @@ namespace worker
                 Stderr.CloseRead();
     #endif
 
-                pWorkerContext->Status(commandLine.nItemId, pszDefaulTime, pWorkerContext->GetString(0x00130007, pszConvertPipes[6]));
+                pWorkerContext->Status(commandLine.nItemId, app::pszDefaulTime, pWorkerContext->GetString(0x00130007, app::pszConvertPipes[6]));
                 pWorkerContext->Callback(commandLine.nItemId, -1, true, true);
                 return false;
             }
@@ -432,7 +432,7 @@ namespace worker
 
                 Stdout.CloseRead();
 
-                pWorkerContext->Status(commandLine.nItemId, pszDefaulTime, pWorkerContext->GetString(0x00130008, pszConvertPipes[7]));
+                pWorkerContext->Status(commandLine.nItemId, app::pszDefaulTime, pWorkerContext->GetString(0x00130008, app::pszConvertPipes[7]));
                 pWorkerContext->Callback(commandLine.nItemId, -1, true, true);
                 return false;
             }
@@ -510,13 +510,13 @@ namespace worker
 
         if (nProgress != 100)
         {
-            pWorkerContext->Status(commandLine.nItemId, pszDefaulTime, pWorkerContext->GetString(0x00130009, pszConvertPipes[8]));
+            pWorkerContext->Status(commandLine.nItemId, app::pszDefaulTime, pWorkerContext->GetString(0x00130009, app::pszConvertPipes[8]));
             pWorkerContext->Callback(commandLine.nItemId, -1, true, true);
             return false;
         }
         else
         {
-            pWorkerContext->Status(commandLine.nItemId, timer.Format(timer.ElapsedTime(), 1), pWorkerContext->GetString(0x0013000B, pszConvertPipes[10]));
+            pWorkerContext->Status(commandLine.nItemId, timer.Format(timer.ElapsedTime(), 1), pWorkerContext->GetString(0x0013000B, app::pszConvertPipes[10]));
             pWorkerContext->Callback(commandLine.nItemId, 100, true, false);
             return true;
         }
@@ -539,7 +539,7 @@ namespace worker
         // create pipes for stdin
         if (Stdin.Create() == false)
         {
-            pWorkerContext->Status(decoderCommandLine.nItemId, pszDefaulTime, pWorkerContext->GetString(0x00130002, pszConvertPipes[1]));
+            pWorkerContext->Status(decoderCommandLine.nItemId, app::pszDefaulTime, pWorkerContext->GetString(0x00130002, app::pszConvertPipes[1]));
             pWorkerContext->Callback(decoderCommandLine.nItemId, -1, true, true);
             return false;
         }
@@ -547,7 +547,7 @@ namespace worker
         // set stdin write pipe inherit flag
         if (Stdin.InheritWrite() == false)
         {
-            pWorkerContext->Status(decoderCommandLine.nItemId, pszDefaulTime, pWorkerContext->GetString(0x00130003, pszConvertPipes[2]));
+            pWorkerContext->Status(decoderCommandLine.nItemId, app::pszDefaulTime, pWorkerContext->GetString(0x00130003, app::pszConvertPipes[2]));
             pWorkerContext->Callback(decoderCommandLine.nItemId, -1, true, true);
             return false;
         }
@@ -558,7 +558,7 @@ namespace worker
             Stdin.CloseRead();
             Stdin.CloseWrite();
 
-            pWorkerContext->Status(decoderCommandLine.nItemId, pszDefaulTime, pWorkerContext->GetString(0x00130004, pszConvertPipes[3]));
+            pWorkerContext->Status(decoderCommandLine.nItemId, app::pszDefaulTime, pWorkerContext->GetString(0x00130004, app::pszConvertPipes[3]));
             pWorkerContext->Callback(decoderCommandLine.nItemId, -1, true, true);
             return false;
         }
@@ -572,7 +572,7 @@ namespace worker
             Stdout.CloseRead();
             Stdout.CloseWrite();
 
-            pWorkerContext->Status(decoderCommandLine.nItemId, pszDefaulTime, pWorkerContext->GetString(0x00130005, pszConvertPipes[4]));
+            pWorkerContext->Status(decoderCommandLine.nItemId, app::pszDefaulTime, pWorkerContext->GetString(0x00130005, app::pszConvertPipes[4]));
             pWorkerContext->Callback(decoderCommandLine.nItemId, -1, true, true);
             return false;
         }
@@ -586,7 +586,7 @@ namespace worker
             Stdout.CloseRead();
             Stdout.CloseWrite();
 
-            pWorkerContext->Status(decoderCommandLine.nItemId, pszDefaulTime, pWorkerContext->GetString(0x0013000A, pszConvertPipes[9]));
+            pWorkerContext->Status(decoderCommandLine.nItemId, app::pszDefaulTime, pWorkerContext->GetString(0x0013000A, app::pszConvertPipes[9]));
             pWorkerContext->Callback(decoderCommandLine.nItemId, -1, true, true);
             return false;
         }
@@ -604,7 +604,7 @@ namespace worker
         timer.Start();
 
         syncDown.Wait();
-        ::SetCurrentDirectory(m_App.szSettingsPath);
+        ::SetCurrentDirectory(app::m_App.szSettingsPath);
 
         // create decoder process
         if (decoderProcess.Start(decoderCommandLine.pszCommandLine, pWorkerContext->pConfig->m_Options.bHideConsoleWindow) == false)
@@ -621,12 +621,12 @@ namespace worker
                     bool bResult = m_Utilities.Download(tool, true, true, nTool, pWorkerContext->pConfig,
                         [this, pWorkerContext, &decoderCommandLine](int nIndex, CString szStatus)
                     {
-                        pWorkerContext->Status(decoderCommandLine.nItemId, pszDefaulTime, szStatus);
+                        pWorkerContext->Status(decoderCommandLine.nItemId, app::pszDefaulTime, szStatus);
                     });
 
                     if (bResult == true)
                     {
-                        ::SetCurrentDirectory(m_App.szSettingsPath);
+                        ::SetCurrentDirectory(app::m_App.szSettingsPath);
 
                         if (decoderProcess.Start(decoderCommandLine.pszCommandLine, pWorkerContext->pConfig->m_Options.bHideConsoleWindow) == true)
                         {
@@ -652,15 +652,15 @@ namespace worker
                 Bridge.CloseWrite();
 
                 CString szStatus;
-                szStatus.Format(pWorkerContext->GetString(0x00130006, pszConvertPipes[5]), ::GetLastError());
+                szStatus.Format(pWorkerContext->GetString(0x00130006, app::pszConvertPipes[5]), ::GetLastError());
 
-                pWorkerContext->Status(decoderCommandLine.nItemId, pszDefaulTime, szStatus);
+                pWorkerContext->Status(decoderCommandLine.nItemId, app::pszDefaulTime, szStatus);
                 pWorkerContext->Callback(decoderCommandLine.nItemId, -1, true, true);
                 return false;
             }
         }
 
-        ::SetCurrentDirectory(m_App.szSettingsPath);
+        ::SetCurrentDirectory(app::m_App.szSettingsPath);
 
         // create encoder process
         if (encoderProcess.Start(encoderCommandLine.pszCommandLine, pWorkerContext->pConfig->m_Options.bHideConsoleWindow) == false)
@@ -677,12 +677,12 @@ namespace worker
                     bool bResult = m_Utilities.Download(tool, true, true, nTool, pWorkerContext->pConfig,
                         [this, pWorkerContext, &encoderCommandLine](int nIndex, CString szStatus)
                     {
-                        pWorkerContext->Status(encoderCommandLine.nItemId, pszDefaulTime, szStatus);
+                        pWorkerContext->Status(encoderCommandLine.nItemId, app::pszDefaulTime, szStatus);
                     });
 
                     if (bResult == true)
                     {
-                        ::SetCurrentDirectory(m_App.szSettingsPath);
+                        ::SetCurrentDirectory(app::m_App.szSettingsPath);
 
                         if (encoderProcess.Start(encoderCommandLine.pszCommandLine, pWorkerContext->pConfig->m_Options.bHideConsoleWindow) == true)
                         {
@@ -710,9 +710,9 @@ namespace worker
                 Bridge.CloseWrite();
 
                 CString szStatus;
-                szStatus.Format(pWorkerContext->GetString(0x00130006, pszConvertPipes[5]), ::GetLastError());
+                szStatus.Format(pWorkerContext->GetString(0x00130006, app::pszConvertPipes[5]), ::GetLastError());
 
-                pWorkerContext->Status(decoderCommandLine.nItemId, pszDefaulTime, szStatus);
+                pWorkerContext->Status(decoderCommandLine.nItemId, app::pszDefaulTime, szStatus);
                 pWorkerContext->Callback(decoderCommandLine.nItemId, -1, true, true);
                 return false;
             }
@@ -738,7 +738,7 @@ namespace worker
 
             Stdin.CloseWrite();
 
-            pWorkerContext->Status(decoderCommandLine.nItemId, pszDefaulTime, pWorkerContext->GetString(0x00130007, pszConvertPipes[6]));
+            pWorkerContext->Status(decoderCommandLine.nItemId, app::pszDefaulTime, pWorkerContext->GetString(0x00130007, app::pszConvertPipes[6]));
             pWorkerContext->Callback(decoderCommandLine.nItemId, -1, true, true);
             return false;
         }
@@ -755,7 +755,7 @@ namespace worker
 
             Stdout.CloseRead();
 
-            pWorkerContext->Status(decoderCommandLine.nItemId, pszDefaulTime, pWorkerContext->GetString(0x00130008, pszConvertPipes[7]));
+            pWorkerContext->Status(decoderCommandLine.nItemId, app::pszDefaulTime, pWorkerContext->GetString(0x00130008, app::pszConvertPipes[7]));
             pWorkerContext->Callback(decoderCommandLine.nItemId, -1, true, true);
             return false;
         }
@@ -805,13 +805,13 @@ namespace worker
 
         if (nProgress != 100)
         {
-            pWorkerContext->Status(decoderCommandLine.nItemId, pszDefaulTime, pWorkerContext->GetString(0x00130009, pszConvertPipes[8]));
+            pWorkerContext->Status(decoderCommandLine.nItemId, app::pszDefaulTime, pWorkerContext->GetString(0x00130009, app::pszConvertPipes[8]));
             pWorkerContext->Callback(decoderCommandLine.nItemId, -1, true, true);
             return false;
         }
         else
         {
-            pWorkerContext->Status(decoderCommandLine.nItemId, timer.Format(timer.ElapsedTime(), 1), pWorkerContext->GetString(0x0013000B, pszConvertPipes[10]));
+            pWorkerContext->Status(decoderCommandLine.nItemId, timer.Format(timer.ElapsedTime(), 1), pWorkerContext->GetString(0x0013000B, app::pszConvertPipes[10]));
             pWorkerContext->Callback(decoderCommandLine.nItemId, 100, true, false);
             return true;
         }
@@ -833,14 +833,14 @@ namespace worker
         szEncInputFile = path.szPath;
         if (::FileExists(szEncInputFile) == false)
         {
-            pWorkerContext->Status(item.nId, pszDefaulTime, pWorkerContext->GetString(0x00140001, pszConvertItem[0]));
+            pWorkerContext->Status(item.nId, app::pszDefaulTime, pWorkerContext->GetString(0x00140001, app::pszConvertItem[0]));
             return false;
         }
 
         int nEncoder = pWorkerContext->pConfig->m_Formats.GetFormatById(item.szFormatId);
         if (nEncoder == -1)
         {
-            pWorkerContext->Status(item.nId, pszDefaulTime, pWorkerContext->GetString(0x00140002, pszConvertItem[1]));
+            pWorkerContext->Status(item.nId, app::pszDefaulTime, pWorkerContext->GetString(0x00140002, app::pszConvertItem[1]));
             return false;
         }
 
@@ -848,7 +848,7 @@ namespace worker
 
         if (item.nPreset >= pEncFormat->m_Presets.Count())
         {
-            pWorkerContext->Status(item.nId, pszDefaulTime, pWorkerContext->GetString(0x00140003, pszConvertItem[2]));
+            pWorkerContext->Status(item.nId, app::pszDefaulTime, pWorkerContext->GetString(0x00140003, app::pszConvertItem[2]));
             return false;
         }
 
@@ -865,7 +865,7 @@ namespace worker
         {
             if (::FileExists(szEncOutputFile) == true)
             {
-                pWorkerContext->Status(item.nId, pszDefaulTime, pWorkerContext->GetString(0x00140010, pszConvertItem[15]));
+                pWorkerContext->Status(item.nId, app::pszDefaulTime, pWorkerContext->GetString(0x00140010, app::pszConvertItem[15]));
                 return false;
             }
         }
@@ -875,23 +875,23 @@ namespace worker
         {
             if (m_Output.CreateOutputPath(szEncOutputFile) == false)
             {
-                pWorkerContext->Status(item.nId, pszDefaulTime, pWorkerContext->GetString(0x0014000F, pszConvertItem[14]));
+                pWorkerContext->Status(item.nId, app::pszDefaulTime, pWorkerContext->GetString(0x0014000F, app::pszConvertItem[14]));
                 return false;
             }
         }
         else
         {
-            pWorkerContext->Status(item.nId, pszDefaulTime, pWorkerContext->GetString(0x0014000F, pszConvertItem[14]));
+            pWorkerContext->Status(item.nId, app::pszDefaulTime, pWorkerContext->GetString(0x0014000F, app::pszConvertItem[14]));
             return false;
         }
 
         if (syncDir.Release() == false)
         {
-            pWorkerContext->Status(item.nId, pszDefaulTime, pWorkerContext->GetString(0x0014000F, pszConvertItem[14]));
+            pWorkerContext->Status(item.nId, app::pszDefaulTime, pWorkerContext->GetString(0x0014000F, app::pszConvertItem[14]));
             return false;
         }
 
-        ::SetCurrentDirectory(m_App.szSettingsPath);
+        ::SetCurrentDirectory(app::m_App.szSettingsPath);
 
         // prepare decoder
         if (bIsValidEncoderInput == false)
@@ -899,7 +899,7 @@ namespace worker
             int nDecoder = pWorkerContext->pConfig->m_Formats.GetDecoderByExtensionAndFormat(item.szExtension, pEncFormat);
             if (nDecoder == -1)
             {
-                pWorkerContext->Status(item.nId, pszDefaulTime, pWorkerContext->GetString(0x00140004, pszConvertItem[3]));
+                pWorkerContext->Status(item.nId, app::pszDefaulTime, pWorkerContext->GetString(0x00140004, app::pszConvertItem[3]));
                 return false;
             }
 
@@ -907,14 +907,14 @@ namespace worker
 
             if (pDecFormat->nDefaultPreset >= pDecFormat->m_Presets.Count())
             {
-                pWorkerContext->Status(item.nId, pszDefaulTime, pWorkerContext->GetString(0x00140005, pszConvertItem[4]));
+                pWorkerContext->Status(item.nId, app::pszDefaulTime, pWorkerContext->GetString(0x00140005, app::pszConvertItem[4]));
                 return false;
             }
 
             bool bIsValidDecoderOutput = pEncFormat->IsValidInputExtension(pDecFormat->szOutputExtension);
             if (bIsValidDecoderOutput == false)
             {
-                pWorkerContext->Status(item.nId, pszDefaulTime, pWorkerContext->GetString(0x00140006, pszConvertItem[5]));
+                pWorkerContext->Status(item.nId, app::pszDefaulTime, pWorkerContext->GetString(0x00140006, app::pszConvertItem[5]));
                 return false;
             }
 
@@ -959,7 +959,7 @@ namespace worker
             // trans-code
             try
             {
-                pWorkerContext->Status(item.nId, pszDefaulTime, pWorkerContext->GetString(0x0014000C, pszConvertItem[11]));
+                pWorkerContext->Status(item.nId, app::pszDefaulTime, pWorkerContext->GetString(0x0014000C, app::pszConvertItem[11]));
 
                 item.ResetProgress();
 
@@ -984,7 +984,7 @@ namespace worker
                 if (pWorkerContext->pConfig->m_Options.bDeleteOnErrors == true)
                     ::DeleteFile(szEncOutputFile);
 
-                pWorkerContext->Status(item.nId, pszDefaulTime, pWorkerContext->GetString(0x0014000E, pszConvertItem[13]));
+                pWorkerContext->Status(item.nId, app::pszDefaulTime, pWorkerContext->GetString(0x0014000E, app::pszConvertItem[13]));
                 pWorkerContext->Callback(item.nId, -1, true, true);
             }
         }
@@ -995,7 +995,7 @@ namespace worker
             {
                 try
                 {
-                    pWorkerContext->Status(item.nId, pszDefaulTime, pWorkerContext->GetString(0x00140007, pszConvertItem[6]));
+                    pWorkerContext->Status(item.nId, app::pszDefaulTime, pWorkerContext->GetString(0x00140007, app::pszConvertItem[6]));
 
                     item.ResetProgress();
 
@@ -1014,7 +1014,7 @@ namespace worker
 
                     if (::FileExists(szDecOutputFile) == false)
                     {
-                        pWorkerContext->Status(item.nId, pszDefaulTime, pWorkerContext->GetString(0x00140008, pszConvertItem[7]));
+                        pWorkerContext->Status(item.nId, app::pszDefaulTime, pWorkerContext->GetString(0x00140008, app::pszConvertItem[7]));
                         return false;
                     }
                 }
@@ -1023,7 +1023,7 @@ namespace worker
                     if (pWorkerContext->pConfig->m_Options.bDeleteOnErrors == true)
                         ::DeleteFile(szEncOutputFile);
 
-                    pWorkerContext->Status(item.nId, pszDefaulTime, pWorkerContext->GetString(0x00140009, pszConvertItem[8]));
+                    pWorkerContext->Status(item.nId, app::pszDefaulTime, pWorkerContext->GetString(0x00140009, app::pszConvertItem[8]));
                     pWorkerContext->Callback(item.nId, -1, true, true);
                 }
             }
@@ -1035,9 +1035,9 @@ namespace worker
             try
             {
                 if (pEncFormat->nType == 0)
-                    pWorkerContext->Status(item.nId, pszDefaulTime, pWorkerContext->GetString(0x0014000A, pszConvertItem[9]));
+                    pWorkerContext->Status(item.nId, app::pszDefaulTime, pWorkerContext->GetString(0x0014000A, app::pszConvertItem[9]));
                 else if (pEncFormat->nType == 1)
-                    pWorkerContext->Status(item.nId, pszDefaulTime, pWorkerContext->GetString(0x0014000B, pszConvertItem[10]));
+                    pWorkerContext->Status(item.nId, app::pszDefaulTime, pWorkerContext->GetString(0x0014000B, app::pszConvertItem[10]));
 
                 item.ResetProgress();
 
@@ -1075,7 +1075,7 @@ namespace worker
                 if (pWorkerContext->pConfig->m_Options.bDeleteOnErrors == true)
                     ::DeleteFile(szEncOutputFile);
 
-                pWorkerContext->Status(item.nId, pszDefaulTime, pWorkerContext->GetString(0x0014000E, pszConvertItem[13]));
+                pWorkerContext->Status(item.nId, app::pszDefaulTime, pWorkerContext->GetString(0x0014000E, app::pszConvertItem[13]));
                 pWorkerContext->Callback(item.nId, -1, true, true);
             }
         }

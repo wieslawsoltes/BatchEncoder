@@ -9,30 +9,33 @@
 
 #include "res\resource.h"
 
-class CMainApp : public CWinAppEx
+namespace app
 {
-public:
-    CMainApp();
-public:
-    virtual BOOL InitInstance();
-    DECLARE_MESSAGE_MAP()
-public:
-    bool m_bIsPortable = true;
-public:
-    CString CombinePath(CString szPath, CString szFile);
-public:
-    CString szSettingsPath;
-public:
-    CString szFormatsPath;
-    CString szPresetsPath;
-    CString szLanguagesPath;
-    CString szProgressPath;
-    CString szToolsPath;
-public:
-    CString szOptionsFile;
-    CString szFormatsFile;
-    CString szItemsFile;
-    CString szToolsFile;
-};
+    class CMainApp : public CWinAppEx
+    {
+    public:
+        CMainApp();
+    public:
+        virtual BOOL InitInstance();
+        DECLARE_MESSAGE_MAP()
+    public:
+        bool m_bIsPortable = true;
+    public:
+        CString CombinePath(CString szPath, CString szFile);
+    public:
+        CString szSettingsPath;
+    public:
+        CString szFormatsPath;
+        CString szPresetsPath;
+        CString szLanguagesPath;
+        CString szProgressPath;
+        CString szToolsPath;
+    public:
+        CString szOptionsFile;
+        CString szFormatsFile;
+        CString szItemsFile;
+        CString szToolsFile;
+    };
 
-extern CMainApp m_App;
+    extern CMainApp m_App;
+}
