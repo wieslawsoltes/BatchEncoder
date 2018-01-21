@@ -1213,7 +1213,5 @@ namespace worker
 
         pWorkerContext->Done();
         pWorkerContext->bDone = true;
-
-        this->m_Thread.Close();
     }
 }

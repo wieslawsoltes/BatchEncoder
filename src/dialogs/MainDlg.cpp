@@ -2614,7 +2614,13 @@ namespace app
                 return;
             }
 
-            if (this->m_Worker.m_Thread.Start([this]() { this->m_Worker.Convert(this->pWorkerContext); }, true) == false)
+            if (this->m_WorkerThread.Start(
+                [this]() 
+                { 
+                    this->m_Worker.Convert(this->pWorkerContext);
+                    this->m_WorkerThread.Close();
+                },
+                true) == false)
             {
                 m_StatusBar.SetText(m_Config.m_Language.GetString(0x0021000E, pszMainDialog[13]), 1, 0);
                 this->pWorkerContext->bDone = true;
@@ -2629,7 +2635,7 @@ namespace app
             this->GetMenu()->ModifyMenu(ID_ACTION_CONVERT, MF_BYCOMMAND, ID_ACTION_CONVERT, m_Config.m_Language.GetString(0x00030003, _T("S&top\tF9")));
 
             this->pWorkerContext->bRunning = true;
-            this->m_Worker.m_Thread.Resume();
+            this->m_WorkerThread.Resume();
 
             bSafeCheck = false;
         }

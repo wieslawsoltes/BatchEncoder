@@ -14,6 +14,7 @@
 #include "controls\MySpinButtonCtrl.h"
 #include "controls\MyProgressCtrl.h"
 #include "controls\MyDialogEx.h"
+#include "utilities\Thread.h"
 #include "utilities\TimeCount.h"
 #include "xml\XmlDoc.h"
 #include "worker\WorkerContext.h"
@@ -66,7 +67,9 @@ namespace app
     public:
         MainDlgDropContext m_DD;
         config::CConfiguration m_Config;
+    public:
         IWorkerContext* pWorkerContext;
+        CThread m_WorkerThread;
         worker::CWorker m_Worker;
     public:
         int nEdtItem;

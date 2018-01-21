@@ -20,8 +20,6 @@ namespace worker
     class CWorker
     {
     public:
-        CThread m_Thread;
-    public:
         CWorker() { }
         virtual ~CWorker() { }
     public:
