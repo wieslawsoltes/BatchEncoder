@@ -6,9 +6,13 @@
 #include "WorkerContext.h"
 #include "CommandLine.h"
 
-class IOutputParser
+namespace worker
 {
-public:
-    virtual bool Init(IWorkerContext* pWorkerContext, CCommandLine* pCommandLine) = 0;
-    virtual bool Parse(const char *szLine) = 0;
-};
+    class IOutputParser
+    {
+    public:
+        virtual bool Init(IWorkerContext* pWorkerContext, CCommandLine* pCommandLine) = 0;
+        virtual bool Parse(const char *szLine) = 0;
+    };
+}
+

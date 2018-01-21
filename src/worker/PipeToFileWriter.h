@@ -6,79 +6,82 @@
 #include "utilities\Pipe.h"
 #include "WorkerContext.h"
 
-class CPipeToFileWriter
+namespace worker
 {
-public:
-    CString szFileName;
-    int nIndex;
-public:
-    volatile bool bError;
-    volatile bool bFinished;
-public:
-    CPipeToFileWriter() { }
-    virtual ~CPipeToFileWriter() { }
-public:
-    bool WriteLoop(IWorkerContext* pWorkerContext, CPipe &Stdout)
+    class CPipeToFileWriter
     {
-        HANDLE hPipe = Stdout.hRead;
-        HANDLE hFile = INVALID_HANDLE_VALUE;
-        BYTE pReadBuff[4096];
-        BOOL bRes = FALSE;
-        DWORD dwReadBytes = 0;
-        DWORD dwWriteBytes = 0;
-        ULONGLONG nTotalBytesWrite = 0;
-
-        bError = false;
-        bFinished = false;
-
-        hFile = ::CreateFile(szFileName, GENERIC_READ | GENERIC_WRITE, 0, nullptr, CREATE_ALWAYS, 0, nullptr);
-        if (hFile == INVALID_HANDLE_VALUE)
+    public:
+        CString szFileName;
+        int nIndex;
+    public:
+        volatile bool bError;
+        volatile bool bFinished;
+    public:
+        CPipeToFileWriter() { }
+        virtual ~CPipeToFileWriter() { }
+    public:
+        bool WriteLoop(IWorkerContext* pWorkerContext, CPipe &Stdout)
         {
-            bError = true;
-            bFinished = true;
-            return false;
-        }
+            HANDLE hPipe = Stdout.hRead;
+            HANDLE hFile = INVALID_HANDLE_VALUE;
+            BYTE pReadBuff[4096];
+            BOOL bRes = FALSE;
+            DWORD dwReadBytes = 0;
+            DWORD dwWriteBytes = 0;
+            ULONGLONG nTotalBytesWrite = 0;
 
-        do
-        {
-            ::Sleep(0);
+            bError = false;
+            bFinished = false;
 
-            DWORD dwAvailableBytes;
-            if (FALSE == PeekNamedPipe(hPipe, 0, 0, 0, &dwAvailableBytes, 0))
-                break;
-
-            if (dwAvailableBytes > 0)
+            hFile = ::CreateFile(szFileName, GENERIC_READ | GENERIC_WRITE, 0, nullptr, CREATE_ALWAYS, 0, nullptr);
+            if (hFile == INVALID_HANDLE_VALUE)
             {
-                bRes = ::ReadFile(hPipe, pReadBuff, 4096, &dwReadBytes, 0);
-                if ((bRes == FALSE) || (dwReadBytes == 0))
+                bError = true;
+                bFinished = true;
+                return false;
+            }
+
+            do
+            {
+                ::Sleep(0);
+
+                DWORD dwAvailableBytes;
+                if (FALSE == PeekNamedPipe(hPipe, 0, 0, 0, &dwAvailableBytes, 0))
                     break;
 
-                bRes = ::WriteFile(hFile, pReadBuff, dwReadBytes, &dwWriteBytes, 0);
-                if ((bRes == FALSE) || (dwWriteBytes == 0) || (dwReadBytes != dwWriteBytes))
-                    break;
+                if (dwAvailableBytes > 0)
+                {
+                    bRes = ::ReadFile(hPipe, pReadBuff, 4096, &dwReadBytes, 0);
+                    if ((bRes == FALSE) || (dwReadBytes == 0))
+                        break;
 
-                nTotalBytesWrite += dwReadBytes;
+                    bRes = ::WriteFile(hFile, pReadBuff, dwReadBytes, &dwWriteBytes, 0);
+                    if ((bRes == FALSE) || (dwWriteBytes == 0) || (dwReadBytes != dwWriteBytes))
+                        break;
+
+                    nTotalBytesWrite += dwReadBytes;
+                }
+                else
+                    bRes = TRUE;
+
+                if (pWorkerContext->bRunning == false)
+                    break;
+            } while (bRes != FALSE);
+
+            ::CloseHandle(hFile);
+
+            if (nTotalBytesWrite <= 0)
+            {
+                bError = true;
+                bFinished = true;
+                return false;
             }
             else
-                bRes = TRUE;
-
-            if (pWorkerContext->bRunning == false)
-                break;
-        } while (bRes != FALSE);
-
-        ::CloseHandle(hFile);
-
-        if (nTotalBytesWrite <= 0)
-        {
-            bError = true;
-            bFinished = true;
-            return false;
+            {
+                bError = false;
+                bFinished = true;
+                return true;
+            }
         }
-        else
-        {
-            bError = false;
-            bFinished = true;
-            return true;
-        }
-    }
-};
+    };
+}

@@ -65,7 +65,7 @@ public:
     MainDlgDropContext m_DD;
     CConfiguration m_Config;
     IWorkerContext* pWorkerContext;
-    CWorker m_Worker;
+    worker::CWorker m_Worker;
 public:
     int nEdtItem;
     int nEdtSubItem;

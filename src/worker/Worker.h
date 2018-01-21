@@ -15,18 +15,21 @@
 #include "CommandLine.h"
 #include "OutputParser.h"
 
-class CWorker
+namespace worker
 {
-public:
-    CThread m_Thread;
-public:
-    CWorker() { }
-    virtual ~CWorker() { }
-public:
-    bool ConvertFileUsingConsole(IWorkerContext* pWorkerContext, CCommandLine &commandLine, CSynchronize &syncDown);
-    bool ConvertFileUsingPipes(IWorkerContext* pWorkerContext, CCommandLine &commandLine, CSynchronize &syncDown);
-    bool ConvertFileUsingOnlyPipes(IWorkerContext* pWorkerContext, CCommandLine &decoderCommandLine, CCommandLine &encoderCommandLine, CSynchronize &syncDown);
-    bool ConvertItem(IWorkerContext* pWorkerContext, CItem& item, CSynchronize &syncDir, CSynchronize &syncDown);
-    bool ConvertLoop(IWorkerContext* pWorkerContext, std::queue<CItem> &queue, CSynchronize &sync, CSynchronize &syncDir, CSynchronize &syncDown);
-    void Convert(IWorkerContext* pWorkerContext);
-};
+    class CWorker
+    {
+    public:
+        CThread m_Thread;
+    public:
+        CWorker() { }
+        virtual ~CWorker() { }
+    public:
+        bool ConvertFileUsingConsole(IWorkerContext* pWorkerContext, CCommandLine &commandLine, CSynchronize &syncDown);
+        bool ConvertFileUsingPipes(IWorkerContext* pWorkerContext, CCommandLine &commandLine, CSynchronize &syncDown);
+        bool ConvertFileUsingOnlyPipes(IWorkerContext* pWorkerContext, CCommandLine &decoderCommandLine, CCommandLine &encoderCommandLine, CSynchronize &syncDown);
+        bool ConvertItem(IWorkerContext* pWorkerContext, CItem& item, CSynchronize &syncDir, CSynchronize &syncDown);
+        bool ConvertLoop(IWorkerContext* pWorkerContext, std::queue<CItem> &queue, CSynchronize &sync, CSynchronize &syncDir, CSynchronize &syncDown);
+        void Convert(IWorkerContext* pWorkerContext);
+    };
+}

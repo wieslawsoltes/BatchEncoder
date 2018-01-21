@@ -10,152 +10,155 @@
 #include "configuration\FormatsList.h"
 #include "configuration\Configuration.h"
 
-class CToolUtilities
+namespace worker
 {
-public:
-    volatile bool bDownload;
-public:
-    CToolUtilities() { }
-    virtual ~CToolUtilities() { }
-public:
-    bool Download(CTool& tool, bool bExtract, bool bInstall, int nIndex, CConfiguration *pConfig, std::function<void(int, CString)> callback = nullptr)
+    class CToolUtilities
     {
-        CDownload m_Download;
-        CString szUrl = tool.szUrl;
-        CString szFilePath = m_App.CombinePath(m_App.szToolsPath, tool.szFile);
-        CString szFolderPath = m_App.CombinePath(m_App.szToolsPath, ::GetOnlyFileName(tool.szFile));
-
-        bool bResult = m_Download.Download(szUrl, szFilePath,
-            [nIndex, pConfig, callback](int nProgress, CString szStatus)
+    public:
+        volatile bool bDownload;
+    public:
+        CToolUtilities() { }
+        virtual ~CToolUtilities() { }
+    public:
+        bool Download(CTool& tool, bool bExtract, bool bInstall, int nIndex, CConfiguration *pConfig, std::function<void(int, CString)> callback = nullptr)
         {
-            if (callback != nullptr)
+            CDownload m_Download;
+            CString szUrl = tool.szUrl;
+            CString szFilePath = m_App.CombinePath(m_App.szToolsPath, tool.szFile);
+            CString szFolderPath = m_App.CombinePath(m_App.szToolsPath, ::GetOnlyFileName(tool.szFile));
+
+            bool bResult = m_Download.Download(szUrl, szFilePath,
+                [nIndex, pConfig, callback](int nProgress, CString szStatus)
             {
-                for (int s = 0; s < 8; s++)
+                if (callback != nullptr)
                 {
-                    if (szStatus.Find(pszDownloadStatus[s]) >= 0)
+                    for (int s = 0; s < 8; s++)
                     {
-                        CString szTranslation = pConfig->m_Language.GetString(0x00400001 + s, pszDownloadStatus[s]);
-                        szStatus.Replace(pszDownloadStatus[s], szTranslation);
+                        if (szStatus.Find(pszDownloadStatus[s]) >= 0)
+                        {
+                            CString szTranslation = pConfig->m_Language.GetString(0x00400001 + s, pszDownloadStatus[s]);
+                            szStatus.Replace(pszDownloadStatus[s], szTranslation);
+                        }
                     }
+                    callback(nIndex, szStatus);
                 }
-                callback(nIndex, szStatus);
-            }
-        });
+            });
 
-        if (bResult == false)
-        {
-            return false;
-        }
-
-        if (tool.szExtract.CompareNoCase(_T("install")) == 0)
-        {
-            if (bInstall == true)
+            if (bResult == false)
             {
-                ::LaunchAndWait(szFilePath, _T(""), TRUE);
-                return true;
+                return false;
             }
-        }
 
-        if (tool.szExtract.CompareNoCase(_T("zip")) == 0)
-        {
-            if (bExtract == true)
+            if (tool.szExtract.CompareNoCase(_T("install")) == 0)
             {
-                CComBSTR file(szFilePath);
-                CComBSTR folder(szFolderPath);
-
-                if (!::DirectoryExists(szFolderPath))
+                if (bInstall == true)
                 {
-                    if (::MakeFullPath(szFolderPath) == false)
-                    {
-                        if (callback != nullptr)
-                        {
-                            CString szStatus = pConfig->m_Language.GetString(0x00410001, pszExtractStatus[0]);
-                            callback(nIndex, szStatus);
-                        }
-                        return false;
-                    }
-                }
-
-                if (::DirectoryExists(szFolderPath) == TRUE)
-                {
-                    bool bUnzipResult = ::Unzip2Folder(file, folder);
-                    if (bUnzipResult == true)
-                    {
-                        if (callback != nullptr)
-                        {
-                            CString szStatus = pConfig->m_Language.GetString(0x00410002, pszExtractStatus[1]);
-                            callback(nIndex, szStatus);
-                        }
-                        return true;
-                    }
-                    else
-                    {
-                        if (callback != nullptr)
-                        {
-                            CString szStatus = pConfig->m_Language.GetString(0x00410003, pszExtractStatus[2]);
-                            callback(nIndex, szStatus);
-                        }
-                        return false;
-                    }
+                    ::LaunchAndWait(szFilePath, _T(""), TRUE);
+                    return true;
                 }
             }
-        }
 
-        return true;
-    }
-    int FindTool(CToolsList& m_Tools, CString szPlatform, CString szFormatId)
-    {
-        int nTool = m_Tools.GetToolByFormatAndPlatform(szFormatId, szPlatform);
-        if (nTool >= 0)
-        {
-            return nTool;
+            if (tool.szExtract.CompareNoCase(_T("zip")) == 0)
+            {
+                if (bExtract == true)
+                {
+                    CComBSTR file(szFilePath);
+                    CComBSTR folder(szFolderPath);
+
+                    if (!::DirectoryExists(szFolderPath))
+                    {
+                        if (::MakeFullPath(szFolderPath) == false)
+                        {
+                            if (callback != nullptr)
+                            {
+                                CString szStatus = pConfig->m_Language.GetString(0x00410001, pszExtractStatus[0]);
+                                callback(nIndex, szStatus);
+                            }
+                            return false;
+                        }
+                    }
+
+                    if (::DirectoryExists(szFolderPath) == TRUE)
+                    {
+                        bool bUnzipResult = ::Unzip2Folder(file, folder);
+                        if (bUnzipResult == true)
+                        {
+                            if (callback != nullptr)
+                            {
+                                CString szStatus = pConfig->m_Language.GetString(0x00410002, pszExtractStatus[1]);
+                                callback(nIndex, szStatus);
+                            }
+                            return true;
+                        }
+                        else
+                        {
+                            if (callback != nullptr)
+                            {
+                                CString szStatus = pConfig->m_Language.GetString(0x00410003, pszExtractStatus[2]);
+                                callback(nIndex, szStatus);
+                            }
+                            return false;
+                        }
+                    }
+                }
+            }
+
+            return true;
         }
-        return -1;
-    }
-    int FindTool(CToolsList& m_Tools, CString szFormatId)
-    {
-#if defined(_WIN32) & !defined(_WIN64)
-        CString szPlatform = _T("x86");
-#else
-        CString szPlatform = _T("x64");
-#endif
-        return FindTool(m_Tools, szPlatform, szFormatId);
-    }
-    void SetFormatPaths(CFormatsList& m_Formats, CToolsList& m_Tools, CString szPlatform)
-    {
-        int nFormats = m_Formats.Count();
-        for (int i = 0; i < nFormats; i++)
+        int FindTool(CToolsList& m_Tools, CString szPlatform, CString szFormatId)
         {
-            CFormat& format = m_Formats.Get(i);
-            int nTool = m_Tools.GetToolByFormatAndPlatform(format.szId, szPlatform);
+            int nTool = m_Tools.GetToolByFormatAndPlatform(szFormatId, szPlatform);
             if (nTool >= 0)
             {
-                CTool& tool = m_Tools.Get(nTool);
-                format.szPath = tool.szPath;
+                return nTool;
+            }
+            return -1;
+        }
+        int FindTool(CToolsList& m_Tools, CString szFormatId)
+        {
+#if defined(_WIN32) & !defined(_WIN64)
+            CString szPlatform = _T("x86");
+#else
+            CString szPlatform = _T("x64");
+#endif
+            return FindTool(m_Tools, szPlatform, szFormatId);
+        }
+        void SetFormatPaths(CFormatsList& m_Formats, CToolsList& m_Tools, CString szPlatform)
+        {
+            int nFormats = m_Formats.Count();
+            for (int i = 0; i < nFormats; i++)
+            {
+                CFormat& format = m_Formats.Get(i);
+                int nTool = m_Tools.GetToolByFormatAndPlatform(format.szId, szPlatform);
+                if (nTool >= 0)
+                {
+                    CTool& tool = m_Tools.Get(nTool);
+                    format.szPath = tool.szPath;
+                }
             }
         }
-    }
-    void SetFormatPaths(CFormatsList& m_Formats, CToolsList& m_Tools, std::function<bool(int, CTool&)> filter)
-    {
-        int nTools = m_Tools.Count();
-        int nFormats = m_Formats.Count();
-        if ((nTools > 0) && (nFormats > 0))
+        void SetFormatPaths(CFormatsList& m_Formats, CToolsList& m_Tools, std::function<bool(int, CTool&)> filter)
         {
-            for (int i = 0; i < nTools; i++)
+            int nTools = m_Tools.Count();
+            int nFormats = m_Formats.Count();
+            if ((nTools > 0) && (nFormats > 0))
             {
-                CTool& tool = m_Tools.Get(i);
-                if (filter(i, tool) == true)
+                for (int i = 0; i < nTools; i++)
                 {
-                    for (int i = 0; i < nFormats; i++)
+                    CTool& tool = m_Tools.Get(i);
+                    if (filter(i, tool) == true)
                     {
-                        CFormat& format = m_Formats.Get(i);
-                        if (tool.IsValidFormat(format.szId))
+                        for (int i = 0; i < nFormats; i++)
                         {
-                            format.szPath = tool.szPath;
+                            CFormat& format = m_Formats.Get(i);
+                            if (tool.IsValidFormat(format.szId))
+                            {
+                                format.szPath = tool.szPath;
+                            }
                         }
                     }
                 }
             }
         }
-    }
-};
+    };
+}

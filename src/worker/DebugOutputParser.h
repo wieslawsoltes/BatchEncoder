@@ -5,25 +5,28 @@
 
 #include "OutputParser.h"
 
-class CDebugOutputParser : public IOutputParser
+namespace worker
 {
-public:
-    IWorkerContext * pWorkerContext;
-    CCommandLine *pCommandLine;
-public:
-    CDebugOutputParser() { }
-    virtual ~CDebugOutputParser() { }
-public:
-    bool Init(IWorkerContext* pWorkerContext, CCommandLine* pCommandLine)
+    class CDebugOutputParser : public IOutputParser
     {
-        this->pWorkerContext = pWorkerContext;
-        this->pCommandLine = pCommandLine;
-        return true;
-    }
-    bool Parse(const char *szLine)
-    {
-        OutputDebugStringA(szLine);
-        OutputDebugStringA("\n");
-        return this->pWorkerContext->IsRunning();
-    }
-};
+    public:
+        IWorkerContext * pWorkerContext;
+        CCommandLine *pCommandLine;
+    public:
+        CDebugOutputParser() { }
+        virtual ~CDebugOutputParser() { }
+    public:
+        bool Init(IWorkerContext* pWorkerContext, CCommandLine* pCommandLine)
+        {
+            this->pWorkerContext = pWorkerContext;
+            this->pCommandLine = pCommandLine;
+            return true;
+        }
+        bool Parse(const char *szLine)
+        {
+            OutputDebugStringA(szLine);
+            OutputDebugStringA("\n");
+            return this->pWorkerContext->IsRunning();
+        }
+    };
+}

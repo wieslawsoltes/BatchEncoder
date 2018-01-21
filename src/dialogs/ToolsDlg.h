@@ -57,7 +57,7 @@ public:
     CToolsList m_Tools;
     CFormatsList m_Formats;
     CThread m_Thread;
-    CToolUtilities m_Utilities;
+    worker::CToolUtilities m_Utilities;
 public:
     CMyStatic m_StcName;
     CMyStatic m_StcPlatform;
