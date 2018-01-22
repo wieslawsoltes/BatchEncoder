@@ -52,20 +52,16 @@ namespace xml
             SetAttributeValue(parent, "original", m_Language.szOriginalName);
             SetAttributeValue(parent, "translated", m_Language.szTranslatedName);
 
-            POSITION pos = m_Language.m_Strings.m_Map.GetStartPosition();
-            while (pos != nullptr)
+            for (auto& item : m_Language.m_Strings.m_Map)
             {
-                CString rValue;
                 CString szKey;
-                int nKey;
-                m_Language.m_Strings.m_Map.GetNextAssoc(pos, nKey, rValue);
-                szKey.Format(_T("%X"), nKey);
+                szKey.Format(_T("%X"), item.first);
 
                 auto element = this->NewElement("String");
                 parent->LinkEndChild(element);
 
                 SetAttributeValue(element, "", szKey);
-                SetAttributeValue(element, "", rValue);
+                SetAttributeValue(element, "", item.second);
             }
         }
         bool GetLanguages(const XmlElement *parent, lang::CLanguagesList &m_Languages)
