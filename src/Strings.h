@@ -4,11 +4,10 @@
 #pragma once
 
 #include <map>
-#include <afxstr.h>
 
 namespace app
 {
-    const std::map<int, CString> m_Strings = {
+    const std::map<int, TCHAR*> m_Strings = {
 
         // Strings Work Thread
 
