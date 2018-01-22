@@ -3,7 +3,6 @@
 
 #pragma once
 
-#include "Strings.h"
 #include "OutputParser.h"
 #include "LuaProgess.h"
 
