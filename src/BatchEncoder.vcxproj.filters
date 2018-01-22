@@ -197,6 +197,9 @@
     <ClInclude Include="worker\ToolUtilities.h">
       <Filter>Header Files\Worker\Tools</Filter>
     </ClInclude>
+    <ClInclude Include="configuration\Strings.h">
+      <Filter>Header Files\Configuration</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="res\BatchEncoder.rc2">

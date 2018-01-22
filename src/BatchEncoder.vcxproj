@@ -315,6 +315,7 @@ copy /Y ..\setup\*.portable $(OutDir)</Command>
   <ItemGroup>
     <ClInclude Include="configuration\Path.h" />
     <ClInclude Include="configuration\PathsList.h" />
+    <ClInclude Include="configuration\Strings.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="version.h" />
     <ClInclude Include="res\resource.h" />
