@@ -15,8 +15,6 @@
 #include "ToolUtilities.h"
 #include "Worker.h"
 
-//#define PIPES_STDERR_DEBUG
-
 namespace worker
 {
     bool CWorker::ConvertFileUsingConsole(IWorkerContext* pWorkerContext, CCommandLine &commandLine, util::CSynchronize &syncDown)
@@ -157,16 +155,10 @@ namespace worker
         util::CProcess process;
         util::CPipe Stdin(true);
         util::CPipe Stdout(true);
-    #ifdef PIPES_STDERR_DEBUG
-        util::CPipe Stderr(true);
-    #endif
         CFileToPipeWriter readContext;
         CPipeToFileWriter writeContext;
         util::CThread readThread;
         util::CThread writeThread;
-    #ifdef PIPES_STDERR_DEBUG
-        util::CThread outputThread;
-    #endif
         int nProgress = 0;
         util::CTimeCount timer;
 
@@ -223,54 +215,24 @@ namespace worker
             }
         }
 
-    #ifdef PIPES_STDERR_DEBUG
-        // create pipes for stderr
-        if (Stderr.Create() == false)
-        {
-            pWorkerContext->Status(commandLine.nItemId, app::pszDefaulTime, pWorkerContext->GetString(0x0013000C, app::pszConvertPipes[11]));
-            pWorkerContext->Callback(commandLine.nItemId, -1, true, true);
-            return false;
-        }
-
-        // set stderr read pipe inherit flag
-        if (Stderr.InheritRead() == false)
-        {
-            pWorkerContext->Status(commandLine.nItemId, app::pszDefaulTime, pWorkerContext->GetString(0x0013000D, app::pszConvertPipes[12]));
-            pWorkerContext->Callback(commandLine.nItemId, -1, true, true);
-            return false;
-        }
-    #endif
-
         // connect pipes to process
         if ((commandLine.bUseReadPipes == true) && (commandLine.bUseWritePipes == false))
         {
             process.ConnectStdInput(Stdin.hRead);
             process.ConnectStdOutput(GetStdHandle(STD_OUTPUT_HANDLE));
-    #ifdef PIPES_STDERR_DEBUG
-            process.ConnectStdError(Stderr.hWrite);
-    #else
             process.ConnectStdError(GetStdHandle(STD_ERROR_HANDLE));
-    #endif
         }
         else if ((commandLine.bUseReadPipes == false) && (commandLine.bUseWritePipes == true))
         {
             process.ConnectStdInput(GetStdHandle(STD_INPUT_HANDLE));
             process.ConnectStdOutput(Stdout.hWrite);
-    #ifdef PIPES_STDERR_DEBUG
-            process.ConnectStdError(Stderr.hWrite);
-    #else
             process.ConnectStdError(GetStdHandle(STD_ERROR_HANDLE));
-    #endif
         }
         else if ((commandLine.bUseReadPipes == true) && (commandLine.bUseWritePipes == true))
         {
             process.ConnectStdInput(Stdin.hRead);
             process.ConnectStdOutput(Stdout.hWrite);
-    #ifdef PIPES_STDERR_DEBUG
-            process.ConnectStdError(Stderr.hWrite);
-    #else
             process.ConnectStdError(GetStdHandle(STD_ERROR_HANDLE));
-    #endif
         }
 
         syncDown.Wait();
@@ -324,11 +286,6 @@ namespace worker
                     Stdout.CloseWrite();
                 }
 
-    #ifdef PIPES_STDERR_DEBUG
-                Stderr.CloseRead();
-                Stderr.CloseWrite();
-    #endif
-
                 CString szStatus;
                 szStatus.Format(pWorkerContext->GetString(0x00130006, app::pszConvertPipes[5]), ::GetLastError());
 
@@ -347,27 +304,6 @@ namespace worker
         if (commandLine.bUseWritePipes == true)
             Stdout.CloseWrite();
 
-    #ifdef PIPES_STDERR_DEBUG
-        Stderr.CloseWrite();
-
-        // create output thread
-        CDebugOutputParser debug;
-        CPipeToStringWriter writer;
-        if (outputThread.Start([this, pWorkerContext, &commandLine, &Stderr, &writer, &debug]() { writer.ReadLoop(pWorkerContext, commandLine, Stderr, debug); }) == false)
-        {
-            timer.Stop();
-
-            process.Stop(false, commandLine.pFormat->nExitCodeSuccess);
-
-            Stdin.CloseWrite();
-            Stderr.CloseRead();
-
-            pWorkerContext->Status(commandLine.nItemId, app::pszDefaulTime, pWorkerContext->GetString(0x0013000E, app::pszConvertPipes[13]));
-            pWorkerContext->Callback(commandLine.nItemId, -1, true, true);
-            return false;
-        }
-    #endif
-
         // create read thread
         if (commandLine.bUseReadPipes == true)
         {
@@ -382,15 +318,7 @@ namespace worker
 
                 process.Stop(false, commandLine.pFormat->nExitCodeSuccess);
 
-    #ifdef PIPES_STDERR_DEBUG
-                outputThread.Terminate();
-                outputThread.Close();
-    #endif
                 Stdin.CloseWrite();
-
-    #ifdef PIPES_STDERR_DEBUG
-                Stderr.CloseRead();
-    #endif
 
                 pWorkerContext->Status(commandLine.nItemId, app::pszDefaulTime, pWorkerContext->GetString(0x00130007, app::pszConvertPipes[6]));
                 pWorkerContext->Callback(commandLine.nItemId, -1, true, true);
@@ -495,16 +423,8 @@ namespace worker
             }
         }
 
-    #ifdef PIPES_STDERR_DEBUG
-        // wait for output thread to finish
-        outputThread.Wait();
-        outputThread.Close();
-    #endif
-
         timer.Stop();
-    #ifdef PIPES_STDERR_DEBUG
-        Stderr.CloseRead();
-    #endif
+
         if (process.Stop(nProgress == 100, commandLine.pFormat->nExitCodeSuccess) == false)
             nProgress = -1;
 
