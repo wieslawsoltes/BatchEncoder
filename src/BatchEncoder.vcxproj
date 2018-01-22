@@ -304,7 +304,6 @@ copy /Y ..\setup\*.portable $(OutDir)</Command>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="MainApp.cpp" />
-    <ClCompile Include="Strings.cpp" />
     <ClCompile Include="dialogs\AboutDlg.cpp" />
     <ClCompile Include="dialogs\MainDlg.cpp" />
     <ClCompile Include="dialogs\FormatsDlg.cpp" />
@@ -321,7 +320,6 @@ copy /Y ..\setup\*.portable $(OutDir)</Command>
     <ClInclude Include="res\resource.h" />
     <ClInclude Include="StdAfx.h" />
     <ClInclude Include="MainApp.h" />
-    <ClInclude Include="Strings.h" />
     <ClInclude Include="configuration\Format.h" />
     <ClInclude Include="configuration\FormatsList.h" />
     <ClInclude Include="configuration\Item.h" />
