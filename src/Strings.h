@@ -3,8 +3,6 @@
 
 #pragma once
 
-#include <map>
-
 namespace app
 {
     extern const TCHAR* pszDefaulTime;
