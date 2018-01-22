@@ -34,10 +34,11 @@ namespace worker
                 {
                     for (int s = 0; s < 8; s++)
                     {
-                        if (szStatus.Find(app::pszDownloadStatus[s]) >= 0)
+                        auto str = config::m_Strings.at(0x00400001 + s);
+                        if (szStatus.Find(str) >= 0)
                         {
-                            CString szTranslation = pConfig->m_Language.GetString(0x00400001 + s, app::pszDownloadStatus[s]);
-                            szStatus.Replace(app::pszDownloadStatus[s], szTranslation);
+                            CString szTranslation = pConfig->GetString(0x00400001 + s);
+                            szStatus.Replace(str, szTranslation);
                         }
                     }
                     callback(nIndex, szStatus);
@@ -71,7 +72,7 @@ namespace worker
                         {
                             if (callback != nullptr)
                             {
-                                CString szStatus = pConfig->m_Language.GetString(0x00410001, app::pszExtractStatus[0]);
+                                CString szStatus = pConfig->GetString(0x00410001);
                                 callback(nIndex, szStatus);
                             }
                             return false;
@@ -85,7 +86,7 @@ namespace worker
                         {
                             if (callback != nullptr)
                             {
-                                CString szStatus = pConfig->m_Language.GetString(0x00410002, app::pszExtractStatus[1]);
+                                CString szStatus = pConfig->GetString(0x00410002);
                                 callback(nIndex, szStatus);
                             }
                             return true;
@@ -94,7 +95,7 @@ namespace worker
                         {
                             if (callback != nullptr)
                             {
-                                CString szStatus = pConfig->m_Language.GetString(0x00410003, app::pszExtractStatus[2]);
+                                CString szStatus = pConfig->GetString(0x00410003);
                                 callback(nIndex, szStatus);
                             }
                             return false;

@@ -219,8 +219,8 @@ namespace app
     {
         CString szFilter;
         szFilter.Format(_T("%s (*.xml)|*.xml|%s (*.*)|*.*||"),
-            pConfig->m_Language.GetString(0x00310008, pszFileDialogs[7]),
-            pConfig->m_Language.GetString(0x00310001, pszFileDialogs[0]));
+            pConfig->GetString(0x00310008),
+            pConfig->GetString(0x00310001));
 
         CFileDialog fd(TRUE, _T("xml"), _T(""),
             OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER,
@@ -245,8 +245,8 @@ namespace app
 
                 CString szFilter;
                 szFilter.Format(_T("%s (*.xml)|*.xml|%s (*.*)|*.*||"),
-                    pConfig->m_Language.GetString(0x00310008, pszFileDialogs[7]),
-                    pConfig->m_Language.GetString(0x00310001, pszFileDialogs[0]));
+                    pConfig->GetString(0x00310008),
+                    pConfig->GetString(0x00310001));
 
                 CFileDialog fd(FALSE, _T("xml"), format.szId,
                     OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER | OFN_OVERWRITEPROMPT,
@@ -358,7 +358,7 @@ namespace app
 
         config::CFormat format;
         format.szId = _T("ID");
-        format.szName = pConfig->m_Language.GetString(0x00230004, pszFormatsDialog[3]);
+        format.szName = pConfig->GetString(0x00230004);
         format.szTemplate = _T("$EXE $OPTIONS $INFILE $OUTFILE");
         format.bPipeInput = true;
         format.bPipeOutput = false;
@@ -371,7 +371,7 @@ namespace app
         format.nDefaultPreset = 0;
 
         config::CPreset preset;
-        preset.szName = pConfig->m_Language.GetString(0x00230005, pszFormatsDialog[4]);
+        preset.szName = pConfig->GetString(0x00230005);
         preset.szOptions = _T("");
         format.m_Presets.Insert(preset);
 
@@ -630,8 +630,8 @@ namespace app
     {
         CString szFilter;
         szFilter.Format(_T("%s (*.xml)|*.xml|%s (*.*)|*.*||"),
-            pConfig->m_Language.GetString(0x00310005, pszFileDialogs[4]),
-            pConfig->m_Language.GetString(0x00310001, pszFileDialogs[0]));
+            pConfig->GetString(0x00310005),
+            pConfig->GetString(0x00310001));
 
         CFileDialog fd(TRUE, _T("xml"), _T(""),
             OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER,
@@ -648,8 +648,8 @@ namespace app
     {
         CString szFilter;
         szFilter.Format(_T("%s (*.xml)|*.xml|%s (*.*)|*.*||"),
-            pConfig->m_Language.GetString(0x00310005, pszFileDialogs[4]),
-            pConfig->m_Language.GetString(0x00310001, pszFileDialogs[0]));
+            pConfig->GetString(0x00310005),
+            pConfig->GetString(0x00310001));
 
         CFileDialog fd(FALSE, _T("xml"), _T("Formats"),
             OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER | OFN_OVERWRITEPROMPT,
@@ -1017,8 +1017,8 @@ namespace app
     {
         CString szFilter;
         szFilter.Format(_T("%s (*.exe)|*.exe|%s (*.*)|*.*||"),
-            pConfig->m_Language.GetString(0x00310006, pszFileDialogs[5]),
-            pConfig->m_Language.GetString(0x00310001, pszFileDialogs[0]));
+            pConfig->GetString(0x00310006),
+            pConfig->GetString(0x00310001));
 
         CFileDialog fd(TRUE, _T("exe"), szDefaultFName,
             OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER,
@@ -1037,8 +1037,8 @@ namespace app
     {
         CString szFilter;
         szFilter.Format(_T("%s (*.lua)|*.lua|%s (*.*)|*.*||"),
-            pConfig->m_Language.GetString(0x00310007, pszFileDialogs[6]),
-            pConfig->m_Language.GetString(0x00310001, pszFileDialogs[0]));
+            pConfig->GetString(0x00310007),
+            pConfig->GetString(0x00310001));
 
         CFileDialog fd(TRUE, _T("lua"), szDefaultFName,
             OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER,

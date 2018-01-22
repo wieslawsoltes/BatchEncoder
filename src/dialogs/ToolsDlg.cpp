@@ -227,8 +227,8 @@ namespace app
 
         CString szFilter;
         szFilter.Format(_T("%s (*.xml)|*.xml|%s (*.*)|*.*||"),
-            pConfig->m_Language.GetString(0x00310010, pszFileDialogs[9]),
-            pConfig->m_Language.GetString(0x00310001, pszFileDialogs[0]));
+            pConfig->GetString(0x00310010),
+            pConfig->GetString(0x00310001));
 
         CFileDialog fd(TRUE, _T("xml"), _T(""),
             OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER,
@@ -256,8 +256,8 @@ namespace app
 
                 CString szFilter;
                 szFilter.Format(_T("%s (*.xml)|*.xml|%s (*.*)|*.*||"),
-                    pConfig->m_Language.GetString(0x00310010, pszFileDialogs[9]),
-                    pConfig->m_Language.GetString(0x00310001, pszFileDialogs[0]));
+                    pConfig->GetString(0x00310010),
+                    pConfig->GetString(0x00310001));
 
                 CFileDialog fd(FALSE, _T("xml"), tool.szName,
                     OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER | OFN_OVERWRITEPROMPT,
@@ -380,7 +380,7 @@ namespace app
         int nItem = m_LstTools.GetItemCount();
 
         config::CTool tool;
-        tool.szName = pConfig->m_Language.GetString(0x00240004, pszToolsDialog[3]);
+        tool.szName = pConfig->GetString(0x00240004);
         tool.szPlatform = _T("");
         tool.szFormats = _T("");
         tool.szUrl = _T("");
@@ -613,8 +613,8 @@ namespace app
 
         CString szFilter;
         szFilter.Format(_T("%s (*.xml)|*.xml|%s (*.*)|*.*||"),
-            pConfig->m_Language.GetString(0x00310009, pszFileDialogs[8]),
-            pConfig->m_Language.GetString(0x00310001, pszFileDialogs[0]));
+            pConfig->GetString(0x00310009),
+            pConfig->GetString(0x00310001));
 
         CFileDialog fd(TRUE, _T("xml"), _T(""),
             OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER,
@@ -634,8 +634,8 @@ namespace app
 
         CString szFilter;
         szFilter.Format(_T("%s (*.xml)|*.xml|%s (*.*)|*.*||"),
-            pConfig->m_Language.GetString(0x00310009, pszFileDialogs[8]),
-            pConfig->m_Language.GetString(0x00310001, pszFileDialogs[0]));
+            pConfig->GetString(0x00310009),
+            pConfig->GetString(0x00310001));
 
         CFileDialog fd(FALSE, _T("xml"), _T("Tools"),
             OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER | OFN_OVERWRITEPROMPT,

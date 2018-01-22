@@ -79,7 +79,7 @@ namespace app
 
             hWndBtnRecurse = ::CreateWindowEx(0,
                 _T("BUTTON"),
-                pDlg->m_Config.m_Language.GetString(0x00210005, pszMainDialog[4]),
+                pDlg->m_Config.GetString(0x00210005),
                 BS_CHECKBOX | BS_AUTOCHECKBOX | WS_CHILD | WS_TABSTOP | WS_VISIBLE,
                 rc.left, rc.top,
                 rc.right - rc.left, rc.bottom - rc.top,
@@ -205,13 +205,13 @@ namespace app
             if (this->nThreadCount == 1)
             {
                 CString szText;
-                szText.Format(this->pConfig->GetString(0x00190003, pszWorkerContext[2]),
+                szText.Format(this->pConfig->GetString(0x00190003),
                     this->nProcessedFiles,
                     this->nTotalFiles,
                     this->nDoneWithoutError,
                     this->nErrors,
                     ((this->nErrors == 0) || (this->nErrors > 1)) ?
-                    this->pConfig->GetString(0x00190002, pszWorkerContext[1]) : this->pConfig->GetString(0x00190001, pszWorkerContext[0]));
+                    this->pConfig->GetString(0x00190002) : this->pConfig->GetString(0x00190001));
                 pDlg->m_StatusBar.SetText(szText, 1, 0);
 
                 this->nLastItemId = nItemId;
@@ -226,13 +226,13 @@ namespace app
             this->nErrors = this->nProcessedFiles - this->nDoneWithoutError;
 
             CString szText;
-            szText.Format(this->pConfig->GetString(0x00190004, pszWorkerContext[3]),
+            szText.Format(this->pConfig->GetString(0x00190004),
                 this->nProcessedFiles,
                 this->nTotalFiles,
                 this->nDoneWithoutError,
                 this->nErrors,
                 ((this->nErrors == 0) || (this->nErrors > 1)) ?
-                this->pConfig->GetString(0x00190002, pszWorkerContext[1]) : this->pConfig->GetString(0x00190001, pszWorkerContext[0]),
+                this->pConfig->GetString(0x00190002) : this->pConfig->GetString(0x00190001),
                 this->timer.Format(this->timer.ElapsedTime(), 3));
             pDlg->m_StatusBar.SetText(szText, 1, 0);
 
@@ -835,7 +835,7 @@ namespace app
             LPITEMIDLIST pidlBrowse;
             TCHAR *lpBuffer;
 
-            CString szTitle = m_Config.m_Language.GetString(0x00210006, pszMainDialog[5]);
+            CString szTitle = m_Config.GetString(0x00210006);
 
             CString szTmp;
             this->m_CmbOutPath.GetWindowText(szTmp);
@@ -902,8 +902,8 @@ namespace app
         {
             CString szFilter;
             szFilter.Format(_T("%s (*.xml)|*.xml|%s (*.*)|*.*||"),
-                m_Config.m_Language.GetString(0x00310003, pszFileDialogs[2]),
-                m_Config.m_Language.GetString(0x00310001, pszFileDialogs[0]));
+                m_Config.GetString(0x00310003),
+                m_Config.GetString(0x00310001));
 
             CFileDialog fd(TRUE, _T("xml"), _T(""),
                 OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER,
@@ -913,7 +913,7 @@ namespace app
             {
                 CString szFileXml = fd.GetPathName();
                 if (this->LoadItems(szFileXml) == false)
-                    m_StatusBar.SetText(m_Config.m_Language.GetString(0x00210007, pszMainDialog[6]), 1, 0);
+                    m_StatusBar.SetText(m_Config.GetString(0x00210007), 1, 0);
                 else
                     this->UpdateStatusBar();
             }
@@ -926,8 +926,8 @@ namespace app
         {
             CString szFilter;
             szFilter.Format(_T("%s (*.xml)|*.xml|%s (*.*)|*.*||"),
-                m_Config.m_Language.GetString(0x00310003, pszFileDialogs[2]),
-                m_Config.m_Language.GetString(0x00310001, pszFileDialogs[0]));
+                m_Config.GetString(0x00310003),
+                m_Config.GetString(0x00310001));
 
             CFileDialog fd(FALSE, _T("xml"), _T("Items"),
                 OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER | OFN_OVERWRITEPROMPT,
@@ -937,7 +937,7 @@ namespace app
             {
                 CString szFileXml = fd.GetPathName();
                 if (this->SaveItems(szFileXml) == false)
-                    m_StatusBar.SetText(m_Config.m_Language.GetString(0x00210008, pszMainDialog[7]), 1, 0);
+                    m_StatusBar.SetText(m_Config.GetString(0x00210008), 1, 0);
             }
         }
     }
@@ -974,14 +974,14 @@ namespace app
                 pFiles = (TCHAR *)malloc(dwMaxSize);
                 if (pFiles == nullptr)
                 {
-                    m_StatusBar.SetText(m_Config.m_Language.GetString(0x00210009, pszMainDialog[8]), 1, 0);
+                    m_StatusBar.SetText(m_Config.GetString(0x00210009), 1, 0);
                     return;
                 }
 
                 ZeroMemory(pFiles, dwMaxSize);
 
                 CString szFilter;
-                szFilter.Format(_T("%s (*.*)|*.*||"), m_Config.m_Language.GetString(0x00310001, pszFileDialogs[0]));
+                szFilter.Format(_T("%s (*.*)|*.*||"), m_Config.GetString(0x00310001));
 
                 CFileDialog fd(TRUE, _T(""), _T(""),
                     OFN_ALLOWMULTISELECT | OFN_HIDEREADONLY | OFN_ENABLESIZING,
@@ -1036,7 +1036,7 @@ namespace app
             LPITEMIDLIST pidlBrowse;
             TCHAR *lpBuffer;
 
-            CString szTitle = m_Config.m_Language.GetString(0x0021000A, pszMainDialog[9]);
+            CString szTitle = m_Config.GetString(0x0021000A);
 
             if (SHGetMalloc(&pMalloc) == E_FAIL)
                 return;
@@ -1652,7 +1652,7 @@ namespace app
         }
         catch (...)
         {
-            m_StatusBar.SetText(m_Config.m_Language.GetString(0x0021000B, pszMainDialog[10]), 1, 0);
+            m_StatusBar.SetText(m_Config.GetString(0x0021000B), 1, 0);
         }
         return true;
     }
@@ -2104,13 +2104,13 @@ namespace app
         m_LstInputItems.SetItemText(lvi.iItem, ITEM_COLUMN_OPTIONS, lvi.pszText);
 
         // [Time] : encoder/decoder conversion time
-        tmpBuf.Format(_T("%s"), (item.szTime.CompareNoCase(_T("")) == 0) ? pszDefaulTime : item.szTime);
+        tmpBuf.Format(_T("%s"), (item.szTime.CompareNoCase(_T("")) == 0) ? m_Config.GetString(0x00150001) : item.szTime);
         lvi.iSubItem = ITEM_COLUMN_TIME;
         lvi.pszText = (LPTSTR)(LPCTSTR)(tmpBuf);
         m_LstInputItems.SetItemText(lvi.iItem, ITEM_COLUMN_TIME, lvi.pszText);
 
         // [Status] : encoder/decoder progress status
-        tmpBuf.Format(_T("%s"), (item.szStatus.CompareNoCase(_T("")) == 0) ? m_Config.m_Language.GetString(0x00210001, pszMainDialog[0]) : item.szStatus);
+        tmpBuf.Format(_T("%s"), (item.szStatus.CompareNoCase(_T("")) == 0) ? m_Config.GetString(0x00210001) : item.szStatus);
         lvi.iSubItem = ITEM_COLUMN_STATUS;
         lvi.pszText = (LPTSTR)(LPCTSTR)(tmpBuf);
         m_LstInputItems.SetItemText(lvi.iItem, ITEM_COLUMN_STATUS, lvi.pszText);
@@ -2314,7 +2314,7 @@ namespace app
         }
         catch (...)
         {
-            m_StatusBar.SetText(m_Config.m_Language.GetString(0x0021000C, pszMainDialog[11]), 1, 0);
+            m_StatusBar.SetText(m_Config.GetString(0x0021000C), 1, 0);
         }
     }
 
@@ -2441,7 +2441,7 @@ namespace app
             {
                 if (m_LstInputItems.GetItemState(i, LVIS_SELECTED) == LVIS_SELECTED)
                 {
-                    this->m_LstInputItems.SetItemText(i, ITEM_COLUMN_TIME, pszDefaulTime);
+                    this->m_LstInputItems.SetItemText(i, ITEM_COLUMN_TIME, m_Config.GetString(0x00150001));
                     nSelected++;
                 }
             }
@@ -2449,7 +2449,7 @@ namespace app
             if (nSelected == 0)
             {
                 for (int i = 0; i < nCount; i++)
-                    this->m_LstInputItems.SetItemText(i, ITEM_COLUMN_TIME, pszDefaulTime);
+                    this->m_LstInputItems.SetItemText(i, ITEM_COLUMN_TIME, m_Config.GetString(0x00150001));
             }
         }
     }
@@ -2464,7 +2464,7 @@ namespace app
             {
                 if (m_LstInputItems.GetItemState(i, LVIS_SELECTED) == LVIS_SELECTED)
                 {
-                    this->m_LstInputItems.SetItemText(i, ITEM_COLUMN_STATUS, m_Config.m_Language.GetString(0x00210001, pszMainDialog[0]));
+                    this->m_LstInputItems.SetItemText(i, ITEM_COLUMN_STATUS, m_Config.GetString(0x00210001));
                     nSelected++;
                 }
             }
@@ -2472,7 +2472,7 @@ namespace app
             if (nSelected == 0)
             {
                 for (int i = 0; i < nCount; i++)
-                    this->m_LstInputItems.SetItemText(i, ITEM_COLUMN_STATUS, m_Config.m_Language.GetString(0x00210001, pszMainDialog[0]));
+                    this->m_LstInputItems.SetItemText(i, ITEM_COLUMN_STATUS, m_Config.GetString(0x00210001));
             }
         }
     }
@@ -2486,13 +2486,13 @@ namespace app
             szText.Format(_T("%d %s"),
                 nCount,
                 (nCount > 1) ?
-                m_Config.m_Language.GetString(0x00210003, pszMainDialog[2]) :
-                m_Config.m_Language.GetString(0x00210002, pszMainDialog[1]));
+                m_Config.GetString(0x00210003) :
+                m_Config.GetString(0x00210002));
             m_StatusBar.SetText(szText, 0, 0);
         }
         else
         {
-            m_StatusBar.SetText(m_Config.m_Language.GetString(0x00210004, pszMainDialog[3]), 0, 0);
+            m_StatusBar.SetText(m_Config.GetString(0x00210004), 0, 0);
             m_StatusBar.SetText(_T(""), 1, 0);
         }
     }
@@ -2583,8 +2583,8 @@ namespace app
                 config::CItem& item = this->m_Config.m_Items.Get(i);
                 if (item.bChecked == true)
                 {
-                    this->m_LstInputItems.SetItemText(i, ITEM_COLUMN_TIME, pszDefaulTime);
-                    this->m_LstInputItems.SetItemText(i, ITEM_COLUMN_STATUS, m_Config.m_Language.GetString(0x00210001, pszMainDialog[0]));
+                    this->m_LstInputItems.SetItemText(i, ITEM_COLUMN_TIME, m_Config.GetString(0x00150001));
+                    this->m_LstInputItems.SetItemText(i, ITEM_COLUMN_STATUS, m_Config.GetString(0x00210001));
                     nChecked++;
                 }
             }
@@ -2600,7 +2600,7 @@ namespace app
             CString szOutput = this->m_Config.m_Options.szOutputPath;
             if (m_Output.Validate(szOutput) == false)
             {
-                m_StatusBar.SetText(m_Config.m_Language.GetString(0x0021000F, pszMainDialog[14]), 1, 0);
+                m_StatusBar.SetText(m_Config.GetString(0x0021000F), 1, 0);
                 bSafeCheck = false;
                 this->pWorkerContext->bDone = true;
                 return;
@@ -2614,7 +2614,7 @@ namespace app
                 },
                 true) == false)
             {
-                m_StatusBar.SetText(m_Config.m_Language.GetString(0x0021000E, pszMainDialog[13]), 1, 0);
+                m_StatusBar.SetText(m_Config.GetString(0x0021000E), 1, 0);
                 this->pWorkerContext->bDone = true;
                 bSafeCheck = false;
                 return;
@@ -2623,8 +2623,8 @@ namespace app
             this->EnableUserInterface(FALSE);
 
             m_StatusBar.SetText(_T(""), 1, 0);
-            m_BtnConvert.SetWindowText(m_Config.m_Language.GetString(0x000A0018, _T("S&top")));
-            this->GetMenu()->ModifyMenu(ID_ACTION_CONVERT, MF_BYCOMMAND, ID_ACTION_CONVERT, m_Config.m_Language.GetString(0x00030003, _T("S&top\tF9")));
+            m_BtnConvert.SetWindowText(m_Config.GetString(0x000A0018));
+            this->GetMenu()->ModifyMenu(ID_ACTION_CONVERT, MF_BYCOMMAND, ID_ACTION_CONVERT, m_Config.GetString(0x00030003));
 
             this->pWorkerContext->bRunning = true;
             this->m_WorkerThread.Resume();
@@ -2635,8 +2635,8 @@ namespace app
         {
             bSafeCheck = true;
 
-            m_BtnConvert.SetWindowText(m_Config.m_Language.GetString(0x000A0017, _T("Conve&rt")));
-            this->GetMenu()->ModifyMenu(ID_ACTION_CONVERT, MF_BYCOMMAND, ID_ACTION_CONVERT, m_Config.m_Language.GetString(0x00030002, _T("Conve&rt\tF9")));
+            m_BtnConvert.SetWindowText(m_Config.GetString(0x000A0017));
+            this->GetMenu()->ModifyMenu(ID_ACTION_CONVERT, MF_BYCOMMAND, ID_ACTION_CONVERT, m_Config.GetString(0x00030002));
             this->EnableUserInterface(TRUE);
 
             this->pWorkerContext->bRunning = false;
@@ -2646,8 +2646,8 @@ namespace app
 
     void CMainDlg::FinishConvert()
     {
-        this->m_BtnConvert.SetWindowText(m_Config.m_Language.GetString(0x000A0017, _T("Conve&rt")));
-        this->GetMenu()->ModifyMenu(ID_ACTION_CONVERT, MF_BYCOMMAND, ID_ACTION_CONVERT, m_Config.m_Language.GetString(0x00030002, _T("Conve&rt\tF9")));
+        this->m_BtnConvert.SetWindowText(m_Config.GetString(0x000A0017));
+        this->GetMenu()->ModifyMenu(ID_ACTION_CONVERT, MF_BYCOMMAND, ID_ACTION_CONVERT, m_Config.GetString(0x00030002));
         this->EnableUserInterface(TRUE);
 
         this->m_Progress.SetPos(0);

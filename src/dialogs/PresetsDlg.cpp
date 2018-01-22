@@ -287,7 +287,7 @@ namespace app
 
             config::CFormat& format = m_Formats.Get(nSelectedFormat);
             config::CPreset preset;
-            preset.szName = pConfig->m_Language.GetString(0x00220004, pszPresetsDialog[3]);
+            preset.szName = pConfig->GetString(0x00220004);
             preset.szOptions = _T("");
             format.m_Presets.Insert(preset);
 
@@ -448,8 +448,8 @@ namespace app
     {
         CString szFilter;
         szFilter.Format(_T("%s (*.xml)|*.xml|%s (*.*)|*.*||"),
-            pConfig->m_Language.GetString(0x00310004, pszFileDialogs[3]),
-            pConfig->m_Language.GetString(0x00310001, pszFileDialogs[0]));
+            pConfig->GetString(0x00310004),
+            pConfig->GetString(0x00310001));
 
         CFileDialog fd(TRUE, _T("xml"), _T(""),
             OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER,
@@ -468,8 +468,8 @@ namespace app
 
         CString szFilter;
         szFilter.Format(_T("%s (*.xml)|*.xml|%s (*.*)|*.*||"),
-            pConfig->m_Language.GetString(0x00310004, pszFileDialogs[3]),
-            pConfig->m_Language.GetString(0x00310001, pszFileDialogs[0]));
+            pConfig->GetString(0x00310004),
+            pConfig->GetString(0x00310001));
 
         CFileDialog fd(FALSE, _T("xml"), format.szId,
             OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER | OFN_OVERWRITEPROMPT,
