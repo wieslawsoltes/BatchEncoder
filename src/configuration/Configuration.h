@@ -3,6 +3,7 @@
 
 #pragma once
 
+#include <map>
 #include "Options.h"
 #include "FormatsList.h"
 #include "ItemsList.h"
