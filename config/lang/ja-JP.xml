@@ -226,6 +226,8 @@
     <String key="0x0014000F" value="出力先のフォルダーを作成できません。" />
     <String key="0x00140010" value="出力ファイルが既に存在しています。" />
 
+    <String key="0x00150001" value="--:--" />
+
     <!-- Strings Worker Context -->
 
     <String key="0x00190001" value="エラー" />
