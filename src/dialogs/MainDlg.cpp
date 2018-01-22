@@ -176,7 +176,7 @@ namespace app
         return ::CloseHandle(pDD->hThread);
     }
 
-    class CMainDlgWorkerContext : public IWorkerContext
+    class CMainDlgWorkerContext : public worker::IWorkerContext
     {
     private:
         util::CTimeCount timer;
@@ -206,13 +206,13 @@ namespace app
             if (this->nThreadCount == 1)
             {
                 CString szText;
-                szText.Format(this->GetString(0x00190003, pszWorkerContext[2]),
+                szText.Format(this->pConfig->GetString(0x00190003, pszWorkerContext[2]),
                     this->nProcessedFiles,
                     this->nTotalFiles,
                     this->nDoneWithoutError,
                     this->nErrors,
                     ((this->nErrors == 0) || (this->nErrors > 1)) ?
-                    this->GetString(0x00190002, pszWorkerContext[1]) : this->GetString(0x00190001, pszWorkerContext[0]));
+                    this->pConfig->GetString(0x00190002, pszWorkerContext[1]) : this->pConfig->GetString(0x00190001, pszWorkerContext[0]));
                 pDlg->m_StatusBar.SetText(szText, 1, 0);
 
                 this->nLastItemId = nItemId;
@@ -227,13 +227,13 @@ namespace app
             this->nErrors = this->nProcessedFiles - this->nDoneWithoutError;
 
             CString szText;
-            szText.Format(this->GetString(0x00190004, pszWorkerContext[3]),
+            szText.Format(this->pConfig->GetString(0x00190004, pszWorkerContext[3]),
                 this->nProcessedFiles,
                 this->nTotalFiles,
                 this->nDoneWithoutError,
                 this->nErrors,
                 ((this->nErrors == 0) || (this->nErrors > 1)) ?
-                this->GetString(0x00190002, pszWorkerContext[1]) : this->GetString(0x00190001, pszWorkerContext[0]),
+                this->pConfig->GetString(0x00190002, pszWorkerContext[1]) : this->pConfig->GetString(0x00190001, pszWorkerContext[0]),
                 this->timer.Format(this->timer.ElapsedTime(), 3));
             pDlg->m_StatusBar.SetText(szText, 1, 0);
 
@@ -328,13 +328,6 @@ namespace app
         {
             pDlg->m_LstInputItems.SetItemText(nItemId, ITEM_COLUMN_TIME, szTime); // Time
             pDlg->m_LstInputItems.SetItemText(nItemId, ITEM_COLUMN_STATUS, szStatus); // Status
-        }
-        CString GetString(int nKey, const TCHAR* szDefault)
-        {
-            CString rValue;
-            if (this->pConfig->m_Language.LookupString(nKey, rValue))
-                return rValue;
-            return szDefault;
         }
     };
 
