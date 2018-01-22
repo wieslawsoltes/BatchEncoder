@@ -91,7 +91,7 @@ namespace worker
                         nLineLen++;
                         if (nLineLen > nBuffSize)
                         {
-                            pWorkerContext->Status(commandLine.nItemId, app::pszDefaulTime, pWorkerContext->GetString(0x00110003, app::pszProgresssLoop[2]));
+                            pWorkerContext->Status(commandLine.nItemId, app::pszDefaulTime, pWorkerContext->pConfig->GetString(0x00110003, app::pszProgresssLoop[2]));
                             pWorkerContext->Callback(commandLine.nItemId, -1, true, true);
                             return false;
                         }
