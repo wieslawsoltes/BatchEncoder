@@ -19,16 +19,18 @@ namespace worker
 {
     bool CWorker::ConvertFileUsingConsole(IWorkerContext* pWorkerContext, CCommandLine &commandLine, util::CSynchronize &syncDown)
     {
+        util::CProcess process;
+        util::CPipe Stderr(true);
+        util::CTimeCount timer;
+        CLuaOutputParser parser;
+        CPipeToStringWriter writer;
+
         if ((commandLine.bUseReadPipes == true) || (commandLine.bUseWritePipes == true))
         {
             pWorkerContext->Status(commandLine.nItemId, app::pszDefaulTime, pWorkerContext->GetString(0x00120001, app::pszConvertConsole[0]));
             pWorkerContext->Callback(commandLine.nItemId, -1, true, true);
             return false;
         }
-
-        util::CProcess process;
-        util::CPipe Stderr(true);
-        util::CTimeCount timer;
 
         // create pipes for stderr
         if (Stderr.Create() == false)
@@ -108,8 +110,6 @@ namespace worker
         Stderr.CloseWrite();
 
         // console progress loop
-        CLuaOutputParser parser;
-        CPipeToStringWriter writer;
         if (writer.ReadLoop(pWorkerContext, commandLine, Stderr, parser, syncDown) == false)
         {
             timer.Stop();
@@ -139,13 +139,6 @@ namespace worker
 
     bool CWorker::ConvertFileUsingPipes(IWorkerContext* pWorkerContext, CCommandLine &commandLine, util::CSynchronize &syncDown)
     {
-        if ((commandLine.bUseReadPipes == false) && (commandLine.bUseWritePipes == false))
-        {
-            pWorkerContext->Status(commandLine.nItemId, app::pszDefaulTime, pWorkerContext->GetString(0x00130001, app::pszConvertPipes[0]));
-            pWorkerContext->Callback(commandLine.nItemId, -1, true, true);
-            return false;
-        }
-
         util::CProcess process;
         util::CPipe Stdin(true);
         util::CPipe Stdout(true);
@@ -156,6 +149,13 @@ namespace worker
         int nProgress = 0;
         util::CTimeCount timer;
 
+        if ((commandLine.bUseReadPipes == false) && (commandLine.bUseWritePipes == false))
+        {
+            pWorkerContext->Status(commandLine.nItemId, app::pszDefaulTime, pWorkerContext->GetString(0x00130001, app::pszConvertPipes[0]));
+            pWorkerContext->Callback(commandLine.nItemId, -1, true, true);
+            return false;
+        }
+ 
         if (commandLine.bUseReadPipes == true)
         {
             // create pipes for stdin
@@ -740,6 +740,8 @@ namespace worker
         CString szDecInputFile;
         CString szDecOutputFile;
         util::COutputPath m_Output;
+        CCommandLine decoderCommandLine;
+        CCommandLine encoderCommandLine;
 
         // prepare encoder
         config::CPath& path = item.m_Paths.Get(0);
@@ -840,7 +842,6 @@ namespace worker
                 CString(pDecFormat->szOutputExtension).MakeLower());
         }
 
-        CCommandLine decoderCommandLine;
         if (bIsValidEncoderInput == false)
         {
             decoderCommandLine.Build(
@@ -854,7 +855,6 @@ namespace worker
                 _T(""));
         }
 
-        CCommandLine encoderCommandLine;
         encoderCommandLine.Build(
             pEncFormat,
             item.nPreset,
@@ -1055,7 +1055,10 @@ namespace worker
 
     void CWorker::Convert(IWorkerContext* pWorkerContext)
     {
-        int nItems = pWorkerContext->pConfig->m_Items.Count();
+        std::queue<config::CItem> queue;
+        util::CSynchronize sync;
+        util::CSynchronize syncDir;
+        util::CSynchronize syncDown;
 
         pWorkerContext->nTotalFiles = 0;
         pWorkerContext->nProcessedFiles = 0;
@@ -1063,11 +1066,7 @@ namespace worker
         pWorkerContext->nErrors = 0;
         pWorkerContext->nLastItemId = -1;
 
-        std::queue<config::CItem> queue;
-        util::CSynchronize sync;
-        util::CSynchronize syncDir;
-        util::CSynchronize syncDown;
-
+        int nItems = pWorkerContext->pConfig->m_Items.Count();
         for (int i = 0; i < nItems; i++)
         {
             config::CItem& item = pWorkerContext->pConfig->m_Items.Get(i);
