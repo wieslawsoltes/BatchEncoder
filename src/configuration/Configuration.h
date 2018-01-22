@@ -44,5 +44,13 @@ namespace config
             this->m_Tools = other.m_Tools;
             this->m_Language = other.m_Language;
         }
+    public:
+        CString GetString(int nKey, const TCHAR* szDefault)
+        {
+            CString rValue;
+            if (this->m_Language.LookupString(nKey, rValue))
+                return rValue;
+            return szDefault;
+        }
     };
 }
