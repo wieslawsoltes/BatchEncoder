@@ -193,7 +193,7 @@ namespace config
 
             if (m_Strings.count(nKey) == 1)
             {
-                return m_Strings[nKey];
+                return m_Strings.at(nKey);
             }
 
             return _T("??");
