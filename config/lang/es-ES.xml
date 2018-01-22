@@ -226,6 +226,8 @@
     <String key="0x0014000F" value="¡Imposible crear archivo de salida!" />
     <String key="0x00140010" value="El archivo de salida ya existe." />
 
+    <String key="0x00150001" value="--:--" />
+
     <!-- Strings Worker Context -->
 
     <String key="0x00190001" value="Error" />
