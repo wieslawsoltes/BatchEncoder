@@ -14,6 +14,16 @@ namespace config
 {
     const std::map<int, const TCHAR*> m_Strings = 
     {
+        // Action Menu
+
+        { 0x00030002, _T("Conve&rt\tF9") },
+        { 0x00030003, _T("S&top\tF9") },
+
+        // Main Dialog
+
+        { 0x000A0017, _T("Conve&rt") },
+        { 0x000A0018, _T("S&top") },
+
         // Strings Work Thread
 
         { 0x00110001, _T("Error: can not load progress script.") },
