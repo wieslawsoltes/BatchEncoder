@@ -3,6 +3,7 @@
 
 #pragma once
 
+#include "Strings.h"
 #include "OutputParser.h"
 #include "LuaProgess.h"
 
@@ -29,14 +30,14 @@ namespace worker
 
             if (this->luaProgress.Open(CT2CA(this->pCommandLine->pFormat->szFunction)) == false)
             {
-                this->pWorkerContext->Status(this->pCommandLine->nItemId, app::pszDefaulTime, this->pWorkerContext->pConfig->GetString(0x00110001, app::pszProgresssLoop[0]));
+                this->pWorkerContext->Status(this->pCommandLine->nItemId, pWorkerContext->pConfig->GetString(0x00150001), this->pWorkerContext->pConfig->GetString(0x00110001));
                 this->pWorkerContext->Callback(this->pCommandLine->nItemId, -1, true, true);
                 return false;
             }
 
             if (this->luaProgress.Init() == false)
             {
-                this->pWorkerContext->Status(this->pCommandLine->nItemId, app::pszDefaulTime, this->pWorkerContext->pConfig->GetString(0x00110002, app::pszProgresssLoop[1]));
+                this->pWorkerContext->Status(this->pCommandLine->nItemId, pWorkerContext->pConfig->GetString(0x00150001), this->pWorkerContext->pConfig->GetString(0x00110002));
                 this->pWorkerContext->Callback(this->pCommandLine->nItemId, -1, true, true);
                 return false;
             }
