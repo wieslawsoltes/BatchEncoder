@@ -86,10 +86,10 @@ namespace worker
                 }
             }
 
-            syncDown.Release();
-
             if (bFailed == true)
             {
+                syncDown.Release();
+
                 timer.Stop();
 
                 Stderr.CloseRead();
@@ -306,10 +306,10 @@ namespace worker
                 }
             }
 
-            syncDown.Release();
-
             if (bFailed == true)
             {
+                syncDown.Release();
+
                 timer.Stop();
 
                 if (commandLine.bUseReadPipes == true)
@@ -636,10 +636,10 @@ namespace worker
                 }
             }
 
-            syncDown.Release();
-
             if (bFailed == true)
             {
+                syncDown.Release();
+
                 timer.Stop();
 
                 Stdin.CloseRead();
@@ -692,10 +692,10 @@ namespace worker
                 }
             }
 
-            syncDown.Release();
-
             if (bFailed == true)
             {
+                syncDown.Release();
+
                 timer.Stop();
 
                 decoderProcess.Stop(false, decoderCommandLine.pFormat->nExitCodeSuccess);
@@ -875,6 +875,7 @@ namespace worker
         {
             if (m_Output.CreateOutputPath(szEncOutputFile) == false)
             {
+                syncDir.Release();
                 pWorkerContext->Status(item.nId, app::pszDefaulTime, pWorkerContext->GetString(0x0014000F, app::pszConvertItem[14]));
                 return false;
             }
