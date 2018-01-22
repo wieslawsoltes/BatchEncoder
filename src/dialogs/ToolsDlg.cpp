@@ -3,7 +3,6 @@
 
 #include "StdAfx.h"
 #include "MainApp.h"
-#include "Strings.h"
 #include "language\LanguageHelper.h"
 #include "utilities\Utilities.h"
 #include "utilities\UnicodeUtf8.h"
