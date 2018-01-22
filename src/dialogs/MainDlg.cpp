@@ -3,7 +3,6 @@
 
 #include "StdAfx.h"
 #include "MainApp.h"
-#include "Strings.h"
 #include "language\LanguageHelper.h"
 #include "utilities\OutputPath.h"
 #include "utilities\Utilities.h"
