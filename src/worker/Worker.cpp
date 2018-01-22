@@ -107,22 +107,16 @@ namespace worker
         // close unused pipe handle
         Stderr.CloseWrite();
 
-        syncDown.Wait();
-        ::SetCurrentDirectory(app::m_App.szSettingsPath);
-
         // console progress loop
         CLuaOutputParser parser;
         CPipeToStringWriter writer;
-        if (writer.ReadLoop(pWorkerContext, commandLine, Stderr, parser) == false)
+        if (writer.ReadLoop(pWorkerContext, commandLine, Stderr, parser, syncDown) == false)
         {
-            syncDown.Release();
             timer.Stop();
             Stderr.CloseRead();
             process.Stop(false, commandLine.pFormat->nExitCodeSuccess);
             return false;
         }
-
-        syncDown.Release();
 
         timer.Stop();
         Stderr.CloseRead();
