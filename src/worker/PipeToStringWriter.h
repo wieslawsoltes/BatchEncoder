@@ -5,6 +5,7 @@
 
 #include <cstring>
 #include "utilities\Pipe.h"
+#include "utilities\Synchronize.h"
 #include "OutputParser.h"
 #include "WorkerContext.h"
 #include "Strings.h"
@@ -17,7 +18,7 @@ namespace worker
         CPipeToStringWriter() { }
         virtual ~CPipeToStringWriter() { }
     public:
-        bool ReadLoop(IWorkerContext* pWorkerContext, CCommandLine &commandLine, util::CPipe &Stderr, IOutputParser &parser)
+        bool ReadLoop(IWorkerContext* pWorkerContext, CCommandLine &commandLine, util::CPipe &Stderr, IOutputParser &parser, util::CSynchronize &syncDown)
         {
             const int nBuffSize = 4096;
             char szReadBuff[nBuffSize];
@@ -29,10 +30,16 @@ namespace worker
             bool bRunning = true;
             int nLineLen = 0;
 
+            syncDown.Wait();
+            ::SetCurrentDirectory(app::m_App.szSettingsPath);
+
             if (parser.Init(pWorkerContext, &commandLine) == false)
             {
+                syncDown.Release();
                 return false; // ERROR
             }
+
+            syncDown.Release();
 
             // initialize buffers
             std::memset(szReadBuff, 0, sizeof(szReadBuff));
