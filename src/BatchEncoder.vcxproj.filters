@@ -51,9 +51,6 @@
     <ClCompile Include="MainApp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Strings.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="dialogs\AboutDlg.cpp">
       <Filter>Source Files\Dialogs</Filter>
     </ClCompile>
@@ -90,9 +87,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="MainApp.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Strings.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="configuration\Configuration.h">
