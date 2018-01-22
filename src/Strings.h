@@ -7,7 +7,7 @@
 
 namespace app
 {
-    const std::map<int, TCHAR*> m_Strings = {
+    const std::map<int, const TCHAR*> m_Strings = {
 
         // Strings Work Thread
 
