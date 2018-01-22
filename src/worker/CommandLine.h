@@ -6,64 +6,67 @@
 #include <cstring>
 #include "utilities\Utilities.h"
 
-class CCommandLine
+namespace worker
 {
-public:
-    config::CFormat * pFormat;
-    int nPreset;
-    int nItemId;
-    CString szInputFile;
-    CString szOutputFile;
-    CString szOutputPath;
-    bool bUseReadPipes;
-    bool bUseWritePipes;
-    CString szOptions;
-    TCHAR pszCommandLine[65536];
-public:
-    CCommandLine() { }
-    virtual ~CCommandLine() { }
-public:
-    void Build(config::CFormat *pFormat, int nPreset, int nItemId, CString szInputFile, CString szOutputFile, bool bUseReadPipes, bool bUseWritePipes, CString szAdditionalOptions)
+    class CCommandLine
     {
-        config::CPreset& preset = pFormat->m_Presets.Get(nPreset);
+    public:
+        config::CFormat * pFormat;
+        int nPreset;
+        int nItemId;
+        CString szInputFile;
+        CString szOutputFile;
+        CString szOutputPath;
+        bool bUseReadPipes;
+        bool bUseWritePipes;
+        CString szOptions;
+        TCHAR pszCommandLine[65536];
+    public:
+        CCommandLine() { }
+        virtual ~CCommandLine() { }
+    public:
+        void Build(config::CFormat *pFormat, int nPreset, int nItemId, CString szInputFile, CString szOutputFile, bool bUseReadPipes, bool bUseWritePipes, CString szAdditionalOptions)
+        {
+            config::CPreset& preset = pFormat->m_Presets.Get(nPreset);
 
-        this->pFormat = pFormat;
-        this->nPreset = nPreset;
-        this->nItemId = nItemId;
-        this->szInputFile = szInputFile;
-        this->szOutputFile = szOutputFile;
-        this->bUseReadPipes = bUseReadPipes;
-        this->bUseWritePipes = bUseWritePipes;
+            this->pFormat = pFormat;
+            this->nPreset = nPreset;
+            this->nItemId = nItemId;
+            this->szInputFile = szInputFile;
+            this->szOutputFile = szOutputFile;
+            this->bUseReadPipes = bUseReadPipes;
+            this->bUseWritePipes = bUseWritePipes;
 
-        if (szAdditionalOptions.GetLength() > 0)
-            this->szOptions = preset.szOptions + _T(" ") + szAdditionalOptions;
-        else
-            this->szOptions = preset.szOptions;
+            if (szAdditionalOptions.GetLength() > 0)
+                this->szOptions = preset.szOptions + _T(" ") + szAdditionalOptions;
+            else
+                this->szOptions = preset.szOptions;
 
-        CString szCommandLine = pFormat->szTemplate;
+            CString szCommandLine = pFormat->szTemplate;
 
-        szCommandLine = util::ReplaceNoCase(szCommandLine, _T("$EXE"), _T("\"$EXE\""));
-        szCommandLine = util::ReplaceNoCase(szCommandLine, _T("$EXE"), pFormat->szPath);
-        szCommandLine = util::ReplaceNoCase(szCommandLine, _T("$OPTIONS"), this->szOptions);
+            szCommandLine = util::ReplaceNoCase(szCommandLine, _T("$EXE"), _T("\"$EXE\""));
+            szCommandLine = util::ReplaceNoCase(szCommandLine, _T("$EXE"), pFormat->szPath);
+            szCommandLine = util::ReplaceNoCase(szCommandLine, _T("$OPTIONS"), this->szOptions);
 
-        szCommandLine = util::ReplaceNoCase(szCommandLine, _T("$INFILE"), _T("\"$INFILE\""));
-        if (bUseReadPipes == true)
-            szCommandLine = util::ReplaceNoCase(szCommandLine, _T("$INFILE"), _T("-"));
-        else
-            szCommandLine = util::ReplaceNoCase(szCommandLine, _T("$INFILE"), this->szInputFile);
+            szCommandLine = util::ReplaceNoCase(szCommandLine, _T("$INFILE"), _T("\"$INFILE\""));
+            if (bUseReadPipes == true)
+                szCommandLine = util::ReplaceNoCase(szCommandLine, _T("$INFILE"), _T("-"));
+            else
+                szCommandLine = util::ReplaceNoCase(szCommandLine, _T("$INFILE"), this->szInputFile);
 
-        szCommandLine = util::ReplaceNoCase(szCommandLine, _T("$OUTFILE"), _T("\"$OUTFILE\""));
-        if (bUseWritePipes == true)
-            szCommandLine = util::ReplaceNoCase(szCommandLine, _T("$OUTFILE"), _T("-"));
-        else
-            szCommandLine = util::ReplaceNoCase(szCommandLine, _T("$OUTFILE"), this->szOutputFile);
+            szCommandLine = util::ReplaceNoCase(szCommandLine, _T("$OUTFILE"), _T("\"$OUTFILE\""));
+            if (bUseWritePipes == true)
+                szCommandLine = util::ReplaceNoCase(szCommandLine, _T("$OUTFILE"), _T("-"));
+            else
+                szCommandLine = util::ReplaceNoCase(szCommandLine, _T("$OUTFILE"), this->szOutputFile);
 
-        this->szOutputPath = util::GetFilePath(this->szOutputFile);
+            this->szOutputPath = util::GetFilePath(this->szOutputFile);
 
-        szCommandLine = util::ReplaceNoCase(szCommandLine, _T("$OUTPATH"), _T("\"$OUTPATH\""));
-        szCommandLine = util::ReplaceNoCase(szCommandLine, _T("$OUTPATH"), this->szOutputPath);
+            szCommandLine = util::ReplaceNoCase(szCommandLine, _T("$OUTPATH"), _T("\"$OUTPATH\""));
+            szCommandLine = util::ReplaceNoCase(szCommandLine, _T("$OUTPATH"), this->szOutputPath);
 
-        std::memset(this->pszCommandLine, 0, sizeof(this->pszCommandLine));
-        lstrcpy(this->pszCommandLine, szCommandLine.GetBuffer(szCommandLine.GetLength()));
-    }
-};
+            std::memset(this->pszCommandLine, 0, sizeof(this->pszCommandLine));
+            lstrcpy(this->pszCommandLine, szCommandLine.GetBuffer(szCommandLine.GetLength()));
+        }
+    };
+}
