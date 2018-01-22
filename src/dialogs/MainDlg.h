@@ -68,8 +68,8 @@ namespace app
         MainDlgDropContext m_DD;
         config::CConfiguration m_Config;
     public:
-        IWorkerContext* pWorkerContext;
         util::CThread m_WorkerThread;
+        worker::IWorkerContext* pWorkerContext;
         worker::CWorker m_Worker;
     public:
         int nEdtItem;
