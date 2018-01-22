@@ -226,6 +226,8 @@
     <String key="0x0014000F" value="Unable to create output path!" />
     <String key="0x00140010" value="Output file already exists." />
 
+    <String key="0x00150001" value="--:--" />
+
     <!-- Strings Worker Context -->
 
     <String key="0x00190001" value="Error" />
