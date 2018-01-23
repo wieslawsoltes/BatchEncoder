@@ -302,7 +302,7 @@ namespace app
                                     CString szProgress;
                                     szProgress.Format(_T("%d%%\0"), nItemProgress);
                                     item.szStatus = szProgress;
-                                    pDlg->m_LstInputItems.RedrawItems(i, i);
+                                    pDlg->RedrawItem(i);
                                     item.nPreviousProgress = nItemProgress;
                                 }
                                 else if (nItemProgress == 100 && nItemProgress > nItemPreviousProgress)
@@ -328,7 +328,7 @@ namespace app
             config::CItem &item = pConfig->m_Items.Get(nItemId);
             item.szTime = szTime;
             item.szStatus = szStatus;
-            pDlg->m_LstInputItems.RedrawItems(nItemId, nItemId);
+            pDlg->RedrawItem(nItemId);
         }
     };
 
@@ -1370,9 +1370,16 @@ namespace app
                 {
                     if (m_LstInputItems.GetItemState(i, LVIS_SELECTED) == LVIS_SELECTED)
                     {
-                        m_LstInputItems.SetCheck(i, TRUE);
+                        config::CItem& item = m_Config.m_Items.Get(i);
+                        if (item.bChecked == false)
+                        {
+                            item.bChecked = true;
+                            this->RedrawItem(i);
+                        }
                     }
                 }
+
+                this->UpdateStatusBar();
             }
         }
     }
@@ -1388,12 +1395,17 @@ namespace app
                 {
                     if (m_LstInputItems.GetItemState(i, LVIS_SELECTED) == LVIS_SELECTED)
                     {
-                        m_LstInputItems.SetCheck(i, FALSE);
+                        config::CItem& item = m_Config.m_Items.Get(i);
+                        if (item.bChecked == true)
+                        {
+                            item.bChecked = false;
+                            this->RedrawItem(i);
+                        }
                     }
                 }
-            }
 
-            this->UpdateStatusBar();
+                this->UpdateStatusBar();
+            }
         }
     }
 
@@ -2133,7 +2145,7 @@ namespace app
     {
         config::CItem& item = m_Config.m_Items.Get(nItem);
         item.bChecked = !item.bChecked;
-        m_LstInputItems.RedrawItems(nItem, nItem);
+        this->RedrawItem(nItem);
     }
 
     int CMainDlg::AddToItems(CString szPath)
@@ -2187,11 +2199,14 @@ namespace app
         return (int)m_Config.m_Items.Count() - 1;
     }
 
-    void CMainDlg::AddToList(config::CItem &item, int nItem)
+    void CMainDlg::RedrawItem(int nItem)
     {
-        m_LstInputItems.SetCheck(nItem, item.bChecked);
-        
         m_LstInputItems.RedrawItems(nItem, nItem);
+    }
+
+    void CMainDlg::RedrawItem(int nStart, nEnd)
+    {
+        m_LstInputItems.RedrawItems(nStart, nEnd);
     }
 
     bool CMainDlg::AddToList(CString szPath)
@@ -2207,8 +2222,7 @@ namespace app
         if (nItem == -1)
             return false;
 
-        config::CItem& item = m_Config.m_Items.Get(nItem);
-        this->AddToList(item, nItem);
+        this->RedrawItem(nItem);
 
         return true;
     }
@@ -2239,7 +2253,7 @@ namespace app
                 {
                     config::CItem& item = m_Config.m_Items.Get(nEdtItem);
                     item.szOptions = szEdtText;
-                    m_LstInputItems.RedrawItems(nEdtItem, nEdtItem);
+                    this->RedrawItem(nEdtItem);
                 }
             }
 
@@ -2481,7 +2495,7 @@ namespace app
                         config::CItem& item = m_Config.m_Items.Get(i);
                         item.szFormatId = format.szId;
                         item.nPreset = nPreset;
-                        m_LstInputItems.RedrawItems(i, i);
+                        this->RedrawItem(i);
                         nSelected++;
                     }
                 }
@@ -2495,7 +2509,7 @@ namespace app
                         item.nPreset = nPreset;
                     }
 
-                    m_LstInputItems.RedrawItems(0, nItems - 1);
+                    this->RedrawItem(0, nItems - 1);
                 }
             }
         }
@@ -2520,7 +2534,7 @@ namespace app
                 {
                     config::CItem& item = m_Config.m_Items.Get(i);
                     item.szTime = szDefaultTime;
-                    m_LstInputItems.RedrawItems(i, i);
+                    this->RedrawItem(i);
                     nSelected++;
                 }
             }
@@ -2532,7 +2546,7 @@ namespace app
                     config::CItem& item = m_Config.m_Items.Get(i);
                     item.szTime = szDefaultTime;
                 }
-                m_LstInputItems.RedrawItems(0, nItems - 1);
+                this->RedrawItem(0, nItems - 1);
             }
         }
     }
@@ -2551,7 +2565,7 @@ namespace app
                 {
                     config::CItem& item = m_Config.m_Items.Get(i);
                     item.szStatus = szDefaultStatus;
-                    m_LstInputItems.RedrawItems(i, i);
+                    this->RedrawItem(i);
                     nSelected++;
                 }
             }
@@ -2563,7 +2577,7 @@ namespace app
                     config::CItem& item = m_Config.m_Items.Get(i);
                     item.szStatus = szDefaultStatus;
                 }
-                m_LstInputItems.RedrawItems(0, nItems - 1);
+                this->RedrawItem(0, nItems - 1);
             }
         }
     }
@@ -2675,7 +2689,7 @@ namespace app
                 {
                     item.szTime = szDefaultTime;
                     item.szStatus = szDefaultStatus;
-                    m_LstInputItems.RedrawItems(i, i);
+                    this->RedrawItem(i);
                     nChecked++;
                 }
             }
