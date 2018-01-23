@@ -377,6 +377,7 @@ namespace app
         ON_MESSAGE(WM_ITEMCHANGED, OnListItemChaged)
         ON_MESSAGE(WM_NOTIFYFORMAT, OnNotifyFormat)
         ON_NOTIFY(LVN_GETDISPINFO, IDC_LIST_ITEMS, OnLvnGetdispinfoListItems)
+        ON_NOTIFY(LVN_ODFINDITEM, IDC_LIST_ITEMS, OnOdfindListItems)
         ON_NOTIFY(NM_CLICK, IDC_LIST_ITEMS, OnNMClickListItems)
         ON_EN_KILLFOCUS(IDC_EDIT_ITEM, OnEnKillfocusEditItem)
         ON_NOTIFY(LVN_KEYDOWN, IDC_LIST_ITEMS, OnLvnKeydownListInputItems)
@@ -727,10 +728,62 @@ namespace app
 
             _tcscpy_s(pItem->pszText, pItem->cchTextMax, szText);
         }
+
+        if( pItem->mask & LVIF_IMAGE) 
+        {
+            config::CItem& item = m_Config.m_Items.Get(nItem);
+
+            pItem->mask |= LVIF_STATE;
+            pItem->stateMask = LVIS_STATEIMAGEMASK;
+            pItem->state = item.bChecked ? INDEXTOSTATEIMAGEMASK(2) : INDEXTOSTATEIMAGEMASK(1);
+        }
+
+        *pResult = 0;
+    }
+
+    void CVirtualListDlg::OnOdfindListItems(NMHDR* pNMHDR, LRESULT* pResult) 
+    {
+        NMLVFINDITEM* pFindInfo = (NMLVFINDITEM*)pNMHDR;
+        *pResult = -1;
+        if((pFindInfo->lvfi.flags & LVFI_STRING) == 0)
+        {
+            return;
+        }
+
+        CString szSearchStr = pFindInfo->lvfi.psz;
+        int startPos = pFindInfo->iStart;
+        if (startPos >= m_LstInputItems.GetItemCount())
+            startPos = 0;
+
+        int currentPos = startPos;
+        do
+        {
+            config::CItem& item = m_Config.m_Items.Get(nItem);
+            if( _tcsnicmp(item.szName, szSearchStr, szSearchStr.GetLength()) == 0)
+            {
+                *pResult = currentPos;
+                break;
+            }
+            currentPos++;
+            if(currentPos >= m_LstInputItems.GetItemCount())
+                currentPos = 0;
+        } while(currentPos != startPos);		
     }
 
     void CMainDlg::OnNMClickListItems(NMHDR *pNMHDR, LRESULT *pResult)
     {
+        NMLISTVIEW* pNMListView = (NM_LISTVIEW*)pNMHDR;
+        LVHITTESTINFO hitInfo;
+        hitInfo.pt = pNMListView->ptAction;
+        int nItem = m_LstInputItems.HitTest(&hitInfo); 
+        if (nItem != -1)
+        {
+            if( (hitInfo.flags & LVHT_ONITEMSTATEICON) != 0)
+            {
+                ToggleItem(nItem);
+            }
+        }
+
         LPNMITEMACTIVATE pNMItemActivate = reinterpret_cast<LPNMITEMACTIVATE>(pNMHDR);
         if (pNMItemActivate->iSubItem == -1 || pNMItemActivate->iItem == -1)
         {
@@ -768,6 +821,13 @@ namespace app
             LPNMLVKEYDOWN pLVKeyDow = reinterpret_cast<LPNMLVKEYDOWN>(pNMHDR);
             switch (pLVKeyDow->wVKey)
             {
+            case VK_SPACE:
+                int nMark = m_LstInputItems.GetSelectionMark();
+                if (nMark != -1)
+                {
+                    ToggleCheckBox(mnMark);
+                }
+                break;
             case VK_INSERT:
                 this->OnEditCrop();
                 break;
@@ -1858,10 +1918,6 @@ namespace app
         {
             config::CItem& item = m_Config.m_Items.Get(i);
             item.nId = i;
-            item.bChecked = this->m_LstInputItems.GetCheck(i) == TRUE;
-            item.szOptions = this->m_LstInputItems.GetItemText(i, ITEM_COLUMN_OPTIONS);
-            item.szTime = this->m_LstInputItems.GetItemText(i, ITEM_COLUMN_TIME);
-            item.szStatus = this->m_LstInputItems.GetItemText(i, ITEM_COLUMN_STATUS);
         }
     }
 
@@ -2068,6 +2124,13 @@ namespace app
         // option: ToolsDialogResize
 
         // option: ToolsListColumns
+    }
+
+    void CMainDlg::ToggleItem(int nItem)
+    {
+        config::CItem& item = m_Config.m_Items.Get(nItem);
+        item.bChecked = !item.bChecked;
+        m_LstInputItems.RedrawItems(nItem, nItem);
     }
 
     int CMainDlg::AddToItems(CString szPath)
