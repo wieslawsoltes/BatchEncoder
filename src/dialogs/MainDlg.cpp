@@ -1311,14 +1311,14 @@ namespace app
 
             for (int i = (nItems - 1); i >= 0; i--)
             {
-                if (m_LstInputItems.GetCheck(i) == TRUE)
-                {
+                config::CItem& item = m_Config.m_Items.Get(i);
+                if (item.bChecked == true)
                     m_Config.m_Items.Remove(i);
-                }
             }
 
             nItems = m_Config.m_Items.Count();
             m_LstInputItems.SetItemCount(nItems);
+            this->RedrawItem(0, nItems - 1);
 
             if (nItems == 0)
             {
@@ -1340,14 +1340,14 @@ namespace app
 
             for (int i = (nItems - 1); i >= 0; i--)
             {
-                if (m_LstInputItems.GetCheck(i) == FALSE)
-                {
+                config::CItem& item = m_Config.m_Items.Get(i);
+                if (item.bChecked == false)
                     m_Config.m_Items.Remove(i);
-                }
             }
 
             nItems = m_Config.m_Items.Count();
             m_LstInputItems.SetItemCount(nItems);
+            this->RedrawItem(0, nItems - 1);
 
             if (nItems == 0)
             {
