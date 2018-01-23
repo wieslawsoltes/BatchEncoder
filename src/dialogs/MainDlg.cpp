@@ -2204,7 +2204,7 @@ namespace app
         m_LstInputItems.RedrawItems(nItem, nItem);
     }
 
-    void CMainDlg::RedrawItem(int nStart, nEnd)
+    void CMainDlg::RedrawItem(int nStart, int nEnd)
     {
         m_LstInputItems.RedrawItems(nStart, nEnd);
     }
