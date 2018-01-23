@@ -126,6 +126,7 @@ namespace app
         afx_msg void OnEditRemoveUnchecked();
         afx_msg void OnEditCheckSelected();
         afx_msg void OnEditUncheckSelected();
+        afx_msg void OnEditToggleSelected();
         afx_msg void OnEditSelectAll();
         afx_msg void OnEditSelectNone();
         afx_msg void OnEditInvertSelection();
