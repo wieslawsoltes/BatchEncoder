@@ -733,7 +733,6 @@ namespace app
         {
             config::CItem& item = m_Config.m_Items.Get(nItem);
 
-            pItem->iImage = nullptr;
             pItem->mask |= LVIF_STATE;
             pItem->stateMask = LVIS_STATEIMAGEMASK;
             pItem->state = item.bChecked ? INDEXTOSTATEIMAGEMASK(2) : INDEXTOSTATEIMAGEMASK(1);
@@ -825,10 +824,10 @@ namespace app
             switch (pLVKeyDow->wVKey)
             {
             case VK_SPACE:
-                int nMark = m_LstInputItems.GetSelectionMark();
-                if (nMark != -1)
                 {
-                    ToggleCheckBox(nMark);
+                    int nMark = m_LstInputItems.GetSelectionMark();
+                    if (nMark != -1)
+                        ToggleItem(nMark);
                 }
                 break;
             case VK_INSERT:
