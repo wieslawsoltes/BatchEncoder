@@ -162,6 +162,7 @@ namespace app
         bool IsItemSelected(int nItem);
         void SelectItem(int nItem);
         void DeselectItem(int nItem);
+        void MakeItemVisible(int nItem);
         void ToggleItem(int nItem);
         int AddToItems(CString szPath);
         bool AddToList(CString szPath);
