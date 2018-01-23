@@ -374,6 +374,7 @@ namespace app
         ON_WM_HELPINFO()
         ON_MESSAGE(WM_ITEMCHANGED, OnListItemChaged)
         ON_MESSAGE(WM_NOTIFYFORMAT, OnNotifyFormat)
+        ON_NOTIFY(LVN_GETDISPINFO, IDC_LIST_ITEMS, OnLvnGetdispinfoListItems)
         ON_NOTIFY(NM_CLICK, IDC_LIST_ITEMS, OnNMClickListItems)
         ON_EN_KILLFOCUS(IDC_EDIT_ITEM, OnEnKillfocusEditItem)
         ON_NOTIFY(LVN_KEYDOWN, IDC_LIST_ITEMS, OnLvnKeydownListInputItems)
@@ -673,6 +674,57 @@ namespace app
     #else
         return NFR_ANSI;
     #endif
+    }
+
+    void CMainDlg::OnLvnGetdispinfoListItems(NMHDR* pNMHDR, LRESULT* pResult) 
+    {
+        NMLVDISPINFO *pDispInfo = reinterpret_cast<NMLVDISPINFO*>(pNMHDR);
+        LV_ITEM* pItem = &(pDispInfo)->item;
+        int iItem = pItem->iItem;
+
+        if (pItem->mask & LVIF_TEXT)
+        {
+            config::CItem& item = m_Config.m_Items.Get(nItem);
+            CString szText;
+
+            switch(pItem->iSubItem)
+            {
+            case ITEM_COLUMN_NAME:
+                    // [Name] : item name
+                    szText = item.szName;
+                    break;
+            case ITEM_COLUMN_INPUT:
+                    // [Type] : input extension 
+                    szText = item.szExtension;
+                    break;
+            case ITEM_COLUMN_SIZE:
+                    // [Size (bytes)] : file size
+                    szText = item.szSize;
+                    break;
+            case ITEM_COLUMN_OUTPUT:
+                    // [Output] : output format
+                    szText = item.szFormatId;
+                    break;
+            case ITEM_COLUMN_PRESET:
+                    // [Preset] : selected preset index
+                    szText.Format(_T("%d"), item.nPreset);
+                    break;
+            case ITEM_COLUMN_OPTIONS:
+                    // [Options] : additional options
+                    szText = item.szOptions;
+                    break;
+            case ITEM_COLUMN_TIME:
+                    // [Time] : encoder/decoder conversion time
+                    szText.Format(_T("%s"), (item.szTime.CompareNoCase(_T("")) == 0) ? m_Config.GetString(0x00150001) : item.szTime);
+                    break;
+            case ITEM_COLUMN_STATUS:
+                    // [Status] : encoder/decoder progress status
+                    szText.Format(_T("%s"), (item.szStatus.CompareNoCase(_T("")) == 0) ? m_Config.GetString(0x00210001) : item.szStatus);
+                    break;
+            }
+
+            _tcscpy_s(pItem->pszText, pItem->cchTextMax, szText);
+        }
     }
 
     void CMainDlg::OnNMClickListItems(NMHDR *pNMHDR, LRESULT *pResult)
