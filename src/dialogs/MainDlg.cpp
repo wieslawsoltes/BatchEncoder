@@ -328,7 +328,7 @@ namespace app
             config::CItem &item = pConfig->m_Items.Get(nItemId);
             item.szTime = szTime;
             item.szStatus = szStatus;
-            pDlg->m_LstInputItems.RedrawItems(i, i);
+            pDlg->m_LstInputItems.RedrawItems(nItemId, nItemId);
         }
     };
 
@@ -683,7 +683,7 @@ namespace app
     {
         NMLVDISPINFO *pDispInfo = reinterpret_cast<NMLVDISPINFO*>(pNMHDR);
         LV_ITEM* pItem = &(pDispInfo)->item;
-        int iItem = pItem->iItem;
+        int nItem = pItem->iItem;
 
         if (pItem->mask & LVIF_TEXT)
         {
@@ -729,10 +729,11 @@ namespace app
             _tcscpy_s(pItem->pszText, pItem->cchTextMax, szText);
         }
 
-        if( pItem->mask & LVIF_IMAGE) 
+        if(pItem->mask & LVIF_IMAGE) 
         {
             config::CItem& item = m_Config.m_Items.Get(nItem);
 
+            pItem->iImage = nullptr;
             pItem->mask |= LVIF_STATE;
             pItem->stateMask = LVIS_STATEIMAGEMASK;
             pItem->state = item.bChecked ? INDEXTOSTATEIMAGEMASK(2) : INDEXTOSTATEIMAGEMASK(1);
@@ -741,7 +742,7 @@ namespace app
         *pResult = 0;
     }
 
-    void CVirtualListDlg::OnOdfindListItems(NMHDR* pNMHDR, LRESULT* pResult) 
+    void CMainDlg::OnOdfindListItems(NMHDR* pNMHDR, LRESULT* pResult) 
     {
         NMLVFINDITEM* pFindInfo = (NMLVFINDITEM*)pNMHDR;
         *pResult = -1;
@@ -758,7 +759,7 @@ namespace app
         int currentPos = startPos;
         do
         {
-            config::CItem& item = m_Config.m_Items.Get(nItem);
+            config::CItem& item = m_Config.m_Items.Get(currentPos);
             if( _tcsnicmp(item.szName, szSearchStr, szSearchStr.GetLength()) == 0)
             {
                 *pResult = currentPos;
@@ -827,7 +828,7 @@ namespace app
                 int nMark = m_LstInputItems.GetSelectionMark();
                 if (nMark != -1)
                 {
-                    ToggleCheckBox(mnMark);
+                    ToggleCheckBox(nMark);
                 }
                 break;
             case VK_INSERT:
@@ -1316,13 +1317,13 @@ namespace app
                 }
             }
 
-            nItems = m_Config.Count();
+            nItems = m_Config.m_Items.Count();
             m_LstInputItems.SetItemCount(nItems);
 
             if (nItems == 0)
             {
                 m_Config.m_Items.RemoveAll();
-               m_LstInputItems.SetItemCount(0);
+                m_LstInputItems.SetItemCount(0);
             }
 
             this->UpdateStatusBar();
