@@ -802,7 +802,9 @@ namespace app
 
         nEdtItem = pNMItemActivate->iItem;
         nEdtSubItem = pNMItemActivate->iSubItem;
-        szEdtText = m_LstInputItems.GetItemText(nEdtItem, nEdtSubItem);
+
+        config::CItem& item = m_Config.m_Items.Get(nEdtItem);
+        szEdtText = item.szOptions;
 
         ShowEdtItem();
 
@@ -2231,8 +2233,15 @@ namespace app
             if (bUpdateText == TRUE)
             {
                 m_EdtItem.GetWindowText(szEdtText);
-                m_LstInputItems.SetItemText(nEdtItem, nEdtSubItem, szEdtText);
+
+                if (nEdtSubItem == ITEM_COLUMN_OPTIONS)
+                {
+                    config::CItem& item = m_Config.m_Items.Get(nEdtItem);
+                    item.szOptions = szEdtText;
+                    m_LstInputItems.RedrawItems(nEdtItem, nEdtItem);
+                }
             }
+
             m_EdtItem.HideCaret();
             m_EdtItem.ShowWindow(SW_HIDE);
             m_LstInputItems.SetFocus();
