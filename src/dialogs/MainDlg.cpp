@@ -217,7 +217,7 @@ namespace app
                 this->nLastItemId = nItemId;
 
                 if (pDlg->m_Config.m_Options.bEnsureItemIsVisible == true)
-                    pDlg->m_LstInputItems.EnsureVisible(nItemId, FALSE);
+                    pDlg->MakeItemVisible(nItemId);
             }
         }
         void Done()
@@ -280,7 +280,7 @@ namespace app
                     {
                         this->nLastItemId = nItemId;
                         if (pDlg->m_Config.m_Options.bEnsureItemIsVisible == true)
-                            pDlg->m_LstInputItems.EnsureVisible(nItemId, FALSE);
+                            pDlg->MakeItemVisible(nItemId);
                     }
 
                     int nTotalProgress = 0;
@@ -1254,7 +1254,7 @@ namespace app
 
             for (int i = (nItems - 1); i >= 0; i--)
             {
-                if (m_LstInputItems.GetItemState(i, LVIS_SELECTED) == LVIS_SELECTED)
+                if (this->IsItemSelected(i))
                 {
                     m_Config.m_Items.Remove(i);
                     nItemLastRemoved = i;
@@ -1268,13 +1268,13 @@ namespace app
             {
                 if (nItemLastRemoved < nItems && nItems >= 0)
                 {
-                    m_LstInputItems.SetItemState(nItemLastRemoved, LVIS_SELECTED, LVIS_SELECTED);
-                    m_LstInputItems.EnsureVisible(nItemLastRemoved, FALSE);
+                    this->SelectItem(nItemLastRemoved);
+                    this->MakeItemVisible(nItemLastRemoved);
                 }
                 else if (nItemLastRemoved >= nItems && nItems >= 0)
                 {
-                    m_LstInputItems.SetItemState(nItemLastRemoved - 1, LVIS_SELECTED, LVIS_SELECTED);
-                    m_LstInputItems.EnsureVisible(nItemLastRemoved, FALSE);
+                    this->SelectItem(nItemLastRemoved - 1);
+                    this->MakeItemVisible(nItemLastRemoved - 1);
                 }
             }
 
@@ -1295,10 +1295,10 @@ namespace app
             int nItems = m_Config.m_Items.Count();
             for (int i = 0; i < nItems; i++)
             {
-                if (m_LstInputItems.GetItemState(i, LVIS_SELECTED) == LVIS_SELECTED)
-                    m_LstInputItems.SetItemState(i, 0, LVIS_SELECTED);
+                if (this->IsItemSelected(i))
+                    this->DeselectItem(i);
                 else
-                    m_LstInputItems.SetItemState(i, LVIS_SELECTED, LVIS_SELECTED);
+                    this->SelectItem(i);
             }
 
             OnEditRemove();
@@ -1372,7 +1372,7 @@ namespace app
             {
                 for (int i = 0; i < nItems; i++)
                 {
-                    if (m_LstInputItems.GetItemState(i, LVIS_SELECTED) == LVIS_SELECTED)
+                    if (this->IsItemSelected(i))
                     {
                         config::CItem& item = m_Config.m_Items.Get(i);
                         if (item.bChecked == false)
@@ -1397,7 +1397,7 @@ namespace app
             {
                 for (int i = 0; i < nItems; i++)
                 {
-                    if (m_LstInputItems.GetItemState(i, LVIS_SELECTED) == LVIS_SELECTED)
+                    if (this->IsItemSelected(i))
                     {
                         config::CItem& item = m_Config.m_Items.Get(i);
                         if (item.bChecked == true)
@@ -1421,7 +1421,7 @@ namespace app
             {
                 for (int i = 0; i < nItems; i++)
                 {
-                    if (m_LstInputItems.GetItemState(i, LVIS_SELECTED) == LVIS_SELECTED)
+                    if (this->IsItemSelected(i))
                     {
                         config::CItem& item = m_Config.m_Items.Get(i);
                         item.bChecked = !item.bChecked;
@@ -1458,10 +1458,10 @@ namespace app
             {
                 for (int i = 0; i < nItems; i++)
                 {
-                    if (m_LstInputItems.GetItemState(i, LVIS_SELECTED) == LVIS_SELECTED)
-                        m_LstInputItems.SetItemState(i, 0, LVIS_SELECTED);
+                    if (this->IsItemSelected(i))
+                        this->DeselectItem(i);
                     else
-                        m_LstInputItems.SetItemState(i, LVIS_SELECTED, LVIS_SELECTED);
+                        this->SelectItem(i);
                 }
             }
         }
@@ -2165,6 +2165,26 @@ namespace app
         // option: ToolsListColumns
     }
 
+    bool CMainDlg::IsItemSelected(int nItem)
+    {
+        return m_LstInputItems.GetItemState(nItem, LVIS_SELECTED) == LVIS_SELECTED;
+    }
+
+    void CMainDlg::SelectItem(int nItem)
+    {
+        m_LstInputItems.SetItemState(nItem, LVIS_SELECTED, LVIS_SELECTED);
+    }
+
+    void CMainDlg::DeselectItem(int nItem)
+    {
+        m_LstInputItems.SetItemState(nItem, 0, LVIS_SELECTED);
+    }
+
+    void CMainDlg::MakeItemVisible(int nItem)
+    {
+        m_LstInputItems.EnsureVisible(nItem, FALSE);
+    }
+
     void CMainDlg::ToggleItem(int nItem)
     {
         config::CItem& item = m_Config.m_Items.Get(nItem);
@@ -2514,7 +2534,7 @@ namespace app
                 int nSelected = 0;
                 for (int i = 0; i < nItems; i++)
                 {
-                    if (m_LstInputItems.GetItemState(i, LVIS_SELECTED) == LVIS_SELECTED)
+                    if (this->IsItemSelected(i))
                     {
                         config::CItem& item = m_Config.m_Items.Get(i);
                         item.szFormatId = format.szId;
@@ -2554,7 +2574,7 @@ namespace app
 
             for (int i = 0; i < nItems; i++)
             {
-                if (m_LstInputItems.GetItemState(i, LVIS_SELECTED) == LVIS_SELECTED)
+                if (this->IsItemSelected(i))
                 {
                     config::CItem& item = m_Config.m_Items.Get(i);
                     item.szTime = szDefaultTime;
@@ -2585,7 +2605,7 @@ namespace app
 
             for (int i = 0; i < nItems; i++)
             {
-                if (m_LstInputItems.GetItemState(i, LVIS_SELECTED) == LVIS_SELECTED)
+                if (this->IsItemSelected(i))
                 {
                     config::CItem& item = m_Config.m_Items.Get(i);
                     item.szStatus = szDefaultStatus;
