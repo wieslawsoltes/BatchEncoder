@@ -778,7 +778,7 @@ namespace app
         int nItem = m_LstInputItems.HitTest(&hitInfo); 
         if (nItem != -1)
         {
-            if( (hitInfo.flags & LVHT_ONITEMSTATEICON) != 0)
+            if (hitInfo.flags == LVHT_ONITEMSTATEICON)
             {
                 ToggleItem(nItem);
             }
@@ -791,6 +791,7 @@ namespace app
             *pResult = 0;
             return;
         }
+
         if (pNMItemActivate->iSubItem == 0 || pNMItemActivate->iSubItem != ITEM_COLUMN_OPTIONS)
         {
             UpdateEdtItem(TRUE);
