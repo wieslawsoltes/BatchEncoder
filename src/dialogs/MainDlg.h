@@ -97,6 +97,7 @@ namespace app
         afx_msg void OnDestroy();
         afx_msg void OnDropFiles(HDROP hDropInfo);
         afx_msg BOOL OnHelpInfo(HELPINFO* pHelpInfo);
+        afx_msg void OnLvnGetdispinfoListItems(NMHDR* pNMHDR, LRESULT* pResult);
         afx_msg LRESULT OnListItemChaged(WPARAM wParam, LPARAM lParam);
         afx_msg LRESULT OnNotifyFormat(WPARAM wParam, LPARAM lParam);
         afx_msg void OnNMClickListItems(NMHDR *pNMHDR, LRESULT *pResult);
