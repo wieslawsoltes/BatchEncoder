@@ -161,7 +161,8 @@ namespace app
         void ToggleItem(int nItem);
         int AddToItems(CString szPath);
         bool AddToList(CString szPath);
-        void AddToList(config::CItem &item, int nItem);
+        void RedrawItem(int nItem);
+        void RedrawItem(int nStart, nEnd);
         void ShowEdtItem();
         void UpdateEdtItem(BOOL bUpdateText);
         void HandleDropFiles(HDROP hDropInfo);
