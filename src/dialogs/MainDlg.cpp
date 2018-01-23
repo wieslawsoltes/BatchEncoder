@@ -1123,7 +1123,6 @@ namespace app
                     } while (pos != nullptr);
 
                     this->SetItems();
-
                     this->UpdateStatusBar();
                 }
             }
@@ -1192,6 +1191,7 @@ namespace app
                 {
                     CString szPath = lpBuffer;
                     this->SearchFolderForFiles(szPath, bRecurseChecked);
+                    this->SetItems();
                     this->UpdateStatusBar();
                 }
                 pMalloc->Free(pidlBrowse);
@@ -2262,6 +2262,7 @@ namespace app
                 if (::GetFileAttributes(szFile) & FILE_ATTRIBUTE_DIRECTORY)
                 {
                     this->SearchFolderForFiles(szFile, true);
+                    this->SetItems();
                 }
                 else
                 {
@@ -2331,6 +2332,7 @@ namespace app
                     else
                     {
                         this->AddToList(szPath);
+                        this->SetItems();
                     }
                 }
 
