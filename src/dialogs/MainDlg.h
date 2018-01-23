@@ -162,7 +162,7 @@ namespace app
         int AddToItems(CString szPath);
         bool AddToList(CString szPath);
         void RedrawItem(int nItem);
-        void RedrawItem(int nStart, nEnd);
+        void RedrawItem(int nStart, int nEnd);
         void ShowEdtItem();
         void UpdateEdtItem(BOOL bUpdateText);
         void HandleDropFiles(HDROP hDropInfo);
