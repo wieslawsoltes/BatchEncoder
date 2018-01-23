@@ -160,6 +160,8 @@ namespace app
         void GetOptions();
         void SetOptions();
         bool IsItemSelected(int nItem);
+        void SelectItem(int nItem);
+        void DeselectItem(int nItem);
         void ToggleItem(int nItem);
         int AddToItems(CString szPath);
         bool AddToList(CString szPath);
