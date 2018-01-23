@@ -157,6 +157,7 @@ namespace app
         void SetItems();
         void GetOptions();
         void SetOptions();
+        void ToggleItem(int nItem);
         int AddToItems(CString szPath);
         bool AddToList(CString szPath);
         void AddToList(config::CItem &item, int nItem);
