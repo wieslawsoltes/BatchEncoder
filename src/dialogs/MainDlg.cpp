@@ -743,78 +743,87 @@ namespace app
 
     void CMainDlg::OnOdfindListItems(NMHDR* pNMHDR, LRESULT* pResult) 
     {
-        NMLVFINDITEM* pFindInfo = (NMLVFINDITEM*)pNMHDR;
-        *pResult = -1;
-        if((pFindInfo->lvfi.flags & LVFI_STRING) == 0)
+        if (this->pWorkerContext->bRunning == false)
         {
-            return;
-        }
-
-        CString szSearchStr = pFindInfo->lvfi.psz;
-        int startPos = pFindInfo->iStart;
-        if (startPos >= m_LstInputItems.GetItemCount())
-            startPos = 0;
-
-        int currentPos = startPos;
-        do
-        {
-            config::CItem& item = m_Config.m_Items.Get(currentPos);
-            if( _tcsnicmp(item.szName, szSearchStr, szSearchStr.GetLength()) == 0)
+            NMLVFINDITEM* pFindInfo = (NMLVFINDITEM*)pNMHDR;
+            *pResult = -1;
+            if((pFindInfo->lvfi.flags & LVFI_STRING) == 0)
             {
-                *pResult = currentPos;
-                break;
+                return;
             }
-            currentPos++;
-            if(currentPos >= m_LstInputItems.GetItemCount())
-                currentPos = 0;
-        } while(currentPos != startPos);		
+
+            CString szSearchStr = pFindInfo->lvfi.psz;
+            int startPos = pFindInfo->iStart;
+            if (startPos >= m_LstInputItems.GetItemCount())
+                startPos = 0;
+
+            int currentPos = startPos;
+            do
+            {
+                config::CItem& item = m_Config.m_Items.Get(currentPos);
+                if( _tcsnicmp(item.szName, szSearchStr, szSearchStr.GetLength()) == 0)
+                {
+                    *pResult = currentPos;
+                    break;
+                }
+                currentPos++;
+                if(currentPos >= m_LstInputItems.GetItemCount())
+                    currentPos = 0;
+            } while(currentPos != startPos);
+        }
     }
 
     void CMainDlg::OnNMClickListItems(NMHDR *pNMHDR, LRESULT *pResult)
     {
-        NMLISTVIEW* pNMListView = (NM_LISTVIEW*)pNMHDR;
-        LVHITTESTINFO hitInfo;
-        hitInfo.pt = pNMListView->ptAction;
-        int nItem = m_LstInputItems.HitTest(&hitInfo); 
-        if (nItem != -1)
+        if (this->pWorkerContext->bRunning == false)
         {
-            if (hitInfo.flags == LVHT_ONITEMSTATEICON)
+            NMLISTVIEW* pNMListView = (NM_LISTVIEW*)pNMHDR;
+            LVHITTESTINFO hitInfo;
+            hitInfo.pt = pNMListView->ptAction;
+            int nItem = m_LstInputItems.HitTest(&hitInfo); 
+            if (nItem != -1)
             {
-                ToggleItem(nItem);
+                if (hitInfo.flags == LVHT_ONITEMSTATEICON)
+                {
+                    ToggleItem(nItem);
+                }
             }
-        }
 
-        LPNMITEMACTIVATE pNMItemActivate = reinterpret_cast<LPNMITEMACTIVATE>(pNMHDR);
-        if (pNMItemActivate->iSubItem == -1 || pNMItemActivate->iItem == -1)
-        {
+            LPNMITEMACTIVATE pNMItemActivate = reinterpret_cast<LPNMITEMACTIVATE>(pNMHDR);
+            if (pNMItemActivate->iSubItem == -1 || pNMItemActivate->iItem == -1)
+            {
+                UpdateEdtItem(TRUE);
+                *pResult = 0;
+                return;
+            }
+
+            if (pNMItemActivate->iSubItem == 0 || pNMItemActivate->iSubItem != ITEM_COLUMN_OPTIONS)
+            {
+                UpdateEdtItem(TRUE);
+                *pResult = 0;
+                return;
+            }
+
             UpdateEdtItem(TRUE);
-            *pResult = 0;
-            return;
+
+            nEdtItem = pNMItemActivate->iItem;
+            nEdtSubItem = pNMItemActivate->iSubItem;
+
+            config::CItem& item = m_Config.m_Items.Get(nEdtItem);
+            szEdtText = item.szOptions;
+
+            ShowEdtItem();
         }
-
-        if (pNMItemActivate->iSubItem == 0 || pNMItemActivate->iSubItem != ITEM_COLUMN_OPTIONS)
-        {
-            UpdateEdtItem(TRUE);
-            *pResult = 0;
-            return;
-        }
-
-        UpdateEdtItem(TRUE);
-
-        nEdtItem = pNMItemActivate->iItem;
-        nEdtSubItem = pNMItemActivate->iSubItem;
-
-        config::CItem& item = m_Config.m_Items.Get(nEdtItem);
-        szEdtText = item.szOptions;
-
-        ShowEdtItem();
 
         *pResult = 0;
     }
 
     void CMainDlg::OnEnKillfocusEditItem()
     {
-        UpdateEdtItem(TRUE);
+        if (this->pWorkerContext->bRunning == false)
+        {
+            UpdateEdtItem(TRUE);
+        }
     }
 
     void CMainDlg::OnLvnKeydownListInputItems(NMHDR *pNMHDR, LRESULT *pResult)
@@ -909,7 +918,6 @@ namespace app
                 }
             }
         }
-
         *pResult = 0;
     }
 
