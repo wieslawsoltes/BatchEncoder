@@ -834,11 +834,7 @@ namespace app
             switch (pLVKeyDow->wVKey)
             {
             case VK_SPACE:
-                {
-                    int nMark = m_LstInputItems.GetSelectionMark();
-                    if (nMark != -1)
-                        ToggleItem(nMark);
-                }
+                this->OnEditToggleSelected();
                 break;
             case VK_INSERT:
                 this->OnEditCrop();
@@ -1409,6 +1405,28 @@ namespace app
                             item.bChecked = false;
                             this->RedrawItem(i);
                         }
+                    }
+                }
+
+                this->UpdateStatusBar();
+            }
+        }
+    }
+
+    void CMainDlg::OnEditToggleSelected()
+    {
+        if (this->pWorkerContext->bRunning == false)
+        {
+            int nItems = m_Config.m_Items.Count();
+            if (nItems > 0)
+            {
+                for (int i = 0; i < nItems; i++)
+                {
+                    if (m_LstInputItems.GetItemState(i, LVIS_SELECTED) == LVIS_SELECTED)
+                    {
+                        config::CItem& item = m_Config.m_Items.Get(i);
+                        item.bChecked = !item.bChecked;
+                        this->RedrawItem(i);
                     }
                 }
 
