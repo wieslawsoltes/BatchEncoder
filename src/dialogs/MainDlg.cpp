@@ -1407,7 +1407,6 @@ namespace app
                         }
                     }
                 }
-
                 this->UpdateStatusBar();
             }
         }
@@ -1429,7 +1428,6 @@ namespace app
                         this->RedrawItem(i);
                     }
                 }
-
                 this->UpdateStatusBar();
             }
         }
