@@ -3,16 +3,16 @@
 
 #pragma once
 
-#include <afxstr.h>
+#include <string>
 
 namespace config
 {
     class COptions
     {
     public:
-        CString szSelectedLanguage;
+        std::wstring szSelectedLanguage;
         int nSelectedFormat;
-        CString szOutputPath;
+        std::wstring szOutputPath;
         bool bDeleteSourceFiles;
         bool bRecurseChecked;
         bool bShutdownWhenFinished;
@@ -26,58 +26,14 @@ namespace config
         bool bOverwriteExistingFiles;
         bool bTryToDownloadTools;
         int nThreadCount;
-        CString szMainWindowResize;
-        CString szFileListColumns;
-        CString szPresetsDialogResize;
-        CString szPresetsListColumns;
-        CString szFormatsDialogResize;
-        CString szFormatsListColumns;
-        CString szToolsDialogResize;
-        CString szToolsListColumns;
-    public:
-        COptions()
-        {
-        }
-        COptions(const COptions &other)
-        {
-            Copy(other);
-        }
-        COptions& operator=(const COptions &other)
-        {
-            Copy(other);
-            return *this;
-        }
-        virtual ~COptions()
-        {
-        }
-    public:
-        void Copy(const COptions &other)
-        {
-            this->szSelectedLanguage = other.szSelectedLanguage;
-            this->nSelectedFormat = other.nSelectedFormat;
-            this->szOutputPath = other.szOutputPath;
-            this->bDeleteSourceFiles = other.bDeleteSourceFiles;
-            this->bRecurseChecked = other.bRecurseChecked;
-            this->bShutdownWhenFinished = other.bShutdownWhenFinished;
-            this->bDoNotSaveConfiguration = other.bDoNotSaveConfiguration;
-            this->bDeleteOnErrors = other.bDeleteOnErrors;
-            this->bStopOnErrors = other.bStopOnErrors;
-            this->bHideConsoleWindow = other.bHideConsoleWindow;
-            this->bTryToFindDecoder = other.bTryToFindDecoder;
-            this->bEnsureItemIsVisible = other.bEnsureItemIsVisible;
-            this->bValidateInputFiles = other.bValidateInputFiles;
-            this->bOverwriteExistingFiles = other.bOverwriteExistingFiles;
-            this->bTryToDownloadTools = other.bTryToDownloadTools;
-            this->nThreadCount = other.nThreadCount;
-            this->szMainWindowResize = other.szMainWindowResize;
-            this->szFileListColumns = other.szFileListColumns;
-            this->szPresetsDialogResize = other.szPresetsDialogResize;
-            this->szPresetsListColumns = other.szPresetsListColumns;
-            this->szFormatsDialogResize = other.szFormatsDialogResize;
-            this->szFormatsListColumns = other.szFormatsListColumns;
-            this->szToolsDialogResize = other.szToolsDialogResize;
-            this->szToolsListColumns = other.szToolsListColumns;
-        }
+        std::wstring szMainWindowResize;
+        std::wstring szFileListColumns;
+        std::wstring szPresetsDialogResize;
+        std::wstring szPresetsListColumns;
+        std::wstring szFormatsDialogResize;
+        std::wstring szFormatsListColumns;
+        std::wstring szToolsDialogResize;
+        std::wstring szToolsListColumns;
     public:
         void Defaults()
         {
