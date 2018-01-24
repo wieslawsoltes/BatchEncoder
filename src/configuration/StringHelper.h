@@ -22,7 +22,6 @@ namespace config
                    << std::hex << i;
           return stream.str();
         }
-    public:
         static std::vector<std::wstring> Split(const wchar_t *str, wchar_t c)
         {
             std::vector<std::wstring> result;
@@ -35,38 +34,39 @@ namespace config
             } while (0 != *str++);
             return result;
         }
-    public:
+        static std::wstring TowLower(const std::wstring& str)
+        {
+            std::wstring s = str;
+            std::transform(s.begin(), s.end(), s.begin(), ::towlower);
+            return s;
+        }
+        static std::wstring ToUpper(const std::wstring& str)
+        {
+            std::wstring s = str;
+            std::transform(s.begin(), s.end(), s.begin(), ::toupper);
+            return s;
+        }
         static bool CompareNoCase(const std::wstring& str1, const std::wstring& str2)
         {
-            std::wstring s1 = str1;
-            std::transform(s1.begin(), s1.end(), s1.begin(), ::toupper);
-            std::wstring s2 = str2;
-            std::transform(s2.begin(), s2.end(), s2.begin(), ::toupper);
+            std::wstring s1 = ToUpper(str1);
+            std::wstring s2 = ToUpper(str2);
             return s1 == s2;
         }
-    public:
         static bool ContainsNoCase(const std::wstring& str, const std::wstring& value, wchar_t token)
         {
-            std::wstring v = value;
-            std::transform(v.begin(), v.end(), v.begin(), ::toupper);
+            std::wstring v = ToUpper(value);
             auto tokens = Split(str.c_str(), token);
             for (auto& t : tokens) 
             {
-                std::transform(t.begin(), t.end(), t.begin(), ::toupper);
-                if (t == v)
+                if (ToUpper(t) == v)
                     return true;
             }
             return false;
         }
-    public:
         static bool ReplaceNoCase(std::wstring& str, const std::wstring& from, const std::wstring& to)
         {
-            std::wstring s = str;
-            std::transform(s.begin(), s.end(), s.begin(), ::toupper);
-
-            std::wstring f = from;
-            std::transform(f.begin(), f.end(), f.begin(), ::toupper);
-
+            std::wstring s = ToUpper(str);
+            std::wstring f = ToUpper(from);
             auto pos = s.find(f);
             if (pos != std::string::npos)
             {
