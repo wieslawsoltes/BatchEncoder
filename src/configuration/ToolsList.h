@@ -3,7 +3,7 @@
 
 #pragma once
 
-#include <afxstr.h>
+#include <string>
 #include "utilities\ListT.h"
 #include "Tool.h"
 
@@ -12,7 +12,7 @@ namespace config
     class CToolsList : public util::CListT<CTool>
     {
     public:
-        int GetToolByFormat(CString szFormat)
+        int GetToolByFormat(const std::wstring& szFormat)
         {
             int nTools = this->Count();
             for (int i = 0; i < nTools; i++)
@@ -25,20 +25,20 @@ namespace config
             }
             return -1;
         }
-        int GetToolByFormatAndPlatform(CString szFormat, CString szPlatform)
+        int GetToolByFormatAndPlatform(const std::wstring& szFormat, const std::wstring& szPlatform)
         {
             int nTools = this->Count();
             for (int i = 0; i < nTools; i++)
             {
                 CTool& tool = this->Get(i);
-                if ((tool.IsValidFormat(szFormat) == true) && (tool.szPlatform.CompareNoCase(szPlatform) == 0))
+                if ((tool.IsValidFormat(szFormat) == true) && (config::StringHelper::CompareNoCase(tool.szPlatform, szPlatform) == true))
                 {
                     return i;
                 }
             }
             return -1;
         }
-        bool IsValidFormat(CString szFormat)
+        bool IsValidFormat(const std::wstring& szFormat)
         {
             int nTools = this->Count();
             for (int i = 0; i < nTools; i++)
