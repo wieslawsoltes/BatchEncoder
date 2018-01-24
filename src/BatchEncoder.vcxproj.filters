@@ -113,6 +113,9 @@
     <ClInclude Include="configuration\PresetsList.h">
       <Filter>Header Files\Configuration</Filter>
     </ClInclude>
+    <ClInclude Include="configuration\StringHelper.h">
+      <Filter>Header Files\Configuration</Filter>
+    </ClInclude>
     <ClInclude Include="configuration\Tool.h">
       <Filter>Header Files\Configuration</Filter>
     </ClInclude>
