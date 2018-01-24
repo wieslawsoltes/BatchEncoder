@@ -21,7 +21,7 @@ namespace worker
         bool bUseReadPipes;
         bool bUseWritePipes;
         std::wstring szOptions;
-        std::string szCommandLine;
+        std::wstring szCommandLine;
     public:
         void Build(config::CFormat *pFormat, int nPreset, int nItemId, const std::wstring& szInputFile, const std::wstring& szOutputFile, bool bUseReadPipes, bool bUseWritePipes, const std::wstring& szAdditionalOptions)
         {
