@@ -6,11 +6,22 @@
 #include <algorithm>
 #include <string>
 #include <vector>
+#include <iomanip>
 
 namespace config
 {
     class StringHelper
     {
+    public:
+        template<typename T>
+        static std::wstring ToHex(T i)
+        {
+            std::wostringstream stream;
+            stream << "0x" 
+                   << std::setfill('0') << std::setw(sizeof(T)*2) 
+                   << std::hex << i;
+          return stream.str();
+        }
     public:
         static std::vector<std::wstring> Split(const wchar_t *str, wchar_t c)
         {
@@ -44,6 +55,23 @@ namespace config
                 std::transform(t.begin(), t.end(), t.begin(), ::toupper);
                 if (t == v)
                     return true;
+            }
+            return false;
+        }
+    public:
+        static bool ReplaceNoCase(std::wstring& str, const std::wstring& from, const std::wstring& to)
+        {
+            std::wstring s = str;
+            std::transform(s.begin(), s.end(), s.begin(), ::toupper);
+
+            std::wstring f = from;
+            std::transform(f.begin(), f.end(), f.begin(), ::toupper);
+
+            auto pos = s.find(f);
+            if (pos != std::string::npos)
+            {
+                str.replace(pos, f.length(), to);
+                return true;
             }
             return false;
         }
