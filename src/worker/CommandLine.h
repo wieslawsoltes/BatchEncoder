@@ -3,8 +3,9 @@
 
 #pragma once
 
-#include <cstring>
+#include <string>
 #include "utilities\Utilities.h"
+#include "config\StringHelper.h"
 
 namespace worker
 {
@@ -14,18 +15,15 @@ namespace worker
         config::CFormat * pFormat;
         int nPreset;
         int nItemId;
-        CString szInputFile;
-        CString szOutputFile;
-        CString szOutputPath;
+        std::wstring szInputFile;
+        std::wstring szOutputFile;
+        std::wstring szOutputPath;
         bool bUseReadPipes;
         bool bUseWritePipes;
-        CString szOptions;
-        TCHAR pszCommandLine[65536];
+        std::wstring szOptions;
+        std::string szCommandLine;
     public:
-        CCommandLine() { }
-        virtual ~CCommandLine() { }
-    public:
-        void Build(config::CFormat *pFormat, int nPreset, int nItemId, CString szInputFile, CString szOutputFile, bool bUseReadPipes, bool bUseWritePipes, CString szAdditionalOptions)
+        void Build(config::CFormat *pFormat, int nPreset, int nItemId, const std::wstring& szInputFile, const std::wstring& szOutputFile, bool bUseReadPipes, bool bUseWritePipes, const std::wstring& szAdditionalOptions)
         {
             config::CPreset& preset = pFormat->m_Presets.Get(nPreset);
 
@@ -37,36 +35,33 @@ namespace worker
             this->bUseReadPipes = bUseReadPipes;
             this->bUseWritePipes = bUseWritePipes;
 
-            if (szAdditionalOptions.GetLength() > 0)
+            if (szAdditionalOptions.length() > 0)
                 this->szOptions = preset.szOptions + _T(" ") + szAdditionalOptions;
             else
                 this->szOptions = preset.szOptions;
 
-            CString szCommandLine = pFormat->szTemplate;
+            szCommandLine = pFormat->szTemplate;
 
-            szCommandLine = util::ReplaceNoCase(szCommandLine, _T("$EXE"), _T("\"$EXE\""));
-            szCommandLine = util::ReplaceNoCase(szCommandLine, _T("$EXE"), pFormat->szPath);
-            szCommandLine = util::ReplaceNoCase(szCommandLine, _T("$OPTIONS"), this->szOptions);
+            config::StringHelper::ReplaceNoCase(szCommandLine, _T("$EXE"), _T("\"$EXE\""));
+            config::StringHelper::ReplaceNoCase(szCommandLine, _T("$EXE"), pFormat->szPath);
+            config::StringHelper::ReplaceNoCase(szCommandLine, _T("$OPTIONS"), this->szOptions);
 
-            szCommandLine = util::ReplaceNoCase(szCommandLine, _T("$INFILE"), _T("\"$INFILE\""));
+            config::StringHelper::ReplaceNoCase(szCommandLine, _T("$INFILE"), _T("\"$INFILE\""));
             if (bUseReadPipes == true)
-                szCommandLine = util::ReplaceNoCase(szCommandLine, _T("$INFILE"), _T("-"));
+               config::StringHelper::ReplaceNoCase(szCommandLine, _T("$INFILE"), _T("-"));
             else
-                szCommandLine = util::ReplaceNoCase(szCommandLine, _T("$INFILE"), this->szInputFile);
+                config::StringHelper::ReplaceNoCase(szCommandLine, _T("$INFILE"), this->szInputFile);
 
-            szCommandLine = util::ReplaceNoCase(szCommandLine, _T("$OUTFILE"), _T("\"$OUTFILE\""));
+            config::StringHelper::ReplaceNoCase(szCommandLine, _T("$OUTFILE"), _T("\"$OUTFILE\""));
             if (bUseWritePipes == true)
-                szCommandLine = util::ReplaceNoCase(szCommandLine, _T("$OUTFILE"), _T("-"));
+                config::StringHelper::ReplaceNoCase(szCommandLine, _T("$OUTFILE"), _T("-"));
             else
-                szCommandLine = util::ReplaceNoCase(szCommandLine, _T("$OUTFILE"), this->szOutputFile);
+                config::StringHelper::ReplaceNoCase(szCommandLine, _T("$OUTFILE"), this->szOutputFile);
 
             this->szOutputPath = util::GetFilePath(this->szOutputFile);
 
-            szCommandLine = util::ReplaceNoCase(szCommandLine, _T("$OUTPATH"), _T("\"$OUTPATH\""));
-            szCommandLine = util::ReplaceNoCase(szCommandLine, _T("$OUTPATH"), this->szOutputPath);
-
-            std::memset(this->pszCommandLine, 0, sizeof(this->pszCommandLine));
-            lstrcpy(this->pszCommandLine, szCommandLine.GetBuffer(szCommandLine.GetLength()));
+            config::StringHelper::ReplaceNoCase(szCommandLine, _T("$OUTPATH"), _T("\"$OUTPATH\""));
+            config::StringHelper::ReplaceNoCase(szCommandLine, _T("$OUTPATH"), this->szOutputPath);
         }
     };
 }
