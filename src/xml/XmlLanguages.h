@@ -5,9 +5,9 @@
 
 #include <string>
 #include "xml\XmlDoc.h"
-#include "configuration\StringHelper.h"
 #include "language\Language.h"
 #include "language\LanguagesList.h"
+#include "utilities\StringHelper.h"
 
 #define VALIDATE(value) if (!value) return false
 
@@ -40,8 +40,7 @@ namespace xml
                     VALIDATE(GetAttributeValue(element, "key", &szKey));
                     VALIDATE(GetAttributeValue(element, "value", &szValue));
 
-                    int nKey;
-                    _stscanf(szKey, _T("%x"), &nKey);
+                    int nKey = std::stoi(szKey, nullptr, 16);
                     m_Language.m_Strings.Insert(nKey, szValue);
                 }
                 return true;
@@ -56,7 +55,7 @@ namespace xml
 
             for (auto& item : m_Language.m_Strings.m_Map)
             {
-                std::wstring szKey = config::StringHelper::ToHex(item.first);
+                std::wstring szKey = util::StringHelper::ToHex(item.first);
 
                 auto element = this->NewElement("String");
                 parent->LinkEndChild(element);

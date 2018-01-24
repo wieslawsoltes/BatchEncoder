@@ -23,7 +23,7 @@ namespace config
     public:
         bool IsValidFormat(const std::wstring& szFormat)
         {
-            return StringHelper::ContainsNoCase(this->szFormats, szFormat, token);
+            return util::StringHelper::ContainsNoCase(this->szFormats, szFormat, token);
         }
     };
 }

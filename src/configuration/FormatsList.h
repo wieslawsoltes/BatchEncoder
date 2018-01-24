@@ -18,7 +18,7 @@ namespace config
             for (int i = 0; i < nFormats; i++)
             {
                 CFormat& format = this->Get(i);
-                if (StringHelper::CompareNoCase(szFormatId, format.szId)) 
+                if (util::StringHelper::CompareNoCase(szFormatId, format.szId))
                     return i;
             }
             return -1;

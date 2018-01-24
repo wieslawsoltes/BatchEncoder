@@ -6,11 +6,11 @@
 #include <string>
 #include <functional>
 #include "utilities\Download.h"
+#include "utilities\StringHelper.h"
 #include "utilities\Thread.h"
 #include "configuration\ToolsList.h"
 #include "configuration\FormatsList.h"
 #include "configuration\Configuration.h"
-#include "configuration\StringHelper.h"
 
 namespace worker
 {
@@ -53,7 +53,7 @@ namespace worker
                 return false;
             }
 
-            if (config::StringHelper::CompareNoCase(tool.szExtract, _T("install")))
+            if (util::StringHelper::CompareNoCase(tool.szExtract, _T("install")))
             {
                 if (bInstall == true)
                 {
@@ -62,7 +62,7 @@ namespace worker
                 }
             }
 
-            if (config::StringHelper::CompareNoCase(tool.szExtract, _T("zip")))
+            if (util::StringHelper::CompareNoCase(tool.szExtract, _T("zip")))
             {
                 if (bExtract == true)
                 {

@@ -4,9 +4,9 @@
 #include "StdAfx.h"
 #include "MainApp.h"
 #include "language\LanguageHelper.h"
-#include "utilities\OutputPath.h"
 #include "utilities\Utilities.h"
 #include "xml\XmlConfig.h"
+#include "worker\OutputPath.h"
 #include "MainDlg.h"
 #include "PresetsDlg.h"
 #include "AboutDlg.h"
@@ -526,10 +526,10 @@ namespace app
 
         try
         {
-            this->LoadTools(m_App.szToolsFile);
-            this->LoadFormats(m_App.szFormatsFile);
+            this->LoadTools(app::m_App.szToolsFile);
+            this->LoadFormats(app::m_App.szFormatsFile);
 
-            if (this->LoadOptions(m_App.szOptionsFile) == false)
+            if (this->LoadOptions(app::m_App.szOptionsFile) == false)
             {
                 this->m_Config.m_Options.Defaults();
                 this->SetOptions();
@@ -537,11 +537,11 @@ namespace app
                 this->UpdatePresetComboBox();
             }
 
-            this->SearchFolderForLanguages(m_App.szSettingsPath);
-            this->SearchFolderForLanguages(m_App.szLanguagesPath);
+            this->SearchFolderForLanguages(app::m_App.szSettingsPath);
+            this->SearchFolderForLanguages(app::m_App.szLanguagesPath);
             this->InitLanguageMenu();
             this->SetLanguage();
-            this->LoadItems(m_App.szItemsFile);
+            this->LoadItems(app::m_App.szItemsFile);
         }
         catch (...) {}
 
@@ -614,10 +614,10 @@ namespace app
         {
             try
             {
-                this->SaveTools(m_App.szToolsFile);
-                this->SaveFormats(m_App.szFormatsFile);
-                this->SaveOptions(m_App.szOptionsFile);
-                this->SaveItems(m_App.szItemsFile);
+                this->SaveTools(app::m_App.szToolsFile);
+                this->SaveFormats(app::m_App.szFormatsFile);
+                this->SaveOptions(app::m_App.szOptionsFile);
+                this->SaveItems(app::m_App.szItemsFile);
             }
             catch (...) {}
         }
@@ -2020,15 +2020,16 @@ namespace app
         int nColWidth[8];
         for (int i = 0; i < 8; i++)
             nColWidth[i] = m_LstInputItems.GetColumnWidth(i);
-        m_Config.m_Options.szFileListColumns.Format(_T("%d %d %d %d %d %d %d %d"),
-            nColWidth[0],
-            nColWidth[1],
-            nColWidth[2],
-            nColWidth[3],
-            nColWidth[4],
-            nColWidth[5],
-            nColWidth[6],
-            nColWidth[7]);
+
+        m_Config.m_Options.szFileListColumns =
+            std::to_wstring(nColWidth[0]) + L" " +
+            std::to_wstring(nColWidth[1]) + L" " +
+            std::to_wstring(nColWidth[2]) + L" " +
+            std::to_wstring(nColWidth[3]) + L" " +
+            std::to_wstring(nColWidth[4]) + L" " +
+            std::to_wstring(nColWidth[5]) + L" " +
+            std::to_wstring(nColWidth[6]) + L" " +
+            std::to_wstring(nColWidth[7]);
     }
 
     void CMainDlg::SetOptions()
@@ -2036,16 +2037,16 @@ namespace app
         // option: SelectedFormat
 
         // option: OutputPath
-        if (m_Config.m_Options.szOutputPath.CompareNoCase(_T("")) != 0)
+        if (!m_Config.m_Options.szOutputPath.empty())
         {
-            this->m_CmbOutPath.SetWindowText(m_Config.m_Options.szOutputPath);
-            szLastBrowse = m_Config.m_Options.szOutputPath;
+            this->m_CmbOutPath.SetWindowText(m_Config.m_Options.szOutputPath.c_str());
+            szLastBrowse = m_Config.m_Options.szOutputPath.c_str();
         }
         else
         {
-            m_Config.m_Options.szOutputPath = m_App.szSettingsPath;
-            szLastBrowse = m_Config.m_Options.szOutputPath;
-            this->m_CmbOutPath.SetWindowText(m_Config.m_Options.szOutputPath);
+            m_Config.m_Options.szOutputPath = app::m_App.szSettingsPath;
+            szLastBrowse = m_Config.m_Options.szOutputPath.c_str();
+            this->m_CmbOutPath.SetWindowText(m_Config.m_Options.szOutputPath.c_str());
         }
 
         // option: DeleteSourceFiles
@@ -2190,12 +2191,12 @@ namespace app
         this->RedrawItem(nItem);
     }
 
-    int CMainDlg::AddToItems(CString szPath)
+    int CMainDlg::AddToItems(const std::wstring& szPath)
     {
         int nFormat = this->m_CmbFormat.GetCurSel();
         int nPreset = this->m_CmbPresets.GetCurSel();
 
-        CString szFormatId = _T("");
+        std::wstring szFormatId = L"";
         if (m_Config.m_Formats.Count() > 0)
         {
             if (m_Config.m_Options.bTryToFindDecoder == true)
@@ -2231,7 +2232,7 @@ namespace app
         item.m_Paths.Insert(path);
         item.szSize = szFileSize;
         item.szName = util::GetOnlyFileName(szPath);
-        item.szExtension = util::GetFileExtension(szPath).MakeUpper();
+        item.szExtension = util::StringHelper::ToUpper(util::GetFileExtension(szPath));
         item.szFormatId = szFormatId;
         item.nPreset = nPreset;
         item.bChecked = true;
@@ -2251,11 +2252,11 @@ namespace app
         m_LstInputItems.RedrawItems(nStart, nEnd);
     }
 
-    bool CMainDlg::AddToList(CString szPath)
+    bool CMainDlg::AddToList(const std::wstring& szPath)
     {
         if (m_Config.m_Options.bValidateInputFiles == true)
         {
-            CString szExt = util::GetFileExtension(szPath);
+            std::wstring szExt = util::GetFileExtension(szPath);
             if (m_Config.m_Formats.IsValidInputExtension(szExt) == false)
                 return false;
         }
@@ -2323,50 +2324,50 @@ namespace app
                 }
                 else
                 {
-                    CString szPath = szFile;
-                    CString szExt = util::GetFileExtension(szPath);
+                    std::wstring szPath = szFile;
+                    std::wstring szExt = util::GetFileExtension(szPath);
 
-                    if (szExt.CompareNoCase(_T("xml")) == 0)
+                    if (util::StringHelper::CompareNoCase(szExt, L"xml"))
                     {
                         xml::XmlDocumnent doc;
-                        CString szName = xml::CXmlConfig::GetRootName(szPath, doc);
-                        if (!szName.IsEmpty())
+                        std::string szName = xml::CXmlConfig::GetRootName(szPath, doc);
+                        if (!szName.empty())
                         {
-                            if (szName.CompareNoCase(_T("Items")) == 0)
+                            if (util::StringHelper::CompareNoCase(szName, "Items"))
                             {
                                 this->LoadItems(doc);
                             }
-                            else if (szName.CompareNoCase(_T("Formats")) == 0)
+                            else if (util::StringHelper::CompareNoCase(szName, "Formats"))
                             {
                                 this->LoadFormats(doc);
                             }
-                            else if (szName.CompareNoCase(_T("Format")) == 0)
+                            else if (util::StringHelper::CompareNoCase(szName, "Format"))
                             {
                                 this->LoadFormat(doc);
                             }
-                            else if (szName.CompareNoCase(_T("Presets")) == 0)
+                            else if (util::StringHelper::CompareNoCase(szName, "Presets"))
                             {
                                 this->LoadPresets(doc);
                             }
-                            else if (szName.CompareNoCase(_T("Options")) == 0)
+                            else if (util::StringHelper::CompareNoCase(szName, "Options"))
                             {
                                 this->LoadOptions(doc);
                             }
-                            else if (szName.CompareNoCase(_T("Tools")) == 0)
+                            else if (util::StringHelper::CompareNoCase(szName, "Tools"))
                             {
                                 this->LoadTools(doc);
                             }
-                            else if (szName.CompareNoCase(_T("Tool")) == 0)
+                            else if (util::StringHelper::CompareNoCase(szName, "Tool"))
                             {
                                 this->LoadTool(doc);
                             }
-                            else if (szName.CompareNoCase(_T("Language")) == 0)
+                            else if (util::StringHelper::CompareNoCase(szName, "Language"))
                             {
                                 this->LoadLanguage(doc);
                             }
                         }
                     }
-                    else if (szExt.CompareNoCase(_T("exe")) == 0)
+                    else if (util::StringHelper::CompareNoCase(szExt, L"exe"))
                     {
                         // Set current format exe path.
                         int nFormat = this->m_CmbFormat.GetCurSel();
@@ -2454,7 +2455,7 @@ namespace app
         }
         catch (...)
         {
-            m_StatusBar.SetText(m_Config.GetString(0x0021000C), 1, 0);
+            m_StatusBar.SetText(m_Config.GetString(0x0021000C).c_str(), 1, 0);
         }
     }
 
@@ -2468,7 +2469,7 @@ namespace app
             for (int i = 0; i < nFormats; i++)
             {
                 config::CFormat& format = m_Config.m_Formats.Get(i);
-                this->m_CmbFormat.InsertString(i, format.szName);
+                this->m_CmbFormat.InsertString(i, format.szName.c_str());
             }
 
             static bool bResizeFormatsComboBox = false;
@@ -2500,7 +2501,7 @@ namespace app
                 for (int i = 0; i < nPresets; i++)
                 {
                     config::CPreset& preset = format.m_Presets.Get(i);
-                    this->m_CmbPresets.InsertString(i, preset.szName);
+                    this->m_CmbPresets.InsertString(i, preset.szName.c_str());
                 }
 
                 nPreset = format.nDefaultPreset;
@@ -2567,7 +2568,7 @@ namespace app
         int nItems = m_Config.m_Items.Count();
         if (nItems > 0)
         {
-            CString szDefaultTime = m_Config.GetString(0x00150001);
+            std::wstring szDefaultTime = m_Config.GetString(0x00150001);
             int nSelected = 0;
 
             for (int i = 0; i < nItems; i++)
@@ -2598,7 +2599,7 @@ namespace app
         int nItems = m_Config.m_Items.Count();
         if (nItems > 0)
         {
-            CString szDefaultStatus = m_Config.GetString(0x00210001);
+            std::wstring szDefaultStatus = m_Config.GetString(0x00210001);
             int nSelected = 0;
 
             for (int i = 0; i < nItems; i++)
@@ -2635,7 +2636,7 @@ namespace app
         }
         else
         {
-            m_StatusBar.SetText(m_Config.GetString(0x00210004), 0, 0);
+            m_StatusBar.SetText(m_Config.GetString(0x00210004).c_str(), 0, 0);
             m_StatusBar.SetText(_T(""), 1, 0);
         }
     }
@@ -2704,7 +2705,7 @@ namespace app
 
             m_StatusBar.SetText(_T(""), 1, 0);
 
-            ::SetCurrentDirectory(m_App.szSettingsPath);
+            ::SetCurrentDirectory(app::m_App.szSettingsPath.c_str());
 
             this->GetOptions();
             this->GetItems();
@@ -2721,8 +2722,8 @@ namespace app
                 return;
             }
 
-            CString szDefaultTime = m_Config.GetString(0x00150001);
-            CString szDefaultStatus = m_Config.GetString(0x00210001);
+            std::wstring szDefaultTime = m_Config.GetString(0x00150001);
+            std::wstring szDefaultStatus = m_Config.GetString(0x00210001);
 
             for (int i = 0; i < nItems; i++)
             {
@@ -2743,11 +2744,11 @@ namespace app
                 return;
             }
 
-            util::COutputPath m_Output;
-            CString szOutput = this->m_Config.m_Options.szOutputPath;
+            worker::COutputPath m_Output;
+            std::wstring szOutput = this->m_Config.m_Options.szOutputPath;
             if (m_Output.Validate(szOutput) == false)
             {
-                m_StatusBar.SetText(m_Config.GetString(0x0021000F), 1, 0);
+                m_StatusBar.SetText(m_Config.GetString(0x0021000F).c_str(), 1, 0);
                 bSafeCheck = false;
                 this->pWorkerContext->bDone = true;
                 return;
@@ -2761,7 +2762,7 @@ namespace app
                 },
                 true) == false)
             {
-                m_StatusBar.SetText(m_Config.GetString(0x0021000E), 1, 0);
+                m_StatusBar.SetText(m_Config.GetString(0x0021000E).c_str(), 1, 0);
                 this->pWorkerContext->bDone = true;
                 bSafeCheck = false;
                 return;
@@ -2770,8 +2771,8 @@ namespace app
             this->EnableUserInterface(FALSE);
 
             m_StatusBar.SetText(_T(""), 1, 0);
-            m_BtnConvert.SetWindowText(m_Config.GetString(0x000A0018));
-            this->GetMenu()->ModifyMenu(ID_ACTION_CONVERT, MF_BYCOMMAND, ID_ACTION_CONVERT, m_Config.GetString(0x00030003));
+            m_BtnConvert.SetWindowText(m_Config.GetString(0x000A0018).c_str());
+            this->GetMenu()->ModifyMenu(ID_ACTION_CONVERT, MF_BYCOMMAND, ID_ACTION_CONVERT, m_Config.GetString(0x00030003).c_str());
 
             this->pWorkerContext->bRunning = true;
             this->m_WorkerThread.Resume();
@@ -2782,8 +2783,8 @@ namespace app
         {
             bSafeCheck = true;
 
-            m_BtnConvert.SetWindowText(m_Config.GetString(0x000A0017));
-            this->GetMenu()->ModifyMenu(ID_ACTION_CONVERT, MF_BYCOMMAND, ID_ACTION_CONVERT, m_Config.GetString(0x00030002));
+            m_BtnConvert.SetWindowText(m_Config.GetString(0x000A0017).c_str());
+            this->GetMenu()->ModifyMenu(ID_ACTION_CONVERT, MF_BYCOMMAND, ID_ACTION_CONVERT, m_Config.GetString(0x00030002).c_str());
             this->EnableUserInterface(TRUE);
 
             this->pWorkerContext->bRunning = false;
@@ -2793,8 +2794,8 @@ namespace app
 
     void CMainDlg::FinishConvert()
     {
-        this->m_BtnConvert.SetWindowText(m_Config.GetString(0x000A0017));
-        this->GetMenu()->ModifyMenu(ID_ACTION_CONVERT, MF_BYCOMMAND, ID_ACTION_CONVERT, m_Config.GetString(0x00030002));
+        this->m_BtnConvert.SetWindowText(m_Config.GetString(0x000A0017).c_str());
+        this->GetMenu()->ModifyMenu(ID_ACTION_CONVERT, MF_BYCOMMAND, ID_ACTION_CONVERT, m_Config.GetString(0x00030002).c_str());
         this->EnableUserInterface(TRUE);
 
         this->m_Progress.SetPos(0);
@@ -2806,9 +2807,9 @@ namespace app
             {
                 try
                 {
-                    this->SaveFormats(m_App.szFormatsFile);
-                    this->SaveOptions(m_App.szOptionsFile);
-                    this->SaveItems(m_App.szItemsFile);
+                    this->SaveFormats(app::m_App.szFormatsFile.c_str());
+                    this->SaveOptions(app::m_App.szOptionsFile.c_str());
+                    this->SaveItems(app::m_App.szItemsFile.c_str());
                 }
                 catch (...) {}
             }
@@ -2817,10 +2818,10 @@ namespace app
         }
     }
 
-    bool CMainDlg::LoadOptions(CString szFileXml)
+    bool CMainDlg::LoadOptions(const std::wstring& szFileXml)
     {
         xml::XmlDocumnent doc;
-        CString szName = xml::CXmlConfig::GetRootName(szFileXml, doc);
+        std::string szName = xml::CXmlConfig::GetRootName(szFileXml, doc);
         if (!szName.IsEmpty() && szName.CompareNoCase(_T("Options")) == 0)
         {
             return this->LoadOptions(doc);
@@ -2842,16 +2843,16 @@ namespace app
         return false;
     }
 
-    bool CMainDlg::SaveOptions(CString szFileXml)
+    bool CMainDlg::SaveOptions(const std::wstring& szFileXml)
     {
         this->GetOptions();
         return xml::CXmlConfig::SaveOptions(szFileXml, this->m_Config.m_Options);
     }
 
-    bool CMainDlg::LoadFormats(CString szFileXml)
+    bool CMainDlg::LoadFormats(const std::wstring& szFileXml)
     {
         xml::XmlDocumnent doc;
-        CString szName = xml::CXmlConfig::GetRootName(szFileXml, doc);
+        std::string szName = xml::CXmlConfig::GetRootName(szFileXml, doc);
         if (!szName.IsEmpty() && szName.CompareNoCase(_T("Formats")) == 0)
         {
             return this->LoadFormats(doc);
@@ -2872,15 +2873,15 @@ namespace app
         return false;
     }
 
-    bool CMainDlg::SaveFormats(CString szFileXml)
+    bool CMainDlg::SaveFormats(const std::wstring& szFileXml)
     {
         return xml::CXmlConfig::SaveFormats(szFileXml, this->m_Config.m_Formats);
     }
 
-    bool CMainDlg::LoadFormat(CString szFileXml)
+    bool CMainDlg::LoadFormat(const std::wstring& szFileXml)
     {
         xml::XmlDocumnent doc;
-        CString szName = xml::CXmlConfig::GetRootName(szFileXml, doc);
+        std::string szName = xml::CXmlConfig::GetRootName(szFileXml, doc);
         if (!szName.IsEmpty() && szName.CompareNoCase(_T("Format")) == 0)
         {
             return this->LoadFormat(doc);
@@ -2901,7 +2902,7 @@ namespace app
         return false;
     }
 
-    bool CMainDlg::SaveFormat(CString szFileXml)
+    bool CMainDlg::SaveFormat(const std::wstring& szFileXml)
     {
         int nFormat = this->m_CmbFormat.GetCurSel();
         if (nFormat != -1)
@@ -2912,10 +2913,10 @@ namespace app
         return false;
     }
 
-    bool CMainDlg::LoadPresets(CString szFileXml)
+    bool CMainDlg::LoadPresets(const std::wstring& szFileXml)
     {
         xml::XmlDocumnent doc;
-        CString szName = xml::CXmlConfig::GetRootName(szFileXml, doc);
+        std::string szName = xml::CXmlConfig::GetRootName(szFileXml, doc);
         if (!szName.IsEmpty() && szName.CompareNoCase(_T("Presets")) == 0)
         {
             return this->LoadPresets(doc);
@@ -2940,7 +2941,7 @@ namespace app
         return false;
     }
 
-    bool CMainDlg::SavePresets(CString szFileXml)
+    bool CMainDlg::SavePresets(const std::wstring& szFileXml)
     {
         int nFormat = this->m_CmbFormat.GetCurSel();
         if (nFormat != -1)
@@ -2951,10 +2952,10 @@ namespace app
         return false;
     }
 
-    bool CMainDlg::LoadTools(CString szFileXml)
+    bool CMainDlg::LoadTools(const std::wstring& szFileXml)
     {
         xml::XmlDocumnent doc;
-        CString szName = xml::CXmlConfig::GetRootName(szFileXml, doc);
+        std::string szName = xml::CXmlConfig::GetRootName(szFileXml, doc);
         if (!szName.IsEmpty() && szName.CompareNoCase(_T("Tools")) == 0)
         {
             return this->LoadTools(doc);
@@ -2973,15 +2974,15 @@ namespace app
         return false;
     }
 
-    bool CMainDlg::SaveTools(CString szFileXml)
+    bool CMainDlg::SaveTools(const std::wstring& szFileXml)
     {
         return xml::CXmlConfig::SaveTools(szFileXml, this->m_Config.m_Tools);
     }
 
-    bool CMainDlg::LoadTool(CString szFileXml)
+    bool CMainDlg::LoadTool(const std::wstring& szFileXml)
     {
         xml::XmlDocumnent doc;
-        CString szName = xml::CXmlConfig::GetRootName(szFileXml, doc);
+        std::string szName = xml::CXmlConfig::GetRootName(szFileXml, doc);
         if (!szName.IsEmpty() && szName.CompareNoCase(_T("Tool")) == 0)
         {
             return this->LoadTool(doc);
@@ -3000,10 +3001,10 @@ namespace app
         return false;
     }
 
-    bool CMainDlg::LoadItems(CString szFileXml)
+    bool CMainDlg::LoadItems(const std::wstring& szFileXml)
     {
         xml::XmlDocumnent doc;
-        CString szName = xml::CXmlConfig::GetRootName(szFileXml, doc);
+        std::string szName = xml::CXmlConfig::GetRootName(szFileXml, doc);
         if (!szName.IsEmpty() && szName.CompareNoCase(_T("Items")) == 0)
         {
             return this->LoadItems(doc);
@@ -3025,16 +3026,16 @@ namespace app
         return false;
     }
 
-    bool CMainDlg::SaveItems(CString szFileXml)
+    bool CMainDlg::SaveItems(const std::wstring& szFileXml)
     {
         this->GetItems();
         return xml::CXmlConfig::SaveItems(szFileXml, this->m_Config.m_Items);
     }
 
-    bool CMainDlg::LoadLanguage(CString szFileXml)
+    bool CMainDlg::LoadLanguage(const std::wstring& szFileXml)
     {
         xml::XmlDocumnent doc;
-        CString szName = xml::CXmlConfig::GetRootName(szFileXml, doc);
+        std::string = xml::CXmlConfig::GetRootName(szFileXml, doc);
         if (!szName.IsEmpty() && szName.CompareNoCase(_T("Language")) == 0)
         {
             return this->LoadLanguage(doc);

@@ -31,7 +31,7 @@ namespace config
             for (int i = 0; i < nTools; i++)
             {
                 CTool& tool = this->Get(i);
-                if ((tool.IsValidFormat(szFormat) == true) && (config::StringHelper::CompareNoCase(tool.szPlatform, szPlatform) == true))
+                if ((tool.IsValidFormat(szFormat) == true) && (util::StringHelper::CompareNoCase(tool.szPlatform, szPlatform) == true))
                 {
                     return i;
                 }

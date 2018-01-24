@@ -110,9 +110,6 @@
     <ClInclude Include="configuration\PresetsList.h">
       <Filter>Header Files\Configuration</Filter>
     </ClInclude>
-    <ClInclude Include="configuration\StringHelper.h">
-      <Filter>Header Files\Configuration</Filter>
-    </ClInclude>
     <ClInclude Include="configuration\Tool.h">
       <Filter>Header Files\Configuration</Filter>
     </ClInclude>
@@ -120,15 +117,6 @@
       <Filter>Header Files\Configuration</Filter>
     </ClInclude>
     <ClInclude Include="dialogs\AboutDlg.h">
-      <Filter>Header Files\Dialogs</Filter>
-    </ClInclude>
-    <ClInclude Include="dialogs\MainDlg.h">
-      <Filter>Header Files\Dialogs</Filter>
-    </ClInclude>
-    <ClInclude Include="dialogs\FormatsDlg.h">
-      <Filter>Header Files\Dialogs</Filter>
-    </ClInclude>
-    <ClInclude Include="dialogs\PresetsDlg.h">
       <Filter>Header Files\Dialogs</Filter>
     </ClInclude>
     <ClInclude Include="dialogs\ToolsDlg.h">
@@ -196,6 +184,18 @@
     </ClInclude>
     <ClInclude Include="configuration\Strings.h">
       <Filter>Header Files\Configuration</Filter>
+    </ClInclude>
+    <ClInclude Include="worker\OutputPath.h">
+      <Filter>Header Files\Worker</Filter>
+    </ClInclude>
+    <ClInclude Include="dialogs\FormatsDlg.h">
+      <Filter>Header Files\Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="dialogs\MainDlg.h">
+      <Filter>Header Files\Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="dialogs\PresetsDlg.h">
+      <Filter>Header Files\Dialogs</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

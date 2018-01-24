@@ -6,12 +6,12 @@
 #include <queue>
 #include <memory>
 #include <string>
-#include "utilities\OutputPath.h"
+#include "OutputPath.h"
 #include "utilities\Pipe.h"
+#include "utilities\StringHelper.h"
 #include "utilities\Thread.h"
 #include "utilities\Process.h"
 #include "utilities\Synchronize.h"
-#include "configuration\StringHelper.h"
 #include "WorkerContext.h"
 #include "CommandLine.h"
 #include "OutputParser.h"

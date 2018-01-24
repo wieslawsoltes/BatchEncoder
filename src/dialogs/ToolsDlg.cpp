@@ -235,7 +235,7 @@ namespace app
 
         if (fd.DoModal() == IDOK)
         {
-            CString szFileXml = fd.GetPathName();
+            std::wstring szFileXml = fd.GetPathName();
             this->LoadTool(szFileXml);
         }
     }
@@ -258,13 +258,13 @@ namespace app
                     pConfig->GetString(0x00310010),
                     pConfig->GetString(0x00310001));
 
-                CFileDialog fd(FALSE, _T("xml"), tool.szName,
+                CFileDialog fd(FALSE, _T("xml"), tool.szName.c_str(),
                     OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER | OFN_OVERWRITEPROMPT,
                     szFilter, this);
 
                 if (fd.DoModal() == IDOK)
                 {
-                    CString szFileXml = fd.GetPathName();
+                    std::wstring szFileXml = fd.GetPathName();
                     this->SaveTool(szFileXml, tool);
                 }
             }
@@ -420,12 +420,12 @@ namespace app
                 config::CTool& tool1 = m_Tools.Get(nItem);
                 config::CTool& tool2 = m_Tools.Get(nItem - 1);
 
-                m_LstTools.SetItemText(nItem, TOOL_COLUMN_NAME, tool2.szName);
-                m_LstTools.SetItemText(nItem, TOOL_COLUMN_URL, tool2.szUrl);
-                m_LstTools.SetItemText(nItem, TOOL_COLUMN_STATUS, tool2.szStatus);
-                m_LstTools.SetItemText(nItem - 1, TOOL_COLUMN_NAME, tool1.szName);
-                m_LstTools.SetItemText(nItem - 1, TOOL_COLUMN_URL, tool1.szUrl);
-                m_LstTools.SetItemText(nItem - 1, TOOL_COLUMN_STATUS, tool1.szStatus);
+                m_LstTools.SetItemText(nItem, TOOL_COLUMN_NAME, tool2.szName.c_str());
+                m_LstTools.SetItemText(nItem, TOOL_COLUMN_URL, tool2.szUrl.c_str());
+                m_LstTools.SetItemText(nItem, TOOL_COLUMN_STATUS, tool2.szStatus.c_str());
+                m_LstTools.SetItemText(nItem - 1, TOOL_COLUMN_NAME, tool1.szName.c_str());
+                m_LstTools.SetItemText(nItem - 1, TOOL_COLUMN_URL, tool1.szUrl.c_str());
+                m_LstTools.SetItemText(nItem - 1, TOOL_COLUMN_STATUS, tool1.szStatus.c_str());
 
                 m_Tools.Swap(nItem, nItem - 1);
 
@@ -458,12 +458,12 @@ namespace app
                 config::CTool& tool1 = m_Tools.Get(nItem);
                 config::CTool& tool2 = m_Tools.Get(nItem + 1);
 
-                m_LstTools.SetItemText(nItem, TOOL_COLUMN_NAME, tool2.szName);
-                m_LstTools.SetItemText(nItem, TOOL_COLUMN_URL, tool2.szUrl);
-                m_LstTools.SetItemText(nItem, TOOL_COLUMN_STATUS, tool2.szStatus);
-                m_LstTools.SetItemText(nItem + 1, TOOL_COLUMN_NAME, tool1.szName);
-                m_LstTools.SetItemText(nItem + 1, TOOL_COLUMN_URL, tool1.szUrl);
-                m_LstTools.SetItemText(nItem + 1, TOOL_COLUMN_STATUS, tool1.szStatus);
+                m_LstTools.SetItemText(nItem, TOOL_COLUMN_NAME, tool2.szName.c_str());
+                m_LstTools.SetItemText(nItem, TOOL_COLUMN_URL, tool2.szUrl.c_str());
+                m_LstTools.SetItemText(nItem, TOOL_COLUMN_STATUS, tool2.szStatus.c_str());
+                m_LstTools.SetItemText(nItem + 1, TOOL_COLUMN_NAME, tool1.szName.c_str());
+                m_LstTools.SetItemText(nItem + 1, TOOL_COLUMN_URL, tool1.szUrl.c_str());
+                m_LstTools.SetItemText(nItem + 1, TOOL_COLUMN_STATUS, tool1.szStatus.c_str());
 
                 m_Tools.Swap(nItem, nItem + 1);
 
@@ -518,7 +518,7 @@ namespace app
 
             m_LstTools.SetItemText(nItem, TOOL_COLUMN_NAME, szName);
             m_LstTools.SetItemText(nItem, TOOL_COLUMN_URL, szUrl);
-            m_LstTools.SetItemText(nItem, TOOL_COLUMN_STATUS, tool.szStatus);
+            m_LstTools.SetItemText(nItem, TOOL_COLUMN_STATUS, tool.szStatus.c_str());
 
             m_LstTools.SetItemState(-1, 0, LVIS_SELECTED);
             m_LstTools.SetItemState(nItem, LVIS_SELECTED, LVIS_SELECTED);
@@ -621,7 +621,7 @@ namespace app
 
         if (fd.DoModal() == IDOK)
         {
-            CString szFileXml = fd.GetPathName();
+            std::wstring szFileXml = fd.GetPathName();
             this->LoadTools(szFileXml);
         }
     }
@@ -642,7 +642,7 @@ namespace app
 
         if (fd.DoModal() == IDOK)
         {
-            CString szFileXml = fd.GetPathName();
+            std::wstring szFileXml = fd.GetPathName();
             this->SaveTools(szFileXml);
         }
     }
@@ -724,11 +724,11 @@ namespace app
     void CToolsDlg::LoadWindowSettings()
     {
         // set window rectangle and position
-        if (szToolsDialogResize.CompareNoCase(_T("")) != 0)
-            this->SetWindowRectStr(szToolsDialogResize);
+        if (!szToolsDialogResize.empty())
+            this->SetWindowRectStr(szToolsDialogResize.c_str());
 
         // load columns width for ToolsList
-        if (szToolsListColumns.CompareNoCase(_T("")) != 0)
+        if (!szToolsListColumns.empty())
         {
             int nColWidth[3];
             if (_stscanf(szToolsListColumns, _T("%d %d %d"),
@@ -751,10 +751,11 @@ namespace app
         int nColWidth[3];
         for (int i = 0; i < 3; i++)
             nColWidth[i] = m_LstTools.GetColumnWidth(i);
-        szToolsListColumns.Format(_T("%d %d %d"),
-            nColWidth[0],
-            nColWidth[1],
-            nColWidth[2]);
+
+        szToolsListColumns =
+            std::to_wstring(nColWidth[0]) + L" " +
+            std::to_wstring(nColWidth[1]) + L" " +
+            std::to_wstring(nColWidth[2]);
     }
 
     void CToolsDlg::SetLanguage()
@@ -804,15 +805,15 @@ namespace app
         lvi.iItem = nItem;
 
         lvi.iSubItem = TOOL_COLUMN_NAME;
-        lvi.pszText = (LPTSTR)(LPCTSTR)(tool.szName);
+        lvi.pszText = (LPTSTR)(LPCTSTR)(tool.szName.c_str());
         m_LstTools.InsertItem(&lvi);
 
         lvi.iSubItem = TOOL_COLUMN_URL;
-        lvi.pszText = (LPTSTR)(LPCTSTR)(tool.szUrl);
+        lvi.pszText = (LPTSTR)(LPCTSTR)(tool.szUrl.c_str());
         m_LstTools.SetItemText(lvi.iItem, TOOL_COLUMN_URL, lvi.pszText);
 
         lvi.iSubItem = TOOL_COLUMN_STATUS;
-        lvi.pszText = (LPTSTR)(LPCTSTR)(tool.szStatus);
+        lvi.pszText = (LPTSTR)(LPCTSTR)(tool.szStatus.c_str());
         m_LstTools.SetItemText(lvi.iItem, TOOL_COLUMN_STATUS, lvi.pszText);
     }
 
@@ -839,20 +840,20 @@ namespace app
                 ::DragQueryFile(hDropInfo, i, szFile.GetBuffer(nReqChars * 2 + 8), nReqChars * 2 + 8);
                 if (!(::GetFileAttributes(szFile) & FILE_ATTRIBUTE_DIRECTORY))
                 {
-                    CString szPath = szFile;
-                    CString szExt = util::GetFileExtension(szPath);
+                    std::wstring szPath = szFile;
+                    std::wstring szExt = util::GetFileExtension(szPath);
 
-                    if (szExt.CompareNoCase(_T("xml")) == 0)
+                    if (util::StringHelper::CompareNoCase(szExt, L"xml"))
                     {
                         xml::XmlDocumnent doc;
-                        CString szName = xml::CXmlConfig::GetRootName(szPath, doc);
-                        if (!szName.IsEmpty())
+                        std::string szName = xml::CXmlConfig::GetRootName(szPath, doc);
+                        if (!szName.empty())
                         {
-                            if (szName.CompareNoCase(_T("Tools")) == 0)
+                            if (util::StringHelper::CompareNoCase(szName, "Tools"))
                             {
                                 this->LoadTools(doc);
                             }
-                            else if (szName.CompareNoCase(_T("Tool")) == 0)
+                            else if (util::StringHelper::CompareNoCase(szName, "Tool"))
                             {
                                 this->LoadTool(doc);
                             }
@@ -869,13 +870,13 @@ namespace app
 
     void CToolsDlg::UpdateFields(config::CTool &tool)
     {
-        this->m_EdtName.SetWindowText(tool.szName);
-        this->m_EdtPlatform.SetWindowText(tool.szPlatform);
-        this->m_EdtFormats.SetWindowText(tool.szFormats);
-        this->m_EdtUrl.SetWindowText(tool.szUrl);
-        this->m_EdtFile.SetWindowText(tool.szFile);
-        this->m_EdtExtract.SetWindowText(tool.szExtract);
-        this->m_EdtPath.SetWindowText(tool.szPath);
+        this->m_EdtName.SetWindowText(tool.szName.c_str());
+        this->m_EdtPlatform.SetWindowText(tool.szPlatform.c_str());
+        this->m_EdtFormats.SetWindowText(tool.szFormats.c_str());
+        this->m_EdtUrl.SetWindowText(tool.szUrl.c_str());
+        this->m_EdtFile.SetWindowText(tool.szFile.c_str());
+        this->m_EdtExtract.SetWindowText(tool.szExtract.c_str());
+        this->m_EdtPath.SetWindowText(tool.szPath.c_str());
     }
 
     void CToolsDlg::ListSelectionChange()
@@ -949,7 +950,7 @@ namespace app
         m_Utilities.bDownload = true;
         EnableUserInterface(FALSE);
 
-        ::SetCurrentDirectory(m_App.szToolsPath);
+        ::SetCurrentDirectory(app::m_App.szToolsPath.c_str());
 
         lang::CLanguageHelper helper(&pConfig->m_Language);
         helper.SetWndText(&m_BtnDownload, 0x000E0024);
@@ -964,9 +965,9 @@ namespace app
                     m_LstTools.EnsureVisible(i, FALSE);
                     config::CTool& tool = m_Tools.Get(i);
                     m_Utilities.Download(tool, true, true, i, pConfig,
-                        [this](int nIndex, CString szStatus)
+                        [this](int nIndex, std::wstring szStatus)
                     {
-                        this->m_LstTools.SetItemText(nIndex, TOOL_COLUMN_STATUS, szStatus);
+                        this->m_LstTools.SetItemText(nIndex, TOOL_COLUMN_STATUS, szStatus.c_str());
                     });
                 }
             }
@@ -978,11 +979,11 @@ namespace app
         m_Utilities.bDownload = false;
     }
 
-    bool CToolsDlg::LoadTool(CString szFileXml)
+    bool CToolsDlg::LoadTool(const std::wstring& szFileXml)
     {
         xml::XmlDocumnent doc;
-        CString szName = xml::CXmlConfig::GetRootName(szFileXml, doc);
-        if (!szName.IsEmpty() && szName.CompareNoCase(_T("Tool")) == 0)
+        std::string szName = xml::CXmlConfig::GetRootName(szFileXml, doc);
+        if (!szName.empty() && util::StringHelper::CompareNoCase(szName, "Tool"))
         {
             return this->LoadTool(doc);
         }
@@ -1002,16 +1003,16 @@ namespace app
         return false;
     }
 
-    bool CToolsDlg::SaveTool(CString szFileXml, config::CTool &tool)
+    bool CToolsDlg::SaveTool(const std::wstring& szFileXml, config::CTool &tool)
     {
         return xml::CXmlConfig::SaveTool(szFileXml, tool);
     }
 
-    bool CToolsDlg::LoadTools(CString szFileXml)
+    bool CToolsDlg::LoadTools(const std::wstring& szFileXml)
     {
         xml::XmlDocumnent doc;
-        CString szName = xml::CXmlConfig::GetRootName(szFileXml, doc);
-        if (!szName.IsEmpty() && szName.CompareNoCase(_T("Tools")) == 0)
+        std::string szName = xml::CXmlConfig::GetRootName(szFileXml, doc);
+        if (!szName.empty() && util::StringHelper::CompareNoCase(szName, "Tools"))
         {
             return this->LoadTools(doc);
         }
@@ -1036,7 +1037,7 @@ namespace app
         return false;
     }
 
-    bool CToolsDlg::SaveTools(CString szFileXml)
+    bool CToolsDlg::SaveTools(const std::wstring& szFileXml)
     {
         return xml::CXmlConfig::SaveTools(szFileXml, this->m_Tools);
     }

@@ -5,6 +5,7 @@
 
 #include <afxcmn.h>
 #include <afxwin.h>
+#include <string>
 #include "controls\MyListCtrl.h"
 #include "controls\MyButton.h"
 #include "controls\MyComboBox.h"
@@ -13,6 +14,7 @@
 #include "controls\MyDialogEx.h"
 #include "configuration\FormatsList.h"
 #include "configuration\Configuration.h"
+#include "utilities\StringHelper.h"
 
 #define FORMAT_COLUMN_NAME      0
 #define FORMAT_COLUMN_TEMPLATE  1
@@ -49,8 +51,8 @@ namespace app
     public:
         FormatsDlgDropContext m_DD;
         config::CConfiguration *pConfig;
-        CString szFormatsDialogResize;
-        CString szFormatsListColumns;
+        std::wstring szFormatsDialogResize;
+        std::wstring szFormatsListColumns;
         volatile bool bUpdate;
         int nSelectedFormat;
         config::CFormatsList m_Formats;
@@ -137,12 +139,12 @@ namespace app
         bool BrowseForPath(CString szDefaultFName, CEdit *pEdit, int nID);
         bool BrowseForFunction(CString szDefaultFName, CEdit *pEdit, int nID);
     public:
-        bool LoadFormat(CString szFileXml);
+        bool LoadFormat(const std::wstring& szFileXml);
         bool LoadFormat(xml::XmlDocumnent &doc);
-        bool SaveFormat(CString szFileXml, config::CFormat &format);
-        bool LoadFormats(CString szFileXml);
+        bool SaveFormat(const std::wstring& szFileXml, config::CFormat &format);
+        bool LoadFormats(const std::wstring& szFileXml);
         bool LoadFormats(xml::XmlDocumnent &doc);
-        bool SaveFormats(CString szFileXml);
+        bool SaveFormats(const std::wstring& szFileXml);
         bool LoadPresets(xml::XmlDocumnent &doc);
     };
 }

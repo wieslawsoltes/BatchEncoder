@@ -4,8 +4,8 @@
 #pragma once
 
 #include <string>
+#include "utilities\StringHelper.h"
 #include "utilities\Utilities.h"
-#include "configuration\StringHelper.h"
 
 namespace worker
 {
@@ -42,26 +42,26 @@ namespace worker
 
             szCommandLine = pFormat->szTemplate;
 
-            config::StringHelper::ReplaceNoCase(szCommandLine, _T("$EXE"), _T("\"$EXE\""));
-            config::StringHelper::ReplaceNoCase(szCommandLine, _T("$EXE"), pFormat->szPath);
-            config::StringHelper::ReplaceNoCase(szCommandLine, _T("$OPTIONS"), this->szOptions);
+            util::StringHelper::ReplaceNoCase(szCommandLine, _T("$EXE"), _T("\"$EXE\""));
+            util::StringHelper::ReplaceNoCase(szCommandLine, _T("$EXE"), pFormat->szPath);
+            util::StringHelper::ReplaceNoCase(szCommandLine, _T("$OPTIONS"), this->szOptions);
 
-            config::StringHelper::ReplaceNoCase(szCommandLine, _T("$INFILE"), _T("\"$INFILE\""));
+            util::StringHelper::ReplaceNoCase(szCommandLine, _T("$INFILE"), _T("\"$INFILE\""));
             if (bUseReadPipes == true)
-               config::StringHelper::ReplaceNoCase(szCommandLine, _T("$INFILE"), _T("-"));
+               util::StringHelper::ReplaceNoCase(szCommandLine, _T("$INFILE"), _T("-"));
             else
-                config::StringHelper::ReplaceNoCase(szCommandLine, _T("$INFILE"), this->szInputFile);
+                util::StringHelper::ReplaceNoCase(szCommandLine, _T("$INFILE"), this->szInputFile);
 
-            config::StringHelper::ReplaceNoCase(szCommandLine, _T("$OUTFILE"), _T("\"$OUTFILE\""));
+            util::StringHelper::ReplaceNoCase(szCommandLine, _T("$OUTFILE"), _T("\"$OUTFILE\""));
             if (bUseWritePipes == true)
-                config::StringHelper::ReplaceNoCase(szCommandLine, _T("$OUTFILE"), _T("-"));
+                util::StringHelper::ReplaceNoCase(szCommandLine, _T("$OUTFILE"), _T("-"));
             else
-                config::StringHelper::ReplaceNoCase(szCommandLine, _T("$OUTFILE"), this->szOutputFile);
+                util::StringHelper::ReplaceNoCase(szCommandLine, _T("$OUTFILE"), this->szOutputFile);
 
             this->szOutputPath = util::GetFilePath(this->szOutputFile);
 
-            config::StringHelper::ReplaceNoCase(szCommandLine, _T("$OUTPATH"), _T("\"$OUTPATH\""));
-            config::StringHelper::ReplaceNoCase(szCommandLine, _T("$OUTPATH"), this->szOutputPath);
+            util::StringHelper::ReplaceNoCase(szCommandLine, _T("$OUTPATH"), _T("\"$OUTPATH\""));
+            util::StringHelper::ReplaceNoCase(szCommandLine, _T("$OUTPATH"), this->szOutputPath);
         }
     };
 }

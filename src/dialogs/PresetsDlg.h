@@ -5,6 +5,7 @@
 
 #include <afxcmn.h>
 #include <afxwin.h>
+#include <string>
 #include "controls\MyListCtrl.h"
 #include "controls\MyButton.h"
 #include "controls\MyComboBox.h"
@@ -13,6 +14,7 @@
 #include "controls\MyDialogEx.h"
 #include "configuration\FormatsList.h"
 #include "configuration\Configuration.h"
+#include "utilities\StringHelper.h"
 
 #define PRESET_COLUMN_NAME      0
 #define PRESET_COLUMN_OPTIONS   1
@@ -49,8 +51,8 @@ namespace app
     public:
         PresetsDlgDropContext m_DD;
         config::CConfiguration *pConfig;
-        CString szPresetsDialogResize;
-        CString szPresetsListColumns;
+        std::wstring szPresetsDialogResize;
+        std::wstring szPresetsListColumns;
         volatile bool bUpdate;
         int nSelectedFormat;
         config::CFormatsList m_Formats;
@@ -100,8 +102,8 @@ namespace app
         void UpdateFields(config::CPreset &preset);
         void ListSelectionChange();
     public:
-        bool LoadPresets(CString szFileXml);
+        bool LoadPresets(const std::wstring& szFileXml);
         bool LoadPresets(xml::XmlDocumnent &doc);
-        bool SavePresets(CString szFileXml, config::CFormat &format);
+        bool SavePresets(const std::wstring& szFileXml, config::CFormat &format);
     };
 }

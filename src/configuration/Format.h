@@ -4,7 +4,7 @@
 #pragma once
 
 #include <string>
-#include "StringHelper.h"
+#include "utilities\StringHelper.h"
 #include "PresetsList.h"
 
 namespace config
@@ -30,7 +30,7 @@ namespace config
     public:
         bool IsValidInputExtension(const std::wstring& szExt)
         {
-            return StringHelper::ContainsNoCase(this->szInputExtensions, szExt, token);
+            return util::StringHelper::ContainsNoCase(this->szInputExtensions, szExt, token);
         }
     };
 }

@@ -5,6 +5,7 @@
 
 #include <afxwin.h>
 #include <afxcmn.h>
+#include <string>
 #include "controls\MyListCtrl.h"
 #include "controls\MyButton.h"
 #include "controls\MyComboBox.h"
@@ -14,6 +15,7 @@
 #include "controls\MySpinButtonCtrl.h"
 #include "controls\MyProgressCtrl.h"
 #include "controls\MyDialogEx.h"
+#include "utilities\StringHelper.h"
 #include "utilities\Thread.h"
 #include "utilities\TimeCount.h"
 #include "xml\XmlDoc.h"
@@ -164,8 +166,8 @@ namespace app
         void DeselectItem(int nItem);
         void MakeItemVisible(int nItem);
         void ToggleItem(int nItem);
-        int AddToItems(CString szPath);
-        bool AddToList(CString szPath);
+        int AddToItems(const std::wstring& szPath);
+        bool AddToList(const std::wstring& szPath);
         void RedrawItem(int nItem);
         void RedrawItem(int nStart, int nEnd);
         void ShowEdtItem();
@@ -183,27 +185,27 @@ namespace app
         void StartConvert();
         void FinishConvert();
     public:
-        bool LoadOptions(CString szFileXml);
+        bool LoadOptions(const std::wstring& szFileXml);
         bool LoadOptions(xml::XmlDocumnent &doc);
-        bool SaveOptions(CString szFileXml);
-        bool LoadFormats(CString szFileXml);
+        bool SaveOptions(const std::wstring& szFileXml);
+        bool LoadFormats(const std::wstring& szFileXml);
         bool LoadFormats(xml::XmlDocumnent &doc);
-        bool SaveFormats(CString szFileXml);
-        bool LoadFormat(CString szFileXml);
+        bool SaveFormats(const std::wstring& szFileXml);
+        bool LoadFormat(const std::wstring& szFileXml);
         bool LoadFormat(xml::XmlDocumnent &doc);
-        bool SaveFormat(CString szFileXml);
-        bool LoadPresets(CString szFileXml);
+        bool SaveFormat(const std::wstring& szFileXml);
+        bool LoadPresets(const std::wstring& szFileXml);
         bool LoadPresets(xml::XmlDocumnent &doc);
-        bool SavePresets(CString szFileXml);
-        bool LoadTools(CString szFileXml);
+        bool SavePresets(const std::wstring& szFileXml);
+        bool LoadTools(const std::wstring& szFileXml);
         bool LoadTools(xml::XmlDocumnent &doc);
-        bool SaveTools(CString szFileXml);
-        bool LoadTool(CString szFileXml);
+        bool SaveTools(const std::wstring& szFileXml);
+        bool LoadTool(const std::wstring& szFileXml);
         bool LoadTool(xml::XmlDocumnent &doc);
-        bool LoadItems(CString szFileXml);
+        bool LoadItems(const std::wstring& szFileXml);
         bool LoadItems(xml::XmlDocumnent &doc);
-        bool SaveItems(CString szFileXml);
-        bool LoadLanguage(CString szFileXml);
+        bool SaveItems(const std::wstring& szFileXml);
+        bool LoadLanguage(const std::wstring& szFileXml);
         bool LoadLanguage(xml::XmlDocumnent &doc);
     };
 }
