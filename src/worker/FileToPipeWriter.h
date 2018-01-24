@@ -3,6 +3,7 @@
 
 #pragma once
 
+#include <string>
 #include "utilities\Pipe.h"
 #include "WorkerContext.h"
 
