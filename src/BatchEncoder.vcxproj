@@ -310,7 +310,6 @@ copy /Y ..\setup\*.portable $(OutDir)</Command>
     <ClCompile Include="dialogs\PresetsDlg.cpp" />
     <ClCompile Include="dialogs\ToolsDlg.cpp" />
     <ClCompile Include="worker\Worker.cpp" />
-    <ClCompile Include="xml\XmlConfig.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="configuration\Path.h" />
