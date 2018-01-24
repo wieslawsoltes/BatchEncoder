@@ -5,7 +5,7 @@
 
 #include <string>
 #include "utilities\Utilities.h"
-#include "config\StringHelper.h"
+#include "configuration\StringHelper.h"
 
 namespace worker
 {
