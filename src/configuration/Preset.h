@@ -3,36 +3,14 @@
 
 #pragma once
 
-#include <afxstr.h>
+#include <string>
 
 namespace config
 {
     class CPreset
     {
     public:
-        CString szName;
-        CString szOptions;
-    public:
-        CPreset()
-        {
-        }
-        CPreset(const CPreset &other)
-        {
-            Copy(other);
-        }
-        CPreset& operator=(const CPreset &other)
-        {
-            Copy(other);
-            return *this;
-        }
-        virtual ~CPreset()
-        {
-        }
-    public:
-        void Copy(const CPreset &other)
-        {
-            this->szName = other.szName;
-            this->szOptions = other.szOptions;
-        }
+        std::wstring szName;
+        std::wstring szOptions;
     };
 }
