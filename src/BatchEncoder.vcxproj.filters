@@ -66,9 +66,6 @@
     <ClCompile Include="dialogs\ToolsDlg.cpp">
       <Filter>Source Files\Dialogs</Filter>
     </ClCompile>
-    <ClCompile Include="xml\XmlConfig.cpp">
-      <Filter>Source Files\Xml</Filter>
-    </ClCompile>
     <ClCompile Include="worker\Worker.cpp">
       <Filter>Source Files\Worker</Filter>
     </ClCompile>
