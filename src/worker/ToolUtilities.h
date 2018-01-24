@@ -3,12 +3,14 @@
 
 #pragma once
 
+#include <string>
 #include <functional>
 #include "utilities\Download.h"
 #include "utilities\Thread.h"
 #include "configuration\ToolsList.h"
 #include "configuration\FormatsList.h"
 #include "configuration\Configuration.h"
+#include "configuration\StringHelper.h"
 
 namespace worker
 {
@@ -20,25 +22,26 @@ namespace worker
         CToolUtilities() { }
         virtual ~CToolUtilities() { }
     public:
-        bool Download(config::CTool& tool, bool bExtract, bool bInstall, int nIndex, config::CConfiguration *pConfig, std::function<void(int, CString)> callback = nullptr)
+        bool Download(config::CTool& tool, bool bExtract, bool bInstall, int nIndex, config::CConfiguration *pConfig, std::function<void(int, std::wstring)> callback = nullptr)
         {
             util::CDownload m_Download;
-            CString szUrl = tool.szUrl;
-            CString szFilePath = app::m_App.CombinePath(app::m_App.szToolsPath, tool.szFile);
-            CString szFolderPath = app::m_App.CombinePath(app::m_App.szToolsPath, util::GetOnlyFileName(tool.szFile));
+            std::wstring szUrl = tool.szUrl;
+            std::wstring szFilePath = app::m_App.CombinePath(app::m_App.szToolsPath, tool.szFile);
+            std::wstring szFolderPath = app::m_App.CombinePath(app::m_App.szToolsPath, util::GetOnlyFileName(tool.szFile));
 
             bool bResult = m_Download.Download(szUrl, szFilePath,
-                [nIndex, pConfig, callback](int nProgress, CString szStatus)
+                [nIndex, pConfig, callback](int nProgress, std::wstring szStatus)
             {
                 if (callback != nullptr)
                 {
                     for (int s = 0; s < 8; s++)
                     {
                         auto str = config::m_Strings.at(0x00400001 + s);
-                        if (szStatus.Find(str) >= 0)
+                        auto pos = szStatus.find(str);
+                        if (pos != std::string::npos)
                         {
-                            CString szTranslation = pConfig->GetString(0x00400001 + s);
-                            szStatus.Replace(str, szTranslation);
+                            std::wstring szTranslation = pConfig->GetString(0x00400001 + s);
+                            szStatus.replace(pos, str.length(), szTranslation);
                         }
                     }
                     callback(nIndex, szStatus);
@@ -50,7 +53,7 @@ namespace worker
                 return false;
             }
 
-            if (tool.szExtract.CompareNoCase(_T("install")) == 0)
+            if (config::StringHelper::CompareNoCase(tool.szExtract, _T("install")))
             {
                 if (bInstall == true)
                 {
@@ -59,12 +62,12 @@ namespace worker
                 }
             }
 
-            if (tool.szExtract.CompareNoCase(_T("zip")) == 0)
+            if (config::StringHelper::CompareNoCase(tool.szExtract, _T("zip")))
             {
                 if (bExtract == true)
                 {
-                    CComBSTR file(szFilePath);
-                    CComBSTR folder(szFolderPath);
+                    CComBSTR file(szFilePath.c_str());
+                    CComBSTR folder(szFolderPath.c_str());
 
                     if (!util::DirectoryExists(szFolderPath))
                     {
@@ -72,7 +75,7 @@ namespace worker
                         {
                             if (callback != nullptr)
                             {
-                                CString szStatus = pConfig->GetString(0x00410001);
+                                std::wstring szStatus = pConfig->GetString(0x00410001);
                                 callback(nIndex, szStatus);
                             }
                             return false;
@@ -86,7 +89,7 @@ namespace worker
                         {
                             if (callback != nullptr)
                             {
-                                CString szStatus = pConfig->GetString(0x00410002);
+                                std::wstring szStatus = pConfig->GetString(0x00410002);
                                 callback(nIndex, szStatus);
                             }
                             return true;
@@ -95,7 +98,7 @@ namespace worker
                         {
                             if (callback != nullptr)
                             {
-                                CString szStatus = pConfig->GetString(0x00410003);
+                                std::wstring szStatus = pConfig->GetString(0x00410003);
                                 callback(nIndex, szStatus);
                             }
                             return false;
@@ -106,7 +109,7 @@ namespace worker
 
             return true;
         }
-        int FindTool(config::CToolsList& m_Tools, CString szPlatform, CString szFormatId)
+        int FindTool(config::CToolsList& m_Tools, const std::wstring& szPlatform, const std::wstring& szFormatId)
         {
             int nTool = m_Tools.GetToolByFormatAndPlatform(szFormatId, szPlatform);
             if (nTool >= 0)
@@ -115,16 +118,16 @@ namespace worker
             }
             return -1;
         }
-        int FindTool(config::CToolsList& m_Tools, CString szFormatId)
+        int FindTool(config::CToolsList& m_Tools, const std::wstring& szFormatId)
         {
 #if defined(_WIN32) & !defined(_WIN64)
-            CString szPlatform = _T("x86");
+            const std::wstring szPlatform = _T("x86");
 #else
-            CString szPlatform = _T("x64");
+            const std::wstring szPlatform = _T("x64");
 #endif
             return FindTool(m_Tools, szPlatform, szFormatId);
         }
-        void SetFormatPaths(config::CFormatsList& m_Formats, config::CToolsList& m_Tools, CString szPlatform)
+        void SetFormatPaths(config::CFormatsList& m_Formats, config::CToolsList& m_Tools, const std::wstring& szPlatform)
         {
             int nFormats = m_Formats.Count();
             for (int i = 0; i < nFormats; i++)
