@@ -4,11 +4,11 @@
 #pragma once
 
 #include <map>
-#include <tchar.h>
+#include <string>
 
 namespace config
 {
-    const std::map<int, const TCHAR*> m_Strings =
+    const std::map<int, const std::wstring> m_Strings =
     {
         // File Menu
 
