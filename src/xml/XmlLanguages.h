@@ -5,7 +5,7 @@
 
 #include <string>
 #include "xml\XmlDoc.h"
-#include "config\StringHelper.h"
+#include "configuration\StringHelper.h"
 #include "language\Language.h"
 #include "language\LanguagesList.h"
 
