@@ -329,6 +329,7 @@ copy /Y ..\setup\*.portable $(OutDir)</Command>
     <ClInclude Include="configuration\Options.h" />
     <ClInclude Include="configuration\Preset.h" />
     <ClInclude Include="configuration\PresetsList.h" />
+    <ClInclude Include="configuration\StringHelper.h" />
     <ClInclude Include="configuration\Tool.h" />
     <ClInclude Include="configuration\ToolsList.h" />
     <ClInclude Include="dialogs\AboutDlg.h" />
