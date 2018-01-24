@@ -11,6 +11,7 @@
 #include "utilities\Thread.h"
 #include "utilities\Process.h"
 #include "utilities\Synchronize.h"
+#include "configuration\StringHelper.h"
 #include "WorkerContext.h"
 #include "CommandLine.h"
 #include "OutputParser.h"
