@@ -19,12 +19,12 @@ namespace app
     {
     }
 
-    CString CMainApp::CombinePath(CString szPath, CString szFile)
+    std::wstring CMainApp::CombinePath(const std::wstring& szPath, const std::wstring& szFile)
     {
-        CString szOutputFile = szFile;
-        if (szPath.GetLength() >= 1)
+        std::wstring szOutputFile = szFile;
+        if (szPath.length() >= 1)
         {
-            auto cLast = szPath[szPath.GetLength() - 1];
+            auto cLast = szPath[szPath.length() - 1];
             if ((cLast == '\\') || (cLast == '/'))
                 szOutputFile = szPath + szOutputFile;
             else
