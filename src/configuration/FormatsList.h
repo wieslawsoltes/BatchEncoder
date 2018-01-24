@@ -3,7 +3,7 @@
 
 #pragma once
 
-#include <afxstr.h>
+#include <string>
 #include "utilities\ListT.h"
 #include "Format.h"
 
@@ -12,18 +12,18 @@ namespace config
     class CFormatsList : public util::CListT<CFormat>
     {
     public:
-        int GetFormatById(CString szFormatId)
+        int GetFormatById(const std::wstring& szFormatId)
         {
             int nFormats = this->Count();
             for (int i = 0; i < nFormats; i++)
             {
                 CFormat& format = this->Get(i);
-                if (szFormatId.CompareNoCase(format.szId) == 0)
+                if (StringHelper::CompareNoCase(szFormatId, format.szId)) 
                     return i;
             }
             return -1;
         }
-        int GetDecoderByExtension(CString szExt)
+        int GetDecoderByExtension(const std::wstring& szExt)
         {
             int nFormats = this->Count();
             for (int i = 0; i < nFormats; i++)
@@ -36,7 +36,7 @@ namespace config
             }
             return -1;
         }
-        int GetDecoderByExtensionAndFormat(CString szExt, CFormat *pEncoderFormat)
+        int GetDecoderByExtensionAndFormat(const std::wstring szExt, CFormat *pEncoderFormat)
         {
             int nFormats = this->Count();
             for (int i = 0; i < nFormats; i++)
@@ -51,7 +51,7 @@ namespace config
             }
             return -1;
         }
-        bool IsValidInputExtension(CString szExt)
+        bool IsValidInputExtension(const std::wstring szExt)
         {
             int nFormats = this->Count();
             for (int i = 0; i < nFormats; i++)
