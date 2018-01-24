@@ -22,7 +22,7 @@ namespace app
     public:
         bool m_bIsPortable = true;
     public:
-        std::wstring CombinePath(const std::wstring szPath, const std::wstring szFile);
+        std::wstring CombinePath(const std::wstring& szPath, const std::wstring& szFile);
     public:
         std::wstring szSettingsPath;
     public:
