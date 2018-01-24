@@ -3,6 +3,7 @@
 
 #pragma once
 
+#include <string>
 #include "Strings.h"
 #include "Options.h"
 #include "FormatsList.h"
@@ -21,43 +22,14 @@ namespace config
         CToolsList m_Tools;
         lang::CLanguageContext m_Language;
     public:
-        CConfiguration()
+        std::wstring GetString(int nKey)
         {
-        }
-        CConfiguration(const CConfiguration &other)
-        {
-            Copy(other);
-        }
-        CConfiguration& operator=(const CConfiguration &other)
-        {
-            Copy(other);
-            return *this;
-        }
-        virtual ~CConfiguration()
-        {
-        }
-    public:
-        void Copy(const CConfiguration &other)
-        {
-            this->m_Options = other.m_Options;
-            this->m_Formats = other.m_Formats;
-            this->m_Items = other.m_Items;
-            this->m_Tools = other.m_Tools;
-            this->m_Language = other.m_Language;
-        }
-    public:
-        CString GetString(int nKey)
-        {
-            CString rValue;
+            std::wstring rValue;
             if (this->m_Language.LookupString(nKey, rValue))
-            {
                 return rValue;
-            }
 
             if (config::m_Strings.count(nKey) == 1)
-            {
                 return config::m_Strings.at(nKey);
-            }
 
             return _T("??");
         }
