@@ -68,7 +68,7 @@ namespace worker
                 {
                     config::CTool& tool = pWorkerContext->pConfig->m_Tools.Get(nTool);
                     bool bResult = m_Utilities.Download(tool, true, true, nTool, pWorkerContext->pConfig,
-                        [this, pWorkerContext, &commandLine](int nIndex, CString szStatus)
+                        [this, pWorkerContext, &commandLine](int nIndex, std::wstring szStatus)
                     {
                         pWorkerContext->Status(commandLine.nItemId, pWorkerContext->pConfig->GetString(0x00150001), szStatus);
                     });
@@ -94,7 +94,7 @@ namespace worker
                 Stderr.CloseRead();
                 Stderr.CloseWrite();
 
-                CString szStatus;
+                std::wstring szStatus;
                 szStatus.Format(pWorkerContext->pConfig->GetString(0x00120004), ::GetLastError());
 
                 pWorkerContext->Status(commandLine.nItemId, pWorkerContext->pConfig->GetString(0x00150001), szStatus);
@@ -244,7 +244,7 @@ namespace worker
                 {
                     config::CTool& tool = pWorkerContext->pConfig->m_Tools.Get(nTool);
                     bool bResult = m_Utilities.Download(tool, true, true, nTool, pWorkerContext->pConfig,
-                        [this, pWorkerContext, &commandLine](int nIndex, CString szStatus)
+                        [this, pWorkerContext, &commandLine](int nIndex, std::wstring szStatus)
                     {
                         pWorkerContext->Status(commandLine.nItemId, pWorkerContext->pConfig->GetString(0x00150001), szStatus);
                     });
@@ -279,7 +279,7 @@ namespace worker
                     Stdout.CloseWrite();
                 }
 
-                CString szStatus;
+                std::wstring szStatus;
                 szStatus.Format(pWorkerContext->pConfig->GetString(0x00130006), ::GetLastError());
 
                 pWorkerContext->Status(commandLine.nItemId, pWorkerContext->pConfig->GetString(0x00150001), szStatus);
@@ -532,7 +532,7 @@ namespace worker
                 {
                     config::CTool& tool = pWorkerContext->pConfig->m_Tools.Get(nTool);
                     bool bResult = m_Utilities.Download(tool, true, true, nTool, pWorkerContext->pConfig,
-                        [this, pWorkerContext, &decoderCommandLine](int nIndex, CString szStatus)
+                        [this, pWorkerContext, &decoderCommandLine](int nIndex, std::wstring szStatus)
                     {
                         pWorkerContext->Status(decoderCommandLine.nItemId, pWorkerContext->pConfig->GetString(0x00150001), szStatus);
                     });
@@ -564,7 +564,7 @@ namespace worker
                 Bridge.CloseRead();
                 Bridge.CloseWrite();
 
-                CString szStatus;
+                std::wstring szStatus;
                 szStatus.Format(pWorkerContext->pConfig->GetString(0x00130006), ::GetLastError());
 
                 pWorkerContext->Status(decoderCommandLine.nItemId, pWorkerContext->pConfig->GetString(0x00150001), szStatus);
@@ -588,7 +588,7 @@ namespace worker
                 {
                     config::CTool& tool = pWorkerContext->pConfig->m_Tools.Get(nTool);
                     bool bResult = m_Utilities.Download(tool, true, true, nTool, pWorkerContext->pConfig,
-                        [this, pWorkerContext, &encoderCommandLine](int nIndex, CString szStatus)
+                        [this, pWorkerContext, &encoderCommandLine](int nIndex, std::wstring szStatus)
                     {
                         pWorkerContext->Status(encoderCommandLine.nItemId, pWorkerContext->pConfig->GetString(0x00150001), szStatus);
                     });
@@ -622,7 +622,7 @@ namespace worker
                 Bridge.CloseRead();
                 Bridge.CloseWrite();
 
-                CString szStatus;
+                std::wstring szStatus;
                 szStatus.Format(pWorkerContext->pConfig->GetString(0x00130006), ::GetLastError());
 
                 pWorkerContext->Status(decoderCommandLine.nItemId, pWorkerContext->pConfig->GetString(0x00150001), szStatus);
@@ -734,10 +734,10 @@ namespace worker
     {
         config::CFormat *pEncFormat = nullptr;
         config::CFormat *pDecFormat = nullptr;
-        CString szEncInputFile;
-        CString szEncOutputFile;
-        CString szDecInputFile;
-        CString szDecOutputFile;
+        std::wstring szEncInputFile;
+        std::wstring szEncOutputFile;
+        std::wstring szDecInputFile;
+        std::wstring szDecOutputFile;
         util::COutputPath m_Output;
         CCommandLine decoderCommandLine;
         CCommandLine encoderCommandLine;
@@ -838,7 +838,7 @@ namespace worker
             szDecOutputFile.Format(_T("%s%s.%s"),
                 util::GetFilePath(szEncOutputFile),
                 util::GenerateUuidString(),
-                CString(pDecFormat->szOutputExtension).MakeLower());
+                config::StringHelper::TowLower((pDecFormat->szOutputExtension));
         }
 
         if (bIsValidEncoderInput == false)
