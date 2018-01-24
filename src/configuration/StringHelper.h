@@ -33,6 +33,7 @@ namespace config
             std::transform(s2.begin(), s2.end(), s2.begin(), ::toupper);
             return s1 == s2;
         }
+    public:
         static bool ContainsNoCase(const std::wstring& str, const std::wstring& value, wchar_t token)
         {
             std::wstring v = value;
