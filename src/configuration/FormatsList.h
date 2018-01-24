@@ -36,7 +36,7 @@ namespace config
             }
             return -1;
         }
-        int GetDecoderByExtensionAndFormat(const std::wstring szExt, CFormat *pEncoderFormat)
+        int GetDecoderByExtensionAndFormat(const std::wstring& szExt, CFormat *pEncoderFormat)
         {
             int nFormats = this->Count();
             for (int i = 0; i < nFormats; i++)
@@ -51,7 +51,7 @@ namespace config
             }
             return -1;
         }
-        bool IsValidInputExtension(const std::wstring szExt)
+        bool IsValidInputExtension(const std::wstring& szExt)
         {
             int nFormats = this->Count();
             for (int i = 0; i < nFormats; i++)
