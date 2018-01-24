@@ -28,7 +28,7 @@ namespace config
         int nDefaultPreset;
         CPresetsList m_Presets;
     public:
-        bool IsValidInputExtension(std::wstring& szExt)
+        bool IsValidInputExtension(const std::wstring& szExt)
         {
             return StringHelper::ContainsNoCase(this->szInputExtensions, szExt, token);
         }
