@@ -97,6 +97,8 @@ namespace app
         afx_msg void OnDestroy();
         afx_msg void OnDropFiles(HDROP hDropInfo);
         afx_msg BOOL OnHelpInfo(HELPINFO* pHelpInfo);
+        afx_msg void OnLvnGetdispinfoListItems(NMHDR* pNMHDR, LRESULT* pResult);
+        afx_msg void OnOdfindListItems(NMHDR* pNMHDR, LRESULT* pResult);
         afx_msg LRESULT OnListItemChaged(WPARAM wParam, LPARAM lParam);
         afx_msg LRESULT OnNotifyFormat(WPARAM wParam, LPARAM lParam);
         afx_msg void OnNMClickListItems(NMHDR *pNMHDR, LRESULT *pResult);
@@ -124,6 +126,7 @@ namespace app
         afx_msg void OnEditRemoveUnchecked();
         afx_msg void OnEditCheckSelected();
         afx_msg void OnEditUncheckSelected();
+        afx_msg void OnEditToggleSelected();
         afx_msg void OnEditSelectAll();
         afx_msg void OnEditSelectNone();
         afx_msg void OnEditInvertSelection();
@@ -156,9 +159,15 @@ namespace app
         void SetItems();
         void GetOptions();
         void SetOptions();
+        bool IsItemSelected(int nItem);
+        void SelectItem(int nItem);
+        void DeselectItem(int nItem);
+        void MakeItemVisible(int nItem);
+        void ToggleItem(int nItem);
         int AddToItems(CString szPath);
         bool AddToList(CString szPath);
-        void AddToList(config::CItem &item, int nItem);
+        void RedrawItem(int nItem);
+        void RedrawItem(int nStart, int nEnd);
         void ShowEdtItem();
         void UpdateEdtItem(BOOL bUpdateText);
         void HandleDropFiles(HDROP hDropInfo);

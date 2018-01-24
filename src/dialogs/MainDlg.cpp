@@ -217,7 +217,7 @@ namespace app
                 this->nLastItemId = nItemId;
 
                 if (pDlg->m_Config.m_Options.bEnsureItemIsVisible == true)
-                    pDlg->m_LstInputItems.EnsureVisible(nItemId, FALSE);
+                    pDlg->MakeItemVisible(nItemId);
             }
         }
         void Done()
@@ -280,7 +280,7 @@ namespace app
                     {
                         this->nLastItemId = nItemId;
                         if (pDlg->m_Config.m_Options.bEnsureItemIsVisible == true)
-                            pDlg->m_LstInputItems.EnsureVisible(nItemId, FALSE);
+                            pDlg->MakeItemVisible(nItemId);
                     }
 
                     int nTotalProgress = 0;
@@ -299,11 +299,9 @@ namespace app
                             {
                                 if (nItemProgress > 0 && nItemProgress < 100 && nItemProgress > nItemPreviousProgress)
                                 {
-                                    CString szProgress;
-                                    szProgress.Format(_T("%d%%\0"), nItemProgress);
-                                    pDlg->m_LstInputItems.SetItemText(i, ITEM_COLUMN_STATUS, szProgress); // Status
-
+                                    item.szStatus.Format(_T("%d%%\0"), nItemProgress);
                                     item.nPreviousProgress = nItemProgress;
+                                    pDlg->RedrawItem(i);
                                 }
                                 else if (nItemProgress == 100 && nItemProgress > nItemPreviousProgress)
                                 {
@@ -325,8 +323,10 @@ namespace app
         }
         void Status(int nItemId, CString szTime, CString szStatus)
         {
-            pDlg->m_LstInputItems.SetItemText(nItemId, ITEM_COLUMN_TIME, szTime); // Time
-            pDlg->m_LstInputItems.SetItemText(nItemId, ITEM_COLUMN_STATUS, szStatus); // Status
+            config::CItem &item = pConfig->m_Items.Get(nItemId);
+            item.szTime = szTime;
+            item.szStatus = szStatus;
+            pDlg->RedrawItem(nItemId);
         }
     };
 
@@ -374,6 +374,8 @@ namespace app
         ON_WM_HELPINFO()
         ON_MESSAGE(WM_ITEMCHANGED, OnListItemChaged)
         ON_MESSAGE(WM_NOTIFYFORMAT, OnNotifyFormat)
+        ON_NOTIFY(LVN_GETDISPINFO, IDC_LIST_ITEMS, OnLvnGetdispinfoListItems)
+        ON_NOTIFY(LVN_ODFINDITEM, IDC_LIST_ITEMS, OnOdfindListItems)
         ON_NOTIFY(NM_CLICK, IDC_LIST_ITEMS, OnNMClickListItems)
         ON_EN_KILLFOCUS(IDC_EDIT_ITEM, OnEnKillfocusEditItem)
         ON_NOTIFY(LVN_KEYDOWN, IDC_LIST_ITEMS, OnLvnKeydownListInputItems)
@@ -675,36 +677,151 @@ namespace app
     #endif
     }
 
+    void CMainDlg::OnLvnGetdispinfoListItems(NMHDR* pNMHDR, LRESULT* pResult) 
+    {
+        NMLVDISPINFO *pDispInfo = reinterpret_cast<NMLVDISPINFO*>(pNMHDR);
+        LV_ITEM* pItem = &(pDispInfo)->item;
+        int nItem = pItem->iItem;
+
+        if (pItem->mask & LVIF_TEXT)
+        {
+            config::CItem& item = m_Config.m_Items.Get(nItem);
+            CString szText;
+
+            switch(pItem->iSubItem)
+            {
+            case ITEM_COLUMN_NAME:
+                    // [Name] : item name
+                    szText = item.szName;
+                    break;
+            case ITEM_COLUMN_INPUT:
+                    // [Type] : input extension 
+                    szText = item.szExtension;
+                    break;
+            case ITEM_COLUMN_SIZE:
+                    // [Size (bytes)] : file size
+                    szText = item.szSize;
+                    break;
+            case ITEM_COLUMN_OUTPUT:
+                    // [Output] : output format
+                    szText = item.szFormatId;
+                    break;
+            case ITEM_COLUMN_PRESET:
+                    // [Preset] : selected preset index
+                    szText.Format(_T("%d"), item.nPreset);
+                    break;
+            case ITEM_COLUMN_OPTIONS:
+                    // [Options] : additional options
+                    szText = item.szOptions;
+                    break;
+            case ITEM_COLUMN_TIME:
+                    // [Time] : encoder/decoder conversion time
+                    szText.Format(_T("%s"), (item.szTime.CompareNoCase(_T("")) == 0) ? m_Config.GetString(0x00150001) : item.szTime);
+                    break;
+            case ITEM_COLUMN_STATUS:
+                    // [Status] : encoder/decoder progress status
+                    szText.Format(_T("%s"), (item.szStatus.CompareNoCase(_T("")) == 0) ? m_Config.GetString(0x00210001) : item.szStatus);
+                    break;
+            }
+
+            _tcscpy_s(pItem->pszText, pItem->cchTextMax, szText);
+        }
+
+        if(pItem->mask & LVIF_IMAGE) 
+        {
+            config::CItem& item = m_Config.m_Items.Get(nItem);
+
+            pItem->mask |= LVIF_STATE;
+            pItem->stateMask = LVIS_STATEIMAGEMASK;
+            pItem->state = item.bChecked ? INDEXTOSTATEIMAGEMASK(2) : INDEXTOSTATEIMAGEMASK(1);
+        }
+
+        *pResult = 0;
+    }
+
+    void CMainDlg::OnOdfindListItems(NMHDR* pNMHDR, LRESULT* pResult) 
+    {
+        if (this->pWorkerContext->bRunning == false)
+        {
+            NMLVFINDITEM* pFindInfo = (NMLVFINDITEM*)pNMHDR;
+            *pResult = -1;
+            if((pFindInfo->lvfi.flags & LVFI_STRING) == 0)
+            {
+                return;
+            }
+
+            CString szSearchStr = pFindInfo->lvfi.psz;
+            int startPos = pFindInfo->iStart;
+            if (startPos >= m_LstInputItems.GetItemCount())
+                startPos = 0;
+
+            int currentPos = startPos;
+            do
+            {
+                config::CItem& item = m_Config.m_Items.Get(currentPos);
+                if( _tcsnicmp(item.szName, szSearchStr, szSearchStr.GetLength()) == 0)
+                {
+                    *pResult = currentPos;
+                    break;
+                }
+                currentPos++;
+                if(currentPos >= m_LstInputItems.GetItemCount())
+                    currentPos = 0;
+            } while(currentPos != startPos);
+        }
+    }
+
     void CMainDlg::OnNMClickListItems(NMHDR *pNMHDR, LRESULT *pResult)
     {
-        LPNMITEMACTIVATE pNMItemActivate = reinterpret_cast<LPNMITEMACTIVATE>(pNMHDR);
-        if (pNMItemActivate->iSubItem == -1 || pNMItemActivate->iItem == -1)
+        if (this->pWorkerContext->bRunning == false)
         {
+            NMLISTVIEW* pNMListView = (NM_LISTVIEW*)pNMHDR;
+            LVHITTESTINFO hitInfo;
+            hitInfo.pt = pNMListView->ptAction;
+            int nItem = m_LstInputItems.HitTest(&hitInfo); 
+            if (nItem != -1)
+            {
+                if (hitInfo.flags == LVHT_ONITEMSTATEICON)
+                {
+                    ToggleItem(nItem);
+                }
+            }
+
+            LPNMITEMACTIVATE pNMItemActivate = reinterpret_cast<LPNMITEMACTIVATE>(pNMHDR);
+            if (pNMItemActivate->iSubItem == -1 || pNMItemActivate->iItem == -1)
+            {
+                UpdateEdtItem(TRUE);
+                *pResult = 0;
+                return;
+            }
+
+            if (pNMItemActivate->iSubItem == 0 || pNMItemActivate->iSubItem != ITEM_COLUMN_OPTIONS)
+            {
+                UpdateEdtItem(TRUE);
+                *pResult = 0;
+                return;
+            }
+
             UpdateEdtItem(TRUE);
-            *pResult = 0;
-            return;
+
+            nEdtItem = pNMItemActivate->iItem;
+            nEdtSubItem = pNMItemActivate->iSubItem;
+
+            config::CItem& item = m_Config.m_Items.Get(nEdtItem);
+            szEdtText = item.szOptions;
+
+            ShowEdtItem();
         }
-        if (pNMItemActivate->iSubItem == 0 || pNMItemActivate->iSubItem != ITEM_COLUMN_OPTIONS)
-        {
-            UpdateEdtItem(TRUE);
-            *pResult = 0;
-            return;
-        }
-
-        UpdateEdtItem(TRUE);
-
-        nEdtItem = pNMItemActivate->iItem;
-        nEdtSubItem = pNMItemActivate->iSubItem;
-        szEdtText = m_LstInputItems.GetItemText(nEdtItem, nEdtSubItem);
-
-        ShowEdtItem();
 
         *pResult = 0;
     }
 
     void CMainDlg::OnEnKillfocusEditItem()
     {
-        UpdateEdtItem(TRUE);
+        if (this->pWorkerContext->bRunning == false)
+        {
+            UpdateEdtItem(TRUE);
+        }
     }
 
     void CMainDlg::OnLvnKeydownListInputItems(NMHDR *pNMHDR, LRESULT *pResult)
@@ -714,6 +831,9 @@ namespace app
             LPNMLVKEYDOWN pLVKeyDow = reinterpret_cast<LPNMLVKEYDOWN>(pNMHDR);
             switch (pLVKeyDow->wVKey)
             {
+            case VK_SPACE:
+                this->OnEditToggleSelected();
+                break;
             case VK_INSERT:
                 this->OnEditCrop();
                 break;
@@ -792,7 +912,6 @@ namespace app
                 }
             }
         }
-
         *pResult = 0;
     }
 
@@ -949,7 +1068,7 @@ namespace app
             if (this->pWorkerContext->bRunning == false)
             {
                 m_Config.m_Items.RemoveAll();
-                m_LstInputItems.DeleteAllItems();
+                m_LstInputItems.SetItemCount(0);
                 this->UpdateStatusBar();
             }
         }
@@ -1006,6 +1125,7 @@ namespace app
                         }
                     } while (pos != nullptr);
 
+                    this->SetItems();
                     this->UpdateStatusBar();
                 }
             }
@@ -1074,6 +1194,7 @@ namespace app
                 {
                     CString szPath = lpBuffer;
                     this->SearchFolderForFiles(szPath, bRecurseChecked);
+                    this->SetItems();
                     this->UpdateStatusBar();
                 }
                 pMalloc->Free(pidlBrowse);
@@ -1125,39 +1246,40 @@ namespace app
         if (this->pWorkerContext->bRunning == false)
         {
             int nItemLastRemoved = -1;
-            int nItems = m_LstInputItems.GetItemCount();
+            int nItems = m_Config.m_Items.Count();
             if (nItems <= 0)
                 return;
 
             for (int i = (nItems - 1); i >= 0; i--)
             {
-                if (m_LstInputItems.GetItemState(i, LVIS_SELECTED) == LVIS_SELECTED)
+                if (this->IsItemSelected(i))
                 {
                     m_Config.m_Items.Remove(i);
-                    m_LstInputItems.DeleteItem(i);
                     nItemLastRemoved = i;
                 }
             }
 
-            nItems = m_LstInputItems.GetItemCount();
+            nItems = m_Config.m_Items.Count();
+            m_LstInputItems.SetItemCount(nItems);
+
             if (nItemLastRemoved != -1)
             {
                 if (nItemLastRemoved < nItems && nItems >= 0)
                 {
-                    m_LstInputItems.SetItemState(nItemLastRemoved, LVIS_SELECTED, LVIS_SELECTED);
-                    m_LstInputItems.EnsureVisible(nItemLastRemoved, FALSE);
+                    this->SelectItem(nItemLastRemoved);
+                    this->MakeItemVisible(nItemLastRemoved);
                 }
                 else if (nItemLastRemoved >= nItems && nItems >= 0)
                 {
-                    m_LstInputItems.SetItemState(nItemLastRemoved - 1, LVIS_SELECTED, LVIS_SELECTED);
-                    m_LstInputItems.EnsureVisible(nItemLastRemoved, FALSE);
+                    this->SelectItem(nItemLastRemoved - 1);
+                    this->MakeItemVisible(nItemLastRemoved - 1);
                 }
             }
 
-            if (m_LstInputItems.GetItemCount() == 0)
+            if (nItems == 0)
             {
                 m_Config.m_Items.RemoveAll();
-                m_LstInputItems.DeleteAllItems();
+                m_LstInputItems.SetItemCount(0);
             }
 
             this->UpdateStatusBar();
@@ -1168,13 +1290,13 @@ namespace app
     {
         if (this->pWorkerContext->bRunning == false)
         {
-            int nFiles = m_LstInputItems.GetItemCount();
-            for (int i = 0; i < nFiles; i++)
+            int nItems = m_Config.m_Items.Count();
+            for (int i = 0; i < nItems; i++)
             {
-                if (m_LstInputItems.GetItemState(i, LVIS_SELECTED) == LVIS_SELECTED)
-                    m_LstInputItems.SetItemState(i, 0, LVIS_SELECTED);
+                if (this->IsItemSelected(i))
+                    this->DeselectItem(i);
                 else
-                    m_LstInputItems.SetItemState(i, LVIS_SELECTED, LVIS_SELECTED);
+                    this->SelectItem(i);
             }
 
             OnEditRemove();
@@ -1185,23 +1307,25 @@ namespace app
     {
         if (this->pWorkerContext->bRunning == false)
         {
-            int nItems = m_LstInputItems.GetItemCount();
+            int nItems = m_Config.m_Items.Count();
             if (nItems <= 0)
                 return;
 
             for (int i = (nItems - 1); i >= 0; i--)
             {
-                if (m_LstInputItems.GetCheck(i) == TRUE)
-                {
+                config::CItem& item = m_Config.m_Items.Get(i);
+                if (item.bChecked == true)
                     m_Config.m_Items.Remove(i);
-                    m_LstInputItems.DeleteItem(i);
-                }
             }
 
-            if (m_LstInputItems.GetItemCount() == 0)
+            nItems = m_Config.m_Items.Count();
+            m_LstInputItems.SetItemCount(nItems);
+            this->RedrawItem(0, nItems - 1);
+
+            if (nItems == 0)
             {
                 m_Config.m_Items.RemoveAll();
-                m_LstInputItems.DeleteAllItems();
+                m_LstInputItems.SetItemCount(0);
             }
 
             this->UpdateStatusBar();
@@ -1212,23 +1336,25 @@ namespace app
     {
         if (this->pWorkerContext->bRunning == false)
         {
-            int nItems = m_LstInputItems.GetItemCount();
+            int nItems = m_Config.m_Items.Count();
             if (nItems <= 0)
                 return;
 
             for (int i = (nItems - 1); i >= 0; i--)
             {
-                if (m_LstInputItems.GetCheck(i) == FALSE)
-                {
+                config::CItem& item = m_Config.m_Items.Get(i);
+                if (item.bChecked == false)
                     m_Config.m_Items.Remove(i);
-                    m_LstInputItems.DeleteItem(i);
-                }
             }
 
-            if (m_LstInputItems.GetItemCount() == 0)
+            nItems = m_Config.m_Items.Count();
+            m_LstInputItems.SetItemCount(nItems);
+            this->RedrawItem(0, nItems - 1);
+
+            if (nItems == 0)
             {
                 m_Config.m_Items.RemoveAll();
-                m_LstInputItems.DeleteAllItems();
+                m_LstInputItems.SetItemCount(0);
             }
 
             this->UpdateStatusBar();
@@ -1239,14 +1365,23 @@ namespace app
     {
         if (this->pWorkerContext->bRunning == false)
         {
-            int nCount = m_LstInputItems.GetItemCount();
-            if (nCount > 0)
+            int nItems = m_Config.m_Items.Count();
+            if (nItems > 0)
             {
-                for (int i = 0; i < nCount; i++)
+                for (int i = 0; i < nItems; i++)
                 {
-                    if (m_LstInputItems.GetItemState(i, LVIS_SELECTED) == LVIS_SELECTED)
-                        m_LstInputItems.SetCheck(i, TRUE);
+                    if (this->IsItemSelected(i))
+                    {
+                        config::CItem& item = m_Config.m_Items.Get(i);
+                        if (item.bChecked == false)
+                        {
+                            item.bChecked = true;
+                            this->RedrawItem(i);
+                        }
+                    }
                 }
+
+                this->UpdateStatusBar();
             }
         }
     }
@@ -1255,17 +1390,44 @@ namespace app
     {
         if (this->pWorkerContext->bRunning == false)
         {
-            int nCount = m_LstInputItems.GetItemCount();
-            if (nCount > 0)
+            int nItems = m_Config.m_Items.Count();
+            if (nItems > 0)
             {
-                for (int i = 0; i < nCount; i++)
+                for (int i = 0; i < nItems; i++)
                 {
-                    if (m_LstInputItems.GetItemState(i, LVIS_SELECTED) == LVIS_SELECTED)
-                        m_LstInputItems.SetCheck(i, FALSE);
+                    if (this->IsItemSelected(i))
+                    {
+                        config::CItem& item = m_Config.m_Items.Get(i);
+                        if (item.bChecked == true)
+                        {
+                            item.bChecked = false;
+                            this->RedrawItem(i);
+                        }
+                    }
                 }
+                this->UpdateStatusBar();
             }
+        }
+    }
 
-            this->UpdateStatusBar();
+    void CMainDlg::OnEditToggleSelected()
+    {
+        if (this->pWorkerContext->bRunning == false)
+        {
+            int nItems = m_Config.m_Items.Count();
+            if (nItems > 0)
+            {
+                for (int i = 0; i < nItems; i++)
+                {
+                    if (this->IsItemSelected(i))
+                    {
+                        config::CItem& item = m_Config.m_Items.Get(i);
+                        item.bChecked = !item.bChecked;
+                        this->RedrawItem(i);
+                    }
+                }
+                this->UpdateStatusBar();
+            }
         }
     }
 
@@ -1289,15 +1451,15 @@ namespace app
     {
         if (this->pWorkerContext->bRunning == false)
         {
-            int nCount = m_LstInputItems.GetItemCount();
-            if (nCount > 0)
+            int nItems = m_Config.m_Items.Count();
+            if (nItems > 0)
             {
-                for (int i = 0; i < nCount; i++)
+                for (int i = 0; i < nItems; i++)
                 {
-                    if (m_LstInputItems.GetItemState(i, LVIS_SELECTED) == LVIS_SELECTED)
-                        m_LstInputItems.SetItemState(i, 0, LVIS_SELECTED);
+                    if (this->IsItemSelected(i))
+                        this->DeselectItem(i);
                     else
-                        m_LstInputItems.SetItemState(i, LVIS_SELECTED, LVIS_SELECTED);
+                        this->SelectItem(i);
                 }
             }
         }
@@ -1793,21 +1955,13 @@ namespace app
         {
             config::CItem& item = m_Config.m_Items.Get(i);
             item.nId = i;
-            item.bChecked = this->m_LstInputItems.GetCheck(i) == TRUE;
-            item.szOptions = this->m_LstInputItems.GetItemText(i, ITEM_COLUMN_OPTIONS);
-            item.szTime = this->m_LstInputItems.GetItemText(i, ITEM_COLUMN_TIME);
-            item.szStatus = this->m_LstInputItems.GetItemText(i, ITEM_COLUMN_STATUS);
         }
     }
 
     void CMainDlg::SetItems()
     {
         int nItems = m_Config.m_Items.Count();
-        for (int i = 0; i < nItems; i++)
-        {
-            config::CItem& item = m_Config.m_Items.Get(i);
-            this->AddToList(item, i);
-        }
+        m_LstInputItems.SetItemCount(nItems);
     }
 
     void CMainDlg::GetOptions()
@@ -2009,6 +2163,33 @@ namespace app
         // option: ToolsListColumns
     }
 
+    bool CMainDlg::IsItemSelected(int nItem)
+    {
+        return m_LstInputItems.GetItemState(nItem, LVIS_SELECTED) == LVIS_SELECTED;
+    }
+
+    void CMainDlg::SelectItem(int nItem)
+    {
+        m_LstInputItems.SetItemState(nItem, LVIS_SELECTED, LVIS_SELECTED);
+    }
+
+    void CMainDlg::DeselectItem(int nItem)
+    {
+        m_LstInputItems.SetItemState(nItem, 0, LVIS_SELECTED);
+    }
+
+    void CMainDlg::MakeItemVisible(int nItem)
+    {
+        m_LstInputItems.EnsureVisible(nItem, FALSE);
+    }
+
+    void CMainDlg::ToggleItem(int nItem)
+    {
+        config::CItem& item = m_Config.m_Items.Get(nItem);
+        item.bChecked = !item.bChecked;
+        this->RedrawItem(nItem);
+    }
+
     int CMainDlg::AddToItems(CString szPath)
     {
         int nFormat = this->m_CmbFormat.GetCurSel();
@@ -2060,63 +2241,14 @@ namespace app
         return (int)m_Config.m_Items.Count() - 1;
     }
 
-    void CMainDlg::AddToList(config::CItem &item, int nItem)
+    void CMainDlg::RedrawItem(int nItem)
     {
-        CString tmpBuf;
-        LVITEM lvi;
-        ZeroMemory(&lvi, sizeof(LVITEM));
-        lvi.mask = LVIF_TEXT | LVIF_STATE;
-        lvi.iItem = nItem;
+        m_LstInputItems.RedrawItems(nItem, nItem);
+    }
 
-        // [Name] : item name
-        lvi.pszText = (LPTSTR)(LPCTSTR)(item.szName);
-        m_LstInputItems.InsertItem(&lvi);
-        m_LstInputItems.SetItemData(nItem, nItem);
-
-        // [Type] : input extension 
-        tmpBuf.Format(_T("%s"), item.szExtension);
-        lvi.iSubItem = ITEM_COLUMN_INPUT;
-        lvi.pszText = (LPTSTR)(LPCTSTR)(tmpBuf);
-        m_LstInputItems.SetItemText(lvi.iItem, ITEM_COLUMN_INPUT, lvi.pszText);
-
-        // [Size (bytes)] : file size
-        tmpBuf.Format(_T("%s"), item.szSize);
-        lvi.iSubItem = ITEM_COLUMN_SIZE;
-        lvi.pszText = (LPTSTR)(LPCTSTR)(tmpBuf);
-        m_LstInputItems.SetItemText(lvi.iItem, ITEM_COLUMN_SIZE, lvi.pszText);
-
-        // [Output] : output format
-        tmpBuf.Format(_T("%s"), item.szFormatId);
-        lvi.iSubItem = ITEM_COLUMN_OUTPUT;
-        lvi.pszText = (LPTSTR)(LPCTSTR)(tmpBuf);
-        m_LstInputItems.SetItemText(lvi.iItem, ITEM_COLUMN_OUTPUT, lvi.pszText);
-
-        // [Preset] : selected preset index
-        tmpBuf.Format(_T("%d"), item.nPreset);
-        lvi.iSubItem = ITEM_COLUMN_PRESET;
-        lvi.pszText = (LPTSTR)(LPCTSTR)(tmpBuf);
-        m_LstInputItems.SetItemText(lvi.iItem, ITEM_COLUMN_PRESET, lvi.pszText);
-
-        // [Options] : additional options
-        tmpBuf.Format(_T("%s"), item.szOptions);
-        lvi.iSubItem = ITEM_COLUMN_OPTIONS;
-        lvi.pszText = (LPTSTR)(LPCTSTR)(tmpBuf);
-        m_LstInputItems.SetItemText(lvi.iItem, ITEM_COLUMN_OPTIONS, lvi.pszText);
-
-        // [Time] : encoder/decoder conversion time
-        tmpBuf.Format(_T("%s"), (item.szTime.CompareNoCase(_T("")) == 0) ? m_Config.GetString(0x00150001) : item.szTime);
-        lvi.iSubItem = ITEM_COLUMN_TIME;
-        lvi.pszText = (LPTSTR)(LPCTSTR)(tmpBuf);
-        m_LstInputItems.SetItemText(lvi.iItem, ITEM_COLUMN_TIME, lvi.pszText);
-
-        // [Status] : encoder/decoder progress status
-        tmpBuf.Format(_T("%s"), (item.szStatus.CompareNoCase(_T("")) == 0) ? m_Config.GetString(0x00210001) : item.szStatus);
-        lvi.iSubItem = ITEM_COLUMN_STATUS;
-        lvi.pszText = (LPTSTR)(LPCTSTR)(tmpBuf);
-        m_LstInputItems.SetItemText(lvi.iItem, ITEM_COLUMN_STATUS, lvi.pszText);
-
-        // item CheckBox state
-        m_LstInputItems.SetCheck(nItem, item.bChecked);
+    void CMainDlg::RedrawItem(int nStart, int nEnd)
+    {
+        m_LstInputItems.RedrawItems(nStart, nEnd);
     }
 
     bool CMainDlg::AddToList(CString szPath)
@@ -2132,8 +2264,7 @@ namespace app
         if (nItem == -1)
             return false;
 
-        config::CItem& item = m_Config.m_Items.Get(nItem);
-        this->AddToList(item, nItem);
+        this->RedrawItem(nItem);
 
         return true;
     }
@@ -2159,8 +2290,15 @@ namespace app
             if (bUpdateText == TRUE)
             {
                 m_EdtItem.GetWindowText(szEdtText);
-                m_LstInputItems.SetItemText(nEdtItem, nEdtSubItem, szEdtText);
+
+                if (nEdtSubItem == ITEM_COLUMN_OPTIONS)
+                {
+                    config::CItem& item = m_Config.m_Items.Get(nEdtItem);
+                    item.szOptions = szEdtText;
+                    this->RedrawItem(nEdtItem);
+                }
             }
+
             m_EdtItem.HideCaret();
             m_EdtItem.ShowWindow(SW_HIDE);
             m_LstInputItems.SetFocus();
@@ -2181,6 +2319,7 @@ namespace app
                 if (::GetFileAttributes(szFile) & FILE_ATTRIBUTE_DIRECTORY)
                 {
                     this->SearchFolderForFiles(szFile, true);
+                    this->SetItems();
                 }
                 else
                 {
@@ -2250,6 +2389,7 @@ namespace app
                     else
                     {
                         this->AddToList(szPath);
+                        this->SetItems();
                     }
                 }
 
@@ -2385,42 +2525,33 @@ namespace app
         {
             config::CFormat& format = m_Config.m_Formats.Get(nFormat);
             config::CPreset& preset = format.m_Presets.Get(nPreset);
-            int nCount = m_LstInputItems.GetItemCount();
-            if (nCount > 0)
+            int nItems = m_Config.m_Items.Count();
+
+            if (nItems > 0)
             {
                 int nSelected = 0;
-                for (int i = 0; i < nCount; i++)
+                for (int i = 0; i < nItems; i++)
                 {
-                    if (m_LstInputItems.GetItemState(i, LVIS_SELECTED) == LVIS_SELECTED)
+                    if (this->IsItemSelected(i))
                     {
                         config::CItem& item = m_Config.m_Items.Get(i);
                         item.szFormatId = format.szId;
                         item.nPreset = nPreset;
-
-                        this->m_LstInputItems.SetItemText(i, ITEM_COLUMN_OUTPUT, format.szId);
-
-                        CString szPreset;
-                        szPreset.Format(_T("%d"), nPreset);
-                        this->m_LstInputItems.SetItemText(i, ITEM_COLUMN_PRESET, szPreset);
-
+                        this->RedrawItem(i);
                         nSelected++;
                     }
                 }
 
                 if (nSelected == 0)
                 {
-                    for (int i = 0; i < nCount; i++)
+                    for (int i = 0; i < nItems; i++)
                     {
                         config::CItem& item = m_Config.m_Items.Get(i);
                         item.szFormatId = format.szId;
                         item.nPreset = nPreset;
-
-                        this->m_LstInputItems.SetItemText(i, ITEM_COLUMN_OUTPUT, format.szId);
-
-                        CString szPreset;
-                        szPreset.Format(_T("%d"), nPreset);
-                        this->m_LstInputItems.SetItemText(i, ITEM_COLUMN_PRESET, szPreset);
                     }
+
+                    this->RedrawItem(0, nItems - 1);
                 }
             }
         }
@@ -2433,61 +2564,73 @@ namespace app
 
     void CMainDlg::ResetConvertionTime()
     {
-        int nCount = m_LstInputItems.GetItemCount();
-        if (nCount > 0)
+        int nItems = m_Config.m_Items.Count();
+        if (nItems > 0)
         {
+            CString szDefaultTime = m_Config.GetString(0x00150001);
             int nSelected = 0;
-            for (int i = 0; i < nCount; i++)
+
+            for (int i = 0; i < nItems; i++)
             {
-                if (m_LstInputItems.GetItemState(i, LVIS_SELECTED) == LVIS_SELECTED)
+                if (this->IsItemSelected(i))
                 {
-                    this->m_LstInputItems.SetItemText(i, ITEM_COLUMN_TIME, m_Config.GetString(0x00150001));
+                    config::CItem& item = m_Config.m_Items.Get(i);
+                    item.szTime = szDefaultTime;
+                    this->RedrawItem(i);
                     nSelected++;
                 }
             }
 
             if (nSelected == 0)
             {
-                for (int i = 0; i < nCount; i++)
-                    this->m_LstInputItems.SetItemText(i, ITEM_COLUMN_TIME, m_Config.GetString(0x00150001));
+                for (int i = 0; i < nItems; i++)
+                {
+                    config::CItem& item = m_Config.m_Items.Get(i);
+                    item.szTime = szDefaultTime;
+                }
+                this->RedrawItem(0, nItems - 1);
             }
         }
     }
 
     void CMainDlg::ResetConvertionStatus()
     {
-        int nCount = m_LstInputItems.GetItemCount();
-        if (nCount > 0)
+        int nItems = m_Config.m_Items.Count();
+        if (nItems > 0)
         {
+            CString szDefaultStatus = m_Config.GetString(0x00210001);
             int nSelected = 0;
-            for (int i = 0; i < nCount; i++)
+
+            for (int i = 0; i < nItems; i++)
             {
-                if (m_LstInputItems.GetItemState(i, LVIS_SELECTED) == LVIS_SELECTED)
+                if (this->IsItemSelected(i))
                 {
-                    this->m_LstInputItems.SetItemText(i, ITEM_COLUMN_STATUS, m_Config.GetString(0x00210001));
+                    config::CItem& item = m_Config.m_Items.Get(i);
+                    item.szStatus = szDefaultStatus;
+                    this->RedrawItem(i);
                     nSelected++;
                 }
             }
 
             if (nSelected == 0)
             {
-                for (int i = 0; i < nCount; i++)
-                    this->m_LstInputItems.SetItemText(i, ITEM_COLUMN_STATUS, m_Config.GetString(0x00210001));
+                for (int i = 0; i < nItems; i++)
+                {
+                    config::CItem& item = m_Config.m_Items.Get(i);
+                    item.szStatus = szDefaultStatus;
+                }
+                this->RedrawItem(0, nItems - 1);
             }
         }
     }
 
     void CMainDlg::UpdateStatusBar()
     {
-        int nCount = m_LstInputItems.GetItemCount();
-        if (nCount > 0)
+        int nItems = m_Config.m_Items.Count();
+        if (nItems > 0)
         {
             CString szText;
-            szText.Format(_T("%d %s"),
-                nCount,
-                (nCount > 1) ?
-                m_Config.GetString(0x00210003) :
-                m_Config.GetString(0x00210002));
+            szText.Format(_T("%d %s"), nItems, (nItems > 1) ? m_Config.GetString(0x00210003) : m_Config.GetString(0x00210002));
             m_StatusBar.SetText(szText, 0, 0);
         }
         else
@@ -2578,13 +2721,17 @@ namespace app
                 return;
             }
 
+            CString szDefaultTime = m_Config.GetString(0x00150001);
+            CString szDefaultStatus = m_Config.GetString(0x00210001);
+
             for (int i = 0; i < nItems; i++)
             {
                 config::CItem& item = this->m_Config.m_Items.Get(i);
                 if (item.bChecked == true)
                 {
-                    this->m_LstInputItems.SetItemText(i, ITEM_COLUMN_TIME, m_Config.GetString(0x00150001));
-                    this->m_LstInputItems.SetItemText(i, ITEM_COLUMN_STATUS, m_Config.GetString(0x00210001));
+                    item.szTime = szDefaultTime;
+                    item.szStatus = szDefaultStatus;
+                    this->RedrawItem(i);
                     nChecked++;
                 }
             }
@@ -2869,7 +3016,7 @@ namespace app
         config::CItemsList items;
         if (xml::CXmlConfig::LoadItems(doc, items))
         {
-            this->m_LstInputItems.DeleteAllItems();
+            m_LstInputItems.SetItemCount(0);
             this->m_Config.m_Items = items;
             this->SetItems();
             this->UpdateStatusBar();

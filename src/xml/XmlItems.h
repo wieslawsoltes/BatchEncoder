@@ -4,7 +4,6 @@
 #pragma once
 
 #include "xml\XmlDoc.h"
-#include "XmlPaths.h"
 #include "configuration\Item.h"
 #include "configuration\ItemsList.h"
 
@@ -22,6 +21,44 @@ namespace xml
         {
         }
     public:
+        bool GetPath(const XmlElement *element, config::CPath &m_Path)
+        {
+            VALIDATE(GetAttributeValue(element, "path", &m_Path.szPath));
+            VALIDATE(GetAttributeValue(element, "size", &m_Path.szSize));
+            return true;
+        }
+        void SetPath(XmlElement *element, config::CPath &m_Path)
+        {
+            SetAttributeValue(element, "path", m_Path.szPath);
+            SetAttributeValue(element, "size", m_Path.szSize);
+        }
+        bool GetPaths(const XmlElement *parent, config::CPathsList &m_Paths)
+        {
+            auto element = parent->FirstChildElement("Path");
+            if (element != nullptr)
+            {
+                for (element; element; element = element->NextSiblingElement())
+                {
+                    config::CPath path;
+                    VALIDATE(this->GetPath(element, path));
+                    m_Paths.Insert(path);
+                }
+                return true;
+            }
+            return false;
+        }
+        void SetPaths(XmlElement *parent, config::CPathsList &m_Paths)
+        {
+            int nPaths = m_Paths.Count();
+            for (int i = 0; i < nPaths; i++)
+            {
+                config::CPath& path = m_Paths.Get(i);
+                auto element = this->NewElement("Path");
+                parent->LinkEndChild(element);
+                this->SetPath(element, path);
+            }
+        }
+    public:
         bool GetItem(const XmlElement *element, config::CItem &m_Item)
         {
             VALIDATE(GetAttributeValue(element, "id", &m_Item.nId));
@@ -34,14 +71,8 @@ namespace xml
             VALIDATE(GetAttributeValue(element, "checked", &m_Item.bChecked));
             VALIDATE(GetAttributeValue(element, "time", &m_Item.szTime));
             VALIDATE(GetAttributeValue(element, "status", &m_Item.szStatus));
-
-            auto parent = element->FirstChildElement("Paths");
-            if (parent != nullptr)
-            {
-                VALIDATE(XmlPaths(m_Document).GetPaths(parent, m_Item.m_Paths));
-                return true;
-            }
-            return false;
+            VALIDATE(this->GetPaths(element, m_Item.m_Paths));
+            return true;
         }
         void SetItem(XmlElement *element, config::CItem &m_Item, int nId)
         {
@@ -55,10 +86,7 @@ namespace xml
             SetAttributeValue(element, "checked", m_Item.bChecked);
             SetAttributeValue(element, "time", m_Item.szTime);
             SetAttributeValue(element, "status", m_Item.szStatus);
-
-            auto parent = this->NewElement("Paths");
-            element->LinkEndChild(parent);
-            XmlPaths(m_Document).SetPaths(parent, m_Item.m_Paths);
+            this->SetPaths(element, m_Item.m_Paths);
         }
         bool GetItems(const XmlElement *parent, config::CItemsList &m_Items)
         {

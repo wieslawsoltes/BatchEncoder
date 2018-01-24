@@ -149,9 +149,6 @@
     <ClInclude Include="xml\XmlOptions.h">
       <Filter>Header Files\Xml</Filter>
     </ClInclude>
-    <ClInclude Include="xml\XmlPaths.h">
-      <Filter>Header Files\Xml</Filter>
-    </ClInclude>
     <ClInclude Include="xml\XmlPresets.h">
       <Filter>Header Files\Xml</Filter>
     </ClInclude>
