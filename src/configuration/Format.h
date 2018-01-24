@@ -30,7 +30,7 @@ namespace config
     public:
         bool IsValidInputExtension(std::wstring& szExt)
         {
-            return StringHelper::Contains(this->szInputExtensions, szExt, token);
+            return StringHelper::ContainsNoCase(this->szInputExtensions, szExt, token);
         }
     };
 }
