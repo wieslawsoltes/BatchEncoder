@@ -3,64 +3,27 @@
 
 #pragma once
 
-#include <afxstr.h>
+#include <string>
 
 namespace config
 {
     class CTool
     {
     public:
-        const CString szFormatsTokens = _T(",");
+        const wchar_t token = ',';
     public:
-        CString szName;
-        CString szPlatform;
-        CString szFormats;
-        CString szUrl;
-        CString szFile;
-        CString szExtract;
-        CString szPath;
-        CString szStatus;
+        std::wstring szName;
+        std::wstring szPlatform;
+        std::wstring szFormats;
+        std::wstring szUrl;
+        std::wstring szFile;
+        std::wstring szExtract;
+        std::wstring szPath;
+        std::wstring szStatus;
     public:
-        CTool()
+        bool IsValidFormat(const std::wstring& szFormat)
         {
-        }
-        CTool(const CTool &other)
-        {
-            Copy(other);
-        }
-        CTool& operator=(const CTool &other)
-        {
-            Copy(other);
-            return *this;
-        }
-        virtual ~CTool()
-        {
-        }
-    public:
-        void Copy(const CTool &other)
-        {
-            this->szName = other.szName;
-            this->szPlatform = other.szPlatform;
-            this->szFormats = other.szFormats;
-            this->szUrl = other.szUrl;
-            this->szFile = other.szFile;
-            this->szExtract = other.szExtract;
-            this->szPath = other.szPath;
-            this->szStatus = other.szStatus;
-        }
-    public:
-        bool IsValidFormat(CString szFormat)
-        {
-            int nTokenPos = 0;
-            CString strToken = this->szFormats.Tokenize(szFormatsTokens, nTokenPos);
-            while (!strToken.IsEmpty())
-            {
-                if (strToken.CompareNoCase(szFormat) == 0)
-                    return true;
-
-                strToken = this->szFormats.Tokenize(szFormatsTokens, nTokenPos);
-            }
-            return false;
+            return StringHelper::ContainsNoCase(this->szFormats, szFormat, token);
         }
     };
 }
