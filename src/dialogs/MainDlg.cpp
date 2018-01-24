@@ -299,11 +299,9 @@ namespace app
                             {
                                 if (nItemProgress > 0 && nItemProgress < 100 && nItemProgress > nItemPreviousProgress)
                                 {
-                                    CString szProgress;
-                                    szProgress.Format(_T("%d%%\0"), nItemProgress);
-                                    item.szStatus = szProgress;
-                                    pDlg->RedrawItem(i);
+                                    item.szStatus.Format(_T("%d%%\0"), nItemProgress);
                                     item.nPreviousProgress = nItemProgress;
+                                    pDlg->RedrawItem(i);
                                 }
                                 else if (nItemProgress == 100 && nItemProgress > nItemPreviousProgress)
                                 {
