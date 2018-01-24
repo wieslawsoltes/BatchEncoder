@@ -3,7 +3,9 @@
 
 #pragma once
 
+#include <string>
 #include "xml\XmlDoc.h"
+#include "config\StringHelper.h"
 #include "language\Language.h"
 #include "language\LanguagesList.h"
 
@@ -32,8 +34,8 @@ namespace xml
             {
                 for (element; element; element = element->NextSiblingElement())
                 {
-                    CString szKey;
-                    CString szValue;
+                    std::wstring szKey;
+                    std::wstring szValue;
 
                     VALIDATE(GetAttributeValue(element, "key", &szKey));
                     VALIDATE(GetAttributeValue(element, "value", &szValue));
@@ -54,8 +56,7 @@ namespace xml
 
             for (auto& item : m_Language.m_Strings.m_Map)
             {
-                CString szKey;
-                szKey.Format(_T("%X"), item.first);
+                std::wstring szKey = config::StringHelper::ToHex(item.first);
 
                 auto element = this->NewElement("String");
                 parent->LinkEndChild(element);
