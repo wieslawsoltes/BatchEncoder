@@ -25,11 +25,18 @@ namespace config
             return result;
         }
     public:
-        static bool Contains(const std::wstring& str, const std::wstring& value, wchar_t token)
+        static bool CompareNoCase(const std::wstring& str1, const std::wstring& str2)
+        {
+            std::wstring s1 = str1;
+            std::transform(s1.begin(), s1.end(), s1.begin(), ::toupper);
+            std::wstring s2 = str2;
+            std::transform(s2.begin(), s2.end(), s2.begin(), ::toupper);
+            return s1 == s2;
+        }
+        static bool ContainsNoCase(const std::wstring& str, const std::wstring& value, wchar_t token)
         {
             std::wstring v = value;
             std::transform(v.begin(), v.end(), v.begin(), ::toupper);
-
             auto tokens = Split(str.c_str(), token);
             for (auto& t : tokens) 
             {
