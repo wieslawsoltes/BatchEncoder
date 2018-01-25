@@ -736,7 +736,7 @@ namespace app
         // load columns width for FormatsList
         if (!szFormatsListColumns.empty())
         {
-            auto widths = util::StringHelper::Split(szFormatsListColumns.c_str(), ' '');
+            auto widths = util::StringHelper::Split(szFormatsListColumns.c_str(), ' ');
             if (widths.size() == 2)
             {
                 for (int i = 0; i < 2; i++)

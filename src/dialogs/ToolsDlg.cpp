@@ -730,7 +730,7 @@ namespace app
         // load columns width for ToolsList
         if (!szToolsListColumns.empty())
         {
-            auto widths = util::StringHelper::Split(szToolsListColumns.c_str(), ' '');
+            auto widths = util::StringHelper::Split(szToolsListColumns.c_str(), ' ');
             if (widths.size() == 3)
             {
                 for (int i = 0; i < 3; i++)

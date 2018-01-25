@@ -2137,7 +2137,7 @@ namespace app
         // option: FileListColumns
         if (m_Config.m_Options.szFileListColumns.CompareNoCase(_T("")) != 0)
         {
-            auto widths = util::StringHelper::Split(m_Config.m_Options.szFileListColumns.c_str(), ' '');
+            auto widths = util::StringHelper::Split(m_Config.m_Options.szFileListColumns.c_str(), ' ');
             if (widths.size() == 8)
             {
                 for (int i = 0; i < 8; i++)

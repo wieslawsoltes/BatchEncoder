@@ -497,7 +497,7 @@ namespace app
         // load columns width for PresetsList
         if (!szPresetsListColumns.empty())
         {
-            auto widths = util::StringHelper::Split(szPresetsListColumns.c_str(), ' '');
+            auto widths = util::StringHelper::Split(szPresetsListColumns.c_str(), ' ');
             if (widths.size() == 2)
             {
                 for (int i = 0; i < 2; i++)
