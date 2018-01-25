@@ -8,6 +8,7 @@
 #include "utilities\Download.h"
 #include "utilities\StringHelper.h"
 #include "utilities\Thread.h"
+#include "utilities\Utilities.h"
 #include "configuration\ToolsList.h"
 #include "configuration\FormatsList.h"
 #include "configuration\Configuration.h"
@@ -26,8 +27,8 @@ namespace worker
         {
             util::CDownload m_Download;
             std::wstring szUrl = tool.szUrl;
-            std::wstring szFilePath = app::m_App.CombinePath(app::m_App.szToolsPath, tool.szFile);
-            std::wstring szFolderPath = app::m_App.CombinePath(app::m_App.szToolsPath, util::GetOnlyFileName(tool.szFile));
+            std::wstring szFilePath = util::CombinePath(app::m_App.szToolsPath, tool.szFile);
+            std::wstring szFolderPath = util::CombinePath(app::m_App.szToolsPath, util::GetOnlyFileName(tool.szFile));
 
             bool bResult = m_Download.Download(szUrl, szFilePath,
                 [nIndex, pConfig, callback](int nProgress, std::wstring szStatus)
