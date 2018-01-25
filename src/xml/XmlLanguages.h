@@ -40,7 +40,7 @@ namespace xml
                     VALIDATE(GetAttributeValue(element, "key", &szKey));
                     VALIDATE(GetAttributeValue(element, "value", &szValue));
 
-                    int nKey = std::stoi(szKey, nullptr, 16);
+                    int nKey = util::StringHelper::ToIntFromHex(szKey);
                     m_Language.m_Strings.Insert(nKey, szValue);
                 }
                 return true;
@@ -55,7 +55,7 @@ namespace xml
 
             for (auto& item : m_Language.m_Strings.m_Map)
             {
-                std::wstring szKey = util::StringHelper::ToHex(item.first);
+                std::wstring szKey = util::StringHelper::ToWStringHex(item.first);
 
                 auto element = this->NewElement("String");
                 parent->LinkEndChild(element);

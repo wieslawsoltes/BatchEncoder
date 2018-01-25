@@ -21,7 +21,7 @@ namespace app
 
     bool CMainApp::IsPortable()
     {
-        cont std::wstring szPath = util::GetExeFilePath() + L"BatchEncoder.portable";
+        std::wstring szPath = util::GetExeFilePath() + L"BatchEncoder.portable";
         return ::PathFileExists(szPath.c_str()) == TRUE;
     }
 
@@ -63,9 +63,9 @@ namespace app
         }
         else
         {
-            CString szConfigDir = L"BatchEncoder";
+            std::wstring szConfigDir = L"BatchEncoder";
 
-            this->szSettingsPath = util::GetSettingsFilePath(L""), szConfigDir);
+            this->szSettingsPath = util::GetSettingsFilePath(L"", szConfigDir);
 
             this->szFormatsPath = util::GetSettingsFilePath(L"", szConfigDir + L"\\formats");
             this->szPresetsPath = util::GetSettingsFilePath(L"", szConfigDir + L"\\presets");
