@@ -11,8 +11,8 @@ namespace config
 {
     class CFormat
     {
-    public:
-        const wchar_t token = ',';
+    private:
+        static const wchar_t token = ',';
     public:
         std::wstring szId;
         std::wstring szName;
@@ -22,7 +22,7 @@ namespace config
         std::wstring szFunction;
         std::wstring szPath;
         int nExitCodeSuccess;
-        int nType; // 0 - Encoder, 1 - Decoder
+        int nType;
         std::wstring szInputExtensions;
         std::wstring szOutputExtension;
         int nDefaultPreset;

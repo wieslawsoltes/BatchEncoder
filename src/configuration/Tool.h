@@ -9,8 +9,8 @@ namespace config
 {
     class CTool
     {
-    public:
-        const wchar_t token = ',';
+    private:
+        static const wchar_t token = ',';
     public:
         std::wstring szName;
         std::wstring szPlatform;
