@@ -1831,11 +1831,10 @@ namespace app
             {
                 lang::CLanguage language = m_Config.m_Language.m_Languages.Get(i);
 
-                CString szBuff;
-                szBuff.Format(_T("%s (%s)"), language.szOriginalName.c_str(), language.szTranslatedName.c_str());
+                std::wstring szBuff = language.szOriginalName + L" (" + language.szTranslatedName + L")";
 
                 UINT nLangID = ID_LANGUAGE_MIN + i;
-                m_hLangMenu->AppendMenu(MF_STRING, nLangID, szBuff);
+                m_hLangMenu->AppendMenu(MF_STRING, nLangID, szBuff.c_str());
                 m_hLangMenu->CheckMenuItem(nLangID, MF_UNCHECKED);
             }
 
@@ -3044,12 +3043,12 @@ namespace app
         lang::CLanguage language;
         if (xml::CXmlConfig::LoadLanguage(doc, language))
         {
-            this->m_Config.m_Language.m_Languages.Insert(language);
-
             CMenu *m_hMenu = this->GetMenu();
             CMenu *m_hLangMenu = m_hMenu->GetSubMenu(4);
+
             int nLanguages = m_Config.m_Language.m_Languages.Count();
 
+            this->m_Config.m_Language.m_Languages.Insert(language);
             std::wstring szBuff = language.szOriginalName + L" (" + language.szTranslatedName + L")";
 
             UINT nLangID = ID_LANGUAGE_MIN + nLanguages - 1;
