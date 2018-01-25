@@ -491,19 +491,17 @@ namespace app
     void CPresetsDlg::LoadWindowSettings()
     {
         // set window rectangle and position
-        if (szPresetsDialogResize.CompareNoCase(_T("")) != 0)
-            this->SetWindowRectStr(szPresetsDialogResize);
+        if (!szPresetsDialogResize.empty())
+            this->SetWindowRectStr(szPresetsDialogResize.c_str());
 
         // load columns width for PresetsList
-        if (szPresetsListColumns.CompareNoCase(_T("")) != 0)
+        if (!szPresetsListColumns.empty())
         {
-            int nColWidth[2];
-            if (_stscanf(szPresetsListColumns, _T("%d %d"),
-                &nColWidth[0],
-                &nColWidth[1]) == 2)
+            auto widths = util::StringHelper::Split(szPresetsListColumns.c_str(), ' '');
+            if (widths.size() == 2)
             {
                 for (int i = 0; i < 2; i++)
-                    m_LstPresets.SetColumnWidth(i, nColWidth[i]);
+                    m_LstPresets.SetColumnWidth(i, util::StringHelper::ToInt(widths[i]));
             }
         }
     }
@@ -558,11 +556,11 @@ namespace app
         lvi.iItem = nItem;
 
         lvi.iSubItem = PRESET_COLUMN_NAME;
-        lvi.pszText = (LPTSTR)(LPCTSTR)(preset.szName);
+        lvi.pszText = (LPTSTR)(LPCTSTR)(preset.szName.c_str());
         m_LstPresets.InsertItem(&lvi);
 
         lvi.iSubItem = PRESET_COLUMN_OPTIONS;
-        lvi.pszText = (LPTSTR)(LPCTSTR)(preset.szOptions);
+        lvi.pszText = (LPTSTR)(LPCTSTR)(preset.szOptions.c_str());
         m_LstPresets.SetItemText(lvi.iItem, PRESET_COLUMN_OPTIONS, lvi.pszText);
     }
 
@@ -652,7 +650,7 @@ namespace app
     bool CPresetsDlg::LoadPresets(const std::wstring& szFileXml)
     {
         xml::XmlDocumnent doc;
-        CString szName = xml::CXmlConfig::GetRootName(szFileXml, doc);
+        std::string szName = xml::CXmlConfig::GetRootName(szFileXml, doc);
         if (!szName.empty() && util::StringHelper::CompareNoCase(szName, "Presets"))
         {
             return this->LoadPresets(doc);

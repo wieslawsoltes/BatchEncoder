@@ -736,13 +736,11 @@ namespace app
         // load columns width for FormatsList
         if (!szFormatsListColumns.empty())
         {
-            int nColWidth[2];
-            if (_stscanf(szFormatsListColumns, _T("%d %d"),
-                &nColWidth[0],
-                &nColWidth[1]) == 2)
+            auto widths = util::StringHelper::Split(szFormatsListColumns.c_str(), ' '');
+            if (widths.size() == 2)
             {
                 for (int i = 0; i < 2; i++)
-                    m_LstFormats.SetColumnWidth(i, nColWidth[i]);
+                    m_LstFormats.SetColumnWidth(i, util::StringHelper::ToInt(widths[i]));
             }
         }
     }

@@ -130,7 +130,7 @@ namespace worker
         }
         else
         {
-            pWorkerContext->Status(commandLine.nItemId, CTimeCount::Format(timer.ElapsedTime()), pWorkerContext->pConfig->GetString(0x00120006));
+            pWorkerContext->Status(commandLine.nItemId, util::CTimeCount::Format(timer.ElapsedTime()), pWorkerContext->pConfig->GetString(0x00120006));
             pWorkerContext->Callback(commandLine.nItemId, 100, true, false);
             return true;
         }
@@ -429,7 +429,7 @@ namespace worker
         }
         else
         {
-            pWorkerContext->Status(commandLine.nItemId, CTimeCount::Format(timer.ElapsedTime()), pWorkerContext->pConfig->GetString(0x0013000B));
+            pWorkerContext->Status(commandLine.nItemId, util::CTimeCount::Format(timer.ElapsedTime()), pWorkerContext->pConfig->GetString(0x0013000B));
             pWorkerContext->Callback(commandLine.nItemId, 100, true, false);
             return true;
         }
@@ -724,7 +724,7 @@ namespace worker
         }
         else
         {
-            pWorkerContext->Status(decoderCommandLine.nItemId, CTimeCount::Format(timer.ElapsedTime()), pWorkerContext->pConfig->GetString(0x0013000B));
+            pWorkerContext->Status(decoderCommandLine.nItemId, util::CTimeCount::Format(timer.ElapsedTime()), pWorkerContext->pConfig->GetString(0x0013000B));
             pWorkerContext->Callback(decoderCommandLine.nItemId, 100, true, false);
             return true;
         }

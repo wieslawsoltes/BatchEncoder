@@ -730,14 +730,11 @@ namespace app
         // load columns width for ToolsList
         if (!szToolsListColumns.empty())
         {
-            int nColWidth[3];
-            if (_stscanf(szToolsListColumns, _T("%d %d %d"),
-                &nColWidth[0],
-                &nColWidth[1],
-                &nColWidth[2]) == 3)
+            auto widths = util::StringHelper::Split(szToolsListColumns.c_str(), ' '');
+            if (widths.size() == 3)
             {
                 for (int i = 0; i < 3; i++)
-                    m_LstTools.SetColumnWidth(i, nColWidth[i]);
+                    m_LstTools.SetColumnWidth(i, util::StringHelper::ToInt(widths[i]));
             }
         }
     }

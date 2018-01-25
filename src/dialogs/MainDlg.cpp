@@ -204,7 +204,7 @@ namespace app
 
             if (this->nThreadCount == 1)
             {
-                CString szFormat = this->pConfig->GetString(0x00190003);
+                CString szFormat = this->pConfig->GetString(0x00190003).c_str();
                 CString szText;
                 szText.Format(szFormat,
                     this->nProcessedFiles,
@@ -212,7 +212,7 @@ namespace app
                     this->nDoneWithoutError,
                     this->nErrors,
                     ((this->nErrors == 0) || (this->nErrors > 1)) ?
-                    this->pConfig->GetString(0x00190002) : this->pConfig->GetString(0x00190001));
+                    this->pConfig->GetString(0x00190002).c_str() : this->pConfig->GetString(0x00190001).c_str());
                 pDlg->m_StatusBar.SetText(szText, 1, 0);
 
                 this->nLastItemId = nItemId;
@@ -226,7 +226,7 @@ namespace app
             this->timer.Stop();
             this->nErrors = this->nProcessedFiles - this->nDoneWithoutError;
 
-            CString szFormat = this->pConfig->GetString(0x00190004);
+            CString szFormat = this->pConfig->GetString(0x00190004).c_str();
             CString szText;
             szText.Format(szFormat,
                 this->nProcessedFiles,
@@ -234,8 +234,8 @@ namespace app
                 this->nDoneWithoutError,
                 this->nErrors,
                 ((this->nErrors == 0) || (this->nErrors > 1)) ?
-                this->pConfig->GetString(0x00190002) : this->pConfig->GetString(0x00190001),
-                CTimeCount::Format(this->timer.ElapsedTime()));
+                this->pConfig->GetString(0x00190002).c_str() : this->pConfig->GetString(0x00190001).c_str(),
+                util::CTimeCount::Format(this->timer.ElapsedTime()).c_str());
             pDlg->m_StatusBar.SetText(szText, 1, 0);
 
             pDlg->FinishConvert();
@@ -710,7 +710,7 @@ namespace app
                     break;
             case ITEM_COLUMN_PRESET:
                     // [Preset] : selected preset index
-                    szText.Format(_T("%d"), item.nPreset);
+                    szText = std::to_wstring(item.nPreset);
                     break;
             case ITEM_COLUMN_OPTIONS:
                     // [Options] : additional options
@@ -2137,19 +2137,11 @@ namespace app
         // option: FileListColumns
         if (m_Config.m_Options.szFileListColumns.CompareNoCase(_T("")) != 0)
         {
-            int nColWidth[8];
-            if (_stscanf(m_Config.m_Options.szFileListColumns, _T("%d %d %d %d %d %d %d %d"),
-                &nColWidth[0],
-                &nColWidth[1],
-                &nColWidth[2],
-                &nColWidth[3],
-                &nColWidth[4],
-                &nColWidth[5],
-                &nColWidth[6],
-                &nColWidth[7]) == 8)
+            auto widths = util::StringHelper::Split(m_Config.m_Options.szFileListColumns.c_str(), ' '');
+            if (widths.size() == 8)
             {
                 for (int i = 0; i < 8; i++)
-                    m_LstInputItems.SetColumnWidth(i, nColWidth[i]);
+                    m_LstInputItems.SetColumnWidth(i, util::StringHelper::ToInt(widths[i]));
             }
         }
 
