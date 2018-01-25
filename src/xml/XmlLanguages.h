@@ -55,7 +55,8 @@ namespace xml
 
             for (auto& item : m_Language.m_Strings.m_Map)
             {
-                std::wstring szKey = util::StringHelper::ToWStringHex(item.first);
+                int nKey = item.first;
+                std::wstring szKey = util::StringHelper::ToWStringHex(nKey);
 
                 auto element = this->NewElement("String");
                 parent->LinkEndChild(element);

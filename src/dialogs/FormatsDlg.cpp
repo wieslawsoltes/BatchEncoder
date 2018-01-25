@@ -740,7 +740,11 @@ namespace app
             if (widths.size() == 2)
             {
                 for (int i = 0; i < 2; i++)
-                    m_LstFormats.SetColumnWidth(i, util::StringHelper::ToInt(widths[i]));
+                {
+                    std::wstring szWidth = widths[i];
+                    int nWidth = util::StringHelper::ToInt(szWidth);
+                    m_LstFormats.SetColumnWidth(i, nWidth);
+                }
             }
         }
     }

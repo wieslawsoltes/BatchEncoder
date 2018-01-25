@@ -2139,7 +2139,11 @@ namespace app
             if (widths.size() == 8)
             {
                 for (int i = 0; i < 8; i++)
-                    m_LstInputItems.SetColumnWidth(i, util::StringHelper::ToInt(widths[i]));
+                {
+                    std::wstring szWidth = widths[i];
+                    int nWidth = util::StringHelper::ToInt(szWidth);
+                    m_LstInputItems.SetColumnWidth(i, nWidth);
+                }
             }
         }
 
