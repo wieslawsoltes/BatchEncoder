@@ -456,7 +456,7 @@ namespace app
 
         if (fd.DoModal() == IDOK)
         {
-            CString szFileXml = fd.GetPathName();
+            std::wstring szFileXml = fd.GetPathName();
             this->LoadPresets(szFileXml);
         }
     }
@@ -476,7 +476,7 @@ namespace app
 
         if (fd.DoModal() == IDOK)
         {
-            CString szFileXml = fd.GetPathName();
+            std::wstring szFileXml = fd.GetPathName();
             this->SavePresets(szFileXml, format);
         }
     }
@@ -653,7 +653,7 @@ namespace app
     {
         xml::XmlDocumnent doc;
         CString szName = xml::CXmlConfig::GetRootName(szFileXml, doc);
-        if (!szName.IsEmpty() && szName.CompareNoCase(_T("Presets")) == 0)
+        if (!szName.empty() && util::StringHelper::CompareNoCase(szName, "Presets"))
         {
             return this->LoadPresets(doc);
         }

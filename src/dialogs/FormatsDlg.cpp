@@ -227,7 +227,7 @@ namespace app
 
         if (fd.DoModal() == IDOK)
         {
-            CString szFileXml = fd.GetPathName();
+            std::wstring szFileXml = fd.GetPathName();
             this->LoadFormat(szFileXml);
         }
     }
@@ -253,7 +253,7 @@ namespace app
 
                 if (fd.DoModal() == IDOK)
                 {
-                    CString szFileXml = fd.GetPathName();
+                    std::wstring szFileXml = fd.GetPathName();
                     this->SaveFormat(szFileXml, format);
                 }
             }
