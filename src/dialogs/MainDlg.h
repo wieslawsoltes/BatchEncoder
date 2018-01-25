@@ -6,6 +6,7 @@
 #include <afxwin.h>
 #include <afxcmn.h>
 #include <string>
+#include <utility>
 #include "controls\MyListCtrl.h"
 #include "controls\MyButton.h"
 #include "controls\MyComboBox.h"

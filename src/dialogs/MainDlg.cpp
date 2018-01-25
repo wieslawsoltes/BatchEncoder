@@ -3013,7 +3013,7 @@ namespace app
         if (xml::CXmlConfig::LoadItems(doc, items))
         {
             m_LstInputItems.SetItemCount(0);
-            this->m_Config.m_Items = items;
+            this->m_Config.m_Items = std::move(items);
             this->SetItems();
             this->UpdateStatusBar();
             return true;
