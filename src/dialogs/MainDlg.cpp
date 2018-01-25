@@ -761,7 +761,7 @@ namespace app
             do
             {
                 config::CItem& item = m_Config.m_Items.Get(currentPos);
-                if( _tcsnicmp(item.szName, szSearchStr, szSearchStr.GetLength()) == 0)
+                if( _tcsnicmp(item.szName.c_str(), szSearchStr, szSearchStr.GetLength()) == 0)
                 {
                     *pResult = currentPos;
                     break;
@@ -1032,9 +1032,9 @@ namespace app
 
             if (fd.DoModal() == IDOK)
             {
-                CString szFileXml = fd.GetPathName();
+                std::wstring szFileXml = fd.GetPathName();
                 if (this->LoadItems(szFileXml) == false)
-                    m_StatusBar.SetText(m_Config.GetString(0x00210007), 1, 0);
+                    m_StatusBar.SetText(m_Config.GetString(0x00210007).c_str(), 1, 0);
                 else
                     this->UpdateStatusBar();
             }
@@ -1056,9 +1056,9 @@ namespace app
 
             if (fd.DoModal() == IDOK)
             {
-                CString szFileXml = fd.GetPathName();
+                std::wstring szFileXml = fd.GetPathName();
                 if (this->SaveItems(szFileXml) == false)
-                    m_StatusBar.SetText(m_Config.GetString(0x00210008), 1, 0);
+                    m_StatusBar.SetText(m_Config.GetString(0x00210008).c_str(), 1, 0);
             }
         }
     }
@@ -1095,7 +1095,7 @@ namespace app
                 pFiles = (TCHAR *)malloc(dwMaxSize);
                 if (pFiles == nullptr)
                 {
-                    m_StatusBar.SetText(m_Config.GetString(0x00210009), 1, 0);
+                    m_StatusBar.SetText(m_Config.GetString(0x00210009).c_str(), 1, 0);
                     return;
                 }
 
@@ -1121,8 +1121,7 @@ namespace app
                         std::wstring sFilePath = fd.GetNextPathName(pos);
                         if (!sFilePath.empty())
                         {
-                            CString szPath = sFilePath;
-                            this->AddToList(szPath);
+                            this->AddToList(sFilePath);
                         }
                     } while (pos != nullptr);
 
@@ -1157,7 +1156,7 @@ namespace app
             LPITEMIDLIST pidlBrowse;
             TCHAR *lpBuffer;
 
-            CString szTitle = m_Config.GetString(0x0021000A);
+            CString szTitle = m_Config.GetString(0x0021000A).c_str();
 
             if (SHGetMalloc(&pMalloc) == E_FAIL)
                 return;
