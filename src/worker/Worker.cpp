@@ -94,10 +94,10 @@ namespace worker
                 Stderr.CloseRead();
                 Stderr.CloseWrite();
 
-                std::wstring szStatus;
-                szStatus.Format(pWorkerContext->pConfig->GetString(0x00120004), ::GetLastError());
+                CString szStatus;
+                szStatus.Format(pWorkerContext->pConfig->GetString(0x00120004).c_str(), ::GetLastError());
 
-                pWorkerContext->Status(commandLine.nItemId, pWorkerContext->pConfig->GetString(0x00150001), szStatus);
+                pWorkerContext->Status(commandLine.nItemId, pWorkerContext->pConfig->GetString(0x00150001), std::wstring(CT2CW(szStatus)));
                 pWorkerContext->Callback(commandLine.nItemId, -1, true, true);
                 return false;
             }
@@ -279,10 +279,10 @@ namespace worker
                     Stdout.CloseWrite();
                 }
 
-                std::wstring szStatus;
-                szStatus.Format(pWorkerContext->pConfig->GetString(0x00130006), ::GetLastError());
+                CString szStatus;
+                szStatus.Format(pWorkerContext->pConfig->GetString(0x00130006).c_str(), ::GetLastError());
 
-                pWorkerContext->Status(commandLine.nItemId, pWorkerContext->pConfig->GetString(0x00150001), szStatus);
+                pWorkerContext->Status(commandLine.nItemId, pWorkerContext->pConfig->GetString(0x00150001), std::wstring(CT2CW(szStatus)));
                 pWorkerContext->Callback(commandLine.nItemId, -1, true, true);
                 return false;
             }
@@ -564,10 +564,10 @@ namespace worker
                 Bridge.CloseRead();
                 Bridge.CloseWrite();
 
-                std::wstring szStatus;
-                szStatus.Format(pWorkerContext->pConfig->GetString(0x00130006), ::GetLastError());
+                CString szStatus;
+                szStatus.Format(pWorkerContext->pConfig->GetString(0x00130006).c_str(), ::GetLastError());
 
-                pWorkerContext->Status(decoderCommandLine.nItemId, pWorkerContext->pConfig->GetString(0x00150001), szStatus);
+                pWorkerContext->Status(decoderCommandLine.nItemId, pWorkerContext->pConfig->GetString(0x00150001), std::wstring(CT2CW(szStatus)));
                 pWorkerContext->Callback(decoderCommandLine.nItemId, -1, true, true);
                 return false;
             }
@@ -622,10 +622,10 @@ namespace worker
                 Bridge.CloseRead();
                 Bridge.CloseWrite();
 
-                std::wstring szStatus;
-                szStatus.Format(pWorkerContext->pConfig->GetString(0x00130006), ::GetLastError());
+                CString szStatus;
+                szStatus.Format(pWorkerContext->pConfig->GetString(0x00130006).c_str(), ::GetLastError());
 
-                pWorkerContext->Status(decoderCommandLine.nItemId, pWorkerContext->pConfig->GetString(0x00150001), szStatus);
+                pWorkerContext->Status(decoderCommandLine.nItemId, pWorkerContext->pConfig->GetString(0x00150001), std::wstring(CT2CW(szStatus)));
                 pWorkerContext->Callback(decoderCommandLine.nItemId, -1, true, true);
                 return false;
             }

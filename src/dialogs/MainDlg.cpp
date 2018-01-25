@@ -890,7 +890,7 @@ namespace app
                         if (m_Config.m_Formats.Count() > 0)
                         {
                             config::CFormat& format = m_Config.m_Formats.Get(this->m_CmbFormat.GetCurSel());
-                            if (item.szFormatId.CompareNoCase(format.szId) == 0)
+                            if (util::StringHelper::CompareNoCase(item.szFormatId, format.szId))
                             {
                                 format.nDefaultPreset = item.nPreset;
                                 this->m_CmbPresets.SetCurSel(item.nPreset);
@@ -1114,13 +1114,12 @@ namespace app
 
                 if (fd.DoModal() != IDCANCEL)
                 {
-                    CString sFilePath;
                     POSITION pos = fd.GetStartPosition();
 
                     do
                     {
-                        sFilePath = fd.GetNextPathName(pos);
-                        if (!sFilePath.IsEmpty())
+                        std::wstring sFilePath = fd.GetNextPathName(pos);
+                        if (!sFilePath.empty())
                         {
                             CString szPath = sFilePath;
                             this->AddToList(szPath);
@@ -1790,8 +1789,8 @@ namespace app
                     xml::XmlDocumnent doc;
                     if (xml::XmlDoc::Open(szFileXml, doc) == true)
                     {
-                        CString szName = CString(xml::XmlDoc::GetRootName(doc));
-                        if (szName.CompareNoCase(_T("Language")) == 0)
+                        std::string = xml::XmlDoc::GetRootName(doc);
+                        if (util::StringHelper::CompareNoCase(szName, "Language"))
                         {
                             lang::CLanguage language;
 
@@ -2129,13 +2128,13 @@ namespace app
         m_EdtThreads.SetWindowText(szThreadCount);
 
         // option: MainWindowResize
-        if (m_Config.m_Options.szMainWindowResize.CompareNoCase(_T("")) != 0)
+        if (!m_Config.m_Options.szMainWindowResize.empty())
         {
             this->SetWindowRectStr(m_Config.m_Options.szMainWindowResize);
         }
 
         // option: FileListColumns
-        if (m_Config.m_Options.szFileListColumns.CompareNoCase(_T("")) != 0)
+        if (@m_Config.m_Options.szFileListColumns.empty())
         {
             auto widths = util::StringHelper::Split(m_Config.m_Options.szFileListColumns.c_str(), ' ');
             if (widths.size() == 8)
@@ -2371,7 +2370,7 @@ namespace app
                             format.szPath = szPath;
                         }
                     }
-                    else if (szExt.CompareNoCase(_T("lua")) == 0)
+                    else if (util::StringHelper::CompareNoCase(szExt, L"lua"))
                     {
                         // Set current format progress path.
                         int nFormat = this->m_CmbFormat.GetCurSel();
@@ -3029,7 +3028,7 @@ namespace app
     bool CMainDlg::LoadLanguage(const std::wstring& szFileXml)
     {
         xml::XmlDocumnent doc;
-        std::string = xml::CXmlConfig::GetRootName(szFileXml, doc);
+        std::string szName = xml::CXmlConfig::GetRootName(szFileXml, doc);
         if (!szName.empty() && util::StringHelper::CompareNoCase(szName, "Language"))
         {
             return this->LoadLanguage(doc);
