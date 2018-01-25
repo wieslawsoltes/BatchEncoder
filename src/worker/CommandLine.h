@@ -58,7 +58,7 @@ namespace worker
             else
                 util::StringHelper::ReplaceNoCase(szCommandLine, _T("$OUTFILE"), this->szOutputFile);
 
-            this->szOutputPath = util::GetFilePath(this->szOutputFile);
+            this->szOutputPath = util::Utilities::GetFilePath(this->szOutputFile);
 
             util::StringHelper::ReplaceNoCase(szCommandLine, _T("$OUTPATH"), _T("\"$OUTPATH\""));
             util::StringHelper::ReplaceNoCase(szCommandLine, _T("$OUTPATH"), this->szOutputPath);

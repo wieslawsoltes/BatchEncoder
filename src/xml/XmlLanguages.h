@@ -5,8 +5,8 @@
 
 #include <string>
 #include "xml\XmlDoc.h"
-#include "language\Language.h"
-#include "language\LanguagesList.h"
+#include "utilities\Language.h"
+#include "utilities\LanguagesList.h"
 #include "utilities\StringHelper.h"
 
 #define VALIDATE(value) if (!value) return false

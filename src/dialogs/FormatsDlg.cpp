@@ -3,7 +3,7 @@
 
 #include "StdAfx.h"
 #include "MainApp.h"
-#include "language\LanguageHelper.h"
+#include "utilities\LanguageHelper.h"
 #include "utilities\Utilities.h"
 #include "utilities\Utf8String.h"
 #include "xml\XmlConfig.h"
@@ -849,7 +849,7 @@ namespace app
                 if (!(::GetFileAttributes(szFile) & FILE_ATTRIBUTE_DIRECTORY))
                 {
                     std::wstring szPath = szFile;
-                    std::wstring szExt = util::GetFileExtension(szPath);
+                    std::wstring szExt = util::Utilities::GetFileExtension(szPath);
 
                     if (util::StringHelper::CompareNoCase(szExt, L"xml"))
                     {
@@ -968,7 +968,7 @@ namespace app
         static bool bResizeDefaultComboBox = false;
         if (bResizeDefaultComboBox == false)
         {
-            util::SetComboBoxHeight(this->GetSafeHwnd(), IDC_COMBO_FORMAT_DEFAULT, 15);
+            util::Utilities::SetComboBoxHeight(this->GetSafeHwnd(), IDC_COMBO_FORMAT_DEFAULT, 15);
             bResizeDefaultComboBox = true;
         }
 

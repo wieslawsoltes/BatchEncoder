@@ -87,7 +87,7 @@ namespace worker
                 std::wstring szOutPath;
                 if (this->bIsEmpty)
                 {
-                    std::wstring szInputPath = util::GetFilePath(szInputFile);
+                    std::wstring szInputPath = util::Utilities::GetFilePath(szInputFile);
                     szOutPath = szInputPath;
                 }
                 else
@@ -111,7 +111,7 @@ namespace worker
                     && (this->bHaveName == true) && (this->bHaveExt == true))
                 {
                     std::wstring szOutputFile = szOutput;
-                    std::wstring szInputPath = util::GetFilePath(szInputFile);
+                    std::wstring szInputPath = util::Utilities::GetFilePath(szInputFile);
                     
                     util::StringHelper::ReplaceNoCase(szOutputFile, VAR_OUTPUT_SOURCE_DIRECTORY, szInputPath);
                     util::StringHelper::ReplaceNoCase(szOutputFile, VAR_OUTPUT_NAME, szName);
@@ -122,7 +122,7 @@ namespace worker
                     && (this->bHaveName == false) && (this->bHaveExt == false))
                 {
                     std::wstring szOutPath = szOutput;
-                    std::wstring szInputPath = util::GetFilePath(szInputFile);
+                    std::wstring szInputPath = util::Utilities::GetFilePath(szInputFile);
                     util::StringHelper::ReplaceNoCase(szOutPath, VAR_OUTPUT_SOURCE_DIRECTORY, szInputPath);
 
                     std::wstring szOutputFile = szName + L"." + util::StringHelper::TowLower(szExt);
@@ -147,12 +147,12 @@ namespace worker
         }
         bool CreateOutputPath(const std::wstring& szOutputFile)
         {
-            std::wstring szOutputPath = util::GetFilePath(szOutputFile);
+            std::wstring szOutputPath = util::Utilities::GetFilePath(szOutputFile);
             if (szOutputPath.length() > 0)
             {
-                if (!util::DirectoryExists(szOutputPath.c_str()))
+                if (!util::Utilities::DirectoryExists(szOutputPath.c_str()))
                 {
-                    if (util::MakeFullPath(szOutputPath) == false)
+                    if (util::Utilities::MakeFullPath(szOutputPath) == false)
                         return false;
                 }
             }

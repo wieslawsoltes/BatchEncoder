@@ -3,7 +3,7 @@
 
 #include "StdAfx.h"
 #include "MainApp.h"
-#include "language\LanguageHelper.h"
+#include "utilities\LanguageHelper.h"
 #include "utilities\Utilities.h"
 #include "xml\XmlConfig.h"
 #include "worker\OutputPath.h"
@@ -522,7 +522,7 @@ namespace app
         this->m_CmbOutPath.InsertString(5, _T("C:\\Output\\$Name$.$Ext$"));
         this->m_CmbOutPath.InsertString(6, _T("C:\\Output\\$Name$_converted.$Ext$"));
 
-        util::SetComboBoxHeight(this->GetSafeHwnd(), IDC_COMBO_OUTPUT, 15);
+        util::Utilities::SetComboBoxHeight(this->GetSafeHwnd(), IDC_COMBO_OUTPUT, 15);
         this->m_CmbOutPath.SetCurSel(1);
         this->m_CmbOutPath.SetFocus();
 
@@ -1475,7 +1475,7 @@ namespace app
                 int nItem = m_LstInputItems.GetNextSelectedItem(pos);
                 config::CItem& item = m_Config.m_Items.Get(nItem);
                 config::CPath& path = item.m_Paths.Get(0);
-                util::LaunchAndWait(path.szPath, L"", FALSE);
+                util::Utilities::LaunchAndWait(path.szPath, L"", FALSE);
             }
         }
     }
@@ -1490,7 +1490,7 @@ namespace app
                 int nItem = m_LstInputItems.GetNextSelectedItem(pos);
                 config::CItem& item = m_Config.m_Items.Get(nItem);
                 config::CPath& path = item.m_Paths.Get(0);
-                util::LaunchAndWait(util::GetFilePath(path.szPath), L"", FALSE);
+                util::Utilities::LaunchAndWait(util::Utilities::GetFilePath(path.szPath), L"", FALSE);
             }
         }
     }
@@ -1741,7 +1741,7 @@ namespace app
     {
         if (this->pWorkerContext->bRunning == false)
         {
-            util::LaunchAndWait(_T("https://github.com/wieslawsoltes/BatchEncoder"), _T(""), FALSE);
+            util::Utilities::LaunchAndWait(_T("https://github.com/wieslawsoltes/BatchEncoder"), _T(""), FALSE);
         }
     }
 
@@ -2197,7 +2197,7 @@ namespace app
         {
             if (m_Config.m_Options.bTryToFindDecoder == true)
             {
-                int nDecoder = m_Config.m_Formats.GetDecoderByExtension(util::GetFileExtension(szPath));
+                int nDecoder = m_Config.m_Formats.GetDecoderByExtension(util::Utilities::GetFileExtension(szPath));
                 if (nDecoder == -1)
                 {
                     config::CFormat &format = m_Config.m_Formats.Get(nFormat);
@@ -2217,7 +2217,7 @@ namespace app
             }
         }
 
-        ULONGLONG nFileSize = util::GetFileSize64(szPath);
+        ULONGLONG nFileSize = util::Utilities::GetFileSize64(szPath);
         CString szFileSize;
         szFileSize.Format(_T("%I64d"), nFileSize);
 
@@ -2227,8 +2227,8 @@ namespace app
         path.szSize = szFileSize;
         item.m_Paths.Insert(path);
         item.szSize = szFileSize;
-        item.szName = util::GetOnlyFileName(szPath);
-        item.szExtension = util::StringHelper::ToUpper(util::GetFileExtension(szPath));
+        item.szName = util::Utilities::GetOnlyFileName(szPath);
+        item.szExtension = util::StringHelper::ToUpper(util::Utilities::GetFileExtension(szPath));
         item.szFormatId = szFormatId;
         item.nPreset = nPreset;
         item.bChecked = true;
@@ -2252,7 +2252,7 @@ namespace app
     {
         if (m_Config.m_Options.bValidateInputFiles == true)
         {
-            std::wstring szExt = util::GetFileExtension(szPath);
+            std::wstring szExt = util::Utilities::GetFileExtension(szPath);
             if (m_Config.m_Formats.IsValidInputExtension(szExt) == false)
                 return false;
         }
@@ -2321,7 +2321,7 @@ namespace app
                 else
                 {
                     std::wstring szPath = szFile;
-                    std::wstring szExt = util::GetFileExtension(szPath);
+                    std::wstring szExt = util::Utilities::GetFileExtension(szPath);
 
                     if (util::StringHelper::CompareNoCase(szExt, L"xml"))
                     {
@@ -2471,7 +2471,7 @@ namespace app
             static bool bResizeFormatsComboBox = false;
             if (bResizeFormatsComboBox == false)
             {
-                util::SetComboBoxHeight(this->GetSafeHwnd(), IDC_COMBO_FORMAT, 15);
+                util::Utilities::SetComboBoxHeight(this->GetSafeHwnd(), IDC_COMBO_FORMAT, 15);
                 bResizeFormatsComboBox = true;
             }
 
@@ -2506,7 +2506,7 @@ namespace app
             static bool bResizePresetsComboBox = false;
             if (bResizePresetsComboBox == false)
             {
-                util::SetComboBoxHeight(this->GetSafeHwnd(), IDC_COMBO_PRESETS, 15);
+                util::Utilities::SetComboBoxHeight(this->GetSafeHwnd(), IDC_COMBO_PRESETS, 15);
                 bResizePresetsComboBox = true;
             }
 
@@ -2810,7 +2810,7 @@ namespace app
                 catch (...) {}
             }
 
-            util::ShutdownWindows();
+            util::Utilities::ShutdownWindows();
         }
     }
 

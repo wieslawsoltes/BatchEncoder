@@ -21,7 +21,7 @@ namespace app
 
     bool CMainApp::IsPortable()
     {
-        std::wstring szPath = util::GetExeFilePath() + L"BatchEncoder.portable";
+        std::wstring szPath = util::Utilities::GetExeFilePath() + L"BatchEncoder.portable";
         return ::PathFileExists(szPath.c_str()) == TRUE;
     }
 
@@ -38,13 +38,13 @@ namespace app
 
         if (this->IsPortable())
         {
-            this->szSettingsPath = util::GetExeFilePath();
+            this->szSettingsPath = util::Utilities::GetExeFilePath();
 
-            this->szFormatsPath = util::CombinePath(this->szSettingsPath, L"formats");
-            this->szPresetsPath = util::CombinePath(this->szSettingsPath, L"presets");
-            this->szLanguagesPath = util::CombinePath(this->szSettingsPath, L"lang");
-            this->szProgressPath = util::CombinePath(this->szSettingsPath, L"progress");
-            this->szToolsPath = util::CombinePath(this->szSettingsPath, L"tools");
+            this->szFormatsPath = util::Utilities::CombinePath(this->szSettingsPath, L"formats");
+            this->szPresetsPath = util::Utilities::CombinePath(this->szSettingsPath, L"presets");
+            this->szLanguagesPath = util::Utilities::CombinePath(this->szSettingsPath, L"lang");
+            this->szProgressPath = util::Utilities::CombinePath(this->szSettingsPath, L"progress");
+            this->szToolsPath = util::Utilities::CombinePath(this->szSettingsPath, L"tools");
 
             try
             {
@@ -56,22 +56,22 @@ namespace app
             }
             catch (...) {}
 
-            this->szOptionsFile = util::CombinePath(this->szSettingsPath, L"Options.xml");
-            this->szFormatsFile = util::CombinePath(this->szSettingsPath, L"Formats.xml");
-            this->szItemsFile = util::CombinePath(this->szSettingsPath, L"Items.xml");
-            this->szToolsFile = util::CombinePath(this->szSettingsPath, L"Tools.xml");
+            this->szOptionsFile = util::Utilities::CombinePath(this->szSettingsPath, L"Options.xml");
+            this->szFormatsFile = util::Utilities::CombinePath(this->szSettingsPath, L"Formats.xml");
+            this->szItemsFile = util::Utilities::CombinePath(this->szSettingsPath, L"Items.xml");
+            this->szToolsFile = util::Utilities::CombinePath(this->szSettingsPath, L"Tools.xml");
         }
         else
         {
             std::wstring szConfigDir = L"BatchEncoder";
 
-            this->szSettingsPath = util::GetSettingsFilePath(L"", szConfigDir);
+            this->szSettingsPath = util::Utilities::GetSettingsFilePath(L"", szConfigDir);
 
-            this->szFormatsPath = util::GetSettingsFilePath(L"", szConfigDir + L"\\formats");
-            this->szPresetsPath = util::GetSettingsFilePath(L"", szConfigDir + L"\\presets");
-            this->szLanguagesPath = util::GetSettingsFilePath(L"", szConfigDir + L"\\lang");
-            this->szProgressPath = util::GetSettingsFilePath(L"", szConfigDir + L"\\progress");
-            this->szToolsPath = util::GetSettingsFilePath(L"", szConfigDir + L"\\tools");
+            this->szFormatsPath = util::Utilities::GetSettingsFilePath(L"", szConfigDir + L"\\formats");
+            this->szPresetsPath = util::Utilities::GetSettingsFilePath(L"", szConfigDir + L"\\presets");
+            this->szLanguagesPath = util::Utilities::GetSettingsFilePath(L"", szConfigDir + L"\\lang");
+            this->szProgressPath = util::Utilities::GetSettingsFilePath(L"", szConfigDir + L"\\progress");
+            this->szToolsPath = util::Utilities::GetSettingsFilePath(L"", szConfigDir + L"\\tools");
 
             try
             {
@@ -84,10 +84,10 @@ namespace app
             }
             catch (...) {}
 
-            this->szOptionsFile = util::GetSettingsFilePath(L"Options.xml", szConfigDir);
-            this->szFormatsFile = util::GetSettingsFilePath(L"Formats.xml", szConfigDir);
-            this->szItemsFile = util::GetSettingsFilePath(L"Items.xml", szConfigDir);
-            this->szToolsFile = util::GetSettingsFilePath(L"Tools.xml", szConfigDir);
+            this->szOptionsFile = util::Utilities::GetSettingsFilePath(L"Options.xml", szConfigDir);
+            this->szFormatsFile = util::Utilities::GetSettingsFilePath(L"Formats.xml", szConfigDir);
+            this->szItemsFile = util::Utilities::GetSettingsFilePath(L"Items.xml", szConfigDir);
+            this->szToolsFile = util::Utilities::GetSettingsFilePath(L"Tools.xml", szConfigDir);
         }
 
         CMainDlg dlg;

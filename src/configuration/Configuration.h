@@ -9,7 +9,7 @@
 #include "FormatsList.h"
 #include "ItemsList.h"
 #include "ToolsList.h"
-#include "language\LanguageContext.h"
+#include "utilities\LanguageContext.h"
 
 namespace config
 {

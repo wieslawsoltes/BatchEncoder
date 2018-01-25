@@ -3,7 +3,7 @@
 
 #include "StdAfx.h"
 #include "MainApp.h"
-#include "language\LanguageHelper.h"
+#include "utilities\LanguageHelper.h"
 #include "utilities\Utilities.h"
 #include "AboutDlg.h"
 

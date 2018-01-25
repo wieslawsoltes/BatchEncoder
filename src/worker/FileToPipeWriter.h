@@ -47,7 +47,7 @@ namespace worker
                 return false;
             }
 
-            nFileSize = util::GetFileSize64(hFile);
+            nFileSize = util::Utilities::GetFileSize64(hFile);
             if (nFileSize == 0)
             {
                 bError = true;

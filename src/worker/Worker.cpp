@@ -746,7 +746,7 @@ namespace worker
         config::CPath& path = item.m_Paths.Get(0);
 
         szEncInputFile = path.szPath;
-        if (util::FileExists(szEncInputFile) == false)
+        if (util::Utilities::FileExists(szEncInputFile) == false)
         {
             pWorkerContext->Status(item.nId, pWorkerContext->pConfig->GetString(0x00150001), pWorkerContext->pConfig->GetString(0x00140001));
             return false;
@@ -767,7 +767,7 @@ namespace worker
             return false;
         }
 
-        bool bIsValidEncoderInput = pEncFormat->IsValidInputExtension(util::GetFileExtension(szEncInputFile));
+        bool bIsValidEncoderInput = pEncFormat->IsValidInputExtension(util::Utilities::GetFileExtension(szEncInputFile));
 
         m_Output.Validate(pWorkerContext->pConfig->m_Options.szOutputPath);
         szEncOutputFile = m_Output.CreateFilePath(
@@ -778,7 +778,7 @@ namespace worker
 
         if (pWorkerContext->pConfig->m_Options.bOverwriteExistingFiles == false)
         {
-            if (util::FileExists(szEncOutputFile) == true)
+            if (util::Utilities::FileExists(szEncOutputFile) == true)
             {
                 pWorkerContext->Status(item.nId, pWorkerContext->pConfig->GetString(0x00150001), pWorkerContext->pConfig->GetString(0x00140010));
                 return false;
@@ -836,8 +836,8 @@ namespace worker
 
             szDecInputFile = szEncInputFile;
             szDecOutputFile = 
-                util::GetFilePath(szEncOutputFile) + 
-                util::GenerateUuidString() + 
+                util::Utilities::GetFilePath(szEncOutputFile) + 
+                util::Utilities::GenerateUuidString() +
                 L"." + util::StringHelper::TowLower(pDecFormat->szOutputExtension);
         }
 
@@ -926,7 +926,7 @@ namespace worker
                         return false;
                     }
 
-                    if (util::FileExists(szDecOutputFile) == false)
+                    if (util::Utilities::FileExists(szDecOutputFile) == false)
                     {
                         pWorkerContext->Status(item.nId, pWorkerContext->pConfig->GetString(0x00150001), pWorkerContext->pConfig->GetString(0x00140008));
                         return false;
@@ -1085,8 +1085,8 @@ namespace worker
         pWorkerContext->nThreadCount = pWorkerContext->pConfig->m_Options.nThreadCount;
         if (pWorkerContext->nThreadCount < 1)
         {
-            util::LogicalProcessorInformation info;
-            if (util::GetLogicalProcessorInformation(&info) == 0)
+            util::Utilities::LogicalProcessorInformation info;
+            if (util::Utilities::GetLogicalProcessorInformation(&info) == 0)
                 pWorkerContext->nThreadCount = info.processorCoreCount;
             else
                 pWorkerContext->nThreadCount = 1;
