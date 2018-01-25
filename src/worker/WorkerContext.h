@@ -30,6 +30,6 @@ namespace worker
         virtual void Done() = 0;
         virtual bool IsRunning() = 0;
         virtual bool Callback(int nItemId, int nProgress, bool bFinished, bool bError = false) = 0;
-        virtual void Status(int nItemId, CString szTime, CString szStatus) = 0;
+        virtual void Status(int nItemId, const std::wstring& szTime, const std::wstring& szStatus) = 0;
     };
 }

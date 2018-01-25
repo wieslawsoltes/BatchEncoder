@@ -5,9 +5,10 @@
 
 #include <queue>
 #include <memory>
-#include <cstring>
-#include "utilities\OutputPath.h"
+#include <string>
+#include "OutputPath.h"
 #include "utilities\Pipe.h"
+#include "utilities\StringHelper.h"
 #include "utilities\Thread.h"
 #include "utilities\Process.h"
 #include "utilities\Synchronize.h"

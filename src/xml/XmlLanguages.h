@@ -3,9 +3,11 @@
 
 #pragma once
 
+#include <string>
 #include "xml\XmlDoc.h"
 #include "language\Language.h"
 #include "language\LanguagesList.h"
+#include "utilities\StringHelper.h"
 
 #define VALIDATE(value) if (!value) return false
 
@@ -32,14 +34,13 @@ namespace xml
             {
                 for (element; element; element = element->NextSiblingElement())
                 {
-                    CString szKey;
-                    CString szValue;
+                    std::wstring szKey;
+                    std::wstring szValue;
 
                     VALIDATE(GetAttributeValue(element, "key", &szKey));
                     VALIDATE(GetAttributeValue(element, "value", &szValue));
 
-                    int nKey;
-                    _stscanf(szKey, _T("%x"), &nKey);
+                    int nKey = util::StringHelper::ToIntFromHex(szKey);
                     m_Language.m_Strings.Insert(nKey, szValue);
                 }
                 return true;
@@ -54,8 +55,8 @@ namespace xml
 
             for (auto& item : m_Language.m_Strings.m_Map)
             {
-                CString szKey;
-                szKey.Format(_T("%X"), item.first);
+                int nKey = item.first;
+                std::wstring szKey = util::StringHelper::ToWStringHex(nKey);
 
                 auto element = this->NewElement("String");
                 parent->LinkEndChild(element);

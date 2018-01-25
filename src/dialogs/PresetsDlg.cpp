@@ -101,7 +101,7 @@ namespace app
         for (int i = 0; i < nFormats; i++)
         {
             config::CFormat& format = m_Formats.Get(i);
-            m_CmbFormat.InsertString(i, format.szName);
+            m_CmbFormat.InsertString(i, format.szName.c_str());
         }
 
         util::SetComboBoxHeight(this->GetSafeHwnd(), IDC_COMBO_PRESET_FORMAT, 15);
@@ -319,10 +319,10 @@ namespace app
                 config::CPreset& preset1 = format.m_Presets.Get(nItem);
                 config::CPreset& preset2 = format.m_Presets.Get(nItem - 1);
 
-                m_LstPresets.SetItemText(nItem, PRESET_COLUMN_NAME, preset2.szName);
-                m_LstPresets.SetItemText(nItem, PRESET_COLUMN_OPTIONS, preset2.szOptions);
-                m_LstPresets.SetItemText(nItem - 1, PRESET_COLUMN_NAME, preset1.szName);
-                m_LstPresets.SetItemText(nItem - 1, PRESET_COLUMN_OPTIONS, preset1.szOptions);
+                m_LstPresets.SetItemText(nItem, PRESET_COLUMN_NAME, preset2.szName.c_str());
+                m_LstPresets.SetItemText(nItem, PRESET_COLUMN_OPTIONS, preset2.szOptions.c_str());
+                m_LstPresets.SetItemText(nItem - 1, PRESET_COLUMN_NAME, preset1.szName.c_str());
+                m_LstPresets.SetItemText(nItem - 1, PRESET_COLUMN_OPTIONS, preset1.szOptions.c_str());
 
                 format.m_Presets.Swap(nItem, nItem - 1);
 
@@ -353,10 +353,10 @@ namespace app
                 config::CPreset& preset1 = format.m_Presets.Get(nItem);
                 config::CPreset& preset2 = format.m_Presets.Get(nItem + 1);
 
-                m_LstPresets.SetItemText(nItem, PRESET_COLUMN_NAME, preset2.szName);
-                m_LstPresets.SetItemText(nItem, PRESET_COLUMN_OPTIONS, preset2.szOptions);
-                m_LstPresets.SetItemText(nItem + 1, PRESET_COLUMN_NAME, preset1.szName);
-                m_LstPresets.SetItemText(nItem + 1, PRESET_COLUMN_OPTIONS, preset1.szOptions);
+                m_LstPresets.SetItemText(nItem, PRESET_COLUMN_NAME, preset2.szName.c_str());
+                m_LstPresets.SetItemText(nItem, PRESET_COLUMN_OPTIONS, preset2.szOptions.c_str());
+                m_LstPresets.SetItemText(nItem + 1, PRESET_COLUMN_NAME, preset1.szName.c_str());
+                m_LstPresets.SetItemText(nItem + 1, PRESET_COLUMN_OPTIONS, preset1.szOptions.c_str());
 
                 format.m_Presets.Swap(nItem, nItem + 1);
 
@@ -456,7 +456,7 @@ namespace app
 
         if (fd.DoModal() == IDOK)
         {
-            CString szFileXml = fd.GetPathName();
+            std::wstring szFileXml = fd.GetPathName();
             this->LoadPresets(szFileXml);
         }
     }
@@ -470,13 +470,13 @@ namespace app
             pConfig->GetString(0x00310004),
             pConfig->GetString(0x00310001));
 
-        CFileDialog fd(FALSE, _T("xml"), format.szId,
+        CFileDialog fd(FALSE, _T("xml"), format.szId.c_str(),
             OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER | OFN_OVERWRITEPROMPT,
             szFilter, this);
 
         if (fd.DoModal() == IDOK)
         {
-            CString szFileXml = fd.GetPathName();
+            std::wstring szFileXml = fd.GetPathName();
             this->SavePresets(szFileXml, format);
         }
     }
@@ -491,19 +491,21 @@ namespace app
     void CPresetsDlg::LoadWindowSettings()
     {
         // set window rectangle and position
-        if (szPresetsDialogResize.CompareNoCase(_T("")) != 0)
-            this->SetWindowRectStr(szPresetsDialogResize);
+        if (!szPresetsDialogResize.empty())
+            this->SetWindowRectStr(szPresetsDialogResize.c_str());
 
         // load columns width for PresetsList
-        if (szPresetsListColumns.CompareNoCase(_T("")) != 0)
+        if (!szPresetsListColumns.empty())
         {
-            int nColWidth[2];
-            if (_stscanf(szPresetsListColumns, _T("%d %d"),
-                &nColWidth[0],
-                &nColWidth[1]) == 2)
+            auto widths = util::StringHelper::Split(szPresetsListColumns.c_str(), ' ');
+            if (widths.size() == 2)
             {
                 for (int i = 0; i < 2; i++)
-                    m_LstPresets.SetColumnWidth(i, nColWidth[i]);
+                {
+                    std::wstring szWidth = widths[i];
+                    int nWidth = util::StringHelper::ToInt(szWidth);
+                    m_LstPresets.SetColumnWidth(i, nWidth);
+                }
             }
         }
     }
@@ -517,9 +519,10 @@ namespace app
         int nColWidth[2];
         for (int i = 0; i < 2; i++)
             nColWidth[i] = m_LstPresets.GetColumnWidth(i);
-        szPresetsListColumns.Format(_T("%d %d"),
-            nColWidth[0],
-            nColWidth[1]);
+
+        szPresetsListColumns =
+            std::to_wstring(nColWidth[0]) + L" " +
+            std::to_wstring(nColWidth[1]);
     }
 
     void CPresetsDlg::SetLanguage()
@@ -557,11 +560,11 @@ namespace app
         lvi.iItem = nItem;
 
         lvi.iSubItem = PRESET_COLUMN_NAME;
-        lvi.pszText = (LPTSTR)(LPCTSTR)(preset.szName);
+        lvi.pszText = (LPTSTR)(LPCTSTR)(preset.szName.c_str());
         m_LstPresets.InsertItem(&lvi);
 
         lvi.iSubItem = PRESET_COLUMN_OPTIONS;
-        lvi.pszText = (LPTSTR)(LPCTSTR)(preset.szOptions);
+        lvi.pszText = (LPTSTR)(LPCTSTR)(preset.szOptions.c_str());
         m_LstPresets.SetItemText(lvi.iItem, PRESET_COLUMN_OPTIONS, lvi.pszText);
     }
 
@@ -592,16 +595,16 @@ namespace app
                 ::DragQueryFile(hDropInfo, i, szFile.GetBuffer(nReqChars * 2 + 8), nReqChars * 2 + 8);
                 if (!(::GetFileAttributes(szFile) & FILE_ATTRIBUTE_DIRECTORY))
                 {
-                    CString szPath = szFile;
-                    CString szExt = util::GetFileExtension(szPath);
+                    std::wstring szPath = szFile;
+                    std::wstring szExt = util::GetFileExtension(szPath);
 
-                    if (szExt.CompareNoCase(_T("xml")) == 0)
+                    if (util::StringHelper::CompareNoCase(szExt, L"xml"))
                     {
                         xml::XmlDocumnent doc;
-                        CString szName = xml::CXmlConfig::GetRootName(szPath, doc);
-                        if (!szName.IsEmpty())
+                        std::string szName = xml::CXmlConfig::GetRootName(szPath, doc);
+                        if (!szName.empty())
                         {
-                            if (szName.CompareNoCase(_T("Presets")) == 0)
+                            if (util::StringHelper::CompareNoCase(szName, "Presets"))
                             {
                                 this->LoadPresets(doc);
                             }
@@ -617,8 +620,8 @@ namespace app
 
     void CPresetsDlg::UpdateFields(config::CPreset& preset)
     {
-        this->m_EdtName.SetWindowText(preset.szName);
-        this->m_EdtOptions.SetWindowText(preset.szOptions);
+        this->m_EdtName.SetWindowText(preset.szName.c_str());
+        this->m_EdtOptions.SetWindowText(preset.szOptions.c_str());
     }
 
     void CPresetsDlg::ListSelectionChange()
@@ -648,11 +651,11 @@ namespace app
         bUpdate = false;
     }
 
-    bool CPresetsDlg::LoadPresets(CString szFileXml)
+    bool CPresetsDlg::LoadPresets(const std::wstring& szFileXml)
     {
         xml::XmlDocumnent doc;
-        CString szName = xml::CXmlConfig::GetRootName(szFileXml, doc);
-        if (!szName.IsEmpty() && szName.CompareNoCase(_T("Presets")) == 0)
+        std::string szName = xml::CXmlConfig::GetRootName(szFileXml, doc);
+        if (!szName.empty() && util::StringHelper::CompareNoCase(szName, "Presets"))
         {
             return this->LoadPresets(doc);
         }
@@ -673,7 +676,7 @@ namespace app
         return false;
     }
 
-    bool CPresetsDlg::SavePresets(CString szFileXml, config::CFormat &format)
+    bool CPresetsDlg::SavePresets(const std::wstring& szFileXml, config::CFormat &format)
     {
         return xml::CXmlConfig::SavePresets(szFileXml, format.m_Presets);
     }

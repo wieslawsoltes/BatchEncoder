@@ -3,9 +3,9 @@
 
 #include "StdAfx.h"
 #include "MainApp.h"
-#include "utilities\OutputPath.h"
 #include "utilities\TimeCount.h"
 #include "utilities\Utilities.h"
+#include "OutputPath.h"
 #include "FileToPipeWriter.h"
 #include "PipeToFileWriter.h"
 #include "PipeToStringWriter.h"
@@ -53,10 +53,10 @@ namespace worker
         process.ConnectStdError(Stderr.hWrite);
 
         syncDown.Wait();
-        ::SetCurrentDirectory(app::m_App.szSettingsPath);
+        ::SetCurrentDirectory(app::m_App.szSettingsPath.c_str());
 
         timer.Start();
-        if (process.Start(commandLine.pszCommandLine, pWorkerContext->pConfig->m_Options.bHideConsoleWindow) == false)
+        if (process.Start(commandLine.szCommandLine, pWorkerContext->pConfig->m_Options.bHideConsoleWindow) == false)
         {
             bool bFailed = true;
 
@@ -68,16 +68,16 @@ namespace worker
                 {
                     config::CTool& tool = pWorkerContext->pConfig->m_Tools.Get(nTool);
                     bool bResult = m_Utilities.Download(tool, true, true, nTool, pWorkerContext->pConfig,
-                        [this, pWorkerContext, &commandLine](int nIndex, CString szStatus)
+                        [this, pWorkerContext, &commandLine](int nIndex, std::wstring szStatus)
                     {
                         pWorkerContext->Status(commandLine.nItemId, pWorkerContext->pConfig->GetString(0x00150001), szStatus);
                     });
 
                     if (bResult == true)
                     {
-                        ::SetCurrentDirectory(app::m_App.szSettingsPath);
+                        ::SetCurrentDirectory(app::m_App.szSettingsPath.c_str());
 
-                        if (process.Start(commandLine.pszCommandLine, pWorkerContext->pConfig->m_Options.bHideConsoleWindow) == true)
+                        if (process.Start(commandLine.szCommandLine, pWorkerContext->pConfig->m_Options.bHideConsoleWindow) == true)
                         {
                             bFailed = false;
                         }
@@ -95,9 +95,9 @@ namespace worker
                 Stderr.CloseWrite();
 
                 CString szStatus;
-                szStatus.Format(pWorkerContext->pConfig->GetString(0x00120004), ::GetLastError());
+                szStatus.Format(pWorkerContext->pConfig->GetString(0x00120004).c_str(), ::GetLastError());
 
-                pWorkerContext->Status(commandLine.nItemId, pWorkerContext->pConfig->GetString(0x00150001), szStatus);
+                pWorkerContext->Status(commandLine.nItemId, pWorkerContext->pConfig->GetString(0x00150001), std::wstring(CT2CW(szStatus)));
                 pWorkerContext->Callback(commandLine.nItemId, -1, true, true);
                 return false;
             }
@@ -130,7 +130,7 @@ namespace worker
         }
         else
         {
-            pWorkerContext->Status(commandLine.nItemId, timer.Format(timer.ElapsedTime(), 1), pWorkerContext->pConfig->GetString(0x00120006));
+            pWorkerContext->Status(commandLine.nItemId, util::CTimeCount::Format(timer.ElapsedTime()), pWorkerContext->pConfig->GetString(0x00120006));
             pWorkerContext->Callback(commandLine.nItemId, 100, true, false);
             return true;
         }
@@ -229,10 +229,10 @@ namespace worker
         }
 
         syncDown.Wait();
-        ::SetCurrentDirectory(app::m_App.szSettingsPath);
+        ::SetCurrentDirectory(app::m_App.szSettingsPath.c_str());
 
         timer.Start();
-        if (process.Start(commandLine.pszCommandLine, pWorkerContext->pConfig->m_Options.bHideConsoleWindow) == false)
+        if (process.Start(commandLine.szCommandLine, pWorkerContext->pConfig->m_Options.bHideConsoleWindow) == false)
         {
             bool bFailed = true;
 
@@ -244,16 +244,16 @@ namespace worker
                 {
                     config::CTool& tool = pWorkerContext->pConfig->m_Tools.Get(nTool);
                     bool bResult = m_Utilities.Download(tool, true, true, nTool, pWorkerContext->pConfig,
-                        [this, pWorkerContext, &commandLine](int nIndex, CString szStatus)
+                        [this, pWorkerContext, &commandLine](int nIndex, std::wstring szStatus)
                     {
                         pWorkerContext->Status(commandLine.nItemId, pWorkerContext->pConfig->GetString(0x00150001), szStatus);
                     });
 
                     if (bResult == true)
                     {
-                        ::SetCurrentDirectory(app::m_App.szSettingsPath);
+                        ::SetCurrentDirectory(app::m_App.szSettingsPath.c_str());
 
-                        if (process.Start(commandLine.pszCommandLine, pWorkerContext->pConfig->m_Options.bHideConsoleWindow) == true)
+                        if (process.Start(commandLine.szCommandLine, pWorkerContext->pConfig->m_Options.bHideConsoleWindow) == true)
                         {
                             bFailed = false;
                         }
@@ -280,9 +280,9 @@ namespace worker
                 }
 
                 CString szStatus;
-                szStatus.Format(pWorkerContext->pConfig->GetString(0x00130006), ::GetLastError());
+                szStatus.Format(pWorkerContext->pConfig->GetString(0x00130006).c_str(), ::GetLastError());
 
-                pWorkerContext->Status(commandLine.nItemId, pWorkerContext->pConfig->GetString(0x00150001), szStatus);
+                pWorkerContext->Status(commandLine.nItemId, pWorkerContext->pConfig->GetString(0x00150001), std::wstring(CT2CW(szStatus)));
                 pWorkerContext->Callback(commandLine.nItemId, -1, true, true);
                 return false;
             }
@@ -429,7 +429,7 @@ namespace worker
         }
         else
         {
-            pWorkerContext->Status(commandLine.nItemId, timer.Format(timer.ElapsedTime(), 1), pWorkerContext->pConfig->GetString(0x0013000B));
+            pWorkerContext->Status(commandLine.nItemId, util::CTimeCount::Format(timer.ElapsedTime()), pWorkerContext->pConfig->GetString(0x0013000B));
             pWorkerContext->Callback(commandLine.nItemId, 100, true, false);
             return true;
         }
@@ -517,10 +517,10 @@ namespace worker
         timer.Start();
 
         syncDown.Wait();
-        ::SetCurrentDirectory(app::m_App.szSettingsPath);
+        ::SetCurrentDirectory(app::m_App.szSettingsPath.c_str());
 
         // create decoder process
-        if (decoderProcess.Start(decoderCommandLine.pszCommandLine, pWorkerContext->pConfig->m_Options.bHideConsoleWindow) == false)
+        if (decoderProcess.Start(decoderCommandLine.szCommandLine, pWorkerContext->pConfig->m_Options.bHideConsoleWindow) == false)
         {
             bool bFailed = true;
 
@@ -532,16 +532,16 @@ namespace worker
                 {
                     config::CTool& tool = pWorkerContext->pConfig->m_Tools.Get(nTool);
                     bool bResult = m_Utilities.Download(tool, true, true, nTool, pWorkerContext->pConfig,
-                        [this, pWorkerContext, &decoderCommandLine](int nIndex, CString szStatus)
+                        [this, pWorkerContext, &decoderCommandLine](int nIndex, std::wstring szStatus)
                     {
                         pWorkerContext->Status(decoderCommandLine.nItemId, pWorkerContext->pConfig->GetString(0x00150001), szStatus);
                     });
 
                     if (bResult == true)
                     {
-                        ::SetCurrentDirectory(app::m_App.szSettingsPath);
+                        ::SetCurrentDirectory(app::m_App.szSettingsPath.c_str());
 
-                        if (decoderProcess.Start(decoderCommandLine.pszCommandLine, pWorkerContext->pConfig->m_Options.bHideConsoleWindow) == true)
+                        if (decoderProcess.Start(decoderCommandLine.szCommandLine, pWorkerContext->pConfig->m_Options.bHideConsoleWindow) == true)
                         {
                             bFailed = false;
                         }
@@ -565,18 +565,18 @@ namespace worker
                 Bridge.CloseWrite();
 
                 CString szStatus;
-                szStatus.Format(pWorkerContext->pConfig->GetString(0x00130006), ::GetLastError());
+                szStatus.Format(pWorkerContext->pConfig->GetString(0x00130006).c_str(), ::GetLastError());
 
-                pWorkerContext->Status(decoderCommandLine.nItemId, pWorkerContext->pConfig->GetString(0x00150001), szStatus);
+                pWorkerContext->Status(decoderCommandLine.nItemId, pWorkerContext->pConfig->GetString(0x00150001), std::wstring(CT2CW(szStatus)));
                 pWorkerContext->Callback(decoderCommandLine.nItemId, -1, true, true);
                 return false;
             }
         }
 
-        ::SetCurrentDirectory(app::m_App.szSettingsPath);
+        ::SetCurrentDirectory(app::m_App.szSettingsPath.c_str());
 
         // create encoder process
-        if (encoderProcess.Start(encoderCommandLine.pszCommandLine, pWorkerContext->pConfig->m_Options.bHideConsoleWindow) == false)
+        if (encoderProcess.Start(encoderCommandLine.szCommandLine, pWorkerContext->pConfig->m_Options.bHideConsoleWindow) == false)
         {
             bool bFailed = true;
 
@@ -588,16 +588,16 @@ namespace worker
                 {
                     config::CTool& tool = pWorkerContext->pConfig->m_Tools.Get(nTool);
                     bool bResult = m_Utilities.Download(tool, true, true, nTool, pWorkerContext->pConfig,
-                        [this, pWorkerContext, &encoderCommandLine](int nIndex, CString szStatus)
+                        [this, pWorkerContext, &encoderCommandLine](int nIndex, std::wstring szStatus)
                     {
                         pWorkerContext->Status(encoderCommandLine.nItemId, pWorkerContext->pConfig->GetString(0x00150001), szStatus);
                     });
 
                     if (bResult == true)
                     {
-                        ::SetCurrentDirectory(app::m_App.szSettingsPath);
+                        ::SetCurrentDirectory(app::m_App.szSettingsPath.c_str());
 
-                        if (encoderProcess.Start(encoderCommandLine.pszCommandLine, pWorkerContext->pConfig->m_Options.bHideConsoleWindow) == true)
+                        if (encoderProcess.Start(encoderCommandLine.szCommandLine, pWorkerContext->pConfig->m_Options.bHideConsoleWindow) == true)
                         {
                             bFailed = false;
                         }
@@ -623,9 +623,9 @@ namespace worker
                 Bridge.CloseWrite();
 
                 CString szStatus;
-                szStatus.Format(pWorkerContext->pConfig->GetString(0x00130006), ::GetLastError());
+                szStatus.Format(pWorkerContext->pConfig->GetString(0x00130006).c_str(), ::GetLastError());
 
-                pWorkerContext->Status(decoderCommandLine.nItemId, pWorkerContext->pConfig->GetString(0x00150001), szStatus);
+                pWorkerContext->Status(decoderCommandLine.nItemId, pWorkerContext->pConfig->GetString(0x00150001), std::wstring(CT2CW(szStatus)));
                 pWorkerContext->Callback(decoderCommandLine.nItemId, -1, true, true);
                 return false;
             }
@@ -724,7 +724,7 @@ namespace worker
         }
         else
         {
-            pWorkerContext->Status(decoderCommandLine.nItemId, timer.Format(timer.ElapsedTime(), 1), pWorkerContext->pConfig->GetString(0x0013000B));
+            pWorkerContext->Status(decoderCommandLine.nItemId, util::CTimeCount::Format(timer.ElapsedTime()), pWorkerContext->pConfig->GetString(0x0013000B));
             pWorkerContext->Callback(decoderCommandLine.nItemId, 100, true, false);
             return true;
         }
@@ -734,11 +734,11 @@ namespace worker
     {
         config::CFormat *pEncFormat = nullptr;
         config::CFormat *pDecFormat = nullptr;
-        CString szEncInputFile;
-        CString szEncOutputFile;
-        CString szDecInputFile;
-        CString szDecOutputFile;
-        util::COutputPath m_Output;
+        std::wstring szEncInputFile;
+        std::wstring szEncOutputFile;
+        std::wstring szDecInputFile;
+        std::wstring szDecOutputFile;
+        COutputPath m_Output;
         CCommandLine decoderCommandLine;
         CCommandLine encoderCommandLine;
 
@@ -807,7 +807,7 @@ namespace worker
             return false;
         }
 
-        ::SetCurrentDirectory(app::m_App.szSettingsPath);
+        ::SetCurrentDirectory(app::m_App.szSettingsPath.c_str());
 
         // prepare decoder
         if (bIsValidEncoderInput == false)
@@ -835,10 +835,10 @@ namespace worker
             }
 
             szDecInputFile = szEncInputFile;
-            szDecOutputFile.Format(_T("%s%s.%s"),
-                util::GetFilePath(szEncOutputFile),
-                util::GenerateUuidString(),
-                CString(pDecFormat->szOutputExtension).MakeLower());
+            szDecOutputFile = 
+                util::GetFilePath(szEncOutputFile) + 
+                util::GenerateUuidString() + 
+                L"." + util::StringHelper::TowLower(pDecFormat->szOutputExtension);
         }
 
         if (bIsValidEncoderInput == false)
@@ -881,14 +881,14 @@ namespace worker
                 if (bResult == true)
                 {
                     if (pWorkerContext->pConfig->m_Options.bDeleteSourceFiles == true)
-                        ::DeleteFile(szEncInputFile);
+                        ::DeleteFile(szEncInputFile.c_str());
 
                     return true;
                 }
                 else
                 {
                     if (pWorkerContext->pConfig->m_Options.bDeleteOnErrors == true)
-                        ::DeleteFile(szEncOutputFile);
+                        ::DeleteFile(szEncOutputFile.c_str());
 
                     return false;
                 }
@@ -896,7 +896,7 @@ namespace worker
             catch (...)
             {
                 if (pWorkerContext->pConfig->m_Options.bDeleteOnErrors == true)
-                    ::DeleteFile(szEncOutputFile);
+                    ::DeleteFile(szEncOutputFile.c_str());
 
                 pWorkerContext->Status(item.nId, pWorkerContext->pConfig->GetString(0x00150001), pWorkerContext->pConfig->GetString(0x0014000E));
                 pWorkerContext->Callback(item.nId, -1, true, true);
@@ -921,7 +921,7 @@ namespace worker
                     if (bResult == false)
                     {
                         if (pWorkerContext->pConfig->m_Options.bDeleteOnErrors == true)
-                            ::DeleteFile(szDecOutputFile);
+                            ::DeleteFile(szDecOutputFile.c_str());
 
                         return false;
                     }
@@ -935,7 +935,7 @@ namespace worker
                 catch (...)
                 {
                     if (pWorkerContext->pConfig->m_Options.bDeleteOnErrors == true)
-                        ::DeleteFile(szEncOutputFile);
+                        ::DeleteFile(szEncOutputFile.c_str());
 
                     pWorkerContext->Status(item.nId, pWorkerContext->pConfig->GetString(0x00150001), pWorkerContext->pConfig->GetString(0x00140009));
                     pWorkerContext->Callback(item.nId, -1, true, true);
@@ -963,20 +963,20 @@ namespace worker
                 if (bResult == true)
                 {
                     if (bIsValidEncoderInput == false)
-                        ::DeleteFile(szDecOutputFile);
+                        ::DeleteFile(szDecOutputFile.c_str());
 
                     if (pWorkerContext->pConfig->m_Options.bDeleteSourceFiles == true)
-                        ::DeleteFile(szEncInputFile);
+                        ::DeleteFile(szEncInputFile.c_str());
 
                     return true;
                 }
                 else
                 {
                     if (bIsValidEncoderInput == false)
-                        ::DeleteFile(szDecOutputFile);
+                        ::DeleteFile(szDecOutputFile.c_str());
 
                     if (pWorkerContext->pConfig->m_Options.bDeleteOnErrors == true)
-                        ::DeleteFile(szEncOutputFile);
+                        ::DeleteFile(szEncOutputFile.c_str());
 
                     return false;
                 }
@@ -984,10 +984,10 @@ namespace worker
             catch (...)
             {
                 if (bIsValidEncoderInput == false)
-                    ::DeleteFile(szDecOutputFile);
+                    ::DeleteFile(szDecOutputFile.c_str());
 
                 if (pWorkerContext->pConfig->m_Options.bDeleteOnErrors == true)
-                    ::DeleteFile(szEncOutputFile);
+                    ::DeleteFile(szEncOutputFile.c_str());
 
                 pWorkerContext->Status(item.nId, pWorkerContext->pConfig->GetString(0x00150001), pWorkerContext->pConfig->GetString(0x0014000E));
                 pWorkerContext->Callback(item.nId, -1, true, true);

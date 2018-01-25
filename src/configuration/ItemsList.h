@@ -3,7 +3,6 @@
 
 #pragma once
 
-#include <afxstr.h>
 #include "utilities\ListT.h"
 #include "Item.h"
 

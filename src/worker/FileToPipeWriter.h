@@ -3,6 +3,7 @@
 
 #pragma once
 
+#include <string>
 #include "utilities\Pipe.h"
 #include "WorkerContext.h"
 
@@ -11,7 +12,7 @@ namespace worker
     class CFileToPipeWriter
     {
     public:
-        CString szFileName;
+        std::wstring szFileName;
         int nIndex;
     public:
         volatile bool bError;
@@ -37,7 +38,7 @@ namespace worker
             bError = false;
             bFinished = false;
 
-            hFile = ::CreateFile(szFileName, GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_EXISTING, 0, nullptr);
+            hFile = ::CreateFile(szFileName.c_str(), GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_EXISTING, 0, nullptr);
             if (hFile == INVALID_HANDLE_VALUE)
             {
                 bError = true;

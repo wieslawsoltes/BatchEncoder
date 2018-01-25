@@ -5,6 +5,7 @@
 
 #include <afxcmn.h>
 #include <afxwin.h>
+#include <string>
 #include "controls\MyListCtrl.h"
 #include "controls\MyButton.h"
 #include "controls\MyComboBox.h"
@@ -14,6 +15,7 @@
 #include "configuration\ToolsList.h"
 #include "configuration\FormatsList.h"
 #include "configuration\Configuration.h"
+#include "utilities\StringHelper.h"
 #include "worker\ToolUtilities.h"
 
 #define TOOL_COLUMN_NAME      0
@@ -52,8 +54,8 @@ namespace app
     public:
         ToolsDlgDropContext m_DD;
         config::CConfiguration *pConfig;
-        CString szToolsDialogResize;
-        CString szToolsListColumns;
+        std::wstring szToolsDialogResize;
+        std::wstring szToolsListColumns;
         volatile bool bUpdate;
         int nSelectedTool;
         config::CToolsList m_Tools;
@@ -134,11 +136,11 @@ namespace app
         void EnableUserInterface(BOOL bEnable = TRUE);
         void DownloadTools();
     public:
-        bool LoadTool(CString szFileXml);
+        bool LoadTool(const std::wstring& szFileXml);
         bool LoadTool(xml::XmlDocumnent &doc);
-        bool SaveTool(CString szFileXml, config::CTool &tool);
-        bool LoadTools(CString szFileXml);
+        bool SaveTool(const std::wstring& szFileXml, config::CTool &tool);
+        bool LoadTools(const std::wstring& szFileXml);
         bool LoadTools(xml::XmlDocumnent &doc);
-        bool SaveTools(CString szFileXml);
+        bool SaveTools(const std::wstring& szFileXml);
     };
 }

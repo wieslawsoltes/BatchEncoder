@@ -7,6 +7,7 @@
 #error "Include 'StdAfx.h' before including this file for PCH"
 #endif // __AFXWIN_H__
 
+#include <string>
 #include "res\resource.h"
 
 namespace app
@@ -19,22 +20,18 @@ namespace app
         virtual BOOL InitInstance();
         DECLARE_MESSAGE_MAP()
     public:
-        bool m_bIsPortable = true;
+        bool IsPortable();
     public:
-        CString CombinePath(CString szPath, CString szFile);
-    public:
-        CString szSettingsPath;
-    public:
-        CString szFormatsPath;
-        CString szPresetsPath;
-        CString szLanguagesPath;
-        CString szProgressPath;
-        CString szToolsPath;
-    public:
-        CString szOptionsFile;
-        CString szFormatsFile;
-        CString szItemsFile;
-        CString szToolsFile;
+        std::wstring szSettingsPath;
+        std::wstring szFormatsPath;
+        std::wstring szPresetsPath;
+        std::wstring szLanguagesPath;
+        std::wstring szProgressPath;
+        std::wstring szToolsPath;
+        std::wstring szOptionsFile;
+        std::wstring szFormatsFile;
+        std::wstring szItemsFile;
+        std::wstring szToolsFile;
     };
 
     extern CMainApp m_App;

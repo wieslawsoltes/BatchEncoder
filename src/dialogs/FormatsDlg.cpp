@@ -227,7 +227,7 @@ namespace app
 
         if (fd.DoModal() == IDOK)
         {
-            CString szFileXml = fd.GetPathName();
+            std::wstring szFileXml = fd.GetPathName();
             this->LoadFormat(szFileXml);
         }
     }
@@ -247,13 +247,13 @@ namespace app
                     pConfig->GetString(0x00310008),
                     pConfig->GetString(0x00310001));
 
-                CFileDialog fd(FALSE, _T("xml"), format.szId,
+                CFileDialog fd(FALSE, _T("xml"), format.szId.c_str(),
                     OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER | OFN_OVERWRITEPROMPT,
                     szFilter, this);
 
                 if (fd.DoModal() == IDOK)
                 {
-                    CString szFileXml = fd.GetPathName();
+                    std::wstring szFileXml = fd.GetPathName();
                     this->SaveFormat(szFileXml, format);
                 }
             }
@@ -403,10 +403,10 @@ namespace app
                 config::CFormat& format1 = m_Formats.Get(nItem);
                 config::CFormat& format2 = m_Formats.Get(nItem - 1);
 
-                m_LstFormats.SetItemText(nItem, FORMAT_COLUMN_NAME, format2.szName);
-                m_LstFormats.SetItemText(nItem, FORMAT_COLUMN_TEMPLATE, format2.szTemplate);
-                m_LstFormats.SetItemText(nItem - 1, FORMAT_COLUMN_NAME, format1.szName);
-                m_LstFormats.SetItemText(nItem - 1, FORMAT_COLUMN_TEMPLATE, format1.szTemplate);
+                m_LstFormats.SetItemText(nItem, FORMAT_COLUMN_NAME, format2.szName.c_str());
+                m_LstFormats.SetItemText(nItem, FORMAT_COLUMN_TEMPLATE, format2.szTemplate.c_str());
+                m_LstFormats.SetItemText(nItem - 1, FORMAT_COLUMN_NAME, format1.szName.c_str());
+                m_LstFormats.SetItemText(nItem - 1, FORMAT_COLUMN_TEMPLATE, format1.szTemplate.c_str());
 
                 m_Formats.Swap(nItem, nItem - 1);
 
@@ -436,10 +436,10 @@ namespace app
                 config::CFormat& format1 = m_Formats.Get(nItem);
                 config::CFormat& format2 = m_Formats.Get(nItem + 1);
 
-                m_LstFormats.SetItemText(nItem, FORMAT_COLUMN_NAME, format2.szName);
-                m_LstFormats.SetItemText(nItem, FORMAT_COLUMN_TEMPLATE, format2.szTemplate);
-                m_LstFormats.SetItemText(nItem + 1, FORMAT_COLUMN_NAME, format1.szName);
-                m_LstFormats.SetItemText(nItem + 1, FORMAT_COLUMN_TEMPLATE, format1.szTemplate);
+                m_LstFormats.SetItemText(nItem, FORMAT_COLUMN_NAME, format2.szName.c_str());
+                m_LstFormats.SetItemText(nItem, FORMAT_COLUMN_TEMPLATE, format2.szTemplate.c_str());
+                m_LstFormats.SetItemText(nItem + 1, FORMAT_COLUMN_NAME, format1.szName.c_str());
+                m_LstFormats.SetItemText(nItem + 1, FORMAT_COLUMN_TEMPLATE, format1.szTemplate.c_str());
 
                 m_Formats.Swap(nItem, nItem + 1);
 
@@ -638,7 +638,7 @@ namespace app
 
         if (fd.DoModal() == IDOK)
         {
-            CString szFileXml = fd.GetPathName();
+            std::wstring szFileXml = fd.GetPathName();
             this->LoadFormats(szFileXml);
         }
     }
@@ -656,7 +656,7 @@ namespace app
 
         if (fd.DoModal() == IDOK)
         {
-            CString szFileXml = fd.GetPathName();
+            std::wstring szFileXml = fd.GetPathName();
             this->SaveFormats(szFileXml);
         }
     }
@@ -730,19 +730,21 @@ namespace app
     void CFormatsDlg::LoadWindowSettings()
     {
         // set window rectangle and position
-        if (szFormatsDialogResize.CompareNoCase(_T("")) != 0)
-            this->SetWindowRectStr(szFormatsDialogResize);
+        if (!szFormatsDialogResize.empty())
+            this->SetWindowRectStr(szFormatsDialogResize.c_str());
 
         // load columns width for FormatsList
-        if (szFormatsListColumns.CompareNoCase(_T("")) != 0)
+        if (!szFormatsListColumns.empty())
         {
-            int nColWidth[2];
-            if (_stscanf(szFormatsListColumns, _T("%d %d"),
-                &nColWidth[0],
-                &nColWidth[1]) == 2)
+            auto widths = util::StringHelper::Split(szFormatsListColumns.c_str(), ' ');
+            if (widths.size() == 2)
             {
                 for (int i = 0; i < 2; i++)
-                    m_LstFormats.SetColumnWidth(i, nColWidth[i]);
+                {
+                    std::wstring szWidth = widths[i];
+                    int nWidth = util::StringHelper::ToInt(szWidth);
+                    m_LstFormats.SetColumnWidth(i, nWidth);
+                }
             }
         }
     }
@@ -756,9 +758,10 @@ namespace app
         int nColWidth[2];
         for (int i = 0; i < 2; i++)
             nColWidth[i] = m_LstFormats.GetColumnWidth(i);
-        szFormatsListColumns.Format(_T("%d %d"),
-            nColWidth[0],
-            nColWidth[1]);
+
+        szFormatsListColumns = 
+            std::to_wstring(nColWidth[0]) + L" " + 
+            std::to_wstring(nColWidth[1]);
     }
 
     void CFormatsDlg::SetLanguage()
@@ -814,11 +817,11 @@ namespace app
         lvi.iItem = nItem;
 
         lvi.iSubItem = FORMAT_COLUMN_NAME;
-        lvi.pszText = (LPTSTR)(LPCTSTR)(format.szName);
+        lvi.pszText = (LPTSTR)(LPCTSTR)(format.szName.c_str());
         m_LstFormats.InsertItem(&lvi);
 
         lvi.iSubItem = FORMAT_COLUMN_TEMPLATE;
-        lvi.pszText = (LPTSTR)(LPCTSTR)(format.szTemplate);
+        lvi.pszText = (LPTSTR)(LPCTSTR)(format.szTemplate.c_str());
         m_LstFormats.SetItemText(lvi.iItem, FORMAT_COLUMN_TEMPLATE, lvi.pszText);
     }
 
@@ -845,30 +848,30 @@ namespace app
                 ::DragQueryFile(hDropInfo, i, szFile.GetBuffer(nReqChars * 2 + 8), nReqChars * 2 + 8);
                 if (!(::GetFileAttributes(szFile) & FILE_ATTRIBUTE_DIRECTORY))
                 {
-                    CString szPath = szFile;
-                    CString szExt = util::GetFileExtension(szPath);
+                    std::wstring szPath = szFile;
+                    std::wstring szExt = util::GetFileExtension(szPath);
 
-                    if (szExt.CompareNoCase(_T("xml")) == 0)
+                    if (util::StringHelper::CompareNoCase(szExt, L"xml"))
                     {
                         xml::XmlDocumnent doc;
-                        CString szName = xml::CXmlConfig::GetRootName(szPath, doc);
-                        if (!szName.IsEmpty())
+                        std::string szName = xml::CXmlConfig::GetRootName(szPath, doc);
+                        if (!szName.empty())
                         {
-                            if (szName.CompareNoCase(_T("Formats")) == 0)
+                            if (util::StringHelper::CompareNoCase(szName, "Formats"))
                             {
                                 this->LoadFormats(doc);
                             }
-                            else if (szName.CompareNoCase(_T("Format")) == 0)
+                            else if (util::StringHelper::CompareNoCase(szName, "Format"))
                             {
                                 this->LoadFormat(doc);
                             }
-                            else if (szName.CompareNoCase(_T("Presets")) == 0)
+                            else if (util::StringHelper::CompareNoCase(szName, "Presets"))
                             {
                                 this->LoadPresets(doc);
                             }
                         }
                     }
-                    else if (szExt.CompareNoCase(_T("exe")) == 0)
+                    else if (util::StringHelper::CompareNoCase(szExt, L"exe"))
                     {
                         // Set current format exe path.
                         POSITION pos = m_LstFormats.GetFirstSelectedItemPosition();
@@ -877,10 +880,10 @@ namespace app
                             int nItem = m_LstFormats.GetNextSelectedItem(pos);
                             config::CFormat& format = this->m_Formats.Get(nItem);
                             format.szPath = szPath;
-                            this->m_EdtPath.SetWindowText(format.szPath);
+                            this->m_EdtPath.SetWindowText(format.szPath.c_str());
                         }
                     }
-                    else if (szExt.CompareNoCase(_T("lua")) == 0)
+                    else if (util::StringHelper::CompareNoCase(szExt, L"lua"))
                     {
                         // Set current format progress path.
                         POSITION pos = m_LstFormats.GetFirstSelectedItemPosition();
@@ -889,7 +892,7 @@ namespace app
                             int nItem = m_LstFormats.GetNextSelectedItem(pos);
                             config::CFormat& format = this->m_Formats.Get(nItem);
                             format.szFunction = szPath;
-                            this->m_EdtFunction.SetWindowText(format.szFunction);
+                            this->m_EdtFunction.SetWindowText(format.szFunction.c_str());
                         }
                     }
                 }
@@ -903,17 +906,17 @@ namespace app
 
     void CFormatsDlg::UpdateFields(config::CFormat &format)
     {
-        this->m_EdtId.SetWindowText(format.szId);
-        this->m_EdtName.SetWindowText(format.szName);
-        this->m_EdtExtension.SetWindowText(format.szOutputExtension);
-        this->m_EdtFormats.SetWindowText(format.szInputExtensions);
+        this->m_EdtId.SetWindowText(format.szId.c_str());
+        this->m_EdtName.SetWindowText(format.szName.c_str());
+        this->m_EdtExtension.SetWindowText(format.szOutputExtension.c_str());
+        this->m_EdtFormats.SetWindowText(format.szInputExtensions.c_str());
 
         CString szExitCodeSuccess;
         szExitCodeSuccess.Format(_T("%d\0"), format.nExitCodeSuccess);
         this->m_EdtCode.SetWindowText(szExitCodeSuccess);
 
-        this->m_EdtTemplate.SetWindowText(format.szTemplate);
-        this->m_EdtPath.SetWindowText(format.szPath);
+        this->m_EdtTemplate.SetWindowText(format.szTemplate.c_str());
+        this->m_EdtPath.SetWindowText(format.szPath.c_str());
 
         switch (format.nType)
         {
@@ -944,7 +947,7 @@ namespace app
         else
             CheckDlgButton(IDC_CHECK_FORMAT_PIPES_OUTPUT, BST_UNCHECKED);
 
-        this->m_EdtFunction.SetWindowText(format.szFunction);
+        this->m_EdtFunction.SetWindowText(format.szFunction.c_str());
     }
 
     void CFormatsDlg::UpdateDefaultComboBox(config::CFormat &format)
@@ -957,7 +960,7 @@ namespace app
         for (int i = 0; i < nPresets; i++)
         {
             config::CPreset& preset = format.m_Presets.Get(i);
-            this->m_CmbDefault.InsertString(i, preset.szName);
+            this->m_CmbDefault.InsertString(i, preset.szName.c_str());
         }
 
         nPreset = format.nDefaultPreset;
@@ -1053,11 +1056,11 @@ namespace app
         return false;
     }
 
-    bool CFormatsDlg::LoadFormat(CString szFileXml)
+    bool CFormatsDlg::LoadFormat(const std::wstring& szFileXml)
     {
         xml::XmlDocumnent doc;
-        CString szName = xml::CXmlConfig::GetRootName(szFileXml, doc);
-        if (!szName.IsEmpty() && szName.CompareNoCase(_T("Format")) == 0)
+        std::string szName = xml::CXmlConfig::GetRootName(szFileXml, doc);
+        if (!szName.empty() && util::StringHelper::CompareNoCase(szName, "Format"))
         {
             return this->LoadFormat(doc);
         }
@@ -1077,16 +1080,16 @@ namespace app
         return false;
     }
 
-    bool CFormatsDlg::SaveFormat(CString szFileXml, config::CFormat &format)
+    bool CFormatsDlg::SaveFormat(const std::wstring& szFileXml, config::CFormat &format)
     {
         return xml::CXmlConfig::SaveFormat(szFileXml, format);
     }
 
-    bool CFormatsDlg::LoadFormats(CString szFileXml)
+    bool CFormatsDlg::LoadFormats(const std::wstring& szFileXml)
     {
         xml::XmlDocumnent doc;
-        CString szName = xml::CXmlConfig::GetRootName(szFileXml, doc);
-        if (!szName.IsEmpty() && szName.CompareNoCase(_T("Formats")) == 0)
+        std::string szName = xml::CXmlConfig::GetRootName(szFileXml, doc);
+        if (!szName.empty() && util::StringHelper::CompareNoCase(szName, "Formats"))
         {
             return this->LoadFormats(doc);
         }
@@ -1112,7 +1115,7 @@ namespace app
         return false;
     }
 
-    bool CFormatsDlg::SaveFormats(CString szFileXml)
+    bool CFormatsDlg::SaveFormats(const std::wstring& szFileXml)
     {
         return xml::CXmlConfig::SaveFormats(szFileXml, this->m_Formats);
     }
