@@ -29,7 +29,7 @@ namespace worker
             this->nProgress = 0;
             this->nPreviousProgress = 0;
 
-            std::string szFunction = util::StringHelper::StringHelper.Convert(this->pCommandLine->pFormat->szFunction);
+            std::string szFunction = util::StringHelper::StringHelper::Convert(this->pCommandLine->pFormat->szFunction);
             if (this->luaProgress.Open(szFunction.c_str()) == false)
             {
                 this->pWorkerContext->Status(this->pCommandLine->nItemId, pWorkerContext->pConfig->GetString(0x00150001), this->pWorkerContext->pConfig->GetString(0x00110001));
