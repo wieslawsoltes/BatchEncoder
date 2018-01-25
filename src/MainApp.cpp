@@ -57,7 +57,7 @@ namespace app
             catch (...) {}
 
             this->szOptionsFile = util::CombinePath(this->szSettingsPath, L"Options.xml");
-            this->szFormatsFile = util::CombinePath(this->szSettingsPath, L"formats.xml");
+            this->szFormatsFile = util::CombinePath(this->szSettingsPath, L"Formats.xml");
             this->szItemsFile = util::CombinePath(this->szSettingsPath, L"Items.xml");
             this->szToolsFile = util::CombinePath(this->szSettingsPath, L"Tools.xml");
         }
