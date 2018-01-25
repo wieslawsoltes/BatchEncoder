@@ -1476,7 +1476,7 @@ namespace app
                 int nItem = m_LstInputItems.GetNextSelectedItem(pos);
                 config::CItem& item = m_Config.m_Items.Get(nItem);
                 config::CPath& path = item.m_Paths.Get(0);
-                util::LaunchAndWait(path.szPath, _T(""), FALSE);
+                util::LaunchAndWait(path.szPath, L"", FALSE);
             }
         }
     }
@@ -1491,9 +1491,7 @@ namespace app
                 int nItem = m_LstInputItems.GetNextSelectedItem(pos);
                 config::CItem& item = m_Config.m_Items.Get(nItem);
                 config::CPath& path = item.m_Paths.Get(0);
-                CString szPath = path.szPath;
-                szPath.TrimRight(util::GetFileName(path.szPath));
-                util::LaunchAndWait(szPath, _T(""), FALSE);
+                util::LaunchAndWait(util::GetFilePath(path.szPath), L"", FALSE);
             }
         }
     }
@@ -1566,9 +1564,9 @@ namespace app
             if (nFormat >= 0)
             {
     #if defined(_WIN32) & !defined(_WIN64)
-                CString szPlatform = _T("x86");
+                const std::wstring szPlatform = L"x86";
     #else
-                CString szPlatform = _T("x64");
+                const std::wstring szPlatform = L"x64";
     #endif
                 config::CFormat& format = m_Config.m_Formats.Get(nFormat);
                 int nTool = m_Config.m_Tools.GetToolByFormatAndPlatform(format.szId, szPlatform);
@@ -1787,9 +1785,9 @@ namespace app
                     szFileXml.Format(_T("%s\\%s\0"), szFile, w32FileData.cFileName);
 
                     xml::XmlDocumnent doc;
-                    if (xml::XmlDoc::Open(szFileXml, doc) == true)
+                    if (xml::XmlDoc::Open(std::wstring(CT2CW(szFileXml)), doc) == true)
                     {
-                        std::string = xml::XmlDoc::GetRootName(doc);
+                        std::string szName = xml::XmlDoc::GetRootName(doc);
                         if (util::StringHelper::CompareNoCase(szName, "Language"))
                         {
                             lang::CLanguage language;
@@ -1815,7 +1813,7 @@ namespace app
         }
         catch (...)
         {
-            m_StatusBar.SetText(m_Config.GetString(0x0021000B), 1, 0);
+            m_StatusBar.SetText(m_Config.GetString(0x0021000B).c_str(), 1, 0);
         }
         return true;
     }
@@ -1971,7 +1969,9 @@ namespace app
         m_Config.m_Options.nSelectedFormat = this->m_CmbFormat.GetCurSel();
 
         // option: OutputPath
-        m_CmbOutPath.GetWindowText(m_Config.m_Options.szOutputPath);
+        CString szOutputPath;
+        m_CmbOutPath.GetWindowText(szOutputPath);
+        m_Config.m_Options.szOutputPath = szOutputPath;
 
         // option: DeleteSourceFiles
         m_Config.m_Options.bDeleteSourceFiles = this->GetMenu()->GetMenuState(ID_OPTIONS_DELETE_SOURCE, MF_BYCOMMAND) == MF_CHECKED;
@@ -2130,11 +2130,11 @@ namespace app
         // option: MainWindowResize
         if (!m_Config.m_Options.szMainWindowResize.empty())
         {
-            this->SetWindowRectStr(m_Config.m_Options.szMainWindowResize);
+            this->SetWindowRectStr(m_Config.m_Options.szMainWindowResize.c_str());
         }
 
         // option: FileListColumns
-        if (@m_Config.m_Options.szFileListColumns.empty())
+        if (!m_Config.m_Options.szFileListColumns.empty())
         {
             auto widths = util::StringHelper::Split(m_Config.m_Options.szFileListColumns.c_str(), ' ');
             if (widths.size() == 8)
@@ -2423,7 +2423,7 @@ namespace app
                 {
                     CString szPath;
                     szPath.Format(_T("%s\\%s\0"), szFile, w32FileData.cFileName);
-                    this->AddToList(szPath);
+                    this->AddToList(std::wstring(CT2CW(szPath)));
                 }
 
                 if (w32FileData.cFileName[0] != '.' &&
@@ -2998,7 +2998,7 @@ namespace app
     {
         xml::XmlDocumnent doc;
         std::string szName = xml::CXmlConfig::GetRootName(szFileXml, doc);
-        if (!szName.IsEmpty() && util::StringHelper::CompareNoCase(szName, "Items"))
+        if (!szName.empty() && util::StringHelper::CompareNoCase(szName, "Items"))
         {
             return this->LoadItems(doc);
         }

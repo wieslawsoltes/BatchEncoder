@@ -695,12 +695,12 @@ namespace app
 
     void CToolsDlg::OnBnClickedButtonToolSetFormatX86()
     {
-        m_Utilities.SetFormatPaths(m_Formats, m_Tools, _T("x86"));
+        m_Utilities.SetFormatPaths(m_Formats, m_Tools, L"x86");
     }
 
     void CToolsDlg::OnBnClickedButtonToolSetFormatX64()
     {
-        m_Utilities.SetFormatPaths(m_Formats, m_Tools, _T("x64"));
+        m_Utilities.SetFormatPaths(m_Formats, m_Tools, L"x64");
     }
 
     void CToolsDlg::OnClose()
