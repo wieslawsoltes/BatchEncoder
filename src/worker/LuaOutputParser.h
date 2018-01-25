@@ -3,8 +3,10 @@
 
 #pragma once
 
+#include <string>
 #include "OutputParser.h"
 #include "LuaProgess.h"
+#include "utilities\StringHelper.h"
 
 namespace worker
 {
@@ -27,7 +29,8 @@ namespace worker
             this->nProgress = 0;
             this->nPreviousProgress = 0;
 
-            if (this->luaProgress.Open(CT2CA(this->pCommandLine->pFormat->szFunction)) == false)
+            std::string szFunction = util::StringHelper::StringHelper.Convert(this->pCommandLine->pFormat->szFunction);
+            if (this->luaProgress.Open(szFunction.c_str()) == false)
             {
                 this->pWorkerContext->Status(this->pCommandLine->nItemId, pWorkerContext->pConfig->GetString(0x00150001), this->pWorkerContext->pConfig->GetString(0x00110001));
                 this->pWorkerContext->Callback(this->pCommandLine->nItemId, -1, true, true);
