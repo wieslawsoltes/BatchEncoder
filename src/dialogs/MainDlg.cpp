@@ -79,7 +79,7 @@ namespace app
 
             hWndBtnRecurse = ::CreateWindowEx(0,
                 _T("BUTTON"),
-                pDlg->m_Config.GetString(0x00210005),
+                pDlg->m_Config.GetString(0x00210005).c_str(),
                 BS_CHECKBOX | BS_AUTOCHECKBOX | WS_CHILD | WS_TABSTOP | WS_VISIBLE,
                 rc.left, rc.top,
                 rc.right - rc.left, rc.bottom - rc.top,
@@ -204,8 +204,9 @@ namespace app
 
             if (this->nThreadCount == 1)
             {
+                CString szFormat = this->pConfig->GetString(0x00190003);
                 CString szText;
-                szText.Format(this->pConfig->GetString(0x00190003),
+                szText.Format(szFormat,
                     this->nProcessedFiles,
                     this->nTotalFiles,
                     this->nDoneWithoutError,
@@ -225,8 +226,9 @@ namespace app
             this->timer.Stop();
             this->nErrors = this->nProcessedFiles - this->nDoneWithoutError;
 
+            CString szFormat = this->pConfig->GetString(0x00190004);
             CString szText;
-            szText.Format(this->pConfig->GetString(0x00190004),
+            szText.Format(szFormat,
                 this->nProcessedFiles,
                 this->nTotalFiles,
                 this->nDoneWithoutError,
@@ -299,7 +301,7 @@ namespace app
                             {
                                 if (nItemProgress > 0 && nItemProgress < 100 && nItemProgress > nItemPreviousProgress)
                                 {
-                                    item.szStatus.Format(_T("%d%%\0"), nItemProgress);
+                                    item.szStatus = std::to_wstring(nItemProgress) + L"%";
                                     item.nPreviousProgress = nItemProgress;
                                     pDlg->RedrawItem(i);
                                 }
@@ -321,7 +323,7 @@ namespace app
 
             return this->bRunning;
         }
-        void Status(int nItemId, CString szTime, CString szStatus)
+        void Status(int nItemId, const std::wstring& szTime, const std::wstring& szStatus)
         {
             config::CItem &item = pConfig->m_Items.Get(nItemId);
             item.szTime = szTime;
@@ -537,8 +539,8 @@ namespace app
                 this->UpdatePresetComboBox();
             }
 
-            this->SearchFolderForLanguages(app::m_App.szSettingsPath);
-            this->SearchFolderForLanguages(app::m_App.szLanguagesPath);
+            this->SearchFolderForLanguages(app::m_App.szSettingsPath.c_str());
+            this->SearchFolderForLanguages(app::m_App.szLanguagesPath.c_str());
             this->InitLanguageMenu();
             this->SetLanguage();
             this->LoadItems(app::m_App.szItemsFile);
@@ -686,7 +688,7 @@ namespace app
         if (pItem->mask & LVIF_TEXT)
         {
             config::CItem& item = m_Config.m_Items.Get(nItem);
-            CString szText;
+            std::wstring szText;
 
             switch(pItem->iSubItem)
             {
@@ -716,15 +718,15 @@ namespace app
                     break;
             case ITEM_COLUMN_TIME:
                     // [Time] : encoder/decoder conversion time
-                    szText.Format(_T("%s"), (item.szTime.CompareNoCase(_T("")) == 0) ? m_Config.GetString(0x00150001) : item.szTime);
+                    szText = item.szTime.empty() ? m_Config.GetString(0x00150001) : item.szTime;
                     break;
             case ITEM_COLUMN_STATUS:
                     // [Status] : encoder/decoder progress status
-                    szText.Format(_T("%s"), (item.szStatus.CompareNoCase(_T("")) == 0) ? m_Config.GetString(0x00210001) : item.szStatus);
+                    szText = item.szStatus.empty() ? m_Config.GetString(0x00210001) : item.szStatus;
                     break;
             }
 
-            _tcscpy_s(pItem->pszText, pItem->cchTextMax, szText);
+            _tcscpy_s(pItem->pszText, pItem->cchTextMax, szText.c_str());
         }
 
         if(pItem->mask & LVIF_IMAGE) 
@@ -808,7 +810,7 @@ namespace app
             nEdtSubItem = pNMItemActivate->iSubItem;
 
             config::CItem& item = m_Config.m_Items.Get(nEdtItem);
-            szEdtText = item.szOptions;
+            szEdtText = item.szOptions.c_str();
 
             ShowEdtItem();
         }
@@ -954,7 +956,7 @@ namespace app
             LPITEMIDLIST pidlBrowse;
             TCHAR *lpBuffer;
 
-            CString szTitle = m_Config.GetString(0x00210006);
+            std::wstring szTitle = m_Config.GetString(0x00210006);
 
             CString szTmp;
             this->m_CmbOutPath.GetWindowText(szTmp);
@@ -984,7 +986,7 @@ namespace app
             bi.hwndOwner = this->GetSafeHwnd();
             bi.pidlRoot = pidlDesktop;
             bi.pszDisplayName = lpBuffer;
-            bi.lpszTitle = szTitle;
+            bi.lpszTitle = szTitle.c_str();
             bi.ulFlags = BIF_STATUSTEXT | BIF_RETURNONLYFSDIRS | BIF_NEWDIALOGSTYLE;
             bi.iImage = 0;
             bi.lpfn = app::BrowseCallbackOutPath;
@@ -2822,7 +2824,7 @@ namespace app
     {
         xml::XmlDocumnent doc;
         std::string szName = xml::CXmlConfig::GetRootName(szFileXml, doc);
-        if (!szName.IsEmpty() && szName.CompareNoCase(_T("Options")) == 0)
+        if (!szName.empty() && util::StringHelper::CompareNoCase(szName, "Options"))
         {
             return this->LoadOptions(doc);
         }
@@ -2853,7 +2855,7 @@ namespace app
     {
         xml::XmlDocumnent doc;
         std::string szName = xml::CXmlConfig::GetRootName(szFileXml, doc);
-        if (!szName.IsEmpty() && szName.CompareNoCase(_T("Formats")) == 0)
+        if (!szName.empty() && util::StringHelper::CompareNoCase(szName, "Formats"))
         {
             return this->LoadFormats(doc);
         }
@@ -2882,7 +2884,7 @@ namespace app
     {
         xml::XmlDocumnent doc;
         std::string szName = xml::CXmlConfig::GetRootName(szFileXml, doc);
-        if (!szName.IsEmpty() && szName.CompareNoCase(_T("Format")) == 0)
+        if (!szName.empty() && util::StringHelper::CompareNoCase(szName, "Format"))
         {
             return this->LoadFormat(doc);
         }
@@ -2917,7 +2919,7 @@ namespace app
     {
         xml::XmlDocumnent doc;
         std::string szName = xml::CXmlConfig::GetRootName(szFileXml, doc);
-        if (!szName.IsEmpty() && szName.CompareNoCase(_T("Presets")) == 0)
+        if (!szName.empty() && util::StringHelper::CompareNoCase(szName, "Presets"))
         {
             return this->LoadPresets(doc);
         }
@@ -2956,7 +2958,7 @@ namespace app
     {
         xml::XmlDocumnent doc;
         std::string szName = xml::CXmlConfig::GetRootName(szFileXml, doc);
-        if (!szName.IsEmpty() && szName.CompareNoCase(_T("Tools")) == 0)
+        if (!szName.empty() && util::StringHelper::CompareNoCase(szName, "Tools"))
         {
             return this->LoadTools(doc);
         }
@@ -2983,7 +2985,7 @@ namespace app
     {
         xml::XmlDocumnent doc;
         std::string szName = xml::CXmlConfig::GetRootName(szFileXml, doc);
-        if (!szName.IsEmpty() && szName.CompareNoCase(_T("Tool")) == 0)
+        if (!szName.empty() && util::StringHelper::CompareNoCase(szName, "Tool"))
         {
             return this->LoadTool(doc);
         }
@@ -3005,7 +3007,7 @@ namespace app
     {
         xml::XmlDocumnent doc;
         std::string szName = xml::CXmlConfig::GetRootName(szFileXml, doc);
-        if (!szName.IsEmpty() && szName.CompareNoCase(_T("Items")) == 0)
+        if (!szName.IsEmpty() && util::StringHelper::CompareNoCase(szName, "Items"))
         {
             return this->LoadItems(doc);
         }
@@ -3036,7 +3038,7 @@ namespace app
     {
         xml::XmlDocumnent doc;
         std::string = xml::CXmlConfig::GetRootName(szFileXml, doc);
-        if (!szName.IsEmpty() && szName.CompareNoCase(_T("Language")) == 0)
+        if (!szName.empty() && util::StringHelper::CompareNoCase(szName, "Language"))
         {
             return this->LoadLanguage(doc);
         }
@@ -3054,11 +3056,10 @@ namespace app
             CMenu *m_hLangMenu = m_hMenu->GetSubMenu(4);
             int nLanguages = m_Config.m_Language.m_Languages.Count();
 
-            CString szBuff;
-            szBuff.Format(_T("%s (%s)"), language.szOriginalName, language.szTranslatedName);
+            std::wstring szBuff = language.szOriginalName + L" (" + language.szTranslatedName + L")";
 
             UINT nLangID = ID_LANGUAGE_MIN + nLanguages - 1;
-            m_hLangMenu->AppendMenu(MF_STRING, nLangID, szBuff);
+            m_hLangMenu->AppendMenu(MF_STRING, nLangID, szBuff.c_str());
             m_hLangMenu->CheckMenuItem(nLangID, MF_UNCHECKED);
 
             return true;
