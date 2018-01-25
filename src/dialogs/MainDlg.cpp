@@ -1102,7 +1102,7 @@ namespace app
                 ZeroMemory(pFiles, dwMaxSize);
 
                 CString szFilter;
-                szFilter.Format(_T("%s (*.*)|*.*||"), m_Config.GetString(0x00310001));
+                szFilter.Format(_T("%s (*.*)|*.*||"), m_Config.GetString(0x00310001).c_str());
 
                 CFileDialog fd(TRUE, _T(""), _T(""),
                     OFN_ALLOWMULTISELECT | OFN_HIDEREADONLY | OFN_ENABLESIZING,
@@ -1832,7 +1832,7 @@ namespace app
                 lang::CLanguage language = m_Config.m_Language.m_Languages.Get(i);
 
                 CString szBuff;
-                szBuff.Format(_T("%s (%s)"), language.szOriginalName, language.szTranslatedName);
+                szBuff.Format(_T("%s (%s)"), language.szOriginalName.c_str(), language.szTranslatedName.c_str());
 
                 UINT nLangID = ID_LANGUAGE_MIN + i;
                 m_hLangMenu->AppendMenu(MF_STRING, nLangID, szBuff);
@@ -2627,7 +2627,7 @@ namespace app
         if (nItems > 0)
         {
             CString szText;
-            szText.Format(_T("%d %s"), nItems, (nItems > 1) ? m_Config.GetString(0x00210003) : m_Config.GetString(0x00210002));
+            szText.Format(_T("%d %s"), nItems, (nItems > 1) ? m_Config.GetString(0x00210003).c_str() : m_Config.GetString(0x00210002).c_str());
             m_StatusBar.SetText(szText, 0, 0);
         }
         else
