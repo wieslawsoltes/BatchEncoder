@@ -12,9 +12,6 @@
 
 namespace app
 {
-    std::wstring CombinePath(const std::wstring& szPath, const std::wstring& szFile);
-    bool IsPortable();
-
     class CMainApp : public CWinAppEx
     {
     public:
@@ -22,6 +19,8 @@ namespace app
     public:
         virtual BOOL InitInstance();
         DECLARE_MESSAGE_MAP()
+    public:
+        bool IsPortable();
     public:
         std::wstring szSettingsPath;
         std::wstring szFormatsPath;

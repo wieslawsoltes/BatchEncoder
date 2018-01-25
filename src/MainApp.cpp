@@ -9,26 +9,6 @@
 
 namespace app
 {
-    std::wstring CombinePath(const std::wstring& szPath, const std::wstring& szFile)
-    {
-        std::wstring szOutputFile = szFile;
-        if (szPath.length() >= 1)
-        {
-            auto cLast = szPath[szPath.length() - 1];
-            if ((cLast == '\\') || (cLast == '/'))
-                szOutputFile = szPath + szOutputFile;
-            else
-                szOutputFile = szPath + L"\\") + szOutputFile;
-        }
-        return szOutputFile;
-    }
-
-    bool IsPortable()
-    {
-        cont std::wstring szPath = util::GetExeFilePath() + L"BatchEncoder.portable";
-        return ::PathFileExists(szPath.c_str()) == TRUE;
-    }
-
     CMainApp m_App;
 
     BEGIN_MESSAGE_MAP(CMainApp, CWinAppEx)
@@ -37,6 +17,12 @@ namespace app
 
     CMainApp::CMainApp()
     {
+    }
+
+    bool CMainApp::IsPortable()
+    {
+        cont std::wstring szPath = util::GetExeFilePath() + L"BatchEncoder.portable";
+        return ::PathFileExists(szPath.c_str()) == TRUE;
     }
 
     BOOL CMainApp::InitInstance()
@@ -50,15 +36,15 @@ namespace app
         AfxEnableControlContainer();
         InitShellManager();
 
-        if (app::IsPortable())
+        if (this->IsPortable())
         {
             this->szSettingsPath = util::GetExeFilePath();
 
-            this->szFormatsPath = app::CombinePath(this->szSettingsPath, L"formats");
-            this->szPresetsPath = app::CombinePath(this->szSettingsPath, L"presets");
-            this->szLanguagesPath = app::CombinePath(this->szSettingsPath, L"lang");
-            this->szProgressPath = app::CombinePath(this->szSettingsPath, L"progress");
-            this->szToolsPath = app::CombinePath(this->szSettingsPath, L"tools");
+            this->szFormatsPath = util::CombinePath(this->szSettingsPath, L"formats");
+            this->szPresetsPath = util::CombinePath(this->szSettingsPath, L"presets");
+            this->szLanguagesPath = util::CombinePath(this->szSettingsPath, L"lang");
+            this->szProgressPath = util::CombinePath(this->szSettingsPath, L"progress");
+            this->szToolsPath = util::CombinePath(this->szSettingsPath, L"tools");
 
             try
             {
@@ -70,10 +56,10 @@ namespace app
             }
             catch (...) {}
 
-            this->szOptionsFile = app::CombinePath(this->szSettingsPath, L"Options.xml");
-            this->szFormatsFile = app::CombinePath(this->szSettingsPath, L"formats.xml");
-            this->szItemsFile = app::CombinePath(this->szSettingsPath, L"Items.xml");
-            this->szToolsFile = app::CombinePath(this->szSettingsPath, L"Tools.xml");
+            this->szOptionsFile = util::CombinePath(this->szSettingsPath, L"Options.xml");
+            this->szFormatsFile = util::CombinePath(this->szSettingsPath, L"formats.xml");
+            this->szItemsFile = util::CombinePath(this->szSettingsPath, L"Items.xml");
+            this->szToolsFile = util::CombinePath(this->szSettingsPath, L"Tools.xml");
         }
         else
         {
