@@ -235,7 +235,7 @@ namespace app
                 this->nErrors,
                 ((this->nErrors == 0) || (this->nErrors > 1)) ?
                 this->pConfig->GetString(0x00190002) : this->pConfig->GetString(0x00190001),
-                this->timer.Format(this->timer.ElapsedTime(), 3));
+                CTimeCount::Format(this->timer.ElapsedTime()));
             pDlg->m_StatusBar.SetText(szText, 1, 0);
 
             pDlg->FinishConvert();
