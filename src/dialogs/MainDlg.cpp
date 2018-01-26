@@ -221,6 +221,9 @@ namespace app
                     if (pDlg->m_Config.m_Options.bEnsureItemIsVisible == true)
                         pDlg->MakeItemVisible(nItemId);
                 }
+                
+                int nPos = (int)((double)this->nProcessedFiles / (double)this->nTotalFiles);
+                pDlg->m_Progress.SetPos(nPos);
             //}
         }
         void Done()
@@ -240,6 +243,9 @@ namespace app
                 util::CTimeCount::Format(this->timer.ElapsedTime()).c_str());
             pDlg->m_StatusBar.SetText(szText, 1, 0);
 
+            int nPos = (int)((double)this->nProcessedFiles / (double)this->nTotalFiles);
+            pDlg->m_Progress.SetPos(nPos);
+
             pDlg->FinishConvert();
         }
         bool IsRunning()
@@ -258,6 +264,11 @@ namespace app
                     pDlg->m_Progress.SetPos(0);
                     this->bRunning = false;
                 }
+                else
+                {
+                    int nPos = (int)((double)this->nProcessedFiles / (double)this->nTotalFiles);
+                    pDlg->m_Progress.SetPos(nPos);
+                }
 
                 return this->bRunning;
             }
@@ -266,6 +277,9 @@ namespace app
             {
                 config::CItem &item = pConfig->m_Items.Get(nItemId);
                 item.bFinished = true;
+                
+                int nPos = (int)((double)this->nProcessedFiles / (double)this->nTotalFiles);
+                pDlg->m_Progress.SetPos(nPos);
             }
 
             if ((bFinished == false) && (this->bRunning == true))
@@ -320,9 +334,9 @@ namespace app
                         pDlg->m_Progress.SetPos(nPos);
 */
 
-                    int nPos = (int)((double)this->nProcessedFiles / (double)this->nTotalFiles);
-                    if (pDlg->m_Progress.GetPos() != nPos)
-                        pDlg->m_Progress.SetPos(nPos);
+                    //int nPos = (int)((double)this->nProcessedFiles / (double)this->nTotalFiles);
+                    //if (pDlg->m_Progress.GetPos() != nPos)
+                    //    pDlg->m_Progress.SetPos(nPos);
 
 
                     bSafeCheck = false;
