@@ -291,7 +291,7 @@ namespace app
                         {
                             item.szStatus = std::to_wstring(nItemProgress) + L"%";
                             item.nPreviousProgress = nItemProgress;
-                            pDlg->RedrawItem(i);
+                            pDlg->RedrawItem(nItemId);
                         }
                         else if (nItemProgress == 100 && nItemProgress > nItemPreviousProgress)
                         {
