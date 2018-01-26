@@ -264,11 +264,6 @@ namespace app
                     pDlg->m_Progress.SetPos(0);
                     this->bRunning = false;
                 }
-                else
-                {
-                    int nPos = (int)(100.0 * ((double)this->nProcessedFiles / (double)this->nTotalFiles));
-                    pDlg->m_Progress.SetPos(nPos);
-                }
 
                 return this->bRunning;
             }
@@ -277,68 +272,44 @@ namespace app
             {
                 config::CItem &item = pConfig->m_Items.Get(nItemId);
                 item.bFinished = true;
-                
-                int nPos = (int)((double)this->nProcessedFiles / (double)this->nTotalFiles);
-                pDlg->m_Progress.SetPos(nPos);
             }
 
             if ((bFinished == false) && (this->bRunning == true))
             {
-                config::CItem &current = pConfig->m_Items.Get(nItemId);
-                current.nProgress = nProgress;
-                if (current.nPreviousProgress > nProgress)
-                    current.nPreviousProgress = nProgress;
+                config::CItem &item = pConfig->m_Items.Get(nItemId);
+                item.nProgress = nProgress;
+                if (item.nPreviousProgress > nProgress)
+                    item.nPreviousProgress = nProgress;
+
+                if (item.bChecked == true)
+                {
+                    int nItemProgress = item.nProgress;
+                    int nItemPreviousProgress = item.nPreviousProgress;
+                    if (item.bFinished == false)
+                    {
+                        if (nItemProgress > 0 && nItemProgress < 100 && nItemProgress > nItemPreviousProgress)
+                        {
+                            item.szStatus = std::to_wstring(nItemProgress) + L"%";
+                            item.nPreviousProgress = nItemProgress;
+                            pDlg->RedrawItem(i);
+                        }
+                        else if (nItemProgress == 100 && nItemProgress > nItemPreviousProgress)
+                        {
+                            item.nPreviousProgress = nItemProgress;
+                        }
+                    }
+                }
 
                 static volatile bool bSafeCheck = false;
                 if (bSafeCheck == false)
                 {
                     bSafeCheck = true;
-
                     if (nItemId > this->nLastItemId)
                     {
                         this->nLastItemId = nItemId;
                         if (pDlg->m_Config.m_Options.bEnsureItemIsVisible == true)
                             pDlg->MakeItemVisible(nItemId);
                     }
-/*
-                    int nTotalProgress = 0;
-                    int nItems = pConfig->m_Items.Count();
-                    for (int i = 0; i < nItems; i++)
-                    {
-                        config::CItem &item = pConfig->m_Items.Get(i);
-                        if (item.bChecked == true)
-                        {
-                            int nItemProgress = item.nProgress;
-                            int nItemPreviousProgress = item.nPreviousProgress;
-
-                            nTotalProgress += nItemProgress;
-
-                            if (item.bFinished == false)
-                            {
-                                if (nItemProgress > 0 && nItemProgress < 100 && nItemProgress > nItemPreviousProgress)
-                                {
-                                    item.szStatus = std::to_wstring(nItemProgress) + L"%";
-                                    item.nPreviousProgress = nItemProgress;
-                                    pDlg->RedrawItem(i);
-                                }
-                                else if (nItemProgress == 100 && nItemProgress > nItemPreviousProgress)
-                                {
-                                    item.nPreviousProgress = nItemProgress;
-                                }
-                            }
-                        }
-                    }
-
-                    int nPos = nTotalProgress / nTotalFiles;
-                    if (pDlg->m_Progress.GetPos() != nPos)
-                        pDlg->m_Progress.SetPos(nPos);
-*/
-
-                    //int nPos = (int)(100.0f * ((double)this->nProcessedFiles / (double)this->nTotalFiles));
-                    //if (pDlg->m_Progress.GetPos() != nPos)
-                    //    pDlg->m_Progress.SetPos(nPos);
-
-
                     bSafeCheck = false;
                 }
             }
