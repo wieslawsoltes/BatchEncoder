@@ -330,7 +330,7 @@ namespace app
                         pDlg->m_Progress.SetPos(nPos);
 */
 
-                    int nPos = this->nProcessedFiles / this->nTotalFiles;
+                    int nPos = (int)((double)this->nProcessedFiles /  (double)this->nTotalFiles);
                     if (pDlg->m_Progress.GetPos() != nPos)
                         pDlg->m_Progress.SetPos(nPos);
 

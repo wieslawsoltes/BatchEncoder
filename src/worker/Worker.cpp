@@ -730,7 +730,7 @@ namespace worker
         }
     }
 
-    bool CWorker::ConvertItem(IWorkerContext* pWorkerContext, config::CItem& item, util::CSynchronize &syncDir, util::CSynchronize &syncDown)
+    bool CWorker::ConvertItem(IWorkerContext* pWorkerContext, int nId, util::CSynchronize &syncDir, util::CSynchronize &syncDown)
     {
         config::CFormat *pEncFormat = nullptr;
         config::CFormat *pDecFormat = nullptr;
@@ -743,6 +743,7 @@ namespace worker
         CCommandLine encoderCommandLine;
 
         // prepare encoder
+        config::CItem& item = pWorkerContext->pConfig->m_Items.Get(nId);
         config::CPath& path = item.m_Paths.Get(0);
 
         szEncInputFile = path.szPath;
@@ -997,7 +998,7 @@ namespace worker
         return false;
     }
 
-    bool CWorker::ConvertLoop(IWorkerContext* pWorkerContext, std::queue<config::CItem> &queue, util::CSynchronize &sync, util::CSynchronize &syncDir, util::CSynchronize &syncDown)
+    bool CWorker::ConvertLoop(IWorkerContext* pWorkerContext, std::queue<int> &queue, util::CSynchronize &sync, util::CSynchronize &syncDir, util::CSynchronize &syncDown)
     {
         while (TRUE)
         {
@@ -1007,7 +1008,7 @@ namespace worker
                 {
                     if (!queue.empty())
                     {
-                        config::CItem item = queue.front();
+                        int nId = queue.front();
                         queue.pop();
 
                         if (sync.Release() == false)
@@ -1016,8 +1017,8 @@ namespace worker
                         if (pWorkerContext->bRunning == false)
                             return false;
 
-                        pWorkerContext->Next(item.nId);
-                        if (ConvertItem(pWorkerContext, item, syncDir, syncDown) == true)
+                        pWorkerContext->Next(nId);
+                        if (ConvertItem(pWorkerContext, nId, syncDir, syncDown) == true)
                         {
                             pWorkerContext->nDoneWithoutError++;
                         }
@@ -1054,7 +1055,7 @@ namespace worker
 
     void CWorker::Convert(IWorkerContext* pWorkerContext)
     {
-        std::queue<config::CItem> queue;
+        std::queue<int> queue;
         util::CSynchronize sync;
         util::CSynchronize syncDir;
         util::CSynchronize syncDown;
@@ -1072,7 +1073,7 @@ namespace worker
             if (item.bChecked == true)
             {
                 item.ResetProgress();
-                queue.push(std::move(item));
+                queue.push(item.nId);
                 pWorkerContext->nTotalFiles++;
             }
             else
