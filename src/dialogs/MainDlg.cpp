@@ -200,31 +200,28 @@ namespace app
         void Next(int nItemId)
         {
             this->nProcessedFiles++;
-            this->nErrors = (this->nProcessedFiles - 1) - this->nDoneWithoutError;
+            this->nErrors = this->nProcessedFiles - this->nDoneWithoutError;
 
-            //if (this->nThreadCount == 1)
-            //{
-                CString szFormat = this->pConfig->GetString(0x00190003).c_str();
-                CString szText;
-                szText.Format(szFormat,
-                    this->nProcessedFiles,
-                    this->nTotalFiles,
-                    this->nDoneWithoutError,
-                    this->nErrors,
-                    ((this->nErrors == 0) || (this->nErrors > 1)) ?
-                    this->pConfig->GetString(0x00190002).c_str() : this->pConfig->GetString(0x00190001).c_str());
-                pDlg->m_StatusBar.SetText(szText, 1, 0);
+            CString szFormat = this->pConfig->GetString(0x00190003).c_str();
+            CString szText;
+            szText.Format(szFormat,
+                this->nProcessedFiles,
+                this->nTotalFiles,
+                this->nDoneWithoutError,
+                this->nErrors,
+                ((this->nErrors == 0) || (this->nErrors > 1)) ?
+                this->pConfig->GetString(0x00190002).c_str() : this->pConfig->GetString(0x00190001).c_str());
+            pDlg->m_StatusBar.SetText(szText, 1, 0);
 
-                if (nItemId > this->nLastItemId)
-                {
-                    this->nLastItemId = nItemId;
-                    if (pDlg->m_Config.m_Options.bEnsureItemIsVisible == true)
-                        pDlg->MakeItemVisible(nItemId);
-                }
-                
-                int nPos = (int)(100.0f * ((double)this->nProcessedFiles / (double)this->nTotalFiles));
-                pDlg->m_Progress.SetPos(nPos);
-            //}
+            if (nItemId > this->nLastItemId)
+            {
+                this->nLastItemId = nItemId;
+                if (pDlg->m_Config.m_Options.bEnsureItemIsVisible == true)
+                    pDlg->MakeItemVisible(nItemId);
+            }
+
+            int nPos = (int)(100.0f * ((double)this->nProcessedFiles / (double)this->nTotalFiles));
+            pDlg->m_Progress.SetPos(nPos);
         }
         void Done()
         {
