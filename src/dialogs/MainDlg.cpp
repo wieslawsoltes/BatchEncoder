@@ -284,7 +284,7 @@ namespace app
                         if (pDlg->m_Config.m_Options.bEnsureItemIsVisible == true)
                             pDlg->MakeItemVisible(nItemId);
                     }
-
+/*
                     int nTotalProgress = 0;
                     int nItems = pConfig->m_Items.Count();
                     for (int i = 0; i < nItems; i++)
@@ -316,7 +316,7 @@ namespace app
                     int nPos = nTotalProgress / nTotalFiles;
                     if (pDlg->m_Progress.GetPos() != nPos)
                         pDlg->m_Progress.SetPos(nPos);
-
+*/
                     bSafeCheck = false;
                 }
             }
