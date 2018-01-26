@@ -1020,10 +1020,14 @@ namespace worker
                         pWorkerContext->Next(nId);
                         if (ConvertItem(pWorkerContext, nId, syncDir, syncDown) == true)
                         {
+                            pWorkerContext->nProcessedFiles++;
                             pWorkerContext->nDoneWithoutError++;
+                            pWorkerContext->nErrors = pWorkerContext->nProcessedFiles - pWorkerContext->nDoneWithoutError;
                         }
                         else
                         {
+                            pWorkerContext->nProcessedFiles++;
+                            pWorkerContext->nErrors = pWorkerContext->nProcessedFiles - pWorkerContext->nDoneWithoutError;
                             if (pWorkerContext->pConfig->m_Options.bStopOnErrors == true)
                                 return false;
                         }

@@ -199,9 +199,6 @@ namespace app
         }
         void Next(int nItemId)
         {
-            this->nProcessedFiles++;
-            this->nErrors = this->nProcessedFiles - this->nDoneWithoutError;
-
             CString szFormat = this->pConfig->GetString(0x00190003).c_str();
             CString szText;
             szText.Format(szFormat,
@@ -226,7 +223,6 @@ namespace app
         void Done()
         {
             this->timer.Stop();
-            this->nErrors = this->nProcessedFiles - this->nDoneWithoutError;
 
             CString szFormat = this->pConfig->GetString(0x00190004).c_str();
             CString szText;
