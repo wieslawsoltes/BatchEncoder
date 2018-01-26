@@ -669,7 +669,7 @@ namespace app
         {
             this->m_LstPresets.DeleteAllItems();
             config::CFormat& format = this->m_Formats.Get(this->nSelectedFormat);
-            format.m_Presets = presets;
+            format.m_Presets = std::move(presets);
             this->InsertPresetsToListCtrl();
             return true;
         }

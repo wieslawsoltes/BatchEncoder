@@ -2829,7 +2829,7 @@ namespace app
         config::COptions options;
         if (xml::CXmlConfig::LoadOptions(doc, options))
         {
-            this->m_Config.m_Options = options;
+            this->m_Config.m_Options = std::move(options);
             this->SetOptions();
             this->UpdateFormatComboBox();
             this->UpdatePresetComboBox();
@@ -2860,7 +2860,7 @@ namespace app
         config::CFormatsList formats;
         if (xml::CXmlConfig::LoadFormats(doc, formats))
         {
-            this->m_Config.m_Formats = formats;
+            this->m_Config.m_Formats = std::move(formats);
             this->UpdateFormatComboBox();
             this->UpdatePresetComboBox();
             return true;
@@ -2928,7 +2928,7 @@ namespace app
             if (nFormat != -1)
             {
                 config::CFormat& format = m_Config.m_Formats.Get(nFormat);
-                format.m_Presets = presets;
+                format.m_Presets = std::move(presets);
                 this->UpdatePresetComboBox();
                 return true;
             }
@@ -2963,7 +2963,7 @@ namespace app
         config::CToolsList tools;
         if (xml::CXmlConfig::LoadTools(doc, tools))
         {
-            this->m_Config.m_Tools = tools;
+            this->m_Config.m_Tools = std::move(tools);
             return true;
         }
         return false;

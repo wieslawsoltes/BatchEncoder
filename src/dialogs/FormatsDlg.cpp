@@ -1103,7 +1103,7 @@ namespace app
         {
             this->m_LstFormats.DeleteAllItems();
 
-            this->m_Formats = formats;
+            this->m_Formats = std::move(formats);
             if (this->m_Formats.Count() > 0)
                 nSelectedFormat = 0;
 
@@ -1130,7 +1130,7 @@ namespace app
             {
                 int nItem = m_LstFormats.GetNextSelectedItem(pos);
                 config::CFormat& format = this->m_Formats.Get(nItem);
-                format.m_Presets = presets;
+                format.m_Presets = std::move(presets);
                 this->UpdateDefaultComboBox(format);
                 return true;
             }

@@ -1027,7 +1027,7 @@ namespace app
         {
             this->m_LstTools.DeleteAllItems();
 
-            this->m_Tools = tools;
+            this->m_Tools = std::move(tools);
             if (this->m_Tools.Count() > 0)
                 nSelectedTool = 0;
 
