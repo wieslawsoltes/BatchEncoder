@@ -222,7 +222,7 @@ namespace app
                         pDlg->MakeItemVisible(nItemId);
                 }
                 
-                int nPos = (int)((double)this->nProcessedFiles / (double)this->nTotalFiles);
+                int nPos = (int)(100.0f * ((double)this->nProcessedFiles / (double)this->nTotalFiles));
                 pDlg->m_Progress.SetPos(nPos);
             //}
         }
@@ -243,7 +243,7 @@ namespace app
                 util::CTimeCount::Format(this->timer.ElapsedTime()).c_str());
             pDlg->m_StatusBar.SetText(szText, 1, 0);
 
-            int nPos = (int)((double)this->nProcessedFiles / (double)this->nTotalFiles);
+            int nPos = (int)(100.0 * ((double)this->nProcessedFiles / (double)this->nTotalFiles));
             pDlg->m_Progress.SetPos(nPos);
 
             pDlg->FinishConvert();
@@ -266,7 +266,7 @@ namespace app
                 }
                 else
                 {
-                    int nPos = (int)((double)this->nProcessedFiles / (double)this->nTotalFiles);
+                    int nPos = (int)(100.0 * ((double)this->nProcessedFiles / (double)this->nTotalFiles));
                     pDlg->m_Progress.SetPos(nPos);
                 }
 
@@ -334,7 +334,7 @@ namespace app
                         pDlg->m_Progress.SetPos(nPos);
 */
 
-                    //int nPos = (int)((double)this->nProcessedFiles / (double)this->nTotalFiles);
+                    //int nPos = (int)(100.0f * ((double)this->nProcessedFiles / (double)this->nTotalFiles));
                     //if (pDlg->m_Progress.GetPos() != nPos)
                     //    pDlg->m_Progress.SetPos(nPos);
 
