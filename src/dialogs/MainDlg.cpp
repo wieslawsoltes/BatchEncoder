@@ -191,12 +191,8 @@ namespace app
         {
         }
     public:
-        volatile bool bSafeCheck;
-    public:
         void Init()
         {
-            bSafeCheck = false;
-            
             this->timer.Start();
 
             pDlg->m_Progress.SetPos(0);
@@ -205,10 +201,6 @@ namespace app
         {
             this->nProcessedFiles++;
             this->nErrors = (this->nProcessedFiles - 1) - this->nDoneWithoutError;
-
-            if (bSafeCheck == false)
-            {
-                bSafeCheck = true;
 
             //if (this->nThreadCount == 1)
             //{
@@ -229,9 +221,7 @@ namespace app
                     if (pDlg->m_Config.m_Options.bEnsureItemIsVisible == true)
                         pDlg->MakeItemVisible(nItemId);
                 }
-            //}
-            
-                bSafeCheck = false;
+
             }
         }
         void Done()
@@ -286,6 +276,7 @@ namespace app
                 if (current.nPreviousProgress > nProgress)
                     current.nPreviousProgress = nProgress;
 
+                static volatile bool bSafeCheck = false;
                 if (bSafeCheck == false)
                 {
                     bSafeCheck = true;
