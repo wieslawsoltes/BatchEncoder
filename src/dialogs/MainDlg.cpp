@@ -329,6 +329,12 @@ namespace app
                     if (pDlg->m_Progress.GetPos() != nPos)
                         pDlg->m_Progress.SetPos(nPos);
 */
+
+                    int nPos = this->nProcessedFiles / this->nTotalFiles;
+                    if (pDlg->m_Progress.GetPos() != nPos)
+                        pDlg->m_Progress.SetPos(nPos);
+
+
                     bSafeCheck = false;
                 }
             }
