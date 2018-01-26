@@ -5,6 +5,7 @@
 
 #include <queue>
 #include <memory>
+#include <utility>
 #include <string>
 #include "OutputPath.h"
 #include "utilities\Pipe.h"

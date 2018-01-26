@@ -1072,7 +1072,7 @@ namespace worker
             if (item.bChecked == true)
             {
                 item.ResetProgress();
-                queue.push(item);
+                queue.push(std::move(item));
                 pWorkerContext->nTotalFiles++;
             }
             else
