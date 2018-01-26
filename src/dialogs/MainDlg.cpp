@@ -191,8 +191,12 @@ namespace app
         {
         }
     public:
+        volatile bool bSafeCheck;
+    public:
         void Init()
         {
+            bSafeCheck = false;
+            
             this->timer.Start();
 
             pDlg->m_Progress.SetPos(0);
@@ -202,8 +206,12 @@ namespace app
             this->nProcessedFiles++;
             this->nErrors = (this->nProcessedFiles - 1) - this->nDoneWithoutError;
 
-            if (this->nThreadCount == 1)
+            if (bSafeCheck == false)
             {
+                bSafeCheck = true;
+
+            //if (this->nThreadCount == 1)
+            //{
                 CString szFormat = this->pConfig->GetString(0x00190003).c_str();
                 CString szText;
                 szText.Format(szFormat,
@@ -215,10 +223,15 @@ namespace app
                     this->pConfig->GetString(0x00190002).c_str() : this->pConfig->GetString(0x00190001).c_str());
                 pDlg->m_StatusBar.SetText(szText, 1, 0);
 
-                this->nLastItemId = nItemId;
-
-                if (pDlg->m_Config.m_Options.bEnsureItemIsVisible == true)
-                    pDlg->MakeItemVisible(nItemId);
+                if (nItemId > this->nLastItemId)
+                {
+                    this->nLastItemId = nItemId;
+                    if (pDlg->m_Config.m_Options.bEnsureItemIsVisible == true)
+                        pDlg->MakeItemVisible(nItemId);
+                }
+            //}
+            
+                bSafeCheck = false;
             }
         }
         void Done()
@@ -273,7 +286,6 @@ namespace app
                 if (current.nPreviousProgress > nProgress)
                     current.nPreviousProgress = nProgress;
 
-                static volatile bool bSafeCheck = false;
                 if (bSafeCheck == false)
                 {
                     bSafeCheck = true;
