@@ -15,7 +15,6 @@ namespace worker
         volatile int nThreadCount;
         volatile int nTotalFiles;
         volatile int nProcessedFiles;
-        volatile int nDoneWithoutError;
         volatile int nErrors;
         volatile int nLastItemId;
     public:

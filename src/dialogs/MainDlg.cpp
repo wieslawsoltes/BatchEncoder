@@ -204,7 +204,7 @@ namespace app
             szText.Format(szFormat,
                 this->nProcessedFiles,
                 this->nTotalFiles,
-                this->nDoneWithoutError,
+                this->nProcessedFiles - this->nErrors,
                 this->nErrors,
                 ((this->nErrors == 0) || (this->nErrors > 1)) ?
                 this->pConfig->GetString(0x00190002).c_str() : this->pConfig->GetString(0x00190001).c_str());
@@ -229,7 +229,7 @@ namespace app
             szText.Format(szFormat,
                 this->nProcessedFiles,
                 this->nTotalFiles,
-                this->nDoneWithoutError,
+                this->nProcessedFiles - this->nErrors,
                 this->nErrors,
                 ((this->nErrors == 0) || (this->nErrors > 1)) ?
                 this->pConfig->GetString(0x00190002).c_str() : this->pConfig->GetString(0x00190001).c_str(),

@@ -1021,13 +1021,11 @@ namespace worker
                         if (ConvertItem(pWorkerContext, nId, syncDir, syncDown) == true)
                         {
                             pWorkerContext->nProcessedFiles++;
-                            pWorkerContext->nDoneWithoutError++;
-                            pWorkerContext->nErrors = pWorkerContext->nProcessedFiles - pWorkerContext->nDoneWithoutError;
                         }
                         else
                         {
                             pWorkerContext->nProcessedFiles++;
-                            pWorkerContext->nErrors = pWorkerContext->nProcessedFiles - pWorkerContext->nDoneWithoutError;
+                            pWorkerContext->nErrors++;
                             if (pWorkerContext->pConfig->m_Options.bStopOnErrors == true)
                                 return false;
                         }
@@ -1066,7 +1064,6 @@ namespace worker
 
         pWorkerContext->nTotalFiles = 0;
         pWorkerContext->nProcessedFiles = 0;
-        pWorkerContext->nDoneWithoutError = 0;
         pWorkerContext->nErrors = 0;
         pWorkerContext->nLastItemId = -1;
 
