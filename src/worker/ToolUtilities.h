@@ -121,12 +121,16 @@ namespace worker
         }
         int FindTool(config::CToolsList& m_Tools, const std::wstring& szFormatId)
         {
+            const std::wstring szPlatformX86 = L"x86";
+            const std::wstring szPlatformX64 = L"x64";
 #if defined(_WIN32) & !defined(_WIN64)
-            const std::wstring szPlatform = _T("x86");
+            return FindTool(m_Tools, szPlatformX86, szFormatId);
 #else
-            const std::wstring szPlatform = _T("x64");
+            int nTool = FindTool(m_Tools, szPlatformX64, szFormatId);
+            if (nTool == -1)
+                return FindTool(m_Tools, szPlatformX86, szFormatId);
+            return nTool;
 #endif
-            return FindTool(m_Tools, szPlatform, szFormatId);
         }
         void SetFormatPaths(config::CFormatsList& m_Formats, config::CToolsList& m_Tools, const std::wstring& szPlatform)
         {
