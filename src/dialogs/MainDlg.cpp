@@ -221,8 +221,7 @@ namespace app
                     if (pDlg->m_Config.m_Options.bEnsureItemIsVisible == true)
                         pDlg->MakeItemVisible(nItemId);
                 }
-
-            }
+            //}
         }
         void Done()
         {
