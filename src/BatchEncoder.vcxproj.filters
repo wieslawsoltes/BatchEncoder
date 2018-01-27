@@ -31,9 +31,6 @@
     <Filter Include="Header Files\Xml">
       <UniqueIdentifier>{8f6b2fbd-d6d7-4e5d-b494-8309102637bc}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Xml">
-      <UniqueIdentifier>{bd76e190-40b0-4cbd-a637-da1e338ec61b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Worker\Parser">
       <UniqueIdentifier>{28f04ed3-4116-4991-94ad-e2a3d720a465}</UniqueIdentifier>
     </Filter>
