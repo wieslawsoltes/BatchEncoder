@@ -226,8 +226,8 @@ namespace app
 
         CString szFilter;
         szFilter.Format(_T("%s (*.xml)|*.xml|%s (*.*)|*.*||"),
-            pConfig->GetString(0x00310010),
-            pConfig->GetString(0x00310001));
+            pConfig->GetString(0x00310010).c_str(),
+            pConfig->GetString(0x00310001).c_str());
 
         CFileDialog fd(TRUE, _T("xml"), _T(""),
             OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER,
@@ -255,8 +255,8 @@ namespace app
 
                 CString szFilter;
                 szFilter.Format(_T("%s (*.xml)|*.xml|%s (*.*)|*.*||"),
-                    pConfig->GetString(0x00310010),
-                    pConfig->GetString(0x00310001));
+                    pConfig->GetString(0x00310010).c_str(),
+                    pConfig->GetString(0x00310001).c_str());
 
                 CFileDialog fd(FALSE, _T("xml"), tool.szName.c_str(),
                     OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER | OFN_OVERWRITEPROMPT,
@@ -612,8 +612,8 @@ namespace app
 
         CString szFilter;
         szFilter.Format(_T("%s (*.xml)|*.xml|%s (*.*)|*.*||"),
-            pConfig->GetString(0x00310009),
-            pConfig->GetString(0x00310001));
+            pConfig->GetString(0x00310009).c_str(),
+            pConfig->GetString(0x00310001).c_str());
 
         CFileDialog fd(TRUE, _T("xml"), _T(""),
             OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER,
@@ -633,8 +633,8 @@ namespace app
 
         CString szFilter;
         szFilter.Format(_T("%s (*.xml)|*.xml|%s (*.*)|*.*||"),
-            pConfig->GetString(0x00310009),
-            pConfig->GetString(0x00310001));
+            pConfig->GetString(0x00310009).c_str(),
+            pConfig->GetString(0x00310001).c_str());
 
         CFileDialog fd(FALSE, _T("xml"), _T("Tools"),
             OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER | OFN_OVERWRITEPROMPT,

@@ -1071,8 +1071,8 @@ namespace app
         {
             CString szFilter;
             szFilter.Format(_T("%s (*.xml)|*.xml|%s (*.*)|*.*||"),
-                m_Config.GetString(0x00310003),
-                m_Config.GetString(0x00310001));
+                m_Config.GetString(0x00310003).c_str(),
+                m_Config.GetString(0x00310001).c_str());
 
             CFileDialog fd(TRUE, _T("xml"), _T(""),
                 OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER,
@@ -1095,8 +1095,8 @@ namespace app
         {
             CString szFilter;
             szFilter.Format(_T("%s (*.xml)|*.xml|%s (*.*)|*.*||"),
-                m_Config.GetString(0x00310003),
-                m_Config.GetString(0x00310001));
+                m_Config.GetString(0x00310003).c_str(),
+                m_Config.GetString(0x00310001).c_str());
 
             CFileDialog fd(FALSE, _T("xml"), _T("Items"),
                 OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER | OFN_OVERWRITEPROMPT,
@@ -1150,7 +1150,8 @@ namespace app
                 ZeroMemory(pFiles, dwMaxSize);
 
                 CString szFilter;
-                szFilter.Format(_T("%s (*.*)|*.*||"), m_Config.GetString(0x00310001).c_str());
+                szFilter.Format(_T("%s (*.*)|*.*||"), 
+                    m_Config.GetString(0x00310001).c_str());
 
                 CFileDialog fd(TRUE, _T(""), _T(""),
                     OFN_ALLOWMULTISELECT | OFN_HIDEREADONLY | OFN_ENABLESIZING,
@@ -2610,7 +2611,9 @@ namespace app
         if (nItems > 0)
         {
             CString szText;
-            szText.Format(_T("%d %s"), nItems, (nItems > 1) ? m_Config.GetString(0x00210003).c_str() : m_Config.GetString(0x00210002).c_str());
+            szText.Format(_T("%d %s"), 
+                nItems, 
+                (nItems > 1) ? m_Config.GetString(0x00210003).c_str() : m_Config.GetString(0x00210002).c_str());
             m_StatusBar.SetText(szText, 0, 0);
         }
         else

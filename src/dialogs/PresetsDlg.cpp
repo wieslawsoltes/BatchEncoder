@@ -447,8 +447,8 @@ namespace app
     {
         CString szFilter;
         szFilter.Format(_T("%s (*.xml)|*.xml|%s (*.*)|*.*||"),
-            pConfig->GetString(0x00310004),
-            pConfig->GetString(0x00310001));
+            pConfig->GetString(0x00310004).c_str(),
+            pConfig->GetString(0x00310001).c_str());
 
         CFileDialog fd(TRUE, _T("xml"), _T(""),
             OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER,
@@ -467,8 +467,8 @@ namespace app
 
         CString szFilter;
         szFilter.Format(_T("%s (*.xml)|*.xml|%s (*.*)|*.*||"),
-            pConfig->GetString(0x00310004),
-            pConfig->GetString(0x00310001));
+            pConfig->GetString(0x00310004).c_str(),
+            pConfig->GetString(0x00310001).c_str());
 
         CFileDialog fd(FALSE, _T("xml"), format.szId.c_str(),
             OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER | OFN_OVERWRITEPROMPT,
