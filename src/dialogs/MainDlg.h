@@ -5,6 +5,7 @@
 
 #include <afxwin.h>
 #include <afxcmn.h>
+#include <vector>
 #include <string>
 #include <utility>
 #include "controls\MyListCtrl.h"
@@ -155,7 +156,7 @@ namespace app
         afx_msg void OnHelpWebsite();
         afx_msg void OnHelpAbout();
     public:
-        bool SearchFolderForLanguages(CString szPath);
+        bool SearchFolderForLanguages(std::wstring szPath);
         void InitLanguageMenu();
         void SetLanguage();
         void GetItems();
@@ -174,7 +175,6 @@ namespace app
         void ShowEdtItem();
         void UpdateEdtItem(BOOL bUpdateText);
         void HandleDropFiles(HDROP hDropInfo);
-        void SearchFolderForFiles(CString szFile, const bool bRecurse);
         void UpdateFormatComboBox();
         void UpdatePresetComboBox();
         void UpdateFormatAndPreset();

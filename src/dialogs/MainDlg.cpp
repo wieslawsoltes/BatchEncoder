@@ -175,6 +175,68 @@ namespace app
         return ::CloseHandle(pDD->hThread);
     }
 
+    bool SearchFolderForFiles(const std::wstring path, std::vector<std::wstring>& files, const bool bRecurse = false)
+    {
+        try
+        {
+            WIN32_FIND_DATA w32FileData;
+            HANDLE hSearch = nullptr;
+            BOOL fFinished = FALSE;
+            TCHAR cTempBuf[(MAX_PATH * 2) + 1];
+
+            ZeroMemory(&w32FileData, sizeof(WIN32_FIND_DATA));
+            ZeroMemory(cTempBuf, MAX_PATH * 2);
+
+            CString szFile = path.c_str();
+            szFile.TrimRight(_T("\\"));
+            szFile.TrimRight(_T("/"));
+            wsprintf(cTempBuf, _T("%s\\*.*\0"), szFile);
+
+            hSearch = FindFirstFile(cTempBuf, &w32FileData);
+            if (hSearch == INVALID_HANDLE_VALUE)
+                return false;
+
+            while (fFinished == FALSE)
+            {
+                if (w32FileData.cFileName[0] != '.' &&
+                    !(w32FileData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) != 0)
+                {
+                    CString szPath;
+                    szPath.Format(_T("%s\\%s\0"), szFile, w32FileData.cFileName);
+                    files.push_back(std::wstring(CT2CW(szPath)));
+                }
+
+                if (w32FileData.cFileName[0] != '.' &&
+                    w32FileData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
+                {
+                    wsprintf(cTempBuf, _T("%s\\%s\0"), szFile, w32FileData.cFileName);
+                    if (bRecurse == true)
+                    {
+                        bool bResult = SearchFolderForFiles(cTempBuf, files, true);
+                        if (bResult == false)
+                            return false;
+                    }
+                }
+
+                if (FindNextFile(hSearch, &w32FileData) == FALSE)
+                {
+                    if (GetLastError() == ERROR_NO_MORE_FILES)
+                        fFinished = TRUE;
+                    else
+                        return false;
+                }
+            }
+
+            if (FindClose(hSearch) == FALSE)
+                return false;
+        }
+        catch (...)
+        {  
+            return false;
+        }
+        return true;
+    }
+
     class CMainDlgWorkerContext : public worker::IWorkerContext
     {
     private:
@@ -525,8 +587,8 @@ namespace app
                 this->UpdatePresetComboBox();
             }
 
-            this->SearchFolderForLanguages(app::m_App.szSettingsPath.c_str());
-            this->SearchFolderForLanguages(app::m_App.szLanguagesPath.c_str());
+            this->SearchFolderForLanguages(app::m_App.szSettingsPath);
+            this->SearchFolderForLanguages(app::m_App.szLanguagesPath);
             this->InitLanguageMenu();
             this->SetLanguage();
             this->LoadItems(app::m_App.szItemsFile);
@@ -1178,10 +1240,22 @@ namespace app
             {
                 if (::SHGetPathFromIDList(pidlBrowse, lpBuffer))
                 {
-                    CString szPath = lpBuffer;
-                    this->SearchFolderForFiles(szPath, bRecurseChecked);
-                    this->SetItems();
-                    this->UpdateStatusBar();
+                    std::wstring szPath = std::wstring(lpBuffer);
+                    std::vector<std::wstring> files;
+                    bool bResult = app::SearchFolderForFiles(szPath, files, bRecurseChecked);
+                    if (bResult == true)
+                    {
+                        for (auto& file : files)
+                        {
+                            this->AddToList(file);
+                        }
+                        this->SetItems();
+                        this->UpdateStatusBar();
+                    }
+                    else
+                    {
+                        m_StatusBar.SetText(m_Config.GetString(0x0021000C).c_str(), 1, 0);
+                    }
                 }
                 pMalloc->Free(pidlBrowse);
             }
@@ -1741,66 +1815,33 @@ namespace app
         }
     }
 
-    bool CMainDlg::SearchFolderForLanguages(CString szFile)
+    bool CMainDlg::SearchFolderForLanguages(std::wstring szPath)
     {
-        try
+        std::vector<std::wstring> files;
+        bool bResult = app::SearchFolderForFiles(szPath, files, false);
+        if (bResult == true)
         {
-            WIN32_FIND_DATA w32FileData;
-            HANDLE hSearch = nullptr;
-            BOOL fFinished = FALSE;
-            TCHAR cTempBuf[(MAX_PATH * 2) + 1];
-
-            ZeroMemory(&w32FileData, sizeof(WIN32_FIND_DATA));
-            ZeroMemory(cTempBuf, MAX_PATH * 2);
-
-            szFile.TrimRight(_T("\\"));
-            szFile.TrimRight(_T("/"));
-            wsprintf(cTempBuf, _T("%s\\*.xml\0"), szFile);
-
-            hSearch = FindFirstFile(cTempBuf, &w32FileData);
-            if (hSearch == INVALID_HANDLE_VALUE)
-                return false;
-
-            while (fFinished == FALSE)
+            for (auto& file : files)
             {
-                if (w32FileData.cFileName[0] != '.' &&
-                    !(w32FileData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) != 0)
+                xml::XmlDocumnent doc;
+                if (xml::XmlDoc::Open(file, doc) == true)
                 {
-                    CString szFileXml;
-                    szFileXml.Format(_T("%s\\%s\0"), szFile, w32FileData.cFileName);
-
-                    xml::XmlDocumnent doc;
-                    if (xml::XmlDoc::Open(std::wstring(CT2CW(szFileXml)), doc) == true)
+                    std::string szName = xml::XmlDoc::GetRootName(doc);
+                    if (util::StringHelper::CompareNoCase(szName, "Language"))
                     {
-                        std::string szName = xml::XmlDoc::GetRootName(doc);
-                        if (util::StringHelper::CompareNoCase(szName, "Language"))
-                        {
-                            lang::CLanguage language;
-
-                            xml::CXmlConfig::LoadLanguage(doc, language);
-
-                            this->m_Config.m_Language.m_Languages.Insert(language);
-                        }
+                        lang::CLanguage language;
+                        xml::CXmlConfig::LoadLanguage(doc, language);
+                        this->m_Config.m_Language.m_Languages.Insert(std::move(language));
                     }
                 }
-
-                if (FindNextFile(hSearch, &w32FileData) == FALSE)
-                {
-                    if (GetLastError() == ERROR_NO_MORE_FILES)
-                        fFinished = TRUE;
-                    else
-                        return false;
-                }
             }
-
-            if (FindClose(hSearch) == FALSE)
-                return false;
+            return true;
         }
-        catch (...)
+        else
         {
             m_StatusBar.SetText(m_Config.GetString(0x0021000B).c_str(), 1, 0);
         }
-        return true;
+        return false;
     }
 
     void CMainDlg::InitLanguageMenu()
@@ -2300,8 +2341,21 @@ namespace app
                 ::DragQueryFile(hDropInfo, i, szFile.GetBuffer(nReqChars * 2 + 8), nReqChars * 2 + 8);
                 if (::GetFileAttributes(szFile) & FILE_ATTRIBUTE_DIRECTORY)
                 {
-                    this->SearchFolderForFiles(szFile, true);
-                    this->SetItems();
+                    std::wstring szPath = std::wstring(szFile);
+                    std::vector<std::wstring> files;
+                    bool bResult = app::SearchFolderForFiles(szPath, files, true);
+                    if (bResult == true)
+                    {
+                        for (auto& file : files)
+                        {
+                            this->AddToList(file);
+                        }
+                        this->SetItems();
+                    }
+                    else
+                    {
+                        m_StatusBar.SetText(m_Config.GetString(0x0021000C).c_str(), 1, 0);
+                    }
                 }
                 else
                 {
@@ -2382,62 +2436,6 @@ namespace app
         }
 
         ::DragFinish(hDropInfo);
-    }
-
-    void CMainDlg::SearchFolderForFiles(CString szFile, const bool bRecurse)
-    {
-        try
-        {
-            WIN32_FIND_DATA w32FileData;
-            HANDLE hSearch = nullptr;
-            BOOL fFinished = FALSE;
-            TCHAR cTempBuf[(MAX_PATH * 2) + 1];
-
-            ZeroMemory(&w32FileData, sizeof(WIN32_FIND_DATA));
-            ZeroMemory(cTempBuf, MAX_PATH * 2);
-
-            szFile.TrimRight(_T("\\"));
-            szFile.TrimRight(_T("/"));
-            wsprintf(cTempBuf, _T("%s\\*.*\0"), szFile);
-
-            hSearch = FindFirstFile(cTempBuf, &w32FileData);
-            if (hSearch == INVALID_HANDLE_VALUE)
-                return;
-
-            while (fFinished == FALSE)
-            {
-                if (w32FileData.cFileName[0] != '.' &&
-                    !(w32FileData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) != 0)
-                {
-                    CString szPath;
-                    szPath.Format(_T("%s\\%s\0"), szFile, w32FileData.cFileName);
-                    this->AddToList(std::wstring(CT2CW(szPath)));
-                }
-
-                if (w32FileData.cFileName[0] != '.' &&
-                    w32FileData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
-                {
-                    wsprintf(cTempBuf, _T("%s\\%s\0"), szFile, w32FileData.cFileName);
-                    if (bRecurse == true)
-                        this->SearchFolderForFiles(cTempBuf, true);
-                }
-
-                if (FindNextFile(hSearch, &w32FileData) == FALSE)
-                {
-                    if (GetLastError() == ERROR_NO_MORE_FILES)
-                        fFinished = TRUE;
-                    else
-                        return;
-                }
-            }
-
-            if (FindClose(hSearch) == FALSE)
-                return;
-        }
-        catch (...)
-        {
-            m_StatusBar.SetText(m_Config.GetString(0x0021000C).c_str(), 1, 0);
-        }
     }
 
     void CMainDlg::UpdateFormatComboBox()
