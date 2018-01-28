@@ -74,7 +74,6 @@ var packageBinariesAction = new Action<string,string> ((configuration, platform)
     var output = "BatchEncoder-" + version + suffix + "-" + platform + (configuration == "Release" ? "" : ("-(" + configuration + ")"));
     var outputDir = artifactsDir.Combine(output);
     var formatsDir = outputDir.Combine("formats");
-    var presetsDir = outputDir.Combine("presets");
     var langDir = outputDir.Combine("lang");
     var progressDir = outputDir.Combine("progress");
     var toolsDir = outputDir.Combine("tools");
@@ -83,7 +82,6 @@ var packageBinariesAction = new Action<string,string> ((configuration, platform)
     var portableFile = File("./setup/BatchEncoder.portable");
     CleanDirectory(outputDir);
     CleanDirectory(formatsDir);
-    CleanDirectory(presetsDir);
     CleanDirectory(langDir);
     CleanDirectory(progressDir);
     CleanDirectory(toolsDir);
@@ -93,7 +91,6 @@ var packageBinariesAction = new Action<string,string> ((configuration, platform)
     CopyFileToDirectory(portableFile, outputDir);
     CopyFiles("./config/*.xml", outputDir);
     CopyFiles("./config/formats/*.xml", formatsDir);
-    CopyFiles("./config/presets/*.xml", presetsDir);
     CopyFiles("./config/lang/*.xml", langDir);
     CopyFiles("./config/progress/*.lua", progressDir);
     CopyFiles("./config/tools/*.xml", toolsDir);

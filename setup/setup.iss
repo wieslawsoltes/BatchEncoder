@@ -49,7 +49,6 @@ Name: main; Description: Main Program; Types: full compact custom
 Name: docs; Description: Documents; Types: full
 Name: config; Description: Configuration; Types: full compact
 Name: formats; Description: Format Definitions; Types: full compact
-Name: presets; Description: Preset Definitions; Types: full compact
 Name: lang; Description: Languages; Types: full
 Name: progress; Description: Progress Functions; Types: full compact
 Name: tools; Description: Tool Definitions; Types: full
@@ -67,7 +66,6 @@ Source: {#BasePath}\*.txt; DestDir: {app}; Flags: ignoreversion; Components: doc
 Source: {#BasePath}\*.md; DestDir: {app}; Flags: ignoreversion; Components: docs
 Source: {#BasePath}\config\*.xml; DestDir: {userappdata}\{#ProgramName}; Flags: ignoreversion; Components: config
 Source: {#BasePath}\config\formats\*.xml; DestDir: {userappdata}\{#ProgramName}\formats; Flags: ignoreversion; Components: formats
-Source: {#BasePath}\config\presets\*.xml; DestDir: {userappdata}\{#ProgramName}\presets; Flags: ignoreversion; Components: presets
 Source: {#BasePath}\config\lang\*.xml; DestDir: {userappdata}\{#ProgramName}\lang; Flags: ignoreversion; Components: lang
 Source: {#BasePath}\config\progress\*.lua; DestDir: {userappdata}\{#ProgramName}\progress; Flags: ignoreversion; Components: progress
 Source: {#BasePath}\config\tools\*.xml; DestDir: {userappdata}\{#ProgramName}\tools; Flags: ignoreversion; Components: tools
