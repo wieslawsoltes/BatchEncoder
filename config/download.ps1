@@ -32,10 +32,13 @@ $PathTools = 'Tools.xml'
 
 foreach ($Tool in $Xml.Tools.Tool) {
     Try {
-        "Downloading: " + $Tool.url
-        (New-Object System.Net.WebClient).DownloadFile($Tool.url, $FullPath + "\"  + $Tool.file)
+        $XmlPath = "$pwd\tools\" + $Tool.name + ".xml"
+        [xml]$XmlTool = Get-Content -Path $XmlPath
+        $url = $XmlTool.Tool.url
+        "Downloading: " + $url
+        (New-Object System.Net.WebClient).DownloadFile($url, $FullPath + "\"  + $XmlTool.Tool.file)
     }
     Catch {
-        "Failed to download: " + $Tool.url
+        "Failed to download: " + $Tool.name
     }
 }

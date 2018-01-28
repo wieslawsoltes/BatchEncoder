@@ -8,7 +8,9 @@ $PathTools = 'Tools.xml'
 
 foreach ($Tool in $Xml.Tools.Tool) 
 {
-    $file = "tools\" + $Tool.file
+    $XmlPath = "$pwd\tools\" + $Tool.name + ".xml"
+    [xml]$XmlTool = Get-Content -Path $XmlPath
+    $file = "$pwd\tools\" + $XmlTool.Tool.file
     $FileExists = Test-Path $file
     if ($FileExists) { '[OK] ' + $file } else { '[X] ' + $file }
 }

@@ -1,7 +1,7 @@
 ﻿# This is BatchEncoder update config script for PowerShell.
 # This file was downloaded from https://github.com/wieslawsoltes/BatchEncoder/blob/master/config/update-config.ps1
 
-function Download-File($prefix, $file)
+function Get-File($prefix, $file)
 {
     try
     {
@@ -22,24 +22,18 @@ function Download-File($prefix, $file)
 
 $prefix = "https://raw.githubusercontent.com/wieslawsoltes/BatchEncoder/master/config/"
 
+# Download Config
+
+Get-File $prefix "Formats.xml"
+Get-File $prefix "Tools.xml"
+Get-File $prefix "Languages.xml"
+
 # Download Formats
 
-Download-File $prefix "Formats.xml"
-
-# Download Tools
-
-Download-File $prefix "Tools.xml"
-
-# Download Languages
-
-Download-File $prefix "Languages.xml"
-
-# Download Progress Functions Files
-
-if (!(Test-Path "$pwd\progress")) 
+if (!(Test-Path "$pwd\formats")) 
 {
-    Write-Host "Creating progress directory..."
-    New-Item -Path "$pwd\progress" -Type directory | out-null
+    Write-Host "Creating formats directory..."
+    New-Item -Path "$pwd\formats" -Type directory | out-null
 }
 
 $PathFormats = 'Formats.xml'
@@ -47,13 +41,48 @@ $PathFormats = 'Formats.xml'
 
 foreach ($Format in $XmlFormats.Formats.Format)
 {
-    if ($Format.function -ne "- none -")
+    $file = "formats\" + $Format.id + ".xml"
+    Get-File $prefix $file
+}
+
+# Download Tools
+
+if (!(Test-Path "$pwd\tools")) 
+{
+    Write-Host "Creating tools directory..."
+    New-Item -Path "$pwd\tools" -Type directory | out-null
+}
+
+$PathTools = 'Tools.xml'
+[xml]$XmlTools = Get-Content -Path $PathTools
+
+foreach ($Tool in $XmlTools.Tools.Tool)
+{
+    $file = "tools\" + $Tool.name + ".xml"
+    Get-File $prefix $file
+}
+
+# Download Progress
+
+if (!(Test-Path "$pwd\progress")) 
+{
+    Write-Host "Creating progress directory..."
+    New-Item -Path "$pwd\progress" -Type directory | out-null
+}
+
+foreach ($Format in $XmlFormats.Formats.Format)
+{
+    $XmlPath = "$pwd\formats\" + $Format.id + ".xml"
+    [xml]$XmlFormat = Get-Content -Path $XmlPath
+    $file = "$pwd\" + $XmlFormat.Format.function
+
+    if ($XmlFormat.Format.function -ne "- none -")
     {
-        Download-File $prefix $Format.function
+        Get-File $prefix $file
     }
 }
 
-# Download Language Files
+# Download Languages
 
 if (!(Test-Path "$pwd\lang")) 
 {
@@ -67,5 +96,5 @@ $PathLanguages = 'Languages.xml'
 foreach ($Language in $XmlLanguages.Languages.Language)
 {
     $file = "lang\" + $Language.id + ".xml"
-    Download-File $prefix $file
+    Get-File $prefix $file
 }

@@ -8,7 +8,9 @@ $PathTools = 'Tools.xml'
 
 foreach ($Tool in $Xml.Tools.Tool) 
 {
-    $url = $Tool.url
+    $XmlPath = "$pwd\tools\" + $Tool.name + ".xml"
+    [xml]$XmlTool = Get-Content -Path $XmlPath
+    $url = $XmlTool.Tool.url
     $req = [net.HttpWebRequest]::create($url)
     $req.Method = "GET"
     $res = $req.getResponse()
