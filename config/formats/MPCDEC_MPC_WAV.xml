@@ -1,6 +1,6 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <Format id="MPCDEC_MPC_WAV" name="Decode MPC to WAV - mpcdec" template="$EXE $INFILE $OUTFILE" input="false" output="false" function="progress\GetProgress_MpcDec.lua" path="tools/musepack_windows_2009-04-02/32bit/mpcdec.exe" success="0" type="1" formats="MPC" extension="WAV" default="0">
     <Presets>
-        <Preset name="Default" options="" />
+        <Preset name="Default" options=""/>
     </Presets>
 </Format>

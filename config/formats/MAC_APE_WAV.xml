@@ -1,6 +1,6 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Format id="MAC_APE_WAV" name="Decode APE to WAV - mac" template="$EXE $INFILE $OUTFILE -d" input="false" output="false" function="progress\GetProgress_MacDec.lua" path="C:\Program Files (x86)\Monkey's Audio\MAC.exe" success="0" type="1" formats="APE" extension="WAV" default="0">
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Format id="MAC_APE_WAV" name="Decode APE to WAV - mac" template="$EXE $INFILE $OUTFILE -d" input="false" output="false" function="progress\GetProgress_MacDec.lua" path="C:\Program Files (x86)\Monkey&apos;s Audio\MAC.exe" success="0" type="1" formats="APE" extension="WAV" default="0">
     <Presets>
-        <Preset name="Default" options="" />
+        <Preset name="Default" options=""/>
     </Presets>
 </Format>

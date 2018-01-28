@@ -1,50 +1,50 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <Format id="NERO_M4A" name="M4A (MPEG-4/AAC) - nero" template="$EXE $OPTIONS -ignorelength -if $INFILE -of $OUTFILE" input="true" output="false" function="- none -" path="tools/NeroAACCodec-1.5.1/win32/neroAacEnc.exe" success="0" type="0" formats="WAV" extension="M4A" default="10">
     <Presets>
-        <Preset name="VBR Quality 0.00" options="-q 0.00" />
-        <Preset name="VBR Quality 0.05 : 15 kbps~" options="-q 0.05" />
-        <Preset name="VBR Quality 0.10 : 24 kbps~" options="-q 0.10" />
-        <Preset name="VBR Quality 0.15 : 33 kbps~" options="-q 0.15" />
-        <Preset name="VBR Quality 0.20 : 48 kbps~" options="-q 0.20" />
-        <Preset name="VBR Quality 0.25 : 63 kbps~" options="-q 0.25" />
-        <Preset name="VBR Quality 0.30 : 82 kbps~" options="-q 0.30" />
-        <Preset name="VBR Quality 0.35 : 100 kbps~" options="-q 0.35" />
-        <Preset name="VBR Quality 0.40 : 125 kbps~" options="-q 0.40" />
-        <Preset name="VBR Quality 0.45 : 150 kbps~" options="-q 0.45" />
-        <Preset name="VBR Quality 0.50 : 175 kbps~" options="-q 0.50" />
-        <Preset name="VBR Quality 0.55 : 200 kbps~" options="-q 0.55" />
-        <Preset name="VBR Quality 0.60 : 225 kbps~" options="-q 0.60" />
-        <Preset name="VBR Quality 0.65 : 250 kbps~" options="-q 0.65" />
-        <Preset name="VBR Quality 0.70 : 275 kbps~" options="-q 0.70" />
-        <Preset name="VBR Quality 0.75 : 300 kbps~" options="-q 0.75" />
-        <Preset name="VBR Quality 0.80 : 325 kbps~" options="-q 0.80" />
-        <Preset name="VBR Quality 0.85 : 350 kbps~" options="-q 0.85" />
-        <Preset name="VBR Quality 0.90 : 375 kbps~" options="-q 0.90" />
-        <Preset name="VBR Quality 0.95 : 400 kbps~" options="-q 0.95" />
-        <Preset name="VBR Quality 1.00 : 400 kbps~" options="-q 1.00" />
-        <Preset name="ABR 32 kbit/s" options="-br 32000" />
-        <Preset name="ABR 48 kbit/s" options="-br 48000" />
-        <Preset name="ABR 64 kbit/s" options="-br 64000" />
-        <Preset name="ABR 96 kbit/s" options="-br 96000" />
-        <Preset name="ABR 128 kbit/s" options="-br 128000" />
-        <Preset name="ABR 160 kbit/s" options="-br 160000" />
-        <Preset name="ABR 192 kbit/s" options="-br 192000" />
-        <Preset name="ABR 224 kbit/s" options="-br 224000" />
-        <Preset name="ABR 256 kbit/s" options="-br 256000" />
-        <Preset name="ABR 320 kbit/s" options="-br 320000" />
-        <Preset name="ABR 400 kbit/s" options="-br 400000" />
-        <Preset name="ABR 465 kbit/s" options="-br 465000" />
-        <Preset name="CBR 32 kbit/s" options="-cbr 32000" />
-        <Preset name="CBR 48 kbit/s" options="-cbr 48000" />
-        <Preset name="CBR 64 kbit/s" options="-cbr 64000" />
-        <Preset name="CBR 96 kbit/s" options="-cbr 96000" />
-        <Preset name="CBR 128 kbit/s" options="-cbr 128000" />
-        <Preset name="CBR 160 kbit/s" options="-cbr 160000" />
-        <Preset name="CBR 192 kbit/s" options="-cbr 192000" />
-        <Preset name="CBR 224 kbit/s" options="-cbr 224000" />
-        <Preset name="CBR 256 kbit/s" options="-cbr 256000" />
-        <Preset name="CBR 320 kbit/s" options="-cbr 320000" />
-        <Preset name="CBR 400 kbit/s" options="-cbr 400000" />
-        <Preset name="CBR 465 kbit/s" options="-cbr 465000" />
+        <Preset name="VBR Quality 0.00" options="-q 0.00"/>
+        <Preset name="VBR Quality 0.05 : 15 kbps~" options="-q 0.05"/>
+        <Preset name="VBR Quality 0.10 : 24 kbps~" options="-q 0.10"/>
+        <Preset name="VBR Quality 0.15 : 33 kbps~" options="-q 0.15"/>
+        <Preset name="VBR Quality 0.20 : 48 kbps~" options="-q 0.20"/>
+        <Preset name="VBR Quality 0.25 : 63 kbps~" options="-q 0.25"/>
+        <Preset name="VBR Quality 0.30 : 82 kbps~" options="-q 0.30"/>
+        <Preset name="VBR Quality 0.35 : 100 kbps~" options="-q 0.35"/>
+        <Preset name="VBR Quality 0.40 : 125 kbps~" options="-q 0.40"/>
+        <Preset name="VBR Quality 0.45 : 150 kbps~" options="-q 0.45"/>
+        <Preset name="VBR Quality 0.50 : 175 kbps~" options="-q 0.50"/>
+        <Preset name="VBR Quality 0.55 : 200 kbps~" options="-q 0.55"/>
+        <Preset name="VBR Quality 0.60 : 225 kbps~" options="-q 0.60"/>
+        <Preset name="VBR Quality 0.65 : 250 kbps~" options="-q 0.65"/>
+        <Preset name="VBR Quality 0.70 : 275 kbps~" options="-q 0.70"/>
+        <Preset name="VBR Quality 0.75 : 300 kbps~" options="-q 0.75"/>
+        <Preset name="VBR Quality 0.80 : 325 kbps~" options="-q 0.80"/>
+        <Preset name="VBR Quality 0.85 : 350 kbps~" options="-q 0.85"/>
+        <Preset name="VBR Quality 0.90 : 375 kbps~" options="-q 0.90"/>
+        <Preset name="VBR Quality 0.95 : 400 kbps~" options="-q 0.95"/>
+        <Preset name="VBR Quality 1.00 : 400 kbps~" options="-q 1.00"/>
+        <Preset name="ABR 32 kbit/s" options="-br 32000"/>
+        <Preset name="ABR 48 kbit/s" options="-br 48000"/>
+        <Preset name="ABR 64 kbit/s" options="-br 64000"/>
+        <Preset name="ABR 96 kbit/s" options="-br 96000"/>
+        <Preset name="ABR 128 kbit/s" options="-br 128000"/>
+        <Preset name="ABR 160 kbit/s" options="-br 160000"/>
+        <Preset name="ABR 192 kbit/s" options="-br 192000"/>
+        <Preset name="ABR 224 kbit/s" options="-br 224000"/>
+        <Preset name="ABR 256 kbit/s" options="-br 256000"/>
+        <Preset name="ABR 320 kbit/s" options="-br 320000"/>
+        <Preset name="ABR 400 kbit/s" options="-br 400000"/>
+        <Preset name="ABR 465 kbit/s" options="-br 465000"/>
+        <Preset name="CBR 32 kbit/s" options="-cbr 32000"/>
+        <Preset name="CBR 48 kbit/s" options="-cbr 48000"/>
+        <Preset name="CBR 64 kbit/s" options="-cbr 64000"/>
+        <Preset name="CBR 96 kbit/s" options="-cbr 96000"/>
+        <Preset name="CBR 128 kbit/s" options="-cbr 128000"/>
+        <Preset name="CBR 160 kbit/s" options="-cbr 160000"/>
+        <Preset name="CBR 192 kbit/s" options="-cbr 192000"/>
+        <Preset name="CBR 224 kbit/s" options="-cbr 224000"/>
+        <Preset name="CBR 256 kbit/s" options="-cbr 256000"/>
+        <Preset name="CBR 320 kbit/s" options="-cbr 320000"/>
+        <Preset name="CBR 400 kbit/s" options="-cbr 400000"/>
+        <Preset name="CBR 465 kbit/s" options="-cbr 465000"/>
     </Presets>
 </Format>
