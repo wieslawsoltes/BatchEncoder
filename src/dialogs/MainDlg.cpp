@@ -175,68 +175,6 @@ namespace app
         return ::CloseHandle(pDD->hThread);
     }
 
-    bool SearchFolderForFiles(const std::wstring path, std::vector<std::wstring>& files, const bool bRecurse = false)
-    {
-        try
-        {
-            WIN32_FIND_DATA w32FileData;
-            HANDLE hSearch = nullptr;
-            BOOL fFinished = FALSE;
-            TCHAR cTempBuf[(MAX_PATH * 2) + 1];
-
-            ZeroMemory(&w32FileData, sizeof(WIN32_FIND_DATA));
-            ZeroMemory(cTempBuf, MAX_PATH * 2);
-
-            CString szFile = path.c_str();
-            szFile.TrimRight(_T("\\"));
-            szFile.TrimRight(_T("/"));
-            wsprintf(cTempBuf, _T("%s\\*.*\0"), szFile);
-
-            hSearch = FindFirstFile(cTempBuf, &w32FileData);
-            if (hSearch == INVALID_HANDLE_VALUE)
-                return false;
-
-            while (fFinished == FALSE)
-            {
-                if (w32FileData.cFileName[0] != '.' &&
-                    !(w32FileData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) != 0)
-                {
-                    CString szPath;
-                    szPath.Format(_T("%s\\%s\0"), szFile, w32FileData.cFileName);
-                    files.push_back(std::wstring(CT2CW(szPath)));
-                }
-
-                if (w32FileData.cFileName[0] != '.' &&
-                    w32FileData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
-                {
-                    wsprintf(cTempBuf, _T("%s\\%s\0"), szFile, w32FileData.cFileName);
-                    if (bRecurse == true)
-                    {
-                        bool bResult = SearchFolderForFiles(cTempBuf, files, true);
-                        if (bResult == false)
-                            return false;
-                    }
-                }
-
-                if (FindNextFile(hSearch, &w32FileData) == FALSE)
-                {
-                    if (GetLastError() == ERROR_NO_MORE_FILES)
-                        fFinished = TRUE;
-                    else
-                        return false;
-                }
-            }
-
-            if (FindClose(hSearch) == FALSE)
-                return false;
-        }
-        catch (...)
-        {  
-            return false;
-        }
-        return true;
-    }
-
     class CMainDlgWorkerContext : public worker::IWorkerContext
     {
     private:
@@ -1243,7 +1181,7 @@ namespace app
                 {
                     std::wstring szPath = std::wstring(lpBuffer);
                     std::vector<std::wstring> files;
-                    bool bResult = app::SearchFolderForFiles(szPath, files, bRecurseChecked);
+                    bool bResult = util::Utilities::FindFiles(szPath, files, bRecurseChecked);
                     if (bResult == true)
                     {
                         for (auto& file : files)
@@ -1819,7 +1757,7 @@ namespace app
     bool CMainDlg::SearchFolderForLanguages(std::wstring szPath)
     {
         std::vector<std::wstring> files;
-        bool bResult = app::SearchFolderForFiles(szPath, files, false);
+        bool bResult = util::Utilities::FindFiles(szPath, files, false);
         if (bResult == true)
         {
             for (auto& file : files)
@@ -2344,7 +2282,7 @@ namespace app
                 {
                     std::wstring szPath = std::wstring(szFile);
                     std::vector<std::wstring> files;
-                    bool bResult = app::SearchFolderForFiles(szPath, files, true);
+                    bool bResult = util::Utilities::FindFiles(szPath, files, true);
                     if (bResult == true)
                     {
                         for (auto& file : files)
