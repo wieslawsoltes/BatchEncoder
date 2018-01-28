@@ -140,8 +140,8 @@ namespace app
         bool LoadTool(const std::wstring& szFileXml);
         bool LoadTool(xml::XmlDocumnent &doc);
         bool SaveTool(const std::wstring& szFileXml, config::CTool &tool);
-        bool LoadTools(const std::wstring& szFileXml);
-        bool LoadTools(xml::XmlDocumnent &doc);
-        bool SaveTools(const std::wstring& szFileXml);
+        bool LoadTools(const std::wstring& szFileXml, bool bOnlyIds);
+        bool LoadTools(xml::XmlDocumnent &doc, bool bOnlyIds);
+        bool SaveTools(const std::wstring& szFileXml, bool bOnlyIds);
     };
 }

@@ -65,7 +65,7 @@ namespace xml
                 SetAttributeValue(element, "", item.second);
             }
         }
-        bool GetLanguages(const XmlElement *parent, lang::CLanguagesList &m_Languages)
+        bool GetLanguages(const XmlElement *parent, lang::CLanguagesList &m_Languages, bool bOnlyIds)
         {
             auto element = parent->FirstChildElement("Language");
             if (element != nullptr)
@@ -73,14 +73,21 @@ namespace xml
                 for (element; element; element = element->NextSiblingElement())
                 {
                     lang::CLanguage language;
-                    VALIDATE(this->GetLanguage(element, language));
+                    if (bOnlyIds == true)
+                    {
+                        VALIDATE(GetAttributeValue(element, "id", &language.szId));
+                    }
+                    else
+                    {
+                        VALIDATE(this->GetLanguage(element, language));
+                    }
                     m_Languages.Insert(language);
                 }
                 return true;
             }
             return false;
         }
-        void SetLanguages(XmlElement *parent, lang::CLanguagesList &m_Languages)
+        void SetLanguages(XmlElement *parent, lang::CLanguagesList &m_Languages, bool bOnlyIds)
         {
             int nLanguages = m_Languages.Count();
             for (int i = 0; i < nLanguages; i++)
@@ -88,7 +95,14 @@ namespace xml
                 lang::CLanguage& language = m_Languages.Get(i);
                 auto element = this->NewElement("Language");
                 parent->LinkEndChild(element);
-                this->SetLanguage(element, language);
+                if (bOnlyIds == true)
+                {
+                    SetAttributeValue(element, "id", language.szId);
+                }
+                else
+                {
+                    this->SetLanguage(element, language);
+                }
             }
         }
     public:
@@ -108,21 +122,21 @@ namespace xml
             this->LinkEndChild(element);
             this->SetLanguage(element, m_Language);
         }
-        bool GetLanguages(lang::CLanguagesList &m_Languages)
+        bool GetLanguages(lang::CLanguagesList &m_Languages, bool bOnlyIds)
         {
             auto element = this->FirstChildElement("Languages");
             if (element != nullptr)
             {
-                VALIDATE(this->GetLanguages(element, m_Languages));
+                VALIDATE(this->GetLanguages(element, m_Languages, bOnlyIds));
                 return true;
             }
             return false;
         }
-        void SetLanguages(lang::CLanguagesList &m_Languages)
+        void SetLanguages(lang::CLanguagesList &m_Languages, bool bOnlyIds)
         {
             auto element = this->NewElement("Languages");
             this->LinkEndChild(element);
-            this->SetLanguages(element, m_Languages);
+            this->SetLanguages(element, m_Languages, bOnlyIds);
         }
     };
 }

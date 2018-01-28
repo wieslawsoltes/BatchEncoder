@@ -42,7 +42,7 @@ namespace xml
             SetAttributeValue(element, "extract", m_Tool.szExtract);
             SetAttributeValue(element, "path", m_Tool.szPath);
         }
-        bool GetTools(const XmlElement *parent, config::CToolsList &m_Tools)
+        bool GetTools(const XmlElement *parent, config::CToolsList &m_Tools, bool bOnlyIds)
         {
             auto element = parent->FirstChildElement("Tool");
             if (element != nullptr)
@@ -50,14 +50,21 @@ namespace xml
                 for (element; element; element = element->NextSiblingElement())
                 {
                     config::CTool tool;
-                    VALIDATE(this->GetTool(element, tool));
+                    if (bOnlyIds == true)
+                    {
+                        VALIDATE(GetAttributeValue(element, "name", &tool.szName));
+                    }
+                    else
+                    {
+                        VALIDATE(this->GetTool(element, tool));
+                    }
                     m_Tools.Insert(tool);
                 }
                 return true;
             }
             return false;
         }
-        void SetTools(XmlElement *parent, config::CToolsList &m_Tools)
+        void SetTools(XmlElement *parent, config::CToolsList &m_Tools, bool bOnlyIds)
         {
             int nTools = m_Tools.Count();
             for (int i = 0; i < nTools; i++)
@@ -65,7 +72,14 @@ namespace xml
                 config::CTool& tool = m_Tools.Get(i);
                 auto element = this->NewElement("Tool");
                 parent->LinkEndChild(element);
-                this->SetTool(element, tool);
+                if (bOnlyIds == true)
+                {
+                    SetAttributeValue(element, "name", tool.szName);
+                }
+                else
+                {
+                    this->SetTool(element, tool);
+                }
             }
         }
     public:
@@ -85,21 +99,21 @@ namespace xml
             this->LinkEndChild(element);
             this->SetTool(element, m_Tool);
         }
-        bool GetTools(config::CToolsList &m_Tools)
+        bool GetTools(config::CToolsList &m_Tools, bool bOnlyIds)
         {
             auto element = this->FirstChildElement("Tools");
             if (element != nullptr)
             {
-                VALIDATE(this->GetTools(element, m_Tools));
+                VALIDATE(this->GetTools(element, m_Tools, bOnlyIds));
                 return true;
             }
             return false;
         }
-        void SetTools(config::CToolsList &m_Tools)
+        void SetTools(config::CToolsList &m_Tools, bool bOnlyIds)
         {
             auto element = this->NewElement("Tools");
             this->LinkEndChild(element);
-            this->SetTools(element, m_Tools);
+            this->SetTools(element, m_Tools, bOnlyIds);
         }
     };
 }

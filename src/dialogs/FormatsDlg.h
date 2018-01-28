@@ -143,9 +143,9 @@ namespace app
         bool LoadFormat(const std::wstring& szFileXml);
         bool LoadFormat(xml::XmlDocumnent &doc);
         bool SaveFormat(const std::wstring& szFileXml, config::CFormat &format);
-        bool LoadFormats(const std::wstring& szFileXml);
-        bool LoadFormats(xml::XmlDocumnent &doc);
-        bool SaveFormats(const std::wstring& szFileXml);
+        bool LoadFormats(const std::wstring& szFileXml, bool bOnlyIds);
+        bool LoadFormats(xml::XmlDocumnent &doc, bool bOnlyIds);
+        bool SaveFormats(const std::wstring& szFileXml, bool bOnlyIds);
         bool LoadPresets(xml::XmlDocumnent &doc);
     };
 }

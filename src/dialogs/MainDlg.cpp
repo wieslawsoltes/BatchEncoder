@@ -514,8 +514,8 @@ namespace app
 
         try
         {
-            this->LoadTools(app::m_App.szToolsFile);
-            this->LoadFormats(app::m_App.szFormatsFile);
+            this->LoadTools(app::m_App.szToolsFile, true);
+            this->LoadFormats(app::m_App.szFormatsFile, true);
 
             if (this->LoadOptions(app::m_App.szOptionsFile) == false)
             {
@@ -602,8 +602,8 @@ namespace app
         {
             try
             {
-                this->SaveTools(app::m_App.szToolsFile);
-                this->SaveFormats(app::m_App.szFormatsFile);
+                this->SaveTools(app::m_App.szToolsFile, true);
+                this->SaveFormats(app::m_App.szFormatsFile, true);
                 this->SaveOptions(app::m_App.szOptionsFile);
                 this->SaveItems(app::m_App.szItemsFile);
             }
@@ -2313,7 +2313,8 @@ namespace app
                             }
                             else if (util::StringHelper::CompareNoCase(szName, "Formats"))
                             {
-                                this->LoadFormats(doc);
+                                ::SetCurrentDirectory(util::Utilities::GetFilePath(szPath).c_str());
+                                this->LoadFormats(doc, true);
                             }
                             else if (util::StringHelper::CompareNoCase(szName, "Format"))
                             {
@@ -2329,7 +2330,8 @@ namespace app
                             }
                             else if (util::StringHelper::CompareNoCase(szName, "Tools"))
                             {
-                                this->LoadTools(doc);
+                                ::SetCurrentDirectory(util::Utilities::GetFilePath(szPath).c_str());
+                                this->LoadTools(doc, true);
                             }
                             else if (util::StringHelper::CompareNoCase(szName, "Tool"))
                             {
@@ -2727,9 +2729,10 @@ namespace app
             {
                 try
                 {
-                    this->SaveFormats(app::m_App.szFormatsFile.c_str());
-                    this->SaveOptions(app::m_App.szOptionsFile.c_str());
-                    this->SaveItems(app::m_App.szItemsFile.c_str());
+                    this->SaveTools(app::m_App.szToolsFile, true);
+                    this->SaveFormats(app::m_App.szFormatsFile, true);
+                    this->SaveOptions(app::m_App.szOptionsFile);
+                    this->SaveItems(app::m_App.szItemsFile);
                 }
                 catch (...) {}
             }
@@ -2769,23 +2772,36 @@ namespace app
         return xml::CXmlConfig::SaveOptions(szFileXml, this->m_Config.m_Options);
     }
 
-    bool CMainDlg::LoadFormats(const std::wstring& szFileXml)
+    bool CMainDlg::LoadFormats(const std::wstring& szFileXml, bool bOnlyIds)
     {
         xml::XmlDocumnent doc;
         std::string szName = xml::CXmlConfig::GetRootName(szFileXml, doc);
         if (!szName.empty() && util::StringHelper::CompareNoCase(szName, "Formats"))
         {
-            return this->LoadFormats(doc);
+            return this->LoadFormats(doc, bOnlyIds);
         }
         return false;
     }
 
-    bool CMainDlg::LoadFormats(xml::XmlDocumnent &doc)
+    bool CMainDlg::LoadFormats(xml::XmlDocumnent &doc, bool bOnlyIds)
     {
         config::CFormatsList formats;
-        if (xml::CXmlConfig::LoadFormats(doc, formats))
+        if (xml::CXmlConfig::LoadFormats(doc, formats, bOnlyIds))
         {
-            this->m_Config.m_Formats = std::move(formats);
+            if (bOnlyIds == true)
+            {
+                this->m_Config.m_Formats.RemoveAll();
+                for (auto& format : formats.m_Items)
+                {
+                    std::wstring path = util::Utilities::CombinePath(app::m_App.szFormatsPath, format.szId + L".xml");
+                    if (this->LoadFormat(path) == false)
+                        return false;
+                }
+            }
+            else
+            {
+                this->m_Config.m_Formats = std::move(formats);
+            }
             this->UpdateFormatComboBox();
             this->UpdatePresetComboBox();
             return true;
@@ -2793,9 +2809,24 @@ namespace app
         return false;
     }
 
-    bool CMainDlg::SaveFormats(const std::wstring& szFileXml)
+    bool CMainDlg::SaveFormats(const std::wstring& szFileXml, bool bOnlyIds)
     {
-        return xml::CXmlConfig::SaveFormats(szFileXml, this->m_Config.m_Formats);
+        bool bResult = xml::CXmlConfig::SaveFormats(szFileXml, this->m_Config.m_Formats, bOnlyIds);
+        if (bResult == false)
+            return false;
+
+        if (bOnlyIds == true)
+        {
+            ::CreateDirectory(app::m_App.szFormatsPath.c_str(), NULL);
+            for (auto& format : this->m_Config.m_Formats.m_Items)
+            {
+                std::wstring path = util::Utilities::CombinePath(app::m_App.szFormatsPath, format.szId + L".xml");
+                if (this->SaveFormat(path, format) == false)
+                    return false;
+            }
+        }
+
+        return true;
     }
 
     bool CMainDlg::LoadFormat(const std::wstring& szFileXml)
@@ -2822,15 +2853,9 @@ namespace app
         return false;
     }
 
-    bool CMainDlg::SaveFormat(const std::wstring& szFileXml)
+    bool CMainDlg::SaveFormat(const std::wstring& szFileXml, config::CFormat& format)
     {
-        int nFormat = this->m_CmbFormat.GetCurSel();
-        if (nFormat != -1)
-        {
-            config::CFormat& format = m_Config.m_Formats.Get(nFormat);
-            return xml::CXmlConfig::SaveFormat(szFileXml, format);
-        }
-        return false;
+        return xml::CXmlConfig::SaveFormat(szFileXml, format);
     }
 
     bool CMainDlg::LoadPresets(const std::wstring& szFileXml)
@@ -2872,31 +2897,59 @@ namespace app
         return false;
     }
 
-    bool CMainDlg::LoadTools(const std::wstring& szFileXml)
+    bool CMainDlg::LoadTools(const std::wstring& szFileXml, bool bOnlyIds)
     {
         xml::XmlDocumnent doc;
         std::string szName = xml::CXmlConfig::GetRootName(szFileXml, doc);
         if (!szName.empty() && util::StringHelper::CompareNoCase(szName, "Tools"))
         {
-            return this->LoadTools(doc);
+            return this->LoadTools(doc, bOnlyIds);
         }
         return false;
     }
 
-    bool CMainDlg::LoadTools(xml::XmlDocumnent &doc)
+    bool CMainDlg::LoadTools(xml::XmlDocumnent &doc, bool bOnlyIds)
     {
         config::CToolsList tools;
-        if (xml::CXmlConfig::LoadTools(doc, tools))
+        if (xml::CXmlConfig::LoadTools(doc, tools, bOnlyIds))
         {
-            this->m_Config.m_Tools = std::move(tools);
+            if (bOnlyIds == true)
+            {
+                this->m_Config.m_Tools.RemoveAll();
+                for (auto& tool : tools.m_Items)
+                {
+                    std::wstring path = util::Utilities::CombinePath(app::m_App.szToolsPath, tool.szName + L".xml");
+                    if (this->LoadTool(path) == false)
+                        return false;
+                }
+            }
+            else
+            {
+                this->m_Config.m_Tools = std::move(tools);
+            }
             return true;
         }
         return false;
     }
 
-    bool CMainDlg::SaveTools(const std::wstring& szFileXml)
+    bool CMainDlg::SaveTools(const std::wstring& szFileXml, bool bOnlyIds)
     {
-        return xml::CXmlConfig::SaveTools(szFileXml, this->m_Config.m_Tools);
+        bool bResult = xml::CXmlConfig::SaveTools(szFileXml, this->m_Config.m_Tools, bOnlyIds);
+        if (bResult == false)
+            return false;
+
+        if (bOnlyIds == true)
+        {
+            ::CreateDirectory(app::m_App.szToolsPath.c_str(), NULL);
+            for (auto& tool : this->m_Config.m_Tools.m_Items)
+            {
+                std::wstring path = util::Utilities::CombinePath(app::m_App.szToolsPath, tool.szName + L".xml");
+                if (this->SaveTool(path, tool) == false)
+                    return false;
+            }
+        }
+
+        return true;
     }
 
     bool CMainDlg::LoadTool(const std::wstring& szFileXml)
@@ -2919,6 +2972,11 @@ namespace app
             return true;
         }
         return false;
+    }
+
+    bool CMainDlg::SaveTool(const std::wstring& szFileXml, config::CTool& tool)
+    {
+        return xml::CXmlConfig::SaveTool(szFileXml, tool);
     }
 
     bool CMainDlg::LoadItems(const std::wstring& szFileXml)

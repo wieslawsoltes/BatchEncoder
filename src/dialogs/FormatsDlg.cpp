@@ -639,7 +639,7 @@ namespace app
         if (fd.DoModal() == IDOK)
         {
             std::wstring szFileXml = fd.GetPathName();
-            this->LoadFormats(szFileXml);
+            this->LoadFormats(szFileXml, true);
         }
     }
 
@@ -657,7 +657,7 @@ namespace app
         if (fd.DoModal() == IDOK)
         {
             std::wstring szFileXml = fd.GetPathName();
-            this->SaveFormats(szFileXml);
+            this->SaveFormats(szFileXml, true);
         }
     }
 
@@ -859,7 +859,8 @@ namespace app
                         {
                             if (util::StringHelper::CompareNoCase(szName, "Formats"))
                             {
-                                this->LoadFormats(doc);
+                                ::SetCurrentDirectory(util::Utilities::GetFilePath(szPath).c_str());
+                                this->LoadFormats(doc, true);
                             }
                             else if (util::StringHelper::CompareNoCase(szName, "Format"))
                             {
@@ -1085,39 +1086,71 @@ namespace app
         return xml::CXmlConfig::SaveFormat(szFileXml, format);
     }
 
-    bool CFormatsDlg::LoadFormats(const std::wstring& szFileXml)
+    bool CFormatsDlg::LoadFormats(const std::wstring& szFileXml, bool bOnlyIds)
     {
         xml::XmlDocumnent doc;
         std::string szName = xml::CXmlConfig::GetRootName(szFileXml, doc);
         if (!szName.empty() && util::StringHelper::CompareNoCase(szName, "Formats"))
         {
-            return this->LoadFormats(doc);
+            ::SetCurrentDirectory(util::Utilities::GetFilePath(szFileXml).c_str());
+            return this->LoadFormats(doc, bOnlyIds);
         }
         return false;
     }
 
-    bool CFormatsDlg::LoadFormats(xml::XmlDocumnent &doc)
+    bool CFormatsDlg::LoadFormats(xml::XmlDocumnent &doc, bool bOnlyIds)
     {
         config::CFormatsList formats;
-        if (xml::CXmlConfig::LoadFormats(doc, formats))
+        if (xml::CXmlConfig::LoadFormats(doc, formats, bOnlyIds))
         {
             this->m_LstFormats.DeleteAllItems();
+            if (bOnlyIds == true)
+            {
+                this->m_Formats.RemoveAll();
+                for (auto& format : formats.m_Items)
+                {
+                    std::wstring path = L"formats\\" + format.szId + L".xml";
+                    if (this->LoadFormat(path) == false)
+                        return false;
+                }
+                if (this->m_Formats.Count() > 0)
+                    nSelectedFormat = 0;
+            }
+            else
+            {
+                this->m_Formats = std::move(formats);
+                if (this->m_Formats.Count() > 0)
+                    nSelectedFormat = 0;
 
-            this->m_Formats = std::move(formats);
-            if (this->m_Formats.Count() > 0)
-                nSelectedFormat = 0;
-
-            this->InsertFormatsToListCtrl();
+                this->InsertFormatsToListCtrl();
+            }
             this->ListSelectionChange();
-
             return true;
         }
         return false;
     }
 
-    bool CFormatsDlg::SaveFormats(const std::wstring& szFileXml)
+    bool CFormatsDlg::SaveFormats(const std::wstring& szFileXml, bool bOnlyIds)
     {
-        return xml::CXmlConfig::SaveFormats(szFileXml, this->m_Formats);
+        bool bResult = xml::CXmlConfig::SaveFormats(szFileXml, this->m_Formats, bOnlyIds);
+        if (bResult == false)
+            return false;
+
+        if (bOnlyIds == true)
+        {
+            std::wstring szFilePath = util::Utilities::GetFilePath(szFileXml);
+            std::wstring szPath = util::Utilities::CombinePath(szFilePath, L"formats");
+            ::SetCurrentDirectory(szFilePath.c_str());
+            ::CreateDirectory(szPath.c_str(), NULL);
+            for (auto& format : this->m_Formats.m_Items)
+            {
+                std::wstring path = util::Utilities::CombinePath(szPath, format.szId + L".xml");
+                if (this->SaveFormat(path, format) == false)
+                    return false;
+            }
+        }
+
+        return true;
     }
 
     bool CFormatsDlg::LoadPresets(xml::XmlDocumnent &doc)

@@ -64,7 +64,7 @@ namespace xml
             element->LinkEndChild(parent);
             XmlPresets(m_Document).SetPresets(parent, m_Format.m_Presets);
         }
-        bool GetFormats(const XmlElement *parent, config::CFormatsList &m_Formats)
+        bool GetFormats(const XmlElement *parent, config::CFormatsList &m_Formats, bool bOnlyIds)
         {
             auto element = parent->FirstChildElement("Format");
             if (element != nullptr)
@@ -72,14 +72,21 @@ namespace xml
                 for (element; element; element = element->NextSiblingElement())
                 {
                     config::CFormat format;
-                    VALIDATE(this->GetFormat(element, format));
+                    if (bOnlyIds == true)
+                    {
+                        VALIDATE(GetAttributeValue(element, "id", &format.szId));
+                    }
+                    else
+                    {
+                        VALIDATE(this->GetFormat(element, format));
+                    }
                     m_Formats.Insert(format);
                 }
                 return true;
             }
             return false;
         }
-        void SetFormats(XmlElement *parent, config::CFormatsList &m_Formats)
+        void SetFormats(XmlElement *parent, config::CFormatsList &m_Formats, bool bOnlyIds)
         {
             int nFormats = m_Formats.Count();
             for (int i = 0; i < nFormats; i++)
@@ -87,7 +94,14 @@ namespace xml
                 config::CFormat& format = m_Formats.Get(i);
                 auto element = this->NewElement("Format");
                 parent->LinkEndChild(element);
-                this->SetFormat(element, format);
+                if (bOnlyIds == true)
+                {
+                    SetAttributeValue(element, "id", format.szId);
+                }
+                else
+                {
+                    this->SetFormat(element, format);
+                }
             }
         }
     public:
@@ -107,21 +121,21 @@ namespace xml
             this->LinkEndChild(element);
             this->SetFormat(element, m_Format);
         }
-        bool GetFormats(config::CFormatsList &m_Formats)
+        bool GetFormats(config::CFormatsList &m_Formats, bool bOnlyIds)
         {
             auto element = this->FirstChildElement("Formats");
             if (element != nullptr)
             {
-                VALIDATE(this->GetFormats(element, m_Formats));
+                VALIDATE(this->GetFormats(element, m_Formats, bOnlyIds));
                 return true;
             }
             return false;
         }
-        void SetFormats(config::CFormatsList &m_Formats)
+        void SetFormats(config::CFormatsList &m_Formats, bool bOnlyIds)
         {
             auto element = this->NewElement("Formats");
             this->LinkEndChild(element);
-            this->SetFormats(element, m_Formats);
+            this->SetFormats(element, m_Formats, bOnlyIds);
         }
     };
 }
