@@ -74,7 +74,7 @@ foreach ($Format in $XmlFormats.Formats.Format)
 {
     $XmlPath = "$pwd\formats\" + $Format.id + ".xml"
     [xml]$XmlFormat = Get-Content -Path $XmlPath
-    $file = "$pwd\" + $XmlFormat.Format.function
+    $file = $XmlFormat.Format.function
 
     if ($XmlFormat.Format.function -ne "- none -")
     {
