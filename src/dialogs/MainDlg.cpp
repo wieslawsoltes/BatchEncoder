@@ -95,12 +95,12 @@ namespace app
                 else
                     ::SendMessage(hWndBtnRecurse, BM_SETCHECK, (WPARAM)BST_UNCHECKED, (LPARAM)0);
 
-    #pragma warning(push)
-    #pragma warning(disable:4311)
-    #pragma warning(disable:4312)
+#pragma warning(push)
+#pragma warning(disable:4311)
+#pragma warning(disable:4312)
                 lpOldWindowProc = (WNDPROC)SetWindowLongPtr(hWnd, GWLP_WNDPROC, (LONG_PTR)BrowseDlgWindowProc);
                 ::ShowWindow(hWndBtnRecurse, SW_SHOW);
-    #pragma warning(pop)
+#pragma warning(pop)
 
                 hFont = (HFONT) ::SendMessage(hWnd, WM_GETFONT, 0, 0);
                 ::SendMessage(hWndBtnRecurse, WM_SETFONT, (WPARAM)hFont, MAKELPARAM(TRUE, 0));
@@ -151,12 +151,12 @@ namespace app
                 ::ShowWindow(hWndTitle, SW_HIDE);
                 ::ShowWindow(::GetDlgItem(hWnd, IDC_STATUSTEXT), SW_HIDE);
 
-    #pragma warning(push)
-    #pragma warning(disable:4311)
-    #pragma warning(disable:4312)
+#pragma warning(push)
+#pragma warning(disable:4311)
+#pragma warning(disable:4312)
                 lpOldWindowProc = (WNDPROC)SetWindowLongPtr(hWnd, GWLP_WNDPROC, (LONG_PTR)BrowseDlgWindowProc);
                 ::ShowWindow(hWndStaticText, SW_SHOW);
-    #pragma warning(pop)
+#pragma warning(pop)
 
                 hFont = (HFONT) ::SendMessage(hWnd, WM_GETFONT, 0, 0);
                 ::SendMessage(hWndStaticText, WM_SETFONT, (WPARAM)hFont, MAKELPARAM(TRUE, 0));
@@ -319,7 +319,7 @@ namespace app
     };
 
     IMPLEMENT_DYNAMIC(CMainDlg, CDialog)
-    CMainDlg::CMainDlg(CWnd* pParent /*=nullptr*/)
+        CMainDlg::CMainDlg(CWnd* pParent /*=nullptr*/)
         : CMyDialogEx(CMainDlg::IDD, pParent)
     {
         this->m_hIcon = AfxGetApp()->LoadIcon(IDI_ICON_MAIN);
@@ -457,9 +457,9 @@ namespace app
         m_hAccel = ::LoadAccelerators(::GetModuleHandle(nullptr), MAKEINTRESOURCE(IDR_ACCELERATOR_MAIN));
 
         // OnNotifyFormat WM_NOTIFYFORMAT
-    #ifdef _UNICODE
+#ifdef _UNICODE
         m_LstInputItems.SendMessage(CCM_SETUNICODEFORMAT, (WPARAM)(BOOL)TRUE, 0);
-    #endif
+#endif
 
         // dialog title
         this->SetWindowText(_T(VER_PRODUCTNAME_STR));
@@ -658,14 +658,14 @@ namespace app
 
     LRESULT CMainDlg::OnNotifyFormat(WPARAM wParam, LPARAM lParam)
     {
-    #ifdef _UNICODE
+#ifdef _UNICODE
         return NFR_UNICODE;
-    #else
+#else
         return NFR_ANSI;
-    #endif
+#endif
     }
 
-    void CMainDlg::OnLvnGetdispinfoListItems(NMHDR* pNMHDR, LRESULT* pResult) 
+    void CMainDlg::OnLvnGetdispinfoListItems(NMHDR* pNMHDR, LRESULT* pResult)
     {
         NMLVDISPINFO *pDispInfo = reinterpret_cast<NMLVDISPINFO*>(pNMHDR);
         LV_ITEM* pItem = &(pDispInfo)->item;
@@ -676,46 +676,46 @@ namespace app
             config::CItem& item = m_Config.m_Items.Get(nItem);
             std::wstring szText;
 
-            switch(pItem->iSubItem)
+            switch (pItem->iSubItem)
             {
             case ITEM_COLUMN_NAME:
-                    // [Name] : item name
-                    szText = item.szName;
-                    break;
+                // [Name] : item name
+                szText = item.szName;
+                break;
             case ITEM_COLUMN_INPUT:
-                    // [Type] : input extension 
-                    szText = item.szExtension;
-                    break;
+                // [Type] : input extension 
+                szText = item.szExtension;
+                break;
             case ITEM_COLUMN_SIZE:
-                    // [Size (bytes)] : file size
-                    szText = item.szSize;
-                    break;
+                // [Size (bytes)] : file size
+                szText = item.szSize;
+                break;
             case ITEM_COLUMN_OUTPUT:
-                    // [Output] : output format
-                    szText = item.szFormatId;
-                    break;
+                // [Output] : output format
+                szText = item.szFormatId;
+                break;
             case ITEM_COLUMN_PRESET:
-                    // [Preset] : selected preset index
-                    szText = std::to_wstring(item.nPreset);
-                    break;
+                // [Preset] : selected preset index
+                szText = std::to_wstring(item.nPreset);
+                break;
             case ITEM_COLUMN_OPTIONS:
-                    // [Options] : additional options
-                    szText = item.szOptions;
-                    break;
+                // [Options] : additional options
+                szText = item.szOptions;
+                break;
             case ITEM_COLUMN_TIME:
-                    // [Time] : encoder/decoder conversion time
-                    szText = item.szTime.empty() ? m_Config.GetString(0x00150001) : item.szTime;
-                    break;
+                // [Time] : encoder/decoder conversion time
+                szText = item.szTime.empty() ? m_Config.GetString(0x00150001) : item.szTime;
+                break;
             case ITEM_COLUMN_STATUS:
-                    // [Status] : encoder/decoder progress status
-                    szText = item.szStatus.empty() ? m_Config.GetString(0x00210001) : item.szStatus;
-                    break;
+                // [Status] : encoder/decoder progress status
+                szText = item.szStatus.empty() ? m_Config.GetString(0x00210001) : item.szStatus;
+                break;
             }
 
             _tcscpy_s(pItem->pszText, pItem->cchTextMax, szText.c_str());
         }
 
-        if(pItem->mask & LVIF_IMAGE) 
+        if (pItem->mask & LVIF_IMAGE)
         {
             config::CItem& item = m_Config.m_Items.Get(nItem);
 
@@ -727,13 +727,13 @@ namespace app
         *pResult = 0;
     }
 
-    void CMainDlg::OnOdfindListItems(NMHDR* pNMHDR, LRESULT* pResult) 
+    void CMainDlg::OnOdfindListItems(NMHDR* pNMHDR, LRESULT* pResult)
     {
         if (this->pWorkerContext->bRunning == false)
         {
             NMLVFINDITEM* pFindInfo = (NMLVFINDITEM*)pNMHDR;
             *pResult = -1;
-            if((pFindInfo->lvfi.flags & LVFI_STRING) == 0)
+            if ((pFindInfo->lvfi.flags & LVFI_STRING) == 0)
             {
                 return;
             }
@@ -747,15 +747,15 @@ namespace app
             do
             {
                 config::CItem& item = m_Config.m_Items.Get(currentPos);
-                if( _tcsnicmp(item.szName.c_str(), szSearchStr, szSearchStr.GetLength()) == 0)
+                if (_tcsnicmp(item.szName.c_str(), szSearchStr, szSearchStr.GetLength()) == 0)
                 {
                     *pResult = currentPos;
                     break;
                 }
                 currentPos++;
-                if(currentPos >= m_LstInputItems.GetItemCount())
+                if (currentPos >= m_LstInputItems.GetItemCount())
                     currentPos = 0;
-            } while(currentPos != startPos);
+            } while (currentPos != startPos);
         }
     }
 
@@ -766,7 +766,7 @@ namespace app
             NMLISTVIEW* pNMListView = (NM_LISTVIEW*)pNMHDR;
             LVHITTESTINFO hitInfo;
             hitInfo.pt = pNMListView->ptAction;
-            int nItem = m_LstInputItems.HitTest(&hitInfo); 
+            int nItem = m_LstInputItems.HitTest(&hitInfo);
             if (nItem != -1)
             {
                 if (hitInfo.flags == LVHT_ONITEMSTATEICON)
@@ -965,9 +965,9 @@ namespace app
                 return;
             }
 
-    #ifndef BIF_NEWDIALOGSTYLE
-    #define BIF_NEWDIALOGSTYLE 0x0040
-    #endif
+#ifndef BIF_NEWDIALOGSTYLE
+#define BIF_NEWDIALOGSTYLE 0x0040
+#endif
 
             bi.hwndOwner = this->GetSafeHwnd();
             bi.pidlRoot = pidlDesktop;
@@ -1088,7 +1088,7 @@ namespace app
                 ZeroMemory(pFiles, dwMaxSize);
 
                 CString szFilter;
-                szFilter.Format(_T("%s (*.*)|*.*||"), 
+                szFilter.Format(_T("%s (*.*)|*.*||"),
                     m_Config.GetString(0x00310001).c_str());
 
                 CFileDialog fd(TRUE, _T(""), _T(""),
@@ -1161,9 +1161,9 @@ namespace app
                 return;
             }
 
-    #ifndef BIF_NEWDIALOGSTYLE
-    #define BIF_NEWDIALOGSTYLE 0x0040
-    #endif
+#ifndef BIF_NEWDIALOGSTYLE
+#define BIF_NEWDIALOGSTYLE 0x0040
+#endif
 
             bi.hwndOwner = this->GetSafeHwnd();
             bi.pidlRoot = pidlDesktop;
@@ -1561,11 +1561,11 @@ namespace app
             int nFormat = this->m_CmbFormat.GetCurSel();
             if (nFormat >= 0)
             {
-    #if defined(_WIN32) & !defined(_WIN64)
+#if defined(_WIN32) & !defined(_WIN64)
                 const std::wstring szPlatform = L"x86";
-    #else
+#else
                 const std::wstring szPlatform = L"x64";
-    #endif
+#endif
                 config::CFormat& format = m_Config.m_Formats.Get(nFormat);
                 int nTool = m_Config.m_Tools.GetToolByFormatAndPlatform(format.szId, szPlatform);
                 if (nTool >= 0)
@@ -2549,8 +2549,8 @@ namespace app
         if (nItems > 0)
         {
             CString szText;
-            szText.Format(_T("%d %s"), 
-                nItems, 
+            szText.Format(_T("%d %s"),
+                nItems,
                 (nItems > 1) ? m_Config.GetString(0x00210003).c_str() : m_Config.GetString(0x00210002).c_str());
             m_StatusBar.SetText(szText, 0, 0);
         }
@@ -2675,11 +2675,11 @@ namespace app
             }
 
             if (this->m_WorkerThread.Start(
-                [this]() 
-                { 
-                    this->m_Worker.Convert(this->pWorkerContext);
-                    this->m_WorkerThread.Close();
-                },
+                [this]()
+            {
+                this->m_Worker.Convert(this->pWorkerContext);
+                this->m_WorkerThread.Close();
+            },
                 true) == false)
             {
                 m_StatusBar.SetText(m_Config.GetString(0x0021000E).c_str(), 1, 0);
