@@ -34,7 +34,7 @@ namespace config
             for (int i = 0; i < nFormats; i++)
             {
                 CFormat& format = this->Get(i);
-                if (format.nType == 1 && format.IsValidInputExtension(szExt) == true)
+                if (format.nType == FormatType::Decoder && format.IsValidInputExtension(szExt) == true)
                 {
                     return i;
                 }
@@ -47,7 +47,7 @@ namespace config
             for (int i = 0; i < nFormats; i++)
             {
                 CFormat& format = this->Get(i);
-                if (format.nType == 1 && format.IsValidInputExtension(szExt) == true)
+                if (format.nType == FormatType::Decoder && format.IsValidInputExtension(szExt) == true)
                 {
                     bool bIsValidEncoderInput = pEncoderFormat->IsValidInputExtension(format.szOutputExtension);
                     if (bIsValidEncoderInput == true)

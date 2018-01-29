@@ -949,9 +949,9 @@ namespace worker
             // encode
             try
             {
-                if (pEncFormat->nType == 0)
+                if (pEncFormat->nType == FormatType::Encoder)
                     pWorkerContext->Status(item.nId, pWorkerContext->pConfig->GetString(0x00150001), pWorkerContext->pConfig->GetString(0x0014000A));
-                else if (pEncFormat->nType == 1)
+                else if (pEncFormat->nType == FormatType::Decoder)
                     pWorkerContext->Status(item.nId, pWorkerContext->pConfig->GetString(0x00150001), pWorkerContext->pConfig->GetString(0x0014000B));
 
                 item.ResetProgress();
