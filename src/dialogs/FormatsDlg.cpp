@@ -1109,7 +1109,7 @@ namespace app
                 this->m_Formats.RemoveAll();
                 for (auto& format : formats.m_Items)
                 {
-                    std::wstring path = L"formats\\" + format.szId + L".xml";
+                    std::wstring path = app::m_App.m_Settings.szFormatsDir + L"\\" + format.szId + L".xml";
                     if (this->LoadFormat(path) == false)
                         return false;
                 }
@@ -1139,7 +1139,7 @@ namespace app
         if (bOnlyIds == true)
         {
             std::wstring szFilePath = util::Utilities::GetFilePath(szFileXml);
-            std::wstring szPath = util::Utilities::CombinePath(szFilePath, L"formats");
+            std::wstring szPath = util::Utilities::CombinePath(szFilePath, app::m_App.m_Settings.szFormatsDir);
             ::SetCurrentDirectory(szFilePath.c_str());
             ::CreateDirectory(szPath.c_str(), NULL);
             for (auto& format : this->m_Formats.m_Items)

@@ -1033,7 +1033,7 @@ namespace app
                 this->m_Tools.RemoveAll();
                 for (auto& tool : tools.m_Items)
                 {
-                    std::wstring path = L"tools\\" + tool.szName + L".xml";
+                    std::wstring path = app::m_App.m_Settings.szToolsDir + L"\\" + tool.szName + L".xml";
                     if (this->LoadTool(path) == false)
                         return false;
                 }
@@ -1063,7 +1063,7 @@ namespace app
         if (bOnlyIds == true)
         {
             std::wstring szFilePath = util::Utilities::GetFilePath(szFileXml);
-            std::wstring szPath = util::Utilities::CombinePath(szFilePath, L"tools");
+            std::wstring szPath = util::Utilities::CombinePath(szFilePath, app::m_App.m_Settings.szToolsDir);
             ::SetCurrentDirectory(szFilePath.c_str());
             ::CreateDirectory(szPath.c_str(), NULL);
             for (auto& tool : this->m_Tools.m_Items)
