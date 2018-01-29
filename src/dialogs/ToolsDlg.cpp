@@ -1065,7 +1065,7 @@ namespace app
             std::wstring szFilePath = util::Utilities::GetFilePath(szFileXml);
             std::wstring szPath = util::Utilities::CombinePath(szFilePath, app::m_App.m_Settings.szToolsDir);
             ::SetCurrentDirectory(szFilePath.c_str());
-            ::CreateDirectory(szPath.c_str(), NULL);
+            ::CreateDirectory(szPath.c_str(), nullptr);
             for (auto& tool : this->m_Tools.m_Items)
             {
                 std::wstring path = util::Utilities::CombinePath(szPath, tool.szName + L".xml");
