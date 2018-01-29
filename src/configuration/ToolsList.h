@@ -17,6 +17,19 @@ namespace config
             CTool::Sort(this->m_Items);
         }
     public:
+        int GetToolByPath(const std::wstring& szPath)
+        {
+            int nTools = this->Count();
+            for (int i = 0; i < nTools; i++)
+            {
+                CTool& tool = this->Get(i);
+                if (util::StringHelper::CompareNoCase(tool.szPath, szPath) == true)
+                {
+                    return i;
+                }
+            }
+            return -1;
+        }
         int GetToolByFormat(const std::wstring& szFormat)
         {
             int nTools = this->Count();
