@@ -365,7 +365,7 @@ namespace app
         format.szPath = _T("program.exe");
         format.nExitCodeSuccess = 0;
         format.nType = config::FormatType::Encoder;
-        formar.nPriority = 0;
+        format.nPriority = 0;
         format.szInputExtensions = _T("WAV");
         format.szOutputExtension = _T("EXT");
         format.nDefaultPreset = 0;
