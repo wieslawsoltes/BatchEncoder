@@ -24,7 +24,6 @@ namespace app
     public:
         std::wstring szSettingsPath;
         std::wstring szFormatsPath;
-        std::wstring szPresetsPath;
         std::wstring szLanguagesPath;
         std::wstring szProgressPath;
         std::wstring szToolsPath;

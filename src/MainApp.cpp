@@ -39,9 +39,7 @@ namespace app
         if (this->IsPortable())
         {
             this->szSettingsPath = util::Utilities::GetExeFilePath();
-
             this->szFormatsPath = util::Utilities::CombinePath(this->szSettingsPath, L"formats");
-            this->szPresetsPath = util::Utilities::CombinePath(this->szSettingsPath, L"presets");
             this->szLanguagesPath = util::Utilities::CombinePath(this->szSettingsPath, L"lang");
             this->szProgressPath = util::Utilities::CombinePath(this->szSettingsPath, L"progress");
             this->szToolsPath = util::Utilities::CombinePath(this->szSettingsPath, L"tools");
@@ -49,7 +47,6 @@ namespace app
             try
             {
                 ::CreateDirectory(this->szFormatsPath.c_str(), NULL);
-                ::CreateDirectory(this->szPresetsPath.c_str(), NULL);
                 ::CreateDirectory(this->szLanguagesPath.c_str(), NULL);
                 ::CreateDirectory(this->szProgressPath.c_str(), NULL);
                 ::CreateDirectory(this->szToolsPath.c_str(), NULL);
@@ -66,9 +63,7 @@ namespace app
             std::wstring szConfigDir = L"BatchEncoder";
 
             this->szSettingsPath = util::Utilities::GetSettingsFilePath(L"", szConfigDir);
-
             this->szFormatsPath = util::Utilities::GetSettingsFilePath(L"", szConfigDir + L"\\formats");
-            this->szPresetsPath = util::Utilities::GetSettingsFilePath(L"", szConfigDir + L"\\presets");
             this->szLanguagesPath = util::Utilities::GetSettingsFilePath(L"", szConfigDir + L"\\lang");
             this->szProgressPath = util::Utilities::GetSettingsFilePath(L"", szConfigDir + L"\\progress");
             this->szToolsPath = util::Utilities::GetSettingsFilePath(L"", szConfigDir + L"\\tools");
@@ -77,7 +72,6 @@ namespace app
             {
                 ::CreateDirectory(szSettingsPath.c_str(), NULL);
                 ::CreateDirectory(szFormatsPath.c_str(), NULL);
-                ::CreateDirectory(szPresetsPath.c_str(), NULL);
                 ::CreateDirectory(szLanguagesPath.c_str(), NULL);
                 ::CreateDirectory(szProgressPath.c_str(), NULL);
                 ::CreateDirectory(szToolsPath.c_str(), NULL);
