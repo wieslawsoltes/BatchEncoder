@@ -35,7 +35,7 @@ namespace xml
 
             int nType;
             VALIDATE(GetAttributeValue(element, "type", &nType));
-            m_Format.nType = CFormat::FromInt(nType);
+            m_Format.nType = config::CFormat::FromInt(nType);
 
             VALIDATE(GetAttributeValue(element, "priority", &m_Format.nPriority));
 
@@ -62,7 +62,7 @@ namespace xml
             SetAttributeValue(element, "path", m_Format.szPath);
             SetAttributeValue(element, "success", m_Format.nExitCodeSuccess);
 
-            int nType = CFormat::ToInt(m_Format.nType);
+            int nType = config::CFormat::ToInt(m_Format.nType);
             SetAttributeValue(element, "type", nType);
 
             SetAttributeValue(element, "priority", m_Format.nPriority);

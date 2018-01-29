@@ -1,4 +1,4 @@
-﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
+// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 #pragma once
@@ -156,7 +156,7 @@ namespace app
         afx_msg void OnHelpWebsite();
         afx_msg void OnHelpAbout();
     public:
-        bool LoadLanguagess(const std::wstring szPath);
+        bool LoadLanguages(const std::wstring szPath);
         void InitLanguageMenu();
         void SetLanguage();
         void GetItems();

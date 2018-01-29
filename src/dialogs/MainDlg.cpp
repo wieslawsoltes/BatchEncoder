@@ -1,4 +1,4 @@
-﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
+// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 #include "StdAfx.h"
@@ -1754,7 +1754,7 @@ namespace app
         }
     }
 
-    bool CMainDlg:LoadLanguagess(const std::wstring szPath)
+    bool CMainDlg:LoadLanguages(const std::wstring szPath)
     {
         std::vector<std::wstring> files;
         bool bResult = util::Utilities::FindFiles(szPath, files, false);
