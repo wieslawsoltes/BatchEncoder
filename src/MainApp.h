@@ -116,7 +116,7 @@ namespace app
             else
                 this->InitUserSettings();
         }
-    }
+    };
 
     class CMainApp : public CWinAppEx
     {
