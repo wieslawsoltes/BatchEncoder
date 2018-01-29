@@ -1133,6 +1133,7 @@ namespace app
         }
         return false;
         */
+        return false;
     }
 
     bool CFormatsDlg::SaveFormats(const std::wstring& szFileXml, bool bOnlyIds)
