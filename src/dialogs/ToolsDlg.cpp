@@ -952,7 +952,7 @@ namespace app
         m_Utilities.bDownload = true;
         EnableUserInterface(FALSE);
 
-        ::SetCurrentDirectory(app::m_App.szToolsPath.c_str());
+        ::SetCurrentDirectory(app::m_App.m_Settings.szToolsPath.c_str());
 
         lang::CLanguageHelper helper(&pConfig->m_Language);
         helper.SetWndText(&m_BtnDownload, 0x000E0024);

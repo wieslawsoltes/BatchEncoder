@@ -30,7 +30,7 @@ namespace worker
             int nLineLen = 0;
 
             syncDown.Wait();
-            ::SetCurrentDirectory(app::m_App.szSettingsPath.c_str());
+            ::SetCurrentDirectory(app::m_App.m_Settings.szSettingsPath.c_str());
 
             if (parser.Init(pWorkerContext, &commandLine) == false)
             {

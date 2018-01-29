@@ -53,7 +53,7 @@ namespace worker
         process.ConnectStdError(Stderr.hWrite);
 
         syncDown.Wait();
-        ::SetCurrentDirectory(app::m_App.szSettingsPath.c_str());
+        ::SetCurrentDirectory(app::m_App.m_Settings.szSettingsPath.c_str());
 
         timer.Start();
         if (process.Start(commandLine.szCommandLine, pWorkerContext->pConfig->m_Options.bHideConsoleWindow) == false)
@@ -75,7 +75,7 @@ namespace worker
 
                     if (bResult == true)
                     {
-                        ::SetCurrentDirectory(app::m_App.szSettingsPath.c_str());
+                        ::SetCurrentDirectory(app::m_App.m_Settings.szSettingsPath.c_str());
 
                         if (process.Start(commandLine.szCommandLine, pWorkerContext->pConfig->m_Options.bHideConsoleWindow) == true)
                         {
@@ -229,7 +229,7 @@ namespace worker
         }
 
         syncDown.Wait();
-        ::SetCurrentDirectory(app::m_App.szSettingsPath.c_str());
+        ::SetCurrentDirectory(app::m_App.m_Settings.szSettingsPath.c_str());
 
         timer.Start();
         if (process.Start(commandLine.szCommandLine, pWorkerContext->pConfig->m_Options.bHideConsoleWindow) == false)
@@ -251,7 +251,7 @@ namespace worker
 
                     if (bResult == true)
                     {
-                        ::SetCurrentDirectory(app::m_App.szSettingsPath.c_str());
+                        ::SetCurrentDirectory(app::m_App.m_Settings.szSettingsPath.c_str());
 
                         if (process.Start(commandLine.szCommandLine, pWorkerContext->pConfig->m_Options.bHideConsoleWindow) == true)
                         {
@@ -517,7 +517,7 @@ namespace worker
         timer.Start();
 
         syncDown.Wait();
-        ::SetCurrentDirectory(app::m_App.szSettingsPath.c_str());
+        ::SetCurrentDirectory(app::m_App.m_Settings.szSettingsPath.c_str());
 
         // create decoder process
         if (decoderProcess.Start(decoderCommandLine.szCommandLine, pWorkerContext->pConfig->m_Options.bHideConsoleWindow) == false)
@@ -539,7 +539,7 @@ namespace worker
 
                     if (bResult == true)
                     {
-                        ::SetCurrentDirectory(app::m_App.szSettingsPath.c_str());
+                        ::SetCurrentDirectory(app::m_App.m_Settings.szSettingsPath.c_str());
 
                         if (decoderProcess.Start(decoderCommandLine.szCommandLine, pWorkerContext->pConfig->m_Options.bHideConsoleWindow) == true)
                         {
@@ -573,7 +573,7 @@ namespace worker
             }
         }
 
-        ::SetCurrentDirectory(app::m_App.szSettingsPath.c_str());
+        ::SetCurrentDirectory(app::m_App.m_Settings.szSettingsPath.c_str());
 
         // create encoder process
         if (encoderProcess.Start(encoderCommandLine.szCommandLine, pWorkerContext->pConfig->m_Options.bHideConsoleWindow) == false)
@@ -595,7 +595,7 @@ namespace worker
 
                     if (bResult == true)
                     {
-                        ::SetCurrentDirectory(app::m_App.szSettingsPath.c_str());
+                        ::SetCurrentDirectory(app::m_App.m_Settings.szSettingsPath.c_str());
 
                         if (encoderProcess.Start(encoderCommandLine.szCommandLine, pWorkerContext->pConfig->m_Options.bHideConsoleWindow) == true)
                         {
@@ -808,7 +808,7 @@ namespace worker
             return false;
         }
 
-        ::SetCurrentDirectory(app::m_App.szSettingsPath.c_str());
+        ::SetCurrentDirectory(app::m_App.m_Settings.szSettingsPath.c_str());
 
         // prepare decoder
         if (bIsValidEncoderInput == false)
