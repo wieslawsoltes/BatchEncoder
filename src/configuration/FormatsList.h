@@ -12,6 +12,11 @@ namespace config
     class CFormatsList : public util::CListT<CFormat>
     {
     public:
+        void Sort()
+        {
+            CFormat::Sort(this->m_Items);
+        }
+    public:
         int GetFormatById(const std::wstring& szFormatId)
         {
             int nFormats = this->Count();

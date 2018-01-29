@@ -4,6 +4,8 @@
 #pragma once
 
 #include <string>
+#include <algorithm>
+#include <vector>
 
 namespace config
 {
@@ -15,11 +17,22 @@ namespace config
         std::wstring szName;
         std::wstring szPlatform;
         std::wstring szFormats;
+        int nPriority;
         std::wstring szUrl;
         std::wstring szFile;
         std::wstring szExtract;
         std::wstring szPath;
         std::wstring szStatus;
+    public:
+        static bool ComparePriority(const CTool& a, const CTool& b)
+        { 
+            return a.nPriority < b.nPriority; 
+        };
+    public:
+        static void Sort(std::vector<CTool>& tools)
+        {
+            std::stable_sort(tools.begin(), tools.end(), &ComparePriority);
+        }
     public:
         bool IsValidFormat(const std::wstring& szFormat)
         {

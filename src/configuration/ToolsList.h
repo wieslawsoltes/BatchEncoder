@@ -12,6 +12,11 @@ namespace config
     class CToolsList : public util::CListT<CTool>
     {
     public:
+        void Sort()
+        {
+            CTool::Sort(this->m_Items);
+        }
+    public:
         int GetToolByFormat(const std::wstring& szFormat)
         {
             int nTools = this->Count();

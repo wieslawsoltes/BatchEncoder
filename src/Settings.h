@@ -20,9 +20,7 @@ namespace app
         std::wstring szToolsDir;
     public:
         std::wstring szOptionsFileName;
-        std::wstring szFormatsFileName;
         std::wstring szItemsFileName;
-        std::wstring szToolsFileName;
     public:
         std::wstring szSettingsPath;
         std::wstring szFormatsPath;
@@ -31,9 +29,7 @@ namespace app
         std::wstring szToolsPath;
     public:
         std::wstring szOptionsFile;
-        std::wstring szFormatsFile;
         std::wstring szItemsFile;
-        std::wstring szToolsFile;
     public:
         CSettings()
         {
@@ -47,9 +43,7 @@ namespace app
             this->szToolsDir = L"tools";
 
             this->szOptionsFileName = L"Options.xml";
-            this->szFormatsFileName = L"Formats.xml";
             this->szItemsFileName = L"Items.xml";
-            this->szToolsFileName = L"Tools.xml";
         }
     public:
         bool IsPortable()
@@ -76,9 +70,7 @@ namespace app
             catch (...) {}
 
             this->szOptionsFile = util::Utilities::CombinePath(this->szSettingsPath, this->szOptionsFileName);
-            this->szFormatsFile = util::Utilities::CombinePath(this->szSettingsPath, this->szFormatsFileName);
             this->szItemsFile = util::Utilities::CombinePath(this->szSettingsPath, this->szItemsFileName);
-            this->szToolsFile = util::Utilities::CombinePath(this->szSettingsPath, this->szToolsFileName);
         }
         void InitUserSettings()
         {
@@ -99,9 +91,7 @@ namespace app
             catch (...) {}
 
             this->szOptionsFile = util::Utilities::GetSettingsFilePath(this->szOptionsFileName, this->szConfigDir);
-            this->szFormatsFile = util::Utilities::GetSettingsFilePath(this->szFormatsFileName, this->szConfigDir);
             this->szItemsFile = util::Utilities::GetSettingsFilePath(this->szItemsFileName, this->szConfigDir);
-            this->szToolsFile = util::Utilities::GetSettingsFilePath(this->szToolsFileName, this->szConfigDir);
         }
     public:
         void Init()
