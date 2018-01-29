@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<Format id="QAAC_AAC" name="AAC (MPEG-2/AAC) - qaac" template="$EXE $OPTIONS --ignorelength --no-optimize $INFILE -o $OUTFILE" input="true" output="false" function="progress\GetProgress_QaacEnc.lua" path="tools/qaac_2.64/qaac_2.64/x86/qaac.exe" success="0" type="0" formats="WAV" extension="AAC" default="7">
+<Format id="QAAC_AAC" name="AAC (MPEG-2/AAC) - qaac" template="$EXE $OPTIONS --ignorelength --no-optimize $INFILE -o $OUTFILE" input="true" output="false" function="progress\GetProgress_QaacEnc.lua" path="tools/qaac_2.64/qaac_2.64/x86/qaac.exe" success="0" type="0" priority="0" formats="WAV" extension="AAC" default="7">
     <Presets>
         <Preset name="True VBR Quality 0 : 40 kbps~" options="--tvbr 0"/>
         <Preset name="True VBR Quality 9 : 48 kbps~" options="--tvbr 9"/>

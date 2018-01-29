@@ -46,11 +46,14 @@ namespace config
             return static_cast<FormatType>(value);
         }
     public:
+        static bool CompareName(const CFormat& a, const CFormat& b)
+        { 
+            return a.szName < b.szName; 
+        };
         static bool CompareType(const CFormat& a, const CFormat& b)
         { 
             return a.nType < b.nType; 
         };
-    public:
         static bool ComparePriority(const CFormat& a, const CFormat& b)
         { 
             return a.nPriority < b.nPriority; 
@@ -58,6 +61,7 @@ namespace config
     public:
         static void Sort(std::vector<CFormat>& formats)
         {
+            std::stable_sort(formats.begin(), formats.end(), &CompareName);
             std::stable_sort(formats.begin(), formats.end(), &ComparePriority);
             std::stable_sort(formats.begin(), formats.end(), &CompareType);
         }

@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<Format id="FLAC_FLAC" name="FLAC (Free Lossless Audio Codec) - flac" template="$EXE $OPTIONS -f -o $OUTFILE $INFILE" input="true" output="false" function="progress\GetProgress_FlacEnc.lua" path="tools/flac-1.3.2-win/flac-1.3.2-win/win32/flac.exe" success="0" type="0" formats="WAV" extension="FLAC" default="5">
+<Format id="FLAC_FLAC" name="FLAC (Free Lossless Audio Codec) - flac" template="$EXE $OPTIONS -f -o $OUTFILE $INFILE" input="true" output="false" function="progress\GetProgress_FlacEnc.lua" path="tools/flac-1.3.2-win/flac-1.3.2-win/win32/flac.exe" success="0" type="0" priority="0" formats="WAV" extension="FLAC" default="5">
     <Presets>
         <Preset name="Compression Level 0 (Fast)" options="-0"/>
         <Preset name="Compression Level 1" options="-1"/>

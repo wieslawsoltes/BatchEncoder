@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<Format id="AVSDEC_WAV" name="Split multi-channel WAV file - avsdec" template="$EXE -s $INFILE $OUTPATH" input="false" output="false" function="progress\GetProgress_AvsDec.lua" path="tools/AvsDec-2.3-Win32-UNICODE/AvsDec.exe" success="0" type="0" formats="WAV" extension="" default="0">
+<Format id="AVSDEC_WAV" name="Split multi-channel WAV file - avsdec" template="$EXE -s $INFILE $OUTPATH" input="false" output="false" function="progress\GetProgress_AvsDec.lua" path="tools/AvsDec-2.3-Win32-UNICODE/AvsDec.exe" success="0" type="0" priority="0" formats="WAV" extension="" default="0">
     <Presets>
         <Preset name="Default" options=""/>
     </Presets>

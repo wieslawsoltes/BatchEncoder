@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<Format id="FAAC_AAC" name="AAC (MPEG-2/AAC) - faac" template="$EXE $OPTIONS -o $OUTFILE $INFILE" input="true" output="false" function="progress\GetProgress_FaacEnc.lua" path="tools/faac-1.28-mod/faac.exe" success="0" type="0" formats="WAV" extension="AAC" default="10">
+<Format id="FAAC_AAC" name="AAC (MPEG-2/AAC) - faac" template="$EXE $OPTIONS -o $OUTFILE $INFILE" input="true" output="false" function="progress\GetProgress_FaacEnc.lua" path="tools/faac-1.28-mod/faac.exe" success="0" type="0" priority="0" formats="WAV" extension="AAC" default="10">
     <Presets>
         <Preset name="VBR Quality 10" options="-q 10"/>
         <Preset name="VBR Quality 25" options="-q 25"/>

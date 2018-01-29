@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<Format id="FFMPEG_AC3" name="AC3 (ATSC A/52) - ffmpeg" template="$EXE -ignore_length true -y -i $INFILE -acodec ac3 $OPTIONS -f ac3 $OUTFILE" input="true" output="false" function="- none -" path="tools/ffmpeg-3.4-win32-static/ffmpeg-3.4-win32-static/bin/ffmpeg.exe" success="0" type="0" formats="WAV" extension="AC3" default="15">
+<Format id="FFMPEG_AC3" name="AC3 (ATSC A/52) - ffmpeg" template="$EXE -ignore_length true -y -i $INFILE -acodec ac3 $OPTIONS -f ac3 $OUTFILE" input="true" output="false" function="- none -" path="tools/ffmpeg-3.4-win32-static/ffmpeg-3.4-win32-static/bin/ffmpeg.exe" success="0" type="0" priority="0" formats="WAV" extension="AC3" default="15">
     <Presets>
         <Preset name="CBR 32 kbit/s" options="-ab 32k"/>
         <Preset name="CBR 40 kbit/s" options="-ab 40k"/>

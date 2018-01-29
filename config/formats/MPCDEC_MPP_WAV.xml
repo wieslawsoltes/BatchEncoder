@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<Format id="MPCDEC_MPP_WAV" name="Decode MPP to WAV - mpcdec" template="$EXE $INFILE $OUTFILE" input="false" output="false" function="progress\GetProgress_MpcDec.lua" path="tools/musepack_windows_2009-04-02/32bit/mpcdec.exe" success="0" type="1" formats="MPP" extension="WAV" default="0">
+<Format id="MPCDEC_MPP_WAV" name="Decode MPP to WAV - mpcdec" template="$EXE $INFILE $OUTFILE" input="false" output="false" function="progress\GetProgress_MpcDec.lua" path="tools/musepack_windows_2009-04-02/32bit/mpcdec.exe" success="0" type="1" priority="0" formats="MPP" extension="WAV" default="0">
     <Presets>
         <Preset name="Default" options=""/>
     </Presets>

@@ -25,8 +25,8 @@ namespace xml
         {
             VALIDATE(GetAttributeValue(element, "name", &m_Tool.szName));
             VALIDATE(GetAttributeValue(element, "platform", &m_Tool.szPlatform));
-            VALIDATE(GetAttributeValue(element, "formats", &m_Tool.szFormats));
             VALIDATE(GetAttributeValue(element, "priority", &m_Tool.nPriority));
+            VALIDATE(GetAttributeValue(element, "formats", &m_Tool.szFormats));
             VALIDATE(GetAttributeValue(element, "url", &m_Tool.szUrl));
             VALIDATE(GetAttributeValue(element, "file", &m_Tool.szFile));
             VALIDATE(GetAttributeValue(element, "extract", &m_Tool.szExtract));
@@ -37,8 +37,8 @@ namespace xml
         {
             SetAttributeValue(element, "name", m_Tool.szName);
             SetAttributeValue(element, "platform", m_Tool.szPlatform);
-            SetAttributeValue(element, "formats", m_Tool.szFormats);
             SetAttributeValue(element, "priority", m_Tool.nPriority);
+            SetAttributeValue(element, "formats", m_Tool.szFormats);
             SetAttributeValue(element, "url", m_Tool.szUrl);
             SetAttributeValue(element, "file", m_Tool.szFile);
             SetAttributeValue(element, "extract", m_Tool.szExtract);

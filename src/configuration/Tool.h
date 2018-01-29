@@ -16,14 +16,18 @@ namespace config
     public:
         std::wstring szName;
         std::wstring szPlatform;
-        std::wstring szFormats;
         int nPriority;
+        std::wstring szFormats;
         std::wstring szUrl;
         std::wstring szFile;
         std::wstring szExtract;
         std::wstring szPath;
         std::wstring szStatus;
     public:
+        static bool CompareName(const CTool& a, const CTool& b)
+        { 
+            return a.szName < b.szName; 
+        };
         static bool ComparePriority(const CTool& a, const CTool& b)
         { 
             return a.nPriority < b.nPriority; 
@@ -31,6 +35,7 @@ namespace config
     public:
         static void Sort(std::vector<CTool>& tools)
         {
+            std::stable_sort(tools.begin(), tools.end(), &CompareName);
             std::stable_sort(tools.begin(), tools.end(), &ComparePriority);
         }
     public:

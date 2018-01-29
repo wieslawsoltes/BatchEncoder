@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<Format id="FFMPEG_TRUEHD_WAV" name="Decode TRUEHD to WAV - ffmpeg" template="$EXE -y -i $INFILE $OPTIONS -f wav $OUTFILE" input="true" output="false" function="- none -" path="tools/ffmpeg-3.4-win32-static/ffmpeg-3.4-win32-static/bin/ffmpeg.exe" success="0" type="1" formats="TRUEHD" extension="WAV" default="0">
+<Format id="FFMPEG_TRUEHD_WAV" name="Decode TRUEHD to WAV - ffmpeg" template="$EXE -y -i $INFILE $OPTIONS -f wav $OUTFILE" input="true" output="false" function="- none -" path="tools/ffmpeg-3.4-win32-static/ffmpeg-3.4-win32-static/bin/ffmpeg.exe" success="0" type="1" priority="0" formats="TRUEHD" extension="WAV" default="0">
     <Presets>
         <Preset name="Default" options=""/>
     </Presets>
