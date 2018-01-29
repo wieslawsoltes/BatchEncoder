@@ -364,7 +364,8 @@ namespace app
         format.szFunction = _T("- none -");
         format.szPath = _T("program.exe");
         format.nExitCodeSuccess = 0;
-        format.nType = 0;
+        format.nType = config::FormatType::Encoder;
+        formar.nPriority = 0;
         format.szInputExtensions = _T("WAV");
         format.szOutputExtension = _T("EXT");
         format.nDefaultPreset = 0;
@@ -472,7 +473,7 @@ namespace app
             CString szTemplate = _T("");
             CString szPath = _T("");
             CString szExitCodeSuccess = _T("");
-            int nType = 0;
+            config::FormatType nType = config::FormatType::Encoder;
             bool bInput = false;
             bool bOutput = false;
             CString szFunction = _T("");
@@ -490,11 +491,10 @@ namespace app
 
             int nCheckID = this->GetCheckedRadioButton(IDC_RADIO_TYPE_ENCODER, IDC_RADIO_TYPE_DECODER);
             if (nCheckID == IDC_RADIO_TYPE_ENCODER)
-                nType = 0;
+                nType = config::FormatType::Encoder;
             else if (nCheckID == IDC_RADIO_TYPE_DECODER)
-                nType = 1;
-            else
-                nType = 0;
+                nType = config::FormatType::Decoder;
+
 
             if (IsDlgButtonChecked(IDC_CHECK_FORMAT_PIPES_INPUT) == BST_CHECKED)
                 bInput = true;
