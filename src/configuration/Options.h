@@ -38,7 +38,7 @@ namespace config
         void Defaults()
         {
             this->szSelectedLanguage = _T("en-US");
-            this->nSelectedFormat = 14;
+            this->nSelectedFormat = 16;
             this->szOutputPath = _T("$SourceDirectory$\\$Name$.$Ext$");
             this->bDeleteSourceFiles = false;
             this->bRecurseChecked = true;
