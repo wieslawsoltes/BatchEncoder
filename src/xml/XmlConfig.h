@@ -93,6 +93,7 @@ namespace xml
             xml.SetItems(items);
             return xml.Save(szFileXml);
         }
+    public:
         static bool CXmlConfig::LoadLanguage(XmlDocumnent &doc, lang::CLanguage &language)
         {
             XmlLanguages xml(doc);
@@ -115,6 +116,7 @@ namespace xml
             xml.SetLanguage(language);
             return xml.Save(szFileXml);
         }
+    public:
         static bool CXmlConfig::LoadPreset(XmlDocumnent &doc, config::CPreset &preset)
         {
             XmlPresets xml(doc);
@@ -159,6 +161,7 @@ namespace xml
             xml.SetPresets(presets);
             return xml.Save(szFileXml);
         }
+    public:
         static bool CXmlConfig::LoadFormat(XmlDocumnent &doc, config::CFormat &format)
         {
             XmlFormats xml(doc);
@@ -181,6 +184,7 @@ namespace xml
             xml.SetFormat(format);
             return xml.Save(szFileXml);
         }
+    public:
         static bool CXmlConfig::LoadTool(XmlDocumnent &doc, config::CTool &tool)
         {
             XmlTools xml(doc);
