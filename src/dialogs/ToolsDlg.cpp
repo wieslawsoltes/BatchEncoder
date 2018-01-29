@@ -1,4 +1,4 @@
-﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
+// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 #include "StdAfx.h"
@@ -1007,11 +1007,13 @@ namespace app
 
     bool CToolsDlg::SaveTool(const std::wstring& szFileXml, config::CTool &tool)
     {
-        return xml::CXmlConfig::SaveTool(szFileXml, tool);
+        //return xml::CXmlConfig::SaveTool(szFileXml, tool);
+        return false;
     }
 
     bool CToolsDlg::LoadTools(const std::wstring& szFileXml, bool bOnlyIds)
     {
+        /*
         xml::XmlDocumnent doc;
         std::string szName = xml::CXmlConfig::GetRootName(szFileXml, doc);
         if (!szName.empty() && util::StringHelper::CompareNoCase(szName, "Tools"))
@@ -1020,10 +1022,13 @@ namespace app
             return this->LoadTools(doc, bOnlyIds);
         }
         return false;
+        */
+        return false;
     }
 
     bool CToolsDlg::LoadTools(xml::XmlDocumnent &doc, bool bOnlyIds)
     {
+        /*
         config::CToolsList tools;
         if (xml::CXmlConfig::LoadTools(doc, tools, bOnlyIds))
         {
@@ -1052,10 +1057,13 @@ namespace app
             return true;
         }
         return false;
+        */
+        return false;
     }
 
     bool CToolsDlg::SaveTools(const std::wstring& szFileXml, bool bOnlyIds)
     {
+        /*
         bool bResult = xml::CXmlConfig::SaveTools(szFileXml, this->m_Tools, bOnlyIds);
         if (bResult == false)
             return false;
@@ -1073,7 +1081,8 @@ namespace app
                     return false;
             }
         }
-
         return true;
+        */
+        return false;
     }
 }

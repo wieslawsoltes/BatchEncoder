@@ -1,4 +1,4 @@
-﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
+// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 #include "StdAfx.h"
@@ -1088,6 +1088,7 @@ namespace app
 
     bool CFormatsDlg::LoadFormats(const std::wstring& szFileXml, bool bOnlyIds)
     {
+        /*
         xml::XmlDocumnent doc;
         std::string szName = xml::CXmlConfig::GetRootName(szFileXml, doc);
         if (!szName.empty() && util::StringHelper::CompareNoCase(szName, "Formats"))
@@ -1096,10 +1097,13 @@ namespace app
             return this->LoadFormats(doc, bOnlyIds);
         }
         return false;
+        */
+        return false;
     }
 
     bool CFormatsDlg::LoadFormats(xml::XmlDocumnent &doc, bool bOnlyIds)
     {
+        /*
         config::CFormatsList formats;
         if (xml::CXmlConfig::LoadFormats(doc, formats, bOnlyIds))
         {
@@ -1128,10 +1132,12 @@ namespace app
             return true;
         }
         return false;
+        */
     }
 
     bool CFormatsDlg::SaveFormats(const std::wstring& szFileXml, bool bOnlyIds)
     {
+        /*
         bool bResult = xml::CXmlConfig::SaveFormats(szFileXml, this->m_Formats, bOnlyIds);
         if (bResult == false)
             return false;
@@ -1149,8 +1155,9 @@ namespace app
                     return false;
             }
         }
-
         return true;
+        */
+        return false;
     }
 
     bool CFormatsDlg::LoadPresets(xml::XmlDocumnent &doc)
