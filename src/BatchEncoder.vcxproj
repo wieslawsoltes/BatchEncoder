@@ -311,6 +311,7 @@ copy /Y ..\setup\*.portable $(OutDir)</Command>
     <ClInclude Include="version.h" />
     <ClInclude Include="res\resource.h" />
     <ClInclude Include="StdAfx.h" />
+    <ClInclude Include="Settings.h" />
     <ClInclude Include="MainApp.h" />
     <ClInclude Include="configuration\Format.h" />
     <ClInclude Include="configuration\FormatsList.h" />
