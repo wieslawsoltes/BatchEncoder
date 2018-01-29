@@ -156,7 +156,7 @@ namespace app
         afx_msg void OnHelpWebsite();
         afx_msg void OnHelpAbout();
     public:
-        bool LoadLanguages(const std::wstring szPath);
+        bool LoadLanguages(const std::wstring& szPath);
         void InitLanguageMenu();
         void SetLanguage();
         void GetItems();
@@ -190,8 +190,8 @@ namespace app
         bool LoadOptions(xml::XmlDocumnent &doc);
         bool SaveOptions(const std::wstring& szFileXml);
     public:
-        bool LoadFormats(const std::wstring szPath);
-        bool SaveFormats(const std::wstring szPath);
+        bool LoadFormats(const std::wstring& szPath);
+        bool SaveFormats(const std::wstring& szPath);
     public:
         bool LoadFormat(const std::wstring& szFileXml);
         bool LoadFormat(xml::XmlDocumnent &doc);
@@ -201,8 +201,8 @@ namespace app
         bool LoadPresets(xml::XmlDocumnent &doc);
         bool SavePresets(const std::wstring& szFileXml);
     public:
-        bool LoadTools(const std::wstring szPath);
-        bool SaveTools(const std::wstring szPath);
+        bool LoadTools(const std::wstring& szPath);
+        bool SaveTools(const std::wstring& szPath);
     public:
         bool LoadTool(const std::wstring& szFileXml);
         bool LoadTool(xml::XmlDocumnent &doc);

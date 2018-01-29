@@ -1754,7 +1754,7 @@ namespace app
         }
     }
 
-    bool CMainDlg:LoadLanguages(const std::wstring szPath)
+    bool CMainDlg::LoadLanguages(const std::wstring& szPath)
     {
         std::vector<std::wstring> files;
         bool bResult = util::Utilities::FindFiles(szPath, files, false);
@@ -2762,7 +2762,7 @@ namespace app
         return xml::CXmlConfig::SaveOptions(szFileXml, this->m_Config.m_Options);
     }
 
-    bool CMainDlg::LoadFormats(const std::wstring szPath)
+    bool CMainDlg::LoadFormats(const std::wstring& szPath)
     {
         std::vector<std::wstring> files;
         bool bResult = util::Utilities::FindFiles(szPath, files, false);
@@ -2797,7 +2797,7 @@ namespace app
         return false;
     }
 
-    bool CMainDlg::SaveFormats(const std::wstring szPath)
+    bool CMainDlg::SaveFormats(const std::wstring& szPath)
     {
         ::CreateDirectory(szPath.c_str(), nullptr);
         for (auto& format : this->m_Config.m_Formats.m_Items)
@@ -2878,7 +2878,7 @@ namespace app
         return false;
     }
 
-    bool CMainDlg::LoadTools(const std::wstring szPath)
+    bool CMainDlg::LoadTools(const std::wstring& szPath)
     {
         std::vector<std::wstring> files;
         bool bResult = util::Utilities::FindFiles(szPath, files, false);
@@ -2911,7 +2911,7 @@ namespace app
         return false;
     }
 
-    bool CMainDlg::SaveTools(const std::wstring szPath)
+    bool CMainDlg::SaveTools(const std::wstring& szPath)
     {
         ::CreateDirectory(szPath.c_str(), nullptr);
         for (auto& tool : this->m_Config.m_Tools.m_Items)
