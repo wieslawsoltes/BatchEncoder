@@ -880,7 +880,7 @@ namespace worker
                 szDecOutputFile,
                 pDecFormat->bPipeInput,
                 pDecFormat->bPipeOutput,
-                _T(""));
+                L"");
         }
 
         encoderCommandLine.Build(

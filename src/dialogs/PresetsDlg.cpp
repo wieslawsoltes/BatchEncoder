@@ -24,8 +24,8 @@ namespace app
         : CMyDialogEx(CPresetsDlg::IDD, pParent)
     {
         this->m_hIcon = AfxGetApp()->LoadIcon(IDI_ICON_MAIN);
-        this->szPresetsDialogResize = _T("");
-        this->szPresetsListColumns = _T("");
+        this->szPresetsDialogResize = L"";
+        this->szPresetsListColumns = L"";
         this->bUpdate = false;
         this->nSelectedFormat = 0;
     }
@@ -287,7 +287,7 @@ namespace app
             config::CFormat& format = m_Formats.Get(nSelectedFormat);
             config::CPreset preset;
             preset.szName = pConfig->GetString(0x00220004);
-            preset.szOptions = _T("");
+            preset.szOptions = L"";
             format.m_Presets.Insert(preset);
 
             AddToList(preset, nItem);

@@ -38,6 +38,8 @@ namespace xml
             VALIDATE(GetChildValue(element, "OverwriteExistingFiles", &m_Options.bOverwriteExistingFiles));
             VALIDATE(GetChildValue(element, "TryToDownloadTools", &m_Options.bTryToDownloadTools));
             VALIDATE(GetChildValue(element, "ThreadCount", &m_Options.nThreadCount));
+            VALIDATE(GetChildValue(element, "OutputBrowse", &m_Options.szOutputBrowse));
+            VALIDATE(GetChildValue(element, "DirectoryBrowse", &m_Options.szDirectoryBrowse));
             VALIDATE(GetChildValue(element, "MainWindowResize", &m_Options.szMainWindowResize));
             VALIDATE(GetChildValue(element, "FileListColumns", &m_Options.szFileListColumns));
             VALIDATE(GetChildValue(element, "PresetsDialogResize", &m_Options.szPresetsDialogResize));
@@ -66,6 +68,8 @@ namespace xml
             SetChildValue(element, "OverwriteExistingFiles", m_Options.bOverwriteExistingFiles);
             SetChildValue(element, "TryToDownloadTools", m_Options.bTryToDownloadTools);
             SetChildValue(element, "ThreadCount", m_Options.nThreadCount);
+            SetChildValue(element, "OutputBrowse", m_Options.szOutputBrowse);
+            SetChildValue(element, "DirectoryBrowse", m_Options.szDirectoryBrowse);
             SetChildValue(element, "MainWindowResize", m_Options.szMainWindowResize);
             SetChildValue(element, "FileListColumns", m_Options.szFileListColumns);
             SetChildValue(element, "PresetsDialogResize", m_Options.szPresetsDialogResize);

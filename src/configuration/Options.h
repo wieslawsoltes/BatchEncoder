@@ -26,6 +26,8 @@ namespace config
         bool bOverwriteExistingFiles;
         bool bTryToDownloadTools;
         int nThreadCount;
+        std::wstring szOutputBrowse;
+        std::wstring szDirectoryBrowse;
         std::wstring szMainWindowResize;
         std::wstring szFileListColumns;
         std::wstring szPresetsDialogResize;
@@ -37,9 +39,9 @@ namespace config
     public:
         void Defaults()
         {
-            this->szSelectedLanguage = _T("en-US");
+            this->szSelectedLanguage = L"en-US";
             this->nSelectedFormat = 16;
-            this->szOutputPath = _T("$SourceDirectory$\\$Name$.$Ext$");
+            this->szOutputPath = L"$SourceDirectory$\\$Name$.$Ext$";
             this->bDeleteSourceFiles = false;
             this->bRecurseChecked = true;
             this->bShutdownWhenFinished = false;
@@ -53,14 +55,16 @@ namespace config
             this->bOverwriteExistingFiles = true;
             this->bTryToDownloadTools = true;
             this->nThreadCount = 0;
-            this->szMainWindowResize = _T("");
-            this->szFileListColumns = _T("");
-            this->szPresetsDialogResize = _T("");
-            this->szPresetsListColumns = _T("");
-            this->szFormatsDialogResize = _T("");
-            this->szFormatsListColumns = _T("");
-            this->szToolsDialogResize = _T("");
-            this->szToolsListColumns = _T("");
+            this->szOutputBrowse = L"";
+            this->szDirectoryBrowse = L"";
+            this->szMainWindowResize = L"";
+            this->szFileListColumns = L"";
+            this->szPresetsDialogResize = L"";
+            this->szPresetsListColumns = L"";
+            this->szFormatsDialogResize = L"";
+            this->szFormatsListColumns = L"";
+            this->szToolsDialogResize = L"";
+            this->szToolsListColumns = L"";
         }
     };
 }

@@ -25,8 +25,8 @@ namespace app
         : CMyDialogEx(CFormatsDlg::IDD, pParent)
     {
         this->m_hIcon = AfxGetApp()->LoadIcon(IDI_ICON_MAIN);
-        this->szFormatsDialogResize = _T("");
-        this->szFormatsListColumns = _T("");
+        this->szFormatsDialogResize = L"";
+        this->szFormatsListColumns = L"";
         this->bUpdate = false;
         this->nSelectedFormat = 0;
     }

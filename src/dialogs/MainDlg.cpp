@@ -27,22 +27,12 @@
 
 namespace app
 {
-    static CString szLastBrowse;
+    static CString szLastOutputBrowse;
+    static CString szLastDirectoryBrowse;
     static WNDPROC lpOldWindowProc;
     static bool bRecurseChecked = true;
     static HWND hWndBtnRecurse = nullptr;
     static HWND hWndStaticText = nullptr;
-
-    int CALLBACK BrowseCallbackProc(HWND hWnd, UINT uMsg, LPARAM lp, LPARAM pData)
-    {
-        if (uMsg == BFFM_INITIALIZED)
-        {
-            TCHAR szPath[MAX_PATH + 1] = _T("");
-            wsprintf(szPath, _T("%s\0"), szLastBrowse);
-            ::SendMessage(hWnd, BFFM_SETSELECTION, TRUE, (LPARAM)szPath);
-        }
-        return(0);
-    }
 
     LRESULT CALLBACK BrowseDlgWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
     {
@@ -63,8 +53,6 @@ namespace app
             HWND hWndTitle = nullptr;
             HFONT hFont;
             RECT rc, rcTitle, rcTree, rcWnd;
-
-            TCHAR szPath[MAX_PATH + 1] = _T("");
 
             hWndTitle = ::GetDlgItem(hWnd, IDC_TITLE);
 
@@ -106,6 +94,8 @@ namespace app
                 ::SendMessage(hWndBtnRecurse, WM_SETFONT, (WPARAM)hFont, MAKELPARAM(TRUE, 0));
             }
 
+            TCHAR szPath[MAX_PATH + 1] = _T("");
+            wsprintf(szPath, _T("%s\0"), szLastDirectoryBrowse);
             ::SendMessage(hWnd, BFFM_SETSELECTION, TRUE, (LPARAM)szPath);
         }
         return(0);
@@ -121,9 +111,6 @@ namespace app
             HWND hWndTitle = nullptr;
             HFONT hFont;
             RECT rc, rcTitle, rcTree, rcWnd;
-
-            TCHAR szPath[MAX_PATH + 1] = _T("");
-            wsprintf(szPath, _T("%s\0"), szLastBrowse);
 
             hWndTitle = ::GetDlgItem(hWnd, IDC_TITLE);
 
@@ -162,6 +149,8 @@ namespace app
                 ::SendMessage(hWndStaticText, WM_SETFONT, (WPARAM)hFont, MAKELPARAM(TRUE, 0));
             }
 
+            TCHAR szPath[MAX_PATH + 1] = _T("");
+            wsprintf(szPath, _T("%s\0"), szLastOutputBrowse);
             ::SendMessage(hWnd, BFFM_SETSELECTION, TRUE, (LPARAM)szPath);
         }
         return(0);
@@ -944,11 +933,6 @@ namespace app
 
             std::wstring szTitle = m_Config.GetString(0x00210006);
 
-            CString szTmp;
-            this->m_CmbOutPath.GetWindowText(szTmp);
-
-            szLastBrowse = szTmp;
-
             if (SHGetMalloc(&pMalloc) == E_FAIL)
                 return;
 
@@ -983,7 +967,7 @@ namespace app
             {
                 if (::SHGetPathFromIDList(pidlBrowse, lpBuffer))
                 {
-                    szLastBrowse.Format(_T("%s\0"), lpBuffer);
+                    szLastOutputBrowse.Format(_T("%s\0"), lpBuffer);
 
                     CString szOutPath;
                     szOutPath.Format(_T("%s\\%s.%s\0"), lpBuffer, VAR_OUTPUT_NAME, VAR_OUTPUT_EXTENSION);
@@ -1154,6 +1138,8 @@ namespace app
             {
                 if (::SHGetPathFromIDList(pidlBrowse, lpBuffer))
                 {
+                    szLastDirectoryBrowse.Format(_T("%s\0"), lpBuffer);
+
                     std::wstring szPath = std::wstring(lpBuffer);
                     std::vector<std::wstring> files;
                     bool bResult = util::Utilities::FindFiles(szPath, files, bRecurseChecked);
@@ -1715,7 +1701,7 @@ namespace app
     {
         if (this->pWorkerContext->bRunning == false)
         {
-            util::Utilities::LaunchAndWait(_T("https://github.com/wieslawsoltes/BatchEncoder"), _T(""), FALSE);
+            util::Utilities::LaunchAndWait(L"https://github.com/wieslawsoltes/BatchEncoder", L"", FALSE);
         }
     }
 
@@ -1953,6 +1939,12 @@ namespace app
         m_EdtThreads.GetWindowText(szThreadCount);
         m_Config.m_Options.nThreadCount = _tstoi(szThreadCount);
 
+        // options: OutputBrowse
+        m_Config.m_Options.szOutputBrowse = szLastOutputBrowse;
+
+        // options: DirectoryBrowse
+        m_Config.m_Options.szDirectoryBrowse = szLastDirectoryBrowse;
+
         // option: MainWindowResize
         m_Config.m_Options.szMainWindowResize = this->GetWindowRectStr();
 
@@ -1980,12 +1972,10 @@ namespace app
         if (!m_Config.m_Options.szOutputPath.empty())
         {
             this->m_CmbOutPath.SetWindowText(m_Config.m_Options.szOutputPath.c_str());
-            szLastBrowse = m_Config.m_Options.szOutputPath.c_str();
         }
         else
         {
             m_Config.m_Options.szOutputPath = app::m_App.m_Settings.szSettingsPath;
-            szLastBrowse = m_Config.m_Options.szOutputPath.c_str();
             this->m_CmbOutPath.SetWindowText(m_Config.m_Options.szOutputPath.c_str());
         }
 
@@ -2065,6 +2055,12 @@ namespace app
         CString szThreadCount;
         szThreadCount.Format(_T("%d\0"), m_Config.m_Options.nThreadCount);
         m_EdtThreads.SetWindowText(szThreadCount);
+
+        // options: OutputBrowse
+        szLastOutputBrowse = m_Config.m_Options.szOutputBrowse.c_str();
+
+        // options: DirectoryBrowse
+        szLastDirectoryBrowse = m_Config.m_Options.szDirectoryBrowse.c_str();
 
         // option: MainWindowResize
         if (!m_Config.m_Options.szMainWindowResize.empty())

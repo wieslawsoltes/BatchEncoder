@@ -24,8 +24,8 @@ namespace app
         : CMyDialogEx(CToolsDlg::IDD, pParent)
     {
         this->m_hIcon = AfxGetApp()->LoadIcon(IDI_ICON_MAIN);
-        this->szToolsDialogResize = _T("");
-        this->szToolsListColumns = _T("");
+        this->szToolsDialogResize = L"";
+        this->szToolsListColumns = L"";
         this->bUpdate = false;
         this->nSelectedTool = 0;
         m_Utilities.bDownload = false;
@@ -390,13 +390,13 @@ namespace app
 
         config::CTool tool;
         tool.szName = pConfig->GetString(0x00240004);
-        tool.szPlatform = _T("");
-        tool.szFormats = _T("");
-        tool.szUrl = _T("");
-        tool.szFile = _T("");
-        tool.szExtract = _T("");
-        tool.szPath = _T("");
-        tool.szStatus = _T("");
+        tool.szPlatform = L"";
+        tool.szFormats = L"";
+        tool.szUrl = L"";
+        tool.szFile = L"";
+        tool.szExtract = L"";
+        tool.szPath = L"";
+        tool.szStatus = L"";
 
         m_Tools.Insert(tool);
 
