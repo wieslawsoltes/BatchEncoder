@@ -5,6 +5,7 @@
 
 #include <afxcmn.h>
 #include <afxwin.h>
+#include <array>
 #include <string>
 #include <utility>
 #include "controls\MyListCtrl.h"

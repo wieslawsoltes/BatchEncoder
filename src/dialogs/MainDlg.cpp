@@ -1097,8 +1097,8 @@ namespace app
                     {
                         std::wstring szFilePath = fd.GetNextPathName(pos);
                         if (!szFilePath.empty())
-                            this->AddToList(sFilePath);
-                    } while (pos != nullptrszFilePath
+                            this->AddToList(szFilePath);
+                    } while (pos != nullptr);
 
                     this->SetItems();
                     this->UpdateStatusBar();
