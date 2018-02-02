@@ -1077,7 +1077,7 @@ namespace app
             try
             {
                 const int nMaxFile = 4096;
-                const int nBufferSize = (nMaxFile * (MAX_PATH + 1)) + 1;
+                const int nBufferSize = ((nMaxFile + 1) * MAX_PATH) + 1;
                 std::array<TCHAR, nBufferSize> buffer { };
 
                 CString szFilter;
@@ -1090,7 +1090,7 @@ namespace app
                     this);
 
                 fd.m_ofn.lpstrFile = buffer.data();
-                fd.m_ofn.nMaxFile = nMaxFile / 2;
+                fd.m_ofn.nMaxFile = nBufferSize;
 
                 if (fd.DoModal() != IDCANCEL)
                 {
