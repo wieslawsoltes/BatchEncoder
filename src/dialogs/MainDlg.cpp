@@ -1076,7 +1076,7 @@ namespace app
         {
             try
             {
-                const int nMaxFile = (4096 * (MAX_PATH + 1)) + 1;
+                const int nMaxFile = (2048 * (MAX_PATH + 1)) + 1;
                 std::array<TCHAR, nMaxFile> buffer { };
 
                 CString szFilter;
