@@ -1090,7 +1090,7 @@ namespace app
                     this);
 
                 fd.m_ofn.lpstrFile = buffer.data();
-                fd.m_ofn.nMaxFile = nMaxFile;
+                fd.m_ofn.nMaxFile = nMaxFile / 2;
 
                 if (fd.DoModal() != IDCANCEL)
                 {
