@@ -216,19 +216,29 @@ namespace app
 
     void CFormatsDlg::OnBnClickedButtonImport()
     {
+        std::array<TCHAR, (768*(MAX_PATH+1))+1> buffer { 0 };
+        
         CString szFilter;
         szFilter.Format(_T("%s (*.xml)|*.xml|%s (*.*)|*.*||"),
             pConfig->GetString(0x00310008).c_str(),
             pConfig->GetString(0x00310001).c_str());
 
         CFileDialog fd(TRUE, _T("xml"), _T(""),
-            OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER,
+            OFN_ALLOWMULTISELECT | OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER,
             szFilter, this);
+
+        fd.m_ofn.lpstrFile = buffer.data();
+        fd.m_ofn.nMaxFile = buffer.size();
 
         if (fd.DoModal() == IDOK)
         {
-            std::wstring szFileXml = fd.GetPathName();
-            this->LoadFormat(szFileXml);
+            POSITION pos = fd.GetStartPosition();
+            do
+            {
+                std::wstring szFilePath = fd.GetNextPathName(pos);
+                if (!szFilePath.empty())
+                    this->LoadFormat(szFilePath);
+            } while (pos != nullptr);
         }
     }
 
