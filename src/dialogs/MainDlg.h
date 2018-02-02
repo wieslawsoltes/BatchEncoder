@@ -5,6 +5,7 @@
 
 #include <afxwin.h>
 #include <afxcmn.h>
+#include <array>
 #include <vector>
 #include <string>
 #include <utility>

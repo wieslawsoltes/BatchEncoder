@@ -1074,18 +1074,10 @@ namespace app
     {
         if (this->pWorkerContext->bRunning == false)
         {
-            TCHAR *pFiles = nullptr;
-            const DWORD dwMaxSize = (4096 * MAX_PATH);
             try
             {
-                pFiles = (TCHAR *)malloc(dwMaxSize);
-                if (pFiles == nullptr)
-                {
-                    m_StatusBar.SetText(m_Config.GetString(0x00210009).c_str(), 1, 0);
-                    return;
-                }
-
-                ZeroMemory(pFiles, dwMaxSize);
+                const int nMaxFile = (4096 * (MAX_PATH + 1)) + 1;
+                std::array<TCHAR, nMaxFile> buffer { };
 
                 CString szFilter;
                 szFilter.Format(_T("%s (*.*)|*.*||"),
@@ -1096,40 +1088,23 @@ namespace app
                     szFilter,
                     this);
 
-                fd.m_ofn.lpstrFile = pFiles;
-                fd.m_ofn.nMaxFile = (dwMaxSize) / 2;
+                fd.m_ofn.lpstrFile = buffer.data();
+                fd.m_ofn.nMaxFile = nMaxFile;
 
                 if (fd.DoModal() != IDCANCEL)
                 {
                     POSITION pos = fd.GetStartPosition();
-
                     do
                     {
                         std::wstring sFilePath = fd.GetNextPathName(pos);
                         if (!sFilePath.empty())
-                        {
                             this->AddToList(sFilePath);
-                        }
                     } while (pos != nullptr);
-
                     this->SetItems();
                     this->UpdateStatusBar();
                 }
             }
-            catch (...)
-            {
-                if (pFiles != nullptr)
-                {
-                    free(pFiles);
-                    pFiles = nullptr;
-                }
-            }
-
-            if (pFiles != nullptr)
-            {
-                free(pFiles);
-                pFiles = nullptr;
-            }
+            catch (...) { }
         }
     }
 
