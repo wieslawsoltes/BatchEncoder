@@ -1076,8 +1076,9 @@ namespace app
         {
             try
             {
-                const int nMaxFile = (2048 * (MAX_PATH + 1)) + 1;
-                std::array<TCHAR, nMaxFile> buffer { };
+                const int nMaxFile = 4096;
+                const int nBufferSize = (nMaxFile * (MAX_PATH + 1)) + 1;
+                std::array<TCHAR, nBufferSize> buffer { };
 
                 CString szFilter;
                 szFilter.Format(_T("%s (*.*)|*.*||"),
