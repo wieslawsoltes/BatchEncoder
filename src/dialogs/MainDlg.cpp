@@ -1076,8 +1076,7 @@ namespace app
         {
             try
             {
-                const int nMaxFile = (768 * (MAX_PATH + 1)) + 1;
-                std::array<TCHAR, nMaxFile> buffer { 0 };
+                std::array<TCHAR, (768*(MAX_PATH+1))+1> buffer { 0 };
 
                 CString szFilter;
                 szFilter.Format(_T("%s (*.*)|*.*||"),
@@ -1089,17 +1088,18 @@ namespace app
                     this);
 
                 fd.m_ofn.lpstrFile = buffer.data();
-                fd.m_ofn.nMaxFile = nMaxFile;
+                fd.m_ofn.nMaxFile = buffer.size();
 
                 if (fd.DoModal() != IDCANCEL)
                 {
                     POSITION pos = fd.GetStartPosition();
                     do
                     {
-                        std::wstring sFilePath = fd.GetNextPathName(pos);
-                        if (!sFilePath.empty())
+                        std::wstring szFilePath = fd.GetNextPathName(pos);
+                        if (!szFilePath.empty())
                             this->AddToList(sFilePath);
-                    } while (pos != nullptr);
+                    } while (pos != nullptrszFilePath
+
                     this->SetItems();
                     this->UpdateStatusBar();
                 }
