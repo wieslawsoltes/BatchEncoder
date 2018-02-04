@@ -98,8 +98,8 @@
     <String key="0x000B0016" value="&amp;모두 삭제" />
     <String key="0x000B0017" value="&amp;삭제" />
     <String key="0x000B0018" value="&amp;추가" />
-    <String key="0x000B0019" value="&amp;불러오기" />
-    <String key="0x000B001A" value="&amp;따로 저장" />
+    <String key="0x000B0019" value="&amp;Import" />
+    <String key="0x000B001A" value="E&amp;xport" />
     <String key="0x000B001B" value="&amp;변경" />
     <String key="0x000B001C" value="&amp;확인" />
     <String key="0x000B001D" value="Du&amp;plicate" />

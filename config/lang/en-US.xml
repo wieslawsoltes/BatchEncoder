@@ -98,8 +98,8 @@
     <String key="0x000B0016" value="Dele&amp;te All" />
     <String key="0x000B0017" value="&amp;Delete" />
     <String key="0x000B0018" value="&amp;Add" />
-    <String key="0x000B0019" value="&amp;Load" />
-    <String key="0x000B001A" value="Sa&amp;ve As" />
+    <String key="0x000B0019" value="&amp;Import" />
+    <String key="0x000B001A" value="E&amp;xport" />
     <String key="0x000B001B" value="C&amp;hange" />
     <String key="0x000B001C" value="&amp;OK" />
     <String key="0x000B001D" value="Du&amp;plicate" />
