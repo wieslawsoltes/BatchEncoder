@@ -73,8 +73,8 @@ namespace app
         controls::CMyButton m_BtnMoveUp;
         controls::CMyButton m_BtnMoveDown;
         controls::CMyButton m_BtnUpdate;
-        controls::CMyButton m_BtnLoad;
-        controls::CMyButton m_BtnSave;
+        controls::CMyButton m_BtnImport;
+        controls::CMyButton m_BtnExport;
     public:
         afx_msg void OnDropFiles(HDROP hDropInfo);
         afx_msg void OnBnClickedOk();
@@ -90,8 +90,8 @@ namespace app
         afx_msg void OnBnClickedButtonUpdatePreset();
         afx_msg void OnEnChangeEditPresetName();
         afx_msg void OnEnChangeEditPresetOptions();
-        afx_msg void OnBnClickedButtonLoadPresets();
-        afx_msg void OnBnClickedButtonSavePresets();
+        afx_msg void OnBnClickedButtonImportPresets();
+        afx_msg void OnBnClickedButtonExportPresets();
         afx_msg void OnClose();
     public:
         void LoadWindowSettings();

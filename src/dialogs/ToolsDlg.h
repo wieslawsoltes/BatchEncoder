@@ -91,8 +91,6 @@ namespace app
         controls::CMyButton m_BtnMoveUp;
         controls::CMyButton m_BtnMoveDown;
         controls::CMyButton m_BtnUpdate;
-        controls::CMyButton m_BtnLoad;
-        controls::CMyButton m_BtnSave;
         controls::CMyButton m_BtnDownload;
         controls::CMyButton m_BtnSetFormat;
         controls::CMyButton m_BtnSetFormatX86;
@@ -118,8 +116,6 @@ namespace app
         afx_msg void OnEnChangeEditToolFile();
         afx_msg void OnEnChangeEditToolExtract();
         afx_msg void OnEnChangeEditToolPath();
-        afx_msg void OnBnClickedButtonLoadTools();
-        afx_msg void OnBnClickedButtonSaveTools();
         afx_msg void OnBnClickedButtonDownloadSelected();
         afx_msg void OnBnClickedButtonToolSetFormat();
         afx_msg void OnBnClickedButtonToolSetFormatX86();

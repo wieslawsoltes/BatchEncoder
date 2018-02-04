@@ -64,8 +64,6 @@ namespace app
         DDX_Control(pDX, IDC_BUTTON_TOOL_UP, m_BtnMoveUp);
         DDX_Control(pDX, IDC_BUTTON_TOOL_DOWN, m_BtnMoveDown);
         DDX_Control(pDX, IDC_BUTTON_TOOL_UPDATE, m_BtnUpdate);
-        DDX_Control(pDX, IDC_BUTTON_TOOL_LOAD, m_BtnLoad);
-        DDX_Control(pDX, IDC_BUTTON_TOOL_SAVE, m_BtnSave);
         DDX_Control(pDX, IDC_BUTTON_TOOL_DOWNLOAD, m_BtnDownload);
         DDX_Control(pDX, IDC_BUTTON_TOOL_SETFORMAT, m_BtnSetFormat);
         DDX_Control(pDX, IDC_BUTTON_TOOL_SETFORMATX86, m_BtnSetFormatX86);
@@ -95,8 +93,6 @@ namespace app
         ON_BN_CLICKED(IDC_BUTTON_TOOL_UP, OnBnClickedButtonToolUp)
         ON_BN_CLICKED(IDC_BUTTON_TOOL_DOWN, OnBnClickedButtonToolDown)
         ON_BN_CLICKED(IDC_BUTTON_TOOL_UPDATE, OnBnClickedButtonUpdateTool)
-        ON_BN_CLICKED(IDC_BUTTON_TOOL_LOAD, OnBnClickedButtonLoadTools)
-        ON_BN_CLICKED(IDC_BUTTON_TOOL_SAVE, OnBnClickedButtonSaveTools)
         ON_BN_CLICKED(IDC_BUTTON_TOOL_DOWNLOAD, OnBnClickedButtonDownloadSelected)
         ON_BN_CLICKED(IDC_BUTTON_TOOL_SETFORMAT, OnBnClickedButtonToolSetFormat)
         ON_BN_CLICKED(IDC_BUTTON_TOOL_SETFORMATX86, OnBnClickedButtonToolSetFormatX86)
@@ -615,48 +611,6 @@ namespace app
         OnBnClickedButtonUpdateTool();
     }
 
-    void CToolsDlg::OnBnClickedButtonLoadTools()
-    {
-        if (m_Utilities.bDownload == true)
-            return;
-
-        CString szFilter;
-        szFilter.Format(_T("%s (*.xml)|*.xml|%s (*.*)|*.*||"),
-            pConfig->GetString(0x00310009).c_str(),
-            pConfig->GetString(0x00310001).c_str());
-
-        CFileDialog fd(TRUE, _T("xml"), _T(""),
-            OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER,
-            szFilter, this);
-
-        if (fd.DoModal() == IDOK)
-        {
-            std::wstring szFileXml = fd.GetPathName();
-            this->LoadTools(szFileXml, true);
-        }
-    }
-
-    void CToolsDlg::OnBnClickedButtonSaveTools()
-    {
-        if (m_Utilities.bDownload == true)
-            return;
-
-        CString szFilter;
-        szFilter.Format(_T("%s (*.xml)|*.xml|%s (*.*)|*.*||"),
-            pConfig->GetString(0x00310009).c_str(),
-            pConfig->GetString(0x00310001).c_str());
-
-        CFileDialog fd(FALSE, _T("xml"), _T("Tools"),
-            OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER | OFN_OVERWRITEPROMPT,
-            szFilter, this);
-
-        if (fd.DoModal() == IDOK)
-        {
-            std::wstring szFileXml = fd.GetPathName();
-            this->SaveTools(szFileXml, true);
-        }
-    }
-
     void CToolsDlg::OnBnClickedButtonDownloadSelected()
     {
         if (m_Utilities.bDownload == true)
@@ -794,8 +748,6 @@ namespace app
         helper.SetWndText(&m_BtnRemoveAll, 0x000E001E);
         helper.SetWndText(&m_BtnRemove, 0x000E001F);
         helper.SetWndText(&m_BtnAdd, 0x000E0020);
-        helper.SetWndText(&m_BtnLoad, 0x000E0021);
-        helper.SetWndText(&m_BtnSave, 0x000E0022);
         helper.SetWndText(&m_BtnDownload, 0x000E0023);
         helper.SetWndText(&m_BtnSetFormat, 0x000E0025);
         helper.SetWndText(&m_BtnSetFormatX86, 0x000E0026);
@@ -950,8 +902,6 @@ namespace app
         this->m_BtnMoveUp.EnableWindow(bEnable);
         this->m_BtnMoveDown.EnableWindow(bEnable);
         this->m_BtnUpdate.EnableWindow(bEnable);
-        this->m_BtnLoad.EnableWindow(bEnable);
-        this->m_BtnSave.EnableWindow(bEnable);
         this->m_BtnSetFormat.EnableWindow(bEnable);
         this->m_BtnSetFormatX86.EnableWindow(bEnable);
         this->m_BtnSetFormatX64.EnableWindow(bEnable);

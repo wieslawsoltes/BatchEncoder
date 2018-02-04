@@ -70,8 +70,6 @@ namespace app
         DDX_Control(pDX, IDC_BUTTON_FORMAT_UP, m_BtnMoveUp);
         DDX_Control(pDX, IDC_BUTTON_FORMAT_DOWN, m_BtnMoveDown);
         DDX_Control(pDX, IDC_BUTTON_FORMAT_UPDATE, m_BtnUpdate);
-        DDX_Control(pDX, IDC_BUTTON_FORMAT_LOAD, m_BtnLoad);
-        DDX_Control(pDX, IDC_BUTTON_FORMAT_SAVE, m_BtnSave);
         DDX_Control(pDX, IDC_BUTTON_EDIT_PRESETS, m_BtnEditPresets);
         DDX_Control(pDX, IDC_BUTTON_BROWSE_PATH, m_BtnBrowsePath);
         DDX_Control(pDX, IDC_BUTTON_BROWSE_FUNCTION, m_BtnBrowseFunction);
@@ -105,8 +103,6 @@ namespace app
         ON_BN_CLICKED(IDC_BUTTON_FORMAT_UP, OnBnClickedButtonFormatUp)
         ON_BN_CLICKED(IDC_BUTTON_FORMAT_DOWN, OnBnClickedButtonFormatDown)
         ON_BN_CLICKED(IDC_BUTTON_FORMAT_UPDATE, OnBnClickedButtonUpdateFormat)
-        ON_BN_CLICKED(IDC_BUTTON_FORMAT_LOAD, OnBnClickedButtonLoadFormats)
-        ON_BN_CLICKED(IDC_BUTTON_FORMAT_SAVE, OnBnClickedButtonSaveFormats)
         ON_BN_CLICKED(IDC_BUTTON_EDIT_PRESETS, OnBnClickedButtonEditPresets)
         ON_BN_CLICKED(IDC_BUTTON_BROWSE_PATH, OnBnClickedButtonBrowsePath)
         ON_BN_CLICKED(IDC_BUTTON_BROWSE_FUNCTION, OnBnClickedButtonBrowseProgress)
@@ -635,42 +631,6 @@ namespace app
         OnBnClickedButtonUpdateFormat();
     }
 
-    void CFormatsDlg::OnBnClickedButtonLoadFormats()
-    {
-        CString szFilter;
-        szFilter.Format(_T("%s (*.xml)|*.xml|%s (*.*)|*.*||"),
-            pConfig->GetString(0x00310005).c_str(),
-            pConfig->GetString(0x00310001).c_str());
-
-        CFileDialog fd(TRUE, _T("xml"), _T(""),
-            OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER,
-            szFilter, this);
-
-        if (fd.DoModal() == IDOK)
-        {
-            std::wstring szFileXml = fd.GetPathName();
-            this->LoadFormats(szFileXml, true);
-        }
-    }
-
-    void CFormatsDlg::OnBnClickedButtonSaveFormats()
-    {
-        CString szFilter;
-        szFilter.Format(_T("%s (*.xml)|*.xml|%s (*.*)|*.*||"),
-            pConfig->GetString(0x00310005).c_str(),
-            pConfig->GetString(0x00310001).c_str());
-
-        CFileDialog fd(FALSE, _T("xml"), _T("Formats"),
-            OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER | OFN_OVERWRITEPROMPT,
-            szFilter, this);
-
-        if (fd.DoModal() == IDOK)
-        {
-            std::wstring szFileXml = fd.GetPathName();
-            this->SaveFormats(szFileXml, true);
-        }
-    }
-
     void CFormatsDlg::OnBnClickedButtonEditPresets()
     {
         POSITION pos = m_LstFormats.GetFirstSelectedItemPosition();
@@ -809,8 +769,6 @@ namespace app
         helper.SetWndText(&m_BtnRemoveAll, 0x000C0024);
         helper.SetWndText(&m_BtnRemove, 0x000C0025);
         helper.SetWndText(&m_BtnAdd, 0x000C0026);
-        helper.SetWndText(&m_BtnLoad, 0x000C0027);
-        helper.SetWndText(&m_BtnSave, 0x000C0028);
         helper.SetWndText(&m_BtnUpdate, 0x000C0029);
         helper.SetWndText(&m_BtnOK, 0x000C002A);
     }
@@ -931,20 +889,16 @@ namespace app
 
         switch (format.nType)
         {
-        case 0:
+        default:
+        case config::FormatType::Encoder:
             this->CheckRadioButton(IDC_RADIO_TYPE_ENCODER,
                 IDC_RADIO_TYPE_DECODER,
                 IDC_RADIO_TYPE_ENCODER);
             break;
-        case 1:
+        case config::FormatType::Decoder:
             this->CheckRadioButton(IDC_RADIO_TYPE_ENCODER,
                 IDC_RADIO_TYPE_DECODER,
                 IDC_RADIO_TYPE_DECODER);
-            break;
-        default:
-            this->CheckRadioButton(IDC_RADIO_TYPE_ENCODER,
-                IDC_RADIO_TYPE_DECODER,
-                IDC_RADIO_TYPE_ENCODER);
             break;
         };
 
