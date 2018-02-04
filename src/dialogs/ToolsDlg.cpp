@@ -251,29 +251,47 @@ namespace app
         if (m_Utilities.bDownload == true)
             return;
 
-        POSITION pos = m_LstTools.GetFirstSelectedItemPosition();
-        if (pos != nullptr)
+        int nCount = m_LstTools.GetItemCount();
+        int nSelectedItems = 0;
+        if (nCount > 0)
         {
-            int nSelected = m_LstTools.GetNextSelectedItem(pos);
-            if (nSelected >= 0)
+            for (int i = 0; i < nCount; i++)
             {
-                config::CTool& tool = m_Tools.Get(nSelected);
+                if (m_LstTools.GetItemState(i, LVIS_SELECTED) == LVIS_SELECTED)
+                    nSelectedItems++;
+            }
+        }
 
-                CString szFilter;
-                szFilter.Format(_T("%s (*.xml)|*.xml|%s (*.*)|*.*||"),
-                    pConfig->GetString(0x00310010).c_str(),
-                    pConfig->GetString(0x00310001).c_str());
-
-                CFileDialog fd(FALSE, _T("xml"), tool.szName.c_str(),
-                    OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER | OFN_OVERWRITEPROMPT,
-                    szFilter, this);
-
-                if (fd.DoModal() == IDOK)
+        if (nSelectedItems == 1)
+        {
+            POSITION pos = m_LstTools.GetFirstSelectedItemPosition();
+            if (pos != nullptr)
+            {
+                int nSelected = m_LstTools.GetNextSelectedItem(pos);
+                if (nSelected >= 0)
                 {
-                    std::wstring szFileXml = fd.GetPathName();
-                    this->SaveTool(szFileXml, tool);
+                    config::CTool& tool = m_Tools.Get(nSelected);
+
+                    CString szFilter;
+                    szFilter.Format(_T("%s (*.xml)|*.xml|%s (*.*)|*.*||"),
+                        pConfig->GetString(0x00310010).c_str(),
+                        pConfig->GetString(0x00310001).c_str());
+
+                    CFileDialog fd(FALSE, _T("xml"), tool.szName.c_str(),
+                        OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER | OFN_OVERWRITEPROMPT,
+                        szFilter, this);
+
+                    if (fd.DoModal() == IDOK)
+                    {
+                        std::wstring szFileXml = fd.GetPathName();
+                        this->SaveTool(szFileXml, tool);
+                    }
                 }
             }
+        }
+        else if (nSelectedItems > 1)
+        {
+            // TODO: Show browse for folder dialog and call SaveTools.
         }
     }
 
@@ -812,12 +830,7 @@ namespace app
                         std::string szName = xml::CXmlConfig::GetRootName(szPath, doc);
                         if (!szName.empty())
                         {
-                            if (util::StringHelper::CompareNoCase(szName, "Tools"))
-                            {
-                                ::SetCurrentDirectory(util::Utilities::GetFilePath(szPath).c_str());
-                                this->LoadTools(doc, true);
-                            }
-                            else if (util::StringHelper::CompareNoCase(szName, "Tool"))
+                            if (util::StringHelper::CompareNoCase(szName, "Tool"))
                             {
                                 this->LoadTool(doc);
                             }
@@ -970,78 +983,22 @@ namespace app
         return xml::CXmlConfig::SaveTool(szFileXml, tool);
     }
 
-    bool CToolsDlg::LoadTools(const std::wstring& szFileXml, bool bOnlyIds)
+    bool CToolsDlg::SaveTools(const std::wstring& szPath)
     {
-        /*
-        xml::XmlDocumnent doc;
-        std::string szName = xml::CXmlConfig::GetRootName(szFileXml, doc);
-        if (!szName.empty() && util::StringHelper::CompareNoCase(szName, "Tools"))
+        int nCount = m_LstTools.GetItemCount();
+        if (nCount > 0)
         {
-            ::SetCurrentDirectory(util::Utilities::GetFilePath(szFileXml).c_str());
-            return this->LoadTools(doc, bOnlyIds);
-        }
-        return false;
-        */
-        return false;
-    }
-
-    bool CToolsDlg::LoadTools(xml::XmlDocumnent &doc, bool bOnlyIds)
-    {
-        /*
-        config::CToolsList tools;
-        if (xml::CXmlConfig::LoadTools(doc, tools, bOnlyIds))
-        {
-            this->m_LstTools.DeleteAllItems();
-            if (bOnlyIds == true)
+            for (int i = 0; i < nCount; i++)
             {
-                this->m_Tools.RemoveAll();
-                for (auto& tool : tools.m_Items)
+                if (m_LstTools.GetItemState(i, LVIS_SELECTED) == LVIS_SELECTED)
                 {
-                    std::wstring path = app::m_App.m_Settings.szToolsDir + L"\\" + tool.szName + L".xml";
-                    if (this->LoadTool(path) == false)
+                    config::CTool& tool = m_Tools.Get(i);
+                    std::wstring path = util::Utilities::CombinePath(szPath, tool.szName + L".xml");
+                    if (this->SaveTool(path, tool) == false)
                         return false;
                 }
-                if (this->m_Tools.Count() > 0)
-                    nSelectedTool = 0;
-            }
-            else
-            {
-                this->m_Tools = std::move(tools);
-                if (this->m_Tools.Count() > 0)
-                    nSelectedTool = 0;
-
-                this->InsertToolsToListCtrl();
-            }
-            this->ListSelectionChange();
-            return true;
-        }
-        return false;
-        */
-        return false;
-    }
-
-    bool CToolsDlg::SaveTools(const std::wstring& szFileXml, bool bOnlyIds)
-    {
-        /*
-        bool bResult = xml::CXmlConfig::SaveTools(szFileXml, this->m_Tools, bOnlyIds);
-        if (bResult == false)
-            return false;
-
-        if (bOnlyIds == true)
-        {
-            std::wstring szFilePath = util::Utilities::GetFilePath(szFileXml);
-            std::wstring szPath = util::Utilities::CombinePath(szFilePath, app::m_App.m_Settings.szToolsDir);
-            ::SetCurrentDirectory(szFilePath.c_str());
-            ::CreateDirectory(szPath.c_str(), nullptr);
-            for (auto& tool : this->m_Tools.m_Items)
-            {
-                std::wstring path = util::Utilities::CombinePath(szPath, tool.szName + L".xml");
-                if (this->SaveTool(path, tool) == false)
-                    return false;
             }
         }
         return true;
-        */
-        return false;
     }
 }
