@@ -967,8 +967,7 @@ namespace app
 
     bool CToolsDlg::SaveTool(const std::wstring& szFileXml, config::CTool &tool)
     {
-        //return xml::CXmlConfig::SaveTool(szFileXml, tool);
-        return false;
+        return xml::CXmlConfig::SaveTool(szFileXml, tool);
     }
 
     bool CToolsDlg::LoadTools(const std::wstring& szFileXml, bool bOnlyIds)
