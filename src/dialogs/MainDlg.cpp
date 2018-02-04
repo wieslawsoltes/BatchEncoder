@@ -83,13 +83,9 @@ namespace app
                 else
                     ::SendMessage(hWndBtnRecurse, BM_SETCHECK, (WPARAM)BST_UNCHECKED, (LPARAM)0);
 
-#pragma warning(push)
-#pragma warning(disable:4311)
-#pragma warning(disable:4312)
                 lpOldWindowProc = (WNDPROC)SetWindowLongPtr(hWnd, GWLP_WNDPROC, (LONG_PTR)BrowseDlgWindowProc);
-                ::ShowWindow(hWndBtnRecurse, SW_SHOW);
-#pragma warning(pop)
 
+                ::ShowWindow(hWndBtnRecurse, SW_SHOW);
                 hFont = (HFONT) ::SendMessage(hWnd, WM_GETFONT, 0, 0);
                 ::SendMessage(hWndBtnRecurse, WM_SETFONT, (WPARAM)hFont, MAKELPARAM(TRUE, 0));
             }
@@ -138,13 +134,9 @@ namespace app
                 ::ShowWindow(hWndTitle, SW_HIDE);
                 ::ShowWindow(::GetDlgItem(hWnd, IDC_STATUSTEXT), SW_HIDE);
 
-#pragma warning(push)
-#pragma warning(disable:4311)
-#pragma warning(disable:4312)
                 lpOldWindowProc = (WNDPROC)SetWindowLongPtr(hWnd, GWLP_WNDPROC, (LONG_PTR)BrowseDlgWindowProc);
-                ::ShowWindow(hWndStaticText, SW_SHOW);
-#pragma warning(pop)
 
+                ::ShowWindow(hWndStaticText, SW_SHOW);
                 hFont = (HFONT) ::SendMessage(hWnd, WM_GETFONT, 0, 0);
                 ::SendMessage(hWndStaticText, WM_SETFONT, (WPARAM)hFont, MAKELPARAM(TRUE, 0));
             }
