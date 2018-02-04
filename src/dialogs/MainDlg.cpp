@@ -921,8 +921,6 @@ namespace app
             LPITEMIDLIST pidlBrowse;
             TCHAR *lpBuffer;
 
-            std::wstring szTitle = m_Config.GetString(0x00210006);
-
             if (SHGetMalloc(&pMalloc) == E_FAIL)
                 return;
 
@@ -939,15 +937,11 @@ namespace app
                 return;
             }
 
-#ifndef BIF_NEWDIALOGSTYLE
-#define BIF_NEWDIALOGSTYLE 0x0040
-#endif
-
             bi.hwndOwner = this->GetSafeHwnd();
             bi.pidlRoot = pidlDesktop;
             bi.pszDisplayName = lpBuffer;
-            bi.lpszTitle = szTitle.c_str();
-            bi.ulFlags = BIF_STATUSTEXT | BIF_RETURNONLYFSDIRS | BIF_NEWDIALOGSTYLE;
+            bi.lpszTitle = m_Config.GetString(0x00210006).c_str();
+            bi.ulFlags = BIF_STATUSTEXT | BIF_RETURNONLYFSDIRS | BIF_USENEWUI;
             bi.iImage = 0;
             bi.lpfn = app::BrowseCallbackOutPath;
             bi.lParam = reinterpret_cast<LPARAM>(this);
@@ -1092,8 +1086,6 @@ namespace app
             LPITEMIDLIST pidlBrowse;
             TCHAR *lpBuffer;
 
-            CString szTitle = m_Config.GetString(0x0021000A).c_str();
-
             if (SHGetMalloc(&pMalloc) == E_FAIL)
                 return;
 
@@ -1110,15 +1102,11 @@ namespace app
                 return;
             }
 
-#ifndef BIF_NEWDIALOGSTYLE
-#define BIF_NEWDIALOGSTYLE 0x0040
-#endif
-
             bi.hwndOwner = this->GetSafeHwnd();
             bi.pidlRoot = pidlDesktop;
             bi.pszDisplayName = lpBuffer;
-            bi.lpszTitle = szTitle;
-            bi.ulFlags = BIF_STATUSTEXT | BIF_RETURNONLYFSDIRS | BIF_NEWDIALOGSTYLE;
+            bi.lpszTitle = m_Config.GetString(0x0021000A).c_str();
+            bi.ulFlags = BIF_STATUSTEXT | BIF_RETURNONLYFSDIRS | BIF_USENEWUI;
             bi.iImage = 0;
             bi.lpfn = app::BrowseCallbackAddDir;
             bi.lParam = reinterpret_cast<LPARAM>(this);
