@@ -134,8 +134,6 @@ namespace app
                 ::ShowWindow(hWndTitle, SW_HIDE);
                 ::ShowWindow(::GetDlgItem(hWnd, IDC_STATUSTEXT), SW_HIDE);
 
-                lpOldWindowProc = (WNDPROC)SetWindowLongPtr(hWnd, GWLP_WNDPROC, (LONG_PTR)BrowseDlgWindowProc);
-
                 ::ShowWindow(hWndStaticText, SW_SHOW);
                 hFont = (HFONT) ::SendMessage(hWnd, WM_GETFONT, 0, 0);
                 ::SendMessage(hWndStaticText, WM_SETFONT, (WPARAM)hFont, MAKELPARAM(TRUE, 0));
