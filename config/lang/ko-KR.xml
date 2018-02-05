@@ -141,6 +141,7 @@
     <String key="0x000C002D" value="&amp;Import" />
     <String key="0x000C002E" value="E&amp;xport" />
     <String key="0x000C002F" value="Du&amp;plicate" />
+    <String key="0x000C0030" value="Priority" />
 
     <!-- Tools Dialog -->
 
@@ -174,6 +175,7 @@
     <String key="0x000E0027" value="Set x&amp;64 Paths" />
     <String key="0x000E0028" value="C&amp;hange" />
     <String key="0x000E0029" value="&amp;OK" />
+    <String key="0x000E002A" value="Priority" />
 
     <!-- About Dialog -->
 

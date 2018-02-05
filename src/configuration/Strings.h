@@ -150,6 +150,7 @@ namespace config
         { 0x000C002D, L"&Import" },
         { 0x000C002E, L"E&xport" },
         { 0x000C002F, L"Du&plicate" },
+        { 0x000C0030, L"Priority" },
 
         // Tools Dialog
 
@@ -183,6 +184,7 @@ namespace config
         { 0x000E0027, L"Set x&64 Paths" },
         { 0x000E0028, L"C&hange" },
         { 0x000E0029, L"&OK" },
+        { 0x000E002A, L"Priority" },
 
         // About Dialog
 

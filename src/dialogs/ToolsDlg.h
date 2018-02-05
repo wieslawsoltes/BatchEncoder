@@ -13,6 +13,7 @@
 #include "controls\MyComboBox.h"
 #include "controls\MyEdit.h"
 #include "controls\MyStatic.h"
+#include "controls\MySpinButtonCtrl.h"
 #include "controls\MyDialogEx.h"
 #include "configuration\ToolsList.h"
 #include "configuration\FormatsList.h"
@@ -68,6 +69,7 @@ namespace dialogs
     public:
         controls::CMyStatic m_StcName;
         controls::CMyStatic m_StcPlatform;
+        controls::CMyStatic m_StcPriority;
         controls::CMyStatic m_StcFormats;
         controls::CMyStatic m_StcUrl;
         controls::CMyStatic m_StcFile;
@@ -76,6 +78,8 @@ namespace dialogs
         controls::CMyListCtrl m_LstTools;
         controls::CMyEdit m_EdtName;
         controls::CMyEdit m_EdtPlatform;
+        controls::CMyEdit m_EdtPriority;
+        controls::CMySpinButtonCtrl m_SpinPriority;
         controls::CMyEdit m_EdtFormats;
         controls::CMyEdit m_EdtUrl;
         controls::CMyEdit m_EdtFile;
@@ -112,6 +116,7 @@ namespace dialogs
         afx_msg void OnBnClickedButtonUpdateTool();
         afx_msg void OnEnChangeEditToolName();
         afx_msg void OnEnChangeEditToolPlatform();
+        afx_msg void OnEnChangeEditToolPriority();
         afx_msg void OnEnChangeEditToolFormats();
         afx_msg void OnEnChangeEditToolUrl();
         afx_msg void OnEnChangeEditToolFile();

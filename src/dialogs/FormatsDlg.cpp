@@ -54,6 +54,7 @@ namespace dialogs
         DDX_Control(pDX, IDC_STATIC_GROUP_FORMAT_TYPE, m_GrpTypes);
         DDX_Control(pDX, IDC_STATIC_FORMAT_ID, m_StcId);
         DDX_Control(pDX, IDC_STATIC_FORMAT_NAME, m_StcName);
+        DDX_Control(pDX, IDC_STATIC_FORMAT_PRIORITY, m_StcPriority);
         DDX_Control(pDX, IDC_STATIC_FORMAT_EXTENSION, m_StcExtension);
         DDX_Control(pDX, IDC_STATIC_FORMAT_FORMATS, m_StcFormats);
         DDX_Control(pDX, IDC_STATIC_FORMAT_CODE, m_StcCode);
@@ -64,6 +65,8 @@ namespace dialogs
         DDX_Control(pDX, IDC_LIST_FORMATS, m_LstFormats);
         DDX_Control(pDX, IDC_EDIT_FORMAT_ID, m_EdtId);
         DDX_Control(pDX, IDC_EDIT_FORMAT_NAME, m_EdtName);
+        DDX_Control(pDX, IDC_EDIT_FORMAT_PRIORITY, m_EdtPriority);
+        DDX_Control(pDX, IDC_SPIN_FORMAT_PRIORITY, m_SpinPriority);
         DDX_Control(pDX, IDC_EDIT_FORMAT_EXTENSION, m_EdtExtension);
         DDX_Control(pDX, IDC_EDIT_FORMAT_FORMATS, m_EdtFormats);
         DDX_Control(pDX, IDC_EDIT_FORMAT_CODE, m_EdtCode);
@@ -100,6 +103,7 @@ namespace dialogs
         ON_BN_CLICKED(IDC_CHECK_FORMAT_PIPES_OUTPUT, OnBnClickedCheckPipesOutput)
         ON_EN_CHANGE(IDC_EDIT_FORMAT_ID, OnEnChangeEditFormatId)
         ON_EN_CHANGE(IDC_EDIT_FORMAT_NAME, OnEnChangeEditFormatName)
+        ON_EN_CHANGE(IDC_EDIT_FORMAT_PRIORITY, OnEnChangeEditFormatPriority)
         ON_EN_CHANGE(IDC_EDIT_FORMAT_EXTENSION, OnEnChangeEditFormatExtension)
         ON_EN_CHANGE(IDC_EDIT_FORMAT_FORMATS, OnEnChangeEditFormatFormats)
         ON_CBN_SELCHANGE(IDC_COMBO_FORMAT_DEFAULT, OnCbnSelchangeComboDefault)
@@ -129,6 +133,9 @@ namespace dialogs
 
         SetIcon(m_hIcon, TRUE);
         SetIcon(m_hIcon, FALSE);
+
+        // priority spin
+        m_SpinPriority.SetRange32(-1000, 1000);
 
         // update list style
         DWORD dwExStyle = m_LstFormats.GetExtendedStyle();
@@ -446,7 +453,7 @@ namespace dialogs
         format.szPath = _T("program.exe");
         format.nExitCodeSuccess = 0;
         format.nType = config::FormatType::Encoder;
-        format.nPriority = 0;
+        format.nPriority = -1;
         format.szInputExtensions = _T("WAV");
         format.szOutputExtension = _T("EXT");
         format.nDefaultPreset = 0;
@@ -539,6 +546,9 @@ namespace dialogs
         if (bUpdate == true)
             return;
 
+        if (m_LstFormats.m_hWnd == nullptr)
+            return;
+
         bUpdate = true;
 
         POSITION pos = m_LstFormats.GetFirstSelectedItemPosition();
@@ -555,6 +565,7 @@ namespace dialogs
             CString szPath = _T("");
             CString szExitCodeSuccess = _T("");
             config::FormatType nType = config::FormatType::Encoder;
+            CString szPriority = _T("");
             bool bInput = false;
             bool bOutput = false;
             CString szFunction = _T("");
@@ -576,6 +587,7 @@ namespace dialogs
             else if (nCheckID == IDC_RADIO_TYPE_DECODER)
                 nType = config::FormatType::Decoder;
 
+            this->m_EdtPriority.GetWindowText(szPriority);
 
             if (IsDlgButtonChecked(IDC_CHECK_FORMAT_PIPES_INPUT) == BST_CHECKED)
                 bInput = true;
@@ -595,6 +607,7 @@ namespace dialogs
             format.szTemplate = szTemplate;
             format.nExitCodeSuccess = _tstoi(szExitCodeSuccess);
             format.nType = nType;
+            format.nPriority = _tstoi(szPriority);
             format.bPipeInput = bInput;
             format.bPipeOutput = bOutput;
             format.szPath = szPath;
@@ -651,6 +664,14 @@ namespace dialogs
     }
 
     void CFormatsDlg::OnEnChangeEditFormatName()
+    {
+        if (bUpdate == true)
+            return;
+
+        OnBnClickedButtonUpdateFormat();
+    }
+
+    void CFormatsDlg::OnEnChangeEditFormatPriority()
     {
         if (bUpdate == true)
             return;
@@ -826,6 +847,7 @@ namespace dialogs
         helper.SetWndText(&m_GrpPipes, 0x000C0017);
         helper.SetWndText(&m_StcId, 0x000C0018);
         helper.SetWndText(&m_StcName, 0x000C0019);
+        helper.SetWndText(&m_StcPriority, 0x000C0030);
         helper.SetWndText(&m_StcExtension, 0x000C001A);
         helper.SetWndText(&m_StcFormats, 0x000C001B);
         helper.SetWndText(&m_StcCode, 0x000C002B);
@@ -972,6 +994,10 @@ namespace dialogs
             break;
         };
 
+        CString szPriority;
+        szPriority.Format(_T("%d\0"), format.nPriority);
+        this->m_EdtPriority.SetWindowText(szPriority);
+
         if (format.bPipeInput)
             CheckDlgButton(IDC_CHECK_FORMAT_PIPES_INPUT, BST_CHECKED);
         else
@@ -1042,6 +1068,9 @@ namespace dialogs
             this->CheckRadioButton(IDC_RADIO_TYPE_ENCODER,
                 IDC_RADIO_TYPE_DECODER,
                 IDC_RADIO_TYPE_ENCODER);
+
+            this->m_EdtPriority.SetWindowText(_T(""));
+
             CheckDlgButton(IDC_CHECK_FORMAT_PIPES_INPUT, BST_UNCHECKED);
             CheckDlgButton(IDC_CHECK_FORMAT_PIPES_OUTPUT, BST_UNCHECKED);
             this->m_EdtFunction.SetWindowText(_T(""));

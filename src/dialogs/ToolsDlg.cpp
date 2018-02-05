@@ -52,6 +52,7 @@ namespace dialogs
         CMyDialogEx::DoDataExchange(pDX);
         DDX_Control(pDX, IDC_STATIC_TOOL_NAME, m_StcName);
         DDX_Control(pDX, IDC_STATIC_TOOL_PLATFORM, m_StcPlatform);
+        DDX_Control(pDX, IDC_STATIC_TOOL_PRIORITY, m_StcPriority);
         DDX_Control(pDX, IDC_STATIC_TOOL_FORMATS, m_StcFormats);
         DDX_Control(pDX, IDC_STATIC_TOOL_URL, m_StcUrl);
         DDX_Control(pDX, IDC_STATIC_TOOL_FILE, m_StcFile);
@@ -60,6 +61,8 @@ namespace dialogs
         DDX_Control(pDX, IDC_LIST_TOOLS, m_LstTools);
         DDX_Control(pDX, IDC_EDIT_TOOL_NAME, m_EdtName);
         DDX_Control(pDX, IDC_EDIT_TOOL_PLATFORM, m_EdtPlatform);
+        DDX_Control(pDX, IDC_EDIT_TOOL_PRIORITY, m_EdtPriority);
+        DDX_Control(pDX, IDC_SPIN_TOOL_PRIORITY, m_SpinPriority);
         DDX_Control(pDX, IDC_EDIT_TOOL_FORMATS, m_EdtFormats);
         DDX_Control(pDX, IDC_EDIT_TOOL_URL, m_EdtUrl);
         DDX_Control(pDX, IDC_EDIT_TOOL_FILE, m_EdtFile);
@@ -91,6 +94,7 @@ namespace dialogs
         ON_NOTIFY(LVN_ITEMCHANGED, IDC_LIST_TOOLS, OnLvnItemchangedListTools)
         ON_EN_CHANGE(IDC_EDIT_TOOL_NAME, OnEnChangeEditToolName)
         ON_EN_CHANGE(IDC_EDIT_TOOL_PLATFORM, OnEnChangeEditToolPlatform)
+        ON_EN_CHANGE(IDC_EDIT_TOOL_PRIORITY, OnEnChangeEditToolPriority)
         ON_EN_CHANGE(IDC_EDIT_TOOL_FORMATS, OnEnChangeEditToolFormats)
         ON_EN_CHANGE(IDC_EDIT_TOOL_URL, OnEnChangeEditToolUrl)
         ON_EN_CHANGE(IDC_EDIT_TOOL_FILE, OnEnChangeEditToolFile)
@@ -121,6 +125,9 @@ namespace dialogs
 
         SetIcon(m_hIcon, TRUE);
         SetIcon(m_hIcon, FALSE);
+
+        // priority spin
+        m_SpinPriority.SetRange32(-1000, 1000);
 
         // update list style
         DWORD dwExStyle = m_LstTools.GetExtendedStyle();
@@ -462,6 +469,7 @@ namespace dialogs
         config::CTool tool;
         tool.szName = pConfig->GetString(0x00240004);
         tool.szPlatform = L"";
+        tool.nPriority = -1;
         tool.szFormats = L"";
         tool.szUrl = L"";
         tool.szFile = L"";
@@ -565,6 +573,9 @@ namespace dialogs
         if (bUpdate == true)
             return;
 
+        if (m_LstTools.m_hWnd == nullptr)
+            return;
+
         bUpdate = true;
 
         POSITION pos = m_LstTools.GetFirstSelectedItemPosition();
@@ -574,6 +585,7 @@ namespace dialogs
 
             CString szName = _T("");
             CString szPlatform = _T("");
+            CString szPriority = _T("");
             CString szFormats = _T("");
             CString szUrl = _T("");
             CString szFile = _T("");
@@ -582,6 +594,7 @@ namespace dialogs
 
             this->m_EdtName.GetWindowText(szName);
             this->m_EdtPlatform.GetWindowText(szPlatform);
+            this->m_EdtPriority.GetWindowText(szPriority);
             this->m_EdtFormats.GetWindowText(szFormats);
             this->m_EdtUrl.GetWindowText(szUrl);
             this->m_EdtFile.GetWindowText(szFile);
@@ -591,6 +604,7 @@ namespace dialogs
             config::CTool& tool = m_Tools.Get(nItem);
             tool.szName = szName;
             tool.szPlatform = szPlatform;
+            tool.nPriority = _tstoi(szPriority);
             tool.szFormats = szFormats;
             tool.szUrl = szUrl;
             tool.szFile = szFile;
@@ -621,6 +635,17 @@ namespace dialogs
     }
 
     void CToolsDlg::OnEnChangeEditToolPlatform()
+    {
+        if (m_Utilities.bDownload == true)
+            return;
+
+        if (bUpdate == true)
+            return;
+
+        OnBnClickedButtonUpdateTool();
+    }
+
+    void CToolsDlg::OnEnChangeEditToolPriority()
     {
         if (m_Utilities.bDownload == true)
             return;
@@ -810,6 +835,7 @@ namespace dialogs
         helper.SetWndText(&m_BtnCancel, 0x000E0011);
         helper.SetWndText(&m_StcName, 0x000E0012);
         helper.SetWndText(&m_StcPlatform, 0x000E0013);
+        helper.SetWndText(&m_StcPriority, 0x000E002A);
         helper.SetWndText(&m_StcFormats, 0x000E0014);
         helper.SetWndText(&m_StcUrl, 0x000E0015);
         helper.SetWndText(&m_StcFile, 0x000E0016);
@@ -906,6 +932,11 @@ namespace dialogs
     {
         this->m_EdtName.SetWindowText(tool.szName.c_str());
         this->m_EdtPlatform.SetWindowText(tool.szPlatform.c_str());
+
+        CString szPriority;
+        szPriority.Format(_T("%d\0"), tool.nPriority);
+        this->m_EdtPriority.SetWindowText(szPriority);
+
         this->m_EdtFormats.SetWindowText(tool.szFormats.c_str());
         this->m_EdtUrl.SetWindowText(tool.szUrl.c_str());
         this->m_EdtFile.SetWindowText(tool.szFile.c_str());
@@ -936,6 +967,7 @@ namespace dialogs
         {
             this->m_EdtName.SetWindowText(_T(""));
             this->m_EdtPlatform.SetWindowText(_T(""));
+            this->m_EdtPriority.SetWindowText(_T(""));
             this->m_EdtFormats.SetWindowText(_T(""));
             this->m_EdtUrl.SetWindowText(_T(""));
             this->m_EdtFile.SetWindowText(_T(""));
@@ -957,6 +989,8 @@ namespace dialogs
         this->m_EdtName.EnableWindow(bEnable);
         this->m_EdtPlatform.EnableWindow(bEnable);
         this->m_EdtFormats.EnableWindow(bEnable);
+        this->m_EdtPriority.EnableWindow(bEnable);
+        this->m_SpinPriority.EnableWindow(bEnable);
         this->m_EdtUrl.EnableWindow(bEnable);
         this->m_EdtFile.EnableWindow(bEnable);
         this->m_EdtExtract.EnableWindow(bEnable);

@@ -13,6 +13,7 @@
 #include "controls\MyComboBox.h"
 #include "controls\MyEdit.h"
 #include "controls\MyStatic.h"
+#include "controls\MySpinButtonCtrl.h"
 #include "controls\MyDialogEx.h"
 #include "configuration\FormatsList.h"
 #include "configuration\Configuration.h"
@@ -64,6 +65,7 @@ namespace dialogs
         controls::CMyStatic m_GrpTypes;
         controls::CMyStatic m_StcId;
         controls::CMyStatic m_StcName;
+        controls::CMyStatic m_StcPriority;
         controls::CMyStatic m_StcExtension;
         controls::CMyStatic m_StcFormats;
         controls::CMyStatic m_StcCode;
@@ -75,6 +77,8 @@ namespace dialogs
         controls::CMyComboBox m_CmbDefault;
         controls::CMyEdit m_EdtId;
         controls::CMyEdit m_EdtName;
+        controls::CMyEdit m_EdtPriority;
+        controls::CMySpinButtonCtrl m_SpinPriority;
         controls::CMyEdit m_EdtExtension;
         controls::CMyEdit m_EdtFormats;
         controls::CMyEdit m_EdtCode;
@@ -115,6 +119,7 @@ namespace dialogs
         afx_msg void OnBnClickedCheckPipesOutput();
         afx_msg void OnEnChangeEditFormatId();
         afx_msg void OnEnChangeEditFormatName();
+        afx_msg void OnEnChangeEditFormatPriority();
         afx_msg void OnEnChangeEditFormatExtension();
         afx_msg void OnEnChangeEditFormatFormats();
         afx_msg void OnCbnSelchangeComboDefault();
