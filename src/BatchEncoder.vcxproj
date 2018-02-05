@@ -131,17 +131,7 @@
       <AdditionalDependencies>Rpcrt4.lib</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>copy /-Y ..\config\*.xml $(OutDir)
-copy /Y ..\config\*.ps1 $(OutDir)
-if not exist $(OutDir)formats\ mkdir $(OutDir)formats\
-if not exist $(OutDir)lang\ mkdir $(OutDir)lang\
-if not exist $(OutDir)progress\ mkdir $(OutDir)progress\
-if not exist $(OutDir)tools\ mkdir $(OutDir)tools\
-copy /Y ..\config\formats\*.xml $(OutDir)formats\
-copy /Y ..\config\lang\*.xml $(OutDir)lang\
-copy /Y ..\config\progress\*.lua $(OutDir)progress\
-copy /Y ..\config\tools\*.xml $(OutDir)tools\
-copy /Y ..\setup\*.portable $(OutDir)</Command>
+      <Command>CopyConfig.cmd ..\config ..\setup\ $(OutDir)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -178,17 +168,7 @@ copy /Y ..\setup\*.portable $(OutDir)</Command>
       <AdditionalDependencies>Rpcrt4.lib</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>copy /-Y ..\config\*.xml $(OutDir)
-copy /Y ..\config\*.ps1 $(OutDir)
-if not exist $(OutDir)formats\ mkdir $(OutDir)formats\
-if not exist $(OutDir)lang\ mkdir $(OutDir)lang\
-if not exist $(OutDir)progress\ mkdir $(OutDir)progress\
-if not exist $(OutDir)tools\ mkdir $(OutDir)tools\
-copy /Y ..\config\formats\*.xml $(OutDir)formats\
-copy /Y ..\config\lang\*.xml $(OutDir)lang\
-copy /Y ..\config\progress\*.lua $(OutDir)progress\
-copy /Y ..\config\tools\*.xml $(OutDir)tools\
-copy /Y ..\setup\*.portable $(OutDir)</Command>
+      <Command>CopyConfig.cmd ..\config ..\setup\ $(OutDir)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -226,17 +206,7 @@ copy /Y ..\setup\*.portable $(OutDir)</Command>
       <AdditionalDependencies>Rpcrt4.lib</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>copy /-Y ..\config\*.xml $(OutDir)
-copy /Y ..\config\*.ps1 $(OutDir)
-if not exist $(OutDir)formats\ mkdir $(OutDir)formats\
-if not exist $(OutDir)lang\ mkdir $(OutDir)lang\
-if not exist $(OutDir)progress\ mkdir $(OutDir)progress\
-if not exist $(OutDir)tools\ mkdir $(OutDir)tools\
-copy /Y ..\config\formats\*.xml $(OutDir)formats\
-copy /Y ..\config\lang\*.xml $(OutDir)lang\
-copy /Y ..\config\progress\*.lua $(OutDir)progress\
-copy /Y ..\config\tools\*.xml $(OutDir)tools\
-copy /Y ..\setup\*.portable $(OutDir)</Command>
+      <Command>CopyConfig.cmd ..\config ..\setup\ $(OutDir)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -275,17 +245,7 @@ copy /Y ..\setup\*.portable $(OutDir)</Command>
       <AdditionalDependencies>Rpcrt4.lib</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>copy /-Y ..\config\*.xml $(OutDir)
-copy /Y ..\config\*.ps1 $(OutDir)
-if not exist $(OutDir)formats\ mkdir $(OutDir)formats\
-if not exist $(OutDir)lang\ mkdir $(OutDir)lang\
-if not exist $(OutDir)progress\ mkdir $(OutDir)progress\
-if not exist $(OutDir)tools\ mkdir $(OutDir)tools\
-copy /Y ..\config\formats\*.xml $(OutDir)formats\
-copy /Y ..\config\lang\*.xml $(OutDir)lang\
-copy /Y ..\config\progress\*.lua $(OutDir)progress\
-copy /Y ..\config\tools\*.xml $(OutDir)tools\
-copy /Y ..\setup\*.portable $(OutDir)</Command>
+      <Command>CopyConfig.cmd ..\config ..\setup\ $(OutDir)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
