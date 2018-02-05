@@ -280,7 +280,50 @@ namespace app
         }
         else if (nSelectedItems > 1)
         {
-            // TODO: Show browse for folder dialog and call SaveFormats.
+            LPMALLOC pMalloc;
+            BROWSEINFO bi;
+            LPITEMIDLIST pidlDesktop;
+            LPITEMIDLIST pidlBrowse;
+            TCHAR *lpBuffer;
+
+            if (SHGetMalloc(&pMalloc) == E_FAIL)
+                return;
+
+            if ((lpBuffer = (TCHAR *)pMalloc->Alloc(MAX_PATH * 2)) == nullptr)
+            {
+                pMalloc->Release();
+                return;
+            }
+
+            if (!SUCCEEDED(::SHGetSpecialFolderLocation(this->GetSafeHwnd(), CSIDL_DESKTOP, &pidlDesktop)))
+            {
+                pMalloc->Free(lpBuffer);
+                pMalloc->Release();
+                return;
+            }
+
+            bi.hwndOwner = this->GetSafeHwnd();
+            bi.pidlRoot = pidlDesktop;
+            bi.pszDisplayName = lpBuffer;
+            bi.ulFlags = BIF_RETURNONLYFSDIRS | BIF_USENEWUI;
+            bi.iImage = 0;
+            bi.lpfn = nullptr;
+            bi.lParam = 0;
+
+            pidlBrowse = ::SHBrowseForFolder(&bi);
+            if (pidlBrowse != nullptr)
+            {
+                if (::SHGetPathFromIDList(pidlBrowse, lpBuffer))
+                {
+                    std::wstring szPath = std::wstring(lpBuffer);
+                    this->SaveFormats(szPath);
+                }
+                pMalloc->Free(pidlBrowse);
+            }
+
+            pMalloc->Free(pidlDesktop);
+            pMalloc->Free(lpBuffer);
+            pMalloc->Release();
         }
     }
 

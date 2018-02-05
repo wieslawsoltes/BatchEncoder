@@ -941,7 +941,7 @@ namespace app
             bi.pidlRoot = pidlDesktop;
             bi.pszDisplayName = lpBuffer;
             bi.lpszTitle = m_Config.GetString(0x00210006).c_str();
-            bi.ulFlags = BIF_STATUSTEXT | BIF_RETURNONLYFSDIRS | BIF_USENEWUI;
+            bi.ulFlags = BIF_RETURNONLYFSDIRS | BIF_USENEWUI;
             bi.iImage = 0;
             bi.lpfn = app::BrowseCallbackOutPath;
             bi.lParam = reinterpret_cast<LPARAM>(this);
@@ -1106,7 +1106,7 @@ namespace app
             bi.pidlRoot = pidlDesktop;
             bi.pszDisplayName = lpBuffer;
             bi.lpszTitle = m_Config.GetString(0x0021000A).c_str();
-            bi.ulFlags = BIF_STATUSTEXT | BIF_RETURNONLYFSDIRS | BIF_USENEWUI;
+            bi.ulFlags = BIF_RETURNONLYFSDIRS | BIF_USENEWUI;
             bi.iImage = 0;
             bi.lpfn = app::BrowseCallbackAddDir;
             bi.lParam = reinterpret_cast<LPARAM>(this);
