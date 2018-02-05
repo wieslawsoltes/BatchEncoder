@@ -12,6 +12,11 @@ namespace config
     class CFormatsList : public util::CListT<CFormat>
     {
     public:
+        void Sort()
+        {
+            CFormat::Sort(this->m_Items);
+        }
+    public:
         int GetFormatById(const std::wstring& szFormatId)
         {
             int nFormats = this->Count();
@@ -29,7 +34,7 @@ namespace config
             for (int i = 0; i < nFormats; i++)
             {
                 CFormat& format = this->Get(i);
-                if (format.nType == 1 && format.IsValidInputExtension(szExt) == true)
+                if (format.nType == FormatType::Decoder && format.IsValidInputExtension(szExt) == true)
                 {
                     return i;
                 }
@@ -42,7 +47,7 @@ namespace config
             for (int i = 0; i < nFormats; i++)
             {
                 CFormat& format = this->Get(i);
-                if (format.nType == 1 && format.IsValidInputExtension(szExt) == true)
+                if (format.nType == FormatType::Decoder && format.IsValidInputExtension(szExt) == true)
                 {
                     bool bIsValidEncoderInput = pEncoderFormat->IsValidInputExtension(format.szOutputExtension);
                     if (bIsValidEncoderInput == true)

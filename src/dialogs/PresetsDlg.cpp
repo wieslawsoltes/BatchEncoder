@@ -24,8 +24,8 @@ namespace app
         : CMyDialogEx(CPresetsDlg::IDD, pParent)
     {
         this->m_hIcon = AfxGetApp()->LoadIcon(IDI_ICON_MAIN);
-        this->szPresetsDialogResize = _T("");
-        this->szPresetsListColumns = _T("");
+        this->szPresetsDialogResize = L"";
+        this->szPresetsListColumns = L"";
         this->bUpdate = false;
         this->nSelectedFormat = 0;
     }
@@ -52,8 +52,8 @@ namespace app
         DDX_Control(pDX, IDC_BUTTON_PRESET_UP, m_BtnMoveUp);
         DDX_Control(pDX, IDC_BUTTON_PRESET_DOWN, m_BtnMoveDown);
         DDX_Control(pDX, IDC_BUTTON_PRESET_UPDATE, m_BtnUpdate);
-        DDX_Control(pDX, IDC_BUTTON_PRESET_LOAD, m_BtnLoad);
-        DDX_Control(pDX, IDC_BUTTON_PRESET_SAVE, m_BtnSave);
+        DDX_Control(pDX, IDC_BUTTON_PRESET_IMPORT, m_BtnImport);
+        DDX_Control(pDX, IDC_BUTTON_PRESET_EXPORT, m_BtnExport);
     }
 
     BEGIN_MESSAGE_MAP(CPresetsDlg, CMyDialogEx)
@@ -73,8 +73,8 @@ namespace app
         ON_BN_CLICKED(IDC_BUTTON_PRESET_UPDATE, OnBnClickedButtonUpdatePreset)
         ON_EN_CHANGE(IDC_EDIT_PRESET_NAME, OnEnChangeEditPresetName)
         ON_EN_CHANGE(IDC_EDIT_PRESET_OPTIONS, OnEnChangeEditPresetOptions)
-        ON_BN_CLICKED(IDC_BUTTON_PRESET_LOAD, OnBnClickedButtonLoadPresets)
-        ON_BN_CLICKED(IDC_BUTTON_PRESET_SAVE, OnBnClickedButtonSavePresets)
+        ON_BN_CLICKED(IDC_BUTTON_PRESET_IMPORT, OnBnClickedButtonImportPresets)
+        ON_BN_CLICKED(IDC_BUTTON_PRESET_EXPORT, OnBnClickedButtonExportPresets)
         ON_WM_CLOSE()
     END_MESSAGE_MAP()
 
@@ -287,7 +287,7 @@ namespace app
             config::CFormat& format = m_Formats.Get(nSelectedFormat);
             config::CPreset preset;
             preset.szName = pConfig->GetString(0x00220004);
-            preset.szOptions = _T("");
+            preset.szOptions = L"";
             format.m_Presets.Insert(preset);
 
             AddToList(preset, nItem);
@@ -443,7 +443,7 @@ namespace app
         OnBnClickedButtonUpdatePreset();
     }
 
-    void CPresetsDlg::OnBnClickedButtonLoadPresets()
+    void CPresetsDlg::OnBnClickedButtonImportPresets()
     {
         CString szFilter;
         szFilter.Format(_T("%s (*.xml)|*.xml|%s (*.*)|*.*||"),
@@ -461,7 +461,7 @@ namespace app
         }
     }
 
-    void CPresetsDlg::OnBnClickedButtonSavePresets()
+    void CPresetsDlg::OnBnClickedButtonExportPresets()
     {
         config::CFormat& format = this->m_Formats.Get(this->nSelectedFormat);
 
@@ -542,8 +542,8 @@ namespace app
         helper.SetWndText(&m_BtnRemoveAll, 0x000B0016);
         helper.SetWndText(&m_BtnRemove, 0x000B0017);
         helper.SetWndText(&m_BtnAdd, 0x000B0018);
-        helper.SetWndText(&m_BtnLoad, 0x000B0019);
-        helper.SetWndText(&m_BtnSave, 0x000B001A);
+        helper.SetWndText(&m_BtnImport, 0x000B0019);
+        helper.SetWndText(&m_BtnExport, 0x000B001A);
         helper.SetWndText(&m_BtnUpdate, 0x000B001B);
         helper.SetWndText(&m_BtnOK, 0x000B001C);
     }

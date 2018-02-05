@@ -1,4 +1,4 @@
-﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
+// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 #include "StdAfx.h"
@@ -24,8 +24,8 @@ namespace app
         : CMyDialogEx(CToolsDlg::IDD, pParent)
     {
         this->m_hIcon = AfxGetApp()->LoadIcon(IDI_ICON_MAIN);
-        this->szToolsDialogResize = _T("");
-        this->szToolsListColumns = _T("");
+        this->szToolsDialogResize = L"";
+        this->szToolsListColumns = L"";
         this->bUpdate = false;
         this->nSelectedTool = 0;
         m_Utilities.bDownload = false;
@@ -64,8 +64,6 @@ namespace app
         DDX_Control(pDX, IDC_BUTTON_TOOL_UP, m_BtnMoveUp);
         DDX_Control(pDX, IDC_BUTTON_TOOL_DOWN, m_BtnMoveDown);
         DDX_Control(pDX, IDC_BUTTON_TOOL_UPDATE, m_BtnUpdate);
-        DDX_Control(pDX, IDC_BUTTON_TOOL_LOAD, m_BtnLoad);
-        DDX_Control(pDX, IDC_BUTTON_TOOL_SAVE, m_BtnSave);
         DDX_Control(pDX, IDC_BUTTON_TOOL_DOWNLOAD, m_BtnDownload);
         DDX_Control(pDX, IDC_BUTTON_TOOL_SETFORMAT, m_BtnSetFormat);
         DDX_Control(pDX, IDC_BUTTON_TOOL_SETFORMATX86, m_BtnSetFormatX86);
@@ -95,8 +93,6 @@ namespace app
         ON_BN_CLICKED(IDC_BUTTON_TOOL_UP, OnBnClickedButtonToolUp)
         ON_BN_CLICKED(IDC_BUTTON_TOOL_DOWN, OnBnClickedButtonToolDown)
         ON_BN_CLICKED(IDC_BUTTON_TOOL_UPDATE, OnBnClickedButtonUpdateTool)
-        ON_BN_CLICKED(IDC_BUTTON_TOOL_LOAD, OnBnClickedButtonLoadTools)
-        ON_BN_CLICKED(IDC_BUTTON_TOOL_SAVE, OnBnClickedButtonSaveTools)
         ON_BN_CLICKED(IDC_BUTTON_TOOL_DOWNLOAD, OnBnClickedButtonDownloadSelected)
         ON_BN_CLICKED(IDC_BUTTON_TOOL_SETFORMAT, OnBnClickedButtonToolSetFormat)
         ON_BN_CLICKED(IDC_BUTTON_TOOL_SETFORMATX86, OnBnClickedButtonToolSetFormatX86)
@@ -224,19 +220,29 @@ namespace app
         if (m_Utilities.bDownload == true)
             return;
 
+        std::array<TCHAR, (768*(MAX_PATH+1))+1> buffer { 0 };
+
         CString szFilter;
         szFilter.Format(_T("%s (*.xml)|*.xml|%s (*.*)|*.*||"),
             pConfig->GetString(0x00310010).c_str(),
             pConfig->GetString(0x00310001).c_str());
 
         CFileDialog fd(TRUE, _T("xml"), _T(""),
-            OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER,
+            OFN_ALLOWMULTISELECT | OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER,
             szFilter, this);
+
+        fd.m_ofn.lpstrFile = buffer.data();
+        fd.m_ofn.nMaxFile = buffer.size();
 
         if (fd.DoModal() == IDOK)
         {
-            std::wstring szFileXml = fd.GetPathName();
-            this->LoadTool(szFileXml);
+            POSITION pos = fd.GetStartPosition();
+            do
+            {
+                std::wstring szFilePath = fd.GetNextPathName(pos);
+                if (!szFilePath.empty())
+                    this->LoadTool(szFilePath);
+            } while (pos != nullptr);
         }
     }
 
@@ -245,29 +251,47 @@ namespace app
         if (m_Utilities.bDownload == true)
             return;
 
-        POSITION pos = m_LstTools.GetFirstSelectedItemPosition();
-        if (pos != nullptr)
+        int nCount = m_LstTools.GetItemCount();
+        int nSelectedItems = 0;
+        if (nCount > 0)
         {
-            int nSelected = m_LstTools.GetNextSelectedItem(pos);
-            if (nSelected >= 0)
+            for (int i = 0; i < nCount; i++)
             {
-                config::CTool& tool = m_Tools.Get(nSelected);
+                if (m_LstTools.GetItemState(i, LVIS_SELECTED) == LVIS_SELECTED)
+                    nSelectedItems++;
+            }
+        }
 
-                CString szFilter;
-                szFilter.Format(_T("%s (*.xml)|*.xml|%s (*.*)|*.*||"),
-                    pConfig->GetString(0x00310010).c_str(),
-                    pConfig->GetString(0x00310001).c_str());
-
-                CFileDialog fd(FALSE, _T("xml"), tool.szName.c_str(),
-                    OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER | OFN_OVERWRITEPROMPT,
-                    szFilter, this);
-
-                if (fd.DoModal() == IDOK)
+        if (nSelectedItems == 1)
+        {
+            POSITION pos = m_LstTools.GetFirstSelectedItemPosition();
+            if (pos != nullptr)
+            {
+                int nSelected = m_LstTools.GetNextSelectedItem(pos);
+                if (nSelected >= 0)
                 {
-                    std::wstring szFileXml = fd.GetPathName();
-                    this->SaveTool(szFileXml, tool);
+                    config::CTool& tool = m_Tools.Get(nSelected);
+
+                    CString szFilter;
+                    szFilter.Format(_T("%s (*.xml)|*.xml|%s (*.*)|*.*||"),
+                        pConfig->GetString(0x00310010).c_str(),
+                        pConfig->GetString(0x00310001).c_str());
+
+                    CFileDialog fd(FALSE, _T("xml"), tool.szName.c_str(),
+                        OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER | OFN_OVERWRITEPROMPT,
+                        szFilter, this);
+
+                    if (fd.DoModal() == IDOK)
+                    {
+                        std::wstring szFileXml = fd.GetPathName();
+                        this->SaveTool(szFileXml, tool);
+                    }
                 }
             }
+        }
+        else if (nSelectedItems > 1)
+        {
+            // TODO: Show browse for folder dialog and call SaveTools.
         }
     }
 
@@ -380,13 +404,13 @@ namespace app
 
         config::CTool tool;
         tool.szName = pConfig->GetString(0x00240004);
-        tool.szPlatform = _T("");
-        tool.szFormats = _T("");
-        tool.szUrl = _T("");
-        tool.szFile = _T("");
-        tool.szExtract = _T("");
-        tool.szPath = _T("");
-        tool.szStatus = _T("");
+        tool.szPlatform = L"";
+        tool.szFormats = L"";
+        tool.szUrl = L"";
+        tool.szFile = L"";
+        tool.szExtract = L"";
+        tool.szPath = L"";
+        tool.szStatus = L"";
 
         m_Tools.Insert(tool);
 
@@ -605,48 +629,6 @@ namespace app
         OnBnClickedButtonUpdateTool();
     }
 
-    void CToolsDlg::OnBnClickedButtonLoadTools()
-    {
-        if (m_Utilities.bDownload == true)
-            return;
-
-        CString szFilter;
-        szFilter.Format(_T("%s (*.xml)|*.xml|%s (*.*)|*.*||"),
-            pConfig->GetString(0x00310009).c_str(),
-            pConfig->GetString(0x00310001).c_str());
-
-        CFileDialog fd(TRUE, _T("xml"), _T(""),
-            OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER,
-            szFilter, this);
-
-        if (fd.DoModal() == IDOK)
-        {
-            std::wstring szFileXml = fd.GetPathName();
-            this->LoadTools(szFileXml, true);
-        }
-    }
-
-    void CToolsDlg::OnBnClickedButtonSaveTools()
-    {
-        if (m_Utilities.bDownload == true)
-            return;
-
-        CString szFilter;
-        szFilter.Format(_T("%s (*.xml)|*.xml|%s (*.*)|*.*||"),
-            pConfig->GetString(0x00310009).c_str(),
-            pConfig->GetString(0x00310001).c_str());
-
-        CFileDialog fd(FALSE, _T("xml"), _T("Tools"),
-            OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER | OFN_OVERWRITEPROMPT,
-            szFilter, this);
-
-        if (fd.DoModal() == IDOK)
-        {
-            std::wstring szFileXml = fd.GetPathName();
-            this->SaveTools(szFileXml, true);
-        }
-    }
-
     void CToolsDlg::OnBnClickedButtonDownloadSelected()
     {
         if (m_Utilities.bDownload == true)
@@ -784,8 +766,6 @@ namespace app
         helper.SetWndText(&m_BtnRemoveAll, 0x000E001E);
         helper.SetWndText(&m_BtnRemove, 0x000E001F);
         helper.SetWndText(&m_BtnAdd, 0x000E0020);
-        helper.SetWndText(&m_BtnLoad, 0x000E0021);
-        helper.SetWndText(&m_BtnSave, 0x000E0022);
         helper.SetWndText(&m_BtnDownload, 0x000E0023);
         helper.SetWndText(&m_BtnSetFormat, 0x000E0025);
         helper.SetWndText(&m_BtnSetFormatX86, 0x000E0026);
@@ -850,12 +830,7 @@ namespace app
                         std::string szName = xml::CXmlConfig::GetRootName(szPath, doc);
                         if (!szName.empty())
                         {
-                            if (util::StringHelper::CompareNoCase(szName, "Tools"))
-                            {
-                                ::SetCurrentDirectory(util::Utilities::GetFilePath(szPath).c_str());
-                                this->LoadTools(doc, true);
-                            }
-                            else if (util::StringHelper::CompareNoCase(szName, "Tool"))
+                            if (util::StringHelper::CompareNoCase(szName, "Tool"))
                             {
                                 this->LoadTool(doc);
                             }
@@ -940,8 +915,6 @@ namespace app
         this->m_BtnMoveUp.EnableWindow(bEnable);
         this->m_BtnMoveDown.EnableWindow(bEnable);
         this->m_BtnUpdate.EnableWindow(bEnable);
-        this->m_BtnLoad.EnableWindow(bEnable);
-        this->m_BtnSave.EnableWindow(bEnable);
         this->m_BtnSetFormat.EnableWindow(bEnable);
         this->m_BtnSetFormatX86.EnableWindow(bEnable);
         this->m_BtnSetFormatX64.EnableWindow(bEnable);
@@ -1010,70 +983,22 @@ namespace app
         return xml::CXmlConfig::SaveTool(szFileXml, tool);
     }
 
-    bool CToolsDlg::LoadTools(const std::wstring& szFileXml, bool bOnlyIds)
+    bool CToolsDlg::SaveTools(const std::wstring& szPath)
     {
-        xml::XmlDocumnent doc;
-        std::string szName = xml::CXmlConfig::GetRootName(szFileXml, doc);
-        if (!szName.empty() && util::StringHelper::CompareNoCase(szName, "Tools"))
+        int nCount = m_LstTools.GetItemCount();
+        if (nCount > 0)
         {
-            ::SetCurrentDirectory(util::Utilities::GetFilePath(szFileXml).c_str());
-            return this->LoadTools(doc, bOnlyIds);
-        }
-        return false;
-    }
-
-    bool CToolsDlg::LoadTools(xml::XmlDocumnent &doc, bool bOnlyIds)
-    {
-        config::CToolsList tools;
-        if (xml::CXmlConfig::LoadTools(doc, tools, bOnlyIds))
-        {
-            this->m_LstTools.DeleteAllItems();
-            if (bOnlyIds == true)
+            for (int i = 0; i < nCount; i++)
             {
-                this->m_Tools.RemoveAll();
-                for (auto& tool : tools.m_Items)
+                if (m_LstTools.GetItemState(i, LVIS_SELECTED) == LVIS_SELECTED)
                 {
-                    std::wstring path = app::m_App.m_Settings.szToolsDir + L"\\" + tool.szName + L".xml";
-                    if (this->LoadTool(path) == false)
+                    config::CTool& tool = m_Tools.Get(i);
+                    std::wstring path = util::Utilities::CombinePath(szPath, tool.szName + L".xml");
+                    if (this->SaveTool(path, tool) == false)
                         return false;
                 }
-                if (this->m_Tools.Count() > 0)
-                    nSelectedTool = 0;
-            }
-            else
-            {
-                this->m_Tools = std::move(tools);
-                if (this->m_Tools.Count() > 0)
-                    nSelectedTool = 0;
-
-                this->InsertToolsToListCtrl();
-            }
-            this->ListSelectionChange();
-            return true;
-        }
-        return false;
-    }
-
-    bool CToolsDlg::SaveTools(const std::wstring& szFileXml, bool bOnlyIds)
-    {
-        bool bResult = xml::CXmlConfig::SaveTools(szFileXml, this->m_Tools, bOnlyIds);
-        if (bResult == false)
-            return false;
-
-        if (bOnlyIds == true)
-        {
-            std::wstring szFilePath = util::Utilities::GetFilePath(szFileXml);
-            std::wstring szPath = util::Utilities::CombinePath(szFilePath, app::m_App.m_Settings.szToolsDir);
-            ::SetCurrentDirectory(szFilePath.c_str());
-            ::CreateDirectory(szPath.c_str(), NULL);
-            for (auto& tool : this->m_Tools.m_Items)
-            {
-                std::wstring path = util::Utilities::CombinePath(szPath, tool.szName + L".xml");
-                if (this->SaveTool(path, tool) == false)
-                    return false;
             }
         }
-
         return true;
     }
 }

@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<Format id="OFR_OFR_WAV" name="Decode OFR to WAV - ofr" template="$EXE --decode --overwrite $INFILE --output $OUTFILE" input="true" output="false" function="progress\GetProgress_OfrDec.lua" path="tools/OptimFROG_Win_x86_5100/OptimFROG_Win_x86_5100/ofr.exe" success="0" type="1" formats="OFR" extension="WAV" default="0">
+<Format id="OFR_OFR_WAV" name="Decode OFR to WAV - ofr" template="$EXE --decode --overwrite $INFILE --output $OUTFILE" input="true" output="false" function="progress\GetProgress_OfrDec.lua" path="tools/OptimFROG_Win_x86_5100/OptimFROG_Win_x86_5100/ofr.exe" success="0" type="1" priority="0" formats="OFR" extension="WAV" default="0">
     <Presets>
         <Preset name="Default" options=""/>
     </Presets>

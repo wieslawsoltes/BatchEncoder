@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<Format id="AFTEN_AC3" name="AC3 (ATSC A/52) - aften" template="$EXE $OPTIONS $INFILE $OUTFILE" input="true" output="false" function="progress\GetProgress_AftenEnc.lua" path="tools/aften-git-20091226-icl11_1_054-win32-bin/aften-git-20091226-icl11_1_054-win32-bin/aften_x86/aften.exe" success="0" type="0" formats="WAV" extension="AC3" default="15">
+<Format id="AFTEN_AC3" name="AC3 (ATSC A/52) - aften" template="$EXE $OPTIONS $INFILE $OUTFILE" input="true" output="false" function="progress\GetProgress_AftenEnc.lua" path="tools/aften-git-20091226-icl11_1_054-win32-bin/aften-git-20091226-icl11_1_054-win32-bin/aften_x86/aften.exe" success="0" type="0" priority="0" formats="WAV" extension="AC3" default="15">
     <Presets>
         <Preset name="CBR 32 kbit/s" options="-b 32"/>
         <Preset name="CBR 40 kbit/s" options="-b 40"/>

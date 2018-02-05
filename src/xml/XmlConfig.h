@@ -48,6 +48,7 @@ namespace xml
             xml.SetOptions(options);
             return xml.Save(szFileXml);
         }
+    public:
         static bool CXmlConfig::LoadItem(XmlDocumnent &doc, config::CItem &item)
         {
             XmlItems xml(doc);
@@ -92,6 +93,7 @@ namespace xml
             xml.SetItems(items);
             return xml.Save(szFileXml);
         }
+    public:
         static bool CXmlConfig::LoadLanguage(XmlDocumnent &doc, lang::CLanguage &language)
         {
             XmlLanguages xml(doc);
@@ -114,28 +116,7 @@ namespace xml
             xml.SetLanguage(language);
             return xml.Save(szFileXml);
         }
-        static bool CXmlConfig::LoadLanguages(XmlDocumnent &doc, lang::CLanguagesList &languages, bool bOnlyIds)
-        {
-            XmlLanguages xml(doc);
-            return xml.GetLanguages(languages, bOnlyIds);
-        }
-        static bool CXmlConfig::LoadLanguages(const std::wstring& szFileXml, lang::CLanguagesList &languages, bool bOnlyIds)
-        {
-            XmlDocumnent doc;
-            if (XmlDoc::Open(szFileXml, doc) == true)
-            {
-                return LoadLanguages(doc, languages, bOnlyIds);
-            }
-            return false;
-        }
-        static bool CXmlConfig::SaveLanguages(const std::wstring& szFileXml, lang::CLanguagesList &languages, bool bOnlyIds)
-        {
-            XmlDocumnent doc;
-            XmlLanguages xml(doc);
-            xml.Create();
-            xml.SetLanguages(languages, bOnlyIds);
-            return xml.Save(szFileXml);
-        }
+    public:
         static bool CXmlConfig::LoadPreset(XmlDocumnent &doc, config::CPreset &preset)
         {
             XmlPresets xml(doc);
@@ -180,6 +161,7 @@ namespace xml
             xml.SetPresets(presets);
             return xml.Save(szFileXml);
         }
+    public:
         static bool CXmlConfig::LoadFormat(XmlDocumnent &doc, config::CFormat &format)
         {
             XmlFormats xml(doc);
@@ -202,28 +184,7 @@ namespace xml
             xml.SetFormat(format);
             return xml.Save(szFileXml);
         }
-        static bool CXmlConfig::LoadFormats(XmlDocumnent &doc, config::CFormatsList &formats, bool bOnlyIds)
-        {
-            XmlFormats xml(doc);
-            return xml.GetFormats(formats, bOnlyIds);
-        }
-        static bool CXmlConfig::LoadFormats(const std::wstring& szFileXml, config::CFormatsList &formats, bool bOnlyIds)
-        {
-            XmlDocumnent doc;
-            if (XmlDoc::Open(szFileXml, doc) == true)
-            {
-                return LoadFormats(doc, formats, bOnlyIds);
-            }
-            return false;
-        }
-        static bool CXmlConfig::SaveFormats(const std::wstring& szFileXml, config::CFormatsList &formats, bool bOnlyIds)
-        {
-            XmlDocumnent doc;
-            XmlFormats xml(doc);
-            xml.Create();
-            xml.SetFormats(formats, bOnlyIds);
-            return xml.Save(szFileXml);
-        }
+    public:
         static bool CXmlConfig::LoadTool(XmlDocumnent &doc, config::CTool &tool)
         {
             XmlTools xml(doc);
@@ -244,28 +205,6 @@ namespace xml
             XmlTools xml(doc);
             xml.Create();
             xml.SetTool(tool);
-            return xml.Save(szFileXml);
-        }
-        static bool CXmlConfig::LoadTools(XmlDocumnent &doc, config::CToolsList &tools, bool bOnlyIds)
-        {
-            XmlTools xml(doc);
-            return xml.GetTools(tools, bOnlyIds);
-        }
-        static bool CXmlConfig::LoadTools(const std::wstring& szFileXml, config::CToolsList &tools, bool bOnlyIds)
-        {
-            XmlDocumnent doc;
-            if (XmlDoc::Open(szFileXml, doc) == true)
-            {
-                return LoadTools(doc, tools, bOnlyIds);
-            }
-            return false;
-        }
-        static bool CXmlConfig::SaveTools(const std::wstring& szFileXml, config::CToolsList &tools, bool bOnlyIds)
-        {
-            XmlDocumnent doc;
-            XmlTools xml(doc);
-            xml.Create();
-            xml.SetTools(tools, bOnlyIds);
             return xml.Save(szFileXml);
         }
     };

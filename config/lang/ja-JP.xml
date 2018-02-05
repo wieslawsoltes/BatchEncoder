@@ -98,8 +98,8 @@
     <String key="0x000B0016" value="すべて削除(&amp;T)" />
     <String key="0x000B0017" value="削除(&amp;D)" />
     <String key="0x000B0018" value="追加(&amp;A)" />
-    <String key="0x000B0019" value="読み込み(&amp;L)" />
-    <String key="0x000B001A" value="保存(&amp;V)" />
+    <String key="0x000B0019" value="インポート(&amp;I)" />
+    <String key="0x000B001A" value="エクスポート(&amp;X)" />
     <String key="0x000B001B" value="変更(&amp;H)" />
     <String key="0x000B001C" value="OK(&amp;O)" />
     <String key="0x000B001D" value="複製(&amp;P)" />

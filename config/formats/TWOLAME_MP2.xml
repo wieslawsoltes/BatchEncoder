@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<Format id="TWOLAME_MP2" name="MP2 (MPEG Audio Layer II) - twolame" template="$EXE $OPTIONS $INFILE $OUTFILE" input="false" output="false" function="progress\GetProgress_TwoLAME.lua" path="tools/twolame0.3.13/twolame.exe" success="0" type="0" formats="WAV,AIF,AU,SND,RAW,GSM,VOX,PAF,FAP,SVX,NIST,SPH,VOC,IRCAM,SF,W64,MAT,MAT4,MAT5,PVF,XI,HTK,SDS,AVR,WAVEX,SD2,FLAC,CAF,WVE,PRC,OGG,OGA,MPC,RF64" extension="MP2" default="17">
+<Format id="TWOLAME_MP2" name="MP2 (MPEG Audio Layer II) - twolame" template="$EXE $OPTIONS $INFILE $OUTFILE" input="false" output="false" function="progress\GetProgress_TwoLAME.lua" path="tools/twolame0.3.13/twolame.exe" success="0" type="0" priority="0" formats="WAV,AIF,AU,SND,RAW,GSM,VOX,PAF,FAP,SVX,NIST,SPH,VOC,IRCAM,SF,W64,MAT,MAT4,MAT5,PVF,XI,HTK,SDS,AVR,WAVEX,SD2,FLAC,CAF,WVE,PRC,OGG,OGA,MPC,RF64" extension="MP2" default="17">
     <Presets>
         <Preset name="VBR (-50)" options="-v --vbr-level -50"/>
         <Preset name="VBR (5)" options="-v --vbr-level 5"/>

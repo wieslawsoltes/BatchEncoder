@@ -5,6 +5,7 @@
 
 #include <afxcmn.h>
 #include <afxwin.h>
+#include <array>
 #include <string>
 #include <utility>
 #include "controls\MyListCtrl.h"
@@ -90,8 +91,6 @@ namespace app
         controls::CMyButton m_BtnMoveUp;
         controls::CMyButton m_BtnMoveDown;
         controls::CMyButton m_BtnUpdate;
-        controls::CMyButton m_BtnLoad;
-        controls::CMyButton m_BtnSave;
         controls::CMyButton m_BtnEditPresets;
         controls::CMyButton m_BtnBrowsePath;
         controls::CMyButton m_BtnBrowseFunction;
@@ -121,8 +120,6 @@ namespace app
         afx_msg void OnEnChangeEditFormatPath();
         afx_msg void OnEnChangeEditFormatTemplate();
         afx_msg void OnEnChangeEditFormatFunction();
-        afx_msg void OnBnClickedButtonLoadFormats();
-        afx_msg void OnBnClickedButtonSaveFormats();
         afx_msg void OnBnClickedButtonEditPresets();
         afx_msg void OnBnClickedButtonBrowsePath();
         afx_msg void OnBnClickedButtonBrowseProgress();
@@ -140,12 +137,12 @@ namespace app
         bool BrowseForPath(CString szDefaultFName, CEdit *pEdit, int nID);
         bool BrowseForFunction(CString szDefaultFName, CEdit *pEdit, int nID);
     public:
+        bool LoadPresets(xml::XmlDocumnent &doc);
+    public:
         bool LoadFormat(const std::wstring& szFileXml);
         bool LoadFormat(xml::XmlDocumnent &doc);
         bool SaveFormat(const std::wstring& szFileXml, config::CFormat &format);
-        bool LoadFormats(const std::wstring& szFileXml, bool bOnlyIds);
-        bool LoadFormats(xml::XmlDocumnent &doc, bool bOnlyIds);
-        bool SaveFormats(const std::wstring& szFileXml, bool bOnlyIds);
-        bool LoadPresets(xml::XmlDocumnent &doc);
+    public:
+        bool SaveFormats(const std::wstring& szPath);
     };
 }

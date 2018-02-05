@@ -23,7 +23,7 @@
     <Tool name="la_x86"/>
     <Tool name="lossywav_x86"/>
     <Tool name="lossywav_x64"/>
-    <Tool name="MAC_x86"/>
+    <Tool name="mac_x86"/>
     <Tool name="mpcenc_x86"/>
     <Tool name="mpcenc_x64"/>
     <Tool name="mpcdec_x86"/>
@@ -61,7 +61,7 @@
     <Tool name="sndfile_convert_x64"/>
     <Tool name="sox_x86"/>
     <Tool name="ssrc_x86"/>
-    <Tool name="Takc_x86"/>
+    <Tool name="takc_x86"/>
     <Tool name="tta_x86"/>
     <Tool name="tta_SSE4_x86"/>
     <Tool name="tta_x64"/>

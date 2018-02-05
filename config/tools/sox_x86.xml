@@ -1,2 +1,2 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<Tool name="sox_x86" platform="x86" formats="" url="https://netix.dl.sourceforge.net/project/sox/sox/14.4.2/sox-14.4.2-win32.zip" file="sox-14.4.2-win32.zip" extract="zip" path="tools/sox-14.4.2-win32/sox-14.4.2/sox.exe"/>
+<Tool name="sox_x86" platform="x86" priority="0" formats="" url="https://netix.dl.sourceforge.net/project/sox/sox/14.4.2/sox-14.4.2-win32.zip" file="sox-14.4.2-win32.zip" extract="zip" path="tools/sox-14.4.2-win32/sox-14.4.2/sox.exe"/>

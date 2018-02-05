@@ -1,2 +1,2 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<Tool name="fhgaacenc_x86" platform="x86" formats="" url="https://github.com/downloads/tmkk/fhgaacenc/fhgaacenc-20120624.zip" file="fhgaacenc-20120624.zip" extract="zip" path="tools/fhgaacenc-20120624/fhgaacenc-20120624/fhgaacenc.exe"/>
+<Tool name="fhgaacenc_x86" platform="x86" priority="0" formats="" url="https://github.com/downloads/tmkk/fhgaacenc/fhgaacenc-20120624.zip" file="fhgaacenc-20120624.zip" extract="zip" path="tools/fhgaacenc-20120624/fhgaacenc-20120624/fhgaacenc.exe"/>

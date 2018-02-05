@@ -63,7 +63,14 @@ namespace worker
             if (pWorkerContext->pConfig->m_Options.bTryToDownloadTools == true)
             {
                 CToolUtilities m_Utilities;
-                int nTool = m_Utilities.FindTool(pWorkerContext->pConfig->m_Tools, commandLine.pFormat->szId);
+
+                int nTool = -1;
+                nTool = pWorkerContext->pConfig->m_Tools.GetToolByPath(commandLine.pFormat->szPath);
+                if (nTool < 0)
+                {
+                    nTool = m_Utilities.FindTool(pWorkerContext->pConfig->m_Tools, commandLine.pFormat->szId);
+                }
+
                 if (nTool >= 0)
                 {
                     config::CTool& tool = pWorkerContext->pConfig->m_Tools.Get(nTool);
@@ -239,7 +246,14 @@ namespace worker
             if (pWorkerContext->pConfig->m_Options.bTryToDownloadTools == true)
             {
                 CToolUtilities m_Utilities;
-                int nTool = m_Utilities.FindTool(pWorkerContext->pConfig->m_Tools, commandLine.pFormat->szId);
+
+                int nTool = -1;
+                nTool = pWorkerContext->pConfig->m_Tools.GetToolByPath(commandLine.pFormat->szPath);
+                if (nTool < 0)
+                {
+                    nTool = m_Utilities.FindTool(pWorkerContext->pConfig->m_Tools, commandLine.pFormat->szId);
+                }
+
                 if (nTool >= 0)
                 {
                     config::CTool& tool = pWorkerContext->pConfig->m_Tools.Get(nTool);
@@ -527,7 +541,14 @@ namespace worker
             if (pWorkerContext->pConfig->m_Options.bTryToDownloadTools == true)
             {
                 CToolUtilities m_Utilities;
-                int nTool = m_Utilities.FindTool(pWorkerContext->pConfig->m_Tools, decoderCommandLine.pFormat->szId);
+
+                int nTool = -1;
+                nTool = pWorkerContext->pConfig->m_Tools.GetToolByPath(decoderCommandLine.pFormat->szPath);
+                if (nTool < 0)
+                {
+                    nTool = m_Utilities.FindTool(pWorkerContext->pConfig->m_Tools, decoderCommandLine.pFormat->szId);
+                }
+
                 if (nTool >= 0)
                 {
                     config::CTool& tool = pWorkerContext->pConfig->m_Tools.Get(nTool);
@@ -583,7 +604,14 @@ namespace worker
             if (pWorkerContext->pConfig->m_Options.bTryToDownloadTools == true)
             {
                 CToolUtilities m_Utilities;
-                int nTool = m_Utilities.FindTool(pWorkerContext->pConfig->m_Tools, encoderCommandLine.pFormat->szId);
+
+                int nTool = -1;
+                nTool = pWorkerContext->pConfig->m_Tools.GetToolByPath(encoderCommandLine.pFormat->szPath);
+                if (nTool < 0)
+                {
+                    nTool = m_Utilities.FindTool(pWorkerContext->pConfig->m_Tools, encoderCommandLine.pFormat->szId);
+                }
+
                 if (nTool >= 0)
                 {
                     config::CTool& tool = pWorkerContext->pConfig->m_Tools.Get(nTool);
@@ -852,7 +880,7 @@ namespace worker
                 szDecOutputFile,
                 pDecFormat->bPipeInput,
                 pDecFormat->bPipeOutput,
-                _T(""));
+                L"");
         }
 
         encoderCommandLine.Build(
@@ -949,9 +977,9 @@ namespace worker
             // encode
             try
             {
-                if (pEncFormat->nType == 0)
+                if (pEncFormat->nType == config::FormatType::Encoder)
                     pWorkerContext->Status(item.nId, pWorkerContext->pConfig->GetString(0x00150001), pWorkerContext->pConfig->GetString(0x0014000A));
-                else if (pEncFormat->nType == 1)
+                else if (pEncFormat->nType == config::FormatType::Decoder)
                     pWorkerContext->Status(item.nId, pWorkerContext->pConfig->GetString(0x00150001), pWorkerContext->pConfig->GetString(0x0014000B));
 
                 item.ResetProgress();

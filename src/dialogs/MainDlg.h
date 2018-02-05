@@ -1,10 +1,11 @@
-﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
+// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 #pragma once
 
 #include <afxwin.h>
 #include <afxcmn.h>
+#include <array>
 #include <vector>
 #include <string>
 #include <utility>
@@ -156,7 +157,7 @@ namespace app
         afx_msg void OnHelpWebsite();
         afx_msg void OnHelpAbout();
     public:
-        bool SearchFolderForLanguages(std::wstring szPath);
+        bool LoadLanguages(const std::wstring& szPath);
         void InitLanguageMenu();
         void SetLanguage();
         void GetItems();
@@ -189,24 +190,29 @@ namespace app
         bool LoadOptions(const std::wstring& szFileXml);
         bool LoadOptions(xml::XmlDocumnent &doc);
         bool SaveOptions(const std::wstring& szFileXml);
-        bool LoadFormats(const std::wstring& szFileXml, bool bOnlyIds);
-        bool LoadFormats(xml::XmlDocumnent &doc, bool bOnlyIds);
-        bool SaveFormats(const std::wstring& szFileXml, bool bOnlyIds);
+    public:
+        bool LoadFormats(const std::wstring& szPath);
+        bool SaveFormats(const std::wstring& szPath);
+    public:
         bool LoadFormat(const std::wstring& szFileXml);
         bool LoadFormat(xml::XmlDocumnent &doc);
         bool SaveFormat(const std::wstring& szFileXml, config::CFormat& format);
+    public:
         bool LoadPresets(const std::wstring& szFileXml);
         bool LoadPresets(xml::XmlDocumnent &doc);
         bool SavePresets(const std::wstring& szFileXml);
-        bool LoadTools(const std::wstring& szFileXml, bool bOnlyIds);
-        bool LoadTools(xml::XmlDocumnent &doc, bool bOnlyIds);
-        bool SaveTools(const std::wstring& szFileXml, bool bOnlyIds);
+    public:
+        bool LoadTools(const std::wstring& szPath);
+        bool SaveTools(const std::wstring& szPath);
+    public:
         bool LoadTool(const std::wstring& szFileXml);
         bool LoadTool(xml::XmlDocumnent &doc);
         bool SaveTool(const std::wstring& szFileXml, config::CTool& tool);
+    public:
         bool LoadItems(const std::wstring& szFileXml);
         bool LoadItems(xml::XmlDocumnent &doc);
         bool SaveItems(const std::wstring& szFileXml);
+    public:
         bool LoadLanguage(const std::wstring& szFileXml);
         bool LoadLanguage(xml::XmlDocumnent &doc);
     };

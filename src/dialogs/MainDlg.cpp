@@ -1,4 +1,4 @@
-﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
+// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 #include "StdAfx.h"
@@ -27,22 +27,12 @@
 
 namespace app
 {
-    static CString szLastBrowse;
+    static CString szLastOutputBrowse;
+    static CString szLastDirectoryBrowse;
     static WNDPROC lpOldWindowProc;
     static bool bRecurseChecked = true;
     static HWND hWndBtnRecurse = nullptr;
     static HWND hWndStaticText = nullptr;
-
-    int CALLBACK BrowseCallbackProc(HWND hWnd, UINT uMsg, LPARAM lp, LPARAM pData)
-    {
-        if (uMsg == BFFM_INITIALIZED)
-        {
-            TCHAR szPath[MAX_PATH + 1] = _T("");
-            wsprintf(szPath, _T("%s\0"), szLastBrowse);
-            ::SendMessage(hWnd, BFFM_SETSELECTION, TRUE, (LPARAM)szPath);
-        }
-        return(0);
-    }
 
     LRESULT CALLBACK BrowseDlgWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
     {
@@ -63,8 +53,6 @@ namespace app
             HWND hWndTitle = nullptr;
             HFONT hFont;
             RECT rc, rcTitle, rcTree, rcWnd;
-
-            TCHAR szPath[MAX_PATH + 1] = _T("");
 
             hWndTitle = ::GetDlgItem(hWnd, IDC_TITLE);
 
@@ -95,17 +83,15 @@ namespace app
                 else
                     ::SendMessage(hWndBtnRecurse, BM_SETCHECK, (WPARAM)BST_UNCHECKED, (LPARAM)0);
 
-#pragma warning(push)
-#pragma warning(disable:4311)
-#pragma warning(disable:4312)
                 lpOldWindowProc = (WNDPROC)SetWindowLongPtr(hWnd, GWLP_WNDPROC, (LONG_PTR)BrowseDlgWindowProc);
-                ::ShowWindow(hWndBtnRecurse, SW_SHOW);
-#pragma warning(pop)
 
+                ::ShowWindow(hWndBtnRecurse, SW_SHOW);
                 hFont = (HFONT) ::SendMessage(hWnd, WM_GETFONT, 0, 0);
                 ::SendMessage(hWndBtnRecurse, WM_SETFONT, (WPARAM)hFont, MAKELPARAM(TRUE, 0));
             }
 
+            TCHAR szPath[MAX_PATH + 1] = _T("");
+            wsprintf(szPath, _T("%s\0"), szLastDirectoryBrowse);
             ::SendMessage(hWnd, BFFM_SETSELECTION, TRUE, (LPARAM)szPath);
         }
         return(0);
@@ -121,9 +107,6 @@ namespace app
             HWND hWndTitle = nullptr;
             HFONT hFont;
             RECT rc, rcTitle, rcTree, rcWnd;
-
-            TCHAR szPath[MAX_PATH + 1] = _T("");
-            wsprintf(szPath, _T("%s\0"), szLastBrowse);
 
             hWndTitle = ::GetDlgItem(hWnd, IDC_TITLE);
 
@@ -151,17 +134,13 @@ namespace app
                 ::ShowWindow(hWndTitle, SW_HIDE);
                 ::ShowWindow(::GetDlgItem(hWnd, IDC_STATUSTEXT), SW_HIDE);
 
-#pragma warning(push)
-#pragma warning(disable:4311)
-#pragma warning(disable:4312)
-                lpOldWindowProc = (WNDPROC)SetWindowLongPtr(hWnd, GWLP_WNDPROC, (LONG_PTR)BrowseDlgWindowProc);
                 ::ShowWindow(hWndStaticText, SW_SHOW);
-#pragma warning(pop)
-
                 hFont = (HFONT) ::SendMessage(hWnd, WM_GETFONT, 0, 0);
                 ::SendMessage(hWndStaticText, WM_SETFONT, (WPARAM)hFont, MAKELPARAM(TRUE, 0));
             }
 
+            TCHAR szPath[MAX_PATH + 1] = _T("");
+            wsprintf(szPath, _T("%s\0"), szLastOutputBrowse);
             ::SendMessage(hWnd, BFFM_SETSELECTION, TRUE, (LPARAM)szPath);
         }
         return(0);
@@ -514,8 +493,8 @@ namespace app
 
         try
         {
-            this->LoadTools(app::m_App.m_Settings.szToolsFile, true);
-            this->LoadFormats(app::m_App.m_Settings.szFormatsFile, true);
+            this->LoadTools(app::m_App.m_Settings.szToolsPath);
+            this->LoadFormats(app::m_App.m_Settings.szFormatsPath);
 
             if (this->LoadOptions(app::m_App.m_Settings.szOptionsFile) == false)
             {
@@ -525,8 +504,8 @@ namespace app
                 this->UpdatePresetComboBox();
             }
 
-            this->SearchFolderForLanguages(app::m_App.m_Settings.szSettingsPath);
-            this->SearchFolderForLanguages(app::m_App.m_Settings.szLanguagesPath);
+            this->LoadLanguages(app::m_App.m_Settings.szSettingsPath);
+            this->LoadLanguages(app::m_App.m_Settings.szLanguagesPath);
             this->InitLanguageMenu();
             this->SetLanguage();
             this->LoadItems(app::m_App.m_Settings.szItemsFile);
@@ -602,8 +581,8 @@ namespace app
         {
             try
             {
-                this->SaveTools(app::m_App.m_Settings.szToolsFile, true);
-                this->SaveFormats(app::m_App.m_Settings.szFormatsFile, true);
+                this->SaveTools(app::m_App.m_Settings.szToolsPath);
+                this->SaveFormats(app::m_App.m_Settings.szFormatsPath);
                 this->SaveOptions(app::m_App.m_Settings.szOptionsFile);
                 this->SaveItems(app::m_App.m_Settings.szItemsFile);
             }
@@ -942,13 +921,6 @@ namespace app
             LPITEMIDLIST pidlBrowse;
             TCHAR *lpBuffer;
 
-            std::wstring szTitle = m_Config.GetString(0x00210006);
-
-            CString szTmp;
-            this->m_CmbOutPath.GetWindowText(szTmp);
-
-            szLastBrowse = szTmp;
-
             if (SHGetMalloc(&pMalloc) == E_FAIL)
                 return;
 
@@ -965,15 +937,11 @@ namespace app
                 return;
             }
 
-#ifndef BIF_NEWDIALOGSTYLE
-#define BIF_NEWDIALOGSTYLE 0x0040
-#endif
-
             bi.hwndOwner = this->GetSafeHwnd();
             bi.pidlRoot = pidlDesktop;
             bi.pszDisplayName = lpBuffer;
-            bi.lpszTitle = szTitle.c_str();
-            bi.ulFlags = BIF_STATUSTEXT | BIF_RETURNONLYFSDIRS | BIF_NEWDIALOGSTYLE;
+            bi.lpszTitle = m_Config.GetString(0x00210006).c_str();
+            bi.ulFlags = BIF_STATUSTEXT | BIF_RETURNONLYFSDIRS | BIF_USENEWUI;
             bi.iImage = 0;
             bi.lpfn = app::BrowseCallbackOutPath;
             bi.lParam = reinterpret_cast<LPARAM>(this);
@@ -983,7 +951,7 @@ namespace app
             {
                 if (::SHGetPathFromIDList(pidlBrowse, lpBuffer))
                 {
-                    szLastBrowse.Format(_T("%s\0"), lpBuffer);
+                    szLastOutputBrowse.Format(_T("%s\0"), lpBuffer);
 
                     CString szOutPath;
                     szOutPath.Format(_T("%s\\%s.%s\0"), lpBuffer, VAR_OUTPUT_NAME, VAR_OUTPUT_EXTENSION);
@@ -1074,18 +1042,9 @@ namespace app
     {
         if (this->pWorkerContext->bRunning == false)
         {
-            TCHAR *pFiles = nullptr;
-            const DWORD dwMaxSize = (4096 * MAX_PATH);
             try
             {
-                pFiles = (TCHAR *)malloc(dwMaxSize);
-                if (pFiles == nullptr)
-                {
-                    m_StatusBar.SetText(m_Config.GetString(0x00210009).c_str(), 1, 0);
-                    return;
-                }
-
-                ZeroMemory(pFiles, dwMaxSize);
+                std::array<TCHAR, (768*(MAX_PATH+1))+1> buffer { 0 };
 
                 CString szFilter;
                 szFilter.Format(_T("%s (*.*)|*.*||"),
@@ -1096,40 +1055,24 @@ namespace app
                     szFilter,
                     this);
 
-                fd.m_ofn.lpstrFile = pFiles;
-                fd.m_ofn.nMaxFile = (dwMaxSize) / 2;
+                fd.m_ofn.lpstrFile = buffer.data();
+                fd.m_ofn.nMaxFile = buffer.size();
 
                 if (fd.DoModal() != IDCANCEL)
                 {
                     POSITION pos = fd.GetStartPosition();
-
                     do
                     {
-                        std::wstring sFilePath = fd.GetNextPathName(pos);
-                        if (!sFilePath.empty())
-                        {
-                            this->AddToList(sFilePath);
-                        }
+                        std::wstring szFilePath = fd.GetNextPathName(pos);
+                        if (!szFilePath.empty())
+                            this->AddToList(szFilePath);
                     } while (pos != nullptr);
 
                     this->SetItems();
                     this->UpdateStatusBar();
                 }
             }
-            catch (...)
-            {
-                if (pFiles != nullptr)
-                {
-                    free(pFiles);
-                    pFiles = nullptr;
-                }
-            }
-
-            if (pFiles != nullptr)
-            {
-                free(pFiles);
-                pFiles = nullptr;
-            }
+            catch (...) { }
         }
     }
 
@@ -1142,8 +1085,6 @@ namespace app
             LPITEMIDLIST pidlDesktop;
             LPITEMIDLIST pidlBrowse;
             TCHAR *lpBuffer;
-
-            CString szTitle = m_Config.GetString(0x0021000A).c_str();
 
             if (SHGetMalloc(&pMalloc) == E_FAIL)
                 return;
@@ -1161,15 +1102,11 @@ namespace app
                 return;
             }
 
-#ifndef BIF_NEWDIALOGSTYLE
-#define BIF_NEWDIALOGSTYLE 0x0040
-#endif
-
             bi.hwndOwner = this->GetSafeHwnd();
             bi.pidlRoot = pidlDesktop;
             bi.pszDisplayName = lpBuffer;
-            bi.lpszTitle = szTitle;
-            bi.ulFlags = BIF_STATUSTEXT | BIF_RETURNONLYFSDIRS | BIF_NEWDIALOGSTYLE;
+            bi.lpszTitle = m_Config.GetString(0x0021000A).c_str();
+            bi.ulFlags = BIF_STATUSTEXT | BIF_RETURNONLYFSDIRS | BIF_USENEWUI;
             bi.iImage = 0;
             bi.lpfn = app::BrowseCallbackAddDir;
             bi.lParam = reinterpret_cast<LPARAM>(this);
@@ -1179,6 +1116,8 @@ namespace app
             {
                 if (::SHGetPathFromIDList(pidlBrowse, lpBuffer))
                 {
+                    szLastDirectoryBrowse.Format(_T("%s\0"), lpBuffer);
+
                     std::wstring szPath = std::wstring(lpBuffer);
                     std::vector<std::wstring> files;
                     bool bResult = util::Utilities::FindFiles(szPath, files, bRecurseChecked);
@@ -1740,7 +1679,7 @@ namespace app
     {
         if (this->pWorkerContext->bRunning == false)
         {
-            util::Utilities::LaunchAndWait(_T("https://github.com/wieslawsoltes/BatchEncoder"), _T(""), FALSE);
+            util::Utilities::LaunchAndWait(L"https://github.com/wieslawsoltes/BatchEncoder", L"", FALSE);
         }
     }
 
@@ -1754,7 +1693,7 @@ namespace app
         }
     }
 
-    bool CMainDlg::SearchFolderForLanguages(std::wstring szPath)
+    bool CMainDlg::LoadLanguages(const std::wstring& szPath)
     {
         std::vector<std::wstring> files;
         bool bResult = util::Utilities::FindFiles(szPath, files, false);
@@ -1978,6 +1917,12 @@ namespace app
         m_EdtThreads.GetWindowText(szThreadCount);
         m_Config.m_Options.nThreadCount = _tstoi(szThreadCount);
 
+        // options: OutputBrowse
+        m_Config.m_Options.szOutputBrowse = szLastOutputBrowse;
+
+        // options: DirectoryBrowse
+        m_Config.m_Options.szDirectoryBrowse = szLastDirectoryBrowse;
+
         // option: MainWindowResize
         m_Config.m_Options.szMainWindowResize = this->GetWindowRectStr();
 
@@ -2005,12 +1950,10 @@ namespace app
         if (!m_Config.m_Options.szOutputPath.empty())
         {
             this->m_CmbOutPath.SetWindowText(m_Config.m_Options.szOutputPath.c_str());
-            szLastBrowse = m_Config.m_Options.szOutputPath.c_str();
         }
         else
         {
             m_Config.m_Options.szOutputPath = app::m_App.m_Settings.szSettingsPath;
-            szLastBrowse = m_Config.m_Options.szOutputPath.c_str();
             this->m_CmbOutPath.SetWindowText(m_Config.m_Options.szOutputPath.c_str());
         }
 
@@ -2090,6 +2033,12 @@ namespace app
         CString szThreadCount;
         szThreadCount.Format(_T("%d\0"), m_Config.m_Options.nThreadCount);
         m_EdtThreads.SetWindowText(szThreadCount);
+
+        // options: OutputBrowse
+        szLastOutputBrowse = m_Config.m_Options.szOutputBrowse.c_str();
+
+        // options: DirectoryBrowse
+        szLastDirectoryBrowse = m_Config.m_Options.szDirectoryBrowse.c_str();
 
         // option: MainWindowResize
         if (!m_Config.m_Options.szMainWindowResize.empty())
@@ -2311,11 +2260,6 @@ namespace app
                             {
                                 this->LoadItems(doc);
                             }
-                            else if (util::StringHelper::CompareNoCase(szName, "Formats"))
-                            {
-                                ::SetCurrentDirectory(util::Utilities::GetFilePath(szPath).c_str());
-                                this->LoadFormats(doc, true);
-                            }
                             else if (util::StringHelper::CompareNoCase(szName, "Format"))
                             {
                                 this->LoadFormat(doc);
@@ -2327,11 +2271,6 @@ namespace app
                             else if (util::StringHelper::CompareNoCase(szName, "Options"))
                             {
                                 this->LoadOptions(doc);
-                            }
-                            else if (util::StringHelper::CompareNoCase(szName, "Tools"))
-                            {
-                                ::SetCurrentDirectory(util::Utilities::GetFilePath(szPath).c_str());
-                                this->LoadTools(doc, true);
                             }
                             else if (util::StringHelper::CompareNoCase(szName, "Tool"))
                             {
@@ -2729,8 +2668,8 @@ namespace app
             {
                 try
                 {
-                    this->SaveTools(app::m_App.m_Settings.szToolsFile, true);
-                    this->SaveFormats(app::m_App.m_Settings.szFormatsFile, true);
+                    this->SaveTools(app::m_App.m_Settings.szToolsPath);
+                    this->SaveFormats(app::m_App.m_Settings.szFormatsPath);
                     this->SaveOptions(app::m_App.m_Settings.szOptionsFile);
                     this->SaveItems(app::m_App.m_Settings.szItemsFile);
                 }
@@ -2772,60 +2711,50 @@ namespace app
         return xml::CXmlConfig::SaveOptions(szFileXml, this->m_Config.m_Options);
     }
 
-    bool CMainDlg::LoadFormats(const std::wstring& szFileXml, bool bOnlyIds)
+    bool CMainDlg::LoadFormats(const std::wstring& szPath)
     {
-        xml::XmlDocumnent doc;
-        std::string szName = xml::CXmlConfig::GetRootName(szFileXml, doc);
-        if (!szName.empty() && util::StringHelper::CompareNoCase(szName, "Formats"))
+        std::vector<std::wstring> files;
+        bool bResult = util::Utilities::FindFiles(szPath, files, false);
+        if (bResult == true)
         {
-            return this->LoadFormats(doc, bOnlyIds);
-        }
-        return false;
-    }
-
-    bool CMainDlg::LoadFormats(xml::XmlDocumnent &doc, bool bOnlyIds)
-    {
-        config::CFormatsList formats;
-        if (xml::CXmlConfig::LoadFormats(doc, formats, bOnlyIds))
-        {
-            if (bOnlyIds == true)
+            config::CFormatsList formats;
+            for (auto& file : files)
             {
-                this->m_Config.m_Formats.RemoveAll();
-                for (auto& format : formats.m_Items)
+                xml::XmlDocumnent doc;
+                if (xml::XmlDoc::Open(file, doc) == true)
                 {
-                    std::wstring path = util::Utilities::CombinePath(app::m_App.m_Settings.szFormatsPath, format.szId + L".xml");
-                    if (this->LoadFormat(path) == false)
-                        return false;
+                    std::string szName = xml::XmlDoc::GetRootName(doc);
+                    if (util::StringHelper::CompareNoCase(szName, "Format"))
+                    {
+                        config::CFormat format;
+                        if (xml::CXmlConfig::LoadFormat(doc, format))
+                        {
+                            formats.Insert(std::move(format));
+                        }
+                    }
                 }
             }
-            else
+            if (formats.Count() > 0)
             {
+                formats.Sort();
                 this->m_Config.m_Formats = std::move(formats);
+                this->UpdateFormatComboBox();
+                this->UpdatePresetComboBox();
             }
-            this->UpdateFormatComboBox();
-            this->UpdatePresetComboBox();
             return true;
         }
         return false;
     }
 
-    bool CMainDlg::SaveFormats(const std::wstring& szFileXml, bool bOnlyIds)
+    bool CMainDlg::SaveFormats(const std::wstring& szPath)
     {
-        bool bResult = xml::CXmlConfig::SaveFormats(szFileXml, this->m_Config.m_Formats, bOnlyIds);
-        if (bResult == false)
-            return false;
-
-        if (bOnlyIds == true)
+        ::CreateDirectory(szPath.c_str(), nullptr);
+        for (auto& format : this->m_Config.m_Formats.m_Items)
         {
-            ::CreateDirectory(app::m_App.m_Settings.szFormatsPath.c_str(), NULL);
-            for (auto& format : this->m_Config.m_Formats.m_Items)
-            {
-                std::wstring path = util::Utilities::CombinePath(app::m_App.m_Settings.szFormatsPath, format.szId + L".xml");
-                if (this->SaveFormat(path, format) == false)
-                    return false;
-            }
+            std::wstring path = util::Utilities::CombinePath(szPath, format.szId + L".xml");
+            if (this->SaveFormat(path, format) == false)
+                return false;
         }
-
         return true;
     }
 
@@ -2846,6 +2775,7 @@ namespace app
         if (xml::CXmlConfig::LoadFormat(doc, format))
         {
             m_Config.m_Formats.Insert(format);
+            m_Config.m_Formats.Sort();
             this->UpdateFormatComboBox();
             this->UpdatePresetComboBox();
             return true;
@@ -2897,34 +2827,32 @@ namespace app
         return false;
     }
 
-    bool CMainDlg::LoadTools(const std::wstring& szFileXml, bool bOnlyIds)
+    bool CMainDlg::LoadTools(const std::wstring& szPath)
     {
-        xml::XmlDocumnent doc;
-        std::string szName = xml::CXmlConfig::GetRootName(szFileXml, doc);
-        if (!szName.empty() && util::StringHelper::CompareNoCase(szName, "Tools"))
+        std::vector<std::wstring> files;
+        bool bResult = util::Utilities::FindFiles(szPath, files, false);
+        if (bResult == true)
         {
-            return this->LoadTools(doc, bOnlyIds);
-        }
-        return false;
-    }
-
-    bool CMainDlg::LoadTools(xml::XmlDocumnent &doc, bool bOnlyIds)
-    {
-        config::CToolsList tools;
-        if (xml::CXmlConfig::LoadTools(doc, tools, bOnlyIds))
-        {
-            if (bOnlyIds == true)
+            config::CToolsList tools;
+            for (auto& file : files)
             {
-                this->m_Config.m_Tools.RemoveAll();
-                for (auto& tool : tools.m_Items)
+                xml::XmlDocumnent doc;
+                if (xml::XmlDoc::Open(file, doc) == true)
                 {
-                    std::wstring path = util::Utilities::CombinePath(app::m_App.m_Settings.szToolsPath, tool.szName + L".xml");
-                    if (this->LoadTool(path) == false)
-                        return false;
+                    std::string szName = xml::XmlDoc::GetRootName(doc);
+                    if (util::StringHelper::CompareNoCase(szName, "Tool"))
+                    {
+                        config::CTool tool;
+                        if (xml::CXmlConfig::LoadTool(doc, tool))
+                        {
+                            tools.Insert(std::move(tool));
+                        }
+                    }
                 }
             }
-            else
+            if (tools.Count() > 0)
             {
+                tools.Sort();
                 this->m_Config.m_Tools = std::move(tools);
             }
             return true;
@@ -2932,23 +2860,15 @@ namespace app
         return false;
     }
 
-    bool CMainDlg::SaveTools(const std::wstring& szFileXml, bool bOnlyIds)
+    bool CMainDlg::SaveTools(const std::wstring& szPath)
     {
-        bool bResult = xml::CXmlConfig::SaveTools(szFileXml, this->m_Config.m_Tools, bOnlyIds);
-        if (bResult == false)
-            return false;
-
-        if (bOnlyIds == true)
+        ::CreateDirectory(szPath.c_str(), nullptr);
+        for (auto& tool : this->m_Config.m_Tools.m_Items)
         {
-            ::CreateDirectory(app::m_App.m_Settings.szToolsPath.c_str(), NULL);
-            for (auto& tool : this->m_Config.m_Tools.m_Items)
-            {
-                std::wstring path = util::Utilities::CombinePath(app::m_App.m_Settings.szToolsPath, tool.szName + L".xml");
-                if (this->SaveTool(path, tool) == false)
-                    return false;
-            }
+            std::wstring path = util::Utilities::CombinePath(szPath, tool.szName + L".xml");
+            if (this->SaveTool(path, tool) == false)
+                return false;
         }
-
         return true;
     }
 
@@ -2969,6 +2889,7 @@ namespace app
         if (xml::CXmlConfig::LoadTool(doc, tool))
         {
             m_Config.m_Tools.Insert(tool);
+            m_Config.m_Tools.Sort();
             return true;
         }
         return false;

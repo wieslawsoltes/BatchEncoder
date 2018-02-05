@@ -5,6 +5,7 @@
 
 #include <afxcmn.h>
 #include <afxwin.h>
+#include <array>
 #include <string>
 #include <utility>
 #include "controls\MyListCtrl.h"
@@ -90,8 +91,6 @@ namespace app
         controls::CMyButton m_BtnMoveUp;
         controls::CMyButton m_BtnMoveDown;
         controls::CMyButton m_BtnUpdate;
-        controls::CMyButton m_BtnLoad;
-        controls::CMyButton m_BtnSave;
         controls::CMyButton m_BtnDownload;
         controls::CMyButton m_BtnSetFormat;
         controls::CMyButton m_BtnSetFormatX86;
@@ -117,8 +116,6 @@ namespace app
         afx_msg void OnEnChangeEditToolFile();
         afx_msg void OnEnChangeEditToolExtract();
         afx_msg void OnEnChangeEditToolPath();
-        afx_msg void OnBnClickedButtonLoadTools();
-        afx_msg void OnBnClickedButtonSaveTools();
         afx_msg void OnBnClickedButtonDownloadSelected();
         afx_msg void OnBnClickedButtonToolSetFormat();
         afx_msg void OnBnClickedButtonToolSetFormatX86();
@@ -140,8 +137,7 @@ namespace app
         bool LoadTool(const std::wstring& szFileXml);
         bool LoadTool(xml::XmlDocumnent &doc);
         bool SaveTool(const std::wstring& szFileXml, config::CTool &tool);
-        bool LoadTools(const std::wstring& szFileXml, bool bOnlyIds);
-        bool LoadTools(xml::XmlDocumnent &doc, bool bOnlyIds);
-        bool SaveTools(const std::wstring& szFileXml, bool bOnlyIds);
+    public:
+        bool SaveTools(const std::wstring& szPath);
     };
 }

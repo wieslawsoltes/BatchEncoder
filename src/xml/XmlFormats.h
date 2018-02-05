@@ -32,7 +32,13 @@ namespace xml
             VALIDATE(GetAttributeValue(element, "function", &m_Format.szFunction));
             VALIDATE(GetAttributeValue(element, "path", &m_Format.szPath));
             VALIDATE(GetAttributeValue(element, "success", &m_Format.nExitCodeSuccess));
-            VALIDATE(GetAttributeValue(element, "type", &m_Format.nType));
+
+            int nType;
+            VALIDATE(GetAttributeValue(element, "type", &nType));
+            m_Format.nType = config::CFormat::FromInt(nType);
+
+            VALIDATE(GetAttributeValue(element, "priority", &m_Format.nPriority));
+
             VALIDATE(GetAttributeValue(element, "formats", &m_Format.szInputExtensions));
             VALIDATE(GetAttributeValue(element, "extension", &m_Format.szOutputExtension));
             VALIDATE(GetAttributeValue(element, "default", &m_Format.nDefaultPreset));
@@ -55,7 +61,12 @@ namespace xml
             SetAttributeValue(element, "function", m_Format.szFunction);
             SetAttributeValue(element, "path", m_Format.szPath);
             SetAttributeValue(element, "success", m_Format.nExitCodeSuccess);
-            SetAttributeValue(element, "type", m_Format.nType);
+
+            int nType = config::CFormat::ToInt(m_Format.nType);
+            SetAttributeValue(element, "type", nType);
+
+            SetAttributeValue(element, "priority", m_Format.nPriority);
+
             SetAttributeValue(element, "formats", m_Format.szInputExtensions);
             SetAttributeValue(element, "extension", m_Format.szOutputExtension);
             SetAttributeValue(element, "default", m_Format.nDefaultPreset);
@@ -63,46 +74,6 @@ namespace xml
             auto parent = this->NewElement("Presets");
             element->LinkEndChild(parent);
             XmlPresets(m_Document).SetPresets(parent, m_Format.m_Presets);
-        }
-        bool GetFormats(const XmlElement *parent, config::CFormatsList &m_Formats, bool bOnlyIds)
-        {
-            auto element = parent->FirstChildElement("Format");
-            if (element != nullptr)
-            {
-                for (element; element; element = element->NextSiblingElement())
-                {
-                    config::CFormat format;
-                    if (bOnlyIds == true)
-                    {
-                        VALIDATE(GetAttributeValue(element, "id", &format.szId));
-                    }
-                    else
-                    {
-                        VALIDATE(this->GetFormat(element, format));
-                    }
-                    m_Formats.Insert(format);
-                }
-                return true;
-            }
-            return false;
-        }
-        void SetFormats(XmlElement *parent, config::CFormatsList &m_Formats, bool bOnlyIds)
-        {
-            int nFormats = m_Formats.Count();
-            for (int i = 0; i < nFormats; i++)
-            {
-                config::CFormat& format = m_Formats.Get(i);
-                auto element = this->NewElement("Format");
-                parent->LinkEndChild(element);
-                if (bOnlyIds == true)
-                {
-                    SetAttributeValue(element, "id", format.szId);
-                }
-                else
-                {
-                    this->SetFormat(element, format);
-                }
-            }
         }
     public:
         bool GetFormat(config::CFormat &m_Format)
@@ -120,22 +91,6 @@ namespace xml
             auto element = this->NewElement("Format");
             this->LinkEndChild(element);
             this->SetFormat(element, m_Format);
-        }
-        bool GetFormats(config::CFormatsList &m_Formats, bool bOnlyIds)
-        {
-            auto element = this->FirstChildElement("Formats");
-            if (element != nullptr)
-            {
-                VALIDATE(this->GetFormats(element, m_Formats, bOnlyIds));
-                return true;
-            }
-            return false;
-        }
-        void SetFormats(config::CFormatsList &m_Formats, bool bOnlyIds)
-        {
-            auto element = this->NewElement("Formats");
-            this->LinkEndChild(element);
-            this->SetFormats(element, m_Formats, bOnlyIds);
         }
     };
 }

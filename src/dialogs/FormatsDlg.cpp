@@ -1,4 +1,4 @@
-﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
+// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 #include "StdAfx.h"
@@ -25,8 +25,8 @@ namespace app
         : CMyDialogEx(CFormatsDlg::IDD, pParent)
     {
         this->m_hIcon = AfxGetApp()->LoadIcon(IDI_ICON_MAIN);
-        this->szFormatsDialogResize = _T("");
-        this->szFormatsListColumns = _T("");
+        this->szFormatsDialogResize = L"";
+        this->szFormatsListColumns = L"";
         this->bUpdate = false;
         this->nSelectedFormat = 0;
     }
@@ -70,8 +70,6 @@ namespace app
         DDX_Control(pDX, IDC_BUTTON_FORMAT_UP, m_BtnMoveUp);
         DDX_Control(pDX, IDC_BUTTON_FORMAT_DOWN, m_BtnMoveDown);
         DDX_Control(pDX, IDC_BUTTON_FORMAT_UPDATE, m_BtnUpdate);
-        DDX_Control(pDX, IDC_BUTTON_FORMAT_LOAD, m_BtnLoad);
-        DDX_Control(pDX, IDC_BUTTON_FORMAT_SAVE, m_BtnSave);
         DDX_Control(pDX, IDC_BUTTON_EDIT_PRESETS, m_BtnEditPresets);
         DDX_Control(pDX, IDC_BUTTON_BROWSE_PATH, m_BtnBrowsePath);
         DDX_Control(pDX, IDC_BUTTON_BROWSE_FUNCTION, m_BtnBrowseFunction);
@@ -105,8 +103,6 @@ namespace app
         ON_BN_CLICKED(IDC_BUTTON_FORMAT_UP, OnBnClickedButtonFormatUp)
         ON_BN_CLICKED(IDC_BUTTON_FORMAT_DOWN, OnBnClickedButtonFormatDown)
         ON_BN_CLICKED(IDC_BUTTON_FORMAT_UPDATE, OnBnClickedButtonUpdateFormat)
-        ON_BN_CLICKED(IDC_BUTTON_FORMAT_LOAD, OnBnClickedButtonLoadFormats)
-        ON_BN_CLICKED(IDC_BUTTON_FORMAT_SAVE, OnBnClickedButtonSaveFormats)
         ON_BN_CLICKED(IDC_BUTTON_EDIT_PRESETS, OnBnClickedButtonEditPresets)
         ON_BN_CLICKED(IDC_BUTTON_BROWSE_PATH, OnBnClickedButtonBrowsePath)
         ON_BN_CLICKED(IDC_BUTTON_BROWSE_FUNCTION, OnBnClickedButtonBrowseProgress)
@@ -216,47 +212,75 @@ namespace app
 
     void CFormatsDlg::OnBnClickedButtonImport()
     {
+        std::array<TCHAR, (768*(MAX_PATH+1))+1> buffer { 0 };
+        
         CString szFilter;
         szFilter.Format(_T("%s (*.xml)|*.xml|%s (*.*)|*.*||"),
             pConfig->GetString(0x00310008).c_str(),
             pConfig->GetString(0x00310001).c_str());
 
         CFileDialog fd(TRUE, _T("xml"), _T(""),
-            OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER,
+            OFN_ALLOWMULTISELECT | OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER,
             szFilter, this);
+
+        fd.m_ofn.lpstrFile = buffer.data();
+        fd.m_ofn.nMaxFile = buffer.size();
 
         if (fd.DoModal() == IDOK)
         {
-            std::wstring szFileXml = fd.GetPathName();
-            this->LoadFormat(szFileXml);
+            POSITION pos = fd.GetStartPosition();
+            do
+            {
+                std::wstring szFilePath = fd.GetNextPathName(pos);
+                if (!szFilePath.empty())
+                    this->LoadFormat(szFilePath);
+            } while (pos != nullptr);
         }
     }
 
     void CFormatsDlg::OnBnClickedButtonExport()
     {
-        POSITION pos = m_LstFormats.GetFirstSelectedItemPosition();
-        if (pos != nullptr)
+        int nCount = m_LstFormats.GetItemCount();
+        int nSelectedItems = 0;
+        if (nCount > 0)
         {
-            int nSelected = m_LstFormats.GetNextSelectedItem(pos);
-            if (nSelected >= 0)
+            for (int i = 0; i < nCount; i++)
             {
-                config::CFormat& format = m_Formats.Get(nSelected);
+                if (m_LstFormats.GetItemState(i, LVIS_SELECTED) == LVIS_SELECTED)
+                    nSelectedItems++;
+            }
+        }
 
-                CString szFilter;
-                szFilter.Format(_T("%s (*.xml)|*.xml|%s (*.*)|*.*||"),
-                    pConfig->GetString(0x00310008).c_str(),
-                    pConfig->GetString(0x00310001).c_str());
-
-                CFileDialog fd(FALSE, _T("xml"), format.szId.c_str(),
-                    OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER | OFN_OVERWRITEPROMPT,
-                    szFilter, this);
-
-                if (fd.DoModal() == IDOK)
+        if (nSelectedItems == 1)
+        {
+            POSITION pos = m_LstFormats.GetFirstSelectedItemPosition();
+            if (pos != nullptr)
+            {
+                int nSelected = m_LstFormats.GetNextSelectedItem(pos);
+                if (nSelected >= 0)
                 {
-                    std::wstring szFileXml = fd.GetPathName();
-                    this->SaveFormat(szFileXml, format);
+                    config::CFormat& format = m_Formats.Get(nSelected);
+
+                    CString szFilter;
+                    szFilter.Format(_T("%s (*.xml)|*.xml|%s (*.*)|*.*||"),
+                        pConfig->GetString(0x00310008).c_str(),
+                        pConfig->GetString(0x00310001).c_str());
+
+                    CFileDialog fd(FALSE, _T("xml"), format.szId.c_str(),
+                        OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER | OFN_OVERWRITEPROMPT,
+                        szFilter, this);
+
+                    if (fd.DoModal() == IDOK)
+                    {
+                        std::wstring szFileXml = fd.GetPathName();
+                        this->SaveFormat(szFileXml, format);
+                    }
                 }
             }
+        }
+        else if (nSelectedItems > 1)
+        {
+            // TODO: Show browse for folder dialog and call SaveFormats.
         }
     }
 
@@ -364,7 +388,8 @@ namespace app
         format.szFunction = _T("- none -");
         format.szPath = _T("program.exe");
         format.nExitCodeSuccess = 0;
-        format.nType = 0;
+        format.nType = config::FormatType::Encoder;
+        format.nPriority = 0;
         format.szInputExtensions = _T("WAV");
         format.szOutputExtension = _T("EXT");
         format.nDefaultPreset = 0;
@@ -472,7 +497,7 @@ namespace app
             CString szTemplate = _T("");
             CString szPath = _T("");
             CString szExitCodeSuccess = _T("");
-            int nType = 0;
+            config::FormatType nType = config::FormatType::Encoder;
             bool bInput = false;
             bool bOutput = false;
             CString szFunction = _T("");
@@ -490,11 +515,10 @@ namespace app
 
             int nCheckID = this->GetCheckedRadioButton(IDC_RADIO_TYPE_ENCODER, IDC_RADIO_TYPE_DECODER);
             if (nCheckID == IDC_RADIO_TYPE_ENCODER)
-                nType = 0;
+                nType = config::FormatType::Encoder;
             else if (nCheckID == IDC_RADIO_TYPE_DECODER)
-                nType = 1;
-            else
-                nType = 0;
+                nType = config::FormatType::Decoder;
+
 
             if (IsDlgButtonChecked(IDC_CHECK_FORMAT_PIPES_INPUT) == BST_CHECKED)
                 bInput = true;
@@ -623,42 +647,6 @@ namespace app
             return;
 
         OnBnClickedButtonUpdateFormat();
-    }
-
-    void CFormatsDlg::OnBnClickedButtonLoadFormats()
-    {
-        CString szFilter;
-        szFilter.Format(_T("%s (*.xml)|*.xml|%s (*.*)|*.*||"),
-            pConfig->GetString(0x00310005).c_str(),
-            pConfig->GetString(0x00310001).c_str());
-
-        CFileDialog fd(TRUE, _T("xml"), _T(""),
-            OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER,
-            szFilter, this);
-
-        if (fd.DoModal() == IDOK)
-        {
-            std::wstring szFileXml = fd.GetPathName();
-            this->LoadFormats(szFileXml, true);
-        }
-    }
-
-    void CFormatsDlg::OnBnClickedButtonSaveFormats()
-    {
-        CString szFilter;
-        szFilter.Format(_T("%s (*.xml)|*.xml|%s (*.*)|*.*||"),
-            pConfig->GetString(0x00310005).c_str(),
-            pConfig->GetString(0x00310001).c_str());
-
-        CFileDialog fd(FALSE, _T("xml"), _T("Formats"),
-            OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER | OFN_OVERWRITEPROMPT,
-            szFilter, this);
-
-        if (fd.DoModal() == IDOK)
-        {
-            std::wstring szFileXml = fd.GetPathName();
-            this->SaveFormats(szFileXml, true);
-        }
     }
 
     void CFormatsDlg::OnBnClickedButtonEditPresets()
@@ -799,8 +787,6 @@ namespace app
         helper.SetWndText(&m_BtnRemoveAll, 0x000C0024);
         helper.SetWndText(&m_BtnRemove, 0x000C0025);
         helper.SetWndText(&m_BtnAdd, 0x000C0026);
-        helper.SetWndText(&m_BtnLoad, 0x000C0027);
-        helper.SetWndText(&m_BtnSave, 0x000C0028);
         helper.SetWndText(&m_BtnUpdate, 0x000C0029);
         helper.SetWndText(&m_BtnOK, 0x000C002A);
     }
@@ -857,12 +843,7 @@ namespace app
                         std::string szName = xml::CXmlConfig::GetRootName(szPath, doc);
                         if (!szName.empty())
                         {
-                            if (util::StringHelper::CompareNoCase(szName, "Formats"))
-                            {
-                                ::SetCurrentDirectory(util::Utilities::GetFilePath(szPath).c_str());
-                                this->LoadFormats(doc, true);
-                            }
-                            else if (util::StringHelper::CompareNoCase(szName, "Format"))
+                            if (util::StringHelper::CompareNoCase(szName, "Format"))
                             {
                                 this->LoadFormat(doc);
                             }
@@ -921,20 +902,16 @@ namespace app
 
         switch (format.nType)
         {
-        case 0:
+        default:
+        case config::FormatType::Encoder:
             this->CheckRadioButton(IDC_RADIO_TYPE_ENCODER,
                 IDC_RADIO_TYPE_DECODER,
                 IDC_RADIO_TYPE_ENCODER);
             break;
-        case 1:
+        case config::FormatType::Decoder:
             this->CheckRadioButton(IDC_RADIO_TYPE_ENCODER,
                 IDC_RADIO_TYPE_DECODER,
                 IDC_RADIO_TYPE_DECODER);
-            break;
-        default:
-            this->CheckRadioButton(IDC_RADIO_TYPE_ENCODER,
-                IDC_RADIO_TYPE_DECODER,
-                IDC_RADIO_TYPE_ENCODER);
             break;
         };
 
@@ -1057,6 +1034,24 @@ namespace app
         return false;
     }
 
+    bool CFormatsDlg::LoadPresets(xml::XmlDocumnent &doc)
+    {
+        config::CPresetsList presets;
+        if (xml::CXmlConfig::LoadPresets(doc, presets))
+        {
+            POSITION pos = m_LstFormats.GetFirstSelectedItemPosition();
+            if (pos != nullptr)
+            {
+                int nItem = m_LstFormats.GetNextSelectedItem(pos);
+                config::CFormat& format = this->m_Formats.Get(nItem);
+                format.m_Presets = std::move(presets);
+                this->UpdateDefaultComboBox(format);
+                return true;
+            }
+        }
+        return false;
+    }
+
     bool CFormatsDlg::LoadFormat(const std::wstring& szFileXml)
     {
         xml::XmlDocumnent doc;
@@ -1086,88 +1081,22 @@ namespace app
         return xml::CXmlConfig::SaveFormat(szFileXml, format);
     }
 
-    bool CFormatsDlg::LoadFormats(const std::wstring& szFileXml, bool bOnlyIds)
+    bool CFormatsDlg::SaveFormats(const std::wstring& szPath)
     {
-        xml::XmlDocumnent doc;
-        std::string szName = xml::CXmlConfig::GetRootName(szFileXml, doc);
-        if (!szName.empty() && util::StringHelper::CompareNoCase(szName, "Formats"))
+        int nCount = m_LstFormats.GetItemCount();
+        if (nCount > 0)
         {
-            ::SetCurrentDirectory(util::Utilities::GetFilePath(szFileXml).c_str());
-            return this->LoadFormats(doc, bOnlyIds);
-        }
-        return false;
-    }
-
-    bool CFormatsDlg::LoadFormats(xml::XmlDocumnent &doc, bool bOnlyIds)
-    {
-        config::CFormatsList formats;
-        if (xml::CXmlConfig::LoadFormats(doc, formats, bOnlyIds))
-        {
-            this->m_LstFormats.DeleteAllItems();
-            if (bOnlyIds == true)
+            for (int i = 0; i < nCount; i++)
             {
-                this->m_Formats.RemoveAll();
-                for (auto& format : formats.m_Items)
+                if (m_LstFormats.GetItemState(i, LVIS_SELECTED) == LVIS_SELECTED)
                 {
-                    std::wstring path = app::m_App.m_Settings.szFormatsDir + L"\\" + format.szId + L".xml";
-                    if (this->LoadFormat(path) == false)
+                    config::CFormat& format = m_Formats.Get(i);
+                    std::wstring path = util::Utilities::CombinePath(szPath, format.szId + L".xml");
+                    if (this->SaveFormat(path, format) == false)
                         return false;
                 }
-                if (this->m_Formats.Count() > 0)
-                    nSelectedFormat = 0;
-            }
-            else
-            {
-                this->m_Formats = std::move(formats);
-                if (this->m_Formats.Count() > 0)
-                    nSelectedFormat = 0;
-
-                this->InsertFormatsToListCtrl();
-            }
-            this->ListSelectionChange();
-            return true;
-        }
-        return false;
-    }
-
-    bool CFormatsDlg::SaveFormats(const std::wstring& szFileXml, bool bOnlyIds)
-    {
-        bool bResult = xml::CXmlConfig::SaveFormats(szFileXml, this->m_Formats, bOnlyIds);
-        if (bResult == false)
-            return false;
-
-        if (bOnlyIds == true)
-        {
-            std::wstring szFilePath = util::Utilities::GetFilePath(szFileXml);
-            std::wstring szPath = util::Utilities::CombinePath(szFilePath, app::m_App.m_Settings.szFormatsDir);
-            ::SetCurrentDirectory(szFilePath.c_str());
-            ::CreateDirectory(szPath.c_str(), NULL);
-            for (auto& format : this->m_Formats.m_Items)
-            {
-                std::wstring path = util::Utilities::CombinePath(szPath, format.szId + L".xml");
-                if (this->SaveFormat(path, format) == false)
-                    return false;
             }
         }
-
         return true;
-    }
-
-    bool CFormatsDlg::LoadPresets(xml::XmlDocumnent &doc)
-    {
-        config::CPresetsList presets;
-        if (xml::CXmlConfig::LoadPresets(doc, presets))
-        {
-            POSITION pos = m_LstFormats.GetFirstSelectedItemPosition();
-            if (pos != nullptr)
-            {
-                int nItem = m_LstFormats.GetNextSelectedItem(pos);
-                config::CFormat& format = this->m_Formats.Get(nItem);
-                format.m_Presets = std::move(presets);
-                this->UpdateDefaultComboBox(format);
-                return true;
-            }
-        }
-        return false;
     }
 }
