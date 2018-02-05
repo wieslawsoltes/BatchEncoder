@@ -24,7 +24,7 @@
 #define TOOL_COLUMN_URL       1
 #define TOOL_COLUMN_STATUS    2
 
-namespace app
+namespace dialogs
 {
     class CToolsDlg;
 

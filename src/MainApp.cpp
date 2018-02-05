@@ -31,7 +31,7 @@ namespace app
 
         m_Settings.Init();
 
-        CMainDlg dlg;
+        dialogs::CMainDlg dlg;
         m_pMainWnd = &dlg;
         dlg.DoModal();
 

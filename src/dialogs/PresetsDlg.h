@@ -20,7 +20,7 @@
 #define PRESET_COLUMN_NAME      0
 #define PRESET_COLUMN_OPTIONS   1
 
-namespace app
+namespace dialogs
 {
     class CPresetsDlg;
 

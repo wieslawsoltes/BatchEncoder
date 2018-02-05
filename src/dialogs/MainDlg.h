@@ -34,7 +34,7 @@
 #define ITEM_COLUMN_TIME    6
 #define ITEM_COLUMN_STATUS  7
 
-namespace app
+namespace dialogs
 {
     class CMainDlg;
 

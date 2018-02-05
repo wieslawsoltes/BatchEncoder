@@ -10,7 +10,7 @@
 #include "FormatsDlg.h"
 #include "PresetsDlg.h"
 
-namespace app
+namespace dialogs
 {
     int CALLBACK BrowseCallbackExportFormatsPath(HWND hWnd, UINT uMsg, LPARAM lp, LPARAM pData)
     {
@@ -320,7 +320,7 @@ namespace app
             bi.lpszTitle = pConfig->GetString(0x0021000A).c_str();
             bi.ulFlags = BIF_RETURNONLYFSDIRS | BIF_USENEWUI;
             bi.iImage = 0;
-            bi.lpfn = app::BrowseCallbackExportFormatsPath;
+            bi.lpfn = BrowseCallbackExportFormatsPath;
             bi.lParam = reinterpret_cast<LPARAM>(this);
 
             pidlBrowse = ::SHBrowseForFolder(&bi);

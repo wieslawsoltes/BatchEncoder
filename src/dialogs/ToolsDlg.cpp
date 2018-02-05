@@ -9,7 +9,7 @@
 #include "xml\XmlConfig.h"
 #include "ToolsDlg.h"
 
-namespace app
+namespace dialogs
 {
     int CALLBACK BrowseCallbackExportToolsPath(HWND hWnd, UINT uMsg, LPARAM lp, LPARAM pData)
     {
@@ -331,7 +331,7 @@ namespace app
             bi.lpszTitle = pConfig->GetString(0x0021000A).c_str();
             bi.ulFlags = BIF_RETURNONLYFSDIRS | BIF_USENEWUI;
             bi.iImage = 0;
-            bi.lpfn = app::BrowseCallbackExportToolsPath;
+            bi.lpfn = BrowseCallbackExportToolsPath;
             bi.lParam = reinterpret_cast<LPARAM>(this);
 
             pidlBrowse = ::SHBrowseForFolder(&bi);

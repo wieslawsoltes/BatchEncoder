@@ -21,7 +21,7 @@
 #define FORMAT_COLUMN_NAME      0
 #define FORMAT_COLUMN_TEMPLATE  1
 
-namespace app
+namespace dialogs
 {
     class CFormatsDlg;
 

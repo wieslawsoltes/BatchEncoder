@@ -12,7 +12,7 @@
 #include "controls\MyStatic.h"
 #include "controls\MyDialogEx.h"
 
-namespace app
+namespace dialogs
 {
     class CAboutDlg : public controls::CMyDialogEx
     {

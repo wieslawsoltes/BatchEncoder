@@ -25,7 +25,7 @@
 #define ID_LANGUAGE_MIN 2000
 #define ID_LANGUAGE_MAX 2999
 
-namespace app
+namespace dialogs
 {
     static CString szLastOutputBrowse;
     static CString szLastDirectoryBrowse;
@@ -943,7 +943,7 @@ namespace app
             bi.lpszTitle = m_Config.GetString(0x00210006).c_str();
             bi.ulFlags = BIF_RETURNONLYFSDIRS | BIF_USENEWUI;
             bi.iImage = 0;
-            bi.lpfn = app::BrowseCallbackOutPath;
+            bi.lpfn = BrowseCallbackOutPath;
             bi.lParam = reinterpret_cast<LPARAM>(this);
 
             pidlBrowse = ::SHBrowseForFolder(&bi);
@@ -1108,7 +1108,7 @@ namespace app
             bi.lpszTitle = m_Config.GetString(0x0021000A).c_str();
             bi.ulFlags = BIF_RETURNONLYFSDIRS | BIF_USENEWUI;
             bi.iImage = 0;
-            bi.lpfn = app::BrowseCallbackAddDir;
+            bi.lpfn = BrowseCallbackAddDir;
             bi.lParam = reinterpret_cast<LPARAM>(this);
 
             pidlBrowse = ::SHBrowseForFolder(&bi);
@@ -1880,7 +1880,7 @@ namespace app
         m_Config.m_Options.bDeleteSourceFiles = this->GetMenu()->GetMenuState(ID_OPTIONS_DELETE_SOURCE, MF_BYCOMMAND) == MF_CHECKED;
 
         // option: RecurseChecked
-        m_Config.m_Options.bRecurseChecked = app::bRecurseChecked;
+        m_Config.m_Options.bRecurseChecked = bRecurseChecked;
 
         // option: ShutdownWhenFinished
         m_Config.m_Options.bShutdownWhenFinished = this->GetMenu()->GetMenuState(ID_OPTIONS_SHUTDOWN_WINDOWS, MF_BYCOMMAND) == MF_CHECKED;
@@ -1965,9 +1965,9 @@ namespace app
 
         // option: RecurseChecked
         if (m_Config.m_Options.bRecurseChecked)
-            app::bRecurseChecked = true;
+            bRecurseChecked = true;
         else
-            app::bRecurseChecked = false;
+            bRecurseChecked = false;
 
         // option: ShutdownWhenFinished
         if (m_Config.m_Options.bShutdownWhenFinished)

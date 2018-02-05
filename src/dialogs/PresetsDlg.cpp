@@ -9,7 +9,7 @@
 #include "xml\XmlConfig.h"
 #include "PresetsDlg.h"
 
-namespace app
+namespace dialogs
 {
     DWORD WINAPI PresetsDlgDropThread(LPVOID lpParam)
     {
