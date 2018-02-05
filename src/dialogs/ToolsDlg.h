@@ -58,6 +58,7 @@ namespace app
         config::CConfiguration *pConfig;
         std::wstring szToolsDialogResize;
         std::wstring szToolsListColumns;
+        CString szLastToolsBrowse;
         volatile bool bUpdate;
         int nSelectedTool;
         config::CToolsList m_Tools;

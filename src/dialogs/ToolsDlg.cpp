@@ -11,6 +11,18 @@
 
 namespace app
 {
+    int CALLBACK BrowseCallbackExportToolsPath(HWND hWnd, UINT uMsg, LPARAM lp, LPARAM pData)
+    {
+        if (uMsg == BFFM_INITIALIZED)
+        {
+            CToolsDlg* pDlg = (CToolsDlg*)pData;
+            TCHAR szPath[MAX_PATH + 1] = _T("");
+            wsprintf(szPath, _T("%s\0"), pDlg->szLastToolsBrowse);
+            ::SendMessage(hWnd, BFFM_SETSELECTION, TRUE, (LPARAM)szPath);
+        }
+        return(0);
+    }
+
     DWORD WINAPI ToolsDlgDropThread(LPVOID lpParam)
     {
         ToolsDlgDropContext* pDD = (ToolsDlgDropContext*)lpParam;
@@ -319,14 +331,15 @@ namespace app
             bi.lpszTitle = pConfig->GetString(0x0021000A).c_str();
             bi.ulFlags = BIF_RETURNONLYFSDIRS | BIF_USENEWUI;
             bi.iImage = 0;
-            bi.lpfn = nullptr;
-            bi.lParam = 0;
+            bi.lpfn = app::BrowseCallbackExportToolsPath;
+            bi.lParam = reinterpret_cast<LPARAM>(this);
 
             pidlBrowse = ::SHBrowseForFolder(&bi);
             if (pidlBrowse != nullptr)
             {
                 if (::SHGetPathFromIDList(pidlBrowse, lpBuffer))
                 {
+                    this->szLastToolsBrowse.Format(_T("%s\0"), lpBuffer);
                     std::wstring szPath = std::wstring(lpBuffer);
                     this->SaveTools(szPath);
                 }

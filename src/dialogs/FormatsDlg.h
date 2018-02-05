@@ -55,6 +55,7 @@ namespace app
         config::CConfiguration *pConfig;
         std::wstring szFormatsDialogResize;
         std::wstring szFormatsListColumns;
+        CString szLastFormatsBrowse;
         volatile bool bUpdate;
         int nSelectedFormat;
         config::CFormatsList m_Formats;
