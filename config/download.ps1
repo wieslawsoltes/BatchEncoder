@@ -27,18 +27,18 @@ $FullPath = (Get-Item -Path $FullPath -Verbose).FullName
 
 "Ddownload Path: " + $FullPath
 
-$PathTools = 'Tools.xml'
-[xml]$Xml = Get-Content -Path $PathTools
+$Files = Get-ChildItem "$pwd\tools" -Filter *.xml
 
-foreach ($Tool in $Xml.Tools.Tool) {
+ForEach ($File in $Files)
+{
+    [xml]$Xml = Get-Content -Path $File.FullName
+    $url = $Xml.Tool.url
+    $file = $Xml.Tool.file
     Try {
-        $XmlPath = "$pwd\tools\" + $Tool.name + ".xml"
-        [xml]$XmlTool = Get-Content -Path $XmlPath
-        $url = $XmlTool.Tool.url
         "Downloading: " + $url
-        (New-Object System.Net.WebClient).DownloadFile($url, $FullPath + "\"  + $XmlTool.Tool.file)
+        (New-Object System.Net.WebClient).DownloadFile($url, $FullPath + "\"  + $file)
     }
     Catch {
-        "Failed to download: " + $Tool.name
+        "Failed to download: " + $Xml.Tool.name
     }
 }
