@@ -182,7 +182,6 @@
     <ClInclude Include="configuration\Preset.h" />
     <ClInclude Include="configuration\PresetsList.h" />
     <ClInclude Include="configuration\Settings.h" />
-    <ClInclude Include="configuration\StringHelper.h" />
     <ClInclude Include="configuration\Strings.h" />
     <ClInclude Include="configuration\Tool.h" />
     <ClInclude Include="configuration\ToolsList.h" />
