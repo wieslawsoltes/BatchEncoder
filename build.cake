@@ -88,7 +88,7 @@ var copyConfigAction = new Action<string> ((output) =>
 
 var packageConfigAction = new Action(() => 
 {
-    var output = "BatchEncoder-Config-" + version + suffix;
+    var output = "BatchEncoder-" + version + suffix + "-Config";
     var outputDir = artifactsDir.Combine(output);
     var outputZip = artifactsDir.CombineWithFilePath(output + ".zip");
     CleanDirectory(outputDir);
