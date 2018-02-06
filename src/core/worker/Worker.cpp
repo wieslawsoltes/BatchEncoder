@@ -1,8 +1,7 @@
 ﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-#include "StdAfx.h"
-#include "MainApp.h"
+#include "stdafx.h"
 #include "utilities\TimeCount.h"
 #include "utilities\Utilities.h"
 #include "OutputPath.h"
@@ -53,7 +52,7 @@ namespace worker
         process.ConnectStdError(Stderr.hWrite);
 
         syncDown.Wait();
-        ::SetCurrentDirectory(app::m_App.m_Settings.szSettingsPath.c_str());
+        ::SetCurrentDirectory(config::m_Settings.szSettingsPath.c_str());
 
         timer.Start();
         if (process.Start(commandLine.szCommandLine, pWorkerContext->pConfig->m_Options.bHideConsoleWindow) == false)
@@ -82,7 +81,7 @@ namespace worker
 
                     if (bResult == true)
                     {
-                        ::SetCurrentDirectory(app::m_App.m_Settings.szSettingsPath.c_str());
+                        ::SetCurrentDirectory(config::m_Settings.szSettingsPath.c_str());
 
                         if (process.Start(commandLine.szCommandLine, pWorkerContext->pConfig->m_Options.bHideConsoleWindow) == true)
                         {
@@ -236,7 +235,7 @@ namespace worker
         }
 
         syncDown.Wait();
-        ::SetCurrentDirectory(app::m_App.m_Settings.szSettingsPath.c_str());
+        ::SetCurrentDirectory(config::m_Settings.szSettingsPath.c_str());
 
         timer.Start();
         if (process.Start(commandLine.szCommandLine, pWorkerContext->pConfig->m_Options.bHideConsoleWindow) == false)
@@ -265,7 +264,7 @@ namespace worker
 
                     if (bResult == true)
                     {
-                        ::SetCurrentDirectory(app::m_App.m_Settings.szSettingsPath.c_str());
+                        ::SetCurrentDirectory(config::m_Settings.szSettingsPath.c_str());
 
                         if (process.Start(commandLine.szCommandLine, pWorkerContext->pConfig->m_Options.bHideConsoleWindow) == true)
                         {
@@ -531,7 +530,7 @@ namespace worker
         timer.Start();
 
         syncDown.Wait();
-        ::SetCurrentDirectory(app::m_App.m_Settings.szSettingsPath.c_str());
+        ::SetCurrentDirectory(config::m_Settings.szSettingsPath.c_str());
 
         // create decoder process
         if (decoderProcess.Start(decoderCommandLine.szCommandLine, pWorkerContext->pConfig->m_Options.bHideConsoleWindow) == false)
@@ -560,7 +559,7 @@ namespace worker
 
                     if (bResult == true)
                     {
-                        ::SetCurrentDirectory(app::m_App.m_Settings.szSettingsPath.c_str());
+                        ::SetCurrentDirectory(config::m_Settings.szSettingsPath.c_str());
 
                         if (decoderProcess.Start(decoderCommandLine.szCommandLine, pWorkerContext->pConfig->m_Options.bHideConsoleWindow) == true)
                         {
@@ -594,7 +593,7 @@ namespace worker
             }
         }
 
-        ::SetCurrentDirectory(app::m_App.m_Settings.szSettingsPath.c_str());
+        ::SetCurrentDirectory(config::m_Settings.szSettingsPath.c_str());
 
         // create encoder process
         if (encoderProcess.Start(encoderCommandLine.szCommandLine, pWorkerContext->pConfig->m_Options.bHideConsoleWindow) == false)
@@ -623,7 +622,7 @@ namespace worker
 
                     if (bResult == true)
                     {
-                        ::SetCurrentDirectory(app::m_App.m_Settings.szSettingsPath.c_str());
+                        ::SetCurrentDirectory(config::m_Settings.szSettingsPath.c_str());
 
                         if (encoderProcess.Start(encoderCommandLine.szCommandLine, pWorkerContext->pConfig->m_Options.bHideConsoleWindow) == true)
                         {
@@ -836,7 +835,7 @@ namespace worker
             return false;
         }
 
-        ::SetCurrentDirectory(app::m_App.m_Settings.szSettingsPath.c_str());
+        ::SetCurrentDirectory(config::m_Settings.szSettingsPath.c_str());
 
         // prepare decoder
         if (bIsValidEncoderInput == false)

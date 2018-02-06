@@ -19,27 +19,6 @@
     <Filter Include="Source Files\Dialogs">
       <UniqueIdentifier>{e5c94674-0e76-46a1-bfb2-d2ab733b8272}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Worker">
-      <UniqueIdentifier>{bd9ed2fd-3058-4441-a528-fcb3e42969c6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Worker">
-      <UniqueIdentifier>{f8cc472c-0a7e-4e72-a429-fcc770c604c0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Configuration">
-      <UniqueIdentifier>{1e005ea3-fc6a-4599-a2d3-a5ba272d5366}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Xml">
-      <UniqueIdentifier>{8f6b2fbd-d6d7-4e5d-b494-8309102637bc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Worker\Parser">
-      <UniqueIdentifier>{28f04ed3-4116-4991-94ad-e2a3d720a465}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Worker\Pipes">
-      <UniqueIdentifier>{abce6057-0596-48c1-94f3-163c835e4786}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Worker\Tools">
-      <UniqueIdentifier>{20112d9d-a723-458b-8c8a-a960c9a2d5af}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="StdAfx.cpp">
@@ -63,9 +42,6 @@
     <ClCompile Include="dialogs\ToolsDlg.cpp">
       <Filter>Source Files\Dialogs</Filter>
     </ClCompile>
-    <ClCompile Include="worker\Worker.cpp">
-      <Filter>Source Files\Worker</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="version.h">
@@ -80,113 +56,14 @@
     <ClInclude Include="StdAfx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Settings.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="MainApp.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="configuration\Configuration.h">
-      <Filter>Header Files\Configuration</Filter>
-    </ClInclude>
-    <ClInclude Include="configuration\Format.h">
-      <Filter>Header Files\Configuration</Filter>
-    </ClInclude>
-    <ClInclude Include="configuration\FormatsList.h">
-      <Filter>Header Files\Configuration</Filter>
-    </ClInclude>
-    <ClInclude Include="configuration\Item.h">
-      <Filter>Header Files\Configuration</Filter>
-    </ClInclude>
-    <ClInclude Include="configuration\ItemsList.h">
-      <Filter>Header Files\Configuration</Filter>
-    </ClInclude>
-    <ClInclude Include="configuration\Options.h">
-      <Filter>Header Files\Configuration</Filter>
-    </ClInclude>
-    <ClInclude Include="configuration\Preset.h">
-      <Filter>Header Files\Configuration</Filter>
-    </ClInclude>
-    <ClInclude Include="configuration\PresetsList.h">
-      <Filter>Header Files\Configuration</Filter>
-    </ClInclude>
-    <ClInclude Include="configuration\Tool.h">
-      <Filter>Header Files\Configuration</Filter>
-    </ClInclude>
-    <ClInclude Include="configuration\ToolsList.h">
-      <Filter>Header Files\Configuration</Filter>
     </ClInclude>
     <ClInclude Include="dialogs\AboutDlg.h">
       <Filter>Header Files\Dialogs</Filter>
     </ClInclude>
     <ClInclude Include="dialogs\ToolsDlg.h">
       <Filter>Header Files\Dialogs</Filter>
-    </ClInclude>
-    <ClInclude Include="worker\WorkerContext.h">
-      <Filter>Header Files\Worker</Filter>
-    </ClInclude>
-    <ClInclude Include="xml\XmlFormats.h">
-      <Filter>Header Files\Xml</Filter>
-    </ClInclude>
-    <ClInclude Include="xml\XmlItems.h">
-      <Filter>Header Files\Xml</Filter>
-    </ClInclude>
-    <ClInclude Include="xml\XmlLanguages.h">
-      <Filter>Header Files\Xml</Filter>
-    </ClInclude>
-    <ClInclude Include="xml\XmlOptions.h">
-      <Filter>Header Files\Xml</Filter>
-    </ClInclude>
-    <ClInclude Include="xml\XmlPresets.h">
-      <Filter>Header Files\Xml</Filter>
-    </ClInclude>
-    <ClInclude Include="xml\XmlTools.h">
-      <Filter>Header Files\Xml</Filter>
-    </ClInclude>
-    <ClInclude Include="xml\XmlConfig.h">
-      <Filter>Header Files\Xml</Filter>
-    </ClInclude>
-    <ClInclude Include="worker\Worker.h">
-      <Filter>Header Files\Worker</Filter>
-    </ClInclude>
-    <ClInclude Include="configuration\Path.h">
-      <Filter>Header Files\Configuration</Filter>
-    </ClInclude>
-    <ClInclude Include="configuration\PathsList.h">
-      <Filter>Header Files\Configuration</Filter>
-    </ClInclude>
-    <ClInclude Include="worker\DebugOutputParser.h">
-      <Filter>Header Files\Worker\Parser</Filter>
-    </ClInclude>
-    <ClInclude Include="worker\OutputParser.h">
-      <Filter>Header Files\Worker\Parser</Filter>
-    </ClInclude>
-    <ClInclude Include="worker\LuaOutputParser.h">
-      <Filter>Header Files\Worker\Parser</Filter>
-    </ClInclude>
-    <ClInclude Include="worker\LuaProgess.h">
-      <Filter>Header Files\Worker\Parser</Filter>
-    </ClInclude>
-    <ClInclude Include="worker\FileToPipeWriter.h">
-      <Filter>Header Files\Worker\Pipes</Filter>
-    </ClInclude>
-    <ClInclude Include="worker\PipeToFileWriter.h">
-      <Filter>Header Files\Worker\Pipes</Filter>
-    </ClInclude>
-    <ClInclude Include="worker\CommandLine.h">
-      <Filter>Header Files\Worker</Filter>
-    </ClInclude>
-    <ClInclude Include="worker\PipeToStringWriter.h">
-      <Filter>Header Files\Worker\Pipes</Filter>
-    </ClInclude>
-    <ClInclude Include="worker\ToolUtilities.h">
-      <Filter>Header Files\Worker\Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="configuration\Strings.h">
-      <Filter>Header Files\Configuration</Filter>
-    </ClInclude>
-    <ClInclude Include="worker\OutputPath.h">
-      <Filter>Header Files\Worker</Filter>
     </ClInclude>
     <ClInclude Include="dialogs\FormatsDlg.h">
       <Filter>Header Files\Dialogs</Filter>

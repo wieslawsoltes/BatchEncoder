@@ -7,6 +7,7 @@
 #include <memory>
 #include <utility>
 #include <string>
+#include <atlstr.h>
 #include "OutputPath.h"
 #include "utilities\Pipe.h"
 #include "utilities\StringHelper.h"

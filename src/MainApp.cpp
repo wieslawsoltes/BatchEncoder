@@ -3,8 +3,8 @@
 
 #include "StdAfx.h"
 #include "MainApp.h"
-#include "controls\MyDialogEx.h"
 #include "dialogs\MainDlg.h"
+#include "configuration\Settings.h"
 
 namespace app
 {
@@ -29,7 +29,7 @@ namespace app
         AfxEnableControlContainer();
         InitShellManager();
 
-        m_Settings.Init();
+        config::m_Settings.Init();
 
         dialogs::CMainDlg dlg;
         m_pMainWnd = &dlg;

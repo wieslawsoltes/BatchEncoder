@@ -78,25 +78,25 @@
     <OutDir>bin\$(Configuration)\$(Platform)\</OutDir>
     <IntDir>obj\$(Configuration)\$(Platform)\</IntDir>
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>.\;.\common;common\lua\lua\src;common\sol2;$(VC_IncludePath);$(WindowsSdk_71A_IncludePath);</IncludePath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSdk_71A_IncludePath);</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>bin\$(Configuration)\$(Platform)\</OutDir>
     <IntDir>obj\$(Configuration)\$(Platform)\</IntDir>
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>.\;.\common;common\lua\lua\src;common\sol2;$(IncludePath);$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+    <IncludePath>$(IncludePath);$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>bin\$(Configuration)\$(Platform)\</OutDir>
     <IntDir>obj\$(Configuration)\$(Platform)\</IntDir>
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>.\;.\common;common\lua\lua\src;common\sol2;$(VC_IncludePath);$(WindowsSdk_71A_IncludePath);</IncludePath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSdk_71A_IncludePath);</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>bin\$(Configuration)\$(Platform)\</OutDir>
     <IntDir>obj\$(Configuration)\$(Platform)\</IntDir>
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>.\;.\common;common\lua\lua\src;common\sol2;$(IncludePath);$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+    <IncludePath>$(IncludePath);$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Midl>
@@ -105,7 +105,7 @@
     </Midl>
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>_UNICODE;UNICODE;WIN32;_WINDOWS;_SILENCE_ALL_CXX17_DEPRECATION_WARNINGS;_DEBUG;_CRT_SECURE_NO_DEPRECATE;_CRT_NON_CONFORMING_SWPRINTFS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_SILENCE_ALL_CXX17_DEPRECATION_WARNINGS;_UNICODE;UNICODE;WIN32;_WINDOWS;_DEBUG;_CRT_SECURE_NO_DEPRECATE;_CRT_NON_CONFORMING_SWPRINTFS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -116,6 +116,7 @@
       <MinimalRebuild>false</MinimalRebuild>
       <DisableSpecificWarnings>4244;4267;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <AdditionalIncludeDirectories>.\;.\core;.\common;.\common\lua\lua\src;.\common\sol2</AdditionalIncludeDirectories>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -142,7 +143,7 @@
     </Midl>
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>_UNICODE;UNICODE;WIN32;_WINDOWS;_SILENCE_ALL_CXX17_DEPRECATION_WARNINGS;_DEBUG;_CRT_SECURE_NO_DEPRECATE;_CRT_NON_CONFORMING_SWPRINTFS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_SILENCE_ALL_CXX17_DEPRECATION_WARNINGS;_UNICODE;UNICODE;WIN32;_WINDOWS;_DEBUG;_CRT_SECURE_NO_DEPRECATE;_CRT_NON_CONFORMING_SWPRINTFS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -153,6 +154,7 @@
       <MinimalRebuild>false</MinimalRebuild>
       <DisableSpecificWarnings>4244;4267;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <AdditionalIncludeDirectories>.\;.\core;.\common;.\common\lua\lua\src;.\common\sol2</AdditionalIncludeDirectories>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -178,7 +180,7 @@
     </Midl>
     <ClCompile>
       <Optimization>MaxSpeed</Optimization>
-      <PreprocessorDefinitions>_UNICODE;UNICODE;WIN32;_WINDOWS;_SILENCE_ALL_CXX17_DEPRECATION_WARNINGS;NDEBUG;_CRT_SECURE_NO_DEPRECATE;_CRT_NON_CONFORMING_SWPRINTFS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_SILENCE_ALL_CXX17_DEPRECATION_WARNINGS;_UNICODE;UNICODE;WIN32;_WINDOWS;NDEBUG;_CRT_SECURE_NO_DEPRECATE;_CRT_NON_CONFORMING_SWPRINTFS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>false</MinimalRebuild>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <PrecompiledHeader>Use</PrecompiledHeader>
@@ -189,6 +191,7 @@
       <WholeProgramOptimization>false</WholeProgramOptimization>
       <DisableSpecificWarnings>4244;4267;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <AdditionalIncludeDirectories>.\;.\core;.\common;.\common\lua\lua\src;.\common\sol2</AdditionalIncludeDirectories>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -217,7 +220,7 @@
     </Midl>
     <ClCompile>
       <Optimization>MaxSpeed</Optimization>
-      <PreprocessorDefinitions>_UNICODE;UNICODE;WIN32;_WINDOWS;_SILENCE_ALL_CXX17_DEPRECATION_WARNINGS;NDEBUG;_CRT_SECURE_NO_DEPRECATE;_CRT_NON_CONFORMING_SWPRINTFS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_SILENCE_ALL_CXX17_DEPRECATION_WARNINGS;_UNICODE;UNICODE;WIN32;_WINDOWS;NDEBUG;_CRT_SECURE_NO_DEPRECATE;_CRT_NON_CONFORMING_SWPRINTFS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>false</MinimalRebuild>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <PrecompiledHeader>Use</PrecompiledHeader>
@@ -228,6 +231,7 @@
       <WholeProgramOptimization>false</WholeProgramOptimization>
       <DisableSpecificWarnings>4244;4267;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <AdditionalIncludeDirectories>.\;.\core;.\common;.\common\lua\lua\src;.\common\sol2</AdditionalIncludeDirectories>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -261,52 +265,18 @@
     <ClCompile Include="dialogs\FormatsDlg.cpp" />
     <ClCompile Include="dialogs\PresetsDlg.cpp" />
     <ClCompile Include="dialogs\ToolsDlg.cpp" />
-    <ClCompile Include="worker\Worker.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="configuration\Path.h" />
-    <ClInclude Include="configuration\PathsList.h" />
-    <ClInclude Include="configuration\Strings.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="version.h" />
     <ClInclude Include="res\resource.h" />
     <ClInclude Include="StdAfx.h" />
-    <ClInclude Include="Settings.h" />
     <ClInclude Include="MainApp.h" />
-    <ClInclude Include="configuration\Format.h" />
-    <ClInclude Include="configuration\FormatsList.h" />
-    <ClInclude Include="configuration\Item.h" />
-    <ClInclude Include="configuration\ItemsList.h" />
-    <ClInclude Include="configuration\Configuration.h" />
-    <ClInclude Include="configuration\Options.h" />
-    <ClInclude Include="configuration\Preset.h" />
-    <ClInclude Include="configuration\PresetsList.h" />
-    <ClInclude Include="configuration\Tool.h" />
-    <ClInclude Include="configuration\ToolsList.h" />
     <ClInclude Include="dialogs\AboutDlg.h" />
     <ClInclude Include="dialogs\MainDlg.h" />
     <ClInclude Include="dialogs\FormatsDlg.h" />
     <ClInclude Include="dialogs\PresetsDlg.h" />
     <ClInclude Include="dialogs\ToolsDlg.h" />
-    <ClInclude Include="worker\DebugOutputParser.h" />
-    <ClInclude Include="worker\CommandLine.h" />
-    <ClInclude Include="worker\FileToPipeWriter.h" />
-    <ClInclude Include="worker\LuaOutputParser.h" />
-    <ClInclude Include="worker\LuaProgess.h" />
-    <ClInclude Include="worker\OutputParser.h" />
-    <ClInclude Include="worker\OutputPath.h" />
-    <ClInclude Include="worker\PipeToFileWriter.h" />
-    <ClInclude Include="worker\PipeToStringWriter.h" />
-    <ClInclude Include="worker\ToolUtilities.h" />
-    <ClInclude Include="worker\WorkerContext.h" />
-    <ClInclude Include="worker\Worker.h" />
-    <ClInclude Include="xml\XmlFormats.h" />
-    <ClInclude Include="xml\XmlItems.h" />
-    <ClInclude Include="xml\XmlLanguages.h" />
-    <ClInclude Include="xml\XmlOptions.h" />
-    <ClInclude Include="xml\XmlPresets.h" />
-    <ClInclude Include="xml\XmlTools.h" />
-    <ClInclude Include="xml\XmlConfig.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\BatchEncoder.ico" />
@@ -332,6 +302,9 @@
     </ProjectReference>
     <ProjectReference Include="common\xml\MFC.Xml.vcxproj">
       <Project>{575068fe-f001-47ef-afb6-af7a10435b8a}</Project>
+    </ProjectReference>
+    <ProjectReference Include="core\BatchEncoder.Core.vcxproj">
+      <Project>{bb512103-dff5-4f13-a790-bbb231a6dad9}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

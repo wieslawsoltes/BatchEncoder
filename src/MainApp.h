@@ -7,7 +7,6 @@
 #error "Include 'StdAfx.h' before including this file for PCH"
 #endif // __AFXWIN_H__
 
-#include "Settings.h"
 #include "res\resource.h"
 
 namespace app
@@ -19,8 +18,6 @@ namespace app
     public:
         virtual BOOL InitInstance();
         DECLARE_MESSAGE_MAP()
-    public:
-        CSettings m_Settings;
     };
 
     extern CMainApp m_App;

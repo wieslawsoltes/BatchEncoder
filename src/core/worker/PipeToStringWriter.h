@@ -6,6 +6,7 @@
 #include <cstring>
 #include "utilities\Pipe.h"
 #include "utilities\Synchronize.h"
+#include "configuration\Settings.h"
 #include "OutputParser.h"
 #include "WorkerContext.h"
 
@@ -30,7 +31,7 @@ namespace worker
             int nLineLen = 0;
 
             syncDown.Wait();
-            ::SetCurrentDirectory(app::m_App.m_Settings.szSettingsPath.c_str());
+            ::SetCurrentDirectory(config::m_Settings.szSettingsPath.c_str());
 
             if (parser.Init(pWorkerContext, &commandLine) == false)
             {

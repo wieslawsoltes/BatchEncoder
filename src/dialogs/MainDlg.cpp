@@ -493,10 +493,10 @@ namespace dialogs
 
         try
         {
-            this->LoadTools(app::m_App.m_Settings.szToolsPath);
-            this->LoadFormats(app::m_App.m_Settings.szFormatsPath);
+            this->LoadTools(config::m_Settings.szToolsPath);
+            this->LoadFormats(config::m_Settings.szFormatsPath);
 
-            if (this->LoadOptions(app::m_App.m_Settings.szOptionsFile) == false)
+            if (this->LoadOptions(config::m_Settings.szOptionsFile) == false)
             {
                 this->m_Config.m_Options.Defaults();
                 this->SetOptions();
@@ -504,11 +504,11 @@ namespace dialogs
                 this->UpdatePresetComboBox();
             }
 
-            this->LoadLanguages(app::m_App.m_Settings.szSettingsPath);
-            this->LoadLanguages(app::m_App.m_Settings.szLanguagesPath);
+            this->LoadLanguages(config::m_Settings.szSettingsPath);
+            this->LoadLanguages(config::m_Settings.szLanguagesPath);
             this->InitLanguageMenu();
             this->SetLanguage();
-            this->LoadItems(app::m_App.m_Settings.szItemsFile);
+            this->LoadItems(config::m_Settings.szItemsFile);
         }
         catch (...) {}
 
@@ -581,10 +581,10 @@ namespace dialogs
         {
             try
             {
-                this->SaveTools(app::m_App.m_Settings.szToolsPath);
-                this->SaveFormats(app::m_App.m_Settings.szFormatsPath);
-                this->SaveOptions(app::m_App.m_Settings.szOptionsFile);
-                this->SaveItems(app::m_App.m_Settings.szItemsFile);
+                this->SaveTools(config::m_Settings.szToolsPath);
+                this->SaveFormats(config::m_Settings.szFormatsPath);
+                this->SaveOptions(config::m_Settings.szOptionsFile);
+                this->SaveItems(config::m_Settings.szItemsFile);
             }
             catch (...) {}
         }
@@ -1953,7 +1953,7 @@ namespace dialogs
         }
         else
         {
-            m_Config.m_Options.szOutputPath = app::m_App.m_Settings.szSettingsPath;
+            m_Config.m_Options.szOutputPath = config::m_Settings.szSettingsPath;
             this->m_CmbOutPath.SetWindowText(m_Config.m_Options.szOutputPath.c_str());
         }
 
@@ -2566,7 +2566,7 @@ namespace dialogs
 
             m_StatusBar.SetText(_T(""), 1, 0);
 
-            ::SetCurrentDirectory(app::m_App.m_Settings.szSettingsPath.c_str());
+            ::SetCurrentDirectory(config::m_Settings.szSettingsPath.c_str());
 
             this->GetOptions();
             this->GetItems();
@@ -2668,10 +2668,10 @@ namespace dialogs
             {
                 try
                 {
-                    this->SaveTools(app::m_App.m_Settings.szToolsPath);
-                    this->SaveFormats(app::m_App.m_Settings.szFormatsPath);
-                    this->SaveOptions(app::m_App.m_Settings.szOptionsFile);
-                    this->SaveItems(app::m_App.m_Settings.szItemsFile);
+                    this->SaveTools(config::m_Settings.szToolsPath);
+                    this->SaveFormats(config::m_Settings.szFormatsPath);
+                    this->SaveOptions(config::m_Settings.szOptionsFile);
+                    this->SaveItems(config::m_Settings.szItemsFile);
                 }
                 catch (...) {}
             }
