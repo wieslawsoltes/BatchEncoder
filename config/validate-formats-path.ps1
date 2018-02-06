@@ -8,7 +8,7 @@ $Files = Get-ChildItem "$pwd\formats" -Filter *.xml
 ForEach ($File in $Files)
 {
     [xml]$Xml = Get-Content -Path $File.FullName
-    $path = "$pwd\" + $Xml.Format.path
+    $path = $Xml.Format.path
     $PathExists = Test-Path $path
     if ($PathExists) { '[OK] ' + $path } else { '[X] ' + $path }
 }
