@@ -17,6 +17,7 @@ BatchEncoder is an audio files conversion software.
 | Windows 64-bit        | Installer   | 3.1           | [BatchEncoder-3.1-x64.exe](https://github.com/wieslawsoltes/BatchEncoder/releases/download/3.1/BatchEncoder-3.1-x64.exe)               |
 | Windows 32-bit        | Portable    | 3.1           | [BatchEncoder-3.1-Win32.zip](https://github.com/wieslawsoltes/BatchEncoder/releases/download/3.1/BatchEncoder-3.1-Win32.zip)           |
 | Windows 64-bit        | Portable    | 3.1           | [BatchEncoder-3.1-x64.zip](https://github.com/wieslawsoltes/BatchEncoder/releases/download/3.1/BatchEncoder-3.1-x64.zip)               |
+| All                   | Config      | 3.1           | [BatchEncoder-3.1-Config.zip](https://github.com/wieslawsoltes/BatchEncoder/releases/download/3.1/BatchEncoder-3.1-Config.zip)         |
 
 ## Support BatchEncoder
 
