@@ -75,9 +75,6 @@
     <ClInclude Include="configuration\Settings.h">
       <Filter>Header Files\Configuration</Filter>
     </ClInclude>
-    <ClInclude Include="configuration\StringHelper.h">
-      <Filter>Header Files\Configuration</Filter>
-    </ClInclude>
     <ClInclude Include="configuration\Strings.h">
       <Filter>Header Files\Configuration</Filter>
     </ClInclude>
