@@ -1,16 +1,14 @@
 ﻿# This is BatchEncoder tools validation script for PowerShell.
 # This file was downloaded from https://github.com/wieslawsoltes/BatchEncoder/blob/master/config/validate-tools-url.ps1
 
-$PathTools = 'Tools.xml'
-[xml]$Xml = Get-Content -Path $PathTools
+$Files = Get-ChildItem "$pwd\tools" -Filter *.xml
 
 "Validate Tools Url:"
 
-foreach ($Tool in $Xml.Tools.Tool) 
+ForEach ($File in $Files)
 {
-    $XmlPath = "$pwd\tools\" + $Tool.name + ".xml"
-    [xml]$XmlTool = Get-Content -Path $XmlPath
-    $url = $XmlTool.Tool.url
+    [xml]$Xml = Get-Content -Path $File.FullName
+    $url = $Xml.Tool.url
     $req = [net.HttpWebRequest]::create($url)
     $req.Method = "GET"
     $res = $req.getResponse()
