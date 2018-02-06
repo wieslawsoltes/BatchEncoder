@@ -68,32 +68,48 @@ var buildSolutionAction = new Action<string,string,string> ((solution, configura
         settings.SetVerbosity(Verbosity.Minimal); });
 });
 
-var packageBinariesAction = new Action<string,string> ((configuration, platform) => 
+var copyConfigAction = new Action<string> ((output) => 
 {
-    var path = "./src/bin/" + configuration + "/" + platform + "/";
-    var output = "BatchEncoder-" + version + suffix + "-" + platform + (configuration == "Release" ? "" : ("-(" + configuration + ")"));
     var outputDir = artifactsDir.Combine(output);
     var formatsDir = outputDir.Combine("formats");
     var langDir = outputDir.Combine("lang");
     var progressDir = outputDir.Combine("progress");
     var toolsDir = outputDir.Combine("tools");
-    var outputZip = artifactsDir.CombineWithFilePath(output + ".zip");
-    var exeFile = File(path + "BatchEncoder.exe");
-    var portableFile = File("./setup/BatchEncoder.portable");
-    CleanDirectory(outputDir);
     CleanDirectory(formatsDir);
     CleanDirectory(langDir);
     CleanDirectory(progressDir);
     CleanDirectory(toolsDir);
-    CopyFileToDirectory(File("README.md"), outputDir);
-    CopyFileToDirectory(File("LICENSE.TXT"), outputDir);
-    CopyFileToDirectory(exeFile, outputDir);
-    CopyFileToDirectory(portableFile, outputDir);
     CopyFiles("./config/formats/*.xml", formatsDir);
     CopyFiles("./config/lang/*.xml", langDir);
     CopyFiles("./config/progress/*.lua", progressDir);
     CopyFiles("./config/tools/*.xml", toolsDir);
     CopyFiles("./config/*.ps1", outputDir);
+});
+
+var packageConfigAction = new Action(() => 
+{
+    var output = "BatchEncoder-Config-" + version + suffix;
+    var outputDir = artifactsDir.Combine(output);
+    var outputZip = artifactsDir.CombineWithFilePath(output + ".zip");
+    CleanDirectory(outputDir);
+    copyConfigAction(output);
+    Zip(outputDir, outputZip);
+});
+
+var packageBinariesAction = new Action<string,string> ((configuration, platform) => 
+{
+    var path = "./src/bin/" + configuration + "/" + platform + "/";
+    var output = "BatchEncoder-" + version + suffix + "-" + platform + (configuration == "Release" ? "" : ("-(" + configuration + ")"));
+    var outputDir = artifactsDir.Combine(output);
+    var outputZip = artifactsDir.CombineWithFilePath(output + ".zip");
+    var exeFile = File(path + "BatchEncoder.exe");
+    var portableFile = File("./setup/BatchEncoder.portable");
+    CleanDirectory(outputDir);
+    CopyFileToDirectory(File("README.md"), outputDir);
+    CopyFileToDirectory(File("LICENSE.TXT"), outputDir);
+    CopyFileToDirectory(exeFile, outputDir);
+    CopyFileToDirectory(portableFile, outputDir);
+    copyConfigAction(output);
     Zip(outputDir, outputZip);
 });
 
@@ -142,13 +158,21 @@ Task("Package-Installers")
     configurations.ForEach(configuration => platforms.ForEach(platform => packageInstallersAction(configuration, platform)));
 });
 
+Task("Package-Config")
+    .IsDependentOn("Build")
+    .Does(() =>
+{
+    packageConfigAction();
+});
+
 ///////////////////////////////////////////////////////////////////////////////
 // TARGETS
 ///////////////////////////////////////////////////////////////////////////////
 
 Task("Package")
   .IsDependentOn("Package-Binaries")
-  .IsDependentOn("Package-Installers");
+  .IsDependentOn("Package-Installers")
+  .IsDependentOn("Package-Config");
 
 Task("Default")
   .IsDependentOn("Build");
