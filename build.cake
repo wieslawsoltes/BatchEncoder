@@ -89,7 +89,6 @@ var packageBinariesAction = new Action<string,string> ((configuration, platform)
     CopyFileToDirectory(File("LICENSE.TXT"), outputDir);
     CopyFileToDirectory(exeFile, outputDir);
     CopyFileToDirectory(portableFile, outputDir);
-    CopyFiles("./config/*.xml", outputDir);
     CopyFiles("./config/formats/*.xml", formatsDir);
     CopyFiles("./config/lang/*.xml", langDir);
     CopyFiles("./config/progress/*.lua", progressDir);
