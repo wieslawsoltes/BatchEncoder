@@ -8,7 +8,7 @@ $Files = Get-ChildItem "$pwd\tools" -Filter *.xml
 ForEach ($File in $Files)
 {
     [xml]$Xml = Get-Content -Path $File.FullName
-    $path = "$pwd\" + $Xml.Tool.path
+    $path = $Xml.Tool.path
     $PathExists = Test-Path $path
     if ($PathExists) { '[OK] ' + $path } else { '[X] ' + $path }
 }
