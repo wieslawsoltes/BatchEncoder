@@ -321,7 +321,8 @@ namespace dialogs
                 return;
             }
 
-            static std::wstring szTitle = pConfig->GetString(0x0021000A);
+            static std::wstring szTitle;
+            szTitle = pConfig->GetString(0x0021000A);
 
             bi.hwndOwner = this->GetSafeHwnd();
             bi.pidlRoot = pidlDesktop;
