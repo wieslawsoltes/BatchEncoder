@@ -332,10 +332,12 @@ namespace dialogs
                 return;
             }
 
+            static std::wstring szTitle = pConfig->GetString(0x0021000A);
+
             bi.hwndOwner = this->GetSafeHwnd();
             bi.pidlRoot = pidlDesktop;
             bi.pszDisplayName = lpBuffer;
-            bi.lpszTitle = pConfig->GetString(0x0021000A).c_str();
+            bi.lpszTitle = szTitle.c_str();
             bi.ulFlags = BIF_RETURNONLYFSDIRS | BIF_USENEWUI;
             bi.iImage = 0;
             bi.lpfn = BrowseCallbackExportToolsPath;
