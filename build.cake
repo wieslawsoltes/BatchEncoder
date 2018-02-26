@@ -155,7 +155,7 @@ Task("Run-Unit-Tests")
         {
             tests.ForEach(test => 
             {
-                var pattern = "./tests/" + test + "/bin/" + configuration + "/" + platform "/" + test + ".dll";
+                var pattern = "./tests/" + test + "/bin/" + configuration + "/" + platform + "/" + test + ".dll";
                 VSTest(pattern, new VSTestSettings() { Logger = "AppVeyor" });
             });
         });
