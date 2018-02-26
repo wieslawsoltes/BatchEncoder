@@ -173,6 +173,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CInputPathTests.cpp" />
+    <ClCompile Include="CNewOutputPathTests.cpp" />
     <ClCompile Include="COutputPathTests.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
