@@ -163,14 +163,14 @@ Task("Run-Unit-Tests")
 });
 
 Task("Package-Binaries")
-    .IsDependentOn("Build")
+    .IsDependentOn("Run-Unit-Tests")
     .Does(() =>
 {
     configurations.ForEach(configuration => platforms.ForEach(platform => packageBinariesAction(configuration, platform)));
 });
 
 Task("Package-Installers")
-    .IsDependentOn("Build")
+    .IsDependentOn("Run-Unit-Tests")
     .Does(() =>
 {
     configurations.ForEach(configuration => platforms.ForEach(platform => packageInstallersAction(configuration, platform)));
