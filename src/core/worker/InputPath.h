@@ -7,14 +7,15 @@ namespace worker
 {
     class CInputPath
     {
-    public:
+    private:
         wchar_t szInputFile[_MAX_PATH];
         wchar_t szInputFilePath[_MAX_PATH];
-        wchar_t szSourceDrive[_MAX_DRIVE];
-        wchar_t szSourceDir[_MAX_DIR];
-        wchar_t szSourceName[_MAX_FNAME];
-        wchar_t szSourceExt[_MAX_EXT];
-        wchar_t szSourcePath[_MAX_PATH];
+    public:
+        wchar_t szInputDrive[_MAX_DRIVE];
+        wchar_t szInputDir[_MAX_DIR];
+        wchar_t szInputName[_MAX_FNAME];
+        wchar_t szInputExt[_MAX_EXT];
+        wchar_t szInputPath[_MAX_PATH];
         std::vector<std::wstring> szSourceFolders;
     public:
         CInputPath(const wchar_t szInputFile[])
@@ -25,14 +26,14 @@ namespace worker
             _wfullpath(this->szInputFilePath, this->szInputFile, _MAX_PATH);
 
             // split full path
-            _wsplitpath_s(this->szInputFilePath, this->szSourceDrive, this->szSourceDir, this->szSourceName, this->szSourceExt);
+            _wsplitpath_s(this->szInputFilePath, this->szInputDrive, this->szInputDir, this->szInputName, this->szInputExt);
 
             // source directory
-            _wmakepath_s(this->szSourcePath, this->szSourceDrive, this->szSourceDir, nullptr, nullptr);
+            _wmakepath_s(this->szInputPath, this->szInputDrive, this->szInputDir, nullptr, nullptr);
 
             // find dir folder names
             wchar_t szSourceDirCopy[_MAX_DIR];
-            wcscpy_s(szSourceDirCopy, this->szSourceDir);
+            wcscpy_s(szSourceDirCopy, this->szInputDir);
 
             wchar_t szSeparators[] = L"\\/";
             wchar_t *szNextToken = nullptr;
