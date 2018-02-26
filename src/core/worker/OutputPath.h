@@ -26,17 +26,17 @@ namespace worker
     class COutputPath
     {
     public:
-        bool bIsEmpty;
-        bool bHaveSourceDirectory;
-        bool bHaveName;
-        bool bHaveExt;
+        bool bIsEmpty = false;
+        bool bHaveSourceDirectory = false;
+        bool bHaveName = false;
+        bool bHaveExt = false;
     public:
         bool Validate(std::wstring& szOutput)
         {
             this->bIsEmpty = szOutput.length() <= 0;
-            this->bHaveSourceDirectory = util::StringHelper::FindNoCase(szOutput, VAR_OUTPUT_SOURCE_DIRECTORY) >= 0;
-            this->bHaveName = util::StringHelper::FindNoCase(szOutput, VAR_OUTPUT_NAME) >= 0;
-            this->bHaveExt = util::StringHelper::FindNoCase(szOutput, VAR_OUTPUT_EXTENSION) >= 0;
+            this->bHaveSourceDirectory = util::StringHelper::FindNoCase(szOutput, VAR_OUTPUT_SOURCE_DIRECTORY) != std::wstring::npos;
+            this->bHaveName = util::StringHelper::FindNoCase(szOutput, VAR_OUTPUT_NAME) != std::wstring::npos;
+            this->bHaveExt = util::StringHelper::FindNoCase(szOutput, VAR_OUTPUT_EXTENSION) != std::wstring::npos;
             if (this->bIsEmpty)
             {
                 // Only input file directory is used (name and extension are added automatically).
