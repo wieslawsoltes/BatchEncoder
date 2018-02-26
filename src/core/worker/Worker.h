@@ -23,9 +23,6 @@ namespace worker
     class CWorker
     {
     public:
-        CWorker() { }
-        virtual ~CWorker() { }
-    public:
         bool ConvertFileUsingConsole(IWorkerContext* pWorkerContext, CCommandLine &commandLine, util::CSynchronize &syncDown);
         bool ConvertFileUsingPipes(IWorkerContext* pWorkerContext, CCommandLine &commandLine, util::CSynchronize &syncDown);
         bool ConvertFileUsingOnlyPipes(IWorkerContext* pWorkerContext, CCommandLine &decoderCommandLine, CCommandLine &encoderCommandLine, util::CSynchronize &syncDown);

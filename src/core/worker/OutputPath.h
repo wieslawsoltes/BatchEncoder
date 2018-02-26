@@ -31,13 +31,6 @@ namespace worker
         bool bHaveName;
         bool bHaveExt;
     public:
-        COutputPath()
-        {
-        }
-        virtual ~COutputPath()
-        {
-        }
-    public:
         bool Validate(std::wstring& szOutput)
         {
             this->bIsEmpty = szOutput.length() <= 0;

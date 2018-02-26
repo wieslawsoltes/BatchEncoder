@@ -19,9 +19,6 @@ namespace worker
         int nProgress;
         int nPreviousProgress;
     public:
-        CLuaOutputParser() { }
-        virtual ~CLuaOutputParser() { }
-    public:
         bool Init(IWorkerContext* pWorkerContext, CCommandLine* pCommandLine)
         {
             this->pWorkerContext = pWorkerContext;

@@ -14,12 +14,8 @@ namespace worker
     public:
         std::wstring szFileName;
         int nIndex;
-    public:
         volatile bool bError;
         volatile bool bFinished;
-    public:
-        CFileToPipeWriter() { }
-        virtual ~CFileToPipeWriter() { }
     public:
         bool ReadLoop(IWorkerContext* pWorkerContext, util::CPipe &Stdin)
         {

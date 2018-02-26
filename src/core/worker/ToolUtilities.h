@@ -21,9 +21,6 @@ namespace worker
     public:
         volatile bool bDownload;
     public:
-        CToolUtilities() { }
-        virtual ~CToolUtilities() { }
-    public:
         bool Download(config::CTool& tool, bool bExtract, bool bInstall, int nIndex, config::CConfiguration *pConfig, std::function<void(int, std::wstring)> callback = nullptr)
         {
             util::CDownload m_Download;

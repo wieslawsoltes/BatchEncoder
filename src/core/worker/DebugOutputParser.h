@@ -13,9 +13,6 @@ namespace worker
         IWorkerContext * pWorkerContext;
         CCommandLine *pCommandLine;
     public:
-        CDebugOutputParser() { }
-        virtual ~CDebugOutputParser() { }
-    public:
         bool Init(IWorkerContext* pWorkerContext, CCommandLine* pCommandLine)
         {
             this->pWorkerContext = pWorkerContext;
