@@ -156,7 +156,9 @@ Task("Run-Unit-Tests")
             tests.ForEach(test => 
             {
                 var pattern = "./tests/" + test + "/bin/" + configuration + "/" + platform + "/" + test + ".dll";
-                VSTest(pattern, new VSTestSettings() { Logger = "AppVeyor" });
+                VSTest(pattern, new VSTestSettings() { 
+                    PlatformArchitecture = (platform == "Win32" || platform == "x86") ? VSTestPlatform.x86 : VSTestPlatform.x64,
+                    Logger = "AppVeyor" });
             });
         });
     });
