@@ -3,7 +3,6 @@ setlocal
 set ConfigDir=%1
 set SetupDir=%2
 set OutputDir=%3
-copy /-Y %ConfigDir%*.xml %OutputDir%
 copy /Y %ConfigDir%*.ps1 %OutputDir%
 if not exist %OutputDir%formats\ mkdir %OutputDir%formats\
 if not exist %OutputDir%lang\ mkdir %OutputDir%lang\
