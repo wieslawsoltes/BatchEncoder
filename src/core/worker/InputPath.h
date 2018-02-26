@@ -1,4 +1,7 @@
-﻿#include <stdlib.h>
+﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
+// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+
+#include <stdlib.h>
 #include <stdio.h>
 #include <vector>
 #include <string>
