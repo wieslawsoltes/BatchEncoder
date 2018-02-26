@@ -158,6 +158,7 @@ Task("Run-Unit-Tests")
                 var pattern = "./tests/" + test + "/bin/" + configuration + "/" + platform + "/" + test + ".dll";
                 VSTest(pattern, new VSTestSettings() { 
                     PlatformArchitecture = (platform == "Win32" || platform == "x86") ? VSTestPlatform.x86 : VSTestPlatform.x64,
+                    InIsolation = (platform == "Win32" || platform == "x86") ? false : true,
                     Logger = "AppVeyor" });
             });
         });
