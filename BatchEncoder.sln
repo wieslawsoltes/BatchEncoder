@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27130.2026
+VisualStudioVersion = 15.0.27130.2036
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BatchEncoder", "src\BatchEncoder.vcxproj", "{746662AD-C2A1-43B7-87D2-BC45FE80B52B}"
 EndProject
@@ -22,6 +22,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{B3FE5579-E60D-4BAB-A72E-E82076C8AFD4}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BatchEncoder.Core", "src\core\BatchEncoder.Core.vcxproj", "{BB512103-DFF5-4F13-A790-BBB231A6DAD9}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BatchEncoder.Core.UnitTests", "tests\BatchEncoder.Core.UnitTests\BatchEncoder.Core.UnitTests.vcxproj", "{35FAE4BB-B00A-4E8F-A093-34353090AECD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -87,6 +89,14 @@ Global
 		{BB512103-DFF5-4F13-A790-BBB231A6DAD9}.Release|Win32.Build.0 = Release|Win32
 		{BB512103-DFF5-4F13-A790-BBB231A6DAD9}.Release|x64.ActiveCfg = Release|x64
 		{BB512103-DFF5-4F13-A790-BBB231A6DAD9}.Release|x64.Build.0 = Release|x64
+		{35FAE4BB-B00A-4E8F-A093-34353090AECD}.Debug|Win32.ActiveCfg = Debug|Win32
+		{35FAE4BB-B00A-4E8F-A093-34353090AECD}.Debug|Win32.Build.0 = Debug|Win32
+		{35FAE4BB-B00A-4E8F-A093-34353090AECD}.Debug|x64.ActiveCfg = Debug|x64
+		{35FAE4BB-B00A-4E8F-A093-34353090AECD}.Debug|x64.Build.0 = Debug|x64
+		{35FAE4BB-B00A-4E8F-A093-34353090AECD}.Release|Win32.ActiveCfg = Release|Win32
+		{35FAE4BB-B00A-4E8F-A093-34353090AECD}.Release|Win32.Build.0 = Release|Win32
+		{35FAE4BB-B00A-4E8F-A093-34353090AECD}.Release|x64.ActiveCfg = Release|x64
+		{35FAE4BB-B00A-4E8F-A093-34353090AECD}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -99,6 +109,7 @@ Global
 		{4B291D95-C2CA-49E3-9EB5-B9F855D32AA0} = {831DB234-8DE6-4AC3-A5EC-E9567BE8DF67}
 		{575068FE-F001-47EF-AFB6-AF7A10435B8A} = {831DB234-8DE6-4AC3-A5EC-E9567BE8DF67}
 		{BB512103-DFF5-4F13-A790-BBB231A6DAD9} = {2162C5C6-26D6-4106-BF2E-A313D030299A}
+		{35FAE4BB-B00A-4E8F-A093-34353090AECD} = {B3FE5579-E60D-4BAB-A72E-E82076C8AFD4}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {37763D67-1229-4E8D-ABED-3786BB37A99D}
