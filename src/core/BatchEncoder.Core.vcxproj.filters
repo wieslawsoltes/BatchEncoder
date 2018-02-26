@@ -141,6 +141,9 @@
     <ClInclude Include="xml\XmlTools.h">
       <Filter>Header Files\Xml</Filter>
     </ClInclude>
+    <ClInclude Include="worker\InputPath.h">
+      <Filter>Header Files\Worker</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">

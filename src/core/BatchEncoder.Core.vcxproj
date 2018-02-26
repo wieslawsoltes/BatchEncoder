@@ -190,6 +190,7 @@
     <ClInclude Include="worker\CommandLine.h" />
     <ClInclude Include="worker\DebugOutputParser.h" />
     <ClInclude Include="worker\FileToPipeWriter.h" />
+    <ClInclude Include="worker\InputPath.h" />
     <ClInclude Include="worker\LuaOutputParser.h" />
     <ClInclude Include="worker\LuaProgess.h" />
     <ClInclude Include="worker\OutputParser.h" />

@@ -4,6 +4,7 @@
 #include "stdafx.h"
 #include "utilities\TimeCount.h"
 #include "utilities\Utilities.h"
+#include "InputPath.h"
 #include "OutputPath.h"
 #include "FileToPipeWriter.h"
 #include "PipeToFileWriter.h"
