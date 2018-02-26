@@ -1171,7 +1171,7 @@ namespace dialogs
     {
         if (this->pWorkerContext->bRunning == false)
         {
-            this->m_StatusBar.SetText(_T(""), 1, 0);
+            this->m_StatusBar.SetText(L"", 1, 0);
             this->ResetConvertionTime();
             this->ResetConvertionStatus();
         }
@@ -2138,9 +2138,7 @@ namespace dialogs
         }
 
         ULONGLONG nFileSize = util::Utilities::GetFileSize64(szPath);
-        CString szFileSize;
-        szFileSize.Format(_T("%I64d"), nFileSize);
-
+        std::wstring szFileSize = std::to_wstring(nFileSize);
         config::CItem item;
         config::CPath path;
         path.szPath = szPath;
@@ -2495,16 +2493,13 @@ namespace dialogs
         int nItems = m_Config.m_Items.Count();
         if (nItems > 0)
         {
-            CString szText;
-            szText.Format(_T("%d %s"),
-                nItems,
-                (nItems > 1) ? m_Config.GetString(0x00210003).c_str() : m_Config.GetString(0x00210002).c_str());
-            m_StatusBar.SetText(szText, 0, 0);
+            std::wstring szText = std::to_wstring(nItems) + L" " + ((nItems > 1) ? m_Config.GetString(0x00210003) : m_Config.GetString(0x00210002));
+            m_StatusBar.SetText(szText.c_str(), 0, 0);
         }
         else
         {
             m_StatusBar.SetText(m_Config.GetString(0x00210004).c_str(), 0, 0);
-            m_StatusBar.SetText(_T(""), 1, 0);
+            m_StatusBar.SetText(L"", 1, 0);
         }
     }
 
@@ -2570,7 +2565,7 @@ namespace dialogs
             bSafeCheck = true;
             this->pWorkerContext->bDone = false;
 
-            m_StatusBar.SetText(_T(""), 1, 0);
+            m_StatusBar.SetText(L"", 1, 0);
 
             ::SetCurrentDirectory(config::m_Settings.szSettingsPath.c_str());
 
@@ -2637,7 +2632,7 @@ namespace dialogs
 
             this->EnableUserInterface(FALSE);
 
-            m_StatusBar.SetText(_T(""), 1, 0);
+            m_StatusBar.SetText(L"", 1, 0);
             m_BtnConvert.SetWindowText(m_Config.GetString(0x000A0018).c_str());
             this->GetMenu()->ModifyMenu(ID_ACTION_CONVERT, MF_BYCOMMAND, ID_ACTION_CONVERT, m_Config.GetString(0x00030003).c_str());
 

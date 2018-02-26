@@ -55,16 +55,16 @@ namespace worker
                 return false;
             }
 
-            if (util::StringHelper::CompareNoCase(tool.szExtract, _T("install")))
+            if (util::StringHelper::CompareNoCase(tool.szExtract, L"install"))
             {
                 if (bInstall == true)
                 {
-                    util::Utilities::LaunchAndWait(szFilePath, _T(""), TRUE);
+                    util::Utilities::LaunchAndWait(szFilePath, L"", TRUE);
                     return true;
                 }
             }
 
-            if (util::StringHelper::CompareNoCase(tool.szExtract, _T("zip")))
+            if (util::StringHelper::CompareNoCase(tool.szExtract, L"zip"))
             {
                 if (bExtract == true)
                 {
@@ -84,7 +84,7 @@ namespace worker
                         }
                     }
 
-                    if (util::Utilities::DirectoryExists(szFolderPath) == TRUE)
+                    if (util::Utilities::DirectoryExists(szFolderPath) == true)
                     {
                         bool bUnzipResult = util::Utilities::Unzip2Folder(file, folder);
                         if (bUnzipResult == true)

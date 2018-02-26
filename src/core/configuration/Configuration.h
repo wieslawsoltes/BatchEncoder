@@ -31,7 +31,7 @@ namespace config
             if (config::m_Strings.count(nKey) == 1)
                 return config::m_Strings.at(nKey);
 
-            return _T("??");
+            return L"??";
         }
     };
 }

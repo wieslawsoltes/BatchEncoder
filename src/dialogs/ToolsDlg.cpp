@@ -585,7 +585,6 @@ namespace dialogs
         if (pos != nullptr)
         {
             int nItem = m_LstTools.GetNextSelectedItem(pos);
-
             CString szName = _T("");
             CString szPlatform = _T("");
             CString szPriority = _T("");

@@ -380,10 +380,8 @@ namespace dialogs
         if (pos != nullptr)
         {
             int nItem = m_LstPresets.GetNextSelectedItem(pos);
-
             CString szName = _T("");
             CString szOptions = _T("");
-
             this->m_EdtName.GetWindowText(szName);
             this->m_EdtOptions.GetWindowText(szOptions);
 

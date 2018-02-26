@@ -447,23 +447,23 @@ namespace dialogs
         int nItem = m_LstFormats.GetItemCount();
 
         config::CFormat format;
-        format.szId = _T("ID");
+        format.szId = L"ID";
         format.szName = pConfig->GetString(0x00230004);
-        format.szTemplate = _T("$EXE $OPTIONS $INFILE $OUTFILE");
+        format.szTemplate = L"$EXE $OPTIONS $INFILE $OUTFILE";
         format.bPipeInput = true;
         format.bPipeOutput = false;
-        format.szFunction = _T("- none -");
-        format.szPath = _T("program.exe");
+        format.szFunction = L"- none -";
+        format.szPath = L"program.exe";
         format.nExitCodeSuccess = 0;
         format.nType = config::FormatType::Encoder;
         format.nPriority = -1;
-        format.szInputExtensions = _T("WAV");
-        format.szOutputExtension = _T("EXT");
+        format.szInputExtensions = L"WAV";
+        format.szOutputExtension = L"EXT";
         format.nDefaultPreset = 0;
 
         config::CPreset preset;
         preset.szName = pConfig->GetString(0x00230005);
-        preset.szOptions = _T("");
+        preset.szOptions = L"";
         format.m_Presets.Insert(preset);
 
         m_Formats.Insert(format);
@@ -558,7 +558,6 @@ namespace dialogs
         if (pos != nullptr)
         {
             int nItem = m_LstFormats.GetNextSelectedItem(pos);
-
             CString szId = _T("");
             CString szName = _T("");
             CString szExtension = _T("");
