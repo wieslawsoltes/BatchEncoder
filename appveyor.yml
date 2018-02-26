@@ -7,8 +7,7 @@ before_build:
 - git submodule update --init
 build_script:
 - ps: .\build.ps1 -Target "Package"
-test_script:
-- cmd: vstest.console /logger:Appveyor tests\BatchEncoder.Core.UnitTests\bin\%configuration%\%platform%\BatchEncoder.Core.UnitTests.dll
+test: off
 artifacts:
 - path: artifacts\*.zip
 - path: artifacts\*.exe

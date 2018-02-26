@@ -18,6 +18,7 @@ var target = Argument("target", "Default");
 
 var platforms = new [] { "Win32", "x64" }.ToList();
 var configurations = new [] { "Release" }.ToList();
+var tests = new [] { "BatchEncoder.Core.UnitTests" }.ToList();
 var solution = "./BatchEncoder.sln";
 var versionHeaderPath = (FilePath)File("./src/version.h");
 var installerScript = MakeAbsolute((FilePath)File("./setup/setup.iss"));
@@ -144,6 +145,23 @@ Task("Build")
     configurations.ForEach(configuration => platforms.ForEach(platform => buildSolutionAction(solution, configuration, platform)));
 });
 
+Task("Run-Unit-Tests")
+    .IsDependentOn("Build")
+    .Does(() =>
+{
+    configurations.ForEach(configuration => 
+    {
+        platforms.ForEach(platform => 
+        {
+            tests.ForEach(test => 
+            {
+                var pattern = "./tests/" + test + "/bin/" + configuration + "/" + platform "/" + test + ".dll";
+                VSTest(pattern, new VSTestSettings() { Logger = "AppVeyor" });
+            });
+        });
+    });
+});
+
 Task("Package-Binaries")
     .IsDependentOn("Build")
     .Does(() =>
@@ -175,7 +193,7 @@ Task("Package")
   .IsDependentOn("Package-Config");
 
 Task("Default")
-  .IsDependentOn("Build");
+  .IsDependentOn("Run-Unit-Tests");
 
 ///////////////////////////////////////////////////////////////////////////////
 // EXECUTE
