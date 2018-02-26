@@ -84,7 +84,7 @@ namespace worker
                         }
                     }
 
-                    if (util::Utilities::DirectoryExists(szFolderPath) == true)
+                    if (util::Utilities::DirectoryExists(szFolderPath))
                     {
                         bool bUnzipResult = util::Utilities::Unzip2Folder(file, folder);
                         if (bUnzipResult == true)

@@ -36,13 +36,13 @@ namespace worker
             this->bUseWritePipes = bUseWritePipes;
 
             if (szAdditionalOptions.length() > 0)
-                this->szOptions = preset.szOptions + _L" " + szAdditionalOptions;
+                this->szOptions = preset.szOptions + L" " + szAdditionalOptions;
             else
                 this->szOptions = preset.szOptions;
 
             szCommandLine = pFormat->szTemplate;
 
-            util::StringHelper::ReplaceNoCase(szCommandLine, L"$EXE", _L"\"$EXE\"");
+            util::StringHelper::ReplaceNoCase(szCommandLine, L"$EXE", L"\"$EXE\"");
             util::StringHelper::ReplaceNoCase(szCommandLine, L"$EXE", pFormat->szPath);
             util::StringHelper::ReplaceNoCase(szCommandLine, L"$OPTIONS", this->szOptions);
 
