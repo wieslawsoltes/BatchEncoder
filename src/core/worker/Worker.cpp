@@ -7,6 +7,7 @@
 #include "FileToPipeWriter.h"
 #include "PipeToFileWriter.h"
 #include "PipeToStringWriter.h"
+#include "OutputParser.h"
 #include "LuaOutputParser.h"
 #include "DebugOutputParser.h"
 #include "ToolUtilities.h"

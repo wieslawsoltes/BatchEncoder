@@ -22,6 +22,7 @@
 #include "utilities\Thread.h"
 #include "utilities\TimeCount.h"
 #include "xml\XmlDoc.h"
+#include "worker\OutputPath.h"
 #include "worker\WorkerContext.h"
 #include "worker\Worker.h"
 

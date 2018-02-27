@@ -10,10 +10,8 @@
 #include <mutex>
 #include <thread>
 #include <atlstr.h>
-#include "OutputPath.h"
 #include "WorkerContext.h"
 #include "CommandLine.h"
-#include "OutputParser.h"
 
 namespace worker
 {
