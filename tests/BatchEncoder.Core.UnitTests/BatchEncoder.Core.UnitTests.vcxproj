@@ -176,9 +176,9 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="CInputPathTests.cpp" />
-    <ClCompile Include="CNewOutputPathTests.cpp" />
-    <ClCompile Include="COutputPathTests.cpp" />
+    <ClCompile Include="InputPathTests.cpp" />
+    <ClCompile Include="NewOutputPathTests.cpp" />
+    <ClCompile Include="OutputPathTests.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
