@@ -46,13 +46,13 @@ namespace BatchEncoderCoreUnitTests
             util::StringHelper::ReplaceNoCase(szOutputFile, L"$Name$", szName);
 
             // replace custom ext
-            util::StringHelper::ReplaceNoCase(szOutputFile, L"$Ext$", szExt);
+            util::StringHelper::ReplaceNoCase(szOutputFile, L"$Ext$", util::StringHelper::TowLower(szExt));
 
             // replace input path parts
             util::StringHelper::ReplaceNoCase(szOutputFile, L"$InputDrive$", m_Input.szInputDrive);
             util::StringHelper::ReplaceNoCase(szOutputFile, L"$InputDir$", m_Input.szInputDir);
             util::StringHelper::ReplaceNoCase(szOutputFile, L"$InputName$", m_Input.szInputName);
-            util::StringHelper::ReplaceNoCase(szOutputFile, L"$InputExt$", m_Input.szInputExt);
+            util::StringHelper::ReplaceNoCase(szOutputFile, L"$InputExt$", util::StringHelper::TowLower(m_Input.szInputExt);
             util::StringHelper::ReplaceNoCase(szOutputFile, L"$InputPath$", m_Input.szInputPath);
 
             // replace input path folders $InputFolder[index]$
@@ -165,6 +165,19 @@ namespace BatchEncoderCoreUnitTests
             std::wstring szOutputFile = m_Output.CreateFilePath(szOutput, szInputFile, szName, szExt);
 
             Assert::AreEqual(L"C:\\Output\\FileName.ext", szOutputFile.c_str());
+        }
+
+        TEST_METHOD(CNewOutputPath_CreateFile_InputExt_Ext_ToLower)
+        {
+            std::wstring szOutput = L"$InputPath$\\$Name$.$InputExt$.$Ext$";
+            std::wstring szInputFile = L"C:\\MusicFolder\\ArtistFolder\\AlbumFolder\\FileName.WAV";
+            std::wstring szName = L"CustomName";
+            std::wstring szExt = L"EXT";
+
+            CNewOutputPath m_Output;
+            std::wstring szOutputFile = m_Output.CreateFilePath(szOutput, szInputFile, szName, szExt);
+
+            Assert::AreEqual(L"C:\\MusicFolder\\ArtistFolder\\AlbumFolder\\CustomName.wav.ext", szOutputFile.c_str());
         }
 
         TEST_METHOD(CNewOutputPath_CreateFilePath_Prefix_Name_Ext)
