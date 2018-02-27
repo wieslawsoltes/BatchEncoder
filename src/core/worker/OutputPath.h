@@ -32,8 +32,8 @@ namespace worker
             if (szPattern.length() <= 0)
                 szPattern = L"$SourceDirectory$\\$Name$.$Ext$";
 
-            bool bHaveName = util::StringHelper::FindNoCase(szOutput, VAR_OUTPUT_NAME) != std::wstring::npos;
-            bool bHaveExt = util::StringHelper::FindNoCase(szOutput, VAR_OUTPUT_EXTENSION) != std::wstring::npos;
+            bool bHaveName = util::StringHelper::FindNoCase(szPattern, VAR_OUTPUT_NAME) != std::wstring::npos;
+            bool bHaveExt = util::StringHelper::FindNoCase(szPattern, VAR_OUTPUT_EXTENSION) != std::wstring::npos;
             if ((bHaveName == false) && (bHaveExt == false))
             {
                 if (szPattern.length() >= 1 && szPattern[szPattern.length() - 1] != '\\' && szPattern[szPattern.length() - 1] != '/')

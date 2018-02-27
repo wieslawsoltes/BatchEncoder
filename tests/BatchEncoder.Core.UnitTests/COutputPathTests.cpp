@@ -66,7 +66,7 @@ namespace BatchEncoderCoreUnitTests
 
         TEST_METHOD(COutputPath_CreateFile_SourceDirectory_String_Name_Ext)
         {
-            std::wstring szOutput = L"$SourceDirectory$\\Converted\\$Name$_converted.$Ext$";
+            std::wstring szOutput = L"$SourceDirectory$\\Converted\\$Name$.$Ext$";
             std::wstring szInputFile = L"C:\\MusicFolder\\FileName.wav";
             std::wstring szName = L"CustomName";
             std::wstring szExt = L"ext";
