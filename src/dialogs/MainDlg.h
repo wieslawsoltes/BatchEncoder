@@ -158,6 +158,7 @@ namespace dialogs
         afx_msg void OnHelpAbout();
     public:
         bool LoadLanguages(const std::wstring& szPath);
+        void AddLanguageToMenu(int nIndex);
         void InitLanguageMenu();
         void SetLanguage();
         void GetItems();

@@ -492,6 +492,8 @@ namespace dialogs
 
         try
         {
+            this->m_Config.m_Language.nLangId = -1;
+
             this->LoadTools(config::m_Settings.szToolsPath);
             this->LoadFormats(config::m_Settings.szFormatsPath);
 
@@ -1661,11 +1663,9 @@ namespace dialogs
         int nSelectedLanguage = nID - ID_LANGUAGE_MIN;
         lang::CLanguage& language = m_Config.m_Language.m_Languages.Get(nSelectedLanguage);
         m_Config.m_Options.szSelectedLanguage = language.szId;
-        m_Config.m_Language.pLanguage = &language;
+        m_Config.m_Language.nLangId = nSelectedLanguage;
 
-        CMenu *m_hMenu = this->GetMenu();
-        CMenu *m_hLangMenu = m_hMenu->GetSubMenu(4);
-
+        CMenu *m_hLangMenu = this->GetMenu()->GetSubMenu(4);
         int nLanguages = m_Config.m_Language.m_Languages.Count();
         for (int i = 0; i < nLanguages; i++)
         {
@@ -1701,8 +1701,7 @@ namespace dialogs
     bool CMainDlg::LoadLanguages(const std::wstring& szPath)
     {
         std::vector<std::wstring> files;
-        bool bResult = util::Utilities::FindFiles(szPath, files, false);
-        if (bResult == true)
+        if (util::Utilities::FindFiles(szPath, files, false))
         {
             for (auto& file : files)
             {
@@ -1713,8 +1712,10 @@ namespace dialogs
                     if (util::StringHelper::CompareNoCase(szName, "Language"))
                     {
                         lang::CLanguage language;
-                        xml::CXmlConfig::LoadLanguage(doc, language);
-                        this->m_Config.m_Language.m_Languages.Insert(std::move(language));
+                        if (xml::CXmlConfig::LoadLanguage(doc, language))
+                        {
+                            this->m_Config.m_Language.m_Languages.Insert(std::move(language));
+                        }
                     }
                 }
             }
@@ -1727,11 +1728,23 @@ namespace dialogs
         return false;
     }
 
+    void CMainDlg::AddLanguageToMenu(int nIndex)
+    {
+        lang::CLanguage& language = m_Config.m_Language.m_Languages.Get(nIndex);
+        std::wstring szText = language.szOriginalName + L" (" + language.szTranslatedName + L")";
+
+        UINT nLangID = ID_LANGUAGE_MIN + nIndex;
+        CMenu *m_hLangMenu = this->GetMenu()->GetSubMenu(4);
+        if (nLangID == ID_LANGUAGE_MIN)
+            m_hLangMenu->DeleteMenu(ID_LANGUAGE_DEFAULT, 0);
+
+        m_hLangMenu->AppendMenu(MF_STRING, nLangID, szText.c_str());
+        m_hLangMenu->CheckMenuItem(nLangID, MF_UNCHECKED);
+    }
+
     void CMainDlg::InitLanguageMenu()
     {
-        CMenu *m_hMenu = this->GetMenu();
-        CMenu *m_hLangMenu = m_hMenu->GetSubMenu(4);
-
+        CMenu *m_hLangMenu = this->GetMenu()->GetSubMenu(4);
         int nLanguages = m_Config.m_Language.m_Languages.Count();
         if (nLanguages > 0 && nLanguages <= (ID_LANGUAGE_MAX - ID_LANGUAGE_MIN))
         {
@@ -1739,30 +1752,29 @@ namespace dialogs
 
             for (int i = 0; i < nLanguages; i++)
             {
-                lang::CLanguage language = m_Config.m_Language.m_Languages.Get(i);
-
-                std::wstring szBuff = language.szOriginalName + L" (" + language.szTranslatedName + L")";
+                lang::CLanguage& language = m_Config.m_Language.m_Languages.Get(i);
+                std::wstring szText = language.szOriginalName + L" (" + language.szTranslatedName + L")";
 
                 UINT nLangID = ID_LANGUAGE_MIN + i;
-                m_hLangMenu->AppendMenu(MF_STRING, nLangID, szBuff.c_str());
+                m_hLangMenu->AppendMenu(MF_STRING, nLangID, szText.c_str());
                 m_hLangMenu->CheckMenuItem(nLangID, MF_UNCHECKED);
             }
 
             int nSelectedLanguage = m_Config.m_Language.m_Languages.GetLanguageById(m_Config.m_Options.szSelectedLanguage);
             if (nSelectedLanguage >= 0)
             {
-                m_hLangMenu->CheckMenuItem(ID_LANGUAGE_MIN + nSelectedLanguage, MF_CHECKED);
-
                 lang::CLanguage& language = m_Config.m_Language.m_Languages.Get(nSelectedLanguage);
-                m_Config.m_Language.pLanguage = &language;
+                m_Config.m_Language.nLangId = nSelectedLanguage;
+
+                m_hLangMenu->CheckMenuItem(ID_LANGUAGE_MIN + nSelectedLanguage, MF_CHECKED);
             }
             else
             {
-                m_hLangMenu->CheckMenuItem(ID_LANGUAGE_MIN, MF_CHECKED);
-
                 lang::CLanguage& language = m_Config.m_Language.m_Languages.Get(0);
                 m_Config.m_Options.szSelectedLanguage = language.szId;
-                m_Config.m_Language.pLanguage = &language;
+                m_Config.m_Language.nLangId = 0;
+
+                m_hLangMenu->CheckMenuItem(ID_LANGUAGE_MIN, MF_CHECKED);
             }
         }
         else
@@ -2937,18 +2949,10 @@ namespace dialogs
         lang::CLanguage language;
         if (xml::CXmlConfig::LoadLanguage(doc, language))
         {
-            CMenu *m_hMenu = this->GetMenu();
-            CMenu *m_hLangMenu = m_hMenu->GetSubMenu(4);
-
+            this->m_Config.m_Language.m_Languages.Insert(std::move(language));
             int nLanguages = m_Config.m_Language.m_Languages.Count();
-
-            this->m_Config.m_Language.m_Languages.Insert(language);
-            std::wstring szBuff = language.szOriginalName + L" (" + language.szTranslatedName + L")";
-
-            UINT nLangID = ID_LANGUAGE_MIN + nLanguages - 1;
-            m_hLangMenu->AppendMenu(MF_STRING, nLangID, szBuff.c_str());
-            m_hLangMenu->CheckMenuItem(nLangID, MF_UNCHECKED);
-
+            int nIndex = nLanguages - 1;
+            this->AddLanguageToMenu(nIndex);
             return true;
         }
         return false;
