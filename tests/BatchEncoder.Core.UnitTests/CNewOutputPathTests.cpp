@@ -5,6 +5,7 @@
 #include "CppUnitTest.h"
 #include "worker\InputPath.h"
 #include "utilities\StringHelper.h"
+#include "utilities\Utilities.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
