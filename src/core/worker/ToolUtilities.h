@@ -7,7 +7,6 @@
 #include <functional>
 #include "utilities\Download.h"
 #include "utilities\StringHelper.h"
-#include "utilities\Thread.h"
 #include "utilities\Utilities.h"
 #include "configuration\Settings.h"
 #include "configuration\ToolsList.h"

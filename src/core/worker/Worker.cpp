@@ -150,8 +150,8 @@ namespace worker
         util::CPipe Stdout(true);
         CFileToPipeWriter readContext;
         CPipeToFileWriter writeContext;
-        util::CThread readThread;
-        util::CThread writeThread;
+        std::thread readThread;
+        std::thread writeThread;
         int nProgress = 0;
         util::CTimeCount timer;
 
@@ -319,29 +319,15 @@ namespace worker
             readContext.szFileName = cl.szInputFile;
             readContext.nIndex = cl.nItemId;
 
-            if (readThread.Start([this, ctx, &readContext, &Stdin]() { readContext.ReadLoop(ctx, Stdin); }) == false)
-            {
-                timer.Stop();
-
-                process.Stop(false, cl.pFormat->nExitCodeSuccess);
-
-                Stdin.CloseWrite();
-
-                ctx->Status(cl.nItemId, ctx->pConfig->GetString(0x00150001), ctx->pConfig->GetString(0x00130007));
-                ctx->Callback(cl.nItemId, -1, true, true);
-                return false;
-            }
+            readThread = std::thread([this, ctx, &readContext, &Stdin]() { readContext.ReadLoop(ctx, Stdin); });
 
             // wait for read thread to finish
             if (cl.bUseWritePipes == false)
             {
-                readThread.Wait();
+                readThread.join();
 
                 // NOTE: Handle is closed in ReadThread.
                 //Stdin.CloseWrite();
-
-                // close read thread handle
-                readThread.Close();
 
                 // check for result from read thread
                 if ((readContext.bError == false) && (readContext.bFinished == true))
@@ -359,29 +345,16 @@ namespace worker
             writeContext.szFileName = cl.szOutputFile;
             writeContext.nIndex = cl.nItemId;
 
-            if (writeThread.Start([this, ctx, &writeContext, &Stdout]() { writeContext.WriteLoop(ctx, Stdout); }) == false)
-            {
-                timer.Stop();
+            writeThread = std::thread([this, ctx, &writeContext, &Stdout]() { writeContext.WriteLoop(ctx, Stdout); });
 
-                process.Stop(false, cl.pFormat->nExitCodeSuccess);
-
-                Stdout.CloseRead();
-
-                ctx->Status(cl.nItemId, ctx->pConfig->GetString(0x00150001), ctx->pConfig->GetString(0x00130008));
-                ctx->Callback(cl.nItemId, -1, true, true);
-                return false;
-            }
 
             if (cl.bUseReadPipes == true)
             {
                 // wait for read thread to finish
-                readThread.Wait();
+                readThread.join();
 
                 // NOTE: Handle is closed in ReadThread.
                 //Stdin.CloseWrite();
-
-                // close read thread handle
-                readThread.Close();
 
                 if ((readContext.bError == true) || (readContext.bFinished == false))
                 {
@@ -389,19 +362,15 @@ namespace worker
                     Stdout.CloseRead();
 
                     // read thread failed so terminate write thread
-                    writeThread.Terminate();
-                    writeThread.Close();
+                    writeThread.join();
                 }
                 else
                 {
                     // wait for write thread to finish
-                    writeThread.Wait();
+                    writeThread.join();
 
                     // close write thread handle
                     Stdout.CloseRead();
-
-                    // close write thread handle
-                    writeThread.Close();
                 }
 
                 // check for result from read thread
@@ -414,13 +383,10 @@ namespace worker
             else
             {
                 // wait for write thread to finish
-                writeThread.Wait();
+                writeThread.join();
 
                 // close write thread handle
                 Stdout.CloseRead();
-
-                // close write thread handle
-                writeThread.Close();
 
                 // check for result from write thread
                 if ((writeContext.bError == false) && (writeContext.bFinished == true))
@@ -458,8 +424,8 @@ namespace worker
         util::CPipe Bridge(true);
         CFileToPipeWriter readContext;
         CPipeToFileWriter writeContext;
-        util::CThread readThread;
-        util::CThread writeThread;
+        std::thread readThread;
+        std::thread writeThread;
         int nProgress = 0;
         util::CTimeCount timer;
 
@@ -673,16 +639,7 @@ namespace worker
         readContext.szFileName = dcl.szInputFile;
         readContext.nIndex = dcl.nItemId;
 
-        if (readThread.Start([this, ctx, &readContext, &Stdin]() { readContext.ReadLoop(ctx, Stdin); }) == false)
-        {
-            timer.Stop();
-
-            Stdin.CloseWrite();
-
-            ctx->Status(dcl.nItemId, ctx->pConfig->GetString(0x00150001), ctx->pConfig->GetString(0x00130007));
-            ctx->Callback(dcl.nItemId, -1, true, true);
-            return false;
-        }
+        readThread = std::thread([this, ctx, &readContext, &Stdin]() { readContext.ReadLoop(ctx, Stdin); });
 
         // create write thread
         writeContext.bError = false;
@@ -690,43 +647,27 @@ namespace worker
         writeContext.szFileName = ecl.szOutputFile;
         writeContext.nIndex = ecl.nItemId;
 
-        if (writeThread.Start([this, ctx, &writeContext, &Stdout]() { writeContext.WriteLoop(ctx, Stdout); }) == false)
-        {
-            timer.Stop();
-
-            Stdout.CloseRead();
-
-            ctx->Status(dcl.nItemId, ctx->pConfig->GetString(0x00150001), ctx->pConfig->GetString(0x00130008));
-            ctx->Callback(dcl.nItemId, -1, true, true);
-            return false;
-        }
+        writeThread = std::thread([this, ctx, &writeContext, &Stdout]() { writeContext.WriteLoop(ctx, Stdout); });
 
         // wait for read thread to finish after write thread finished
-        readThread.Wait();
+        readThread.join();
 
         // NOTE: Handle is closed in ReadThread.
         //Stdin.CloseWrite();
-
-        // close read thread handle
-        readThread.Close();
 
         if ((readContext.bError == true) || (readContext.bFinished == false))
         {
             Stdout.CloseRead();
 
             // read thread failed so terminate write thread
-            writeThread.Terminate();
-            writeThread.Close();
+            writeThread.join();
         }
         else
         {
             Stdout.CloseRead();
 
             // wait for write thread to finish
-            writeThread.Wait();
-
-            // close write thread handle
-            writeThread.Close();
+            writeThread.join();
         }
 
         // check for result from read and write thread
@@ -767,8 +708,8 @@ namespace worker
         std::wstring szDecInputFile;
         std::wstring szDecOutputFile;
         COutputPath m_Output;
-        CCommandLine decoderCommandLine;
-        CCommandLine encoderCommandLine;
+        CCommandLine dcl;
+        CCommandLine ecl;
 
         // prepare encoder
         config::CItem& item = ctx->pConfig->m_Items.Get(nId);
@@ -871,7 +812,7 @@ namespace worker
 
         if (bIsValidEncoderInput == false)
         {
-            decoderCommandLine.Build(
+            dcl.Build(
                 pDecFormat,
                 pDecFormat->nDefaultPreset,
                 item.nId,
@@ -882,7 +823,7 @@ namespace worker
                 L"");
         }
 
-        encoderCommandLine.Build(
+        ecl.Build(
             pEncFormat,
             item.nPreset,
             item.nId,
@@ -893,10 +834,8 @@ namespace worker
             item.szOptions);
 
         if (bIsValidEncoderInput == false
-            && decoderCommandLine.bUseReadPipes == true
-            && decoderCommandLine.bUseWritePipes == true
-            && encoderCommandLine.bUseReadPipes == true
-            && encoderCommandLine.bUseWritePipes == true)
+            && dcl.bUseReadPipes == true && dcl.bUseWritePipes == true
+            && ecl.bUseReadPipes == true && ecl.bUseWritePipes == true)
         {
             // trans-code
             try
@@ -905,7 +844,7 @@ namespace worker
 
                 item.ResetProgress();
 
-                bool bResult = ConvertFileUsingOnlyPipes(ctx, decoderCommandLine, encoderCommandLine, syncDown);
+                bool bResult = ConvertFileUsingOnlyPipes(ctx, dcl, ecl, syncDown);
                 if (bResult == true)
                 {
                     if (ctx->pConfig->m_Options.bDeleteSourceFiles == true)
@@ -942,10 +881,10 @@ namespace worker
                     item.ResetProgress();
 
                     bool bResult = false;
-                    if ((decoderCommandLine.bUseReadPipes == false) && (decoderCommandLine.bUseWritePipes == false))
-                        bResult = ConvertFileUsingConsole(ctx, decoderCommandLine, syncDown);
+                    if ((dcl.bUseReadPipes == false) && (dcl.bUseWritePipes == false))
+                        bResult = ConvertFileUsingConsole(ctx, dcl, syncDown);
                     else
-                        bResult = ConvertFileUsingPipes(ctx, decoderCommandLine, syncDown);
+                        bResult = ConvertFileUsingPipes(ctx, dcl, syncDown);
                     if (bResult == false)
                     {
                         if (ctx->pConfig->m_Options.bDeleteOnErrors == true)
@@ -984,10 +923,10 @@ namespace worker
                 item.ResetProgress();
 
                 bool bResult = false;
-                if ((encoderCommandLine.bUseReadPipes == false) && (encoderCommandLine.bUseWritePipes == false))
-                    bResult = ConvertFileUsingConsole(ctx, encoderCommandLine, syncDown);
+                if ((ecl.bUseReadPipes == false) && (ecl.bUseWritePipes == false))
+                    bResult = ConvertFileUsingConsole(ctx, ecl, syncDown);
                 else
-                    bResult = ConvertFileUsingPipes(ctx, encoderCommandLine, syncDown);
+                    bResult = ConvertFileUsingPipes(ctx, ecl, syncDown);
                 if (bResult == true)
                 {
                     if (bIsValidEncoderInput == false)
@@ -1132,25 +1071,19 @@ namespace worker
         // multi-threaded
         if (ctx->nThreadCount > 1)
         {
-            auto threads = std::make_unique<util::CThread[]>(ctx->nThreadCount);
+            auto convert = [this, ctx, &queue, &sync, &syncDir, &syncDown]()
+            {
+                this->ConvertLoop(ctx, queue, sync, syncDir, syncDown);
+            };
+
+            auto threads = std::make_unique<std::thread[]>(ctx->nThreadCount);
             for (int i = 0; i < ctx->nThreadCount; i++)
             {
-                auto entry = [this, ctx, &queue, &sync, &syncDir, &syncDown]()
-                { 
-                    this->ConvertLoop(ctx, queue, sync, syncDir, syncDown);
-                };
-                if (threads[i].Start(entry, true) == false)
-                    break;
-
-                if (threads[i].Resume() == false)
-                    break;
+                threads[i] = std::thread(convert);
             }
 
             for (int i = 0; i < ctx->nThreadCount; i++)
-                threads[i].Wait();
-
-            for (int i = 0; i < ctx->nThreadCount; i++)
-                threads[i].Close();
+                threads[i].join();
         }
 
         ctx->Done();

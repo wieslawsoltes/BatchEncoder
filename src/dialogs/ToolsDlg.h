@@ -19,6 +19,7 @@
 #include "configuration\FormatsList.h"
 #include "configuration\Configuration.h"
 #include "utilities\StringHelper.h"
+#include "utilities\Thread.h"
 #include "worker\ToolUtilities.h"
 
 #define TOOL_COLUMN_NAME      0

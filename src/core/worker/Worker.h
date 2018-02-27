@@ -8,10 +8,10 @@
 #include <utility>
 #include <string>
 #include <atlstr.h>
+#include <thread>
 #include "OutputPath.h"
 #include "utilities\Pipe.h"
 #include "utilities\StringHelper.h"
-#include "utilities\Thread.h"
 #include "utilities\Process.h"
 #include "utilities\Synchronize.h"
 #include "WorkerContext.h"
