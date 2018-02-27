@@ -50,6 +50,9 @@ namespace worker
             util::StringHelper::ReplaceNoCase(szOutputFile, VAR_OUTPUT_NAME, szName);
             util::StringHelper::ReplaceNoCase(szOutputFile, VAR_OUTPUT_EXTENSION, util::StringHelper::TowLower(szExt));
 
+            util::StringHelper::ReplaceNoCase(szOutputFile, L"\\\\", L"\\");
+            util::StringHelper::ReplaceNoCase(szOutputFile, L"//", L"/");
+
             return szOutputFile;
         }
         bool CreateOutputPath(const std::wstring& szOutputFile)
