@@ -30,26 +30,23 @@ namespace worker
         {
             std::wstring szPattern = szOutput;
             if (szPattern.length() <= 0)
-            {
                 szPattern = L"$SourceDirectory$\\$Name$.$Ext$";
-            }
-            else
+
+            bool bHaveName = util::StringHelper::FindNoCase(szOutput, VAR_OUTPUT_NAME) != std::wstring::npos;
+            bool bHaveExt = util::StringHelper::FindNoCase(szOutput, VAR_OUTPUT_EXTENSION) != std::wstring::npos;
+            if ((bHaveName == false) && (bHaveExt == false))
             {
-                bool bHaveName = util::StringHelper::FindNoCase(szOutput, VAR_OUTPUT_NAME) != std::wstring::npos;
-                bool bHaveExt = util::StringHelper::FindNoCase(szOutput, VAR_OUTPUT_EXTENSION) != std::wstring::npos;
-                if ((bHaveName == false) && (bHaveExt == false))
-                {
-                    if (szPattern.length() >= 1 && szPattern[szPattern.length() - 1] != '\\' && szPattern[szPattern.length() - 1] != '/')
-                        szPattern += L"\\";
-                    szPattern += L"$Name$.$Ext$";
-                }
+                if (szPattern.length() >= 1 && szPattern[szPattern.length() - 1] != '\\' && szPattern[szPattern.length() - 1] != '/')
+                    szPattern += L"\\";
+                szPattern += L"$Name$.$Ext$";
             }
+
             std::wstring szOutputFile = szPattern;
             std::wstring szInputPath = util::Utilities::GetFilePath(szInputFile);
+
             util::StringHelper::ReplaceNoCase(szOutputFile, VAR_OUTPUT_SOURCE_DIRECTORY, szInputPath);
             util::StringHelper::ReplaceNoCase(szOutputFile, VAR_OUTPUT_NAME, szName);
             util::StringHelper::ReplaceNoCase(szOutputFile, VAR_OUTPUT_EXTENSION, util::StringHelper::TowLower(szExt));
-
             util::StringHelper::ReplaceNoCase(szOutputFile, L"\\\\", L"\\");
             util::StringHelper::ReplaceNoCase(szOutputFile, L"//", L"/");
 

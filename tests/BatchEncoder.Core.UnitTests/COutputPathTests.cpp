@@ -19,7 +19,7 @@ namespace BatchEncoderCoreUnitTests
             std::wstring szName = L"CustomName";
             std::wstring szExt = L"ext";
 
-            COutputPath m_Output;
+            worker::COutputPath m_Output;
             std::wstring szOutputFile = m_Output.CreateFilePath(szOutput, szInputFile, szName, szExt);
 
             Assert::AreEqual(L"C:\\MusicFolder\\CustomName.ext", szOutputFile.c_str());
@@ -32,7 +32,7 @@ namespace BatchEncoderCoreUnitTests
             std::wstring szName = L"CustomName";
             std::wstring szExt = L"ext";
 
-            COutputPath m_Output;
+            worker::COutputPath m_Output;
             std::wstring szOutputFile = m_Output.CreateFilePath(szOutput, szInputFile, szName, szExt);
 
             Assert::AreEqual(L"C:\\MusicFolder\\CustomName.ext", szOutputFile.c_str());
@@ -45,7 +45,7 @@ namespace BatchEncoderCoreUnitTests
             std::wstring szName = L"CustomName";
             std::wstring szExt = L"ext";
 
-            COutputPath m_Output;
+            worker::COutputPath m_Output;
             std::wstring szOutputFile = m_Output.CreateFilePath(szOutput, szInputFile, szName, szExt);
 
             Assert::AreEqual(L"C:\\MusicFolder\\CustomName.ext", szOutputFile.c_str());
@@ -58,7 +58,7 @@ namespace BatchEncoderCoreUnitTests
             std::wstring szName = L"CustomName";
             std::wstring szExt = L"ext";
 
-            COutputPath m_Output;
+            worker::COutputPath m_Output;
             std::wstring szOutputFile = m_Output.CreateFilePath(szOutput, szInputFile, szName, szExt);
 
             Assert::AreEqual(L"C:\\MusicFolder\\CustomName_converted.ext", szOutputFile.c_str());
@@ -71,7 +71,7 @@ namespace BatchEncoderCoreUnitTests
             std::wstring szName = L"CustomName";
             std::wstring szExt = L"ext";
 
-            COutputPath m_Output;
+            worker::COutputPath m_Output;
             std::wstring szOutputFile = m_Output.CreateFilePath(szOutput, szInputFile, szName, szExt);
 
             Assert::AreEqual(L"C:\\MusicFolder\\Converted\\$CustomName.ext", szOutputFile.c_str());
@@ -79,12 +79,12 @@ namespace BatchEncoderCoreUnitTests
 
         TEST_METHOD(COutputPath_CreateFile_Path_NoSlash)
         {
-            std::wstring szOutput = L"C:\\Output;
+            std::wstring szOutput = L"C:\\Output";
             std::wstring szInputFile = L"C:\\MusicFolder\\FileName.wav";
             std::wstring szName = L"CustomName";
             std::wstring szExt = L"ext";
 
-            COutputPath m_Output;
+            worker::COutputPath m_Output;
             std::wstring szOutputFile = m_Output.CreateFilePath(szOutput, szInputFile, szName, szExt);
 
             Assert::AreEqual(L"C:\\Output\\CustomName.ext", szOutputFile.c_str());
@@ -92,12 +92,12 @@ namespace BatchEncoderCoreUnitTests
 
         TEST_METHOD(COutputPath_CreateFile_Path_Slash)
         {
-            std::wstring szOutput = L"C:\\Output\\;
+            std::wstring szOutput = L"C:\\Output\\";
             std::wstring szInputFile = L"C:\\MusicFolder\\FileName.wav";
             std::wstring szName = L"CustomName";
             std::wstring szExt = L"ext";
 
-            COutputPath m_Output;
+            worker::COutputPath m_Output;
             std::wstring szOutputFile = m_Output.CreateFilePath(szOutput, szInputFile, szName, szExt);
 
             Assert::AreEqual(L"C:\\Output\\CustomName.ext", szOutputFile.c_str());
@@ -105,12 +105,12 @@ namespace BatchEncoderCoreUnitTests
 
         TEST_METHOD(COutputPath_CreateFile_Path_Name_Ext)
         {
-            std::wstring szOutput = L"C:\\Output\\$Name$.$Ext$;
+            std::wstring szOutput = L"C:\\Output\\$Name$.$Ext$";
             std::wstring szInputFile = L"C:\\MusicFolder\\FileName.wav";
             std::wstring szName = L"CustomName";
             std::wstring szExt = L"ext";
 
-            COutputPath m_Output;
+            worker::COutputPath m_Output;
             std::wstring szOutputFile = m_Output.CreateFilePath(szOutput, szInputFile, szName, szExt);
 
             Assert::AreEqual(L"C:\\Output\\CustomName.ext", szOutputFile.c_str());
@@ -118,12 +118,12 @@ namespace BatchEncoderCoreUnitTests
 
         TEST_METHOD(COutputPath_CreateFile_Path_Name_String_Ext)
         {
-            std::wstring szOutput = L"C:\\Output\\$Name$_converted.$Ext$;
+            std::wstring szOutput = L"C:\\Output\\$Name$_converted.$Ext$";
             std::wstring szInputFile = L"C:\\MusicFolder\\FileName.wav";
             std::wstring szName = L"CustomName";
             std::wstring szExt = L"ext";
 
-            COutputPath m_Output;
+            worker::COutputPath m_Output;
             std::wstring szOutputFile = m_Output.CreateFilePath(szOutput, szInputFile, szName, szExt);
 
             Assert::AreEqual(L"C:\\Output\\CustomName_converted.ext", szOutputFile.c_str());
