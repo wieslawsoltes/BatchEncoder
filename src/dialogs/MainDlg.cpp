@@ -2639,20 +2639,6 @@ namespace dialogs
                 return;
             }
 
-            if (this->m_WorkerThread.Start(
-                [this]()
-                {
-                    this->m_Worker.Convert(this->pWorkerContext);
-                    this->m_WorkerThread.Close();
-                },
-                true) == false)
-            {
-                m_StatusBar.SetText(m_Config.GetString(0x0021000E).c_str(), 1, 0);
-                this->pWorkerContext->bDone = true;
-                bSafeCheck = false;
-                return;
-            }
-
             this->EnableUserInterface(FALSE);
 
             m_StatusBar.SetText(L"", 1, 0);
@@ -2660,7 +2646,12 @@ namespace dialogs
             this->GetMenu()->ModifyMenu(ID_ACTION_CONVERT, MF_BYCOMMAND, ID_ACTION_CONVERT, m_Config.GetString(0x00030003).c_str());
 
             this->pWorkerContext->bRunning = true;
-            this->m_WorkerThread.Resume();
+
+            std::thread m_WorkerThread = std::thread([this]()
+            {
+                this->m_Worker.Convert(this->pWorkerContext);
+            });
+            m_WorkerThread.detach();
 
             bSafeCheck = false;
         }

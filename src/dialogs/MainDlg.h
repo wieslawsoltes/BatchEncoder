@@ -9,6 +9,7 @@
 #include <vector>
 #include <string>
 #include <utility>
+#include <thread>
 #include "controls\MyListCtrl.h"
 #include "controls\MyButton.h"
 #include "controls\MyComboBox.h"
@@ -19,7 +20,6 @@
 #include "controls\MyProgressCtrl.h"
 #include "controls\MyDialogEx.h"
 #include "utilities\StringHelper.h"
-#include "utilities\Thread.h"
 #include "utilities\TimeCount.h"
 #include "xml\XmlDoc.h"
 #include "worker\OutputPath.h"
@@ -74,7 +74,6 @@ namespace dialogs
         MainDlgDropContext m_DD;
         config::CConfiguration m_Config;
     public:
-        util::CThread m_WorkerThread;
         worker::IWorkerContext* pWorkerContext;
         worker::CWorker m_Worker;
     public:
