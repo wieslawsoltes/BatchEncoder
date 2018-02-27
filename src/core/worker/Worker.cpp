@@ -16,7 +16,7 @@
 
 namespace worker
 {
-    bool CWorker::ConvertFileUsingConsole(IWorkerContext* pWorkerContext, CCommandLine &commandLine, util::CSynchronize &syncDown)
+    bool CWorker::ConvertFileUsingConsole(IWorkerContext* ctx, CCommandLine &cl, util::CSynchronize &syncDown)
     {
         util::CProcess process;
         util::CPipe Stderr(true);
@@ -24,26 +24,26 @@ namespace worker
         CLuaOutputParser parser;
         CPipeToStringWriter writer;
 
-        if ((commandLine.bUseReadPipes == true) || (commandLine.bUseWritePipes == true))
+        if ((cl.bUseReadPipes == true) || (cl.bUseWritePipes == true))
         {
-            pWorkerContext->Status(commandLine.nItemId, pWorkerContext->pConfig->GetString(0x00150001), pWorkerContext->pConfig->GetString(0x00120001));
-            pWorkerContext->Callback(commandLine.nItemId, -1, true, true);
+            ctx->Status(cl.nItemId, ctx->pConfig->GetString(0x00150001), ctx->pConfig->GetString(0x00120001));
+            ctx->Callback(cl.nItemId, -1, true, true);
             return false;
         }
 
         // create pipes for stderr
         if (Stderr.Create() == false)
         {
-            pWorkerContext->Status(commandLine.nItemId, pWorkerContext->pConfig->GetString(0x00150001), pWorkerContext->pConfig->GetString(0x00120002));
-            pWorkerContext->Callback(commandLine.nItemId, -1, true, true);
+            ctx->Status(cl.nItemId, ctx->pConfig->GetString(0x00150001), ctx->pConfig->GetString(0x00120002));
+            ctx->Callback(cl.nItemId, -1, true, true);
             return false;
         }
 
         // duplicate stderr read pipe handle to prevent child process from closing the pipe
         if (Stderr.DuplicateRead() == false)
         {
-            pWorkerContext->Status(commandLine.nItemId, pWorkerContext->pConfig->GetString(0x00150001), pWorkerContext->pConfig->GetString(0x00120003));
-            pWorkerContext->Callback(commandLine.nItemId, -1, true, true);
+            ctx->Status(cl.nItemId, ctx->pConfig->GetString(0x00150001), ctx->pConfig->GetString(0x00120003));
+            ctx->Callback(cl.nItemId, -1, true, true);
             return false;
         }
 
@@ -56,35 +56,35 @@ namespace worker
         ::SetCurrentDirectory(config::m_Settings.szSettingsPath.c_str());
 
         timer.Start();
-        if (process.Start(commandLine.szCommandLine, pWorkerContext->pConfig->m_Options.bHideConsoleWindow) == false)
+        if (process.Start(cl.szCommandLine, ctx->pConfig->m_Options.bHideConsoleWindow) == false)
         {
             bool bFailed = true;
 
-            if (pWorkerContext->pConfig->m_Options.bTryToDownloadTools == true)
+            if (ctx->pConfig->m_Options.bTryToDownloadTools == true)
             {
                 CToolUtilities m_Utilities;
 
                 int nTool = -1;
-                nTool = pWorkerContext->pConfig->m_Tools.GetToolByPath(commandLine.pFormat->szPath);
+                nTool = ctx->pConfig->m_Tools.GetToolByPath(cl.pFormat->szPath);
                 if (nTool < 0)
                 {
-                    nTool = m_Utilities.FindTool(pWorkerContext->pConfig->m_Tools, commandLine.pFormat->szId);
+                    nTool = m_Utilities.FindTool(ctx->pConfig->m_Tools, cl.pFormat->szId);
                 }
 
                 if (nTool >= 0)
                 {
-                    config::CTool& tool = pWorkerContext->pConfig->m_Tools.Get(nTool);
-                    bool bResult = m_Utilities.Download(tool, true, true, nTool, pWorkerContext->pConfig,
-                        [this, pWorkerContext, &commandLine](int nIndex, std::wstring szStatus)
+                    config::CTool& tool = ctx->pConfig->m_Tools.Get(nTool);
+                    bool bResult = m_Utilities.Download(tool, true, true, nTool, ctx->pConfig,
+                        [this, ctx, &cl](int nIndex, std::wstring szStatus)
                     {
-                        pWorkerContext->Status(commandLine.nItemId, pWorkerContext->pConfig->GetString(0x00150001), szStatus);
+                        ctx->Status(cl.nItemId, ctx->pConfig->GetString(0x00150001), szStatus);
                     });
 
                     if (bResult == true)
                     {
                         ::SetCurrentDirectory(config::m_Settings.szSettingsPath.c_str());
 
-                        if (process.Start(commandLine.szCommandLine, pWorkerContext->pConfig->m_Options.bHideConsoleWindow) == true)
+                        if (process.Start(cl.szCommandLine, ctx->pConfig->m_Options.bHideConsoleWindow) == true)
                         {
                             bFailed = false;
                         }
@@ -102,10 +102,10 @@ namespace worker
                 Stderr.CloseWrite();
 
                 CString szStatus;
-                szStatus.Format(pWorkerContext->pConfig->GetString(0x00120004).c_str(), ::GetLastError());
+                szStatus.Format(ctx->pConfig->GetString(0x00120004).c_str(), ::GetLastError());
 
-                pWorkerContext->Status(commandLine.nItemId, pWorkerContext->pConfig->GetString(0x00150001), std::wstring(CT2CW(szStatus)));
-                pWorkerContext->Callback(commandLine.nItemId, -1, true, true);
+                ctx->Status(cl.nItemId, ctx->pConfig->GetString(0x00150001), std::wstring(CT2CW(szStatus)));
+                ctx->Callback(cl.nItemId, -1, true, true);
                 return false;
             }
         }
@@ -116,34 +116,34 @@ namespace worker
         Stderr.CloseWrite();
 
         // console progress loop
-        if (writer.ReadLoop(pWorkerContext, commandLine, Stderr, parser, syncDown) == false)
+        if (writer.ReadLoop(ctx, cl, Stderr, parser, syncDown) == false)
         {
             timer.Stop();
             Stderr.CloseRead();
-            process.Stop(false, commandLine.pFormat->nExitCodeSuccess);
+            process.Stop(false, cl.pFormat->nExitCodeSuccess);
             return false;
         }
 
         timer.Stop();
         Stderr.CloseRead();
-        if (process.Stop(parser.nProgress == 100, commandLine.pFormat->nExitCodeSuccess) == false)
+        if (process.Stop(parser.nProgress == 100, cl.pFormat->nExitCodeSuccess) == false)
             parser.nProgress = -1;
 
         if (parser.nProgress != 100)
         {
-            pWorkerContext->Status(commandLine.nItemId, pWorkerContext->pConfig->GetString(0x00150001), pWorkerContext->pConfig->GetString(0x00120005));
-            pWorkerContext->Callback(commandLine.nItemId, -1, true, true);
+            ctx->Status(cl.nItemId, ctx->pConfig->GetString(0x00150001), ctx->pConfig->GetString(0x00120005));
+            ctx->Callback(cl.nItemId, -1, true, true);
             return false;
         }
         else
         {
-            pWorkerContext->Status(commandLine.nItemId, util::CTimeCount::Format(timer.ElapsedTime()), pWorkerContext->pConfig->GetString(0x00120006));
-            pWorkerContext->Callback(commandLine.nItemId, 100, true, false);
+            ctx->Status(cl.nItemId, util::CTimeCount::Format(timer.ElapsedTime()), ctx->pConfig->GetString(0x00120006));
+            ctx->Callback(cl.nItemId, 100, true, false);
             return true;
         }
     }
 
-    bool CWorker::ConvertFileUsingPipes(IWorkerContext* pWorkerContext, CCommandLine &commandLine, util::CSynchronize &syncDown)
+    bool CWorker::ConvertFileUsingPipes(IWorkerContext* ctx, CCommandLine &cl, util::CSynchronize &syncDown)
     {
         util::CProcess process;
         util::CPipe Stdin(true);
@@ -155,52 +155,52 @@ namespace worker
         int nProgress = 0;
         util::CTimeCount timer;
 
-        if ((commandLine.bUseReadPipes == false) && (commandLine.bUseWritePipes == false))
+        if ((cl.bUseReadPipes == false) && (cl.bUseWritePipes == false))
         {
-            pWorkerContext->Status(commandLine.nItemId, pWorkerContext->pConfig->GetString(0x00150001), pWorkerContext->pConfig->GetString(0x00130001));
-            pWorkerContext->Callback(commandLine.nItemId, -1, true, true);
+            ctx->Status(cl.nItemId, ctx->pConfig->GetString(0x00150001), ctx->pConfig->GetString(0x00130001));
+            ctx->Callback(cl.nItemId, -1, true, true);
             return false;
         }
  
-        if (commandLine.bUseReadPipes == true)
+        if (cl.bUseReadPipes == true)
         {
             // create pipes for stdin
             if (Stdin.Create() == false)
             {
-                pWorkerContext->Status(commandLine.nItemId, pWorkerContext->pConfig->GetString(0x00150001), pWorkerContext->pConfig->GetString(0x00130002));
-                pWorkerContext->Callback(commandLine.nItemId, -1, true, true);
+                ctx->Status(cl.nItemId, ctx->pConfig->GetString(0x00150001), ctx->pConfig->GetString(0x00130002));
+                ctx->Callback(cl.nItemId, -1, true, true);
                 return false;
             }
 
             // set stdin write pipe inherit flag
             if (Stdin.InheritWrite() == false)
             {
-                pWorkerContext->Status(commandLine.nItemId, pWorkerContext->pConfig->GetString(0x00150001), pWorkerContext->pConfig->GetString(0x00130003));
-                pWorkerContext->Callback(commandLine.nItemId, -1, true, true);
+                ctx->Status(cl.nItemId, ctx->pConfig->GetString(0x00150001), ctx->pConfig->GetString(0x00130003));
+                ctx->Callback(cl.nItemId, -1, true, true);
                 return false;
             }
         }
 
-        if (commandLine.bUseWritePipes == true)
+        if (cl.bUseWritePipes == true)
         {
             // create pipes for stdout
             if (Stdout.Create() == false)
             {
-                if (commandLine.bUseReadPipes == true)
+                if (cl.bUseReadPipes == true)
                 {
                     Stdin.CloseRead();
                     Stdin.CloseWrite();
                 }
 
-                pWorkerContext->Status(commandLine.nItemId, pWorkerContext->pConfig->GetString(0x00150001), pWorkerContext->pConfig->GetString(0x00130004));
-                pWorkerContext->Callback(commandLine.nItemId, -1, true, true);
+                ctx->Status(cl.nItemId, ctx->pConfig->GetString(0x00150001), ctx->pConfig->GetString(0x00130004));
+                ctx->Callback(cl.nItemId, -1, true, true);
                 return false;
             }
 
             // set stdout read pipe inherit flag
             if (Stdout.InheritRead() == false)
             {
-                if (commandLine.bUseReadPipes == true)
+                if (cl.bUseReadPipes == true)
                 {
                     Stdin.CloseRead();
                     Stdin.CloseWrite();
@@ -209,26 +209,26 @@ namespace worker
                 Stdout.CloseRead();
                 Stdout.CloseWrite();
 
-                pWorkerContext->Status(commandLine.nItemId, pWorkerContext->pConfig->GetString(0x00150001), pWorkerContext->pConfig->GetString(0x00130005));
-                pWorkerContext->Callback(commandLine.nItemId, -1, true, true);
+                ctx->Status(cl.nItemId, ctx->pConfig->GetString(0x00150001), ctx->pConfig->GetString(0x00130005));
+                ctx->Callback(cl.nItemId, -1, true, true);
                 return false;
             }
         }
 
         // connect pipes to process
-        if ((commandLine.bUseReadPipes == true) && (commandLine.bUseWritePipes == false))
+        if ((cl.bUseReadPipes == true) && (cl.bUseWritePipes == false))
         {
             process.ConnectStdInput(Stdin.hRead);
             process.ConnectStdOutput(GetStdHandle(STD_OUTPUT_HANDLE));
             process.ConnectStdError(GetStdHandle(STD_ERROR_HANDLE));
         }
-        else if ((commandLine.bUseReadPipes == false) && (commandLine.bUseWritePipes == true))
+        else if ((cl.bUseReadPipes == false) && (cl.bUseWritePipes == true))
         {
             process.ConnectStdInput(GetStdHandle(STD_INPUT_HANDLE));
             process.ConnectStdOutput(Stdout.hWrite);
             process.ConnectStdError(GetStdHandle(STD_ERROR_HANDLE));
         }
-        else if ((commandLine.bUseReadPipes == true) && (commandLine.bUseWritePipes == true))
+        else if ((cl.bUseReadPipes == true) && (cl.bUseWritePipes == true))
         {
             process.ConnectStdInput(Stdin.hRead);
             process.ConnectStdOutput(Stdout.hWrite);
@@ -239,35 +239,35 @@ namespace worker
         ::SetCurrentDirectory(config::m_Settings.szSettingsPath.c_str());
 
         timer.Start();
-        if (process.Start(commandLine.szCommandLine, pWorkerContext->pConfig->m_Options.bHideConsoleWindow) == false)
+        if (process.Start(cl.szCommandLine, ctx->pConfig->m_Options.bHideConsoleWindow) == false)
         {
             bool bFailed = true;
 
-            if (pWorkerContext->pConfig->m_Options.bTryToDownloadTools == true)
+            if (ctx->pConfig->m_Options.bTryToDownloadTools == true)
             {
                 CToolUtilities m_Utilities;
 
                 int nTool = -1;
-                nTool = pWorkerContext->pConfig->m_Tools.GetToolByPath(commandLine.pFormat->szPath);
+                nTool = ctx->pConfig->m_Tools.GetToolByPath(cl.pFormat->szPath);
                 if (nTool < 0)
                 {
-                    nTool = m_Utilities.FindTool(pWorkerContext->pConfig->m_Tools, commandLine.pFormat->szId);
+                    nTool = m_Utilities.FindTool(ctx->pConfig->m_Tools, cl.pFormat->szId);
                 }
 
                 if (nTool >= 0)
                 {
-                    config::CTool& tool = pWorkerContext->pConfig->m_Tools.Get(nTool);
-                    bool bResult = m_Utilities.Download(tool, true, true, nTool, pWorkerContext->pConfig,
-                        [this, pWorkerContext, &commandLine](int nIndex, std::wstring szStatus)
+                    config::CTool& tool = ctx->pConfig->m_Tools.Get(nTool);
+                    bool bResult = m_Utilities.Download(tool, true, true, nTool, ctx->pConfig,
+                        [this, ctx, &cl](int nIndex, std::wstring szStatus)
                     {
-                        pWorkerContext->Status(commandLine.nItemId, pWorkerContext->pConfig->GetString(0x00150001), szStatus);
+                        ctx->Status(cl.nItemId, ctx->pConfig->GetString(0x00150001), szStatus);
                     });
 
                     if (bResult == true)
                     {
                         ::SetCurrentDirectory(config::m_Settings.szSettingsPath.c_str());
 
-                        if (process.Start(commandLine.szCommandLine, pWorkerContext->pConfig->m_Options.bHideConsoleWindow) == true)
+                        if (process.Start(cl.szCommandLine, ctx->pConfig->m_Options.bHideConsoleWindow) == true)
                         {
                             bFailed = false;
                         }
@@ -281,23 +281,23 @@ namespace worker
 
                 timer.Stop();
 
-                if (commandLine.bUseReadPipes == true)
+                if (cl.bUseReadPipes == true)
                 {
                     Stdin.CloseRead();
                     Stdin.CloseWrite();
                 }
 
-                if (commandLine.bUseWritePipes == true)
+                if (cl.bUseWritePipes == true)
                 {
                     Stdout.CloseRead();
                     Stdout.CloseWrite();
                 }
 
                 CString szStatus;
-                szStatus.Format(pWorkerContext->pConfig->GetString(0x00130006).c_str(), ::GetLastError());
+                szStatus.Format(ctx->pConfig->GetString(0x00130006).c_str(), ::GetLastError());
 
-                pWorkerContext->Status(commandLine.nItemId, pWorkerContext->pConfig->GetString(0x00150001), std::wstring(CT2CW(szStatus)));
-                pWorkerContext->Callback(commandLine.nItemId, -1, true, true);
+                ctx->Status(cl.nItemId, ctx->pConfig->GetString(0x00150001), std::wstring(CT2CW(szStatus)));
+                ctx->Callback(cl.nItemId, -1, true, true);
                 return false;
             }
         }
@@ -305,35 +305,35 @@ namespace worker
         syncDown.Release();
 
         // close unused pipe handles
-        if (commandLine.bUseReadPipes == true)
+        if (cl.bUseReadPipes == true)
             Stdin.CloseRead();
 
-        if (commandLine.bUseWritePipes == true)
+        if (cl.bUseWritePipes == true)
             Stdout.CloseWrite();
 
         // create read thread
-        if (commandLine.bUseReadPipes == true)
+        if (cl.bUseReadPipes == true)
         {
             readContext.bError = false;
             readContext.bFinished = false;
-            readContext.szFileName = commandLine.szInputFile;
-            readContext.nIndex = commandLine.nItemId;
+            readContext.szFileName = cl.szInputFile;
+            readContext.nIndex = cl.nItemId;
 
-            if (readThread.Start([this, pWorkerContext, &readContext, &Stdin]() { readContext.ReadLoop(pWorkerContext, Stdin); }) == false)
+            if (readThread.Start([this, ctx, &readContext, &Stdin]() { readContext.ReadLoop(ctx, Stdin); }) == false)
             {
                 timer.Stop();
 
-                process.Stop(false, commandLine.pFormat->nExitCodeSuccess);
+                process.Stop(false, cl.pFormat->nExitCodeSuccess);
 
                 Stdin.CloseWrite();
 
-                pWorkerContext->Status(commandLine.nItemId, pWorkerContext->pConfig->GetString(0x00150001), pWorkerContext->pConfig->GetString(0x00130007));
-                pWorkerContext->Callback(commandLine.nItemId, -1, true, true);
+                ctx->Status(cl.nItemId, ctx->pConfig->GetString(0x00150001), ctx->pConfig->GetString(0x00130007));
+                ctx->Callback(cl.nItemId, -1, true, true);
                 return false;
             }
 
             // wait for read thread to finish
-            if (commandLine.bUseWritePipes == false)
+            if (cl.bUseWritePipes == false)
             {
                 readThread.Wait();
 
@@ -352,27 +352,27 @@ namespace worker
         }
 
         // create write thread
-        if (commandLine.bUseWritePipes == true)
+        if (cl.bUseWritePipes == true)
         {
             writeContext.bError = false;
             writeContext.bFinished = false;
-            writeContext.szFileName = commandLine.szOutputFile;
-            writeContext.nIndex = commandLine.nItemId;
+            writeContext.szFileName = cl.szOutputFile;
+            writeContext.nIndex = cl.nItemId;
 
-            if (writeThread.Start([this, pWorkerContext, &writeContext, &Stdout]() { writeContext.WriteLoop(pWorkerContext, Stdout); }) == false)
+            if (writeThread.Start([this, ctx, &writeContext, &Stdout]() { writeContext.WriteLoop(ctx, Stdout); }) == false)
             {
                 timer.Stop();
 
-                process.Stop(false, commandLine.pFormat->nExitCodeSuccess);
+                process.Stop(false, cl.pFormat->nExitCodeSuccess);
 
                 Stdout.CloseRead();
 
-                pWorkerContext->Status(commandLine.nItemId, pWorkerContext->pConfig->GetString(0x00150001), pWorkerContext->pConfig->GetString(0x00130008));
-                pWorkerContext->Callback(commandLine.nItemId, -1, true, true);
+                ctx->Status(cl.nItemId, ctx->pConfig->GetString(0x00150001), ctx->pConfig->GetString(0x00130008));
+                ctx->Callback(cl.nItemId, -1, true, true);
                 return false;
             }
 
-            if (commandLine.bUseReadPipes == true)
+            if (cl.bUseReadPipes == true)
             {
                 // wait for read thread to finish
                 readThread.Wait();
@@ -432,24 +432,24 @@ namespace worker
 
         timer.Stop();
 
-        if (process.Stop(nProgress == 100, commandLine.pFormat->nExitCodeSuccess) == false)
+        if (process.Stop(nProgress == 100, cl.pFormat->nExitCodeSuccess) == false)
             nProgress = -1;
 
         if (nProgress != 100)
         {
-            pWorkerContext->Status(commandLine.nItemId, pWorkerContext->pConfig->GetString(0x00150001), pWorkerContext->pConfig->GetString(0x00130009));
-            pWorkerContext->Callback(commandLine.nItemId, -1, true, true);
+            ctx->Status(cl.nItemId, ctx->pConfig->GetString(0x00150001), ctx->pConfig->GetString(0x00130009));
+            ctx->Callback(cl.nItemId, -1, true, true);
             return false;
         }
         else
         {
-            pWorkerContext->Status(commandLine.nItemId, util::CTimeCount::Format(timer.ElapsedTime()), pWorkerContext->pConfig->GetString(0x0013000B));
-            pWorkerContext->Callback(commandLine.nItemId, 100, true, false);
+            ctx->Status(cl.nItemId, util::CTimeCount::Format(timer.ElapsedTime()), ctx->pConfig->GetString(0x0013000B));
+            ctx->Callback(cl.nItemId, 100, true, false);
             return true;
         }
     }
 
-    bool CWorker::ConvertFileUsingOnlyPipes(IWorkerContext* pWorkerContext, CCommandLine &decoderCommandLine, CCommandLine &encoderCommandLine, util::CSynchronize &syncDown)
+    bool CWorker::ConvertFileUsingOnlyPipes(IWorkerContext* ctx, CCommandLine &dcl, CCommandLine &ecl, util::CSynchronize &syncDown)
     {
         util::CProcess decoderProcess;
         util::CProcess encoderProcess;
@@ -466,16 +466,16 @@ namespace worker
         // create pipes for stdin
         if (Stdin.Create() == false)
         {
-            pWorkerContext->Status(decoderCommandLine.nItemId, pWorkerContext->pConfig->GetString(0x00150001), pWorkerContext->pConfig->GetString(0x00130002));
-            pWorkerContext->Callback(decoderCommandLine.nItemId, -1, true, true);
+            ctx->Status(dcl.nItemId, ctx->pConfig->GetString(0x00150001), ctx->pConfig->GetString(0x00130002));
+            ctx->Callback(dcl.nItemId, -1, true, true);
             return false;
         }
 
         // set stdin write pipe inherit flag
         if (Stdin.InheritWrite() == false)
         {
-            pWorkerContext->Status(decoderCommandLine.nItemId, pWorkerContext->pConfig->GetString(0x00150001), pWorkerContext->pConfig->GetString(0x00130003));
-            pWorkerContext->Callback(decoderCommandLine.nItemId, -1, true, true);
+            ctx->Status(dcl.nItemId, ctx->pConfig->GetString(0x00150001), ctx->pConfig->GetString(0x00130003));
+            ctx->Callback(dcl.nItemId, -1, true, true);
             return false;
         }
 
@@ -485,8 +485,8 @@ namespace worker
             Stdin.CloseRead();
             Stdin.CloseWrite();
 
-            pWorkerContext->Status(decoderCommandLine.nItemId, pWorkerContext->pConfig->GetString(0x00150001), pWorkerContext->pConfig->GetString(0x00130004));
-            pWorkerContext->Callback(decoderCommandLine.nItemId, -1, true, true);
+            ctx->Status(dcl.nItemId, ctx->pConfig->GetString(0x00150001), ctx->pConfig->GetString(0x00130004));
+            ctx->Callback(dcl.nItemId, -1, true, true);
             return false;
         }
 
@@ -499,8 +499,8 @@ namespace worker
             Stdout.CloseRead();
             Stdout.CloseWrite();
 
-            pWorkerContext->Status(decoderCommandLine.nItemId, pWorkerContext->pConfig->GetString(0x00150001), pWorkerContext->pConfig->GetString(0x00130005));
-            pWorkerContext->Callback(decoderCommandLine.nItemId, -1, true, true);
+            ctx->Status(dcl.nItemId, ctx->pConfig->GetString(0x00150001), ctx->pConfig->GetString(0x00130005));
+            ctx->Callback(dcl.nItemId, -1, true, true);
             return false;
         }
 
@@ -513,8 +513,8 @@ namespace worker
             Stdout.CloseRead();
             Stdout.CloseWrite();
 
-            pWorkerContext->Status(decoderCommandLine.nItemId, pWorkerContext->pConfig->GetString(0x00150001), pWorkerContext->pConfig->GetString(0x0013000A));
-            pWorkerContext->Callback(decoderCommandLine.nItemId, -1, true, true);
+            ctx->Status(dcl.nItemId, ctx->pConfig->GetString(0x00150001), ctx->pConfig->GetString(0x0013000A));
+            ctx->Callback(dcl.nItemId, -1, true, true);
             return false;
         }
 
@@ -534,35 +534,35 @@ namespace worker
         ::SetCurrentDirectory(config::m_Settings.szSettingsPath.c_str());
 
         // create decoder process
-        if (decoderProcess.Start(decoderCommandLine.szCommandLine, pWorkerContext->pConfig->m_Options.bHideConsoleWindow) == false)
+        if (decoderProcess.Start(dcl.szCommandLine, ctx->pConfig->m_Options.bHideConsoleWindow) == false)
         {
             bool bFailed = true;
 
-            if (pWorkerContext->pConfig->m_Options.bTryToDownloadTools == true)
+            if (ctx->pConfig->m_Options.bTryToDownloadTools == true)
             {
                 CToolUtilities m_Utilities;
 
                 int nTool = -1;
-                nTool = pWorkerContext->pConfig->m_Tools.GetToolByPath(decoderCommandLine.pFormat->szPath);
+                nTool = ctx->pConfig->m_Tools.GetToolByPath(dcl.pFormat->szPath);
                 if (nTool < 0)
                 {
-                    nTool = m_Utilities.FindTool(pWorkerContext->pConfig->m_Tools, decoderCommandLine.pFormat->szId);
+                    nTool = m_Utilities.FindTool(ctx->pConfig->m_Tools, dcl.pFormat->szId);
                 }
 
                 if (nTool >= 0)
                 {
-                    config::CTool& tool = pWorkerContext->pConfig->m_Tools.Get(nTool);
-                    bool bResult = m_Utilities.Download(tool, true, true, nTool, pWorkerContext->pConfig,
-                        [this, pWorkerContext, &decoderCommandLine](int nIndex, std::wstring szStatus)
+                    config::CTool& tool = ctx->pConfig->m_Tools.Get(nTool);
+                    bool bResult = m_Utilities.Download(tool, true, true, nTool, ctx->pConfig,
+                        [this, ctx, &dcl](int nIndex, std::wstring szStatus)
                     {
-                        pWorkerContext->Status(decoderCommandLine.nItemId, pWorkerContext->pConfig->GetString(0x00150001), szStatus);
+                        ctx->Status(dcl.nItemId, ctx->pConfig->GetString(0x00150001), szStatus);
                     });
 
                     if (bResult == true)
                     {
                         ::SetCurrentDirectory(config::m_Settings.szSettingsPath.c_str());
 
-                        if (decoderProcess.Start(decoderCommandLine.szCommandLine, pWorkerContext->pConfig->m_Options.bHideConsoleWindow) == true)
+                        if (decoderProcess.Start(dcl.szCommandLine, ctx->pConfig->m_Options.bHideConsoleWindow) == true)
                         {
                             bFailed = false;
                         }
@@ -586,10 +586,10 @@ namespace worker
                 Bridge.CloseWrite();
 
                 CString szStatus;
-                szStatus.Format(pWorkerContext->pConfig->GetString(0x00130006).c_str(), ::GetLastError());
+                szStatus.Format(ctx->pConfig->GetString(0x00130006).c_str(), ::GetLastError());
 
-                pWorkerContext->Status(decoderCommandLine.nItemId, pWorkerContext->pConfig->GetString(0x00150001), std::wstring(CT2CW(szStatus)));
-                pWorkerContext->Callback(decoderCommandLine.nItemId, -1, true, true);
+                ctx->Status(dcl.nItemId, ctx->pConfig->GetString(0x00150001), std::wstring(CT2CW(szStatus)));
+                ctx->Callback(dcl.nItemId, -1, true, true);
                 return false;
             }
         }
@@ -597,35 +597,35 @@ namespace worker
         ::SetCurrentDirectory(config::m_Settings.szSettingsPath.c_str());
 
         // create encoder process
-        if (encoderProcess.Start(encoderCommandLine.szCommandLine, pWorkerContext->pConfig->m_Options.bHideConsoleWindow) == false)
+        if (encoderProcess.Start(ecl.szCommandLine, ctx->pConfig->m_Options.bHideConsoleWindow) == false)
         {
             bool bFailed = true;
 
-            if (pWorkerContext->pConfig->m_Options.bTryToDownloadTools == true)
+            if (ctx->pConfig->m_Options.bTryToDownloadTools == true)
             {
                 CToolUtilities m_Utilities;
 
                 int nTool = -1;
-                nTool = pWorkerContext->pConfig->m_Tools.GetToolByPath(encoderCommandLine.pFormat->szPath);
+                nTool = ctx->pConfig->m_Tools.GetToolByPath(ecl.pFormat->szPath);
                 if (nTool < 0)
                 {
-                    nTool = m_Utilities.FindTool(pWorkerContext->pConfig->m_Tools, encoderCommandLine.pFormat->szId);
+                    nTool = m_Utilities.FindTool(ctx->pConfig->m_Tools, ecl.pFormat->szId);
                 }
 
                 if (nTool >= 0)
                 {
-                    config::CTool& tool = pWorkerContext->pConfig->m_Tools.Get(nTool);
-                    bool bResult = m_Utilities.Download(tool, true, true, nTool, pWorkerContext->pConfig,
-                        [this, pWorkerContext, &encoderCommandLine](int nIndex, std::wstring szStatus)
+                    config::CTool& tool = ctx->pConfig->m_Tools.Get(nTool);
+                    bool bResult = m_Utilities.Download(tool, true, true, nTool, ctx->pConfig,
+                        [this, ctx, &ecl](int nIndex, std::wstring szStatus)
                     {
-                        pWorkerContext->Status(encoderCommandLine.nItemId, pWorkerContext->pConfig->GetString(0x00150001), szStatus);
+                        ctx->Status(ecl.nItemId, ctx->pConfig->GetString(0x00150001), szStatus);
                     });
 
                     if (bResult == true)
                     {
                         ::SetCurrentDirectory(config::m_Settings.szSettingsPath.c_str());
 
-                        if (encoderProcess.Start(encoderCommandLine.szCommandLine, pWorkerContext->pConfig->m_Options.bHideConsoleWindow) == true)
+                        if (encoderProcess.Start(ecl.szCommandLine, ctx->pConfig->m_Options.bHideConsoleWindow) == true)
                         {
                             bFailed = false;
                         }
@@ -639,7 +639,7 @@ namespace worker
 
                 timer.Stop();
 
-                decoderProcess.Stop(false, decoderCommandLine.pFormat->nExitCodeSuccess);
+                decoderProcess.Stop(false, dcl.pFormat->nExitCodeSuccess);
 
                 Stdin.CloseRead();
                 Stdin.CloseWrite();
@@ -651,10 +651,10 @@ namespace worker
                 Bridge.CloseWrite();
 
                 CString szStatus;
-                szStatus.Format(pWorkerContext->pConfig->GetString(0x00130006).c_str(), ::GetLastError());
+                szStatus.Format(ctx->pConfig->GetString(0x00130006).c_str(), ::GetLastError());
 
-                pWorkerContext->Status(decoderCommandLine.nItemId, pWorkerContext->pConfig->GetString(0x00150001), std::wstring(CT2CW(szStatus)));
-                pWorkerContext->Callback(decoderCommandLine.nItemId, -1, true, true);
+                ctx->Status(dcl.nItemId, ctx->pConfig->GetString(0x00150001), std::wstring(CT2CW(szStatus)));
+                ctx->Callback(dcl.nItemId, -1, true, true);
                 return false;
             }
         }
@@ -670,34 +670,34 @@ namespace worker
         // create read thread
         readContext.bError = false;
         readContext.bFinished = false;
-        readContext.szFileName = decoderCommandLine.szInputFile;
-        readContext.nIndex = decoderCommandLine.nItemId;
+        readContext.szFileName = dcl.szInputFile;
+        readContext.nIndex = dcl.nItemId;
 
-        if (readThread.Start([this, pWorkerContext, &readContext, &Stdin]() { readContext.ReadLoop(pWorkerContext, Stdin); }) == false)
+        if (readThread.Start([this, ctx, &readContext, &Stdin]() { readContext.ReadLoop(ctx, Stdin); }) == false)
         {
             timer.Stop();
 
             Stdin.CloseWrite();
 
-            pWorkerContext->Status(decoderCommandLine.nItemId, pWorkerContext->pConfig->GetString(0x00150001), pWorkerContext->pConfig->GetString(0x00130007));
-            pWorkerContext->Callback(decoderCommandLine.nItemId, -1, true, true);
+            ctx->Status(dcl.nItemId, ctx->pConfig->GetString(0x00150001), ctx->pConfig->GetString(0x00130007));
+            ctx->Callback(dcl.nItemId, -1, true, true);
             return false;
         }
 
         // create write thread
         writeContext.bError = false;
         writeContext.bFinished = false;
-        writeContext.szFileName = encoderCommandLine.szOutputFile;
-        writeContext.nIndex = encoderCommandLine.nItemId;
+        writeContext.szFileName = ecl.szOutputFile;
+        writeContext.nIndex = ecl.nItemId;
 
-        if (writeThread.Start([this, pWorkerContext, &writeContext, &Stdout]() { writeContext.WriteLoop(pWorkerContext, Stdout); }) == false)
+        if (writeThread.Start([this, ctx, &writeContext, &Stdout]() { writeContext.WriteLoop(ctx, Stdout); }) == false)
         {
             timer.Stop();
 
             Stdout.CloseRead();
 
-            pWorkerContext->Status(decoderCommandLine.nItemId, pWorkerContext->pConfig->GetString(0x00150001), pWorkerContext->pConfig->GetString(0x00130008));
-            pWorkerContext->Callback(decoderCommandLine.nItemId, -1, true, true);
+            ctx->Status(dcl.nItemId, ctx->pConfig->GetString(0x00150001), ctx->pConfig->GetString(0x00130008));
+            ctx->Callback(dcl.nItemId, -1, true, true);
             return false;
         }
 
@@ -738,27 +738,27 @@ namespace worker
 
         timer.Stop();
 
-        if (decoderProcess.Stop(nProgress == 100, decoderCommandLine.pFormat->nExitCodeSuccess) == false)
+        if (decoderProcess.Stop(nProgress == 100, dcl.pFormat->nExitCodeSuccess) == false)
             nProgress = -1;
 
-        if (encoderProcess.Stop(nProgress == 100, encoderCommandLine.pFormat->nExitCodeSuccess) == false)
+        if (encoderProcess.Stop(nProgress == 100, ecl.pFormat->nExitCodeSuccess) == false)
             nProgress = -1;
 
         if (nProgress != 100)
         {
-            pWorkerContext->Status(decoderCommandLine.nItemId, pWorkerContext->pConfig->GetString(0x00150001), pWorkerContext->pConfig->GetString(0x00130009));
-            pWorkerContext->Callback(decoderCommandLine.nItemId, -1, true, true);
+            ctx->Status(dcl.nItemId, ctx->pConfig->GetString(0x00150001), ctx->pConfig->GetString(0x00130009));
+            ctx->Callback(dcl.nItemId, -1, true, true);
             return false;
         }
         else
         {
-            pWorkerContext->Status(decoderCommandLine.nItemId, util::CTimeCount::Format(timer.ElapsedTime()), pWorkerContext->pConfig->GetString(0x0013000B));
-            pWorkerContext->Callback(decoderCommandLine.nItemId, 100, true, false);
+            ctx->Status(dcl.nItemId, util::CTimeCount::Format(timer.ElapsedTime()), ctx->pConfig->GetString(0x0013000B));
+            ctx->Callback(dcl.nItemId, 100, true, false);
             return true;
         }
     }
 
-    bool CWorker::ConvertItem(IWorkerContext* pWorkerContext, int nId, util::CSynchronize &syncDir, util::CSynchronize &syncDown)
+    bool CWorker::ConvertItem(IWorkerContext* ctx, int nId, util::CSynchronize &syncDir, util::CSynchronize &syncDown)
     {
         config::CFormat *pEncFormat = nullptr;
         config::CFormat *pDecFormat = nullptr;
@@ -771,44 +771,44 @@ namespace worker
         CCommandLine encoderCommandLine;
 
         // prepare encoder
-        config::CItem& item = pWorkerContext->pConfig->m_Items.Get(nId);
+        config::CItem& item = ctx->pConfig->m_Items.Get(nId);
         config::CPath& path = item.m_Paths.Get(0);
 
         szEncInputFile = path.szPath;
         if (util::Utilities::FileExists(szEncInputFile) == false)
         {
-            pWorkerContext->Status(item.nId, pWorkerContext->pConfig->GetString(0x00150001), pWorkerContext->pConfig->GetString(0x00140001));
+            ctx->Status(item.nId, ctx->pConfig->GetString(0x00150001), ctx->pConfig->GetString(0x00140001));
             return false;
         }
 
-        int nEncoder = pWorkerContext->pConfig->m_Formats.GetFormatById(item.szFormatId);
+        int nEncoder = ctx->pConfig->m_Formats.GetFormatById(item.szFormatId);
         if (nEncoder == -1)
         {
-            pWorkerContext->Status(item.nId, pWorkerContext->pConfig->GetString(0x00150001), pWorkerContext->pConfig->GetString(0x00140002));
+            ctx->Status(item.nId, ctx->pConfig->GetString(0x00150001), ctx->pConfig->GetString(0x00140002));
             return false;
         }
 
-        pEncFormat = &pWorkerContext->pConfig->m_Formats.Get(nEncoder);
+        pEncFormat = &ctx->pConfig->m_Formats.Get(nEncoder);
 
         if (item.nPreset >= pEncFormat->m_Presets.Count())
         {
-            pWorkerContext->Status(item.nId, pWorkerContext->pConfig->GetString(0x00150001), pWorkerContext->pConfig->GetString(0x00140003));
+            ctx->Status(item.nId, ctx->pConfig->GetString(0x00150001), ctx->pConfig->GetString(0x00140003));
             return false;
         }
 
         bool bIsValidEncoderInput = pEncFormat->IsValidInputExtension(util::Utilities::GetFileExtension(szEncInputFile));
 
         szEncOutputFile = m_Output.CreateFilePath(
-            pWorkerContext->pConfig->m_Options.szOutputPath,
+            ctx->pConfig->m_Options.szOutputPath,
             szEncInputFile,
             item.szName,
             pEncFormat->szOutputExtension);
 
-        if (pWorkerContext->pConfig->m_Options.bOverwriteExistingFiles == false)
+        if (ctx->pConfig->m_Options.bOverwriteExistingFiles == false)
         {
             if (util::Utilities::FileExists(szEncOutputFile) == true)
             {
-                pWorkerContext->Status(item.nId, pWorkerContext->pConfig->GetString(0x00150001), pWorkerContext->pConfig->GetString(0x00140010));
+                ctx->Status(item.nId, ctx->pConfig->GetString(0x00150001), ctx->pConfig->GetString(0x00140010));
                 return false;
             }
         }
@@ -819,19 +819,19 @@ namespace worker
             if (m_Output.CreateOutputPath(szEncOutputFile) == false)
             {
                 syncDir.Release();
-                pWorkerContext->Status(item.nId, pWorkerContext->pConfig->GetString(0x00150001), pWorkerContext->pConfig->GetString(0x0014000F));
+                ctx->Status(item.nId, ctx->pConfig->GetString(0x00150001), ctx->pConfig->GetString(0x0014000F));
                 return false;
             }
         }
         else
         {
-            pWorkerContext->Status(item.nId, pWorkerContext->pConfig->GetString(0x00150001), pWorkerContext->pConfig->GetString(0x0014000F));
+            ctx->Status(item.nId, ctx->pConfig->GetString(0x00150001), ctx->pConfig->GetString(0x0014000F));
             return false;
         }
 
         if (syncDir.Release() == false)
         {
-            pWorkerContext->Status(item.nId, pWorkerContext->pConfig->GetString(0x00150001), pWorkerContext->pConfig->GetString(0x0014000F));
+            ctx->Status(item.nId, ctx->pConfig->GetString(0x00150001), ctx->pConfig->GetString(0x0014000F));
             return false;
         }
 
@@ -840,25 +840,25 @@ namespace worker
         // prepare decoder
         if (bIsValidEncoderInput == false)
         {
-            int nDecoder = pWorkerContext->pConfig->m_Formats.GetDecoderByExtensionAndFormat(item.szExtension, pEncFormat);
+            int nDecoder = ctx->pConfig->m_Formats.GetDecoderByExtensionAndFormat(item.szExtension, pEncFormat);
             if (nDecoder == -1)
             {
-                pWorkerContext->Status(item.nId, pWorkerContext->pConfig->GetString(0x00150001), pWorkerContext->pConfig->GetString(0x00140004));
+                ctx->Status(item.nId, ctx->pConfig->GetString(0x00150001), ctx->pConfig->GetString(0x00140004));
                 return false;
             }
 
-            pDecFormat = &pWorkerContext->pConfig->m_Formats.Get(nDecoder);
+            pDecFormat = &ctx->pConfig->m_Formats.Get(nDecoder);
 
             if (pDecFormat->nDefaultPreset >= pDecFormat->m_Presets.Count())
             {
-                pWorkerContext->Status(item.nId, pWorkerContext->pConfig->GetString(0x00150001), pWorkerContext->pConfig->GetString(0x00140005));
+                ctx->Status(item.nId, ctx->pConfig->GetString(0x00150001), ctx->pConfig->GetString(0x00140005));
                 return false;
             }
 
             bool bIsValidDecoderOutput = pEncFormat->IsValidInputExtension(pDecFormat->szOutputExtension);
             if (bIsValidDecoderOutput == false)
             {
-                pWorkerContext->Status(item.nId, pWorkerContext->pConfig->GetString(0x00150001), pWorkerContext->pConfig->GetString(0x00140006));
+                ctx->Status(item.nId, ctx->pConfig->GetString(0x00150001), ctx->pConfig->GetString(0x00140006));
                 return false;
             }
 
@@ -901,21 +901,21 @@ namespace worker
             // trans-code
             try
             {
-                pWorkerContext->Status(item.nId, pWorkerContext->pConfig->GetString(0x00150001), pWorkerContext->pConfig->GetString(0x0014000C));
+                ctx->Status(item.nId, ctx->pConfig->GetString(0x00150001), ctx->pConfig->GetString(0x0014000C));
 
                 item.ResetProgress();
 
-                bool bResult = ConvertFileUsingOnlyPipes(pWorkerContext, decoderCommandLine, encoderCommandLine, syncDown);
+                bool bResult = ConvertFileUsingOnlyPipes(ctx, decoderCommandLine, encoderCommandLine, syncDown);
                 if (bResult == true)
                 {
-                    if (pWorkerContext->pConfig->m_Options.bDeleteSourceFiles == true)
+                    if (ctx->pConfig->m_Options.bDeleteSourceFiles == true)
                         ::DeleteFile(szEncInputFile.c_str());
 
                     return true;
                 }
                 else
                 {
-                    if (pWorkerContext->pConfig->m_Options.bDeleteOnErrors == true)
+                    if (ctx->pConfig->m_Options.bDeleteOnErrors == true)
                         ::DeleteFile(szEncOutputFile.c_str());
 
                     return false;
@@ -923,11 +923,11 @@ namespace worker
             }
             catch (...)
             {
-                if (pWorkerContext->pConfig->m_Options.bDeleteOnErrors == true)
+                if (ctx->pConfig->m_Options.bDeleteOnErrors == true)
                     ::DeleteFile(szEncOutputFile.c_str());
 
-                pWorkerContext->Status(item.nId, pWorkerContext->pConfig->GetString(0x00150001), pWorkerContext->pConfig->GetString(0x0014000E));
-                pWorkerContext->Callback(item.nId, -1, true, true);
+                ctx->Status(item.nId, ctx->pConfig->GetString(0x00150001), ctx->pConfig->GetString(0x0014000E));
+                ctx->Callback(item.nId, -1, true, true);
             }
         }
         else
@@ -937,18 +937,18 @@ namespace worker
             {
                 try
                 {
-                    pWorkerContext->Status(item.nId, pWorkerContext->pConfig->GetString(0x00150001), pWorkerContext->pConfig->GetString(0x00140007));
+                    ctx->Status(item.nId, ctx->pConfig->GetString(0x00150001), ctx->pConfig->GetString(0x00140007));
 
                     item.ResetProgress();
 
                     bool bResult = false;
                     if ((decoderCommandLine.bUseReadPipes == false) && (decoderCommandLine.bUseWritePipes == false))
-                        bResult = ConvertFileUsingConsole(pWorkerContext, decoderCommandLine, syncDown);
+                        bResult = ConvertFileUsingConsole(ctx, decoderCommandLine, syncDown);
                     else
-                        bResult = ConvertFileUsingPipes(pWorkerContext, decoderCommandLine, syncDown);
+                        bResult = ConvertFileUsingPipes(ctx, decoderCommandLine, syncDown);
                     if (bResult == false)
                     {
-                        if (pWorkerContext->pConfig->m_Options.bDeleteOnErrors == true)
+                        if (ctx->pConfig->m_Options.bDeleteOnErrors == true)
                             ::DeleteFile(szDecOutputFile.c_str());
 
                         return false;
@@ -956,44 +956,44 @@ namespace worker
 
                     if (util::Utilities::FileExists(szDecOutputFile) == false)
                     {
-                        pWorkerContext->Status(item.nId, pWorkerContext->pConfig->GetString(0x00150001), pWorkerContext->pConfig->GetString(0x00140008));
+                        ctx->Status(item.nId, ctx->pConfig->GetString(0x00150001), ctx->pConfig->GetString(0x00140008));
                         return false;
                     }
                 }
                 catch (...)
                 {
-                    if (pWorkerContext->pConfig->m_Options.bDeleteOnErrors == true)
+                    if (ctx->pConfig->m_Options.bDeleteOnErrors == true)
                         ::DeleteFile(szEncOutputFile.c_str());
 
-                    pWorkerContext->Status(item.nId, pWorkerContext->pConfig->GetString(0x00150001), pWorkerContext->pConfig->GetString(0x00140009));
-                    pWorkerContext->Callback(item.nId, -1, true, true);
+                    ctx->Status(item.nId, ctx->pConfig->GetString(0x00150001), ctx->pConfig->GetString(0x00140009));
+                    ctx->Callback(item.nId, -1, true, true);
                 }
             }
 
-            if (pWorkerContext->bRunning == false)
+            if (ctx->bRunning == false)
                 return false;
 
             // encode
             try
             {
                 if (pEncFormat->nType == config::FormatType::Encoder)
-                    pWorkerContext->Status(item.nId, pWorkerContext->pConfig->GetString(0x00150001), pWorkerContext->pConfig->GetString(0x0014000A));
+                    ctx->Status(item.nId, ctx->pConfig->GetString(0x00150001), ctx->pConfig->GetString(0x0014000A));
                 else if (pEncFormat->nType == config::FormatType::Decoder)
-                    pWorkerContext->Status(item.nId, pWorkerContext->pConfig->GetString(0x00150001), pWorkerContext->pConfig->GetString(0x0014000B));
+                    ctx->Status(item.nId, ctx->pConfig->GetString(0x00150001), ctx->pConfig->GetString(0x0014000B));
 
                 item.ResetProgress();
 
                 bool bResult = false;
                 if ((encoderCommandLine.bUseReadPipes == false) && (encoderCommandLine.bUseWritePipes == false))
-                    bResult = ConvertFileUsingConsole(pWorkerContext, encoderCommandLine, syncDown);
+                    bResult = ConvertFileUsingConsole(ctx, encoderCommandLine, syncDown);
                 else
-                    bResult = ConvertFileUsingPipes(pWorkerContext, encoderCommandLine, syncDown);
+                    bResult = ConvertFileUsingPipes(ctx, encoderCommandLine, syncDown);
                 if (bResult == true)
                 {
                     if (bIsValidEncoderInput == false)
                         ::DeleteFile(szDecOutputFile.c_str());
 
-                    if (pWorkerContext->pConfig->m_Options.bDeleteSourceFiles == true)
+                    if (ctx->pConfig->m_Options.bDeleteSourceFiles == true)
                         ::DeleteFile(szEncInputFile.c_str());
 
                     return true;
@@ -1003,7 +1003,7 @@ namespace worker
                     if (bIsValidEncoderInput == false)
                         ::DeleteFile(szDecOutputFile.c_str());
 
-                    if (pWorkerContext->pConfig->m_Options.bDeleteOnErrors == true)
+                    if (ctx->pConfig->m_Options.bDeleteOnErrors == true)
                         ::DeleteFile(szEncOutputFile.c_str());
 
                     return false;
@@ -1014,18 +1014,18 @@ namespace worker
                 if (bIsValidEncoderInput == false)
                     ::DeleteFile(szDecOutputFile.c_str());
 
-                if (pWorkerContext->pConfig->m_Options.bDeleteOnErrors == true)
+                if (ctx->pConfig->m_Options.bDeleteOnErrors == true)
                     ::DeleteFile(szEncOutputFile.c_str());
 
-                pWorkerContext->Status(item.nId, pWorkerContext->pConfig->GetString(0x00150001), pWorkerContext->pConfig->GetString(0x0014000E));
-                pWorkerContext->Callback(item.nId, -1, true, true);
+                ctx->Status(item.nId, ctx->pConfig->GetString(0x00150001), ctx->pConfig->GetString(0x0014000E));
+                ctx->Callback(item.nId, -1, true, true);
             }
         }
 
         return false;
     }
 
-    bool CWorker::ConvertLoop(IWorkerContext* pWorkerContext, std::queue<int> &queue, util::CSynchronize &sync, util::CSynchronize &syncDir, util::CSynchronize &syncDown)
+    bool CWorker::ConvertLoop(IWorkerContext* ctx, std::queue<int> &queue, util::CSynchronize &sync, util::CSynchronize &syncDir, util::CSynchronize &syncDown)
     {
         while (TRUE)
         {
@@ -1041,23 +1041,23 @@ namespace worker
                         if (sync.Release() == false)
                             return false;
 
-                        if (pWorkerContext->bRunning == false)
+                        if (ctx->bRunning == false)
                             return false;
 
-                        pWorkerContext->Next(nId);
-                        if (ConvertItem(pWorkerContext, nId, syncDir, syncDown) == true)
+                        ctx->Next(nId);
+                        if (ConvertItem(ctx, nId, syncDir, syncDown) == true)
                         {
-                            pWorkerContext->nProcessedFiles++;
+                            ctx->nProcessedFiles++;
                         }
                         else
                         {
-                            pWorkerContext->nProcessedFiles++;
-                            pWorkerContext->nErrors++;
-                            if (pWorkerContext->pConfig->m_Options.bStopOnErrors == true)
+                            ctx->nProcessedFiles++;
+                            ctx->nErrors++;
+                            if (ctx->pConfig->m_Options.bStopOnErrors == true)
                                 return false;
                         }
 
-                        if (pWorkerContext->bRunning == false)
+                        if (ctx->bRunning == false)
                             return false; 
                     }
                     else
@@ -1082,27 +1082,27 @@ namespace worker
         return true;
     }
 
-    void CWorker::Convert(IWorkerContext* pWorkerContext)
+    void CWorker::Convert(IWorkerContext* ctx)
     {
         std::queue<int> queue;
         util::CSynchronize sync;
         util::CSynchronize syncDir;
         util::CSynchronize syncDown;
 
-        pWorkerContext->nTotalFiles = 0;
-        pWorkerContext->nProcessedFiles = 0;
-        pWorkerContext->nErrors = 0;
-        pWorkerContext->nLastItemId = -1;
+        ctx->nTotalFiles = 0;
+        ctx->nProcessedFiles = 0;
+        ctx->nErrors = 0;
+        ctx->nLastItemId = -1;
 
-        int nItems = pWorkerContext->pConfig->m_Items.Count();
+        int nItems = ctx->pConfig->m_Items.Count();
         for (int i = 0; i < nItems; i++)
         {
-            config::CItem& item = pWorkerContext->pConfig->m_Items.Get(i);
+            config::CItem& item = ctx->pConfig->m_Items.Get(i);
             if (item.bChecked == true)
             {
                 item.ResetProgress();
                 queue.push(item.nId);
-                pWorkerContext->nTotalFiles++;
+                ctx->nTotalFiles++;
             }
             else
             {
@@ -1111,33 +1111,33 @@ namespace worker
             }
         }
 
-        pWorkerContext->nThreadCount = pWorkerContext->pConfig->m_Options.nThreadCount;
-        if (pWorkerContext->nThreadCount < 1)
+        ctx->nThreadCount = ctx->pConfig->m_Options.nThreadCount;
+        if (ctx->nThreadCount < 1)
         {
             util::Utilities::LogicalProcessorInformation info;
             if (util::Utilities::GetLogicalProcessorInformation(&info) == 0)
-                pWorkerContext->nThreadCount = info.processorCoreCount;
+                ctx->nThreadCount = info.processorCoreCount;
             else
-                pWorkerContext->nThreadCount = 1;
+                ctx->nThreadCount = 1;
         }
 
-        pWorkerContext->Init();
+        ctx->Init();
 
         // single-threaded
-        if (pWorkerContext->nThreadCount == 1)
+        if (ctx->nThreadCount == 1)
         {
-            ConvertLoop(pWorkerContext, queue, sync, syncDir, syncDown);
+            ConvertLoop(ctx, queue, sync, syncDir, syncDown);
         }
 
         // multi-threaded
-        if (pWorkerContext->nThreadCount > 1)
+        if (ctx->nThreadCount > 1)
         {
-            auto threads = std::make_unique<util::CThread[]>(pWorkerContext->nThreadCount);
-            for (int i = 0; i < pWorkerContext->nThreadCount; i++)
+            auto threads = std::make_unique<util::CThread[]>(ctx->nThreadCount);
+            for (int i = 0; i < ctx->nThreadCount; i++)
             {
-                auto entry = [this, pWorkerContext, &queue, &sync, &syncDir, &syncDown]()
+                auto entry = [this, ctx, &queue, &sync, &syncDir, &syncDown]()
                 { 
-                    this->ConvertLoop(pWorkerContext, queue, sync, syncDir, syncDown);
+                    this->ConvertLoop(ctx, queue, sync, syncDir, syncDown);
                 };
                 if (threads[i].Start(entry, true) == false)
                     break;
@@ -1146,14 +1146,14 @@ namespace worker
                     break;
             }
 
-            for (int i = 0; i < pWorkerContext->nThreadCount; i++)
+            for (int i = 0; i < ctx->nThreadCount; i++)
                 threads[i].Wait();
 
-            for (int i = 0; i < pWorkerContext->nThreadCount; i++)
+            for (int i = 0; i < ctx->nThreadCount; i++)
                 threads[i].Close();
         }
 
-        pWorkerContext->Done();
-        pWorkerContext->bDone = true;
+        ctx->Done();
+        ctx->bDone = true;
     }
 }
