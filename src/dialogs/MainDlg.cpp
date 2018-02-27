@@ -1190,19 +1190,21 @@ namespace dialogs
     {
         if (this->pWorkerContext->bRunning == false)
         {
-            int nItemLastRemoved = -1;
             int nItems = m_Config.m_Items.Count();
             if (nItems <= 0)
                 return;
 
-            for (int i = (nItems - 1); i >= 0; i--)
+            int nItemLastRemoved = -1;
+            std::vector<int> keep;
+            for (int i = 0; i < nItems; i++)
             {
-                if (this->IsItemSelected(i))
-                {
-                    m_Config.m_Items.Remove(i);
+                if (!this->IsItemSelected(i))
+                    keep.emplace_back(i);
+                else
                     nItemLastRemoved = i;
-                }
             }
+
+            this->RemoveItems(keep);
 
             nItems = m_Config.m_Items.Count();
             m_LstInputItems.SetItemCount(nItems);
@@ -1256,12 +1258,15 @@ namespace dialogs
             if (nItems <= 0)
                 return;
 
-            for (int i = (nItems - 1); i >= 0; i--)
+            std::vector<int> keep;
+            for (int i = 0; i < nItems; i++)
             {
                 config::CItem& item = m_Config.m_Items.Get(i);
-                if (item.bChecked == true)
-                    m_Config.m_Items.Remove(i);
+                if (item.bChecked == false)
+                    keep.emplace_back(i);
             }
+
+            this->RemoveItems(keep);
 
             nItems = m_Config.m_Items.Count();
             m_LstInputItems.SetItemCount(nItems);
@@ -1285,12 +1290,15 @@ namespace dialogs
             if (nItems <= 0)
                 return;
 
-            for (int i = (nItems - 1); i >= 0; i--)
+            std::vector<int> keep;
+            for (int i = 0; i < nItems; i++)
             {
                 config::CItem& item = m_Config.m_Items.Get(i);
-                if (item.bChecked == false)
-                    m_Config.m_Items.Remove(i);
+                if (item.bChecked == true)
+                    keep.emplace_back(i);
             }
+
+            this->RemoveItems(keep);
 
             nItems = m_Config.m_Items.Count();
             m_LstInputItems.SetItemCount(nItems);
@@ -2193,6 +2201,20 @@ namespace dialogs
         this->RedrawItem(nItem);
 
         return true;
+    }
+
+    void CMainDlg::RemoveItems(std::vector<int>& keep)
+    {
+        config::CItemsList items;
+
+        for (int i = 0; i < keep.size(); i++)
+        {
+            int nIndex = keep[i];
+            auto& item = m_Config.m_Items.Get(nIndex);
+            items.Insert(std::move(item));
+        }
+
+        m_Config.m_Items = items;
     }
 
     void CMainDlg::ShowEdtItem()

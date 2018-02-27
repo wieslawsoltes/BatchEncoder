@@ -172,6 +172,7 @@ namespace dialogs
         void ToggleItem(int nItem);
         int AddToItems(const std::wstring& szPath);
         bool AddToList(const std::wstring& szPath);
+        void RemoveItems(std::vector<int>& keep);
         void RedrawItem(int nItem);
         void RedrawItem(int nStart, int nEnd);
         void ShowEdtItem();
