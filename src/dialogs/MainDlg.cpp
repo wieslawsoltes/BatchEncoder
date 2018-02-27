@@ -6,7 +6,6 @@
 #include "utilities\LanguageHelper.h"
 #include "utilities\Utilities.h"
 #include "xml\XmlConfig.h"
-#include "worker\OutputPath.h"
 #include "MainDlg.h"
 #include "PresetsDlg.h"
 #include "AboutDlg.h"
@@ -2606,22 +2605,12 @@ namespace dialogs
                 return;
             }
 
-            worker::COutputPath m_Output;
-            std::wstring szOutput = this->m_Config.m_Options.szOutputPath;
-            if (m_Output.Validate(szOutput) == false)
-            {
-                m_StatusBar.SetText(m_Config.GetString(0x0021000F).c_str(), 1, 0);
-                bSafeCheck = false;
-                this->pWorkerContext->bDone = true;
-                return;
-            }
-
             if (this->m_WorkerThread.Start(
                 [this]()
-            {
-                this->m_Worker.Convert(this->pWorkerContext);
-                this->m_WorkerThread.Close();
-            },
+                {
+                    this->m_Worker.Convert(this->pWorkerContext);
+                    this->m_WorkerThread.Close();
+                },
                 true) == false)
             {
                 m_StatusBar.SetText(m_Config.GetString(0x0021000E).c_str(), 1, 0);
