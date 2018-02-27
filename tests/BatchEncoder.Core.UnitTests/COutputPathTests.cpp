@@ -15,23 +15,6 @@ namespace BatchEncoderCoreUnitTests
         TEST_METHOD(COutputPath_Constructor)
         {
             worker::COutputPath m_Output;
-
-            Assert::IsFalse(m_Output.bIsEmpty);
-            Assert::IsFalse(m_Output.bHaveSourceDirectory);
-            Assert::IsFalse(m_Output.bHaveName);
-            Assert::IsFalse(m_Output.bHaveExt);
-        }
-        TEST_METHOD(COutputPath_Validate_Output_Empty)
-        {
-            worker::COutputPath m_Output;
-            std::wstring szOutput = L"";
-            bool bValidate = m_Output.Validate(szOutput);
-
-            Assert::IsTrue(m_Output.bIsEmpty);
-            Assert::IsFalse(m_Output.bHaveSourceDirectory);
-            Assert::IsFalse(m_Output.bHaveName);
-            Assert::IsFalse(m_Output.bHaveExt);
-            Assert::IsTrue(bValidate);
         }
     };
 }
