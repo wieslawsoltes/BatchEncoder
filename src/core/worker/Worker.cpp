@@ -798,7 +798,6 @@ namespace worker
 
         bool bIsValidEncoderInput = pEncFormat->IsValidInputExtension(util::Utilities::GetFileExtension(szEncInputFile));
 
-        m_Output.Validate(pWorkerContext->pConfig->m_Options.szOutputPath);
         szEncOutputFile = m_Output.CreateFilePath(
             pWorkerContext->pConfig->m_Options.szOutputPath,
             szEncInputFile,

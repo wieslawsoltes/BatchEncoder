@@ -73,6 +73,7 @@ namespace worker
         }
         std::wstring CreateFilePath(const std::wstring& szOutput, const std::wstring& szInputFile, const std::wstring& szName, const std::wstring& szExt)
         {
+            this->Validate(szOutput);
             if (this->bIsEmpty
                 || ((this->bHaveSourceDirectory == false)
                     && (this->bHaveName == false) && (this->bHaveExt == false)))
