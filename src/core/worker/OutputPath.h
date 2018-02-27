@@ -31,7 +31,7 @@ namespace worker
             std::wstring szPattern = szOutput;
             if (szPattern.length() <= 0)
             {
-                szPattern = L"$SourceDirectory$\$Name$.$Ext$";
+                szPattern = L"$SourceDirectory$\\$Name$.$Ext$";
             }
             else
             {
