@@ -2207,7 +2207,7 @@ namespace dialogs
     {
         config::CItemsList items;
 
-        for (int i = 0; i < keep.size(); i++)
+        for (size_t i = 0; i < keep.size(); i++)
         {
             int nIndex = keep[i];
             auto& item = m_Config.m_Items.Get(nIndex);
