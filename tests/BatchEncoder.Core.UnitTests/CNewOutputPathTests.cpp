@@ -71,6 +71,19 @@ namespace BatchEncoderCoreUnitTests
 
             return szOutputFile;
         }
+        bool CreateOutputPath(const std::wstring& szOutputFile)
+        {
+            std::wstring szOutputPath = util::Utilities::GetFilePath(szOutputFile);
+            if (szOutputPath.length() > 0)
+            {
+                if (!util::Utilities::DirectoryExists(szOutputPath.c_str()))
+                {
+                    if (util::Utilities::MakeFullPath(szOutputPath) == false)
+                        return false;
+                }
+            }
+            return true;
+        }
     };
 
     TEST_CLASS(CNewOutputPath_Tests)
