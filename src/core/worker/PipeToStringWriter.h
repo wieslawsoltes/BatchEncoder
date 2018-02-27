@@ -4,6 +4,7 @@
 #pragma once
 
 #include <cstring>
+#include <mutex>
 #include "utilities\Pipe.h"
 #include "utilities\Synchronize.h"
 #include "configuration\Settings.h"
@@ -15,7 +16,7 @@ namespace worker
     class CPipeToStringWriter
     {
     public:
-        bool ReadLoop(IWorkerContext* pWorkerContext, CCommandLine &commandLine, util::CPipe &Stderr, IOutputParser &parser, util::CSynchronize &syncDown)
+        bool ReadLoop(IWorkerContext* pWorkerContext, CCommandLine &commandLine, util::CPipe &Stderr, IOutputParser &parser, std::mutex &syncDown)
         {
             const int nBuffSize = 4096;
             char szReadBuff[nBuffSize];
@@ -27,16 +28,16 @@ namespace worker
             bool bRunning = true;
             int nLineLen = 0;
 
-            syncDown.Wait();
+            syncDown.lock();
             ::SetCurrentDirectory(config::m_Settings.szSettingsPath.c_str());
 
             if (parser.Init(pWorkerContext, &commandLine) == false)
             {
-                syncDown.Release();
+                syncDown.unlock();
                 return false; // ERROR
             }
 
-            syncDown.Release();
+            syncDown.unlock();
 
             // initialize buffers
             std::memset(szReadBuff, 0, sizeof(szReadBuff));

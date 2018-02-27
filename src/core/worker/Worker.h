@@ -7,13 +7,10 @@
 #include <memory>
 #include <utility>
 #include <string>
-#include <atlstr.h>
+#include <mutex>
 #include <thread>
+#include <atlstr.h>
 #include "OutputPath.h"
-#include "utilities\Pipe.h"
-#include "utilities\StringHelper.h"
-#include "utilities\Process.h"
-#include "utilities\Synchronize.h"
 #include "WorkerContext.h"
 #include "CommandLine.h"
 #include "OutputParser.h"
@@ -23,11 +20,11 @@ namespace worker
     class CWorker
     {
     public:
-        bool ConvertFileUsingConsole(IWorkerContext* ctx, CCommandLine &cl, util::CSynchronize &syncDown);
-        bool ConvertFileUsingPipes(IWorkerContext* ctx, CCommandLine &cl, util::CSynchronize &syncDown);
-        bool ConvertFileUsingOnlyPipes(IWorkerContext* ctx, CCommandLine &dcl, CCommandLine &ecl, util::CSynchronize &syncDown);
-        bool ConvertItem(IWorkerContext* ctx, int nId, util::CSynchronize &syncDir, util::CSynchronize &syncDown);
-        bool ConvertLoop(IWorkerContext* ctx, std::queue<int> &queue, util::CSynchronize &sync, util::CSynchronize &syncDir, util::CSynchronize &syncDown);
+        bool ConvertFileUsingConsole(IWorkerContext* ctx, CCommandLine &cl, std::mutex &syncDown);
+        bool ConvertFileUsingPipes(IWorkerContext* ctx, CCommandLine &cl, std::mutex &syncDown);
+        bool ConvertFileUsingOnlyPipes(IWorkerContext* ctx, CCommandLine &dcl, CCommandLine &ecl, std::mutex &syncDown);
+        bool ConvertItem(IWorkerContext* ctx, int nId, std::mutex &syncDir, std::mutex &syncDown);
+        bool ConvertLoop(IWorkerContext* ctx, std::queue<int> &queue, std::mutex &sync, std::mutex &syncDir, std::mutex &syncDown);
         void Convert(IWorkerContext* ctx);
     };
 }

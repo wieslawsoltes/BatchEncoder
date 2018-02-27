@@ -2,8 +2,6 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 #include "stdafx.h"
-#include "utilities\TimeCount.h"
-#include "utilities\Utilities.h"
 #include "InputPath.h"
 #include "OutputPath.h"
 #include "FileToPipeWriter.h"
@@ -13,10 +11,15 @@
 #include "DebugOutputParser.h"
 #include "ToolUtilities.h"
 #include "Worker.h"
+#include "utilities\TimeCount.h"
+#include "utilities\Utilities.h"
+#include "utilities\Pipe.h"
+#include "utilities\Process.h"
+#include "utilities\StringHelper.h"
 
 namespace worker
 {
-    bool CWorker::ConvertFileUsingConsole(IWorkerContext* ctx, CCommandLine &cl, util::CSynchronize &syncDown)
+    bool CWorker::ConvertFileUsingConsole(IWorkerContext* ctx, CCommandLine &cl, std::mutex &syncDown)
     {
         util::CProcess process;
         util::CPipe Stderr(true);
@@ -52,7 +55,7 @@ namespace worker
         process.ConnectStdOutput(Stderr.hWrite);
         process.ConnectStdError(Stderr.hWrite);
 
-        syncDown.Wait();
+        syncDown.lock();
         ::SetCurrentDirectory(config::m_Settings.szSettingsPath.c_str());
 
         timer.Start();
@@ -94,7 +97,7 @@ namespace worker
 
             if (bFailed == true)
             {
-                syncDown.Release();
+                syncDown.unlock();
 
                 timer.Stop();
 
@@ -110,7 +113,7 @@ namespace worker
             }
         }
 
-        syncDown.Release();
+        syncDown.unlock();
 
         // close unused pipe handle
         Stderr.CloseWrite();
@@ -143,7 +146,7 @@ namespace worker
         }
     }
 
-    bool CWorker::ConvertFileUsingPipes(IWorkerContext* ctx, CCommandLine &cl, util::CSynchronize &syncDown)
+    bool CWorker::ConvertFileUsingPipes(IWorkerContext* ctx, CCommandLine &cl, std::mutex &syncDown)
     {
         util::CProcess process;
         util::CPipe Stdin(true);
@@ -235,7 +238,7 @@ namespace worker
             process.ConnectStdError(GetStdHandle(STD_ERROR_HANDLE));
         }
 
-        syncDown.Wait();
+        syncDown.lock();
         ::SetCurrentDirectory(config::m_Settings.szSettingsPath.c_str());
 
         timer.Start();
@@ -277,7 +280,7 @@ namespace worker
 
             if (bFailed == true)
             {
-                syncDown.Release();
+                syncDown.unlock();
 
                 timer.Stop();
 
@@ -302,7 +305,7 @@ namespace worker
             }
         }
 
-        syncDown.Release();
+        syncDown.unlock();
 
         // close unused pipe handles
         if (cl.bUseReadPipes == true)
@@ -415,7 +418,7 @@ namespace worker
         }
     }
 
-    bool CWorker::ConvertFileUsingOnlyPipes(IWorkerContext* ctx, CCommandLine &dcl, CCommandLine &ecl, util::CSynchronize &syncDown)
+    bool CWorker::ConvertFileUsingOnlyPipes(IWorkerContext* ctx, CCommandLine &dcl, CCommandLine &ecl, std::mutex &syncDown)
     {
         util::CProcess decoderProcess;
         util::CProcess encoderProcess;
@@ -496,7 +499,7 @@ namespace worker
 
         timer.Start();
 
-        syncDown.Wait();
+        syncDown.lock();
         ::SetCurrentDirectory(config::m_Settings.szSettingsPath.c_str());
 
         // create decoder process
@@ -538,7 +541,7 @@ namespace worker
 
             if (bFailed == true)
             {
-                syncDown.Release();
+                syncDown.unlock();
 
                 timer.Stop();
 
@@ -601,7 +604,7 @@ namespace worker
 
             if (bFailed == true)
             {
-                syncDown.Release();
+                syncDown.unlock();
 
                 timer.Stop();
 
@@ -625,7 +628,7 @@ namespace worker
             }
         }
 
-        syncDown.Release();
+        syncDown.unlock();
 
         // close unused pipe handles
         Stdin.CloseRead();
@@ -699,7 +702,7 @@ namespace worker
         }
     }
 
-    bool CWorker::ConvertItem(IWorkerContext* ctx, int nId, util::CSynchronize &syncDir, util::CSynchronize &syncDown)
+    bool CWorker::ConvertItem(IWorkerContext* ctx, int nId, std::mutex &syncDir, std::mutex &syncDown)
     {
         config::CFormat *pEncFormat = nullptr;
         config::CFormat *pDecFormat = nullptr;
@@ -755,26 +758,16 @@ namespace worker
         }
 
         // create output path
-        if (syncDir.Wait() == true)
+        syncDir.lock();
+
+        if (m_Output.CreateOutputPath(szEncOutputFile) == false)
         {
-            if (m_Output.CreateOutputPath(szEncOutputFile) == false)
-            {
-                syncDir.Release();
-                ctx->Status(item.nId, ctx->pConfig->GetString(0x00150001), ctx->pConfig->GetString(0x0014000F));
-                return false;
-            }
-        }
-        else
-        {
+            syncDir.unlock();
             ctx->Status(item.nId, ctx->pConfig->GetString(0x00150001), ctx->pConfig->GetString(0x0014000F));
             return false;
         }
 
-        if (syncDir.Release() == false)
-        {
-            ctx->Status(item.nId, ctx->pConfig->GetString(0x00150001), ctx->pConfig->GetString(0x0014000F));
-            return false;
-        }
+        syncDir.unlock();
 
         ::SetCurrentDirectory(config::m_Settings.szSettingsPath.c_str());
 
@@ -964,53 +957,46 @@ namespace worker
         return false;
     }
 
-    bool CWorker::ConvertLoop(IWorkerContext* ctx, std::queue<int> &queue, util::CSynchronize &sync, util::CSynchronize &syncDir, util::CSynchronize &syncDown)
+    bool CWorker::ConvertLoop(IWorkerContext* ctx, std::queue<int> &queue, std::mutex &sync, std::mutex &syncDir, std::mutex &syncDown)
     {
         while (TRUE)
         {
             try
             {
-                if (sync.Wait() == true)
+                sync.lock();
+ 
+                if (!queue.empty())
                 {
-                    if (!queue.empty())
+                    int nId = queue.front();
+                    queue.pop();
+
+                    sync.unlock();
+
+                    if (ctx->bRunning == false)
+                        return false;
+
+                    ctx->Next(nId);
+                    if (ConvertItem(ctx, nId, syncDir, syncDown) == true)
                     {
-                        int nId = queue.front();
-                        queue.pop();
-
-                        if (sync.Release() == false)
-                            return false;
-
-                        if (ctx->bRunning == false)
-                            return false;
-
-                        ctx->Next(nId);
-                        if (ConvertItem(ctx, nId, syncDir, syncDown) == true)
-                        {
-                            ctx->nProcessedFiles++;
-                        }
-                        else
-                        {
-                            ctx->nProcessedFiles++;
-                            ctx->nErrors++;
-                            if (ctx->pConfig->m_Options.bStopOnErrors == true)
-                                return false;
-                        }
-
-                        if (ctx->bRunning == false)
-                            return false; 
+                        ctx->nProcessedFiles++;
                     }
                     else
                     {
-                        if (sync.Release() == false)
+                        ctx->nProcessedFiles++;
+                        ctx->nErrors++;
+                        if (ctx->pConfig->m_Options.bStopOnErrors == true)
                             return false;
-
-                        return true;
                     }
+
+                    if (ctx->bRunning == false)
+                        return false; 
                 }
                 else
                 {
-                    return false;
+                    sync.unlock();
+                    return true;
                 }
+
             }
             catch (...)
             {
@@ -1024,9 +1010,9 @@ namespace worker
     void CWorker::Convert(IWorkerContext* ctx)
     {
         std::queue<int> queue;
-        util::CSynchronize sync;
-        util::CSynchronize syncDir;
-        util::CSynchronize syncDown;
+        std::mutex sync;
+        std::mutex syncDir;
+        std::mutex syncDown;
 
         ctx->nTotalFiles = 0;
         ctx->nProcessedFiles = 0;
