@@ -74,7 +74,7 @@ namespace BatchEncoderCoreUnitTests
             worker::COutputPath m_Output;
             std::wstring szOutputFile = m_Output.CreateFilePath(szOutput, szInputFile, szName, szExt);
 
-            Assert::AreEqual(L"C:\\MusicFolder\\Converted\\$CustomName.ext", szOutputFile.c_str());
+            Assert::AreEqual(L"C:\\MusicFolder\\Converted\\CustomName.ext", szOutputFile.c_str());
         }
 
         TEST_METHOD(COutputPath_CreateFile_Path_NoSlash)
