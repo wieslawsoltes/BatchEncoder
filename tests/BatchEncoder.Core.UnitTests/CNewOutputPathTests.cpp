@@ -169,7 +169,7 @@ namespace BatchEncoderCoreUnitTests
 
         TEST_METHOD(CNewOutputPath_CreateFilePath_InputExt)
         {
-            std::wstring szOutput = L"$InputPath$\\$Name$.$InputExt$.$Ext$";
+            std::wstring szOutput = L"$InputPath$\\$Name$$InputExt$.$Ext$";
             std::wstring szInputFile = L"C:\\MusicFolder\\ArtistFolder\\AlbumFolder\\FileName.wav";
             std::wstring szName = L"CustomName";
             std::wstring szExt = L"ext";
@@ -182,7 +182,7 @@ namespace BatchEncoderCoreUnitTests
 
         TEST_METHOD(CNewOutputPath_CreateFile_InputExt_Ext_ToLower)
         {
-            std::wstring szOutput = L"$InputPath$\\$Name$.$InputExt$.$Ext$";
+            std::wstring szOutput = L"$InputPath$\\$Name$$InputExt$.$Ext$";
             std::wstring szInputFile = L"C:\\MusicFolder\\ArtistFolder\\AlbumFolder\\FileName.WAV";
             std::wstring szName = L"CustomName";
             std::wstring szExt = L"EXT";
