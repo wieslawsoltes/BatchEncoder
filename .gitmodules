@@ -1,6 +1,3 @@
 [submodule "src/common"]
 	path = src/common
 	url = https://github.com/wieslawsoltes/MfcToolkit.git
-[submodule "src/avs"]
-	path = src/avs
-	url = https://github.com/wieslawsoltes/AvsDec.git
