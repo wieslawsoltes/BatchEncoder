@@ -52,7 +52,7 @@ namespace BatchEncoderCoreUnitTests
             util::StringHelper::ReplaceNoCase(szOutputFile, L"$InputDrive$", m_Input.szInputDrive);
             util::StringHelper::ReplaceNoCase(szOutputFile, L"$InputDir$", m_Input.szInputDir);
             util::StringHelper::ReplaceNoCase(szOutputFile, L"$InputName$", m_Input.szInputName);
-            util::StringHelper::ReplaceNoCase(szOutputFile, L"$InputExt$", util::StringHelper::TowLower(m_Input.szInputExt);
+            util::StringHelper::ReplaceNoCase(szOutputFile, L"$InputExt$", util::StringHelper::TowLower(m_Input.szInputExt));
             util::StringHelper::ReplaceNoCase(szOutputFile, L"$InputPath$", m_Input.szInputPath);
 
             // replace input path folders $InputFolder[index]$
