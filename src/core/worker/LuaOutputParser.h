@@ -29,14 +29,14 @@ namespace worker
             std::string szFunction = util::StringHelper::StringHelper::Convert(this->cl->pFormat->szFunction);
             if (this->luaProgress.Open(szFunction.c_str()) == false)
             {
-                this->ctx->Status(this->cl->nItemId, ctx->GetString(0x00150001), this->ctx->GetString(0x00110001));
+                this->ctx->ItemStatus(this->cl->nItemId, ctx->GetString(0x00150001), this->ctx->GetString(0x00110001));
                 this->ctx->ItemProgress(this->cl->nItemId, -1, true, true);
                 return false;
             }
 
             if (this->luaProgress.Init() == false)
             {
-                this->ctx->Status(this->cl->nItemId, ctx->GetString(0x00150001), this->ctx->GetString(0x00110002));
+                this->ctx->ItemStatus(this->cl->nItemId, ctx->GetString(0x00150001), this->ctx->GetString(0x00110002));
                 this->ctx->ItemProgress(this->cl->nItemId, -1, true, true);
                 return false;
             }

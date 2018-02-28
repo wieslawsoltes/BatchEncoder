@@ -89,7 +89,7 @@ namespace worker
                         nLineLen++;
                         if (nLineLen > nBuffSize)
                         {
-                            ctx->Status(cl.nItemId, ctx->GetString(0x00150001), ctx->GetString(0x00110003));
+                            ctx->ItemStatus(cl.nItemId, ctx->GetString(0x00150001), ctx->GetString(0x00110003));
                             ctx->ItemProgress(cl.nItemId, -1, true, true);
                             return false;
                         }
