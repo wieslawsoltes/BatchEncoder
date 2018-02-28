@@ -13,6 +13,15 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Source Files\Config">
+      <UniqueIdentifier>{729b870c-db57-4dc9-bb0f-59a664971031}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Worker">
+      <UniqueIdentifier>{7020f804-bc68-4875-9cba-6852ea4d398b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Xml">
+      <UniqueIdentifier>{5bf22d62-faea-4a16-99e1-089e06541f35}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -21,22 +30,79 @@
     <ClInclude Include="targetver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="TestWorkerContext.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TestOutputParser.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="InputPathTests.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="config\ConfigurationTests.cpp">
+      <Filter>Source Files\Config</Filter>
     </ClCompile>
-    <ClCompile Include="NewOutputPathTests.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="config\FormatTests.cpp">
+      <Filter>Source Files\Config</Filter>
     </ClCompile>
-    <ClCompile Include="OutputPathTests.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="config\ItemTests.cpp">
+      <Filter>Source Files\Config</Filter>
     </ClCompile>
-    <ClCompile Include="WorkerTests.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="config\OptionsTests.cpp">
+      <Filter>Source Files\Config</Filter>
+    </ClCompile>
+    <ClCompile Include="config\PathTests.cpp">
+      <Filter>Source Files\Config</Filter>
+    </ClCompile>
+    <ClCompile Include="config\PresetTests.cpp">
+      <Filter>Source Files\Config</Filter>
+    </ClCompile>
+    <ClCompile Include="config\ToolTests.cpp">
+      <Filter>Source Files\Config</Filter>
+    </ClCompile>
+    <ClCompile Include="xml\XmlConfigTests.cpp">
+      <Filter>Source Files\Xml</Filter>
+    </ClCompile>
+    <ClCompile Include="worker\DebugOutputParserTests.cpp">
+      <Filter>Source Files\Worker</Filter>
+    </ClCompile>
+    <ClCompile Include="worker\FileToPipeWriterTests.cpp">
+      <Filter>Source Files\Worker</Filter>
+    </ClCompile>
+    <ClCompile Include="worker\InputPathTests.cpp">
+      <Filter>Source Files\Worker</Filter>
+    </ClCompile>
+    <ClCompile Include="worker\LuaOutputParserTests.cpp">
+      <Filter>Source Files\Worker</Filter>
+    </ClCompile>
+    <ClCompile Include="worker\LuaProgessTests.cpp">
+      <Filter>Source Files\Worker</Filter>
+    </ClCompile>
+    <ClCompile Include="worker\NewOutputPathTests.cpp">
+      <Filter>Source Files\Worker</Filter>
+    </ClCompile>
+    <ClCompile Include="worker\OutputParserTests.cpp">
+      <Filter>Source Files\Worker</Filter>
+    </ClCompile>
+    <ClCompile Include="worker\OutputPathTests.cpp">
+      <Filter>Source Files\Worker</Filter>
+    </ClCompile>
+    <ClCompile Include="worker\PipeToFileWriterTests.cpp">
+      <Filter>Source Files\Worker</Filter>
+    </ClCompile>
+    <ClCompile Include="worker\PipeToStringWriterTests.cpp">
+      <Filter>Source Files\Worker</Filter>
+    </ClCompile>
+    <ClCompile Include="worker\ToolUtilitiesTests.cpp">
+      <Filter>Source Files\Worker</Filter>
+    </ClCompile>
+    <ClCompile Include="worker\WorkerTests.cpp">
+      <Filter>Source Files\Worker</Filter>
+    </ClCompile>
+    <ClCompile Include="worker\WorkerContextTests.cpp">
+      <Filter>Source Files\Worker</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
