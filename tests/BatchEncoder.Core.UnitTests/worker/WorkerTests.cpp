@@ -13,6 +13,15 @@ namespace BatchEncoderCoreUnitTests
 {
     TEST_CLASS(CWorker_Tests)
     {
+        void Init(worker::IWorkerContext& ctx)
+        {
+            ctx.bRunning = true;
+            ctx.bDone = false;
+            ctx.nTotalFiles = 0;
+            ctx.nProcessedFiles = 0;
+            ctx.nErrors = 0;
+            ctx.nLastItemId = -1;
+        }
     public:
         TEST_METHOD(CWorker_Convert_Nothing)
         {
@@ -22,16 +31,12 @@ namespace BatchEncoderCoreUnitTests
             Assert::IsTrue(ctx.bDone);
             Assert::IsNull(ctx.pConfig);
 
-            ctx.bRunning = true;
-            ctx.bDone = false;
-            ctx.nTotalFiles = 0;
-            ctx.nProcessedFiles = 0;
-            ctx.nErrors = 0;
-            ctx.nLastItemId = -1;
-            ctx.nThreadCount = m_Config.m_Options.nThreadCount;
+            Init(ctx);
+
+            ctx.nThreadCount = 1;
             ctx.pConfig = &m_Config;
 
-            Assert::AreEqual(0, ctx.nThreadCount);
+            Assert::AreEqual(1, ctx.nThreadCount);
             Assert::IsNotNull(ctx.pConfig);
 
             worker::CWorker m_Worker;
@@ -43,7 +48,7 @@ namespace BatchEncoderCoreUnitTests
             Assert::IsTrue(ctx.nProcessedFiles == 0);
             Assert::IsTrue(ctx.nErrors == 0);
             Assert::IsTrue(ctx.nLastItemId == -1);
-            Assert::AreEqual(0, ctx.nThreadCount);
+            Assert::AreEqual(1, ctx.nThreadCount);
             Assert::IsNull(ctx.pConfig);
         }
     };
