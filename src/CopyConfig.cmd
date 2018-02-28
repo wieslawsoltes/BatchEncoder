@@ -1,8 +1,13 @@
 @echo off
 setlocal
+
 set ConfigDir=%1
 set OutputDir=%2
 set BuildSystem=%3
+
+echo "ConfigDir: " %ConfigDir%
+echo "OutputDir: " %OutputDir%
+echo "BuildSystem: " %BuildSystem%
 
 if %BuildSystem%=="CI" goto done
 
