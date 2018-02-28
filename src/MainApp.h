@@ -26,9 +26,9 @@ namespace app
     class CLanguageHelper
     {
     public:
-        CConfiguration * pConfig;
+        config::CConfiguration * pConfig;
     public:
-        CLanguageHelper(CConfiguration *pConfig) : pConfig(pConfig) { }
+        CLanguageHelper(config::CConfiguration *pConfig) : pConfig(pConfig) { }
     public:
         void SetColumnText(CListCtrl& listCtrl, int nCol, int nKey)
         {
@@ -49,9 +49,7 @@ namespace app
         {
             std::wstring rValue;
             if (this->pConfig->LookupString(nKey, rValue))
-            {
                 hMenu->ModifyMenu(nPosition, MF_STRING | MF_BYPOSITION, nPosition, rValue.c_str());
-            }
         }
         void SetMenuItemText(CMenu *hMenu, UINT nID, int nKey)
         {
@@ -70,17 +68,13 @@ namespace app
         {
             std::wstring rValue;
             if (this->pConfig->LookupString(nKey, rValue))
-            {
                 hWnd->SetWindowText(rValue.c_str());
-            }
         }
         void SetItemText(CWnd *hWnd, UINT nID, int nKey)
         {
             std::wstring rValue;
             if (this->pConfig->LookupString(nKey, rValue))
-            {
                 hWnd->GetDlgItem(nID)->SetWindowText(rValue.c_str());
-            }
         }
     };
 

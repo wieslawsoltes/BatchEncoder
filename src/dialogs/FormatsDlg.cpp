@@ -263,7 +263,7 @@ namespace dialogs
                 int nSelected = m_LstFormats.GetNextSelectedItem(pos);
                 if (nSelected >= 0)
                 {
-                    config::CFormat& format = m_Formats.Get(nSelected);
+                    config::CFormat& format = m_Formats[nSelected];
 
                     CString szFilter;
                     szFilter.Format(_T("%s (*.xml)|*.xml|%s (*.*)|*.*||"),
@@ -349,10 +349,10 @@ namespace dialogs
             int nSelected = m_LstFormats.GetNextSelectedItem(pos);
             if (nSelected >= 0)
             {
-                config::CFormat& format = m_Formats.Get(nSelected);
+                config::CFormat& format = m_Formats[nSelected];
                 config::CFormat copy = format;
 
-                m_Formats.Insert(copy);
+                m_Formats.emplace_back(copy);
 
                 int nItem = m_LstFormats.GetItemCount();
                 AddToList(copy, nItem);
@@ -370,9 +370,9 @@ namespace dialogs
 
     void CFormatsDlg::OnBnClickedButtonRemoveAllFormats()
     {
-        if (m_Formats.Count() > 0)
+        if (m_Formats.size() > 0)
         {
-            m_Formats.RemoveAll();
+            m_Formats.clear();
             m_LstFormats.DeleteAllItems();
             this->ListSelectionChange();
         }
@@ -394,7 +394,7 @@ namespace dialogs
         {
             if (m_LstFormats.GetItemState(i, LVIS_SELECTED) == LVIS_SELECTED)
             {
-                m_Formats.Remove(i);
+                m_Formats.erase(m_Formats.begin() + i);
                 m_LstFormats.DeleteItem(i);
                 nItemLastRemoved = i;
             }
@@ -449,9 +449,9 @@ namespace dialogs
         config::CPreset preset;
         preset.szName = pConfig->GetString(0x00230005);
         preset.szOptions = L"";
-        format.m_Presets.Insert(preset);
+        format.m_Presets.emplace_back(preset);
 
-        m_Formats.Insert(format);
+        m_Formats.emplace_back(format);
 
         AddToList(format, nItem);
 
@@ -477,15 +477,15 @@ namespace dialogs
             int nItem = m_LstFormats.GetNextSelectedItem(pos);
             if (nItem > 0)
             {
-                config::CFormat& format1 = m_Formats.Get(nItem);
-                config::CFormat& format2 = m_Formats.Get(nItem - 1);
+                config::CFormat& format1 = m_Formats[nItem];
+                config::CFormat& format2 = m_Formats[nItem - 1];
 
-                m_LstFormats.SetItemText(nItem, FORMAT_COLUMN_NAME, format2.szName.c_str());
-                m_LstFormats.SetItemText(nItem, FORMAT_COLUMN_TEMPLATE, format2.szTemplate.c_str());
-                m_LstFormats.SetItemText(nItem - 1, FORMAT_COLUMN_NAME, format1.szName.c_str());
-                m_LstFormats.SetItemText(nItem - 1, FORMAT_COLUMN_TEMPLATE, format1.szTemplate.c_str());
+                std::swap(format1, format2);
 
-                m_Formats.Swap(nItem, nItem - 1);
+                m_LstFormats.SetItemText(nItem, FORMAT_COLUMN_NAME, format1.szName.c_str());
+                m_LstFormats.SetItemText(nItem, FORMAT_COLUMN_TEMPLATE, format1.szTemplate.c_str());
+                m_LstFormats.SetItemText(nItem - 1, FORMAT_COLUMN_NAME, format2.szName.c_str());
+                m_LstFormats.SetItemText(nItem - 1, FORMAT_COLUMN_TEMPLATE, format2.szTemplate.c_str());
 
                 m_LstFormats.SetItemState(-1, 0, LVIS_SELECTED);
                 m_LstFormats.SetItemState(nItem - 1, LVIS_SELECTED, LVIS_SELECTED);
@@ -510,15 +510,15 @@ namespace dialogs
             int nItems = m_LstFormats.GetItemCount();
             if (nItem != (nItems - 1) && nItem >= 0)
             {
-                config::CFormat& format1 = m_Formats.Get(nItem);
-                config::CFormat& format2 = m_Formats.Get(nItem + 1);
+                config::CFormat& format1 = m_Formats[nItem];
+                config::CFormat& format2 = m_Formats[nItem + 1];
 
-                m_LstFormats.SetItemText(nItem, FORMAT_COLUMN_NAME, format2.szName.c_str());
-                m_LstFormats.SetItemText(nItem, FORMAT_COLUMN_TEMPLATE, format2.szTemplate.c_str());
-                m_LstFormats.SetItemText(nItem + 1, FORMAT_COLUMN_NAME, format1.szName.c_str());
-                m_LstFormats.SetItemText(nItem + 1, FORMAT_COLUMN_TEMPLATE, format1.szTemplate.c_str());
+                std::swap(format1, format2);
 
-                m_Formats.Swap(nItem, nItem + 1);
+                m_LstFormats.SetItemText(nItem, FORMAT_COLUMN_NAME, format1.szName.c_str());
+                m_LstFormats.SetItemText(nItem, FORMAT_COLUMN_TEMPLATE, format1.szTemplate.c_str());
+                m_LstFormats.SetItemText(nItem + 1, FORMAT_COLUMN_NAME, format2.szName.c_str());
+                m_LstFormats.SetItemText(nItem + 1, FORMAT_COLUMN_TEMPLATE, format2.szTemplate.c_str());
 
                 m_LstFormats.SetItemState(-1, 0, LVIS_SELECTED);
                 m_LstFormats.SetItemState(nItem + 1, LVIS_SELECTED, LVIS_SELECTED);
@@ -585,7 +585,7 @@ namespace dialogs
             this->m_EdtPath.GetWindowText(szPath);
             this->m_EdtFunction.GetWindowText(szFunction);
 
-            config::CFormat& format = m_Formats.Get(nItem);
+            config::CFormat& format = m_Formats[nItem];
             format.szId = szId;
             format.szName = szName;
             format.szOutputExtension = szExtension;
@@ -731,7 +731,7 @@ namespace dialogs
             INT_PTR nRet = dlg.DoModal();
             if (nRet == IDOK)
             {
-                this->m_Formats.RemoveAll();
+                this->m_Formats.clear();
                 this->m_Formats = dlg.m_Formats;
 
                 this->m_LstFormats.DeleteAllItems();
@@ -879,10 +879,10 @@ namespace dialogs
 
     void CFormatsDlg::InsertFormatsToListCtrl()
     {
-        int nFormats = m_Formats.Count();
-        for (int i = 0; i < nFormats; i++)
+        size_t nFormats = m_Formats.size();
+        for (size_t i = 0; i < nFormats; i++)
         {
-            config::CFormat& format = m_Formats.Get(i);
+            config::CFormat& format = m_Formats[i];
             this->AddToList(format, i);
         }
     }
@@ -926,7 +926,7 @@ namespace dialogs
                         if (pos != nullptr)
                         {
                             int nItem = m_LstFormats.GetNextSelectedItem(pos);
-                            config::CFormat& format = this->m_Formats.Get(nItem);
+                            config::CFormat& format = this->m_Formats[nItem];
                             format.szPath = szPath;
                             this->m_EdtPath.SetWindowText(format.szPath.c_str());
                         }
@@ -938,7 +938,7 @@ namespace dialogs
                         if (pos != nullptr)
                         {
                             int nItem = m_LstFormats.GetNextSelectedItem(pos);
-                            config::CFormat& format = this->m_Formats.Get(nItem);
+                            config::CFormat& format = this->m_Formats[nItem];
                             format.szFunction = szPath;
                             this->m_EdtFunction.SetWindowText(format.szFunction.c_str());
                         }
@@ -1004,10 +1004,10 @@ namespace dialogs
 
         int nPreset = -1;
 
-        int nPresets = format.m_Presets.Count();
-        for (int i = 0; i < nPresets; i++)
+        size_t nPresets = format.m_Presets.size();
+        for (size_t i = 0; i < nPresets; i++)
         {
-            config::CPreset& preset = format.m_Presets.Get(i);
+            config::CPreset& preset = format.m_Presets[i];
             this->m_CmbDefault.InsertString(i, preset.szName.c_str());
         }
 
@@ -1035,7 +1035,7 @@ namespace dialogs
         {
             int nItem = m_LstFormats.GetNextSelectedItem(pos);
 
-            config::CFormat& format = this->m_Formats.Get(nItem);
+            config::CFormat& format = this->m_Formats[nItem];
 
             this->UpdateFields(format);
             this->UpdateDefaultComboBox(format);
@@ -1109,14 +1109,14 @@ namespace dialogs
 
     bool CFormatsDlg::LoadPresets(xml::XmlDocumnent &doc)
     {
-        config::CPresetsList presets;
+        std::vector<config::CPreset> presets;
         if (xml::XmlConfig::LoadPresets(doc, presets))
         {
             POSITION pos = m_LstFormats.GetFirstSelectedItemPosition();
             if (pos != nullptr)
             {
                 int nItem = m_LstFormats.GetNextSelectedItem(pos);
-                config::CFormat& format = this->m_Formats.Get(nItem);
+                config::CFormat& format = this->m_Formats[nItem];
                 format.m_Presets = std::move(presets);
                 this->UpdateDefaultComboBox(format);
                 return true;
@@ -1141,8 +1141,8 @@ namespace dialogs
         config::CFormat format;
         if (xml::XmlConfig::LoadFormat(doc, format))
         {
-            m_Formats.Insert(format);
-            int nItem = m_Formats.Count() - 1;
+            m_Formats.emplace_back(format);
+            size_t nItem = m_Formats.size() - 1;
             this->AddToList(format, nItem);
             return true;
         }
@@ -1163,7 +1163,7 @@ namespace dialogs
             {
                 if (m_LstFormats.GetItemState(i, LVIS_SELECTED) == LVIS_SELECTED)
                 {
-                    config::CFormat& format = m_Formats.Get(i);
+                    config::CFormat& format = m_Formats[i];
                     std::wstring path = util::Utilities::CombinePath(szPath, format.szId + L".xml");
                     if (this->SaveFormat(path, format) == false)
                         return false;

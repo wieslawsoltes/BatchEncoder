@@ -6,6 +6,7 @@
 #include <afxcmn.h>
 #include <afxwin.h>
 #include <array>
+#include <vector>
 #include <string>
 #include <utility>
 #include <thread>
@@ -49,7 +50,7 @@ namespace dialogs
         CString szLastFormatsBrowse;
         volatile bool bUpdate;
         int nSelectedFormat;
-        config::CFormatsList m_Formats;
+        std::vector<config::CFormat> m_Formats;
     public:
         controls::CMyStatic m_GrpPipes;
         controls::CMyStatic m_GrpTypes;

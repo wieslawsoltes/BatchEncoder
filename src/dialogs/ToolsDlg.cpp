@@ -274,7 +274,7 @@ namespace dialogs
                 int nSelected = m_LstTools.GetNextSelectedItem(pos);
                 if (nSelected >= 0)
                 {
-                    config::CTool& tool = m_Tools.Get(nSelected);
+                    config::CTool& tool = m_Tools[nSelected];
 
                     CString szFilter;
                     szFilter.Format(_T("%s (*.xml)|*.xml|%s (*.*)|*.*||"),
@@ -363,10 +363,10 @@ namespace dialogs
             int nSelected = m_LstTools.GetNextSelectedItem(pos);
             if (nSelected >= 0)
             {
-                config::CTool& tool = m_Tools.Get(nSelected);
+                config::CTool& tool = m_Tools[nSelected];
                 config::CTool copy = tool;
 
-                m_Tools.Insert(copy);
+                m_Tools.emplace_back(copy);
 
                 int nItem = m_LstTools.GetItemCount();
                 AddToList(copy, nItem);
@@ -387,9 +387,9 @@ namespace dialogs
         if (m_Utilities.bDownload == true)
             return;
 
-        if (m_Tools.Count() > 0)
+        if (m_Tools.size() > 0)
         {
-            m_Tools.RemoveAll();
+            m_Tools.clear();
             m_LstTools.DeleteAllItems();
             this->ListSelectionChange();
         }
@@ -414,7 +414,7 @@ namespace dialogs
         {
             if (m_LstTools.GetItemState(i, LVIS_SELECTED) == LVIS_SELECTED)
             {
-                m_Tools.Remove(i);
+                m_Tools.erase(m_Tools.begin() + i);
                 m_LstTools.DeleteItem(i);
                 nItemLastRemoved = i;
             }
@@ -465,7 +465,7 @@ namespace dialogs
         tool.szPath = L"";
         tool.szStatus = L"";
 
-        m_Tools.Insert(tool);
+        m_Tools.emplace_back(tool);
 
         AddToList(tool, nItem);
 
@@ -494,17 +494,17 @@ namespace dialogs
             int nItem = m_LstTools.GetNextSelectedItem(pos);
             if (nItem > 0)
             {
-                config::CTool& tool1 = m_Tools.Get(nItem);
-                config::CTool& tool2 = m_Tools.Get(nItem - 1);
+                config::CTool& tool1 = m_Tools[nItem];
+                config::CTool& tool2 = m_Tools[nItem - 1];
 
-                m_LstTools.SetItemText(nItem, TOOL_COLUMN_NAME, tool2.szName.c_str());
-                m_LstTools.SetItemText(nItem, TOOL_COLUMN_URL, tool2.szUrl.c_str());
-                m_LstTools.SetItemText(nItem, TOOL_COLUMN_STATUS, tool2.szStatus.c_str());
-                m_LstTools.SetItemText(nItem - 1, TOOL_COLUMN_NAME, tool1.szName.c_str());
-                m_LstTools.SetItemText(nItem - 1, TOOL_COLUMN_URL, tool1.szUrl.c_str());
-                m_LstTools.SetItemText(nItem - 1, TOOL_COLUMN_STATUS, tool1.szStatus.c_str());
+                std::swap(tool1, tool2);
 
-                m_Tools.Swap(nItem, nItem - 1);
+                m_LstTools.SetItemText(nItem, TOOL_COLUMN_NAME, tool1.szName.c_str());
+                m_LstTools.SetItemText(nItem, TOOL_COLUMN_URL, tool1.szUrl.c_str());
+                m_LstTools.SetItemText(nItem, TOOL_COLUMN_STATUS, tool1.szStatus.c_str());
+                m_LstTools.SetItemText(nItem - 1, TOOL_COLUMN_NAME, tool2.szName.c_str());
+                m_LstTools.SetItemText(nItem - 1, TOOL_COLUMN_URL, tool2.szUrl.c_str());
+                m_LstTools.SetItemText(nItem - 1, TOOL_COLUMN_STATUS, tool2.szStatus.c_str());
 
                 m_LstTools.SetItemState(-1, 0, LVIS_SELECTED);
                 m_LstTools.SetItemState(nItem - 1, LVIS_SELECTED, LVIS_SELECTED);
@@ -532,17 +532,17 @@ namespace dialogs
             int nItems = m_LstTools.GetItemCount();
             if (nItem != (nItems - 1) && nItem >= 0)
             {
-                config::CTool& tool1 = m_Tools.Get(nItem);
-                config::CTool& tool2 = m_Tools.Get(nItem + 1);
+                config::CTool& tool1 = m_Tools[nItem];
+                config::CTool& tool2 = m_Tools[nItem + 1];
 
-                m_LstTools.SetItemText(nItem, TOOL_COLUMN_NAME, tool2.szName.c_str());
-                m_LstTools.SetItemText(nItem, TOOL_COLUMN_URL, tool2.szUrl.c_str());
-                m_LstTools.SetItemText(nItem, TOOL_COLUMN_STATUS, tool2.szStatus.c_str());
-                m_LstTools.SetItemText(nItem + 1, TOOL_COLUMN_NAME, tool1.szName.c_str());
-                m_LstTools.SetItemText(nItem + 1, TOOL_COLUMN_URL, tool1.szUrl.c_str());
-                m_LstTools.SetItemText(nItem + 1, TOOL_COLUMN_STATUS, tool1.szStatus.c_str());
+                std::swap(tool1, tool2);
 
-                m_Tools.Swap(nItem, nItem + 1);
+                m_LstTools.SetItemText(nItem, TOOL_COLUMN_NAME, tool1.szName.c_str());
+                m_LstTools.SetItemText(nItem, TOOL_COLUMN_URL, tool1.szUrl.c_str());
+                m_LstTools.SetItemText(nItem, TOOL_COLUMN_STATUS, tool1.szStatus.c_str());
+                m_LstTools.SetItemText(nItem + 1, TOOL_COLUMN_NAME, tool2.szName.c_str());
+                m_LstTools.SetItemText(nItem + 1, TOOL_COLUMN_URL, tool2.szUrl.c_str());
+                m_LstTools.SetItemText(nItem + 1, TOOL_COLUMN_STATUS, tool2.szStatus.c_str());
 
                 m_LstTools.SetItemState(-1, 0, LVIS_SELECTED);
                 m_LstTools.SetItemState(nItem + 1, LVIS_SELECTED, LVIS_SELECTED);
@@ -588,7 +588,7 @@ namespace dialogs
             this->m_EdtExtract.GetWindowText(szExtract);
             this->m_EdtPath.GetWindowText(szPath);
 
-            config::CTool& tool = m_Tools.Get(nItem);
+            config::CTool& tool = m_Tools[nItem];
             tool.szName = szName;
             tool.szPlatform = szPlatform;
             tool.nPriority = _tstoi(szPriority);
@@ -863,10 +863,10 @@ namespace dialogs
 
     void CToolsDlg::InsertToolsToListCtrl()
     {
-        int nTools = m_Tools.Count();
-        for (int i = 0; i < nTools; i++)
+        size_t nTools = m_Tools.size();
+        for (size_t i = 0; i < nTools; i++)
         {
-            config::CTool& tool = m_Tools.Get(i);
+            config::CTool& tool = m_Tools[i];
             this->AddToList(tool, i);
         }
     }
@@ -939,7 +939,7 @@ namespace dialogs
         {
             int nItem = m_LstTools.GetNextSelectedItem(pos);
 
-            config::CTool& tool = this->m_Tools.Get(nItem);
+            config::CTool& tool = this->m_Tools[nItem];
 
             this->UpdateFields(tool);
         }
@@ -1009,7 +1009,7 @@ namespace dialogs
                 if (m_LstTools.GetItemState(i, LVIS_SELECTED) == LVIS_SELECTED)
                 {
                     m_LstTools.EnsureVisible(i, FALSE);
-                    config::CTool& tool = m_Tools.Get(i);
+                    config::CTool& tool = m_Tools[i];
                     m_Utilities.Download(tool, true, true, i, pConfig,
                         [this](int nIndex, std::wstring szStatus) -> bool
                         {
@@ -1042,8 +1042,8 @@ namespace dialogs
         config::CTool tool;
         if (xml::XmlConfig::LoadTool(doc, tool))
         {
-            m_Tools.Insert(tool);
-            int nItem = m_Tools.Count() - 1;
+            m_Tools.emplace_back(tool);
+            size_t nItem = m_Tools.size() - 1;
             this->AddToList(tool, nItem);
             return true;
         }
@@ -1064,7 +1064,7 @@ namespace dialogs
             {
                 if (m_LstTools.GetItemState(i, LVIS_SELECTED) == LVIS_SELECTED)
                 {
-                    config::CTool& tool = m_Tools.Get(i);
+                    config::CTool& tool = m_Tools[i];
                     std::wstring path = util::Utilities::CombinePath(szPath, tool.szName + L".xml");
                     if (this->SaveTool(path, tool) == false)
                         return false;

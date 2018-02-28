@@ -14,7 +14,6 @@
 #include "controls\MyEdit.h"
 #include "controls\MyStatic.h"
 #include "controls\MyDialogEx.h"
-#include "config\FormatsList.h"
 #include "config\Configuration.h"
 #include "utilities\StringHelper.h"
 
@@ -47,7 +46,7 @@ namespace dialogs
         std::wstring szPresetsListColumns;
         volatile bool bUpdate;
         int nSelectedFormat;
-        config::CFormatsList m_Formats;
+        std::vector<config::CFormat> m_Formats;
     public:
         controls::CMyStatic m_StcName;
         controls::CMyStatic m_StcOptions;

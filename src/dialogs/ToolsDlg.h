@@ -51,8 +51,8 @@ namespace dialogs
         CString szLastToolsBrowse;
         volatile bool bUpdate;
         int nSelectedTool;
-        config::CToolsList m_Tools;
-        config::CFormatsList m_Formats;
+        std::vector<config::CTool> m_Tools;
+        std::vector<config::CFormat> m_Formats;
         std::thread m_Thread;
         volatile bool bAbort = false;
         worker::CToolUtilities m_Utilities;

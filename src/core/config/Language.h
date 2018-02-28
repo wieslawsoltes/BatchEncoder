@@ -5,6 +5,8 @@
 
 #include <string>
 #include <map>
+#include <vector>
+#include "utilities\StringHelper.h"
 
 namespace config
 {
@@ -16,7 +18,7 @@ namespace config
         std::wstring szTranslatedName;
         std::map<int, std::wstring> m_Strings;
     public:
-        static size_t GetLanguageById(const std::vector<CLanguage>& languages, const std::wstring& szLanguageId)
+        static size_t GetLanguageById(std::vector<CLanguage>& languages, const std::wstring& szLanguageId)
         {
             size_t nCount = languages.size();
             for (size_t i = 0; i < nCount; i++)

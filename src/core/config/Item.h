@@ -6,7 +6,7 @@
 #include <string>
 #include <algorithm>
 #include <vector>
-#include "PathsList.h"
+#include "Path.h"
 
 namespace config
 {
@@ -19,7 +19,7 @@ namespace config
         std::wstring szName;
         std::wstring szExtension;
         std::wstring szFormatId;
-        int nPreset;
+        size_t nPreset;
         std::wstring szOptions;
         bool bChecked;
         std::wstring szTime;

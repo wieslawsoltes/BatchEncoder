@@ -34,7 +34,7 @@ namespace config
                 auto& language = this->m_Languages[this->nLangId];
                 if (language.m_Strings.count(nKey) == 1)
                 {
-                    rValue = language.m_Strings.at[key];
+                    rValue = language.m_Strings[nKey];
                     return true;
                 }
             }

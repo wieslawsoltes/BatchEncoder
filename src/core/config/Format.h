@@ -7,7 +7,7 @@
 #include <algorithm>
 #include <vector>
 #include "utilities\StringHelper.h"
-#include "PresetsList.h"
+#include "Preset.h"
 
 namespace config
 {
@@ -34,7 +34,7 @@ namespace config
         int nPriority;
         std::wstring szInputExtensions;
         std::wstring szOutputExtension;
-        int nDefaultPreset;
+        size_t nDefaultPreset;
         std::vector<CPreset> m_Presets;
     public:
         static int ToInt(const FormatType value)
@@ -51,7 +51,7 @@ namespace config
             return util::StringHelper::ContainsNoCase(this->szInputExtensions, szExt, token);
         }
     public:
-        static size_t GetFormatById(const std::vector<CFormat>& formats, const std::wstring& szFormatId)
+        static size_t GetFormatById(std::vector<CFormat>& formats, const std::wstring& szFormatId)
         {
             size_t nFormats = formats.size();
             for (size_t i = 0; i < nFormats; i++)
@@ -62,7 +62,7 @@ namespace config
             }
             return -1;
         }
-        static size_t GetDecoderByExtension(const std::vector<CFormat>& formats, const std::wstring& szExt)
+        static size_t GetDecoderByExtension(std::vector<CFormat>& formats, const std::wstring& szExt)
         {
             size_t nFormats = formats.size();
             for (size_t i = 0; i < nFormats; i++)
@@ -73,7 +73,7 @@ namespace config
             }
             return -1;
         }
-        static size_t GetDecoderByExtensionAndFormat(const std::vector<CFormat>& formats, const std::wstring& szExt, CFormat *pEncoderFormat)
+        static size_t GetDecoderByExtensionAndFormat(std::vector<CFormat>& formats, const std::wstring& szExt, CFormat *pEncoderFormat)
         {
             size_t nFormats = formats.size();
             for (size_t i = 0; i < nFormats; i++)
@@ -88,7 +88,7 @@ namespace config
             }
             return -1;
         }
-        static bool IsValidInputExtension(const std::vector<CFormat>& formats, const std::wstring& szExt)
+        static bool IsValidInputExtension(std::vector<CFormat>& formats, const std::wstring& szExt)
         {
             size_t nFormats = formats.size();
             for (size_t i = 0; i < nFormats; i++)

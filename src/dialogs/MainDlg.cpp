@@ -217,7 +217,7 @@ namespace dialogs
         {
             if (bError == true)
             {
-                config::CItem &item = pDlg->m_Config.m_Items.Get(nItemId);
+                config::CItem &item = pDlg->m_Config.m_Items[nItemId];
                 item.bFinished = true;
                 if (pDlg->m_Config.m_Options.bStopOnErrors == true)
                 {
@@ -229,13 +229,13 @@ namespace dialogs
 
             if (bFinished == true)
             {
-                config::CItem &item = pDlg->m_Config.m_Items.Get(nItemId);
+                config::CItem &item = pDlg->m_Config.m_Items[nItemId];
                 item.bFinished = true;
             }
 
             if ((bFinished == false) && (this->bRunning == true))
             {
-                config::CItem &item = pDlg->m_Config.m_Items.Get(nItemId);
+                config::CItem &item = pDlg->m_Config.m_Items[nItemId];
                 item.nProgress = nProgress;
                 if (item.nPreviousProgress > nProgress)
                     item.nPreviousProgress = nProgress;
@@ -276,7 +276,7 @@ namespace dialogs
         }
         void Status(int nItemId, const std::wstring& szTime, const std::wstring& szStatus)
         {
-            config::CItem &item = pDlg->m_Config.m_Items.Get(nItemId);
+            config::CItem &item = pDlg->m_Config.m_Items[nItemId];
             item.szTime = szTime;
             item.szStatus = szStatus;
             pDlg->RedrawItem(nItemId);
@@ -479,7 +479,7 @@ namespace dialogs
 
         try
         {
-            this->m_Config.m_Language.nLangId = -1;
+            this->m_Config.nLangId = -1;
 
             this->LoadTools(this->m_Config.m_Settings.szToolsPath);
             this->LoadFormats(this->m_Config.m_Settings.szFormatsPath);
@@ -584,9 +584,9 @@ namespace dialogs
     {
         CMyDialogEx::OnDestroy();
 
-        m_Config.m_Items.RemoveAll();
-        m_Config.m_Formats.RemoveAll();
-        m_Config.m_Tools.RemoveAll();
+        m_Config.m_Items.clear();
+        m_Config.m_Formats.clear();
+        m_Config.m_Tools.clear();
     }
 
     void CMainDlg::OnDropFiles(HDROP hDropInfo)
@@ -613,7 +613,7 @@ namespace dialogs
             LPTSTR szText = (LPTSTR)lParam;
             if ((nIndex >= 0) && szText != nullptr)
             {
-                config::CItem& item = m_Config.m_Items.Get(nIndex);
+                config::CItem& item = m_Config.m_Items[nIndex];
                 item.szName = szText;
             }
         }
@@ -637,7 +637,7 @@ namespace dialogs
 
         if (pItem->mask & LVIF_TEXT)
         {
-            config::CItem& item = m_Config.m_Items.Get(nItem);
+            config::CItem& item = m_Config.m_Items[nItem];
             std::wstring szText;
 
             switch (pItem->iSubItem)
@@ -681,7 +681,7 @@ namespace dialogs
 
         if (pItem->mask & LVIF_IMAGE)
         {
-            config::CItem& item = m_Config.m_Items.Get(nItem);
+            config::CItem& item = m_Config.m_Items[nItem];
 
             pItem->mask |= LVIF_STATE;
             pItem->stateMask = LVIS_STATEIMAGEMASK;
@@ -710,7 +710,7 @@ namespace dialogs
             int currentPos = startPos;
             do
             {
-                config::CItem& item = m_Config.m_Items.Get(currentPos);
+                config::CItem& item = m_Config.m_Items[currentPos];
                 if (_tcsnicmp(item.szName.c_str(), szSearchStr, szSearchStr.GetLength()) == 0)
                 {
                     *pResult = currentPos;
@@ -759,7 +759,7 @@ namespace dialogs
             nEdtItem = pNMItemActivate->iItem;
             nEdtSubItem = pNMItemActivate->iSubItem;
 
-            config::CItem& item = m_Config.m_Items.Get(nEdtItem);
+            config::CItem& item = m_Config.m_Items[nEdtItem];
             szEdtText = item.szOptions.c_str();
 
             ShowEdtItem();
@@ -833,13 +833,13 @@ namespace dialogs
                 POSITION pos = m_LstInputItems.GetFirstSelectedItemPosition();
                 if (pos != nullptr)
                 {
-                    int nItem = this->m_LstInputItems.GetNextSelectedItem(pos);
-                    if (nItem < m_Config.m_Items.Count())
+                    size_t nItem = this->m_LstInputItems.GetNextSelectedItem(pos);
+                    if (nItem < m_Config.m_Items.size())
                     {
-                        config::CItem& item = m_Config.m_Items.Get(nItem);
-                        if (m_Config.m_Formats.Count() > 0)
+                        config::CItem& item = m_Config.m_Items[nItem];
+                        if (m_Config.m_Formats.size() > 0)
                         {
-                            config::CFormat& format = m_Config.m_Formats.Get(this->m_CmbFormat.GetCurSel());
+                            config::CFormat& format = m_Config.m_Formats[this->m_CmbFormat.GetCurSel()];
                             if (util::StringHelper::CompareNoCase(item.szFormatId, format.szId))
                             {
                                 format.nDefaultPreset = item.nPreset;
@@ -847,10 +847,10 @@ namespace dialogs
                             }
                             else
                             {
-                                int nFormat = m_Config.m_Formats.GetFormatById(item.szFormatId);
+                                int nFormat = config::CFormat::GetFormatById(m_Config.m_Formats, item.szFormatId);
                                 if (nFormat >= 0)
                                 {
-                                    config::CFormat& format = m_Config.m_Formats.Get(nFormat);
+                                    config::CFormat& format = m_Config.m_Formats[nFormat];
 
                                     m_Config.m_Options.nSelectedFormat = nFormat;
                                     format.nDefaultPreset = item.nPreset;
@@ -874,7 +874,7 @@ namespace dialogs
             int nFormat = this->m_CmbFormat.GetCurSel();
             int nPreset = this->m_CmbPresets.GetCurSel();
 
-            config::CFormat& format = m_Config.m_Formats.Get(nFormat);
+            config::CFormat& format = m_Config.m_Formats[nFormat];
             format.nDefaultPreset = nPreset;
 
             this->UpdateFormatAndPreset();
@@ -1011,7 +1011,7 @@ namespace dialogs
         {
             if (this->ctx->bRunning == false)
             {
-                m_Config.m_Items.RemoveAll();
+                m_Config.m_Items.clear();
                 m_LstInputItems.SetItemCount(0);
                 this->UpdateStatusBar();
             }
@@ -1174,13 +1174,13 @@ namespace dialogs
     {
         if (this->ctx->bRunning == false)
         {
-            int nItems = m_Config.m_Items.Count();
+            size_t nItems = m_Config.m_Items.size();
             if (nItems <= 0)
                 return;
 
-            int nItemLastRemoved = -1;
+            size_t nItemLastRemoved = -1;
             std::vector<int> keep;
-            for (int i = 0; i < nItems; i++)
+            for (size_t i = 0; i < nItems; i++)
             {
                 if (!this->IsItemSelected(i))
                     keep.emplace_back(i);
@@ -1190,7 +1190,7 @@ namespace dialogs
 
             this->RemoveItems(keep);
 
-            nItems = m_Config.m_Items.Count();
+            nItems = m_Config.m_Items.size();
             m_LstInputItems.SetItemCount(nItems);
 
             if (nItemLastRemoved != -1)
@@ -1209,7 +1209,7 @@ namespace dialogs
 
             if (nItems == 0)
             {
-                m_Config.m_Items.RemoveAll();
+                m_Config.m_Items.clear();
                 m_LstInputItems.SetItemCount(0);
             }
 
@@ -1221,8 +1221,8 @@ namespace dialogs
     {
         if (this->ctx->bRunning == false)
         {
-            int nItems = m_Config.m_Items.Count();
-            for (int i = 0; i < nItems; i++)
+            size_t nItems = m_Config.m_Items.size();
+            for (size_t i = 0; i < nItems; i++)
             {
                 if (this->IsItemSelected(i))
                     this->DeselectItem(i);
@@ -1238,27 +1238,27 @@ namespace dialogs
     {
         if (this->ctx->bRunning == false)
         {
-            int nItems = m_Config.m_Items.Count();
+            size_t nItems = m_Config.m_Items.size();
             if (nItems <= 0)
                 return;
 
             std::vector<int> keep;
-            for (int i = 0; i < nItems; i++)
+            for (size_t i = 0; i < nItems; i++)
             {
-                config::CItem& item = m_Config.m_Items.Get(i);
+                config::CItem& item = m_Config.m_Items[i];
                 if (item.bChecked == false)
                     keep.emplace_back(i);
             }
 
             this->RemoveItems(keep);
 
-            nItems = m_Config.m_Items.Count();
+            nItems = m_Config.m_Items.size();
             m_LstInputItems.SetItemCount(nItems);
             this->RedrawItem(0, nItems - 1);
 
             if (nItems == 0)
             {
-                m_Config.m_Items.RemoveAll();
+                m_Config.m_Items.clear();
                 m_LstInputItems.SetItemCount(0);
             }
 
@@ -1270,27 +1270,27 @@ namespace dialogs
     {
         if (this->ctx->bRunning == false)
         {
-            int nItems = m_Config.m_Items.Count();
+            size_t nItems = m_Config.m_Items.size();
             if (nItems <= 0)
                 return;
 
             std::vector<int> keep;
-            for (int i = 0; i < nItems; i++)
+            for (size_t i = 0; i < nItems; i++)
             {
-                config::CItem& item = m_Config.m_Items.Get(i);
+                config::CItem& item = m_Config.m_Items[i];
                 if (item.bChecked == true)
                     keep.emplace_back(i);
             }
 
             this->RemoveItems(keep);
 
-            nItems = m_Config.m_Items.Count();
+            nItems = m_Config.m_Items.size();
             m_LstInputItems.SetItemCount(nItems);
             this->RedrawItem(0, nItems - 1);
 
             if (nItems == 0)
             {
-                m_Config.m_Items.RemoveAll();
+                m_Config.m_Items.clear();
                 m_LstInputItems.SetItemCount(0);
             }
 
@@ -1302,14 +1302,14 @@ namespace dialogs
     {
         if (this->ctx->bRunning == false)
         {
-            int nItems = m_Config.m_Items.Count();
+            size_t nItems = m_Config.m_Items.size();
             if (nItems > 0)
             {
-                for (int i = 0; i < nItems; i++)
+                for (size_t i = 0; i < nItems; i++)
                 {
                     if (this->IsItemSelected(i))
                     {
-                        config::CItem& item = m_Config.m_Items.Get(i);
+                        config::CItem& item = m_Config.m_Items[i];
                         if (item.bChecked == false)
                         {
                             item.bChecked = true;
@@ -1327,14 +1327,14 @@ namespace dialogs
     {
         if (this->ctx->bRunning == false)
         {
-            int nItems = m_Config.m_Items.Count();
+            size_t nItems = m_Config.m_Items.size();
             if (nItems > 0)
             {
-                for (int i = 0; i < nItems; i++)
+                for (size_t i = 0; i < nItems; i++)
                 {
                     if (this->IsItemSelected(i))
                     {
-                        config::CItem& item = m_Config.m_Items.Get(i);
+                        config::CItem& item = m_Config.m_Items[i];
                         if (item.bChecked == true)
                         {
                             item.bChecked = false;
@@ -1351,14 +1351,14 @@ namespace dialogs
     {
         if (this->ctx->bRunning == false)
         {
-            int nItems = m_Config.m_Items.Count();
+            size_t nItems = m_Config.m_Items.size();
             if (nItems > 0)
             {
-                for (int i = 0; i < nItems; i++)
+                for (size_t i = 0; i < nItems; i++)
                 {
                     if (this->IsItemSelected(i))
                     {
-                        config::CItem& item = m_Config.m_Items.Get(i);
+                        config::CItem& item = m_Config.m_Items[i];
                         item.bChecked = !item.bChecked;
                         this->RedrawItem(i);
                     }
@@ -1388,10 +1388,10 @@ namespace dialogs
     {
         if (this->ctx->bRunning == false)
         {
-            int nItems = m_Config.m_Items.Count();
+            size_t nItems = m_Config.m_Items.size();
             if (nItems > 0)
             {
-                for (int i = 0; i < nItems; i++)
+                for (size_t i = 0; i < nItems; i++)
                 {
                     if (this->IsItemSelected(i))
                         this->DeselectItem(i);
@@ -1410,8 +1410,8 @@ namespace dialogs
             if (pos != nullptr)
             {
                 int nItem = m_LstInputItems.GetNextSelectedItem(pos);
-                config::CItem& item = m_Config.m_Items.Get(nItem);
-                config::CPath& path = item.m_Paths.Get(0);
+                config::CItem& item = m_Config.m_Items[nItem];
+                config::CPath& path = item.m_Paths[0];
                 util::Utilities::LaunchAndWait(path.szPath, L"", FALSE);
             }
         }
@@ -1425,8 +1425,8 @@ namespace dialogs
             if (pos != nullptr)
             {
                 int nItem = m_LstInputItems.GetNextSelectedItem(pos);
-                config::CItem& item = m_Config.m_Items.Get(nItem);
-                config::CPath& path = item.m_Paths.Get(0);
+                config::CItem& item = m_Config.m_Items[nItem];
+                config::CPath& path = item.m_Paths[0];
                 util::Utilities::LaunchAndWait(util::Utilities::GetFilePath(path.szPath), L"", FALSE);
             }
         }
@@ -1451,7 +1451,7 @@ namespace dialogs
             INT_PTR nRet = dlg.DoModal();
             if (nRet == IDOK)
             {
-                m_Config.m_Formats.RemoveAll();
+                m_Config.m_Formats.clear();
                 m_Config.m_Formats = dlg.m_Formats;
                 this->UpdateFormatComboBox();
                 this->UpdatePresetComboBox();
@@ -1476,7 +1476,7 @@ namespace dialogs
             INT_PTR nRet = dlg.DoModal();
             if (nRet == IDOK)
             {
-                m_Config.m_Formats.RemoveAll();
+                m_Config.m_Formats.clear();
                 m_Config.m_Formats = dlg.m_Formats;
 
                 if (dlg.nSelectedFormat >= 0)
@@ -1504,8 +1504,8 @@ namespace dialogs
 #else
                 const std::wstring szPlatform = L"x64";
 #endif
-                config::CFormat& format = m_Config.m_Formats.Get(nFormat);
-                int nTool = m_Config.m_Tools.GetToolByFormatAndPlatform(format.szId, szPlatform);
+                config::CFormat& format = m_Config.m_Formats[nFormat];
+                int nTool = config::CTool::GetToolByFormatAndPlatform(m_Config.m_Tools, format.szId, szPlatform);
                 if (nTool >= 0)
                     nSelectedTool = nTool;
             }
@@ -1521,10 +1521,10 @@ namespace dialogs
             INT_PTR nRet = dlg.DoModal();
             if (nRet == IDOK)
             {
-                m_Config.m_Tools.RemoveAll();
+                m_Config.m_Tools.clear();
                 m_Config.m_Tools = dlg.m_Tools;
 
-                m_Config.m_Formats.RemoveAll();
+                m_Config.m_Formats.clear();
                 m_Config.m_Formats = dlg.m_Formats;
 
                 this->UpdateFormatComboBox();
@@ -1653,13 +1653,13 @@ namespace dialogs
     void CMainDlg::OnLanguageChange(UINT nID)
     {
         int nSelectedLanguage = nID - ID_LANGUAGE_MIN;
-        lang::CLanguage& language = m_Config.m_Language.m_Languages.Get(nSelectedLanguage);
+        config::CLanguage& language = m_Config.m_Languages[nSelectedLanguage];
         m_Config.m_Options.szSelectedLanguage = language.szId;
-        m_Config.m_Language.nLangId = nSelectedLanguage;
+        m_Config.nLangId = nSelectedLanguage;
 
         CMenu *m_hLangMenu = this->GetMenu()->GetSubMenu(4);
-        int nLanguages = m_Config.m_Language.m_Languages.Count();
-        for (int i = 0; i < nLanguages; i++)
+        size_t nLanguages = m_Config.m_Languages.size();
+        for (size_t i = 0; i < nLanguages; i++)
         {
             UINT nLangID = ID_LANGUAGE_MIN + i;
             if (nLangID != nID)
@@ -1703,10 +1703,10 @@ namespace dialogs
                     std::string szName = xml::XmlDoc::GetRootName(doc);
                     if (util::StringHelper::CompareNoCase(szName, "Language"))
                     {
-                        lang::CLanguage language;
+                        config::CLanguage language;
                         if (xml::XmlConfig::LoadLanguage(doc, language))
                         {
-                            this->m_Config.m_Language.m_Languages.Insert(std::move(language));
+                            this->m_Config.m_Languages.emplace_back(std::move(language));
                         }
                     }
                 }
@@ -1722,7 +1722,7 @@ namespace dialogs
 
     void CMainDlg::AddLanguageToMenu(int nIndex)
     {
-        lang::CLanguage& language = m_Config.m_Language.m_Languages.Get(nIndex);
+        config::CLanguage& language = m_Config.m_Languages[nIndex];
         std::wstring szText = language.szOriginalName + L" (" + language.szTranslatedName + L")";
 
         UINT nLangID = ID_LANGUAGE_MIN + nIndex;
@@ -1737,14 +1737,14 @@ namespace dialogs
     void CMainDlg::InitLanguageMenu()
     {
         CMenu *m_hLangMenu = this->GetMenu()->GetSubMenu(4);
-        int nLanguages = m_Config.m_Language.m_Languages.Count();
+        size_t nLanguages = m_Config.m_Languages.size();
         if (nLanguages > 0 && nLanguages <= (ID_LANGUAGE_MAX - ID_LANGUAGE_MIN))
         {
             m_hLangMenu->DeleteMenu(ID_LANGUAGE_DEFAULT, 0);
 
-            for (int i = 0; i < nLanguages; i++)
+            for (size_t i = 0; i < nLanguages; i++)
             {
-                lang::CLanguage& language = m_Config.m_Language.m_Languages.Get(i);
+                config::CLanguage& language = m_Config.m_Languages[i];
                 std::wstring szText = language.szOriginalName + L" (" + language.szTranslatedName + L")";
 
                 UINT nLangID = ID_LANGUAGE_MIN + i;
@@ -1752,19 +1752,19 @@ namespace dialogs
                 m_hLangMenu->CheckMenuItem(nLangID, MF_UNCHECKED);
             }
 
-            int nSelectedLanguage = m_Config.m_Language.m_Languages.GetLanguageById(m_Config.m_Options.szSelectedLanguage);
+            int nSelectedLanguage = config::CLanguage::GetLanguageById(m_Config.m_Languages, m_Config.m_Options.szSelectedLanguage);
             if (nSelectedLanguage >= 0)
             {
-                lang::CLanguage& language = m_Config.m_Language.m_Languages.Get(nSelectedLanguage);
-                m_Config.m_Language.nLangId = nSelectedLanguage;
+                config::CLanguage& language = m_Config.m_Languages[nSelectedLanguage];
+                m_Config.nLangId = nSelectedLanguage;
 
                 m_hLangMenu->CheckMenuItem(ID_LANGUAGE_MIN + nSelectedLanguage, MF_CHECKED);
             }
             else
             {
-                lang::CLanguage& language = m_Config.m_Language.m_Languages.Get(0);
+                config::CLanguage& language = m_Config.m_Languages[0];
                 m_Config.m_Options.szSelectedLanguage = language.szId;
-                m_Config.m_Language.nLangId = 0;
+                m_Config.nLangId = 0;
 
                 m_hLangMenu->CheckMenuItem(ID_LANGUAGE_MIN, MF_CHECKED);
             }
@@ -1864,14 +1864,14 @@ namespace dialogs
         int nItems = this->m_LstInputItems.GetItemCount();
         for (int i = 0; i < nItems; i++)
         {
-            config::CItem& item = m_Config.m_Items.Get(i);
+            config::CItem& item = m_Config.m_Items[i];
             item.nId = i;
         }
     }
 
     void CMainDlg::SetItems()
     {
-        int nItems = m_Config.m_Items.Count();
+        size_t nItems = m_Config.m_Items.size();
         m_LstInputItems.SetItemCount(nItems);
     }
 
@@ -2105,7 +2105,7 @@ namespace dialogs
 
     void CMainDlg::ToggleItem(int nItem)
     {
-        config::CItem& item = m_Config.m_Items.Get(nItem);
+        config::CItem& item = m_Config.m_Items[nItem];
         item.bChecked = !item.bChecked;
         this->RedrawItem(nItem);
     }
@@ -2116,26 +2116,26 @@ namespace dialogs
         int nPreset = this->m_CmbPresets.GetCurSel();
 
         std::wstring szFormatId = L"";
-        if (m_Config.m_Formats.Count() > 0)
+        if (m_Config.m_Formats.size() > 0)
         {
             if (m_Config.m_Options.bTryToFindDecoder == true)
             {
-                int nDecoder = m_Config.m_Formats.GetDecoderByExtension(util::Utilities::GetFileExtension(szPath));
+                int nDecoder = config::CFormat::GetDecoderByExtension(m_Config.m_Formats, util::Utilities::GetFileExtension(szPath));
                 if (nDecoder == -1)
                 {
-                    config::CFormat &format = m_Config.m_Formats.Get(nFormat);
+                    config::CFormat &format = m_Config.m_Formats[nFormat];
                     szFormatId = format.szId;
                 }
                 else
                 {
-                    config::CFormat &format = m_Config.m_Formats.Get(nDecoder);
+                    config::CFormat &format = m_Config.m_Formats[nDecoder];
                     szFormatId = format.szId;
                     nPreset = format.nDefaultPreset;
                 }
             }
             else
             {
-                config::CFormat &format = m_Config.m_Formats.Get(nFormat);
+                config::CFormat &format = m_Config.m_Formats[nFormat];
                 szFormatId = format.szId;
             }
         }
@@ -2145,7 +2145,7 @@ namespace dialogs
         config::CPath path;
         path.szPath = szPath;
         path.nSize = nFileSize;
-        item.m_Paths.Insert(path);
+        item.m_Paths.emplace_back(path);
         item.nSize = nFileSize;
         item.szName = util::Utilities::GetOnlyFileName(szPath);
         item.szExtension = util::StringHelper::ToUpper(util::Utilities::GetFileExtension(szPath));
@@ -2153,9 +2153,9 @@ namespace dialogs
         item.nPreset = nPreset;
         item.bChecked = true;
 
-        m_Config.m_Items.Insert(item);
+        m_Config.m_Items.emplace_back(item);
 
-        return (int)m_Config.m_Items.Count() - 1;
+        return (int)m_Config.m_Items.size() - 1;
     }
 
     void CMainDlg::RedrawItem(int nItem)
@@ -2173,7 +2173,7 @@ namespace dialogs
         if (m_Config.m_Options.bValidateInputFiles == true)
         {
             std::wstring szExt = util::Utilities::GetFileExtension(szPath);
-            if (m_Config.m_Formats.IsValidInputExtension(szExt) == false)
+            if (config::CFormat::IsValidInputExtension(m_Config.m_Formats, szExt) == false)
                 return false;
         }
 
@@ -2188,15 +2188,13 @@ namespace dialogs
 
     void CMainDlg::RemoveItems(std::vector<int>& keep)
     {
-        config::CItemsList items;
-
+        std::vector<config::CItem> items;
         for (size_t i = 0; i < keep.size(); i++)
         {
             int nIndex = keep[i];
-            auto& item = m_Config.m_Items.Get(nIndex);
-            items.Insert(std::move(item));
+            auto& item = m_Config.m_Items[nIndex];
+            items.emplace_back(std::move(item));
         }
-
         m_Config.m_Items = items;
     }
 
@@ -2224,7 +2222,7 @@ namespace dialogs
 
                 if (nEdtSubItem == ITEM_COLUMN_OPTIONS)
                 {
-                    config::CItem& item = m_Config.m_Items.Get(nEdtItem);
+                    config::CItem& item = m_Config.m_Items[nEdtItem];
                     item.szOptions = szEdtText;
                     this->RedrawItem(nEdtItem);
                 }
@@ -2308,7 +2306,7 @@ namespace dialogs
                         int nFormat = this->m_CmbFormat.GetCurSel();
                         if (nFormat != -1)
                         {
-                            config::CFormat& format = m_Config.m_Formats.Get(nFormat);
+                            config::CFormat& format = m_Config.m_Formats[nFormat];
                             format.szPath = szPath;
                         }
                     }
@@ -2318,7 +2316,7 @@ namespace dialogs
                         int nFormat = this->m_CmbFormat.GetCurSel();
                         if (nFormat != -1)
                         {
-                            config::CFormat& format = m_Config.m_Formats.Get(nFormat);
+                            config::CFormat& format = m_Config.m_Formats[nFormat];
                             format.szFunction = szPath;
                         }
                     }
@@ -2344,10 +2342,10 @@ namespace dialogs
         {
             this->m_CmbFormat.ResetContent();
 
-            int nFormats = m_Config.m_Formats.Count();
-            for (int i = 0; i < nFormats; i++)
+            size_t nFormats = m_Config.m_Formats.size();
+            for (size_t i = 0; i < nFormats; i++)
             {
-                config::CFormat& format = m_Config.m_Formats.Get(i);
+                config::CFormat& format = m_Config.m_Formats[i];
                 this->m_CmbFormat.InsertString(i, format.szName.c_str());
             }
 
@@ -2370,16 +2368,16 @@ namespace dialogs
 
             int nPreset = -1;
 
-            if (m_Config.m_Options.nSelectedFormat > m_Config.m_Formats.Count() - 1)
+            if (m_Config.m_Options.nSelectedFormat > m_Config.m_Formats.size() - 1)
                 m_Config.m_Options.nSelectedFormat = 0;
 
-            if (m_Config.m_Options.nSelectedFormat >= 0 && m_Config.m_Formats.Count() > 0)
+            if (m_Config.m_Options.nSelectedFormat >= 0 && m_Config.m_Formats.size() > 0)
             {
-                config::CFormat& format = m_Config.m_Formats.Get(m_Config.m_Options.nSelectedFormat);
-                int nPresets = format.m_Presets.Count();
-                for (int i = 0; i < nPresets; i++)
+                config::CFormat& format = m_Config.m_Formats[m_Config.m_Options.nSelectedFormat];
+                size_t nPresets = format.m_Presets.size();
+                for (size_t i = 0; i < nPresets; i++)
                 {
-                    config::CPreset& preset = format.m_Presets.Get(i);
+                    config::CPreset& preset = format.m_Presets[i];
                     this->m_CmbPresets.InsertString(i, preset.szName.c_str());
                 }
 
@@ -2403,18 +2401,17 @@ namespace dialogs
         int nPreset = this->m_CmbPresets.GetCurSel();
         if ((nFormat >= 0) && (nPreset >= 0))
         {
-            config::CFormat& format = m_Config.m_Formats.Get(nFormat);
-            config::CPreset& preset = format.m_Presets.Get(nPreset);
-            int nItems = m_Config.m_Items.Count();
-
+            config::CFormat& format = m_Config.m_Formats[nFormat];
+            config::CPreset& preset = format.m_Presets[nPreset];
+            size_t nItems = m_Config.m_Items.size();
             if (nItems > 0)
             {
                 int nSelected = 0;
-                for (int i = 0; i < nItems; i++)
+                for (size_t i = 0; i < nItems; i++)
                 {
                     if (this->IsItemSelected(i))
                     {
-                        config::CItem& item = m_Config.m_Items.Get(i);
+                        config::CItem& item = m_Config.m_Items[i];
                         item.szFormatId = format.szId;
                         item.nPreset = nPreset;
                         this->RedrawItem(i);
@@ -2424,13 +2421,12 @@ namespace dialogs
 
                 if (nSelected == 0)
                 {
-                    for (int i = 0; i < nItems; i++)
+                    for (size_t i = 0; i < nItems; i++)
                     {
-                        config::CItem& item = m_Config.m_Items.Get(i);
+                        config::CItem& item = m_Config.m_Items[i];
                         item.szFormatId = format.szId;
                         item.nPreset = nPreset;
                     }
-
                     this->RedrawItem(0, nItems - 1);
                 }
             }
@@ -2444,17 +2440,17 @@ namespace dialogs
 
     void CMainDlg::ResetConvertionTime()
     {
-        int nItems = m_Config.m_Items.Count();
+        size_t nItems = m_Config.m_Items.size();
         if (nItems > 0)
         {
             std::wstring szDefaultTime = m_Config.GetString(0x00150001);
             int nSelected = 0;
 
-            for (int i = 0; i < nItems; i++)
+            for (size_t i = 0; i < nItems; i++)
             {
                 if (this->IsItemSelected(i))
                 {
-                    config::CItem& item = m_Config.m_Items.Get(i);
+                    config::CItem& item = m_Config.m_Items[i];
                     item.szTime = szDefaultTime;
                     this->RedrawItem(i);
                     nSelected++;
@@ -2463,9 +2459,9 @@ namespace dialogs
 
             if (nSelected == 0)
             {
-                for (int i = 0; i < nItems; i++)
+                for (size_t i = 0; i < nItems; i++)
                 {
-                    config::CItem& item = m_Config.m_Items.Get(i);
+                    config::CItem& item = m_Config.m_Items[i];
                     item.szTime = szDefaultTime;
                 }
                 this->RedrawItem(0, nItems - 1);
@@ -2475,17 +2471,17 @@ namespace dialogs
 
     void CMainDlg::ResetConvertionStatus()
     {
-        int nItems = m_Config.m_Items.Count();
+        size_t nItems = m_Config.m_Items.size();
         if (nItems > 0)
         {
             std::wstring szDefaultStatus = m_Config.GetString(0x00210001);
             int nSelected = 0;
 
-            for (int i = 0; i < nItems; i++)
+            for (size_t i = 0; i < nItems; i++)
             {
                 if (this->IsItemSelected(i))
                 {
-                    config::CItem& item = m_Config.m_Items.Get(i);
+                    config::CItem& item = m_Config.m_Items[i];
                     item.szStatus = szDefaultStatus;
                     this->RedrawItem(i);
                     nSelected++;
@@ -2494,9 +2490,9 @@ namespace dialogs
 
             if (nSelected == 0)
             {
-                for (int i = 0; i < nItems; i++)
+                for (size_t i = 0; i < nItems; i++)
                 {
-                    config::CItem& item = m_Config.m_Items.Get(i);
+                    config::CItem& item = m_Config.m_Items[i];
                     item.szStatus = szDefaultStatus;
                 }
                 this->RedrawItem(0, nItems - 1);
@@ -2506,7 +2502,7 @@ namespace dialogs
 
     void CMainDlg::UpdateStatusBar()
     {
-        int nItems = m_Config.m_Items.Count();
+        size_t nItems = m_Config.m_Items.size();
         if (nItems > 0)
         {
             std::wstring szText = std::to_wstring(nItems) + L" " + ((nItems > 1) ? m_Config.GetString(0x00210003) : m_Config.GetString(0x00210002));
@@ -2590,7 +2586,7 @@ namespace dialogs
 
             this->ctx->pConfig = &this->m_Config;
 
-            int nItems = this->m_Config.m_Items.Count();
+            size_t nItems = this->m_Config.m_Items.size();
             int nChecked = 0;
 
             if (nItems <= 0)
@@ -2603,9 +2599,9 @@ namespace dialogs
             std::wstring szDefaultTime = m_Config.GetString(0x00150001);
             std::wstring szDefaultStatus = m_Config.GetString(0x00210001);
 
-            for (int i = 0; i < nItems; i++)
+            for (size_t i = 0; i < nItems; i++)
             {
-                config::CItem& item = this->m_Config.m_Items.Get(i);
+                config::CItem& item = this->m_Config.m_Items[i];
                 if (item.bChecked == true)
                 {
                     item.szTime = szDefaultTime;
@@ -2715,7 +2711,7 @@ namespace dialogs
         bool bResult = util::Utilities::FindFiles(szPath, files, false);
         if (bResult == true)
         {
-            config::CFormatsList formats;
+            std::vector<config::CFormat> formats;
             for (auto& file : files)
             {
                 xml::XmlDocumnent doc;
@@ -2727,14 +2723,14 @@ namespace dialogs
                         config::CFormat format;
                         if (xml::XmlConfig::LoadFormat(doc, format))
                         {
-                            formats.Insert(std::move(format));
+                            formats.emplace_back(std::move(format));
                         }
                     }
                 }
             }
-            if (formats.Count() > 0)
+            if (formats.size() > 0)
             {
-                formats.Sort();
+                config::CFormat::Sort(formats);
                 this->m_Config.m_Formats = std::move(formats);
                 this->UpdateFormatComboBox();
                 this->UpdatePresetComboBox();
@@ -2747,7 +2743,7 @@ namespace dialogs
     bool CMainDlg::SaveFormats(const std::wstring& szPath)
     {
         ::CreateDirectory(szPath.c_str(), nullptr);
-        for (auto& format : this->m_Config.m_Formats.m_Items)
+        for (auto& format : this->m_Config.m_Formats)
         {
             std::wstring path = util::Utilities::CombinePath(szPath, format.szId + L".xml");
             if (this->SaveFormat(path, format) == false)
@@ -2772,8 +2768,8 @@ namespace dialogs
         config::CFormat format;
         if (xml::XmlConfig::LoadFormat(doc, format))
         {
-            m_Config.m_Formats.Insert(format);
-            m_Config.m_Formats.Sort();
+            m_Config.m_Formats.emplace_back(format);
+            config::CFormat::Sort(m_Config.m_Formats);
             this->UpdateFormatComboBox();
             this->UpdatePresetComboBox();
             return true;
@@ -2799,13 +2795,13 @@ namespace dialogs
 
     bool CMainDlg::LoadPresets(xml::XmlDocumnent &doc)
     {
-        config::CPresetsList presets;
+        std::vector<config::CPreset> presets;
         if (xml::XmlConfig::LoadPresets(doc, presets))
         {
             int nFormat = this->m_CmbFormat.GetCurSel();
             if (nFormat != -1)
             {
-                config::CFormat& format = m_Config.m_Formats.Get(nFormat);
+                config::CFormat& format = m_Config.m_Formats[nFormat];
                 format.m_Presets = std::move(presets);
                 this->UpdatePresetComboBox();
                 return true;
@@ -2819,7 +2815,7 @@ namespace dialogs
         int nFormat = this->m_CmbFormat.GetCurSel();
         if (nFormat != -1)
         {
-            config::CFormat& format = m_Config.m_Formats.Get(nFormat);
+            config::CFormat& format = m_Config.m_Formats[nFormat];
             return xml::XmlConfig::SavePresets(szFileXml, format.m_Presets);
         }
         return false;
@@ -2831,7 +2827,7 @@ namespace dialogs
         bool bResult = util::Utilities::FindFiles(szPath, files, false);
         if (bResult == true)
         {
-            config::CToolsList tools;
+            std::vector<config::CTool> tools;
             for (auto& file : files)
             {
                 xml::XmlDocumnent doc;
@@ -2843,14 +2839,14 @@ namespace dialogs
                         config::CTool tool;
                         if (xml::XmlConfig::LoadTool(doc, tool))
                         {
-                            tools.Insert(std::move(tool));
+                            tools.emplace_back(std::move(tool));
                         }
                     }
                 }
             }
-            if (tools.Count() > 0)
+            if (tools.size() > 0)
             {
-                tools.Sort();
+                config::CTool::Sort(tools);
                 this->m_Config.m_Tools = std::move(tools);
             }
             return true;
@@ -2861,7 +2857,7 @@ namespace dialogs
     bool CMainDlg::SaveTools(const std::wstring& szPath)
     {
         ::CreateDirectory(szPath.c_str(), nullptr);
-        for (auto& tool : this->m_Config.m_Tools.m_Items)
+        for (auto& tool : this->m_Config.m_Tools)
         {
             std::wstring path = util::Utilities::CombinePath(szPath, tool.szName + L".xml");
             if (this->SaveTool(path, tool) == false)
@@ -2886,8 +2882,8 @@ namespace dialogs
         config::CTool tool;
         if (xml::XmlConfig::LoadTool(doc, tool))
         {
-            m_Config.m_Tools.Insert(tool);
-            m_Config.m_Tools.Sort();
+            m_Config.m_Tools.emplace_back(tool);
+            config::CTool::Sort(m_Config.m_Tools);
             return true;
         }
         return false;
@@ -2911,7 +2907,7 @@ namespace dialogs
 
     bool CMainDlg::LoadItems(xml::XmlDocumnent &doc)
     {
-        config::CItemsList items;
+        std::vector<config::CItem> items;
         if (xml::XmlConfig::LoadItems(doc, items))
         {
             m_LstInputItems.SetItemCount(0);
@@ -2942,12 +2938,12 @@ namespace dialogs
 
     bool CMainDlg::LoadLanguage(xml::XmlDocumnent &doc)
     {
-        lang::CLanguage language;
+        config::CLanguage language;
         if (xml::XmlConfig::LoadLanguage(doc, language))
         {
-            this->m_Config.m_Language.m_Languages.Insert(std::move(language));
-            int nLanguages = m_Config.m_Language.m_Languages.Count();
-            int nIndex = nLanguages - 1;
+            this->m_Config.m_Languages.emplace_back(std::move(language));
+            size_t nLanguages = m_Config.m_Languages.size();
+            size_t nIndex = nLanguages - 1;
             this->AddLanguageToMenu(nIndex);
             return true;
         }

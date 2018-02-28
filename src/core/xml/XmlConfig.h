@@ -85,17 +85,25 @@ namespace xml
         }
         int ToInt(const char *pszUtf8)
         {
-            return _wtoi(ToString(pszUtf8).c_str());
+            return std::stoi(pszUtf8);
+        }
+        size_t ToUInt(const char *pszUtf8)
+        {
+            return std::stoul(pszUtf8);
         }
         unsigned __int64 ToUInt64(const char *pszUtf8)
         {
-           return _wcstoui64(ToString(pszUtf8).c_str(), nullptr, 10);
+           return std::strtoull(pszUtf8, nullptr, 10);
         }
         bool ToBool(const char *pszUtf8)
         {
             return _wcsicmp(ToString(pszUtf8).c_str(), m_True.c_str()) == 0;
         }
         std::wstring ToString(const int nValue)
+        {
+            return std::to_wstring(nValue);
+        }
+        std::wstring ToString(const size_t nValue)
         {
             return std::to_wstring(nValue);
         }
@@ -124,6 +132,16 @@ namespace xml
             if (pszResult != nullptr)
             {
                 (*value) = ToInt(pszResult);
+                return true;
+            }
+            return false;
+        }
+        bool GetAttributeValue(const XmlElement *element, const char *name, size_t *value)
+        {
+            const char *pszResult = element->Attribute(name);
+            if (pszResult != nullptr)
+            {
+                (*value) = ToUInt(pszResult);
                 return true;
             }
             return false;
@@ -157,6 +175,10 @@ namespace xml
         {
             element->SetAttribute(name, util::CUtf8String::ToUtf8(ToString(value)).c_str());
         }
+        void SetAttributeValue(XmlElement *element, const char *name, const size_t &value)
+        {
+            element->SetAttribute(name, util::CUtf8String::ToUtf8(ToString(value)).c_str());
+        }
         void SetAttributeValue(XmlElement *element, const char *name, const unsigned __int64 &value)
         {
             element->SetAttribute(name, util::CUtf8String::ToUtf8(ToString(value)).c_str());
@@ -182,6 +204,16 @@ namespace xml
             if (element != nullptr)
             {
                 (*value) = ToInt(element->GetText());
+                return true;
+            }
+            return false;
+        }
+        bool GetChildValue(const XmlElement *parent, const char *name, size_t *value)
+        {
+            auto element = parent->FirstChildElement(name);
+            if (element != nullptr)
+            {
+                (*value) = ToUInt(element->GetText());
                 return true;
             }
             return false;
@@ -214,6 +246,12 @@ namespace xml
             parent->LinkEndChild(element);
         }
         void SetChildValue(XmlElement *parent, const char *name, const int &value)
+        {
+            auto element = m_Document.NewElement(name);
+            element->LinkEndChild(m_Document.NewText(util::CUtf8String::ToUtf8(ToString(value)).c_str()));
+            parent->LinkEndChild(element);
+        }
+        void SetChildValue(XmlElement *parent, const char *name, const size_t &value)
         {
             auto element = m_Document.NewElement(name);
             element->LinkEndChild(m_Document.NewText(util::CUtf8String::ToUtf8(ToString(value)).c_str()));
@@ -483,7 +521,7 @@ namespace xml
         XmlLanguages(XmlDocumnent &doc) : XmlDoc(doc) { }
         virtual ~XmlLanguages() { }
     public:
-        bool GetLanguage(const XmlElement *parent, lang::CLanguage &m_Language)
+        bool GetLanguage(const XmlElement *parent, config::CLanguage &m_Language)
         {
             VALIDATE(GetAttributeValue(parent, "id", &m_Language.szId));
             VALIDATE(GetAttributeValue(parent, "original", &m_Language.szOriginalName));
@@ -507,7 +545,7 @@ namespace xml
             }
             return false;
         }
-        void SetLanguage(XmlElement *parent, lang::CLanguage &m_Language)
+        void SetLanguage(XmlElement *parent, config::CLanguage &m_Language)
         {
             SetAttributeValue(parent, "id", m_Language.szId);
             SetAttributeValue(parent, "original", m_Language.szOriginalName);
@@ -526,7 +564,7 @@ namespace xml
             }
         }
     public:
-        bool GetLanguage(lang::CLanguage &m_Language)
+        bool GetLanguage(config::CLanguage &m_Language)
         {
             auto element = this->FirstChildElement("Language");
             if (element != nullptr)
@@ -536,7 +574,7 @@ namespace xml
             }
             return false;
         }
-        void SetLanguage(lang::CLanguage &m_Language)
+        void SetLanguage(config::CLanguage &m_Language)
         {
             auto element = this->NewElement("Language");
             this->LinkEndChild(element);
@@ -824,19 +862,19 @@ namespace xml
             return xml.Save(szFileXml);
         }
     public:
-        static bool LoadLanguage(XmlDocumnent &doc, lang::CLanguage &language)
+        static bool LoadLanguage(XmlDocumnent &doc, config::CLanguage &language)
         {
             XmlLanguages xml(doc);
             return xml.GetLanguage(language);
         }
-        static bool LoadLanguage(const std::wstring& szFileXml, lang::CLanguage &language)
+        static bool LoadLanguage(const std::wstring& szFileXml, config::CLanguage &language)
         {
             XmlDocumnent doc;
             if (XmlDoc::Open(szFileXml, doc) == true)
                 return LoadLanguage(doc, language);
             return false;
         }
-        static bool SaveLanguage(const std::wstring& szFileXml, lang::CLanguage &language)
+        static bool SaveLanguage(const std::wstring& szFileXml, config::CLanguage &language)
         {
             XmlDocumnent doc;
             XmlLanguages xml(doc);

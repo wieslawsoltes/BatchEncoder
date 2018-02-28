@@ -6,6 +6,7 @@
 #include <string>
 #include <algorithm>
 #include <vector>
+#include "utilities\StringHelper.h"
 
 namespace config
 {
@@ -29,7 +30,7 @@ namespace config
             return util::StringHelper::ContainsNoCase(this->szFormats, szFormat, token);
         }
     public:
-        static size_t GetToolByPath(const std::vector<CTool>& tools, const std::wstring& szPath)
+        static size_t GetToolByPath(std::vector<CTool>& tools, const std::wstring& szPath)
         {
             size_t nTools = tools.size();
             for (size_t i = 0; i < nTools; i++)
@@ -40,7 +41,7 @@ namespace config
             }
             return -1;
         }
-        static size_t GetToolByFormat(const std::vector<CTool>& tools, const std::wstring& szFormat)
+        static size_t GetToolByFormat(std::vector<CTool>& tools, const std::wstring& szFormat)
         {
             size_t nTools = tools.size();
             for (size_t i = 0; i < nTools; i++)
@@ -51,7 +52,7 @@ namespace config
             }
             return -1;
         }
-        static size_t GetToolByFormatAndPlatform(const std::vector<CTool>& tools, const std::wstring& szFormat, const std::wstring& szPlatform)
+        static size_t GetToolByFormatAndPlatform(std::vector<CTool>& tools, const std::wstring& szFormat, const std::wstring& szPlatform)
         {
             size_t nTools = tools.size();
             for (size_t i = 0; i < nTools; i++)
@@ -62,7 +63,7 @@ namespace config
             }
             return -1;
         }
-        static bool IsValidFormat(const std::vector<CTool>& tools, const std::wstring& szFormat)
+        static bool IsValidFormat(std::vector<CTool>& tools, const std::wstring& szFormat)
         {
             size_t nTools = tools.size();
             for (size_t i = 0; i < nTools; i++)

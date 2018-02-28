@@ -11,7 +11,7 @@ namespace config
     {
     public:
         std::wstring szSelectedLanguage;
-        int nSelectedFormat;
+        size_t nSelectedFormat;
         std::wstring szOutputPath;
         bool bDeleteSourceFiles;
         bool bRecurseChecked;
