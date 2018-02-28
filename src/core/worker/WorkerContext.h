@@ -3,6 +3,8 @@
 
 #pragma once
 
+#include <string>
+#include <utility>
 #include "configuration\Configuration.h"
 
 namespace worker
@@ -23,6 +25,8 @@ namespace worker
         IWorkerContext(config::CConfiguration* pConfig)
             : pConfig(pConfig) { }
         virtual ~IWorkerContext() { }
+    public:
+        virtual std::wstring GetString(int nKey) = 0;
     public:
         virtual void Init() = 0;
         virtual void Next(int nItemId) = 0;

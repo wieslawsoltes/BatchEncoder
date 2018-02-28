@@ -30,7 +30,7 @@ namespace worker
 
         if ((cl.bUseReadPipes == true) || (cl.bUseWritePipes == true))
         {
-            ctx->Status(cl.nItemId, ctx->pConfig->GetString(0x00150001), ctx->pConfig->GetString(0x00120001));
+            ctx->Status(cl.nItemId, ctx->GetString(0x00150001), ctx->GetString(0x00120001));
             ctx->Callback(cl.nItemId, -1, true, true);
             return false;
         }
@@ -38,7 +38,7 @@ namespace worker
         // create pipes for stderr
         if (Stderr.Create() == false)
         {
-            ctx->Status(cl.nItemId, ctx->pConfig->GetString(0x00150001), ctx->pConfig->GetString(0x00120002));
+            ctx->Status(cl.nItemId, ctx->GetString(0x00150001), ctx->GetString(0x00120002));
             ctx->Callback(cl.nItemId, -1, true, true);
             return false;
         }
@@ -46,7 +46,7 @@ namespace worker
         // duplicate stderr read pipe handle to prevent child process from closing the pipe
         if (Stderr.DuplicateRead() == false)
         {
-            ctx->Status(cl.nItemId, ctx->pConfig->GetString(0x00150001), ctx->pConfig->GetString(0x00120003));
+            ctx->Status(cl.nItemId, ctx->GetString(0x00150001), ctx->GetString(0x00120003));
             ctx->Callback(cl.nItemId, -1, true, true);
             return false;
         }
@@ -81,7 +81,7 @@ namespace worker
                     bool bResult = m_Utilities.Download(tool, true, true, nTool, ctx->pConfig,
                         [this, ctx, &cl](int nIndex, std::wstring szStatus) -> bool
                     {
-                        ctx->Status(cl.nItemId, ctx->pConfig->GetString(0x00150001), szStatus);
+                        ctx->Status(cl.nItemId, ctx->GetString(0x00150001), szStatus);
                         if (ctx->bRunning == false)
                             return true;
                         return false;
@@ -109,9 +109,9 @@ namespace worker
                 Stderr.CloseWrite();
 
                 CString szStatus;
-                szStatus.Format(ctx->pConfig->GetString(0x00120004).c_str(), ::GetLastError());
+                szStatus.Format(ctx->GetString(0x00120004).c_str(), ::GetLastError());
 
-                ctx->Status(cl.nItemId, ctx->pConfig->GetString(0x00150001), std::wstring(CT2CW(szStatus)));
+                ctx->Status(cl.nItemId, ctx->GetString(0x00150001), std::wstring(CT2CW(szStatus)));
                 ctx->Callback(cl.nItemId, -1, true, true);
                 return false;
             }
@@ -138,13 +138,13 @@ namespace worker
 
         if (parser.nProgress != 100)
         {
-            ctx->Status(cl.nItemId, ctx->pConfig->GetString(0x00150001), ctx->pConfig->GetString(0x00120005));
+            ctx->Status(cl.nItemId, ctx->GetString(0x00150001), ctx->GetString(0x00120005));
             ctx->Callback(cl.nItemId, -1, true, true);
             return false;
         }
         else
         {
-            ctx->Status(cl.nItemId, util::CTimeCount::Format(timer.ElapsedTime()), ctx->pConfig->GetString(0x00120006));
+            ctx->Status(cl.nItemId, util::CTimeCount::Format(timer.ElapsedTime()), ctx->GetString(0x00120006));
             ctx->Callback(cl.nItemId, 100, true, false);
             return true;
         }
@@ -164,7 +164,7 @@ namespace worker
 
         if ((cl.bUseReadPipes == false) && (cl.bUseWritePipes == false))
         {
-            ctx->Status(cl.nItemId, ctx->pConfig->GetString(0x00150001), ctx->pConfig->GetString(0x00130001));
+            ctx->Status(cl.nItemId, ctx->GetString(0x00150001), ctx->GetString(0x00130001));
             ctx->Callback(cl.nItemId, -1, true, true);
             return false;
         }
@@ -174,7 +174,7 @@ namespace worker
             // create pipes for stdin
             if (Stdin.Create() == false)
             {
-                ctx->Status(cl.nItemId, ctx->pConfig->GetString(0x00150001), ctx->pConfig->GetString(0x00130002));
+                ctx->Status(cl.nItemId, ctx->GetString(0x00150001), ctx->GetString(0x00130002));
                 ctx->Callback(cl.nItemId, -1, true, true);
                 return false;
             }
@@ -182,7 +182,7 @@ namespace worker
             // set stdin write pipe inherit flag
             if (Stdin.InheritWrite() == false)
             {
-                ctx->Status(cl.nItemId, ctx->pConfig->GetString(0x00150001), ctx->pConfig->GetString(0x00130003));
+                ctx->Status(cl.nItemId, ctx->GetString(0x00150001), ctx->GetString(0x00130003));
                 ctx->Callback(cl.nItemId, -1, true, true);
                 return false;
             }
@@ -199,7 +199,7 @@ namespace worker
                     Stdin.CloseWrite();
                 }
 
-                ctx->Status(cl.nItemId, ctx->pConfig->GetString(0x00150001), ctx->pConfig->GetString(0x00130004));
+                ctx->Status(cl.nItemId, ctx->GetString(0x00150001), ctx->GetString(0x00130004));
                 ctx->Callback(cl.nItemId, -1, true, true);
                 return false;
             }
@@ -216,7 +216,7 @@ namespace worker
                 Stdout.CloseRead();
                 Stdout.CloseWrite();
 
-                ctx->Status(cl.nItemId, ctx->pConfig->GetString(0x00150001), ctx->pConfig->GetString(0x00130005));
+                ctx->Status(cl.nItemId, ctx->GetString(0x00150001), ctx->GetString(0x00130005));
                 ctx->Callback(cl.nItemId, -1, true, true);
                 return false;
             }
@@ -267,7 +267,7 @@ namespace worker
                     bool bResult = m_Utilities.Download(tool, true, true, nTool, ctx->pConfig,
                         [this, ctx, &cl](int nIndex, std::wstring szStatus) -> bool
                     {
-                        ctx->Status(cl.nItemId, ctx->pConfig->GetString(0x00150001), szStatus);
+                        ctx->Status(cl.nItemId, ctx->GetString(0x00150001), szStatus);
                         if (ctx->bRunning == false)
                             return true;
                         return false;
@@ -304,9 +304,9 @@ namespace worker
                 }
 
                 CString szStatus;
-                szStatus.Format(ctx->pConfig->GetString(0x00130006).c_str(), ::GetLastError());
+                szStatus.Format(ctx->GetString(0x00130006).c_str(), ::GetLastError());
 
-                ctx->Status(cl.nItemId, ctx->pConfig->GetString(0x00150001), std::wstring(CT2CW(szStatus)));
+                ctx->Status(cl.nItemId, ctx->GetString(0x00150001), std::wstring(CT2CW(szStatus)));
                 ctx->Callback(cl.nItemId, -1, true, true);
                 return false;
             }
@@ -413,13 +413,13 @@ namespace worker
 
         if (nProgress != 100)
         {
-            ctx->Status(cl.nItemId, ctx->pConfig->GetString(0x00150001), ctx->pConfig->GetString(0x00130009));
+            ctx->Status(cl.nItemId, ctx->GetString(0x00150001), ctx->GetString(0x00130009));
             ctx->Callback(cl.nItemId, -1, true, true);
             return false;
         }
         else
         {
-            ctx->Status(cl.nItemId, util::CTimeCount::Format(timer.ElapsedTime()), ctx->pConfig->GetString(0x0013000B));
+            ctx->Status(cl.nItemId, util::CTimeCount::Format(timer.ElapsedTime()), ctx->GetString(0x0013000B));
             ctx->Callback(cl.nItemId, 100, true, false);
             return true;
         }
@@ -442,7 +442,7 @@ namespace worker
         // create pipes for stdin
         if (Stdin.Create() == false)
         {
-            ctx->Status(dcl.nItemId, ctx->pConfig->GetString(0x00150001), ctx->pConfig->GetString(0x00130002));
+            ctx->Status(dcl.nItemId, ctx->GetString(0x00150001), ctx->GetString(0x00130002));
             ctx->Callback(dcl.nItemId, -1, true, true);
             return false;
         }
@@ -450,7 +450,7 @@ namespace worker
         // set stdin write pipe inherit flag
         if (Stdin.InheritWrite() == false)
         {
-            ctx->Status(dcl.nItemId, ctx->pConfig->GetString(0x00150001), ctx->pConfig->GetString(0x00130003));
+            ctx->Status(dcl.nItemId, ctx->GetString(0x00150001), ctx->GetString(0x00130003));
             ctx->Callback(dcl.nItemId, -1, true, true);
             return false;
         }
@@ -461,7 +461,7 @@ namespace worker
             Stdin.CloseRead();
             Stdin.CloseWrite();
 
-            ctx->Status(dcl.nItemId, ctx->pConfig->GetString(0x00150001), ctx->pConfig->GetString(0x00130004));
+            ctx->Status(dcl.nItemId, ctx->GetString(0x00150001), ctx->GetString(0x00130004));
             ctx->Callback(dcl.nItemId, -1, true, true);
             return false;
         }
@@ -475,7 +475,7 @@ namespace worker
             Stdout.CloseRead();
             Stdout.CloseWrite();
 
-            ctx->Status(dcl.nItemId, ctx->pConfig->GetString(0x00150001), ctx->pConfig->GetString(0x00130005));
+            ctx->Status(dcl.nItemId, ctx->GetString(0x00150001), ctx->GetString(0x00130005));
             ctx->Callback(dcl.nItemId, -1, true, true);
             return false;
         }
@@ -489,7 +489,7 @@ namespace worker
             Stdout.CloseRead();
             Stdout.CloseWrite();
 
-            ctx->Status(dcl.nItemId, ctx->pConfig->GetString(0x00150001), ctx->pConfig->GetString(0x0013000A));
+            ctx->Status(dcl.nItemId, ctx->GetString(0x00150001), ctx->GetString(0x0013000A));
             ctx->Callback(dcl.nItemId, -1, true, true);
             return false;
         }
@@ -531,7 +531,7 @@ namespace worker
                     bool bResult = m_Utilities.Download(tool, true, true, nTool, ctx->pConfig,
                         [this, ctx, &dcl](int nIndex, std::wstring szStatus) -> bool
                     {
-                        ctx->Status(dcl.nItemId, ctx->pConfig->GetString(0x00150001), szStatus);
+                        ctx->Status(dcl.nItemId, ctx->GetString(0x00150001), szStatus);
                         if (ctx->bRunning == false)
                             return true;
                         return false;
@@ -565,9 +565,9 @@ namespace worker
                 Bridge.CloseWrite();
 
                 CString szStatus;
-                szStatus.Format(ctx->pConfig->GetString(0x00130006).c_str(), ::GetLastError());
+                szStatus.Format(ctx->GetString(0x00130006).c_str(), ::GetLastError());
 
-                ctx->Status(dcl.nItemId, ctx->pConfig->GetString(0x00150001), std::wstring(CT2CW(szStatus)));
+                ctx->Status(dcl.nItemId, ctx->GetString(0x00150001), std::wstring(CT2CW(szStatus)));
                 ctx->Callback(dcl.nItemId, -1, true, true);
                 return false;
             }
@@ -597,7 +597,7 @@ namespace worker
                     bool bResult = m_Utilities.Download(tool, true, true, nTool, ctx->pConfig,
                         [this, ctx, &ecl](int nIndex, std::wstring szStatus) -> bool
                     {
-                        ctx->Status(ecl.nItemId, ctx->pConfig->GetString(0x00150001), szStatus);
+                        ctx->Status(ecl.nItemId, ctx->GetString(0x00150001), szStatus);
                         if (ctx->bRunning == false)
                             return true;
                         return false;
@@ -633,9 +633,9 @@ namespace worker
                 Bridge.CloseWrite();
 
                 CString szStatus;
-                szStatus.Format(ctx->pConfig->GetString(0x00130006).c_str(), ::GetLastError());
+                szStatus.Format(ctx->GetString(0x00130006).c_str(), ::GetLastError());
 
-                ctx->Status(dcl.nItemId, ctx->pConfig->GetString(0x00150001), std::wstring(CT2CW(szStatus)));
+                ctx->Status(dcl.nItemId, ctx->GetString(0x00150001), std::wstring(CT2CW(szStatus)));
                 ctx->Callback(dcl.nItemId, -1, true, true);
                 return false;
             }
@@ -703,13 +703,13 @@ namespace worker
 
         if (nProgress != 100)
         {
-            ctx->Status(dcl.nItemId, ctx->pConfig->GetString(0x00150001), ctx->pConfig->GetString(0x00130009));
+            ctx->Status(dcl.nItemId, ctx->GetString(0x00150001), ctx->GetString(0x00130009));
             ctx->Callback(dcl.nItemId, -1, true, true);
             return false;
         }
         else
         {
-            ctx->Status(dcl.nItemId, util::CTimeCount::Format(timer.ElapsedTime()), ctx->pConfig->GetString(0x0013000B));
+            ctx->Status(dcl.nItemId, util::CTimeCount::Format(timer.ElapsedTime()), ctx->GetString(0x0013000B));
             ctx->Callback(dcl.nItemId, 100, true, false);
             return true;
         }
@@ -734,14 +734,14 @@ namespace worker
         szEncInputFile = path.szPath;
         if (util::Utilities::FileExists(szEncInputFile) == false)
         {
-            ctx->Status(item.nId, ctx->pConfig->GetString(0x00150001), ctx->pConfig->GetString(0x00140001));
+            ctx->Status(item.nId, ctx->GetString(0x00150001), ctx->GetString(0x00140001));
             return false;
         }
 
         int nEncoder = ctx->pConfig->m_Formats.GetFormatById(item.szFormatId);
         if (nEncoder == -1)
         {
-            ctx->Status(item.nId, ctx->pConfig->GetString(0x00150001), ctx->pConfig->GetString(0x00140002));
+            ctx->Status(item.nId, ctx->GetString(0x00150001), ctx->GetString(0x00140002));
             return false;
         }
 
@@ -749,7 +749,7 @@ namespace worker
 
         if (item.nPreset >= pEncFormat->m_Presets.Count())
         {
-            ctx->Status(item.nId, ctx->pConfig->GetString(0x00150001), ctx->pConfig->GetString(0x00140003));
+            ctx->Status(item.nId, ctx->GetString(0x00150001), ctx->GetString(0x00140003));
             return false;
         }
 
@@ -765,7 +765,7 @@ namespace worker
         {
             if (util::Utilities::FileExists(szEncOutputFile) == true)
             {
-                ctx->Status(item.nId, ctx->pConfig->GetString(0x00150001), ctx->pConfig->GetString(0x00140010));
+                ctx->Status(item.nId, ctx->GetString(0x00150001), ctx->GetString(0x00140010));
                 return false;
             }
         }
@@ -776,7 +776,7 @@ namespace worker
         if (m_Output.CreateOutputPath(szEncOutputFile) == false)
         {
             syncDir.unlock();
-            ctx->Status(item.nId, ctx->pConfig->GetString(0x00150001), ctx->pConfig->GetString(0x0014000F));
+            ctx->Status(item.nId, ctx->GetString(0x00150001), ctx->GetString(0x0014000F));
             return false;
         }
 
@@ -790,7 +790,7 @@ namespace worker
             int nDecoder = ctx->pConfig->m_Formats.GetDecoderByExtensionAndFormat(item.szExtension, pEncFormat);
             if (nDecoder == -1)
             {
-                ctx->Status(item.nId, ctx->pConfig->GetString(0x00150001), ctx->pConfig->GetString(0x00140004));
+                ctx->Status(item.nId, ctx->GetString(0x00150001), ctx->GetString(0x00140004));
                 return false;
             }
 
@@ -798,14 +798,14 @@ namespace worker
 
             if (pDecFormat->nDefaultPreset >= pDecFormat->m_Presets.Count())
             {
-                ctx->Status(item.nId, ctx->pConfig->GetString(0x00150001), ctx->pConfig->GetString(0x00140005));
+                ctx->Status(item.nId, ctx->GetString(0x00150001), ctx->GetString(0x00140005));
                 return false;
             }
 
             bool bIsValidDecoderOutput = pEncFormat->IsValidInputExtension(pDecFormat->szOutputExtension);
             if (bIsValidDecoderOutput == false)
             {
-                ctx->Status(item.nId, ctx->pConfig->GetString(0x00150001), ctx->pConfig->GetString(0x00140006));
+                ctx->Status(item.nId, ctx->GetString(0x00150001), ctx->GetString(0x00140006));
                 return false;
             }
 
@@ -846,7 +846,7 @@ namespace worker
             // trans-code
             try
             {
-                ctx->Status(item.nId, ctx->pConfig->GetString(0x00150001), ctx->pConfig->GetString(0x0014000C));
+                ctx->Status(item.nId, ctx->GetString(0x00150001), ctx->GetString(0x0014000C));
 
                 item.ResetProgress();
 
@@ -871,7 +871,7 @@ namespace worker
                 if (ctx->pConfig->m_Options.bDeleteOnErrors == true)
                     ::DeleteFile(szEncOutputFile.c_str());
 
-                ctx->Status(item.nId, ctx->pConfig->GetString(0x00150001), ctx->pConfig->GetString(0x0014000E));
+                ctx->Status(item.nId, ctx->GetString(0x00150001), ctx->GetString(0x0014000E));
                 ctx->Callback(item.nId, -1, true, true);
             }
         }
@@ -882,7 +882,7 @@ namespace worker
             {
                 try
                 {
-                    ctx->Status(item.nId, ctx->pConfig->GetString(0x00150001), ctx->pConfig->GetString(0x00140007));
+                    ctx->Status(item.nId, ctx->GetString(0x00150001), ctx->GetString(0x00140007));
 
                     item.ResetProgress();
 
@@ -901,7 +901,7 @@ namespace worker
 
                     if (util::Utilities::FileExists(szDecOutputFile) == false)
                     {
-                        ctx->Status(item.nId, ctx->pConfig->GetString(0x00150001), ctx->pConfig->GetString(0x00140008));
+                        ctx->Status(item.nId, ctx->GetString(0x00150001), ctx->GetString(0x00140008));
                         return false;
                     }
                 }
@@ -910,7 +910,7 @@ namespace worker
                     if (ctx->pConfig->m_Options.bDeleteOnErrors == true)
                         ::DeleteFile(szEncOutputFile.c_str());
 
-                    ctx->Status(item.nId, ctx->pConfig->GetString(0x00150001), ctx->pConfig->GetString(0x00140009));
+                    ctx->Status(item.nId, ctx->GetString(0x00150001), ctx->GetString(0x00140009));
                     ctx->Callback(item.nId, -1, true, true);
                 }
             }
@@ -922,9 +922,9 @@ namespace worker
             try
             {
                 if (pEncFormat->nType == config::FormatType::Encoder)
-                    ctx->Status(item.nId, ctx->pConfig->GetString(0x00150001), ctx->pConfig->GetString(0x0014000A));
+                    ctx->Status(item.nId, ctx->GetString(0x00150001), ctx->GetString(0x0014000A));
                 else if (pEncFormat->nType == config::FormatType::Decoder)
-                    ctx->Status(item.nId, ctx->pConfig->GetString(0x00150001), ctx->pConfig->GetString(0x0014000B));
+                    ctx->Status(item.nId, ctx->GetString(0x00150001), ctx->GetString(0x0014000B));
 
                 item.ResetProgress();
 
@@ -962,7 +962,7 @@ namespace worker
                 if (ctx->pConfig->m_Options.bDeleteOnErrors == true)
                     ::DeleteFile(szEncOutputFile.c_str());
 
-                ctx->Status(item.nId, ctx->pConfig->GetString(0x00150001), ctx->pConfig->GetString(0x0014000E));
+                ctx->Status(item.nId, ctx->GetString(0x00150001), ctx->GetString(0x0014000E));
                 ctx->Callback(item.nId, -1, true, true);
             }
         }

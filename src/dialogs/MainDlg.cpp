@@ -157,19 +157,21 @@ namespace dialogs
             this->bDone = true;
             this->pDlg = pDlg;
         }
-        virtual ~CMainDlgWorkerContext()
+        virtual ~CMainDlgWorkerContext() { }
+    public:
+        std::wstring GetString(int nKey)
         {
+            return pDlg->m_Config.GetString(nKey);
         }
     public:
         void Init()
         {
             this->timer.Start();
-
             pDlg->m_Progress.SetPos(0);
         }
         void Next(int nItemId)
         {
-            CString szFormat = this->pConfig->GetString(0x00190003).c_str();
+            CString szFormat = pDlg->m_Config.GetString(0x00190003).c_str();
             CString szText;
             szText.Format(szFormat,
                 this->nProcessedFiles,
@@ -177,7 +179,7 @@ namespace dialogs
                 this->nProcessedFiles - this->nErrors,
                 this->nErrors,
                 ((this->nErrors == 0) || (this->nErrors > 1)) ?
-                this->pConfig->GetString(0x00190002).c_str() : this->pConfig->GetString(0x00190001).c_str());
+                pDlg->m_Config.GetString(0x00190002).c_str() : pDlg->m_Config.GetString(0x00190001).c_str());
             pDlg->m_StatusBar.SetText(szText, 1, 0);
 
             if (nItemId > this->nLastItemId)
@@ -193,8 +195,7 @@ namespace dialogs
         void Done()
         {
             this->timer.Stop();
-
-            CString szFormat = this->pConfig->GetString(0x00190004).c_str();
+            CString szFormat = pDlg->m_Config.GetString(0x00190004).c_str();
             CString szText;
             szText.Format(szFormat,
                 this->nProcessedFiles,
@@ -202,13 +203,11 @@ namespace dialogs
                 this->nProcessedFiles - this->nErrors,
                 this->nErrors,
                 ((this->nErrors == 0) || (this->nErrors > 1)) ?
-                this->pConfig->GetString(0x00190002).c_str() : this->pConfig->GetString(0x00190001).c_str(),
+                pDlg->m_Config.GetString(0x00190002).c_str() : pDlg->m_Config.GetString(0x00190001).c_str(),
                 util::CTimeCount::Format(this->timer.ElapsedTime()).c_str());
             pDlg->m_StatusBar.SetText(szText, 1, 0);
-
             int nPos = (int)(100.0 * ((double)this->nProcessedFiles / (double)this->nTotalFiles));
             pDlg->m_Progress.SetPos(nPos);
-
             pDlg->FinishConvert();
         }
         bool IsRunning()
@@ -219,27 +218,25 @@ namespace dialogs
         {
             if (bError == true)
             {
-                config::CItem &item = pConfig->m_Items.Get(nItemId);
+                config::CItem &item = pDlg->m_Config.m_Items.Get(nItemId);
                 item.bFinished = true;
-
-                if (pConfig->m_Options.bStopOnErrors == true)
+                if (pDlg->m_Config.m_Options.bStopOnErrors == true)
                 {
                     pDlg->m_Progress.SetPos(0);
                     this->bRunning = false;
                 }
-
                 return this->bRunning;
             }
 
             if (bFinished == true)
             {
-                config::CItem &item = pConfig->m_Items.Get(nItemId);
+                config::CItem &item = pDlg->m_Config.m_Items.Get(nItemId);
                 item.bFinished = true;
             }
 
             if ((bFinished == false) && (this->bRunning == true))
             {
-                config::CItem &item = pConfig->m_Items.Get(nItemId);
+                config::CItem &item = pDlg->m_Config.m_Items.Get(nItemId);
                 item.nProgress = nProgress;
                 if (item.nPreviousProgress > nProgress)
                     item.nPreviousProgress = nProgress;
@@ -276,12 +273,11 @@ namespace dialogs
                     bSafeCheck = false;
                 }
             }
-
             return this->bRunning;
         }
         void Status(int nItemId, const std::wstring& szTime, const std::wstring& szStatus)
         {
-            config::CItem &item = pConfig->m_Items.Get(nItemId);
+            config::CItem &item = pDlg->m_Config.m_Items.Get(nItemId);
             item.szTime = szTime;
             item.szStatus = szStatus;
             pDlg->RedrawItem(nItemId);

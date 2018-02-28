@@ -10,7 +10,7 @@ namespace worker
     class CDebugOutputParser : public IOutputParser
     {
     public:
-        IWorkerContext * ctx;
+        IWorkerContext *ctx;
         CCommandLine *cl;
     public:
         bool Init(IWorkerContext* ctx, CCommandLine* cl)
