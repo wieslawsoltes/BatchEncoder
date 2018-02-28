@@ -20,7 +20,7 @@ namespace worker
     public:
         volatile bool bDownload;
     public:
-        bool Download(config::CTool& tool, bool bExtract, bool bInstall, int nIndex, config::CConfiguration *pConfig, std::function<void(int, std::wstring)> callback = nullptr)
+        bool Download(config::CTool& tool, bool bExtract, bool bInstall, int nIndex, config::CConfiguration *pConfig, std::function<bool(int, std::wstring)> callback = nullptr)
         {
             util::CDownload m_Download;
             std::wstring szUrl = tool.szUrl;
@@ -42,8 +42,9 @@ namespace worker
                             szStatus.replace(pos, str.length(), szTranslation);
                         }
                     }
-                    callback(nIndex, szStatus);
+                    return callback(nIndex, szStatus);
                 }
+                return false; // Do not abort.
             });
 
             if (bResult == false)

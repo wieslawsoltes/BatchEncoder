@@ -717,17 +717,11 @@ namespace dialogs
     {
         if (m_Utilities.bDownload == true)
         {
-            m_Thread.Terminate();
-
-            lang::CLanguageHelper helper(&pConfig->m_Language);
-            helper.SetWndText(&m_BtnDownload, 0x000E0023);
-
-            EnableUserInterface(TRUE);
-
-            m_Utilities.bDownload = false;
+            bAbort = true;
             return;
         }
 
+        bAbort = false;
         m_Utilities.bDownload = true;
 
         int nCount = m_LstTools.GetItemCount();
@@ -741,12 +735,11 @@ namespace dialogs
                 }
             }
 
-            m_Thread.Start(
-                [this]()
+            m_Thread = std::thread([this]() 
             {
                 this->DownloadTools();
-                this->m_Thread.Close();
-            }, false);
+            });
+            m_Thread.detach();
         }
     }
 
@@ -782,7 +775,7 @@ namespace dialogs
 
         if (m_Utilities.bDownload == true)
         {
-            m_Thread.Terminate();
+            bAbort = true;
             m_Utilities.bDownload = false;
         }
     }
@@ -1033,10 +1026,11 @@ namespace dialogs
                     m_LstTools.EnsureVisible(i, FALSE);
                     config::CTool& tool = m_Tools.Get(i);
                     m_Utilities.Download(tool, true, true, i, pConfig,
-                        [this](int nIndex, std::wstring szStatus)
-                    {
-                        this->m_LstTools.SetItemText(nIndex, TOOL_COLUMN_STATUS, szStatus.c_str());
-                    });
+                        [this](int nIndex, std::wstring szStatus) -> bool
+                        {
+                            this->m_LstTools.SetItemText(nIndex, TOOL_COLUMN_STATUS, szStatus.c_str());
+                            return this->bAbort;
+                        });
                 }
             }
         }

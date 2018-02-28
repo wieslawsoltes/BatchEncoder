@@ -79,9 +79,12 @@ namespace worker
                 {
                     config::CTool& tool = ctx->pConfig->m_Tools.Get(nTool);
                     bool bResult = m_Utilities.Download(tool, true, true, nTool, ctx->pConfig,
-                        [this, ctx, &cl](int nIndex, std::wstring szStatus)
+                        [this, ctx, &cl](int nIndex, std::wstring szStatus) -> bool
                     {
                         ctx->Status(cl.nItemId, ctx->pConfig->GetString(0x00150001), szStatus);
+                        if (ctx->bRunning == false)
+                            return true;
+                        return false;
                     });
 
                     if (bResult == true)
@@ -262,9 +265,12 @@ namespace worker
                 {
                     config::CTool& tool = ctx->pConfig->m_Tools.Get(nTool);
                     bool bResult = m_Utilities.Download(tool, true, true, nTool, ctx->pConfig,
-                        [this, ctx, &cl](int nIndex, std::wstring szStatus)
+                        [this, ctx, &cl](int nIndex, std::wstring szStatus) -> bool
                     {
                         ctx->Status(cl.nItemId, ctx->pConfig->GetString(0x00150001), szStatus);
+                        if (ctx->bRunning == false)
+                            return true;
+                        return false;
                     });
 
                     if (bResult == true)
@@ -523,9 +529,12 @@ namespace worker
                 {
                     config::CTool& tool = ctx->pConfig->m_Tools.Get(nTool);
                     bool bResult = m_Utilities.Download(tool, true, true, nTool, ctx->pConfig,
-                        [this, ctx, &dcl](int nIndex, std::wstring szStatus)
+                        [this, ctx, &dcl](int nIndex, std::wstring szStatus) -> bool
                     {
                         ctx->Status(dcl.nItemId, ctx->pConfig->GetString(0x00150001), szStatus);
+                        if (ctx->bRunning == false)
+                            return true;
+                        return false;
                     });
 
                     if (bResult == true)
@@ -586,9 +595,12 @@ namespace worker
                 {
                     config::CTool& tool = ctx->pConfig->m_Tools.Get(nTool);
                     bool bResult = m_Utilities.Download(tool, true, true, nTool, ctx->pConfig,
-                        [this, ctx, &ecl](int nIndex, std::wstring szStatus)
+                        [this, ctx, &ecl](int nIndex, std::wstring szStatus) -> bool
                     {
                         ctx->Status(ecl.nItemId, ctx->pConfig->GetString(0x00150001), szStatus);
+                        if (ctx->bRunning == false)
+                            return true;
+                        return false;
                     });
 
                     if (bResult == true)

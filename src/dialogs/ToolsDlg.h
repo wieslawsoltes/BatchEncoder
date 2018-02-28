@@ -8,6 +8,7 @@
 #include <array>
 #include <string>
 #include <utility>
+#include <thread>
 #include "controls\MyListCtrl.h"
 #include "controls\MyButton.h"
 #include "controls\MyComboBox.h"
@@ -19,7 +20,6 @@
 #include "configuration\FormatsList.h"
 #include "configuration\Configuration.h"
 #include "utilities\StringHelper.h"
-#include "utilities\Thread.h"
 #include "worker\ToolUtilities.h"
 
 #define TOOL_COLUMN_NAME      0
@@ -65,7 +65,8 @@ namespace dialogs
         int nSelectedTool;
         config::CToolsList m_Tools;
         config::CFormatsList m_Formats;
-        util::CThread m_Thread;
+        std::thread m_Thread;
+        volatile bool bAbort = false;
         worker::CToolUtilities m_Utilities;
     public:
         controls::CMyStatic m_StcName;
