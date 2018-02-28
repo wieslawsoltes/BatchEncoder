@@ -77,25 +77,25 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>..\..\src\common;..\..\src\common\lua\lua\src;..\..\src\common\sol2;..\..\src\core;$(VC_IncludePath);$(WindowsSdk_71A_IncludePath);</IncludePath>
+    <IncludePath>.\;..\;..\..\src\common;..\..\src\common\lua\lua\src;..\..\src\common\sol2;..\..\src\core;$(VC_IncludePath);$(WindowsSdk_71A_IncludePath);</IncludePath>
     <OutDir>bin\$(Configuration)\$(Platform)\</OutDir>
     <IntDir>obj\$(Configuration)\$(Platform)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>..\..\src\common;..\..\src\common\lua\lua\src;..\..\src\common\sol2;..\..\src\core;$(VC_IncludePath);$(WindowsSdk_71A_IncludePath);</IncludePath>
+    <IncludePath>.\;..\;..\..\src\common;..\..\src\common\lua\lua\src;..\..\src\common\sol2;..\..\src\core;$(VC_IncludePath);$(WindowsSdk_71A_IncludePath);</IncludePath>
     <OutDir>bin\$(Configuration)\$(Platform)\</OutDir>
     <IntDir>obj\$(Configuration)\$(Platform)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>..\..\src\common;..\..\src\common\lua\lua\src;..\..\src\common\sol2;..\..\src\core;$(VC_IncludePath);$(WindowsSdk_71A_IncludePath);</IncludePath>
+    <IncludePath>.\;..\;..\..\src\common;..\..\src\common\lua\lua\src;..\..\src\common\sol2;..\..\src\core;$(VC_IncludePath);$(WindowsSdk_71A_IncludePath);</IncludePath>
     <OutDir>bin\$(Configuration)\$(Platform)\</OutDir>
     <IntDir>obj\$(Configuration)\$(Platform)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>..\..\src\common;..\..\src\common\lua\lua\src;..\..\src\common\sol2;..\..\src\core;$(VC_IncludePath);$(WindowsSdk_71A_IncludePath);</IncludePath>
+    <IncludePath>.\;..\;..\..\src\common;..\..\src\common\lua\lua\src;..\..\src\common\sol2;..\..\src\core;$(VC_IncludePath);$(WindowsSdk_71A_IncludePath);</IncludePath>
     <OutDir>bin\$(Configuration)\$(Platform)\</OutDir>
     <IntDir>obj\$(Configuration)\$(Platform)\</IntDir>
   </PropertyGroup>
