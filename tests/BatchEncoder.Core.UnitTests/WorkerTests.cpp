@@ -10,6 +10,42 @@ using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 namespace BatchEncoderCoreUnitTests
 {
+    class CTestWorkerContext : public worker::IWorkerContext
+    {
+    public:
+        CTestWorkerContext(config::CConfiguration* pConfig)
+        {
+            this->pConfig = pConfig;
+            this->bDone = true;
+        }
+        virtual ~CTestWorkerContext() { }
+    public:
+        std::wstring GetString(int nKey)
+        {
+            return pConfig->GetString(nKey);
+        }
+        bool IsRunning()
+        {
+            return this->bRunning;
+        }
+        void Start()
+        {
+        }
+        void Stop()
+        {
+        }
+        void Next(int nItemId)
+        {
+        }
+        bool Progress(int nItemId, int nProgress, bool bFinished, bool bError = false)
+        {
+            return this->bRunning;
+        }
+        void Status(int nItemId, const std::wstring& szTime, const std::wstring& szStatus)
+        {
+        }
+    };
+
     TEST_CLASS(CWorker_Tests)
     {
     public:
