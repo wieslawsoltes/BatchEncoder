@@ -1705,7 +1705,7 @@ namespace dialogs
                     if (util::StringHelper::CompareNoCase(szName, "Language"))
                     {
                         lang::CLanguage language;
-                        if (xml::CXmlConfig::LoadLanguage(doc, language))
+                        if (xml::XmlConfig::LoadLanguage(doc, language))
                         {
                             this->m_Config.m_Language.m_Languages.Insert(std::move(language));
                         }
@@ -2274,7 +2274,7 @@ namespace dialogs
                     if (util::StringHelper::CompareNoCase(szExt, L"xml"))
                     {
                         xml::XmlDocumnent doc;
-                        std::string szName = xml::CXmlConfig::GetRootName(szPath, doc);
+                        std::string szName = xml::XmlConfig::GetRootName(szPath, doc);
                         if (!szName.empty())
                         {
                             if (util::StringHelper::CompareNoCase(szName, "Items"))
@@ -2682,7 +2682,7 @@ namespace dialogs
     bool CMainDlg::LoadOptions(const std::wstring& szFileXml)
     {
         xml::XmlDocumnent doc;
-        std::string szName = xml::CXmlConfig::GetRootName(szFileXml, doc);
+        std::string szName = xml::XmlConfig::GetRootName(szFileXml, doc);
         if (!szName.empty() && util::StringHelper::CompareNoCase(szName, "Options"))
         {
             return this->LoadOptions(doc);
@@ -2693,7 +2693,7 @@ namespace dialogs
     bool CMainDlg::LoadOptions(xml::XmlDocumnent &doc)
     {
         config::COptions options;
-        if (xml::CXmlConfig::LoadOptions(doc, options))
+        if (xml::XmlConfig::LoadOptions(doc, options))
         {
             this->m_Config.m_Options = std::move(options);
             this->SetOptions();
@@ -2707,7 +2707,7 @@ namespace dialogs
     bool CMainDlg::SaveOptions(const std::wstring& szFileXml)
     {
         this->GetOptions();
-        return xml::CXmlConfig::SaveOptions(szFileXml, this->m_Config.m_Options);
+        return xml::XmlConfig::SaveOptions(szFileXml, this->m_Config.m_Options);
     }
 
     bool CMainDlg::LoadFormats(const std::wstring& szPath)
@@ -2726,7 +2726,7 @@ namespace dialogs
                     if (util::StringHelper::CompareNoCase(szName, "Format"))
                     {
                         config::CFormat format;
-                        if (xml::CXmlConfig::LoadFormat(doc, format))
+                        if (xml::XmlConfig::LoadFormat(doc, format))
                         {
                             formats.Insert(std::move(format));
                         }
@@ -2760,7 +2760,7 @@ namespace dialogs
     bool CMainDlg::LoadFormat(const std::wstring& szFileXml)
     {
         xml::XmlDocumnent doc;
-        std::string szName = xml::CXmlConfig::GetRootName(szFileXml, doc);
+        std::string szName = xml::XmlConfig::GetRootName(szFileXml, doc);
         if (!szName.empty() && util::StringHelper::CompareNoCase(szName, "Format"))
         {
             return this->LoadFormat(doc);
@@ -2771,7 +2771,7 @@ namespace dialogs
     bool CMainDlg::LoadFormat(xml::XmlDocumnent &doc)
     {
         config::CFormat format;
-        if (xml::CXmlConfig::LoadFormat(doc, format))
+        if (xml::XmlConfig::LoadFormat(doc, format))
         {
             m_Config.m_Formats.Insert(format);
             m_Config.m_Formats.Sort();
@@ -2784,13 +2784,13 @@ namespace dialogs
 
     bool CMainDlg::SaveFormat(const std::wstring& szFileXml, config::CFormat& format)
     {
-        return xml::CXmlConfig::SaveFormat(szFileXml, format);
+        return xml::XmlConfig::SaveFormat(szFileXml, format);
     }
 
     bool CMainDlg::LoadPresets(const std::wstring& szFileXml)
     {
         xml::XmlDocumnent doc;
-        std::string szName = xml::CXmlConfig::GetRootName(szFileXml, doc);
+        std::string szName = xml::XmlConfig::GetRootName(szFileXml, doc);
         if (!szName.empty() && util::StringHelper::CompareNoCase(szName, "Presets"))
         {
             return this->LoadPresets(doc);
@@ -2801,7 +2801,7 @@ namespace dialogs
     bool CMainDlg::LoadPresets(xml::XmlDocumnent &doc)
     {
         config::CPresetsList presets;
-        if (xml::CXmlConfig::LoadPresets(doc, presets))
+        if (xml::XmlConfig::LoadPresets(doc, presets))
         {
             int nFormat = this->m_CmbFormat.GetCurSel();
             if (nFormat != -1)
@@ -2821,7 +2821,7 @@ namespace dialogs
         if (nFormat != -1)
         {
             config::CFormat& format = m_Config.m_Formats.Get(nFormat);
-            return xml::CXmlConfig::SavePresets(szFileXml, format.m_Presets);
+            return xml::XmlConfig::SavePresets(szFileXml, format.m_Presets);
         }
         return false;
     }
@@ -2842,7 +2842,7 @@ namespace dialogs
                     if (util::StringHelper::CompareNoCase(szName, "Tool"))
                     {
                         config::CTool tool;
-                        if (xml::CXmlConfig::LoadTool(doc, tool))
+                        if (xml::XmlConfig::LoadTool(doc, tool))
                         {
                             tools.Insert(std::move(tool));
                         }
@@ -2874,7 +2874,7 @@ namespace dialogs
     bool CMainDlg::LoadTool(const std::wstring& szFileXml)
     {
         xml::XmlDocumnent doc;
-        std::string szName = xml::CXmlConfig::GetRootName(szFileXml, doc);
+        std::string szName = xml::XmlConfig::GetRootName(szFileXml, doc);
         if (!szName.empty() && util::StringHelper::CompareNoCase(szName, "Tool"))
         {
             return this->LoadTool(doc);
@@ -2885,7 +2885,7 @@ namespace dialogs
     bool CMainDlg::LoadTool(xml::XmlDocumnent &doc)
     {
         config::CTool tool;
-        if (xml::CXmlConfig::LoadTool(doc, tool))
+        if (xml::XmlConfig::LoadTool(doc, tool))
         {
             m_Config.m_Tools.Insert(tool);
             m_Config.m_Tools.Sort();
@@ -2896,13 +2896,13 @@ namespace dialogs
 
     bool CMainDlg::SaveTool(const std::wstring& szFileXml, config::CTool& tool)
     {
-        return xml::CXmlConfig::SaveTool(szFileXml, tool);
+        return xml::XmlConfig::SaveTool(szFileXml, tool);
     }
 
     bool CMainDlg::LoadItems(const std::wstring& szFileXml)
     {
         xml::XmlDocumnent doc;
-        std::string szName = xml::CXmlConfig::GetRootName(szFileXml, doc);
+        std::string szName = xml::XmlConfig::GetRootName(szFileXml, doc);
         if (!szName.empty() && util::StringHelper::CompareNoCase(szName, "Items"))
         {
             return this->LoadItems(doc);
@@ -2913,7 +2913,7 @@ namespace dialogs
     bool CMainDlg::LoadItems(xml::XmlDocumnent &doc)
     {
         config::CItemsList items;
-        if (xml::CXmlConfig::LoadItems(doc, items))
+        if (xml::XmlConfig::LoadItems(doc, items))
         {
             m_LstInputItems.SetItemCount(0);
             this->m_Config.m_Items = std::move(items);
@@ -2927,13 +2927,13 @@ namespace dialogs
     bool CMainDlg::SaveItems(const std::wstring& szFileXml)
     {
         this->GetItems();
-        return xml::CXmlConfig::SaveItems(szFileXml, this->m_Config.m_Items);
+        return xml::XmlConfig::SaveItems(szFileXml, this->m_Config.m_Items);
     }
 
     bool CMainDlg::LoadLanguage(const std::wstring& szFileXml)
     {
         xml::XmlDocumnent doc;
-        std::string szName = xml::CXmlConfig::GetRootName(szFileXml, doc);
+        std::string szName = xml::XmlConfig::GetRootName(szFileXml, doc);
         if (!szName.empty() && util::StringHelper::CompareNoCase(szName, "Language"))
         {
             return this->LoadLanguage(doc);
@@ -2944,7 +2944,7 @@ namespace dialogs
     bool CMainDlg::LoadLanguage(xml::XmlDocumnent &doc)
     {
         lang::CLanguage language;
-        if (xml::CXmlConfig::LoadLanguage(doc, language))
+        if (xml::XmlConfig::LoadLanguage(doc, language))
         {
             this->m_Config.m_Language.m_Languages.Insert(std::move(language));
             int nLanguages = m_Config.m_Language.m_Languages.Count();

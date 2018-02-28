@@ -12,12 +12,8 @@ namespace xml
     class XmlPresets : public XmlDoc
     {
     public:
-        XmlPresets(XmlDocumnent &doc) : XmlDoc(doc)
-        {
-        }
-        virtual ~XmlPresets()
-        {
-        }
+        XmlPresets(XmlDocumnent &doc) : XmlDoc(doc) { }
+        virtual ~XmlPresets() { }
     public:
         bool GetPreset(const XmlElement *element, config::CPreset &m_Preset)
         {

@@ -12,12 +12,8 @@ namespace xml
     class XmlTools : public XmlDoc
     {
     public:
-        XmlTools(XmlDocumnent &doc) : XmlDoc(doc)
-        {
-        }
-        virtual ~XmlTools()
-        {
-        }
+        XmlTools(XmlDocumnent &doc) : XmlDoc(doc) { }
+        virtual ~XmlTools() { }
     public:
         bool GetTool(const XmlElement *element, config::CTool &m_Tool)
         {

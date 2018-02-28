@@ -11,12 +11,8 @@ namespace xml
     class XmlOptions : public XmlDoc
     {
     public:
-        XmlOptions(XmlDocumnent &doc) : XmlDoc(doc)
-        {
-        }
-        virtual ~XmlOptions()
-        {
-        }
+        XmlOptions(XmlDocumnent &doc) : XmlDoc(doc) { }
+        virtual ~XmlOptions() { }
     public:
         bool GetOptions(const XmlElement *element, config::COptions &m_Options)
         {

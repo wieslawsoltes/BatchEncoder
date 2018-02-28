@@ -12,12 +12,8 @@ namespace xml
     class XmlItems : public XmlDoc
     {
     public:
-        XmlItems(XmlDocumnent &doc) : XmlDoc(doc)
-        {
-        }
-        virtual ~XmlItems()
-        {
-        }
+        XmlItems(XmlDocumnent &doc) : XmlDoc(doc) { }
+        virtual ~XmlItems() { }
     public:
         bool GetPath(const XmlElement *element, config::CPath &m_Path)
         {

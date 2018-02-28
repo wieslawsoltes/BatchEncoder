@@ -907,7 +907,7 @@ namespace dialogs
                     if (util::StringHelper::CompareNoCase(szExt, L"xml"))
                     {
                         xml::XmlDocumnent doc;
-                        std::string szName = xml::CXmlConfig::GetRootName(szPath, doc);
+                        std::string szName = xml::XmlConfig::GetRootName(szPath, doc);
                         if (!szName.empty())
                         {
                             if (util::StringHelper::CompareNoCase(szName, "Format"))
@@ -1111,7 +1111,7 @@ namespace dialogs
     bool CFormatsDlg::LoadPresets(xml::XmlDocumnent &doc)
     {
         config::CPresetsList presets;
-        if (xml::CXmlConfig::LoadPresets(doc, presets))
+        if (xml::XmlConfig::LoadPresets(doc, presets))
         {
             POSITION pos = m_LstFormats.GetFirstSelectedItemPosition();
             if (pos != nullptr)
@@ -1129,7 +1129,7 @@ namespace dialogs
     bool CFormatsDlg::LoadFormat(const std::wstring& szFileXml)
     {
         xml::XmlDocumnent doc;
-        std::string szName = xml::CXmlConfig::GetRootName(szFileXml, doc);
+        std::string szName = xml::XmlConfig::GetRootName(szFileXml, doc);
         if (!szName.empty() && util::StringHelper::CompareNoCase(szName, "Format"))
         {
             return this->LoadFormat(doc);
@@ -1140,7 +1140,7 @@ namespace dialogs
     bool CFormatsDlg::LoadFormat(xml::XmlDocumnent &doc)
     {
         config::CFormat format;
-        if (xml::CXmlConfig::LoadFormat(doc, format))
+        if (xml::XmlConfig::LoadFormat(doc, format))
         {
             m_Formats.Insert(format);
             int nItem = m_Formats.Count() - 1;
@@ -1152,7 +1152,7 @@ namespace dialogs
 
     bool CFormatsDlg::SaveFormat(const std::wstring& szFileXml, config::CFormat &format)
     {
-        return xml::CXmlConfig::SaveFormat(szFileXml, format);
+        return xml::XmlConfig::SaveFormat(szFileXml, format);
     }
 
     bool CFormatsDlg::SaveFormats(const std::wstring& szPath)

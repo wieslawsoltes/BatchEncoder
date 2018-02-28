@@ -585,7 +585,7 @@ namespace dialogs
                     if (util::StringHelper::CompareNoCase(szExt, L"xml"))
                     {
                         xml::XmlDocumnent doc;
-                        std::string szName = xml::CXmlConfig::GetRootName(szPath, doc);
+                        std::string szName = xml::XmlConfig::GetRootName(szPath, doc);
                         if (!szName.empty())
                         {
                             if (util::StringHelper::CompareNoCase(szName, "Presets"))
@@ -638,7 +638,7 @@ namespace dialogs
     bool CPresetsDlg::LoadPresets(const std::wstring& szFileXml)
     {
         xml::XmlDocumnent doc;
-        std::string szName = xml::CXmlConfig::GetRootName(szFileXml, doc);
+        std::string szName = xml::XmlConfig::GetRootName(szFileXml, doc);
         if (!szName.empty() && util::StringHelper::CompareNoCase(szName, "Presets"))
         {
             return this->LoadPresets(doc);
@@ -649,7 +649,7 @@ namespace dialogs
     bool CPresetsDlg::LoadPresets(xml::XmlDocumnent &doc)
     {
         config::CPresetsList presets;
-        if (xml::CXmlConfig::LoadPresets(doc, presets))
+        if (xml::XmlConfig::LoadPresets(doc, presets))
         {
             this->m_LstPresets.DeleteAllItems();
             config::CFormat& format = this->m_Formats.Get(this->nSelectedFormat);
@@ -662,6 +662,6 @@ namespace dialogs
 
     bool CPresetsDlg::SavePresets(const std::wstring& szFileXml, config::CFormat &format)
     {
-        return xml::CXmlConfig::SavePresets(szFileXml, format.m_Presets);
+        return xml::XmlConfig::SavePresets(szFileXml, format.m_Presets);
     }
 }

@@ -14,12 +14,8 @@ namespace xml
     class XmlLanguages : public XmlDoc
     {
     public:
-        XmlLanguages(XmlDocumnent &doc) : XmlDoc(doc)
-        {
-        }
-        virtual ~XmlLanguages()
-        {
-        }
+        XmlLanguages(XmlDocumnent &doc) : XmlDoc(doc) { }
+        virtual ~XmlLanguages() { }
     public:
         bool GetLanguage(const XmlElement *parent, lang::CLanguage &m_Language)
         {

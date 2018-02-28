@@ -8,25 +8,21 @@
 #include "tinyxml2\tinyxml2.h" // https://github.com/leethomason/tinyxml2
 #include "utilities\Utf8String.h"
 
+#define VALIDATE(value) if (!value) return false
+
 namespace xml
 {
     typedef tinyxml2::XMLNode XmlNode;
     typedef tinyxml2::XMLElement XmlElement;
     typedef tinyxml2::XMLDocument XmlDocumnent;
 
-    #define VALIDATE(value) if (!value) return false
-
     class XmlDoc
     {
     protected:
         XmlDocumnent & m_Document;
     public:
-        XmlDoc(XmlDocumnent &doc) : m_Document(doc)
-        {
-        }
-        virtual ~XmlDoc()
-        {
-        }
+        XmlDoc(XmlDocumnent &doc) : m_Document(doc) { }
+        virtual ~XmlDoc() { }
     public:
         static const char* GetRootName(XmlDocumnent &doc)
         {

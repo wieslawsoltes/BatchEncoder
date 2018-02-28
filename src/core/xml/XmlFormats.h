@@ -13,12 +13,8 @@ namespace xml
     class XmlFormats : public XmlDoc
     {
     public:
-        XmlFormats(XmlDocumnent &doc) : XmlDoc(doc)
-        {
-        }
-        virtual ~XmlFormats()
-        {
-        }
+        XmlFormats(XmlDocumnent &doc) : XmlDoc(doc) { }
+        virtual ~XmlFormats() { }
     public:
         bool GetFormat(const XmlElement *element, config::CFormat &m_Format)
         {
