@@ -6,6 +6,7 @@
 #include <string>
 #include <string.h>
 #include <vector>
+#include <cstdio>
 #include "tinyxml2\tinyxml2.h" // https://github.com/leethomason/tinyxml2
 #include "utilities\StringHelper.h"
 #include "utilities\Utf8String.h"
@@ -47,29 +48,32 @@ namespace xml
         }
         static bool Open(const std::wstring& szFileName, XmlDocumnent & doc)
         {
-            CStdioFile fp;
-            if (fp.Open(szFileName.c_str(), CFile::modeRead | CFile::typeBinary) == TRUE)
-            {
-                auto result = doc.LoadFile(fp.m_pStream);
-                fp.Close();
-                return result == tinyxml2::XMLError::XML_SUCCESS;
-            }
-            return false;
+            FILE *fs;
+            errno_t error = _wfopen_s(&fs, szFileName.c_str(), L"rb");
+            if (error != 0)
+                return false;
+
+            tinyxml2::XMLError result = doc.LoadFile(fs);
+            fclose(fs);
+
+            return result == tinyxml2::XMLError::XML_SUCCESS;
         }
         static bool Save(const std::wstring& szFileName, XmlDocumnent & doc)
         {
-            CStdioFile fp;
-            if (fp.Open(szFileName.c_str(), CFile::modeCreate | CFile::modeWrite | CFile::typeText) == TRUE)
-            {
-                fputc(0xefU, fp.m_pStream);
-                fputc(0xbbU, fp.m_pStream);
-                fputc(0xbfU, fp.m_pStream);
-                tinyxml2::XMLPrinter printer(fp.m_pStream);
-                doc.Print(&printer);
-                fp.Close();
-                return true;
-            }
-            return false;
+            FILE *fs;
+            errno_t error = _wfopen_s(&fs, szFileName.c_str(), L"wt");
+            if (error != 0)
+                return false;
+
+            fputc(0xefU, fs);
+            fputc(0xbbU, fs);
+            fputc(0xbfU, fs);
+
+            tinyxml2::XMLPrinter printer(fs);
+            doc.Print(&printer);
+
+            fclose(fs);
+            return true;
         }
     public:
         const std::wstring m_True = L"true";
