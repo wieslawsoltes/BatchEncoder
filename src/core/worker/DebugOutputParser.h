@@ -11,12 +11,12 @@ namespace worker
     {
     public:
         IWorkerContext * ctx;
-        CCommandLine *pCommandLine;
+        CCommandLine *cl;
     public:
-        bool Init(IWorkerContext* ctx, CCommandLine* pCommandLine)
+        bool Init(IWorkerContext* ctx, CCommandLine* cl)
         {
             this->ctx = ctx;
-            this->pCommandLine = pCommandLine;
+            this->cl = cl;
             return true;
         }
         bool Parse(const char *szLine)

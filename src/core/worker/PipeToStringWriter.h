@@ -16,7 +16,7 @@ namespace worker
     class CPipeToStringWriter
     {
     public:
-        bool ReadLoop(IWorkerContext* ctx, CCommandLine &commandLine, util::CPipe &Stderr, IOutputParser &parser, std::mutex &syncDown)
+        bool ReadLoop(IWorkerContext* ctx, CCommandLine &cl, util::CPipe &Stderr, IOutputParser &parser, std::mutex &syncDown)
         {
             const int nBuffSize = 4096;
             char szReadBuff[nBuffSize];
@@ -31,7 +31,7 @@ namespace worker
             syncDown.lock();
             ::SetCurrentDirectory(ctx->pConfig->m_Settings.szSettingsPath.c_str());
 
-            if (parser.Init(ctx, &commandLine) == false)
+            if (parser.Init(ctx, &cl) == false)
             {
                 syncDown.unlock();
                 return false; // ERROR
@@ -89,8 +89,8 @@ namespace worker
                         nLineLen++;
                         if (nLineLen > nBuffSize)
                         {
-                            ctx->Status(commandLine.nItemId, ctx->pConfig->GetString(0x00150001), ctx->pConfig->GetString(0x00110003));
-                            ctx->Callback(commandLine.nItemId, -1, true, true);
+                            ctx->Status(cl.nItemId, ctx->pConfig->GetString(0x00150001), ctx->pConfig->GetString(0x00110003));
+                            ctx->Callback(cl.nItemId, -1, true, true);
                             return false;
                         }
 
