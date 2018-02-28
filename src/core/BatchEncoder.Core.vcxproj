@@ -171,22 +171,22 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="configuration\Configuration.h" />
-    <ClInclude Include="configuration\Format.h" />
-    <ClInclude Include="configuration\FormatsList.h" />
-    <ClInclude Include="configuration\Item.h" />
-    <ClInclude Include="configuration\ItemsList.h" />
-    <ClInclude Include="configuration\Options.h" />
-    <ClInclude Include="configuration\Path.h" />
-    <ClInclude Include="configuration\PathsList.h" />
-    <ClInclude Include="configuration\Preset.h" />
-    <ClInclude Include="configuration\PresetsList.h" />
-    <ClInclude Include="configuration\Settings.h" />
-    <ClInclude Include="configuration\Strings.h" />
-    <ClInclude Include="configuration\Tool.h" />
-    <ClInclude Include="configuration\ToolsList.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="config\Configuration.h" />
+    <ClInclude Include="config\Format.h" />
+    <ClInclude Include="config\FormatsList.h" />
+    <ClInclude Include="config\Item.h" />
+    <ClInclude Include="config\ItemsList.h" />
+    <ClInclude Include="config\Options.h" />
+    <ClInclude Include="config\Path.h" />
+    <ClInclude Include="config\PathsList.h" />
+    <ClInclude Include="config\Preset.h" />
+    <ClInclude Include="config\PresetsList.h" />
+    <ClInclude Include="config\Settings.h" />
+    <ClInclude Include="config\Strings.h" />
+    <ClInclude Include="config\Tool.h" />
+    <ClInclude Include="config\ToolsList.h" />
     <ClInclude Include="worker\CommandLine.h" />
     <ClInclude Include="worker\DebugOutputParser.h" />
     <ClInclude Include="worker\FileToPipeWriter.h" />

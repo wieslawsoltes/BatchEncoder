@@ -14,8 +14,8 @@
 #include "controls\MyEdit.h"
 #include "controls\MyStatic.h"
 #include "controls\MyDialogEx.h"
-#include "configuration\FormatsList.h"
-#include "configuration\Configuration.h"
+#include "config\FormatsList.h"
+#include "config\Configuration.h"
 #include "utilities\StringHelper.h"
 
 #define PRESET_COLUMN_NAME      0

@@ -5,7 +5,7 @@
 
 #include <string>
 #include <utility>
-#include "configuration\Configuration.h"
+#include "config\Configuration.h"
 
 namespace worker
 {

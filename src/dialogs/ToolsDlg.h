@@ -16,9 +16,9 @@
 #include "controls\MyStatic.h"
 #include "controls\MySpinButtonCtrl.h"
 #include "controls\MyDialogEx.h"
-#include "configuration\ToolsList.h"
-#include "configuration\FormatsList.h"
-#include "configuration\Configuration.h"
+#include "config\ToolsList.h"
+#include "config\FormatsList.h"
+#include "config\Configuration.h"
 #include "utilities\StringHelper.h"
 #include "worker\ToolUtilities.h"
 

@@ -5,8 +5,8 @@
 
 #include "xml\XmlDoc.h"
 #include "XmlPresets.h"
-#include "configuration\Format.h"
-#include "configuration\FormatsList.h"
+#include "config\Format.h"
+#include "config\FormatsList.h"
 
 #define VALIDATE(value) if (!value) return false
 

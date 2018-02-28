@@ -7,7 +7,7 @@
 #include <mutex>
 #include "utilities\Pipe.h"
 #include "utilities\Synchronize.h"
-#include "configuration\Settings.h"
+#include "config\Settings.h"
 #include "OutputParser.h"
 #include "WorkerContext.h"
 

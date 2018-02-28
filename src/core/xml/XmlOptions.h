@@ -4,7 +4,7 @@
 #pragma once
 
 #include "xml\XmlDoc.h"
-#include "configuration\Options.h"
+#include "config\Options.h"
 
 #define VALIDATE(value) if (!value) return false
 

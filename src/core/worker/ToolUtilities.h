@@ -8,10 +8,10 @@
 #include "utilities\Download.h"
 #include "utilities\StringHelper.h"
 #include "utilities\Utilities.h"
-#include "configuration\Settings.h"
-#include "configuration\ToolsList.h"
-#include "configuration\FormatsList.h"
-#include "configuration\Configuration.h"
+#include "config\Settings.h"
+#include "config\ToolsList.h"
+#include "config\FormatsList.h"
+#include "config\Configuration.h"
 
 namespace worker
 {

@@ -4,8 +4,8 @@
 #pragma once
 
 #include "xml\XmlDoc.h"
-#include "configuration\Preset.h"
-#include "configuration\PresetsList.h"
+#include "config\Preset.h"
+#include "config\PresetsList.h"
 
 #define VALIDATE(value) if (!value) return false
 

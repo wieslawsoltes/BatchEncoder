@@ -22,7 +22,7 @@
     <Filter Include="Header Files\Worker">
       <UniqueIdentifier>{bb989857-60a6-4683-96b4-13acfc42ee6f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Configuration">
+    <Filter Include="Header Files\Config">
       <UniqueIdentifier>{785ded21-51bf-4ad7-a04b-af8a49d822ee}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\Worker\Parser">
@@ -42,53 +42,56 @@
     <ClInclude Include="targetver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="configuration\Configuration.h">
-      <Filter>Header Files\Configuration</Filter>
+    <ClInclude Include="config\Configuration.h">
+      <Filter>Header Files\Config</Filter>
     </ClInclude>
-    <ClInclude Include="configuration\Format.h">
-      <Filter>Header Files\Configuration</Filter>
+    <ClInclude Include="config\Format.h">
+      <Filter>Header Files\Config</Filter>
     </ClInclude>
-    <ClInclude Include="configuration\FormatsList.h">
-      <Filter>Header Files\Configuration</Filter>
+    <ClInclude Include="config\FormatsList.h">
+      <Filter>Header Files\Config</Filter>
     </ClInclude>
-    <ClInclude Include="configuration\Item.h">
-      <Filter>Header Files\Configuration</Filter>
+    <ClInclude Include="config\Item.h">
+      <Filter>Header Files\Config</Filter>
     </ClInclude>
-    <ClInclude Include="configuration\ItemsList.h">
-      <Filter>Header Files\Configuration</Filter>
+    <ClInclude Include="config\ItemsList.h">
+      <Filter>Header Files\Config</Filter>
     </ClInclude>
-    <ClInclude Include="configuration\Options.h">
-      <Filter>Header Files\Configuration</Filter>
+    <ClInclude Include="config\Options.h">
+      <Filter>Header Files\Config</Filter>
     </ClInclude>
-    <ClInclude Include="configuration\Path.h">
-      <Filter>Header Files\Configuration</Filter>
+    <ClInclude Include="config\Path.h">
+      <Filter>Header Files\Config</Filter>
     </ClInclude>
-    <ClInclude Include="configuration\PathsList.h">
-      <Filter>Header Files\Configuration</Filter>
+    <ClInclude Include="config\PathsList.h">
+      <Filter>Header Files\Config</Filter>
     </ClInclude>
-    <ClInclude Include="configuration\Preset.h">
-      <Filter>Header Files\Configuration</Filter>
+    <ClInclude Include="config\Preset.h">
+      <Filter>Header Files\Config</Filter>
     </ClInclude>
-    <ClInclude Include="configuration\PresetsList.h">
-      <Filter>Header Files\Configuration</Filter>
+    <ClInclude Include="config\PresetsList.h">
+      <Filter>Header Files\Config</Filter>
     </ClInclude>
-    <ClInclude Include="configuration\Settings.h">
-      <Filter>Header Files\Configuration</Filter>
+    <ClInclude Include="config\Settings.h">
+      <Filter>Header Files\Config</Filter>
     </ClInclude>
-    <ClInclude Include="configuration\Strings.h">
-      <Filter>Header Files\Configuration</Filter>
+    <ClInclude Include="config\Strings.h">
+      <Filter>Header Files\Config</Filter>
     </ClInclude>
-    <ClInclude Include="configuration\Tool.h">
-      <Filter>Header Files\Configuration</Filter>
+    <ClInclude Include="config\Tool.h">
+      <Filter>Header Files\Config</Filter>
     </ClInclude>
-    <ClInclude Include="configuration\ToolsList.h">
-      <Filter>Header Files\Configuration</Filter>
+    <ClInclude Include="config\ToolsList.h">
+      <Filter>Header Files\Config</Filter>
     </ClInclude>
     <ClInclude Include="worker\ToolUtilities.h">
       <Filter>Header Files\Worker\Tools</Filter>
     </ClInclude>
     <ClInclude Include="worker\FileToPipeWriter.h">
       <Filter>Header Files\Worker\Pipes</Filter>
+    </ClInclude>
+    <ClInclude Include="worker\InputPath.h">
+      <Filter>Header Files\Worker</Filter>
     </ClInclude>
     <ClInclude Include="worker\PipeToFileWriter.h">
       <Filter>Header Files\Worker\Pipes</Filter>
@@ -140,9 +143,6 @@
     </ClInclude>
     <ClInclude Include="xml\XmlTools.h">
       <Filter>Header Files\Xml</Filter>
-    </ClInclude>
-    <ClInclude Include="worker\InputPath.h">
-      <Filter>Header Files\Worker</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

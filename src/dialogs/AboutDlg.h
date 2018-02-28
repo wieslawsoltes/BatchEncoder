@@ -5,7 +5,7 @@
 
 #include <afxcmn.h>
 #include <afxwin.h>
-#include "configuration\Configuration.h"
+#include "config\Configuration.h"
 #include "utilities\StringHelper.h"
 #include "controls\MyHyperlink.h"
 #include "controls\MyButton.h"
