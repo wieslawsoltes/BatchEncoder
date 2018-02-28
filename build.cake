@@ -66,6 +66,7 @@ var buildSolutionAction = new Action<string,string,string> ((solution, configura
     MSBuild(solution, settings => {
         settings.SetConfiguration(configuration);
         settings.WithProperty("Platform", "\"" + platform + "\"");
+        settings.WithProperty("BuildSystem", "CI");
         settings.SetVerbosity(Verbosity.Minimal); });
 });
 

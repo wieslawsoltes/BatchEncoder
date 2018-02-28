@@ -131,7 +131,7 @@
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
     </Link>
     <PostBuildEvent>
-      <Command>CopyConfig.cmd ..\config\ $(OutDir)</Command>
+      <Command>CopyConfig.cmd ..\config\ $(OutDir) $(BuildSystem)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -168,7 +168,7 @@
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
     </Link>
     <PostBuildEvent>
-      <Command>CopyConfig.cmd ..\config\ $(OutDir)</Command>
+      <Command>CopyConfig.cmd ..\config\ $(OutDir) $(BuildSystem)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -206,7 +206,7 @@
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
     </Link>
     <PostBuildEvent>
-      <Command>CopyConfig.cmd ..\config\ $(OutDir)</Command>
+      <Command>CopyConfig.cmd ..\config\ $(OutDir) $(BuildSystem)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -245,7 +245,7 @@
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
     </Link>
     <PostBuildEvent>
-      <Command>CopyConfig.cmd ..\config\ $(OutDir)</Command>
+      <Command>CopyConfig.cmd ..\config\ $(OutDir) $(BuildSystem)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
