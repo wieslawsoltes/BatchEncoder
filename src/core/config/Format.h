@@ -46,29 +46,28 @@ namespace config
             return static_cast<FormatType>(value);
         }
     public:
+        bool IsValidInputExtension(const std::wstring& szExt)
+        {
+            return util::StringHelper::ContainsNoCase(this->szInputExtensions, szExt, token);
+        }
+    public:
         static bool CompareName(const CFormat& a, const CFormat& b)
-        { 
-            return a.szName < b.szName; 
+        {
+            return a.szName < b.szName;
         };
         static bool CompareType(const CFormat& a, const CFormat& b)
-        { 
-            return a.nType < b.nType; 
+        {
+            return a.nType < b.nType;
         };
         static bool ComparePriority(const CFormat& a, const CFormat& b)
-        { 
-            return a.nPriority < b.nPriority; 
+        {
+            return a.nPriority < b.nPriority;
         };
-    public:
         static void Sort(std::vector<CFormat>& formats)
         {
             std::stable_sort(formats.begin(), formats.end(), &CompareName);
             std::stable_sort(formats.begin(), formats.end(), &ComparePriority);
             std::stable_sort(formats.begin(), formats.end(), &CompareType);
-        }
-    public:
-        bool IsValidInputExtension(const std::wstring& szExt)
-        {
-            return util::StringHelper::ContainsNoCase(this->szInputExtensions, szExt, token);
         }
     };
 }

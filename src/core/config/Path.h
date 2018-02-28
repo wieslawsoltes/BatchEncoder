@@ -4,6 +4,8 @@
 #pragma once
 
 #include <string>
+#include <algorithm>
+#include <vector>
 
 namespace config
 {
@@ -12,5 +14,14 @@ namespace config
     public:
         std::wstring szPath;
         std::wstring szSize;
+    public:
+        static bool ComparePath(const CPath& a, const CPath& b)
+        {
+            return a.szName < b.szName;
+        };
+        static void Sort(std::vector<CPath>& paths)
+        {
+            std::stable_sort(paths.begin(), paths.end(), &ComparePath);
+        }
     };
 }

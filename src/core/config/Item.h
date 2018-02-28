@@ -4,6 +4,8 @@
 #pragma once
 
 #include <string>
+#include <algorithm>
+#include <vector>
 #include "PathsList.h"
 
 namespace config
@@ -31,6 +33,15 @@ namespace config
             this->bFinished = false;
             this->nProgress = 0;
             this->nPreviousProgress = 0;
+        }
+    public:
+        static bool CompareName(const CItem& a, const CItem& b)
+        {
+            return a.szName < b.szName;
+        };
+        static void Sort(std::vector<CItem>& items)
+        {
+            std::stable_sort(items.begin(), items.end(), &CompareName);
         }
     };
 }
