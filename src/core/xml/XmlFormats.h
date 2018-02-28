@@ -3,12 +3,10 @@
 
 #pragma once
 
-#include "xml\XmlDoc.h"
+#include "XmlDoc.h"
 #include "XmlPresets.h"
 #include "config\Format.h"
 #include "config\FormatsList.h"
-
-#define VALIDATE(value) if (!value) return false
 
 namespace xml
 {

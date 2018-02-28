@@ -3,11 +3,9 @@
 
 #pragma once
 
-#include "xml\XmlDoc.h"
+#include "XmlDoc.h"
 #include "config\Preset.h"
 #include "config\PresetsList.h"
-
-#define VALIDATE(value) if (!value) return false
 
 namespace xml
 {

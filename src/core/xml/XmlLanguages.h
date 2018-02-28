@@ -4,12 +4,10 @@
 #pragma once
 
 #include <string>
-#include "xml\XmlDoc.h"
+#include "XmlDoc.h"
 #include "utilities\Language.h"
 #include "utilities\LanguagesList.h"
 #include "utilities\StringHelper.h"
-
-#define VALIDATE(value) if (!value) return false
 
 namespace xml
 {
