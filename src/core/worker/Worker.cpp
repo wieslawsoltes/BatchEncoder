@@ -57,7 +57,7 @@ namespace worker
         process.ConnectStdError(Stderr.hWrite);
 
         syncDown.lock();
-        ::SetCurrentDirectory(config::m_Settings.szSettingsPath.c_str());
+        ::SetCurrentDirectory(ctx->pConfig->m_Settings.szSettingsPath.c_str());
 
         timer.Start();
         if (process.Start(cl.szCommandLine, ctx->pConfig->m_Options.bHideConsoleWindow) == false)
@@ -89,7 +89,7 @@ namespace worker
 
                     if (bResult == true)
                     {
-                        ::SetCurrentDirectory(config::m_Settings.szSettingsPath.c_str());
+                        ::SetCurrentDirectory(ctx->pConfig->m_Settings.szSettingsPath.c_str());
 
                         if (process.Start(cl.szCommandLine, ctx->pConfig->m_Options.bHideConsoleWindow) == true)
                         {
@@ -243,7 +243,7 @@ namespace worker
         }
 
         syncDown.lock();
-        ::SetCurrentDirectory(config::m_Settings.szSettingsPath.c_str());
+        ::SetCurrentDirectory(ctx->pConfig->m_Settings.szSettingsPath.c_str());
 
         timer.Start();
         if (process.Start(cl.szCommandLine, ctx->pConfig->m_Options.bHideConsoleWindow) == false)
@@ -275,7 +275,7 @@ namespace worker
 
                     if (bResult == true)
                     {
-                        ::SetCurrentDirectory(config::m_Settings.szSettingsPath.c_str());
+                        ::SetCurrentDirectory(ctx->pConfig->m_Settings.szSettingsPath.c_str());
 
                         if (process.Start(cl.szCommandLine, ctx->pConfig->m_Options.bHideConsoleWindow) == true)
                         {
@@ -507,7 +507,7 @@ namespace worker
         timer.Start();
 
         syncDown.lock();
-        ::SetCurrentDirectory(config::m_Settings.szSettingsPath.c_str());
+        ::SetCurrentDirectory(ctx->pConfig->m_Settings.szSettingsPath.c_str());
 
         // create decoder process
         if (decoderProcess.Start(dcl.szCommandLine, ctx->pConfig->m_Options.bHideConsoleWindow) == false)
@@ -539,7 +539,7 @@ namespace worker
 
                     if (bResult == true)
                     {
-                        ::SetCurrentDirectory(config::m_Settings.szSettingsPath.c_str());
+                        ::SetCurrentDirectory(ctx->pConfig->m_Settings.szSettingsPath.c_str());
 
                         if (decoderProcess.Start(dcl.szCommandLine, ctx->pConfig->m_Options.bHideConsoleWindow) == true)
                         {
@@ -573,7 +573,7 @@ namespace worker
             }
         }
 
-        ::SetCurrentDirectory(config::m_Settings.szSettingsPath.c_str());
+        ::SetCurrentDirectory(ctx->pConfig->m_Settings.szSettingsPath.c_str());
 
         // create encoder process
         if (encoderProcess.Start(ecl.szCommandLine, ctx->pConfig->m_Options.bHideConsoleWindow) == false)
@@ -605,7 +605,7 @@ namespace worker
 
                     if (bResult == true)
                     {
-                        ::SetCurrentDirectory(config::m_Settings.szSettingsPath.c_str());
+                        ::SetCurrentDirectory(ctx->pConfig->m_Settings.szSettingsPath.c_str());
 
                         if (encoderProcess.Start(ecl.szCommandLine, ctx->pConfig->m_Options.bHideConsoleWindow) == true)
                         {
@@ -782,7 +782,7 @@ namespace worker
 
         syncDir.unlock();
 
-        ::SetCurrentDirectory(config::m_Settings.szSettingsPath.c_str());
+        ::SetCurrentDirectory(ctx->pConfig->m_Settings.szSettingsPath.c_str());
 
         // prepare decoder
         if (bIsValidEncoderInput == false)

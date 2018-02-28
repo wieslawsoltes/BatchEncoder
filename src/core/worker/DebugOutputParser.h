@@ -10,12 +10,12 @@ namespace worker
     class CDebugOutputParser : public IOutputParser
     {
     public:
-        IWorkerContext * pWorkerContext;
+        IWorkerContext * ctx;
         CCommandLine *pCommandLine;
     public:
-        bool Init(IWorkerContext* pWorkerContext, CCommandLine* pCommandLine)
+        bool Init(IWorkerContext* ctx, CCommandLine* pCommandLine)
         {
-            this->pWorkerContext = pWorkerContext;
+            this->ctx = ctx;
             this->pCommandLine = pCommandLine;
             return true;
         }
@@ -23,7 +23,7 @@ namespace worker
         {
             OutputDebugStringA(szLine);
             OutputDebugStringA("\n");
-            return this->pWorkerContext->IsRunning();
+            return this->ctx->IsRunning();
         }
     };
 }

@@ -4,7 +4,6 @@
 #include "StdAfx.h"
 #include "MainApp.h"
 #include "dialogs\MainDlg.h"
-#include "configuration\Settings.h"
 
 namespace app
 {
@@ -29,9 +28,9 @@ namespace app
         AfxEnableControlContainer();
         InitShellManager();
 
-        config::m_Settings.Init();
-
         dialogs::CMainDlg dlg;
+        dlg.m_Config.m_Settings.Init();
+
         m_pMainWnd = &dlg;
         dlg.DoModal();
 

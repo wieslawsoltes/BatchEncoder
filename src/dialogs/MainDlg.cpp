@@ -294,14 +294,14 @@ namespace dialogs
     {
         this->m_hIcon = AfxGetApp()->LoadIcon(IDI_ICON_MAIN);
         this->m_Config.m_Options.Defaults();
-        this->pWorkerContext = new CMainDlgWorkerContext(&this->m_Config, this);
-        this->pWorkerContext->bRunning = false;
+        this->ctx = new CMainDlgWorkerContext(&this->m_Config, this);
+        this->ctx->bRunning = false;
     }
 
     CMainDlg::~CMainDlg()
     {
-        if (this->pWorkerContext != nullptr)
-            delete this->pWorkerContext;
+        if (this->ctx != nullptr)
+            delete this->ctx;
     }
 
     void CMainDlg::DoDataExchange(CDataExchange* pDX)
@@ -486,10 +486,10 @@ namespace dialogs
         {
             this->m_Config.m_Language.nLangId = -1;
 
-            this->LoadTools(config::m_Settings.szToolsPath);
-            this->LoadFormats(config::m_Settings.szFormatsPath);
+            this->LoadTools(this->m_Config.m_Settings.szToolsPath);
+            this->LoadFormats(this->m_Config.m_Settings.szFormatsPath);
 
-            if (this->LoadOptions(config::m_Settings.szOptionsFile) == false)
+            if (this->LoadOptions(this->m_Config.m_Settings.szOptionsFile) == false)
             {
                 this->m_Config.m_Options.Defaults();
                 this->SetOptions();
@@ -497,11 +497,11 @@ namespace dialogs
                 this->UpdatePresetComboBox();
             }
 
-            this->LoadLanguages(config::m_Settings.szSettingsPath);
-            this->LoadLanguages(config::m_Settings.szLanguagesPath);
+            this->LoadLanguages(this->m_Config.m_Settings.szSettingsPath);
+            this->LoadLanguages(this->m_Config.m_Settings.szLanguagesPath);
             this->InitLanguageMenu();
             this->SetLanguage();
-            this->LoadItems(config::m_Settings.szItemsFile);
+            this->LoadItems(this->m_Config.m_Settings.szItemsFile);
         }
         catch (...) {}
 
@@ -574,10 +574,10 @@ namespace dialogs
         {
             try
             {
-                this->SaveTools(config::m_Settings.szToolsPath);
-                this->SaveFormats(config::m_Settings.szFormatsPath);
-                this->SaveOptions(config::m_Settings.szOptionsFile);
-                this->SaveItems(config::m_Settings.szItemsFile);
+                this->SaveTools(this->m_Config.m_Settings.szToolsPath);
+                this->SaveFormats(this->m_Config.m_Settings.szFormatsPath);
+                this->SaveOptions(this->m_Config.m_Settings.szOptionsFile);
+                this->SaveItems(this->m_Config.m_Settings.szItemsFile);
             }
             catch (...) {}
         }
@@ -596,7 +596,7 @@ namespace dialogs
 
     void CMainDlg::OnDropFiles(HDROP hDropInfo)
     {
-        if (this->pWorkerContext->bRunning == true)
+        if (this->ctx->bRunning == true)
             return;
 
         std::thread m_DropThread = std::thread([this, hDropInfo]() { this->HandleDropFiles(hDropInfo); });
@@ -612,7 +612,7 @@ namespace dialogs
 
     LRESULT CMainDlg::OnListItemChaged(WPARAM wParam, LPARAM lParam)
     {
-        if (this->pWorkerContext->bRunning == false)
+        if (this->ctx->bRunning == false)
         {
             INT nIndex = (INT)wParam;
             LPTSTR szText = (LPTSTR)lParam;
@@ -698,7 +698,7 @@ namespace dialogs
 
     void CMainDlg::OnOdfindListItems(NMHDR* pNMHDR, LRESULT* pResult)
     {
-        if (this->pWorkerContext->bRunning == false)
+        if (this->ctx->bRunning == false)
         {
             NMLVFINDITEM* pFindInfo = (NMLVFINDITEM*)pNMHDR;
             *pResult = -1;
@@ -730,7 +730,7 @@ namespace dialogs
 
     void CMainDlg::OnNMClickListItems(NMHDR *pNMHDR, LRESULT *pResult)
     {
-        if (this->pWorkerContext->bRunning == false)
+        if (this->ctx->bRunning == false)
         {
             NMLISTVIEW* pNMListView = (NM_LISTVIEW*)pNMHDR;
             LVHITTESTINFO hitInfo;
@@ -775,7 +775,7 @@ namespace dialogs
 
     void CMainDlg::OnEnKillfocusEditItem()
     {
-        if (this->pWorkerContext->bRunning == false)
+        if (this->ctx->bRunning == false)
         {
             UpdateEdtItem(TRUE);
         }
@@ -783,7 +783,7 @@ namespace dialogs
 
     void CMainDlg::OnLvnKeydownListInputItems(NMHDR *pNMHDR, LRESULT *pResult)
     {
-        if (this->pWorkerContext->bRunning == false)
+        if (this->ctx->bRunning == false)
         {
             LPNMLVKEYDOWN pLVKeyDow = reinterpret_cast<LPNMLVKEYDOWN>(pNMHDR);
             switch (pLVKeyDow->wVKey)
@@ -806,7 +806,7 @@ namespace dialogs
 
     void CMainDlg::OnNMRclickListInputItems(NMHDR *pNMHDR, LRESULT *pResult)
     {
-        if (this->pWorkerContext->bRunning == false)
+        if (this->ctx->bRunning == false)
         {
             POINT point;
             GetCursorPos(&point);
@@ -818,7 +818,7 @@ namespace dialogs
 
     void CMainDlg::OnLvnItemchangingListInputItems(NMHDR* pNMHDR, LRESULT* pResult)
     {
-        if (this->pWorkerContext->bRunning == true)
+        if (this->ctx->bRunning == true)
         {
             *pResult = true;
             return;
@@ -828,7 +828,7 @@ namespace dialogs
 
     void CMainDlg::OnLvnItemchangedListInputItems(NMHDR *pNMHDR, LRESULT *pResult)
     {
-        if (this->pWorkerContext->bRunning == false)
+        if (this->ctx->bRunning == false)
         {
             LPNMLISTVIEW pNMLV = reinterpret_cast<LPNMLISTVIEW>(pNMHDR);
 
@@ -874,7 +874,7 @@ namespace dialogs
 
     void CMainDlg::OnCbnSelchangeComboPresets()
     {
-        if (this->pWorkerContext->bRunning == false)
+        if (this->ctx->bRunning == false)
         {
             int nFormat = this->m_CmbFormat.GetCurSel();
             int nPreset = this->m_CmbPresets.GetCurSel();
@@ -888,7 +888,7 @@ namespace dialogs
 
     void CMainDlg::OnCbnSelchangeComboFormat()
     {
-        if (this->pWorkerContext->bRunning == false)
+        if (this->ctx->bRunning == false)
         {
             int nFormat = this->m_CmbFormat.GetCurSel();
             if (nFormat != -1)
@@ -903,7 +903,7 @@ namespace dialogs
 
     void CMainDlg::OnBnClickedButtonBrowsePath()
     {
-        if (this->pWorkerContext->bRunning == false)
+        if (this->ctx->bRunning == false)
         {
             LPMALLOC pMalloc;
             BROWSEINFO bi;
@@ -966,7 +966,7 @@ namespace dialogs
 
     void CMainDlg::OnFileLoadList()
     {
-        if (this->pWorkerContext->bRunning == false)
+        if (this->ctx->bRunning == false)
         {
             CString szFilter;
             szFilter.Format(_T("%s (*.xml)|*.xml|%s (*.*)|*.*||"),
@@ -990,7 +990,7 @@ namespace dialogs
 
     void CMainDlg::OnFileSaveList()
     {
-        if (this->pWorkerContext->bRunning == false)
+        if (this->ctx->bRunning == false)
         {
             CString szFilter;
             szFilter.Format(_T("%s (*.xml)|*.xml|%s (*.*)|*.*||"),
@@ -1012,9 +1012,9 @@ namespace dialogs
 
     void CMainDlg::OnFileClearList()
     {
-        if (this->pWorkerContext->bRunning == false)
+        if (this->ctx->bRunning == false)
         {
-            if (this->pWorkerContext->bRunning == false)
+            if (this->ctx->bRunning == false)
             {
                 m_Config.m_Items.RemoveAll();
                 m_LstInputItems.SetItemCount(0);
@@ -1025,7 +1025,7 @@ namespace dialogs
 
     void CMainDlg::OnFileExit()
     {
-        if (this->pWorkerContext->bRunning == false)
+        if (this->ctx->bRunning == false)
         {
             this->OnClose();
         }
@@ -1033,7 +1033,7 @@ namespace dialogs
 
     void CMainDlg::OnEditAddFiles()
     {
-        if (this->pWorkerContext->bRunning == false)
+        if (this->ctx->bRunning == false)
         {
             try
             {
@@ -1071,7 +1071,7 @@ namespace dialogs
 
     void CMainDlg::OnEditAddDir()
     {
-        if (this->pWorkerContext->bRunning == false)
+        if (this->ctx->bRunning == false)
         {
             LPMALLOC pMalloc;
             BROWSEINFO bi;
@@ -1142,7 +1142,7 @@ namespace dialogs
 
     void CMainDlg::OnEditRename()
     {
-        if (this->pWorkerContext->bRunning == false)
+        if (this->ctx->bRunning == false)
         {
             if (m_LstInputItems.GetFocus()->GetSafeHwnd() != m_LstInputItems.GetSafeHwnd())
                 return;
@@ -1159,7 +1159,7 @@ namespace dialogs
 
     void CMainDlg::OnEditResetTime()
     {
-        if (this->pWorkerContext->bRunning == false)
+        if (this->ctx->bRunning == false)
         {
             this->m_StatusBar.SetText(L"", 1, 0);
             this->ResetConvertionTime();
@@ -1169,7 +1169,7 @@ namespace dialogs
 
     void CMainDlg::OnEditResetOutput()
     {
-        if (this->pWorkerContext->bRunning == false)
+        if (this->ctx->bRunning == false)
         {
             this->ResetOutput();
         }
@@ -1177,7 +1177,7 @@ namespace dialogs
 
     void CMainDlg::OnEditRemove()
     {
-        if (this->pWorkerContext->bRunning == false)
+        if (this->ctx->bRunning == false)
         {
             int nItems = m_Config.m_Items.Count();
             if (nItems <= 0)
@@ -1224,7 +1224,7 @@ namespace dialogs
 
     void CMainDlg::OnEditCrop()
     {
-        if (this->pWorkerContext->bRunning == false)
+        if (this->ctx->bRunning == false)
         {
             int nItems = m_Config.m_Items.Count();
             for (int i = 0; i < nItems; i++)
@@ -1241,7 +1241,7 @@ namespace dialogs
 
     void CMainDlg::OnEditRemoveChecked()
     {
-        if (this->pWorkerContext->bRunning == false)
+        if (this->ctx->bRunning == false)
         {
             int nItems = m_Config.m_Items.Count();
             if (nItems <= 0)
@@ -1273,7 +1273,7 @@ namespace dialogs
 
     void CMainDlg::OnEditRemoveUnchecked()
     {
-        if (this->pWorkerContext->bRunning == false)
+        if (this->ctx->bRunning == false)
         {
             int nItems = m_Config.m_Items.Count();
             if (nItems <= 0)
@@ -1305,7 +1305,7 @@ namespace dialogs
 
     void CMainDlg::OnEditCheckSelected()
     {
-        if (this->pWorkerContext->bRunning == false)
+        if (this->ctx->bRunning == false)
         {
             int nItems = m_Config.m_Items.Count();
             if (nItems > 0)
@@ -1330,7 +1330,7 @@ namespace dialogs
 
     void CMainDlg::OnEditUncheckSelected()
     {
-        if (this->pWorkerContext->bRunning == false)
+        if (this->ctx->bRunning == false)
         {
             int nItems = m_Config.m_Items.Count();
             if (nItems > 0)
@@ -1354,7 +1354,7 @@ namespace dialogs
 
     void CMainDlg::OnEditToggleSelected()
     {
-        if (this->pWorkerContext->bRunning == false)
+        if (this->ctx->bRunning == false)
         {
             int nItems = m_Config.m_Items.Count();
             if (nItems > 0)
@@ -1375,7 +1375,7 @@ namespace dialogs
 
     void CMainDlg::OnEditSelectAll()
     {
-        if (this->pWorkerContext->bRunning == false)
+        if (this->ctx->bRunning == false)
         {
             m_LstInputItems.SetItemState(-1, LVIS_SELECTED, LVIS_SELECTED);
         }
@@ -1383,7 +1383,7 @@ namespace dialogs
 
     void CMainDlg::OnEditSelectNone()
     {
-        if (this->pWorkerContext->bRunning == false)
+        if (this->ctx->bRunning == false)
         {
             m_LstInputItems.SetItemState(-1, 0, LVIS_SELECTED);
         }
@@ -1391,7 +1391,7 @@ namespace dialogs
 
     void CMainDlg::OnEditInvertSelection()
     {
-        if (this->pWorkerContext->bRunning == false)
+        if (this->ctx->bRunning == false)
         {
             int nItems = m_Config.m_Items.Count();
             if (nItems > 0)
@@ -1409,7 +1409,7 @@ namespace dialogs
 
     void CMainDlg::OnEditOpen()
     {
-        if (this->pWorkerContext->bRunning == false)
+        if (this->ctx->bRunning == false)
         {
             POSITION pos = m_LstInputItems.GetFirstSelectedItemPosition();
             if (pos != nullptr)
@@ -1424,7 +1424,7 @@ namespace dialogs
 
     void CMainDlg::OnEditExplore()
     {
-        if (this->pWorkerContext->bRunning == false)
+        if (this->ctx->bRunning == false)
         {
             POSITION pos = m_LstInputItems.GetFirstSelectedItemPosition();
             if (pos != nullptr)
@@ -1444,7 +1444,7 @@ namespace dialogs
 
     void CMainDlg::OnOptionsConfigurePresets()
     {
-        if (this->pWorkerContext->bRunning == false)
+        if (this->ctx->bRunning == false)
         {
             CPresetsDlg dlg;
             dlg.pConfig = &m_Config;
@@ -1469,7 +1469,7 @@ namespace dialogs
 
     void CMainDlg::OnOptionsConfigureFormat()
     {
-        if (this->pWorkerContext->bRunning == false)
+        if (this->ctx->bRunning == false)
         {
             CFormatsDlg dlg;
             dlg.pConfig = &m_Config;
@@ -1498,7 +1498,7 @@ namespace dialogs
 
     void CMainDlg::OnOptionsConfigureTools()
     {
-        if (this->pWorkerContext->bRunning == false)
+        if (this->ctx->bRunning == false)
         {
             int nSelectedTool = 0;
             int nFormat = this->m_CmbFormat.GetCurSel();
@@ -1543,7 +1543,7 @@ namespace dialogs
 
     void CMainDlg::OnOptionsDeleteSource()
     {
-        if (this->pWorkerContext->bRunning == false)
+        if (this->ctx->bRunning == false)
         {
             BOOL bChecked = this->GetMenu()->GetMenuState(ID_OPTIONS_DELETE_SOURCE, MF_BYCOMMAND) == MF_CHECKED;
             this->GetMenu()->CheckMenuItem(ID_OPTIONS_DELETE_SOURCE, (bChecked == TRUE) ? MF_UNCHECKED : MF_CHECKED);
@@ -1553,7 +1553,7 @@ namespace dialogs
 
     void CMainDlg::OnOptionsShutdownWindows()
     {
-        if (this->pWorkerContext->bRunning == false)
+        if (this->ctx->bRunning == false)
         {
             BOOL bChecked = this->GetMenu()->GetMenuState(ID_OPTIONS_SHUTDOWN_WINDOWS, MF_BYCOMMAND) == MF_CHECKED;
             this->GetMenu()->CheckMenuItem(ID_OPTIONS_SHUTDOWN_WINDOWS, (bChecked == TRUE) ? MF_UNCHECKED : MF_CHECKED);
@@ -1563,7 +1563,7 @@ namespace dialogs
 
     void CMainDlg::OnOptionsDoNotSave()
     {
-        if (this->pWorkerContext->bRunning == false)
+        if (this->ctx->bRunning == false)
         {
             BOOL bChecked = this->GetMenu()->GetMenuState(ID_OPTIONS_DO_NOT_SAVE, MF_BYCOMMAND) == MF_CHECKED;
             this->GetMenu()->CheckMenuItem(ID_OPTIONS_DO_NOT_SAVE, (bChecked == TRUE) ? MF_UNCHECKED : MF_CHECKED);
@@ -1573,7 +1573,7 @@ namespace dialogs
 
     void CMainDlg::OnOptionsDeleteOnErrors()
     {
-        if (this->pWorkerContext->bRunning == false)
+        if (this->ctx->bRunning == false)
         {
             BOOL bChecked = this->GetMenu()->GetMenuState(ID_OPTIONS_DELETE_ON_ERRORS, MF_BYCOMMAND) == MF_CHECKED;
             this->GetMenu()->CheckMenuItem(ID_OPTIONS_DELETE_ON_ERRORS, (bChecked == TRUE) ? MF_UNCHECKED : MF_CHECKED);
@@ -1583,7 +1583,7 @@ namespace dialogs
 
     void CMainDlg::OnOptionsStopOnErrors()
     {
-        if (this->pWorkerContext->bRunning == false)
+        if (this->ctx->bRunning == false)
         {
             BOOL bChecked = this->GetMenu()->GetMenuState(ID_OPTIONS_STOP_ON_ERRORS, MF_BYCOMMAND) == MF_CHECKED;
             this->GetMenu()->CheckMenuItem(ID_OPTIONS_STOP_ON_ERRORS, (bChecked == TRUE) ? MF_UNCHECKED : MF_CHECKED);
@@ -1593,7 +1593,7 @@ namespace dialogs
 
     void CMainDlg::OnOptionsHideConsole()
     {
-        if (this->pWorkerContext->bRunning == false)
+        if (this->ctx->bRunning == false)
         {
             BOOL bChecked = this->GetMenu()->GetMenuState(ID_OPTIONS_HIDE_CONSOLE, MF_BYCOMMAND) == MF_CHECKED;
             this->GetMenu()->CheckMenuItem(ID_OPTIONS_HIDE_CONSOLE, (bChecked == TRUE) ? MF_UNCHECKED : MF_CHECKED);
@@ -1603,7 +1603,7 @@ namespace dialogs
 
     void CMainDlg::OnOptionsEnsureVisible()
     {
-        if (this->pWorkerContext->bRunning == false)
+        if (this->ctx->bRunning == false)
         {
             BOOL bChecked = this->GetMenu()->GetMenuState(ID_OPTIONS_ENSURE_VISIBLE, MF_BYCOMMAND) == MF_CHECKED;
             this->GetMenu()->CheckMenuItem(ID_OPTIONS_ENSURE_VISIBLE, (bChecked == TRUE) ? MF_UNCHECKED : MF_CHECKED);
@@ -1613,7 +1613,7 @@ namespace dialogs
 
     void CMainDlg::OnOptionsFindDecoder()
     {
-        if (this->pWorkerContext->bRunning == false)
+        if (this->ctx->bRunning == false)
         {
             BOOL bChecked = this->GetMenu()->GetMenuState(ID_OPTIONS_FIND_DECODER, MF_BYCOMMAND) == MF_CHECKED;
             this->GetMenu()->CheckMenuItem(ID_OPTIONS_FIND_DECODER, (bChecked == TRUE) ? MF_UNCHECKED : MF_CHECKED);
@@ -1623,7 +1623,7 @@ namespace dialogs
 
     void CMainDlg::OnOptionsValidateFiles()
     {
-        if (this->pWorkerContext->bRunning == false)
+        if (this->ctx->bRunning == false)
         {
             BOOL bChecked = this->GetMenu()->GetMenuState(ID_OPTIONS_VALIDATE_FILES, MF_BYCOMMAND) == MF_CHECKED;
             this->GetMenu()->CheckMenuItem(ID_OPTIONS_VALIDATE_FILES, (bChecked == TRUE) ? MF_UNCHECKED : MF_CHECKED);
@@ -1633,7 +1633,7 @@ namespace dialogs
 
     void CMainDlg::OnOptionsOverwriteFiles()
     {
-        if (this->pWorkerContext->bRunning == false)
+        if (this->ctx->bRunning == false)
         {
             BOOL bChecked = this->GetMenu()->GetMenuState(ID_OPTIONS_OVERWRITE_FILES, MF_BYCOMMAND) == MF_CHECKED;
             this->GetMenu()->CheckMenuItem(ID_OPTIONS_OVERWRITE_FILES, (bChecked == TRUE) ? MF_UNCHECKED : MF_CHECKED);
@@ -1643,7 +1643,7 @@ namespace dialogs
 
     void CMainDlg::OnOptionsDownloadTools()
     {
-        if (this->pWorkerContext->bRunning == false)
+        if (this->ctx->bRunning == false)
         {
             BOOL bChecked = this->GetMenu()->GetMenuState(ID_OPTIONS_DOWNLOAD_TOOLS, MF_BYCOMMAND) == MF_CHECKED;
             this->GetMenu()->CheckMenuItem(ID_OPTIONS_DOWNLOAD_TOOLS, (bChecked == TRUE) ? MF_UNCHECKED : MF_CHECKED);
@@ -1679,7 +1679,7 @@ namespace dialogs
 
     void CMainDlg::OnHelpWebsite()
     {
-        if (this->pWorkerContext->bRunning == false)
+        if (this->ctx->bRunning == false)
         {
             util::Utilities::LaunchAndWait(L"https://github.com/wieslawsoltes/BatchEncoder", L"", FALSE);
         }
@@ -1687,7 +1687,7 @@ namespace dialogs
 
     void CMainDlg::OnHelpAbout()
     {
-        if (this->pWorkerContext->bRunning == false)
+        if (this->ctx->bRunning == false)
         {
             CAboutDlg dlg;
             dlg.pConfig = &m_Config;
@@ -1967,7 +1967,7 @@ namespace dialogs
         }
         else
         {
-            m_Config.m_Options.szOutputPath = config::m_Settings.szSettingsPath;
+            m_Config.m_Options.szOutputPath = this->m_Config.m_Settings.szSettingsPath;
             this->m_CmbOutPath.SetWindowText(m_Config.m_Options.szOutputPath.c_str());
         }
 
@@ -2346,7 +2346,7 @@ namespace dialogs
 
     void CMainDlg::UpdateFormatComboBox()
     {
-        if (this->pWorkerContext->bRunning == false)
+        if (this->ctx->bRunning == false)
         {
             this->m_CmbFormat.ResetContent();
 
@@ -2370,7 +2370,7 @@ namespace dialogs
 
     void CMainDlg::UpdatePresetComboBox()
     {
-        if (this->pWorkerContext->bRunning == false)
+        if (this->ctx->bRunning == false)
         {
             this->m_CmbPresets.ResetContent();
 
@@ -2582,19 +2582,19 @@ namespace dialogs
         if (bSafeCheck == true)
             return;
 
-        if (this->pWorkerContext->bRunning == false && this->pWorkerContext->bDone == true)
+        if (this->ctx->bRunning == false && this->ctx->bDone == true)
         {
             bSafeCheck = true;
-            this->pWorkerContext->bDone = false;
+            this->ctx->bDone = false;
 
             m_StatusBar.SetText(L"", 1, 0);
 
-            ::SetCurrentDirectory(config::m_Settings.szSettingsPath.c_str());
+            ::SetCurrentDirectory(this->m_Config.m_Settings.szSettingsPath.c_str());
 
             this->GetOptions();
             this->GetItems();
 
-            this->pWorkerContext->pConfig = &this->m_Config;
+            this->ctx->pConfig = &this->m_Config;
 
             int nItems = this->m_Config.m_Items.Count();
             int nChecked = 0;
@@ -2602,7 +2602,7 @@ namespace dialogs
             if (nItems <= 0)
             {
                 bSafeCheck = false;
-                this->pWorkerContext->bDone = true;
+                this->ctx->bDone = true;
                 return;
             }
 
@@ -2624,7 +2624,7 @@ namespace dialogs
             if (nChecked <= 0)
             {
                 bSafeCheck = false;
-                this->pWorkerContext->bDone = true;
+                this->ctx->bDone = true;
                 return;
             }
 
@@ -2634,11 +2634,11 @@ namespace dialogs
             m_BtnConvert.SetWindowText(m_Config.GetString(0x000A0018).c_str());
             this->GetMenu()->ModifyMenu(ID_ACTION_CONVERT, MF_BYCOMMAND, ID_ACTION_CONVERT, m_Config.GetString(0x00030003).c_str());
 
-            this->pWorkerContext->bRunning = true;
+            this->ctx->bRunning = true;
 
             std::thread m_WorkerThread = std::thread([this]()
             {
-                this->m_Worker.Convert(this->pWorkerContext);
+                this->m_Worker.Convert(this->ctx);
             });
             m_WorkerThread.detach();
 
@@ -2652,7 +2652,7 @@ namespace dialogs
             this->GetMenu()->ModifyMenu(ID_ACTION_CONVERT, MF_BYCOMMAND, ID_ACTION_CONVERT, m_Config.GetString(0x00030002).c_str());
             this->EnableUserInterface(TRUE);
 
-            this->pWorkerContext->bRunning = false;
+            this->ctx->bRunning = false;
             bSafeCheck = false;
         }
     }
@@ -2664,7 +2664,7 @@ namespace dialogs
         this->EnableUserInterface(TRUE);
 
         this->m_Progress.SetPos(0);
-        this->pWorkerContext->bRunning = false;
+        this->ctx->bRunning = false;
 
         if (this->m_Config.m_Options.bShutdownWhenFinished == true)
         {
@@ -2672,10 +2672,10 @@ namespace dialogs
             {
                 try
                 {
-                    this->SaveTools(config::m_Settings.szToolsPath);
-                    this->SaveFormats(config::m_Settings.szFormatsPath);
-                    this->SaveOptions(config::m_Settings.szOptionsFile);
-                    this->SaveItems(config::m_Settings.szItemsFile);
+                    this->SaveTools(this->m_Config.m_Settings.szToolsPath);
+                    this->SaveFormats(this->m_Config.m_Settings.szFormatsPath);
+                    this->SaveOptions(this->m_Config.m_Settings.szOptionsFile);
+                    this->SaveItems(this->m_Config.m_Settings.szItemsFile);
                 }
                 catch (...) {}
             }

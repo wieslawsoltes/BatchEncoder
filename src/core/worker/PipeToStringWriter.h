@@ -16,7 +16,7 @@ namespace worker
     class CPipeToStringWriter
     {
     public:
-        bool ReadLoop(IWorkerContext* pWorkerContext, CCommandLine &commandLine, util::CPipe &Stderr, IOutputParser &parser, std::mutex &syncDown)
+        bool ReadLoop(IWorkerContext* ctx, CCommandLine &commandLine, util::CPipe &Stderr, IOutputParser &parser, std::mutex &syncDown)
         {
             const int nBuffSize = 4096;
             char szReadBuff[nBuffSize];
@@ -29,9 +29,9 @@ namespace worker
             int nLineLen = 0;
 
             syncDown.lock();
-            ::SetCurrentDirectory(config::m_Settings.szSettingsPath.c_str());
+            ::SetCurrentDirectory(ctx->pConfig->m_Settings.szSettingsPath.c_str());
 
-            if (parser.Init(pWorkerContext, &commandLine) == false)
+            if (parser.Init(ctx, &commandLine) == false)
             {
                 syncDown.unlock();
                 return false; // ERROR
@@ -89,8 +89,8 @@ namespace worker
                         nLineLen++;
                         if (nLineLen > nBuffSize)
                         {
-                            pWorkerContext->Status(commandLine.nItemId, pWorkerContext->pConfig->GetString(0x00150001), pWorkerContext->pConfig->GetString(0x00110003));
-                            pWorkerContext->Callback(commandLine.nItemId, -1, true, true);
+                            ctx->Status(commandLine.nItemId, ctx->pConfig->GetString(0x00150001), ctx->pConfig->GetString(0x00110003));
+                            ctx->Callback(commandLine.nItemId, -1, true, true);
                             return false;
                         }
 
@@ -105,7 +105,7 @@ namespace worker
                         {
                             bRunning = parser.Parse(szLineBuff);
                             std::memset(szLineBuff, 0, sizeof(szLineBuff));
-                            if ((pWorkerContext->bRunning == false) || (bRunning == false))
+                            if ((ctx->bRunning == false) || (bRunning == false))
                                 break;
                         }
 

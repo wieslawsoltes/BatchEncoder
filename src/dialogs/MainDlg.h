@@ -64,7 +64,7 @@ namespace dialogs
     public:
         config::CConfiguration m_Config;
     public:
-        worker::IWorkerContext* pWorkerContext;
+        worker::IWorkerContext* ctx;
         worker::CWorker m_Worker;
     public:
         int nEdtItem;

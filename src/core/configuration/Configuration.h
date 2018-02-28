@@ -5,6 +5,7 @@
 
 #include <string>
 #include "Strings.h"
+#include "Settings.h"
 #include "Options.h"
 #include "FormatsList.h"
 #include "ItemsList.h"
@@ -16,6 +17,7 @@ namespace config
     class CConfiguration
     {
     public:
+        CSettings m_Settings;
         COptions m_Options;
         CFormatsList m_Formats;
         CItemsList m_Items;

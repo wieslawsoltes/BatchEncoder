@@ -14,14 +14,14 @@ namespace worker
     {
         CLuaProgess luaProgress;
     public:
-        IWorkerContext * pWorkerContext;
+        IWorkerContext * ctx;
         CCommandLine *pCommandLine;
         int nProgress;
         int nPreviousProgress;
     public:
-        bool Init(IWorkerContext* pWorkerContext, CCommandLine* pCommandLine)
+        bool Init(IWorkerContext* ctx, CCommandLine* pCommandLine)
         {
-            this->pWorkerContext = pWorkerContext;
+            this->ctx = ctx;
             this->pCommandLine = pCommandLine;
             this->nProgress = 0;
             this->nPreviousProgress = 0;
@@ -29,15 +29,15 @@ namespace worker
             std::string szFunction = util::StringHelper::StringHelper::Convert(this->pCommandLine->pFormat->szFunction);
             if (this->luaProgress.Open(szFunction.c_str()) == false)
             {
-                this->pWorkerContext->Status(this->pCommandLine->nItemId, pWorkerContext->pConfig->GetString(0x00150001), this->pWorkerContext->pConfig->GetString(0x00110001));
-                this->pWorkerContext->Callback(this->pCommandLine->nItemId, -1, true, true);
+                this->ctx->Status(this->pCommandLine->nItemId, ctx->pConfig->GetString(0x00150001), this->ctx->pConfig->GetString(0x00110001));
+                this->ctx->Callback(this->pCommandLine->nItemId, -1, true, true);
                 return false;
             }
 
             if (this->luaProgress.Init() == false)
             {
-                this->pWorkerContext->Status(this->pCommandLine->nItemId, pWorkerContext->pConfig->GetString(0x00150001), this->pWorkerContext->pConfig->GetString(0x00110002));
-                this->pWorkerContext->Callback(this->pCommandLine->nItemId, -1, true, true);
+                this->ctx->Status(this->pCommandLine->nItemId, ctx->pConfig->GetString(0x00150001), this->ctx->pConfig->GetString(0x00110002));
+                this->ctx->Callback(this->pCommandLine->nItemId, -1, true, true);
                 return false;
             }
 
@@ -54,12 +54,12 @@ namespace worker
             if (this->nProgress != this->nPreviousProgress)
             {
                 nPreviousProgress = nProgress;
-                bool bRunning = this->pWorkerContext->Callback(this->pCommandLine->nItemId, nProgress, false);
+                bool bRunning = this->ctx->Callback(this->pCommandLine->nItemId, nProgress, false);
                 return bRunning;
             }
             else
             {
-                bool bRunning = this->pWorkerContext->IsRunning();
+                bool bRunning = this->ctx->IsRunning();
                 return bRunning;
             }
 

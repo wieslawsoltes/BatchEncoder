@@ -17,7 +17,7 @@ namespace worker
         volatile bool bError;
         volatile bool bFinished;
     public:
-        bool ReadLoop(IWorkerContext* pWorkerContext, util::CPipe &Stdin)
+        bool ReadLoop(IWorkerContext* ctx, util::CPipe &Stdin)
         {
             HANDLE hPipe = Stdin.hWrite;
             HANDLE hFile = INVALID_HANDLE_VALUE;
@@ -70,11 +70,11 @@ namespace worker
 
                 if (nProgress != nPreviousProgress)
                 {
-                    bRunning = pWorkerContext->Callback(nIndex, nProgress, false);
+                    bRunning = ctx->Callback(nIndex, nProgress, false);
                     nPreviousProgress = nProgress;
                 }
 
-                if ((pWorkerContext->bRunning == false) || (bRunning == false))
+                if ((ctx->bRunning == false) || (bRunning == false))
                     break;
             } while (bRes != FALSE);
 

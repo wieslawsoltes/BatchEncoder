@@ -102,6 +102,4 @@ namespace config
                 this->InitUserSettings();
         }
     };
-
-    extern CSettings m_Settings;
 }

@@ -17,7 +17,7 @@ namespace worker
         volatile bool bError;
         volatile bool bFinished;
     public:
-        bool WriteLoop(IWorkerContext* pWorkerContext, util::CPipe &Stdout)
+        bool WriteLoop(IWorkerContext* ctx, util::CPipe &Stdout)
         {
             HANDLE hPipe = Stdout.hRead;
             HANDLE hFile = INVALID_HANDLE_VALUE;
@@ -61,7 +61,7 @@ namespace worker
                 else
                     bRes = TRUE;
 
-                if (pWorkerContext->bRunning == false)
+                if (ctx->bRunning == false)
                     break;
             } while (bRes != FALSE);
 
