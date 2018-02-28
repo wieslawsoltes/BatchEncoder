@@ -19,15 +19,10 @@ namespace worker
         volatile int nProcessedFiles;
         volatile int nErrors;
         volatile int nLastItemId;
-    public:
         config::CConfiguration* pConfig;
     public:
-        IWorkerContext(config::CConfiguration* pConfig)
-            : pConfig(pConfig) { }
         virtual ~IWorkerContext() { }
-    public:
         virtual std::wstring GetString(int nKey) = 0;
-    public:
         virtual void Init() = 0;
         virtual void Next(int nItemId) = 0;
         virtual void Done() = 0;

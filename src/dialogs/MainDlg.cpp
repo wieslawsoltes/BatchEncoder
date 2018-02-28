@@ -151,10 +151,10 @@ namespace dialogs
         CMainDlg *pDlg;
     public:
         CMainDlgWorkerContext(config::CConfiguration* pConfig, CMainDlg* pDlg)
-            : IWorkerContext(pConfig)
         {
-            this->bDone = true;
+            this->pConfig = pConfig;
             this->pDlg = pDlg;
+            this->bDone = true;
         }
         virtual ~CMainDlgWorkerContext() { }
     public:
