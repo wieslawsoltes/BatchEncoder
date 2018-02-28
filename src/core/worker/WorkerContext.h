@@ -27,8 +27,8 @@ namespace worker
         virtual bool IsRunning() = 0;
         virtual void Start() = 0;
         virtual void Stop() = 0;
-        virtual void Next(int nItemId) = 0;
-        virtual bool Progress(int nItemId, int nProgress, bool bFinished, bool bError = false) = 0;
-        virtual void Status(int nItemId, const std::wstring& szTime, const std::wstring& szStatus) = 0;
+        virtual bool ItemProgress(int nItemId, int nProgress, bool bFinished, bool bError = false) = 0;
+        virtual void ItemStatus(int nItemId, const std::wstring& szTime, const std::wstring& szStatus) = 0;
+        virtual void TotalProgress(int nItemId) = 0;
     };
 }

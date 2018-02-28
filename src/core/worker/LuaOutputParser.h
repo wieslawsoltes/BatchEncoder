@@ -30,14 +30,14 @@ namespace worker
             if (this->luaProgress.Open(szFunction.c_str()) == false)
             {
                 this->ctx->Status(this->cl->nItemId, ctx->GetString(0x00150001), this->ctx->GetString(0x00110001));
-                this->ctx->Progress(this->cl->nItemId, -1, true, true);
+                this->ctx->ItemProgress(this->cl->nItemId, -1, true, true);
                 return false;
             }
 
             if (this->luaProgress.Init() == false)
             {
                 this->ctx->Status(this->cl->nItemId, ctx->GetString(0x00150001), this->ctx->GetString(0x00110002));
-                this->ctx->Progress(this->cl->nItemId, -1, true, true);
+                this->ctx->ItemProgress(this->cl->nItemId, -1, true, true);
                 return false;
             }
 
@@ -54,7 +54,7 @@ namespace worker
             if (this->nProgress != this->nPreviousProgress)
             {
                 nPreviousProgress = nProgress;
-                bool bRunning = this->ctx->Progress(this->cl->nItemId, nProgress, false);
+                bool bRunning = this->ctx->ItemProgress(this->cl->nItemId, nProgress, false);
                 return bRunning;
             }
             else

@@ -150,11 +150,11 @@ namespace dialogs
         util::CTimeCount timer;
         CMainDlg *pDlg;
     public:
-        CMainDlgWorkerContext(config::CConfiguration* pConfig, CMainDlg* pDlg)
+        CMainDlgWorkerContext(CMainDlg* pDlg)
         {
-            this->pConfig = pConfig;
-            this->pDlg = pDlg;
             this->bDone = true;
+            this->bRunning = false;
+            this->pDlg = pDlg;
         }
         virtual ~CMainDlgWorkerContext() { }
     public:
@@ -188,31 +188,10 @@ namespace dialogs
             int nPos = (int)(100.0 * ((double)this->nProcessedFiles / (double)this->nTotalFiles));
             pDlg->m_Progress.SetPos(nPos);
             pDlg->FinishConvert();
+            this->pConfig = nullptr;
+            this->bRunning = false;
         }
-        void Next(int nItemId)
-        {
-            CString szFormat = pDlg->m_Config.GetString(0x00190003).c_str();
-            CString szText;
-            szText.Format(szFormat,
-                this->nProcessedFiles,
-                this->nTotalFiles,
-                this->nProcessedFiles - this->nErrors,
-                this->nErrors,
-                ((this->nErrors == 0) || (this->nErrors > 1)) ?
-                pDlg->m_Config.GetString(0x00190002).c_str() : pDlg->m_Config.GetString(0x00190001).c_str());
-            pDlg->m_StatusBar.SetText(szText, 1, 0);
-
-            if (nItemId > this->nLastItemId)
-            {
-                this->nLastItemId = nItemId;
-                if (pDlg->m_Config.m_Options.bEnsureItemIsVisible == true)
-                    pDlg->MakeItemVisible(nItemId);
-            }
-
-            int nPos = (int)(100.0f * ((double)this->nProcessedFiles / (double)this->nTotalFiles));
-            pDlg->m_Progress.SetPos(nPos);
-        }
-        bool Progress(int nItemId, int nProgress, bool bFinished, bool bError = false)
+        bool ItemProgress(int nItemId, int nProgress, bool bFinished, bool bError = false)
         {
             if (bError == true)
             {
@@ -273,12 +252,35 @@ namespace dialogs
             }
             return this->bRunning;
         }
-        void Status(int nItemId, const std::wstring& szTime, const std::wstring& szStatus)
+        void ItemStatus(int nItemId, const std::wstring& szTime, const std::wstring& szStatus)
         {
             config::CItem &item = pDlg->m_Config.m_Items[nItemId];
             item.szTime = szTime;
             item.szStatus = szStatus;
             pDlg->RedrawItem(nItemId);
+        }
+        void TotalProgress(int nItemId)
+        {
+            CString szFormat = pDlg->m_Config.GetString(0x00190003).c_str();
+            CString szText;
+            szText.Format(szFormat,
+                this->nProcessedFiles,
+                this->nTotalFiles,
+                this->nProcessedFiles - this->nErrors,
+                this->nErrors,
+                ((this->nErrors == 0) || (this->nErrors > 1)) ?
+                pDlg->m_Config.GetString(0x00190002).c_str() : pDlg->m_Config.GetString(0x00190001).c_str());
+            pDlg->m_StatusBar.SetText(szText, 1, 0);
+
+            if (nItemId > this->nLastItemId)
+            {
+                this->nLastItemId = nItemId;
+                if (pDlg->m_Config.m_Options.bEnsureItemIsVisible == true)
+                    pDlg->MakeItemVisible(nItemId);
+            }
+
+            int nPos = (int)(100.0f * ((double)this->nProcessedFiles / (double)this->nTotalFiles));
+            pDlg->m_Progress.SetPos(nPos);
         }
     };
 
@@ -288,8 +290,7 @@ namespace dialogs
     {
         this->m_hIcon = AfxGetApp()->LoadIcon(IDI_ICON_MAIN);
         this->m_Config.m_Options.Defaults();
-        this->ctx = new CMainDlgWorkerContext(&this->m_Config, this);
-        this->ctx->bRunning = false;
+        this->ctx = new CMainDlgWorkerContext(this);
     }
 
     CMainDlg::~CMainDlg()
@@ -2657,7 +2658,6 @@ namespace dialogs
         this->EnableUserInterface(TRUE);
 
         this->m_Progress.SetPos(0);
-        this->ctx->bRunning = false;
 
         if (this->m_Config.m_Options.bShutdownWhenFinished == true)
         {
@@ -2673,6 +2673,7 @@ namespace dialogs
                 catch (...) {}
             }
 
+            this->ctx->bRunning = false;
             util::Utilities::ShutdownWindows();
         }
     }

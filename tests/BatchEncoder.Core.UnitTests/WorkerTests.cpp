@@ -13,10 +13,11 @@ namespace BatchEncoderCoreUnitTests
     class CTestWorkerContext : public worker::IWorkerContext
     {
     public:
-        CTestWorkerContext(config::CConfiguration* pConfig)
+        CTestWorkerContext()
         {
-            this->pConfig = pConfig;
             this->bDone = true;
+            this->bRunning = false;
+            this->pConfig = nullptr;
         }
         virtual ~CTestWorkerContext() { }
     public:
@@ -33,16 +34,39 @@ namespace BatchEncoderCoreUnitTests
         }
         void Stop()
         {
+            this->pConfig = nullptr;
+            this->bRunning = false;
         }
-        void Next(int nItemId)
+        bool ItemProgress(int nItemId, int nProgress, bool bFinished, bool bError = false)
         {
-        }
-        bool Progress(int nItemId, int nProgress, bool bFinished, bool bError = false)
-        {
+            if (bError == true)
+            {
+                if (this->pConfig->m_Options.bStopOnErrors == true)
+                {
+                    this->bRunning = false;
+                }
+                return this->bRunning;
+            }
+
+            if (bFinished == true)
+            {
+            }
+
+            if ((bFinished == false) && (this->bRunning == true))
+            {
+            }
+
             return this->bRunning;
         }
-        void Status(int nItemId, const std::wstring& szTime, const std::wstring& szStatus)
+        void ItemStatus(int nItemId, const std::wstring& szTime, const std::wstring& szStatus)
         {
+        }
+        void TotalProgress(int nItemId)
+        {
+            if (nItemId > this->nLastItemId)
+            {
+                this->nLastItemId = nItemId;
+            }
         }
     };
 
