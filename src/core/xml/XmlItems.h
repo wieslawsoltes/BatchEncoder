@@ -24,13 +24,13 @@ namespace xml
         bool GetPath(const XmlElement *element, config::CPath &m_Path)
         {
             VALIDATE(GetAttributeValue(element, "path", &m_Path.szPath));
-            VALIDATE(GetAttributeValue(element, "size", &m_Path.szSize));
+            VALIDATE(GetAttributeValue(element, "size", &m_Path.nSize));
             return true;
         }
         void SetPath(XmlElement *element, config::CPath &m_Path)
         {
             SetAttributeValue(element, "path", m_Path.szPath);
-            SetAttributeValue(element, "size", m_Path.szSize);
+            SetAttributeValue(element, "size", m_Path.nSize);
         }
         bool GetPaths(const XmlElement *parent, config::CPathsList &m_Paths)
         {
@@ -62,7 +62,7 @@ namespace xml
         bool GetItem(const XmlElement *element, config::CItem &m_Item)
         {
             VALIDATE(GetAttributeValue(element, "id", &m_Item.nId));
-            VALIDATE(GetAttributeValue(element, "size", &m_Item.szSize));
+            VALIDATE(GetAttributeValue(element, "size", &m_Item.nSize));
             VALIDATE(GetAttributeValue(element, "name", &m_Item.szName));
             VALIDATE(GetAttributeValue(element, "extension", &m_Item.szExtension));
             VALIDATE(GetAttributeValue(element, "format", &m_Item.szFormatId));
@@ -77,7 +77,7 @@ namespace xml
         void SetItem(XmlElement *element, config::CItem &m_Item, int nId)
         {
             SetAttributeValue(element, "id", nId);
-            SetAttributeValue(element, "size", m_Item.szSize);
+            SetAttributeValue(element, "size", m_Item.nSize);
             SetAttributeValue(element, "name", m_Item.szName);
             SetAttributeValue(element, "extension", m_Item.szExtension);
             SetAttributeValue(element, "format", m_Item.szFormatId);

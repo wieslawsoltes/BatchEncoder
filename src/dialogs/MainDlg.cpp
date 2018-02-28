@@ -653,7 +653,7 @@ namespace dialogs
                 break;
             case ITEM_COLUMN_SIZE:
                 // [Size (bytes)] : file size
-                szText = item.szSize;
+                szText = std::to_wstring(item.nSize);
                 break;
             case ITEM_COLUMN_OUTPUT:
                 // [Output] : output format
@@ -2142,13 +2142,12 @@ namespace dialogs
         }
 
         ULONGLONG nFileSize = util::Utilities::GetFileSize64(szPath);
-        std::wstring szFileSize = std::to_wstring(nFileSize);
         config::CItem item;
         config::CPath path;
         path.szPath = szPath;
-        path.szSize = szFileSize;
+        path.nSize = nFileSize;
         item.m_Paths.Insert(path);
-        item.szSize = szFileSize;
+        item.nSize = nFileSize;
         item.szName = util::Utilities::GetOnlyFileName(szPath);
         item.szExtension = util::StringHelper::ToUpper(util::Utilities::GetFileExtension(szPath));
         item.szFormatId = szFormatId;

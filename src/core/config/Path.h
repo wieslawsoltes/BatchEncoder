@@ -13,11 +13,11 @@ namespace config
     {
     public:
         std::wstring szPath;
-        std::wstring szSize;
+        unsigned __int64 nSize;
     public:
         static bool ComparePath(const CPath& a, const CPath& b)
         {
-            return a.szName < b.szName;
+            return a.szPath < b.szPath;
         };
         static void Sort(std::vector<CPath>& paths)
         {

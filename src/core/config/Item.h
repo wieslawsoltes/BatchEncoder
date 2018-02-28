@@ -15,7 +15,7 @@ namespace config
     public:
         int nId;
         CPathsList m_Paths;
-        std::wstring szSize;
+        unsigned __int64 nSize;
         std::wstring szName;
         std::wstring szExtension;
         std::wstring szFormatId;
