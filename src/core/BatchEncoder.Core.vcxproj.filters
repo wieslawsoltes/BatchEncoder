@@ -13,9 +13,6 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Source Files\Worker">
-      <UniqueIdentifier>{06c60c87-54da-4e70-8fcd-2545f7b2ab4d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Xml">
       <UniqueIdentifier>{4813f535-920f-4387-b544-929464db517f}</UniqueIdentifier>
     </Filter>
