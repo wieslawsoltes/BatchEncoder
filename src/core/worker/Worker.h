@@ -368,7 +368,6 @@ namespace worker
 
                 writeThread = std::thread([this, ctx, &writeContext, &Stdout]() { writeContext.WriteLoop(ctx, Stdout); });
 
-
                 if (cl.bUseReadPipes == true)
                 {
                     // wait for read thread to finish
@@ -1084,9 +1083,7 @@ namespace worker
 
                 auto threads = std::make_unique<std::thread[]>(ctx->nThreadCount);
                 for (int i = 0; i < ctx->nThreadCount; i++)
-                {
                     threads[i] = std::thread(convert);
-                }
 
                 for (int i = 0; i < ctx->nThreadCount; i++)
                     threads[i].join();
