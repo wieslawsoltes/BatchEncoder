@@ -70,7 +70,7 @@ namespace worker
 
                 if (nProgress != nPreviousProgress)
                 {
-                    bRunning = ctx->Callback(nIndex, nProgress, false);
+                    bRunning = ctx->Progress(nIndex, nProgress, false);
                     nPreviousProgress = nProgress;
                 }
 

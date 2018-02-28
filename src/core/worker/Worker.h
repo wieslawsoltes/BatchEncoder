@@ -43,7 +43,7 @@ namespace worker
             if ((cl.bUseReadPipes == true) || (cl.bUseWritePipes == true))
             {
                 ctx->Status(cl.nItemId, ctx->GetString(0x00150001), ctx->GetString(0x00120001));
-                ctx->Callback(cl.nItemId, -1, true, true);
+                ctx->Progress(cl.nItemId, -1, true, true);
                 return false;
             }
 
@@ -51,7 +51,7 @@ namespace worker
             if (Stderr.Create() == false)
             {
                 ctx->Status(cl.nItemId, ctx->GetString(0x00150001), ctx->GetString(0x00120002));
-                ctx->Callback(cl.nItemId, -1, true, true);
+                ctx->Progress(cl.nItemId, -1, true, true);
                 return false;
             }
 
@@ -59,7 +59,7 @@ namespace worker
             if (Stderr.DuplicateRead() == false)
             {
                 ctx->Status(cl.nItemId, ctx->GetString(0x00150001), ctx->GetString(0x00120003));
-                ctx->Callback(cl.nItemId, -1, true, true);
+                ctx->Progress(cl.nItemId, -1, true, true);
                 return false;
             }
 
@@ -123,7 +123,7 @@ namespace worker
                     szStatus.Format(ctx->GetString(0x00120004).c_str(), ::GetLastError());
 
                     ctx->Status(cl.nItemId, ctx->GetString(0x00150001), std::wstring(CT2CW(szStatus)));
-                    ctx->Callback(cl.nItemId, -1, true, true);
+                    ctx->Progress(cl.nItemId, -1, true, true);
                     return false;
                 }
             }
@@ -150,13 +150,13 @@ namespace worker
             if (parser.nProgress != 100)
             {
                 ctx->Status(cl.nItemId, ctx->GetString(0x00150001), ctx->GetString(0x00120005));
-                ctx->Callback(cl.nItemId, -1, true, true);
+                ctx->Progress(cl.nItemId, -1, true, true);
                 return false;
             }
             else
             {
                 ctx->Status(cl.nItemId, util::CTimeCount::Format(timer.ElapsedTime()), ctx->GetString(0x00120006));
-                ctx->Callback(cl.nItemId, 100, true, false);
+                ctx->Progress(cl.nItemId, 100, true, false);
                 return true;
             }
         }
@@ -175,7 +175,7 @@ namespace worker
             if ((cl.bUseReadPipes == false) && (cl.bUseWritePipes == false))
             {
                 ctx->Status(cl.nItemId, ctx->GetString(0x00150001), ctx->GetString(0x00130001));
-                ctx->Callback(cl.nItemId, -1, true, true);
+                ctx->Progress(cl.nItemId, -1, true, true);
                 return false;
             }
 
@@ -185,7 +185,7 @@ namespace worker
                 if (Stdin.Create() == false)
                 {
                     ctx->Status(cl.nItemId, ctx->GetString(0x00150001), ctx->GetString(0x00130002));
-                    ctx->Callback(cl.nItemId, -1, true, true);
+                    ctx->Progress(cl.nItemId, -1, true, true);
                     return false;
                 }
 
@@ -193,7 +193,7 @@ namespace worker
                 if (Stdin.InheritWrite() == false)
                 {
                     ctx->Status(cl.nItemId, ctx->GetString(0x00150001), ctx->GetString(0x00130003));
-                    ctx->Callback(cl.nItemId, -1, true, true);
+                    ctx->Progress(cl.nItemId, -1, true, true);
                     return false;
                 }
             }
@@ -210,7 +210,7 @@ namespace worker
                     }
 
                     ctx->Status(cl.nItemId, ctx->GetString(0x00150001), ctx->GetString(0x00130004));
-                    ctx->Callback(cl.nItemId, -1, true, true);
+                    ctx->Progress(cl.nItemId, -1, true, true);
                     return false;
                 }
 
@@ -227,7 +227,7 @@ namespace worker
                     Stdout.CloseWrite();
 
                     ctx->Status(cl.nItemId, ctx->GetString(0x00150001), ctx->GetString(0x00130005));
-                    ctx->Callback(cl.nItemId, -1, true, true);
+                    ctx->Progress(cl.nItemId, -1, true, true);
                     return false;
                 }
             }
@@ -316,7 +316,7 @@ namespace worker
                     szStatus.Format(ctx->GetString(0x00130006).c_str(), ::GetLastError());
 
                     ctx->Status(cl.nItemId, ctx->GetString(0x00150001), std::wstring(CT2CW(szStatus)));
-                    ctx->Callback(cl.nItemId, -1, true, true);
+                    ctx->Progress(cl.nItemId, -1, true, true);
                     return false;
                 }
             }
@@ -422,13 +422,13 @@ namespace worker
             if (nProgress != 100)
             {
                 ctx->Status(cl.nItemId, ctx->GetString(0x00150001), ctx->GetString(0x00130009));
-                ctx->Callback(cl.nItemId, -1, true, true);
+                ctx->Progress(cl.nItemId, -1, true, true);
                 return false;
             }
             else
             {
                 ctx->Status(cl.nItemId, util::CTimeCount::Format(timer.ElapsedTime()), ctx->GetString(0x0013000B));
-                ctx->Callback(cl.nItemId, 100, true, false);
+                ctx->Progress(cl.nItemId, 100, true, false);
                 return true;
             }
         }
@@ -450,7 +450,7 @@ namespace worker
             if (Stdin.Create() == false)
             {
                 ctx->Status(dcl.nItemId, ctx->GetString(0x00150001), ctx->GetString(0x00130002));
-                ctx->Callback(dcl.nItemId, -1, true, true);
+                ctx->Progress(dcl.nItemId, -1, true, true);
                 return false;
             }
 
@@ -458,7 +458,7 @@ namespace worker
             if (Stdin.InheritWrite() == false)
             {
                 ctx->Status(dcl.nItemId, ctx->GetString(0x00150001), ctx->GetString(0x00130003));
-                ctx->Callback(dcl.nItemId, -1, true, true);
+                ctx->Progress(dcl.nItemId, -1, true, true);
                 return false;
             }
 
@@ -469,7 +469,7 @@ namespace worker
                 Stdin.CloseWrite();
 
                 ctx->Status(dcl.nItemId, ctx->GetString(0x00150001), ctx->GetString(0x00130004));
-                ctx->Callback(dcl.nItemId, -1, true, true);
+                ctx->Progress(dcl.nItemId, -1, true, true);
                 return false;
             }
 
@@ -483,7 +483,7 @@ namespace worker
                 Stdout.CloseWrite();
 
                 ctx->Status(dcl.nItemId, ctx->GetString(0x00150001), ctx->GetString(0x00130005));
-                ctx->Callback(dcl.nItemId, -1, true, true);
+                ctx->Progress(dcl.nItemId, -1, true, true);
                 return false;
             }
 
@@ -497,7 +497,7 @@ namespace worker
                 Stdout.CloseWrite();
 
                 ctx->Status(dcl.nItemId, ctx->GetString(0x00150001), ctx->GetString(0x0013000A));
-                ctx->Callback(dcl.nItemId, -1, true, true);
+                ctx->Progress(dcl.nItemId, -1, true, true);
                 return false;
             }
 
@@ -574,7 +574,7 @@ namespace worker
                     szStatus.Format(ctx->GetString(0x00130006).c_str(), ::GetLastError());
 
                     ctx->Status(dcl.nItemId, ctx->GetString(0x00150001), std::wstring(CT2CW(szStatus)));
-                    ctx->Callback(dcl.nItemId, -1, true, true);
+                    ctx->Progress(dcl.nItemId, -1, true, true);
                     return false;
                 }
             }
@@ -642,7 +642,7 @@ namespace worker
                     szStatus.Format(ctx->GetString(0x00130006).c_str(), ::GetLastError());
 
                     ctx->Status(dcl.nItemId, ctx->GetString(0x00150001), std::wstring(CT2CW(szStatus)));
-                    ctx->Callback(dcl.nItemId, -1, true, true);
+                    ctx->Progress(dcl.nItemId, -1, true, true);
                     return false;
                 }
             }
@@ -710,13 +710,13 @@ namespace worker
             if (nProgress != 100)
             {
                 ctx->Status(dcl.nItemId, ctx->GetString(0x00150001), ctx->GetString(0x00130009));
-                ctx->Callback(dcl.nItemId, -1, true, true);
+                ctx->Progress(dcl.nItemId, -1, true, true);
                 return false;
             }
             else
             {
                 ctx->Status(dcl.nItemId, util::CTimeCount::Format(timer.ElapsedTime()), ctx->GetString(0x0013000B));
-                ctx->Callback(dcl.nItemId, 100, true, false);
+                ctx->Progress(dcl.nItemId, 100, true, false);
                 return true;
             }
         }
@@ -877,7 +877,7 @@ namespace worker
                         ::DeleteFile(szEncOutputFile.c_str());
 
                     ctx->Status(item.nId, ctx->GetString(0x00150001), ctx->GetString(0x0014000E));
-                    ctx->Callback(item.nId, -1, true, true);
+                    ctx->Progress(item.nId, -1, true, true);
                 }
             }
             else
@@ -916,7 +916,7 @@ namespace worker
                             ::DeleteFile(szEncOutputFile.c_str());
 
                         ctx->Status(item.nId, ctx->GetString(0x00150001), ctx->GetString(0x00140009));
-                        ctx->Callback(item.nId, -1, true, true);
+                        ctx->Progress(item.nId, -1, true, true);
                     }
                 }
 
@@ -968,7 +968,7 @@ namespace worker
                         ::DeleteFile(szEncOutputFile.c_str());
 
                     ctx->Status(item.nId, ctx->GetString(0x00150001), ctx->GetString(0x0014000E));
-                    ctx->Callback(item.nId, -1, true, true);
+                    ctx->Progress(item.nId, -1, true, true);
                 }
             }
 
@@ -1062,7 +1062,7 @@ namespace worker
                     ctx->nThreadCount = 1;
             }
 
-            ctx->Init();
+            ctx->Start();
 
             // single-threaded
             if (ctx->nThreadCount == 1)
@@ -1086,7 +1086,7 @@ namespace worker
                     threads[i].join();
             }
 
-            ctx->Done();
+            ctx->Stop();
             ctx->bDone = true;
         }
     };

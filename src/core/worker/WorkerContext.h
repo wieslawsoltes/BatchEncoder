@@ -23,11 +23,11 @@ namespace worker
     public:
         virtual ~IWorkerContext() { }
         virtual std::wstring GetString(int nKey) = 0;
-        virtual void Init() = 0;
-        virtual void Next(int nItemId) = 0;
-        virtual void Done() = 0;
         virtual bool IsRunning() = 0;
-        virtual bool Callback(int nItemId, int nProgress, bool bFinished, bool bError = false) = 0;
+        virtual void Start() = 0;
+        virtual void Stop() = 0;
+        virtual void Next(int nItemId) = 0;
+        virtual bool Progress(int nItemId, int nProgress, bool bFinished, bool bError = false) = 0;
         virtual void Status(int nItemId, const std::wstring& szTime, const std::wstring& szStatus) = 0;
     };
 }

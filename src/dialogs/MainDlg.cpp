@@ -162,11 +162,32 @@ namespace dialogs
         {
             return pDlg->m_Config.GetString(nKey);
         }
-    public:
-        void Init()
+        bool IsRunning()
+        {
+            return this->bRunning;
+        }
+        void Start()
         {
             this->timer.Start();
             pDlg->m_Progress.SetPos(0);
+        }
+        void Stop()
+        {
+            this->timer.Stop();
+            CString szFormat = pDlg->m_Config.GetString(0x00190004).c_str();
+            CString szText;
+            szText.Format(szFormat,
+                this->nProcessedFiles,
+                this->nTotalFiles,
+                this->nProcessedFiles - this->nErrors,
+                this->nErrors,
+                ((this->nErrors == 0) || (this->nErrors > 1)) ?
+                pDlg->m_Config.GetString(0x00190002).c_str() : pDlg->m_Config.GetString(0x00190001).c_str(),
+                util::CTimeCount::Format(this->timer.ElapsedTime()).c_str());
+            pDlg->m_StatusBar.SetText(szText, 1, 0);
+            int nPos = (int)(100.0 * ((double)this->nProcessedFiles / (double)this->nTotalFiles));
+            pDlg->m_Progress.SetPos(nPos);
+            pDlg->FinishConvert();
         }
         void Next(int nItemId)
         {
@@ -191,29 +212,7 @@ namespace dialogs
             int nPos = (int)(100.0f * ((double)this->nProcessedFiles / (double)this->nTotalFiles));
             pDlg->m_Progress.SetPos(nPos);
         }
-        void Done()
-        {
-            this->timer.Stop();
-            CString szFormat = pDlg->m_Config.GetString(0x00190004).c_str();
-            CString szText;
-            szText.Format(szFormat,
-                this->nProcessedFiles,
-                this->nTotalFiles,
-                this->nProcessedFiles - this->nErrors,
-                this->nErrors,
-                ((this->nErrors == 0) || (this->nErrors > 1)) ?
-                pDlg->m_Config.GetString(0x00190002).c_str() : pDlg->m_Config.GetString(0x00190001).c_str(),
-                util::CTimeCount::Format(this->timer.ElapsedTime()).c_str());
-            pDlg->m_StatusBar.SetText(szText, 1, 0);
-            int nPos = (int)(100.0 * ((double)this->nProcessedFiles / (double)this->nTotalFiles));
-            pDlg->m_Progress.SetPos(nPos);
-            pDlg->FinishConvert();
-        }
-        bool IsRunning()
-        {
-            return this->bRunning;
-        }
-        bool Callback(int nItemId, int nProgress, bool bFinished, bool bError = false)
+        bool Progress(int nItemId, int nProgress, bool bFinished, bool bError = false)
         {
             if (bError == true)
             {

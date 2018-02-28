@@ -90,7 +90,7 @@ namespace worker
                         if (nLineLen > nBuffSize)
                         {
                             ctx->Status(cl.nItemId, ctx->GetString(0x00150001), ctx->GetString(0x00110003));
-                            ctx->Callback(cl.nItemId, -1, true, true);
+                            ctx->Progress(cl.nItemId, -1, true, true);
                             return false;
                         }
 
