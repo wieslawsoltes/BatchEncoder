@@ -4,13 +4,15 @@
 #pragma once
 
 #include <string>
-#include "Strings.h"
-#include "Settings.h"
+#include "Format.h"
+#include "Item.h"
+#include "Language.h"
 #include "Options.h"
-#include "FormatsList.h"
-#include "ItemsList.h"
-#include "ToolsList.h"
-#include "utilities\LanguageContext.h"
+#include "Path.h"
+#include "Preset.h"
+#include "Settings.h"
+#include "Strings.h"
+#include "Tool.h"
 
 namespace config
 {
@@ -19,15 +21,36 @@ namespace config
     public:
         CSettings m_Settings;
         COptions m_Options;
-        CFormatsList m_Formats;
-        CItemsList m_Items;
-        CToolsList m_Tools;
-        lang::CLanguageContext m_Language;
+        std::vector<CFormat> m_Formats;
+        std::vector<CItem> m_Items;
+        std::vector<CTool> m_Tools;
+        size_t nLangId;
+        std::vector<CLanguage> m_Languages;
     public:
+        inline bool LookupString(const int nKey, std::wstring& rValue)
+        {
+            if (this->nLangId >= 0 && this->nLangId < this->m_Languages.size())
+            {
+                auto& language = this->m_Languages[this->nLangId];
+                if (language.m_Strings.count(nKey) == 1)
+                {
+                    rValue = language.m_Strings.at[key];
+                    return true;
+                }
+            }
+            return false;
+        }
+        inline std::wstring GetString(int nKey, const std::wstring& szDefault)
+        {
+            std::wstring rValue;
+            if (this->LookupString(nKey, rValue))
+                return rValue;
+            return szDefault;
+        }
         std::wstring GetString(int nKey)
         {
             std::wstring rValue;
-            if (this->m_Language.LookupString(nKey, rValue))
+            if (this->LookupString(nKey, rValue))
                 return rValue;
 
             if (config::m_Strings.count(nKey) == 1)

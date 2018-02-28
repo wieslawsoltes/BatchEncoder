@@ -3,7 +3,6 @@
 
 #include "StdAfx.h"
 #include "MainApp.h"
-#include "utilities\LanguageHelper.h"
 #include "utilities\Utilities.h"
 #include "AboutDlg.h"
 
@@ -72,7 +71,7 @@ namespace dialogs
 
     void CAboutDlg::SetLanguage()
     {
-        lang::CLanguageHelper helper(&pConfig->m_Language);
+        app::CLanguageHelper helper(pConfig);
 
         helper.SetWndText(this, 0x000D0010);
         helper.SetWndText(&m_BtnOK, 0x000D0011);

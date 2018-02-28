@@ -3,7 +3,6 @@
 
 #include "StdAfx.h"
 #include "MainApp.h"
-#include "utilities\LanguageHelper.h"
 #include "utilities\Utilities.h"
 #include "utilities\Utf8String.h"
 #include "xml\XmlConfig.h"
@@ -806,7 +805,7 @@ namespace dialogs
 
     void CToolsDlg::SetLanguage()
     {
-        lang::CLanguageHelper helper(&pConfig->m_Language);
+        app::CLanguageHelper helper(pConfig);
 
         helper.SetColumnText(m_LstTools, TOOL_COLUMN_NAME, 0x000E0001);
         helper.SetColumnText(m_LstTools, TOOL_COLUMN_URL, 0x000E0002);
@@ -999,7 +998,7 @@ namespace dialogs
 
         ::SetCurrentDirectory(pConfig->m_Settings.szToolsPath.c_str());
 
-        lang::CLanguageHelper helper(&pConfig->m_Language);
+        app::CLanguageHelper helper(pConfig);
         helper.SetWndText(&m_BtnDownload, 0x000E0024);
 
         int nCount = m_LstTools.GetItemCount();

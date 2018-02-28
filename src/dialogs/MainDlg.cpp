@@ -3,7 +3,6 @@
 
 #include "StdAfx.h"
 #include "MainApp.h"
-#include "utilities\LanguageHelper.h"
 #include "utilities\Utilities.h"
 #include "xml\XmlConfig.h"
 #include "MainDlg.h"
@@ -1779,7 +1778,7 @@ namespace dialogs
 
     void CMainDlg::SetLanguage()
     {
-        lang::CLanguageHelper helper(&m_Config.m_Language);
+        app::CLanguageHelper helper(&m_Config);
         CMenu *m_hMenu = this->GetMenu();
 
         // File Menu

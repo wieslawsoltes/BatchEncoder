@@ -5,20 +5,17 @@
 
 #include <string>
 #include <string.h>
+#include <vector>
 #include "tinyxml2\tinyxml2.h" // https://github.com/leethomason/tinyxml2
-#include "utilities\Utf8String.h"
-#include "config\Options.h"
-#include "config\Item.h"
-#include "config\ItemsList.h"
-#include "utilities\Language.h"
-#include "utilities\LanguagesList.h"
 #include "utilities\StringHelper.h"
-#include "config\Preset.h"
-#include "config\PresetsList.h"
+#include "utilities\Utf8String.h"
+#include "config\Item.h"
 #include "config\Format.h"
-#include "config\FormatsList.h"
+#include "config\Language.h"
+#include "config\Options.h"
+#include "config\Path.h"
+#include "config\Preset.h"
 #include "config\Tool.h"
-#include "config\ToolsList.h"
 
 #define VALIDATE(value) if (!value) return false
 
@@ -363,7 +360,7 @@ namespace xml
             SetAttributeValue(element, "path", m_Path.szPath);
             SetAttributeValue(element, "size", m_Path.nSize);
         }
-        bool GetPaths(const XmlElement *parent, config::CPathsList &m_Paths)
+        bool GetPaths(const XmlElement *parent, std::vector<config::CPath> &m_Paths)
         {
             auto element = parent->FirstChildElement("Path");
             if (element != nullptr)
@@ -372,18 +369,18 @@ namespace xml
                 {
                     config::CPath path;
                     VALIDATE(this->GetPath(element, path));
-                    m_Paths.Insert(path);
+                    m_Paths.emplace_back(path);
                 }
                 return true;
             }
             return false;
         }
-        void SetPaths(XmlElement *parent, config::CPathsList &m_Paths)
+        void SetPaths(XmlElement *parent, std::vector<config::CPath> &m_Paths)
         {
-            int nPaths = m_Paths.Count();
-            for (int i = 0; i < nPaths; i++)
+            size_t nPaths = m_Paths.size();
+            for (size_t i = 0; i < nPaths; i++)
             {
-                config::CPath& path = m_Paths.Get(i);
+                config::CPath& path = m_Paths[i];
                 auto element = this->NewElement("Path");
                 parent->LinkEndChild(element);
                 this->SetPath(element, path);
@@ -419,7 +416,7 @@ namespace xml
             SetAttributeValue(element, "status", m_Item.szStatus);
             this->SetPaths(element, m_Item.m_Paths);
         }
-        bool GetItems(const XmlElement *parent, config::CItemsList &m_Items)
+        bool GetItems(const XmlElement *parent, std::vector<config::CItem> &m_Items)
         {
             auto element = parent->FirstChildElement("Item");
             if (element != nullptr)
@@ -428,18 +425,18 @@ namespace xml
                 {
                     config::CItem item;
                     VALIDATE(this->GetItem(element, item));
-                    m_Items.Insert(item);
+                    m_Items.emplace_back(item);
                 }
                 return true;
             }
             return false;
         }
-        void SetItems(XmlElement *parent, config::CItemsList &m_Items)
+        void SetItems(XmlElement *parent, std::vector<config::CItem> &m_Items)
         {
-            int nItems = m_Items.Count();
-            for (int i = 0; i < nItems; i++)
+            size_t nItems = m_Items.size();
+            for (size_t i = 0; i < nItems; i++)
             {
-                config::CItem& item = m_Items.Get(i);
+                config::CItem& item = m_Items[i];
                 auto element = this->NewElement("Item");
                 parent->LinkEndChild(element);
                 this->SetItem(element, item, i);
@@ -462,7 +459,7 @@ namespace xml
             this->LinkEndChild(element);
             this->SetItem(element, m_Item, -1);
         }
-        bool GetItems(config::CItemsList &m_Items)
+        bool GetItems(std::vector<config::CItem> &m_Items)
         {
             auto element = this->FirstChildElement("Items");
             if (element != nullptr)
@@ -472,7 +469,7 @@ namespace xml
             }
             return false;
         }
-        void SetItems(config::CItemsList &m_Items)
+        void SetItems(std::vector<config::CItem> &m_Items)
         {
             auto element = this->NewElement("Items");
             this->LinkEndChild(element);
@@ -504,7 +501,7 @@ namespace xml
                     VALIDATE(GetAttributeValue(element, "value", &szValue));
 
                     int nKey = util::StringHelper::ToIntFromHex(szKey);
-                    m_Language.m_Strings.Insert(nKey, szValue);
+                    m_Language.m_Strings[nKey] = szValue;
                 }
                 return true;
             }
@@ -516,7 +513,7 @@ namespace xml
             SetAttributeValue(parent, "original", m_Language.szOriginalName);
             SetAttributeValue(parent, "translated", m_Language.szTranslatedName);
 
-            for (auto& item : m_Language.m_Strings.m_Map)
+            for (auto& item : m_Language.m_Strings)
             {
                 int nKey = item.first;
                 std::wstring szKey = util::StringHelper::ToWStringHex(nKey);
@@ -564,7 +561,7 @@ namespace xml
             SetAttributeValue(element, "name", m_Preset.szName);
             SetAttributeValue(element, "options", m_Preset.szOptions);
         }
-        bool GetPresets(const XmlElement *parent, config::CPresetsList &m_Presets)
+        bool GetPresets(const XmlElement *parent, std::vector<config::CPreset> &m_Presets)
         {
             auto element = parent->FirstChildElement("Preset");
             if (element != nullptr)
@@ -573,18 +570,18 @@ namespace xml
                 {
                     config::CPreset preset;
                     VALIDATE(this->GetPreset(element, preset));
-                    m_Presets.Insert(preset);
+                    m_Presets.emplace_back(preset);
                 }
                 return true;
             }
             return false;
         }
-        void SetPresets(XmlElement *parent, config::CPresetsList &m_Presets)
+        void SetPresets(XmlElement *parent, std::vector<config::CPreset> &m_Presets)
         {
-            int nPresets = m_Presets.Count();
-            for (int i = 0; i < nPresets; i++)
+            size_t nPresets = m_Presets.size();
+            for (size_t i = 0; i < nPresets; i++)
             {
-                config::CPreset& preset = m_Presets.Get(i);
+                config::CPreset& preset = m_Presets[i];
                 auto element = this->NewElement("Preset");
                 this->SetPreset(element, preset);
                 parent->LinkEndChild(element);
@@ -607,7 +604,7 @@ namespace xml
             this->LinkEndChild(element);
             this->SetPreset(element, m_Preset);
         }
-        bool GetPresets(config::CPresetsList &m_Presets)
+        bool GetPresets(std::vector<config::CPreset> &m_Presets)
         {
             auto element = this->FirstChildElement("Presets");
             if (element != nullptr)
@@ -617,7 +614,7 @@ namespace xml
             }
             return false;
         }
-        void SetPresets(config::CPresetsList &m_Presets)
+        void SetPresets(std::vector<config::CPreset> &m_Presets)
         {
             auto element = this->NewElement("Presets");
             this->LinkEndChild(element);
@@ -806,19 +803,19 @@ namespace xml
             xml.SetItem(item);
             return xml.Save(szFileXml);
         }
-        static bool LoadItems(XmlDocumnent &doc, config::CItemsList &items)
+        static bool LoadItems(XmlDocumnent &doc, std::vector<config::CItem> &items)
         {
             XmlItems xml(doc);
             return xml.GetItems(items);
         }
-        static bool LoadItems(const std::wstring& szFileXml, config::CItemsList &items)
+        static bool LoadItems(const std::wstring& szFileXml, std::vector<config::CItem> &items)
         {
             XmlDocumnent doc;
             if (XmlDoc::Open(szFileXml, doc) == true)
                 return LoadItems(doc, items);
             return false;
         }
-        static bool SaveItems(const std::wstring& szFileXml, config::CItemsList &items)
+        static bool SaveItems(const std::wstring& szFileXml, std::vector<config::CItem> &items)
         {
             XmlDocumnent doc;
             XmlItems xml(doc);
@@ -868,19 +865,19 @@ namespace xml
             xml.SetPreset(preset);
             return xml.Save(szFileXml);
         }
-        static bool LoadPresets(XmlDocumnent &doc, config::CPresetsList &presets)
+        static bool LoadPresets(XmlDocumnent &doc, std::vector<config::CPreset> &presets)
         {
             XmlPresets xml(doc);
             return xml.GetPresets(presets);
         }
-        static bool LoadPresets(const std::wstring& szFileXml, config::CPresetsList &presets)
+        static bool LoadPresets(const std::wstring& szFileXml, std::vector<config::CPreset> &presets)
         {
             XmlDocumnent doc;
             if (XmlDoc::Open(szFileXml, doc) == true)
                 return LoadPresets(doc, presets);
             return false;
         }
-        static bool SavePresets(const std::wstring& szFileXml, config::CPresetsList &presets)
+        static bool SavePresets(const std::wstring& szFileXml, std::vector<config::CPreset> &presets)
         {
             XmlDocumnent doc;
             XmlPresets xml(doc);

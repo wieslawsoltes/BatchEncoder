@@ -9,8 +9,8 @@
 #include "utilities\StringHelper.h"
 #include "utilities\Utilities.h"
 #include "config\Settings.h"
-#include "config\ToolsList.h"
-#include "config\FormatsList.h"
+#include "config\Tool.h"
+#include "config\Format.h"
 #include "config\Configuration.h"
 
 namespace worker

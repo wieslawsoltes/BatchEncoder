@@ -34,14 +34,11 @@ namespace config
         CSettings()
         {
             this->szPortableFile = L"BatchEncoder.portable";
-
             this->szConfigDir = L"BatchEncoder";
-
             this->szFormatsDir = L"formats";
             this->szLanguagesDir = L"lang";
             this->szProgressDir = L"progress";
             this->szToolsDir = L"tools";
-
             this->szOptionsFileName = L"Options.xml";
             this->szItemsFileName = L"Items.xml";
         }

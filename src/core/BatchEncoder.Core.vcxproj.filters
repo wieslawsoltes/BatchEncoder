@@ -48,13 +48,10 @@
     <ClInclude Include="config\Format.h">
       <Filter>Header Files\Config</Filter>
     </ClInclude>
-    <ClInclude Include="config\FormatsList.h">
+    <ClInclude Include="config\Language.h">
       <Filter>Header Files\Config</Filter>
     </ClInclude>
     <ClInclude Include="config\Item.h">
-      <Filter>Header Files\Config</Filter>
-    </ClInclude>
-    <ClInclude Include="config\ItemsList.h">
       <Filter>Header Files\Config</Filter>
     </ClInclude>
     <ClInclude Include="config\Options.h">
@@ -63,13 +60,7 @@
     <ClInclude Include="config\Path.h">
       <Filter>Header Files\Config</Filter>
     </ClInclude>
-    <ClInclude Include="config\PathsList.h">
-      <Filter>Header Files\Config</Filter>
-    </ClInclude>
     <ClInclude Include="config\Preset.h">
-      <Filter>Header Files\Config</Filter>
-    </ClInclude>
-    <ClInclude Include="config\PresetsList.h">
       <Filter>Header Files\Config</Filter>
     </ClInclude>
     <ClInclude Include="config\Settings.h">
@@ -79,9 +70,6 @@
       <Filter>Header Files\Config</Filter>
     </ClInclude>
     <ClInclude Include="config\Tool.h">
-      <Filter>Header Files\Config</Filter>
-    </ClInclude>
-    <ClInclude Include="config\ToolsList.h">
       <Filter>Header Files\Config</Filter>
     </ClInclude>
     <ClInclude Include="worker\ToolUtilities.h">

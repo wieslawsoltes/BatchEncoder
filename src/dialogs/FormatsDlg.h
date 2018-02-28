@@ -16,7 +16,6 @@
 #include "controls\MyStatic.h"
 #include "controls\MySpinButtonCtrl.h"
 #include "controls\MyDialogEx.h"
-#include "config\FormatsList.h"
 #include "config\Configuration.h"
 #include "utilities\StringHelper.h"
 

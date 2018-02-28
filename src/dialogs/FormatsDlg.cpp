@@ -3,7 +3,6 @@
 
 #include "StdAfx.h"
 #include "MainApp.h"
-#include "utilities\LanguageHelper.h"
 #include "utilities\Utilities.h"
 #include "utilities\Utf8String.h"
 #include "xml\XmlConfig.h"
@@ -820,7 +819,7 @@ namespace dialogs
 
     void CFormatsDlg::SetLanguage()
     {
-        lang::CLanguageHelper helper(&pConfig->m_Language);
+        app::CLanguageHelper helper(pConfig);
 
         helper.SetColumnText(m_LstFormats, FORMAT_COLUMN_NAME, 0x000C0001);
         helper.SetColumnText(m_LstFormats, FORMAT_COLUMN_TEMPLATE, 0x000C0002);

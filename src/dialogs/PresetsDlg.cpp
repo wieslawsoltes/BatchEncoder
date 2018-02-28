@@ -3,7 +3,6 @@
 
 #include "StdAfx.h"
 #include "MainApp.h"
-#include "utilities\LanguageHelper.h"
 #include "utilities\Utilities.h"
 #include "utilities\Utf8String.h"
 #include "xml\XmlConfig.h"
@@ -511,7 +510,7 @@ namespace dialogs
 
     void CPresetsDlg::SetLanguage()
     {
-        lang::CLanguageHelper helper(&pConfig->m_Language);
+        app::CLanguageHelper helper(pConfig);
 
         helper.SetColumnText(m_LstPresets, PRESET_COLUMN_NAME, 0x000B0001);
         helper.SetColumnText(m_LstPresets, PRESET_COLUMN_OPTIONS, 0x000B0002);

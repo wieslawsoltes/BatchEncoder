@@ -14,7 +14,7 @@ namespace config
     {
     public:
         int nId;
-        CPathsList m_Paths;
+        std::vector<CPath> m_Paths;
         unsigned __int64 nSize;
         std::wstring szName;
         std::wstring szExtension;
