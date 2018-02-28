@@ -2566,7 +2566,6 @@ namespace dialogs
         if (this->ctx->bRunning == false && this->ctx->bDone == true)
         {
             bSafeCheck = true;
-            this->ctx->bDone = false;
 
             m_StatusBar.SetText(L"", 1, 0);
 
@@ -2575,11 +2574,7 @@ namespace dialogs
             this->GetOptions();
             this->GetItems();
 
-            this->ctx->pConfig = &this->m_Config;
-
             size_t nItems = this->m_Config.m_Items.size();
-            int nChecked = 0;
-
             if (nItems <= 0)
             {
                 bSafeCheck = false;
@@ -2590,6 +2585,7 @@ namespace dialogs
             std::wstring szDefaultTime = m_Config.GetString(0x00150001);
             std::wstring szDefaultStatus = m_Config.GetString(0x00210001);
 
+            size_t nChecked = 0;
             for (size_t i = 0; i < nItems; i++)
             {
                 config::CItem& item = this->m_Config.m_Items[i];
@@ -2616,6 +2612,23 @@ namespace dialogs
             this->GetMenu()->ModifyMenu(ID_ACTION_CONVERT, MF_BYCOMMAND, ID_ACTION_CONVERT, m_Config.GetString(0x00030003).c_str());
 
             this->ctx->bRunning = true;
+            this->ctx->bDone = false;
+            this->ctx->nTotalFiles = 0;
+            this->ctx->nProcessedFiles = 0;
+            this->ctx->nErrors = 0;
+            this->ctx->nLastItemId = -1;
+
+            this->ctx->nThreadCount = this->m_Config.m_Options.nThreadCount;
+            if (this->ctx->nThreadCount < 1)
+            {
+                util::Utilities::LogicalProcessorInformation info;
+                if (util::Utilities::GetLogicalProcessorInformation(&info) == 0)
+                    this->ctx->nThreadCount = info.processorCoreCount;
+                else
+                    this->ctx->nThreadCount = 1;
+            }
+
+            this->ctx->pConfig = &this->m_Config;
 
             std::thread m_WorkerThread = std::thread([this]()
             {

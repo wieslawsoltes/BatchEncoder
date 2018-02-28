@@ -1030,11 +1030,6 @@ namespace worker
             std::mutex syncDir;
             std::mutex syncDown;
 
-            ctx->nTotalFiles = 0;
-            ctx->nProcessedFiles = 0;
-            ctx->nErrors = 0;
-            ctx->nLastItemId = -1;
-
             size_t nItems = ctx->pConfig->m_Items.size();
             for (size_t i = 0; i < nItems; i++)
             {
@@ -1052,26 +1047,13 @@ namespace worker
                 }
             }
 
-            ctx->nThreadCount = ctx->pConfig->m_Options.nThreadCount;
-            if (ctx->nThreadCount < 1)
-            {
-                util::Utilities::LogicalProcessorInformation info;
-                if (util::Utilities::GetLogicalProcessorInformation(&info) == 0)
-                    ctx->nThreadCount = info.processorCoreCount;
-                else
-                    ctx->nThreadCount = 1;
-            }
-
             ctx->Start();
 
-            // single-threaded
-            if (ctx->nThreadCount == 1)
+            if (ctx->nThreadCount <= 1)
             {
                 ConvertLoop(ctx, queue, sync, syncDir, syncDown);
             }
-
-            // multi-threaded
-            if (ctx->nThreadCount > 1)
+            else
             {
                 auto convert = [this, ctx, &queue, &sync, &syncDir, &syncDown]()
                 {

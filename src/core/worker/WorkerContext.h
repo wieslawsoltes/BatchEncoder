@@ -14,11 +14,12 @@ namespace worker
     public:
         volatile bool bRunning;
         volatile bool bDone;
-        volatile int nThreadCount;
         volatile int nTotalFiles;
         volatile int nProcessedFiles;
         volatile int nErrors;
         volatile int nLastItemId;
+    public:
+        int nThreadCount;
         config::CConfiguration* pConfig;
     public:
         virtual ~IWorkerContext() { }
