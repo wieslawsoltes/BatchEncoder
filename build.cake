@@ -104,7 +104,7 @@ var packageBinariesAction = new Action<string,string> ((configuration, platform)
     var outputDir = artifactsDir.Combine(output);
     var outputZip = artifactsDir.CombineWithFilePath(output + ".zip");
     var exeFile = File(path + "BatchEncoder.exe");
-    var portableFile = File("./setup/BatchEncoder.portable");
+    var portableFile = File("./config/BatchEncoder.portable");
     CleanDirectory(outputDir);
     CopyFileToDirectory(File("README.md"), outputDir);
     CopyFileToDirectory(File("LICENSE.TXT"), outputDir);
