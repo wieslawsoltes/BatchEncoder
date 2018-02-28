@@ -4,24 +4,28 @@ setlocal
 set ConfigDir=%1
 set OutputDir=%2
 set BuildSystem=%3
+set FormatsFolder=formats
+set LangFolder=formats
+set ProgressFolder=formats
+set ToolsFolder=formats
 
-echo "ConfigDir: " %ConfigDir%
-echo "OutputDir: " %OutputDir%
-echo "BuildSystem: " %BuildSystem%
+echo ConfigDir: %ConfigDir%
+echo OutputDir: %OutputDir%
+echo BuildSystem: %BuildSystem%
 
-if %BuildSystem%=="CI" goto done
+if %BuildSystem% == CI goto done
 
 copy /Y %ConfigDir%*.ps1 %OutputDir%
 
-if not exist %OutputDir%formats\ mkdir %OutputDir%formats\
-if not exist %OutputDir%lang\ mkdir %OutputDir%lang\
-if not exist %OutputDir%progress\ mkdir %OutputDir%progress\
-if not exist %OutputDir%tools\ mkdir %OutputDir%tools\
+if not exist %OutputDir%%FormatsFolder%\ mkdir %OutputDir%%FormatsFolder%\
+if not exist %OutputDir%%LangFolder%\ mkdir %OutputDir%%LangFolder%\
+if not exist %OutputDir%%ProgressFolder%\ mkdir %OutputDir%%ProgressFolder%\
+if not exist %OutputDir%%ToolsFolder%\ mkdir %OutputDir%%ToolsFolder%\
 
-copy /Y %ConfigDir%formats\*.xml %OutputDir%formats\
-copy /Y %ConfigDir%lang\*.xml %OutputDir%lang\
-copy /Y %ConfigDir%progress\*.lua %OutputDir%progress\
-copy /Y %ConfigDir%tools\*.xml %OutputDir%tools\
+copy /Y %ConfigDir%%FormatsFolder%\*.xml %OutputDir%%FormatsFolder%\
+copy /Y %ConfigDir%%LangFolder%\*.xml %OutputDir%%LangFolder%\
+copy /Y %ConfigDir%%ProgressFolder%\*.lua %OutputDir%%ProgressFolder%\
+copy /Y %ConfigDir%%ToolsFolder%\*.xml %OutputDir%%ToolsFolder%\
 copy /Y %ConfigDir%*.portable %OutputDir%
 
 :done
