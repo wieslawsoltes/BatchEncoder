@@ -149,8 +149,5 @@
     <ClCompile Include="stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="worker\Worker.cpp">
-      <Filter>Source Files\Worker</Filter>
-    </ClCompile>
   </ItemGroup>
 </Project>
