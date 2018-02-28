@@ -372,7 +372,7 @@ namespace dialogs
     {
         if (m_Formats.size() > 0)
         {
-            m_Formats.clear();
+            m_Formats = std::vector<config::CFormat>();
             m_LstFormats.DeleteAllItems();
             this->ListSelectionChange();
         }
@@ -731,8 +731,7 @@ namespace dialogs
             INT_PTR nRet = dlg.DoModal();
             if (nRet == IDOK)
             {
-                this->m_Formats.clear();
-                this->m_Formats = dlg.m_Formats;
+                this->m_Formats = std::move(dlg.m_Formats);
 
                 this->m_LstFormats.DeleteAllItems();
 

@@ -389,7 +389,7 @@ namespace dialogs
 
         if (m_Tools.size() > 0)
         {
-            m_Tools.clear();
+            m_Tools = std::vector<config::CTool>();
             m_LstTools.DeleteAllItems();
             this->ListSelectionChange();
         }

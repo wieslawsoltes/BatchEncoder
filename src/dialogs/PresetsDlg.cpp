@@ -204,7 +204,7 @@ namespace dialogs
         if (m_Formats.size() > 0)
         {
             config::CFormat& format = m_Formats[nSelectedFormat];
-            format.m_Presets.clear();
+            format.m_Presets = std::vector<config::CPreset>();
 
             m_LstPresets.DeleteAllItems();
 

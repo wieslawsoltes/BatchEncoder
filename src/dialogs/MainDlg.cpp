@@ -582,10 +582,6 @@ namespace dialogs
     void CMainDlg::OnDestroy()
     {
         CMyDialogEx::OnDestroy();
-
-        m_Config.m_Items.clear();
-        m_Config.m_Formats.clear();
-        m_Config.m_Tools.clear();
     }
 
     void CMainDlg::OnDropFiles(HDROP hDropInfo)
@@ -1010,7 +1006,7 @@ namespace dialogs
         {
             if (this->ctx->bRunning == false)
             {
-                m_Config.m_Items.clear();
+                m_Config.m_Items = std::vector<config::CItem>();
                 m_LstInputItems.SetItemCount(0);
                 this->UpdateStatusBar();
             }
@@ -1208,7 +1204,7 @@ namespace dialogs
 
             if (nItems == 0)
             {
-                m_Config.m_Items.clear();
+                m_Config.m_Items = std::vector<config::CItem>();
                 m_LstInputItems.SetItemCount(0);
             }
 
@@ -1257,7 +1253,7 @@ namespace dialogs
 
             if (nItems == 0)
             {
-                m_Config.m_Items.clear();
+                m_Config.m_Items = std::vector<config::CItem>();
                 m_LstInputItems.SetItemCount(0);
             }
 
@@ -1289,7 +1285,7 @@ namespace dialogs
 
             if (nItems == 0)
             {
-                m_Config.m_Items.clear();
+                m_Config.m_Items = std::vector<config::CItem>();
                 m_LstInputItems.SetItemCount(0);
             }
 
@@ -1450,8 +1446,8 @@ namespace dialogs
             INT_PTR nRet = dlg.DoModal();
             if (nRet == IDOK)
             {
-                m_Config.m_Formats.clear();
-                m_Config.m_Formats = dlg.m_Formats;
+                m_Config.m_Formats = std::move(dlg.m_Formats);
+
                 this->UpdateFormatComboBox();
                 this->UpdatePresetComboBox();
             }
@@ -1475,8 +1471,7 @@ namespace dialogs
             INT_PTR nRet = dlg.DoModal();
             if (nRet == IDOK)
             {
-                m_Config.m_Formats.clear();
-                m_Config.m_Formats = dlg.m_Formats;
+                m_Config.m_Formats = std::move(dlg.m_Formats);
 
                 if (dlg.nSelectedFormat >= 0)
                     m_Config.m_Options.nSelectedFormat = dlg.nSelectedFormat;
@@ -1520,11 +1515,8 @@ namespace dialogs
             INT_PTR nRet = dlg.DoModal();
             if (nRet == IDOK)
             {
-                m_Config.m_Tools.clear();
-                m_Config.m_Tools = dlg.m_Tools;
-
-                m_Config.m_Formats.clear();
-                m_Config.m_Formats = dlg.m_Formats;
+                m_Config.m_Tools = std::move(dlg.m_Tools);
+                m_Config.m_Formats = std::move(dlg.m_Formats);
 
                 this->UpdateFormatComboBox();
                 this->UpdatePresetComboBox();
