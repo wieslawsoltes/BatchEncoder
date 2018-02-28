@@ -2584,7 +2584,6 @@ namespace dialogs
 
             std::wstring szDefaultTime = m_Config.GetString(0x00150001);
             std::wstring szDefaultStatus = m_Config.GetString(0x00210001);
-
             size_t nChecked = 0;
             for (size_t i = 0; i < nItems; i++)
             {
