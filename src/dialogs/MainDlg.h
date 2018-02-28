@@ -22,7 +22,7 @@
 #include "utilities\StringHelper.h"
 #include "utilities\TimeCount.h"
 #include "config\Configuration.h"
-#include "xml\XmlDoc.h"
+#include "xml\XmlConfig.h"
 #include "worker\OutputPath.h"
 #include "worker\WorkerContext.h"
 #include "worker\Worker.h"

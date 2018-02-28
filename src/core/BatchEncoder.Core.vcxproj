@@ -201,12 +201,6 @@
     <ClInclude Include="worker\Worker.h" />
     <ClInclude Include="worker\WorkerContext.h" />
     <ClInclude Include="xml\XmlConfig.h" />
-    <ClInclude Include="xml\XmlFormats.h" />
-    <ClInclude Include="xml\XmlItems.h" />
-    <ClInclude Include="xml\XmlLanguages.h" />
-    <ClInclude Include="xml\XmlOptions.h" />
-    <ClInclude Include="xml\XmlPresets.h" />
-    <ClInclude Include="xml\XmlTools.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
