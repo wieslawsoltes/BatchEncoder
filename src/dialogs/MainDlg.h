@@ -39,15 +39,6 @@ namespace dialogs
 {
     class CMainDlg;
 
-    typedef struct tagMainDlgDropContext
-    {
-        CMainDlg *pDlg = nullptr;
-        HDROP hDrop = nullptr;
-        HANDLE hThread = nullptr;
-        DWORD dwThreadID = -1;
-        volatile bool bHandled = true;
-    } MainDlgDropContext;
-
     class CMainDlg : public controls::CMyDialogEx
     {
         DECLARE_DYNAMIC(CMainDlg)
@@ -71,7 +62,6 @@ namespace dialogs
         HACCEL m_hAccel;
         BOOL PreTranslateMessage(MSG* pMsg);
     public:
-        MainDlgDropContext m_DD;
         config::CConfiguration m_Config;
     public:
         worker::IWorkerContext* pWorkerContext;

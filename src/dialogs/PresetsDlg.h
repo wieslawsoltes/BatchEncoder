@@ -7,6 +7,7 @@
 #include <afxwin.h>
 #include <string>
 #include <utility>
+#include <thread>
 #include "controls\MyListCtrl.h"
 #include "controls\MyButton.h"
 #include "controls\MyComboBox.h"
@@ -23,15 +24,6 @@
 namespace dialogs
 {
     class CPresetsDlg;
-
-    typedef struct tagPresetsDlgDropContext
-    {
-        CPresetsDlg *pDlg = nullptr;
-        HDROP hDrop = nullptr;
-        HANDLE hThread = nullptr;
-        DWORD dwThreadID = -1;
-        volatile bool bHandled = true;
-    } PresetsDlgDropContext;
 
     class CPresetsDlg : public controls::CMyDialogEx
     {
@@ -50,7 +42,6 @@ namespace dialogs
     public:
         virtual BOOL OnInitDialog();
     public:
-        PresetsDlgDropContext m_DD;
         config::CConfiguration *pConfig;
         std::wstring szPresetsDialogResize;
         std::wstring szPresetsListColumns;

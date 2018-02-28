@@ -10,7 +10,7 @@
 namespace dialogs
 {
     IMPLEMENT_DYNAMIC(CAboutDlg, CDialog)
-        CAboutDlg::CAboutDlg(CWnd* pParent /*=nullptr*/)
+    CAboutDlg::CAboutDlg(CWnd* pParent /*=nullptr*/)
         : CMyDialogEx(CAboutDlg::IDD, pParent)
     {
     }

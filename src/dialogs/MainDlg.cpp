@@ -145,14 +145,6 @@ namespace dialogs
         return(0);
     }
 
-    DWORD WINAPI MainDlgDropThread(LPVOID lpParam)
-    {
-        MainDlgDropContext* pDD = (MainDlgDropContext*)lpParam;
-        pDD->pDlg->HandleDropFiles(pDD->hDrop);
-        pDD->bHandled = true;
-        return ::CloseHandle(pDD->hThread);
-    }
-
     class CMainDlgWorkerContext : public worker::IWorkerContext
     {
     private:
@@ -297,7 +289,7 @@ namespace dialogs
     };
 
     IMPLEMENT_DYNAMIC(CMainDlg, CDialog)
-        CMainDlg::CMainDlg(CWnd* pParent /*=nullptr*/)
+    CMainDlg::CMainDlg(CWnd* pParent /*=nullptr*/)
         : CMyDialogEx(CMainDlg::IDD, pParent)
     {
         this->m_hIcon = AfxGetApp()->LoadIcon(IDI_ICON_MAIN);
@@ -604,15 +596,12 @@ namespace dialogs
 
     void CMainDlg::OnDropFiles(HDROP hDropInfo)
     {
-        if (this->pWorkerContext->bRunning == false && this->m_DD.bHandled == true)
-        {
-            this->m_DD.bHandled = false;
-            this->m_DD.pDlg = this;
-            this->m_DD.hDrop = hDropInfo;
-            this->m_DD.hThread = ::CreateThread(nullptr, 0, MainDlgDropThread, (LPVOID)&this->m_DD, 0, &this->m_DD.dwThreadID);
-            if (this->m_DD.hThread == nullptr)
-                this->m_DD.bHandled = true;
-        }
+        if (this->pWorkerContext->bRunning == true)
+            return;
+
+        std::thread m_DropThread = std::thread([this, hDropInfo]() { this->HandleDropFiles(hDropInfo); });
+        m_DropThread.detach();
+
         CMyDialogEx::OnDropFiles(hDropInfo);
     }
 

@@ -23,16 +23,8 @@ namespace dialogs
         return(0);
     }
 
-    DWORD WINAPI ToolsDlgDropThread(LPVOID lpParam)
-    {
-        ToolsDlgDropContext* pDD = (ToolsDlgDropContext*)lpParam;
-        pDD->pDlg->HandleDropFiles(pDD->hDrop);
-        pDD->bHandled = true;
-        return ::CloseHandle(pDD->hThread);
-    }
-
     IMPLEMENT_DYNAMIC(CToolsDlg, CDialog)
-        CToolsDlg::CToolsDlg(CWnd* pParent /*=nullptr*/)
+    CToolsDlg::CToolsDlg(CWnd* pParent /*=nullptr*/)
         : CMyDialogEx(CToolsDlg::IDD, pParent)
     {
         this->m_hIcon = AfxGetApp()->LoadIcon(IDI_ICON_MAIN);
@@ -184,15 +176,9 @@ namespace dialogs
         if (m_Utilities.bDownload == true)
             return;
 
-        if (this->m_DD.bHandled == true)
-        {
-            this->m_DD.bHandled = false;
-            this->m_DD.pDlg = this;
-            this->m_DD.hDrop = hDropInfo;
-            this->m_DD.hThread = ::CreateThread(nullptr, 0, ToolsDlgDropThread, (LPVOID)&this->m_DD, 0, &this->m_DD.dwThreadID);
-            if (this->m_DD.hThread == nullptr)
-                this->m_DD.bHandled = true;
-        }
+        std::thread m_DropThread = std::thread([this, hDropInfo]() { this->HandleDropFiles(hDropInfo); });
+        m_DropThread.detach();
+
         CMyDialogEx::OnDropFiles(hDropInfo);
     }
 

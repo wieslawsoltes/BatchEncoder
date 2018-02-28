@@ -24,14 +24,6 @@ namespace dialogs
         return(0);
     }
 
-    DWORD WINAPI FormatsDlgDropThread(LPVOID lpParam)
-    {
-        FormatsDlgDropContext* pDD = (FormatsDlgDropContext*)lpParam;
-        pDD->pDlg->HandleDropFiles(pDD->hDrop);
-        pDD->bHandled = true;
-        return ::CloseHandle(pDD->hThread);
-    }
-
     IMPLEMENT_DYNAMIC(CFormatsDlg, CDialog)
     CFormatsDlg::CFormatsDlg(CWnd* pParent /*=nullptr*/)
         : CMyDialogEx(CFormatsDlg::IDD, pParent)
@@ -188,15 +180,9 @@ namespace dialogs
 
     void CFormatsDlg::OnDropFiles(HDROP hDropInfo)
     {
-        if (this->m_DD.bHandled == true)
-        {
-            this->m_DD.bHandled = false;
-            this->m_DD.pDlg = this;
-            this->m_DD.hDrop = hDropInfo;
-            this->m_DD.hThread = ::CreateThread(nullptr, 0, FormatsDlgDropThread, (LPVOID)&this->m_DD, 0, &this->m_DD.dwThreadID);
-            if (this->m_DD.hThread == nullptr)
-                this->m_DD.bHandled = true;
-        }
+        std::thread m_DropThread = std::thread([this, hDropInfo]() { this->HandleDropFiles(hDropInfo); });
+        m_DropThread.detach();
+
         CMyDialogEx::OnDropFiles(hDropInfo);
     }
 

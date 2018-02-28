@@ -30,15 +30,6 @@ namespace dialogs
 {
     class CToolsDlg;
 
-    typedef struct tagToolsDlgDropContext
-    {
-        CToolsDlg *pDlg = nullptr;
-        HDROP hDrop = nullptr;
-        HANDLE hThread = nullptr;
-        DWORD dwThreadID = -1;
-        volatile bool bHandled = true;
-    } ToolsDlgDropContext;
-
     class CToolsDlg : public controls::CMyDialogEx
     {
         DECLARE_DYNAMIC(CToolsDlg)
@@ -56,7 +47,6 @@ namespace dialogs
     public:
         virtual BOOL OnInitDialog();
     public:
-        ToolsDlgDropContext m_DD;
         config::CConfiguration *pConfig;
         std::wstring szToolsDialogResize;
         std::wstring szToolsListColumns;

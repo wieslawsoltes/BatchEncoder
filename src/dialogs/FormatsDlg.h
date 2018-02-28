@@ -8,6 +8,7 @@
 #include <array>
 #include <string>
 #include <utility>
+#include <thread>
 #include "controls\MyListCtrl.h"
 #include "controls\MyButton.h"
 #include "controls\MyComboBox.h"
@@ -26,15 +27,6 @@ namespace dialogs
 {
     class CFormatsDlg;
 
-    typedef struct tagFormatsDlgDropContext
-    {
-        CFormatsDlg *pDlg = nullptr;
-        HDROP hDrop = nullptr;
-        HANDLE hThread = nullptr;
-        DWORD dwThreadID = -1;
-        volatile bool bHandled = true;
-    } FormatsDlgDropContext;
-
     class CFormatsDlg : public controls::CMyDialogEx
     {
         DECLARE_DYNAMIC(CFormatsDlg)
@@ -52,7 +44,6 @@ namespace dialogs
     public:
         virtual BOOL OnInitDialog();
     public:
-        FormatsDlgDropContext m_DD;
         config::CConfiguration *pConfig;
         std::wstring szFormatsDialogResize;
         std::wstring szFormatsListColumns;

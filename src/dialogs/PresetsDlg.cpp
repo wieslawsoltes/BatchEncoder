@@ -11,16 +11,8 @@
 
 namespace dialogs
 {
-    DWORD WINAPI PresetsDlgDropThread(LPVOID lpParam)
-    {
-        PresetsDlgDropContext* pDD = (PresetsDlgDropContext*)lpParam;
-        pDD->pDlg->HandleDropFiles(pDD->hDrop);
-        pDD->bHandled = true;
-        return ::CloseHandle(pDD->hThread);
-    }
-
     IMPLEMENT_DYNAMIC(CPresetsDlg, CDialog)
-        CPresetsDlg::CPresetsDlg(CWnd* pParent /*=nullptr*/)
+    CPresetsDlg::CPresetsDlg(CWnd* pParent /*=nullptr*/)
         : CMyDialogEx(CPresetsDlg::IDD, pParent)
     {
         this->m_hIcon = AfxGetApp()->LoadIcon(IDI_ICON_MAIN);
@@ -146,15 +138,9 @@ namespace dialogs
 
     void CPresetsDlg::OnDropFiles(HDROP hDropInfo)
     {
-        if (this->m_DD.bHandled == true)
-        {
-            this->m_DD.bHandled = false;
-            this->m_DD.pDlg = this;
-            this->m_DD.hDrop = hDropInfo;
-            this->m_DD.hThread = ::CreateThread(nullptr, 0, PresetsDlgDropThread, (LPVOID)&this->m_DD, 0, &this->m_DD.dwThreadID);
-            if (this->m_DD.hThread == nullptr)
-                this->m_DD.bHandled = true;
-        }
+        std::thread m_DropThread = std::thread([this, hDropInfo]() { this->HandleDropFiles(hDropInfo); });
+        m_DropThread.detach();
+
         CMyDialogEx::OnDropFiles(hDropInfo);
     }
 
