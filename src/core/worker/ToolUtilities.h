@@ -9,8 +9,8 @@
 #include "utilities\StringHelper.h"
 #include "utilities\Utilities.h"
 #include "config\Settings.h"
-#include "config\ToolsList.h"
-#include "config\FormatsList.h"
+#include "config\Tool.h"
+#include "config\Format.h"
 #include "config\Configuration.h"
 
 namespace worker
@@ -108,16 +108,16 @@ namespace worker
 
             return true;
         }
-        int FindTool(config::CToolsList& m_Tools, const std::wstring& szPlatform, const std::wstring& szFormatId)
+        int FindTool(std::vector<config::CTool>& m_Tools, const std::wstring& szPlatform, const std::wstring& szFormatId)
         {
-            int nTool = m_Tools.GetToolByFormatAndPlatform(szFormatId, szPlatform);
+            int nTool = config::CTool::GetToolByFormatAndPlatform(m_Tools, szFormatId, szPlatform);
             if (nTool >= 0)
             {
                 return nTool;
             }
             return -1;
         }
-        int FindTool(config::CToolsList& m_Tools, const std::wstring& szFormatId)
+        int FindTool(std::vector<config::CTool>& m_Tools, const std::wstring& szFormatId)
         {
             const std::wstring szPlatformX86 = L"x86";
             const std::wstring szPlatformX64 = L"x64";
@@ -130,34 +130,34 @@ namespace worker
             return nTool;
 #endif
         }
-        void SetFormatPaths(config::CFormatsList& m_Formats, config::CToolsList& m_Tools, const std::wstring& szPlatform)
+        void SetFormatPaths(std::vector<config::CFormat>& m_Formats, std::vector<config::CTool>& m_Tools, const std::wstring& szPlatform)
         {
-            int nFormats = m_Formats.Count();
-            for (int i = 0; i < nFormats; i++)
+            size_t nFormats = m_Formats.size();
+            for (size_t i = 0; i < nFormats; i++)
             {
-                config::CFormat& format = m_Formats.Get(i);
-                int nTool = m_Tools.GetToolByFormatAndPlatform(format.szId, szPlatform);
+                config::CFormat& format = m_Formats[i];
+                int nTool = config::CTool::GetToolByFormatAndPlatform(m_Tools, format.szId, szPlatform);
                 if (nTool >= 0)
                 {
-                    config::CTool& tool = m_Tools.Get(nTool);
+                    config::CTool& tool = m_Tools[nTool];
                     format.szPath = tool.szPath;
                 }
             }
         }
-        void SetFormatPaths(config::CFormatsList& m_Formats, config::CToolsList& m_Tools, std::function<bool(int, config::CTool&)> filter)
+        void SetFormatPaths(std::vector<config::CFormat>& m_Formats, std::vector<config::CTool>& m_Tools, std::function<bool(int, config::CTool&)> filter)
         {
-            int nTools = m_Tools.Count();
-            int nFormats = m_Formats.Count();
+            size_t nTools = m_Tools.size();
+            size_t nFormats = m_Formats.size();
             if ((nTools > 0) && (nFormats > 0))
             {
-                for (int i = 0; i < nTools; i++)
+                for (size_t i = 0; i < nTools; i++)
                 {
-                    config::CTool& tool = m_Tools.Get(i);
+                    config::CTool& tool = m_Tools[i];
                     if (filter(i, tool) == true)
                     {
-                        for (int i = 0; i < nFormats; i++)
+                        for (size_t i = 0; i < nFormats; i++)
                         {
-                            config::CFormat& format = m_Formats.Get(i);
+                            config::CFormat& format = m_Formats[i];
                             if (tool.IsValidFormat(format.szId))
                             {
                                 format.szPath = tool.szPath;

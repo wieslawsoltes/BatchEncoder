@@ -9,6 +9,9 @@
 
 #include "res\resource.h"
 
+#include <string>
+#include "config\Configuration.h"
+
 namespace app
 {
     class CMainApp : public CWinAppEx
@@ -18,6 +21,61 @@ namespace app
     public:
         virtual BOOL InitInstance();
         DECLARE_MESSAGE_MAP()
+    };
+
+    class CLanguageHelper
+    {
+    public:
+        config::CConfiguration * pConfig;
+    public:
+        CLanguageHelper(config::CConfiguration *pConfig) : pConfig(pConfig) { }
+    public:
+        void SetColumnText(CListCtrl& listCtrl, int nCol, int nKey)
+        {
+            std::wstring rValue;
+            if (this->pConfig->LookupString(nKey, rValue))
+            {
+                LVCOLUMN lvCol;
+                ::ZeroMemory((void *)&lvCol, sizeof(LVCOLUMN));
+
+                lvCol.mask = LVCF_TEXT;
+                listCtrl.GetColumn(nCol, &lvCol);
+
+                lvCol.pszText = (LPTSTR)(LPCTSTR)rValue.c_str();
+                listCtrl.SetColumn(nCol, &lvCol);
+            }
+        }
+        void SetMenuPopupText(CMenu *hMenu, UINT nPosition, int nKey)
+        {
+            std::wstring rValue;
+            if (this->pConfig->LookupString(nKey, rValue))
+                hMenu->ModifyMenu(nPosition, MF_STRING | MF_BYPOSITION, nPosition, rValue.c_str());
+        }
+        void SetMenuItemText(CMenu *hMenu, UINT nID, int nKey)
+        {
+            std::wstring rValue;
+            if (this->pConfig->LookupString(nKey, rValue))
+            {
+                UINT nState = hMenu->GetMenuState(nID, MF_BYCOMMAND);
+                hMenu->ModifyMenu(nID, MF_BYCOMMAND, nID, rValue.c_str());
+                if (nState & MF_CHECKED)
+                    hMenu->CheckMenuItem(nID, MF_CHECKED | MF_BYCOMMAND);
+                else
+                    hMenu->CheckMenuItem(nID, MF_UNCHECKED | MF_BYCOMMAND);
+            }
+        }
+        void SetWndText(CWnd *hWnd, int nKey)
+        {
+            std::wstring rValue;
+            if (this->pConfig->LookupString(nKey, rValue))
+                hWnd->SetWindowText(rValue.c_str());
+        }
+        void SetItemText(CWnd *hWnd, UINT nID, int nKey)
+        {
+            std::wstring rValue;
+            if (this->pConfig->LookupString(nKey, rValue))
+                hWnd->GetDlgItem(nID)->SetWindowText(rValue.c_str());
+        }
     };
 
     extern CMainApp m_App;

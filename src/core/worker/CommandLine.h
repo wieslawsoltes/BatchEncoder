@@ -6,6 +6,7 @@
 #include <string>
 #include "utilities\StringHelper.h"
 #include "utilities\Utilities.h"
+#include "config\Format.h"
 
 namespace worker
 {
@@ -25,7 +26,7 @@ namespace worker
     public:
         void Build(config::CFormat *pFormat, int nPreset, int nItemId, const std::wstring& szInputFile, const std::wstring& szOutputFile, bool bUseReadPipes, bool bUseWritePipes, const std::wstring& szAdditionalOptions)
         {
-            config::CPreset& preset = pFormat->m_Presets.Get(nPreset);
+            config::CPreset& preset = pFormat->m_Presets[nPreset];
 
             this->pFormat = pFormat;
             this->nPreset = nPreset;

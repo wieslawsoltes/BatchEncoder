@@ -3,7 +3,6 @@
 
 #include "StdAfx.h"
 #include "MainApp.h"
-#include "utilities\LanguageHelper.h"
 #include "utilities\Utilities.h"
 #include "utilities\Utf8String.h"
 #include "xml\XmlConfig.h"
@@ -89,10 +88,10 @@ namespace dialogs
         m_LstPresets.InsertColumn(PRESET_COLUMN_OPTIONS, _T("Options"), LVCFMT_LEFT, 290);
 
         // file format combo-box
-        int nFormats = m_Formats.Count();
-        for (int i = 0; i < nFormats; i++)
+        size_t nFormats = m_Formats.size();
+        for (size_t i = 0; i < nFormats; i++)
         {
-            config::CFormat& format = m_Formats.Get(i);
+            config::CFormat& format = m_Formats[i];
             m_CmbFormat.InsertString(i, format.szName.c_str());
         }
 
@@ -180,11 +179,11 @@ namespace dialogs
             int nSelected = m_LstPresets.GetNextSelectedItem(pos);
             if (nSelected >= 0)
             {
-                config::CFormat& format = m_Formats.Get(nSelectedFormat);
-                config::CPreset& preset = format.m_Presets.Get(nSelected);
+                config::CFormat& format = m_Formats[nSelectedFormat];
+                config::CPreset& preset = format.m_Presets[nSelected];
                 config::CPreset copy = preset;
 
-                format.m_Presets.InsertAfter(copy, nSelected);
+                format.m_Presets.insert(format.m_Presets.begin() + nSelected + 1, copy);
 
                 this->m_LstPresets.DeleteAllItems();
                 this->InsertPresetsToListCtrl();
@@ -202,10 +201,10 @@ namespace dialogs
 
     void CPresetsDlg::OnBnClickedButtonRemoveAllPresets()
     {
-        if (m_Formats.Count() > 0)
+        if (m_Formats.size() > 0)
         {
-            config::CFormat& format = m_Formats.Get(nSelectedFormat);
-            format.m_Presets.RemoveAll();
+            config::CFormat& format = m_Formats[nSelectedFormat];
+            format.m_Presets.clear();
 
             m_LstPresets.DeleteAllItems();
 
@@ -225,13 +224,13 @@ namespace dialogs
         if (nItems <= 0)
             return;
 
-        config::CFormat& format = m_Formats.Get(nSelectedFormat);
+        config::CFormat& format = m_Formats[nSelectedFormat];
 
         for (int i = (nItems - 1); i >= 0; i--)
         {
             if (m_LstPresets.GetItemState(i, LVIS_SELECTED) == LVIS_SELECTED)
             {
-                format.m_Presets.Remove(i);
+                format.m_Presets.erase(format.m_Presets.begin() + i);
                 m_LstPresets.DeleteItem(i);
                 nItemLastRemoved = i;
             }
@@ -261,7 +260,7 @@ namespace dialogs
 
     void CPresetsDlg::OnBnClickedButtonAddPreset()
     {
-        if (m_Formats.Count() > 0)
+        if (m_Formats.size() > 0)
         {
             if (bUpdate == true)
                 return;
@@ -270,11 +269,11 @@ namespace dialogs
 
             int nItem = m_LstPresets.GetItemCount();
 
-            config::CFormat& format = m_Formats.Get(nSelectedFormat);
+            config::CFormat& format = m_Formats[nSelectedFormat];
             config::CPreset preset;
             preset.szName = pConfig->GetString(0x00220004);
             preset.szOptions = L"";
-            format.m_Presets.Insert(preset);
+            format.m_Presets.emplace_back(preset);
 
             AddToList(preset, nItem);
 
@@ -301,16 +300,16 @@ namespace dialogs
             int nItem = m_LstPresets.GetNextSelectedItem(pos);
             if (nItem > 0)
             {
-                config::CFormat& format = m_Formats.Get(nSelectedFormat);
-                config::CPreset& preset1 = format.m_Presets.Get(nItem);
-                config::CPreset& preset2 = format.m_Presets.Get(nItem - 1);
+                config::CFormat& format = m_Formats[nSelectedFormat];
+                config::CPreset& preset1 = format.m_Presets[nItem];
+                config::CPreset& preset2 = format.m_Presets[nItem - 1];
 
-                m_LstPresets.SetItemText(nItem, PRESET_COLUMN_NAME, preset2.szName.c_str());
-                m_LstPresets.SetItemText(nItem, PRESET_COLUMN_OPTIONS, preset2.szOptions.c_str());
-                m_LstPresets.SetItemText(nItem - 1, PRESET_COLUMN_NAME, preset1.szName.c_str());
-                m_LstPresets.SetItemText(nItem - 1, PRESET_COLUMN_OPTIONS, preset1.szOptions.c_str());
+                std::swap(preset1, preset2);
 
-                format.m_Presets.Swap(nItem, nItem - 1);
+                m_LstPresets.SetItemText(nItem, PRESET_COLUMN_NAME, preset1.szName.c_str());
+                m_LstPresets.SetItemText(nItem, PRESET_COLUMN_OPTIONS, preset1.szOptions.c_str());
+                m_LstPresets.SetItemText(nItem - 1, PRESET_COLUMN_NAME, preset2.szName.c_str());
+                m_LstPresets.SetItemText(nItem - 1, PRESET_COLUMN_OPTIONS, preset2.szOptions.c_str());
 
                 m_LstPresets.SetItemState(-1, 0, LVIS_SELECTED);
                 m_LstPresets.SetItemState(nItem - 1, LVIS_SELECTED, LVIS_SELECTED);
@@ -335,16 +334,16 @@ namespace dialogs
             int nItems = m_LstPresets.GetItemCount();
             if (nItem != (nItems - 1) && nItem >= 0)
             {
-                config::CFormat& format = m_Formats.Get(nSelectedFormat);
-                config::CPreset& preset1 = format.m_Presets.Get(nItem);
-                config::CPreset& preset2 = format.m_Presets.Get(nItem + 1);
+                config::CFormat& format = m_Formats[nSelectedFormat];
+                config::CPreset& preset1 = format.m_Presets[nItem];
+                config::CPreset& preset2 = format.m_Presets[nItem + 1];
 
-                m_LstPresets.SetItemText(nItem, PRESET_COLUMN_NAME, preset2.szName.c_str());
-                m_LstPresets.SetItemText(nItem, PRESET_COLUMN_OPTIONS, preset2.szOptions.c_str());
-                m_LstPresets.SetItemText(nItem + 1, PRESET_COLUMN_NAME, preset1.szName.c_str());
-                m_LstPresets.SetItemText(nItem + 1, PRESET_COLUMN_OPTIONS, preset1.szOptions.c_str());
+                std::swap(preset1, preset2);
 
-                format.m_Presets.Swap(nItem, nItem + 1);
+                m_LstPresets.SetItemText(nItem, PRESET_COLUMN_NAME, preset1.szName.c_str());
+                m_LstPresets.SetItemText(nItem, PRESET_COLUMN_OPTIONS, preset1.szOptions.c_str());
+                m_LstPresets.SetItemText(nItem + 1, PRESET_COLUMN_NAME, preset2.szName.c_str());
+                m_LstPresets.SetItemText(nItem + 1, PRESET_COLUMN_OPTIONS, preset2.szOptions.c_str());
 
                 m_LstPresets.SetItemState(-1, 0, LVIS_SELECTED);
                 m_LstPresets.SetItemState(nItem + 1, LVIS_SELECTED, LVIS_SELECTED);
@@ -371,8 +370,8 @@ namespace dialogs
             this->m_EdtName.GetWindowText(szName);
             this->m_EdtOptions.GetWindowText(szOptions);
 
-            config::CFormat& format = m_Formats.Get(nSelectedFormat);
-            config::CPreset& preset = format.m_Presets.Get(nItem);
+            config::CFormat& format = m_Formats[nSelectedFormat];
+            config::CPreset& preset = format.m_Presets[nItem];
             preset.szName = szName;
             preset.szOptions = szOptions;
 
@@ -395,9 +394,9 @@ namespace dialogs
 
         this->InsertPresetsToListCtrl();
 
-        if (this->m_Formats.Count() > 0)
+        if (this->m_Formats.size() > 0)
         {
-            config::CFormat& format = this->m_Formats.Get(nSelectedFormat);
+            config::CFormat& format = this->m_Formats[nSelectedFormat];
 
             m_LstPresets.SetItemState(-1, 0, LVIS_SELECTED);
             m_LstPresets.SetItemState(format.nDefaultPreset, LVIS_SELECTED, LVIS_SELECTED);
@@ -447,7 +446,7 @@ namespace dialogs
 
     void CPresetsDlg::OnBnClickedButtonExportPresets()
     {
-        config::CFormat& format = this->m_Formats.Get(this->nSelectedFormat);
+        config::CFormat& format = this->m_Formats[this->nSelectedFormat];
 
         CString szFilter;
         szFilter.Format(_T("%s (*.xml)|*.xml|%s (*.*)|*.*||"),
@@ -511,7 +510,7 @@ namespace dialogs
 
     void CPresetsDlg::SetLanguage()
     {
-        lang::CLanguageHelper helper(&pConfig->m_Language);
+        app::CLanguageHelper helper(pConfig);
 
         helper.SetColumnText(m_LstPresets, PRESET_COLUMN_NAME, 0x000B0001);
         helper.SetColumnText(m_LstPresets, PRESET_COLUMN_OPTIONS, 0x000B0002);
@@ -554,13 +553,13 @@ namespace dialogs
 
     void CPresetsDlg::InsertPresetsToListCtrl()
     {
-        if (this->m_Formats.Count() > 0)
+        if (this->m_Formats.size() > 0)
         {
-            config::CFormat& format = this->m_Formats.Get(this->nSelectedFormat);
-            int nPresets = format.m_Presets.Count();
-            for (int i = 0; i < nPresets; i++)
+            config::CFormat& format = this->m_Formats[this->nSelectedFormat];
+            size_t nPresets = format.m_Presets.size();
+            for (size_t i = 0; i < nPresets; i++)
             {
-                config::CPreset& preset = format.m_Presets.Get(i);
+                config::CPreset& preset = format.m_Presets[i];
                 this->AddToList(preset, i);
             }
         }
@@ -620,8 +619,8 @@ namespace dialogs
         {
             int nItem = m_LstPresets.GetNextSelectedItem(pos);
 
-            config::CFormat& format = m_Formats.Get(nSelectedFormat);
-            config::CPreset& preset = format.m_Presets.Get(nItem);
+            config::CFormat& format = m_Formats[nSelectedFormat];
+            config::CPreset& preset = format.m_Presets[nItem];
             format.nDefaultPreset = nItem;
 
             this->UpdateFields(preset);
@@ -648,11 +647,11 @@ namespace dialogs
 
     bool CPresetsDlg::LoadPresets(xml::XmlDocumnent &doc)
     {
-        config::CPresetsList presets;
+        std::vector<config::CPreset> presets;
         if (xml::XmlConfig::LoadPresets(doc, presets))
         {
             this->m_LstPresets.DeleteAllItems();
-            config::CFormat& format = this->m_Formats.Get(this->nSelectedFormat);
+            config::CFormat& format = this->m_Formats[this->nSelectedFormat];
             format.m_Presets = std::move(presets);
             this->InsertPresetsToListCtrl();
             return true;

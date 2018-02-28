@@ -80,8 +80,7 @@ namespace worker
                 {
                     CToolUtilities m_Utilities;
 
-                    int nTool = -1;
-                    nTool = ctx->pConfig->m_Tools.GetToolByPath(cl.pFormat->szPath);
+                    int nTool = config::CTool::GetToolByPath(ctx->pConfig->m_Tools, cl.pFormat->szPath);
                     if (nTool < 0)
                     {
                         nTool = m_Utilities.FindTool(ctx->pConfig->m_Tools, cl.pFormat->szId);
@@ -89,7 +88,7 @@ namespace worker
 
                     if (nTool >= 0)
                     {
-                        config::CTool& tool = ctx->pConfig->m_Tools.Get(nTool);
+                        config::CTool& tool = ctx->pConfig->m_Tools[nTool];
                         bool bResult = m_Utilities.Download(tool, true, true, nTool, ctx->pConfig,
                             [this, ctx, &cl](int nIndex, std::wstring szStatus) -> bool
                         {
@@ -265,8 +264,7 @@ namespace worker
                 {
                     CToolUtilities m_Utilities;
 
-                    int nTool = -1;
-                    nTool = ctx->pConfig->m_Tools.GetToolByPath(cl.pFormat->szPath);
+                    int nTool = config::CTool::GetToolByPath(ctx->pConfig->m_Tools, cl.pFormat->szPath);
                     if (nTool < 0)
                     {
                         nTool = m_Utilities.FindTool(ctx->pConfig->m_Tools, cl.pFormat->szId);
@@ -274,7 +272,7 @@ namespace worker
 
                     if (nTool >= 0)
                     {
-                        config::CTool& tool = ctx->pConfig->m_Tools.Get(nTool);
+                        config::CTool& tool = ctx->pConfig->m_Tools[nTool];
                         bool bResult = m_Utilities.Download(tool, true, true, nTool, ctx->pConfig,
                             [this, ctx, &cl](int nIndex, std::wstring szStatus) -> bool
                         {
@@ -527,8 +525,7 @@ namespace worker
                 {
                     CToolUtilities m_Utilities;
 
-                    int nTool = -1;
-                    nTool = ctx->pConfig->m_Tools.GetToolByPath(dcl.pFormat->szPath);
+                    int nTool = config::CTool::GetToolByPath(ctx->pConfig->m_Tools, dcl.pFormat->szPath);
                     if (nTool < 0)
                     {
                         nTool = m_Utilities.FindTool(ctx->pConfig->m_Tools, dcl.pFormat->szId);
@@ -536,7 +533,7 @@ namespace worker
 
                     if (nTool >= 0)
                     {
-                        config::CTool& tool = ctx->pConfig->m_Tools.Get(nTool);
+                        config::CTool& tool = ctx->pConfig->m_Tools[nTool];
                         bool bResult = m_Utilities.Download(tool, true, true, nTool, ctx->pConfig,
                             [this, ctx, &dcl](int nIndex, std::wstring szStatus) -> bool
                         {
@@ -594,7 +591,7 @@ namespace worker
                     CToolUtilities m_Utilities;
 
                     int nTool = -1;
-                    nTool = ctx->pConfig->m_Tools.GetToolByPath(ecl.pFormat->szPath);
+                    nTool = config::CTool::GetToolByPath(ctx->pConfig->m_Tools, ecl.pFormat->szPath);
                     if (nTool < 0)
                     {
                         nTool = m_Utilities.FindTool(ctx->pConfig->m_Tools, ecl.pFormat->szId);
@@ -602,7 +599,7 @@ namespace worker
 
                     if (nTool >= 0)
                     {
-                        config::CTool& tool = ctx->pConfig->m_Tools.Get(nTool);
+                        config::CTool& tool = ctx->pConfig->m_Tools[nTool];
                         bool bResult = m_Utilities.Download(tool, true, true, nTool, ctx->pConfig,
                             [this, ctx, &ecl](int nIndex, std::wstring szStatus) -> bool
                         {
@@ -736,8 +733,8 @@ namespace worker
             CCommandLine ecl;
 
             // prepare encoder
-            config::CItem& item = ctx->pConfig->m_Items.Get(nId);
-            config::CPath& path = item.m_Paths.Get(0);
+            config::CItem& item = ctx->pConfig->m_Items[nId];
+            config::CPath& path = item.m_Paths[0];
 
             szEncInputFile = path.szPath;
             if (util::Utilities::FileExists(szEncInputFile) == false)
@@ -746,16 +743,16 @@ namespace worker
                 return false;
             }
 
-            int nEncoder = ctx->pConfig->m_Formats.GetFormatById(item.szFormatId);
+            int nEncoder = config::CFormat::GetFormatById(ctx->pConfig->m_Formats, item.szFormatId);
             if (nEncoder == -1)
             {
                 ctx->Status(item.nId, ctx->GetString(0x00150001), ctx->GetString(0x00140002));
                 return false;
             }
 
-            pEncFormat = &ctx->pConfig->m_Formats.Get(nEncoder);
+            pEncFormat = &ctx->pConfig->m_Formats[nEncoder];
 
-            if (item.nPreset >= pEncFormat->m_Presets.Count())
+            if (item.nPreset >= pEncFormat->m_Presets.size())
             {
                 ctx->Status(item.nId, ctx->GetString(0x00150001), ctx->GetString(0x00140003));
                 return false;
@@ -795,16 +792,16 @@ namespace worker
             // prepare decoder
             if (bIsValidEncoderInput == false)
             {
-                int nDecoder = ctx->pConfig->m_Formats.GetDecoderByExtensionAndFormat(item.szExtension, pEncFormat);
+                int nDecoder = config::CFormat::GetDecoderByExtensionAndFormat(ctx->pConfig->m_Formats, item.szExtension, pEncFormat);
                 if (nDecoder == -1)
                 {
                     ctx->Status(item.nId, ctx->GetString(0x00150001), ctx->GetString(0x00140004));
                     return false;
                 }
 
-                pDecFormat = &ctx->pConfig->m_Formats.Get(nDecoder);
+                pDecFormat = &ctx->pConfig->m_Formats[nDecoder];
 
-                if (pDecFormat->nDefaultPreset >= pDecFormat->m_Presets.Count())
+                if (pDecFormat->nDefaultPreset >= pDecFormat->m_Presets.size())
                 {
                     ctx->Status(item.nId, ctx->GetString(0x00150001), ctx->GetString(0x00140005));
                     return false;
@@ -1038,10 +1035,10 @@ namespace worker
             ctx->nErrors = 0;
             ctx->nLastItemId = -1;
 
-            int nItems = ctx->pConfig->m_Items.Count();
-            for (int i = 0; i < nItems; i++)
+            size_t nItems = ctx->pConfig->m_Items.size();
+            for (size_t i = 0; i < nItems; i++)
             {
-                config::CItem& item = ctx->pConfig->m_Items.Get(i);
+                config::CItem& item = ctx->pConfig->m_Items[i];
                 if (item.bChecked == true)
                 {
                     item.ResetProgress();

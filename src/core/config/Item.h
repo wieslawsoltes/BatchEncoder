@@ -6,7 +6,7 @@
 #include <string>
 #include <algorithm>
 #include <vector>
-#include "PathsList.h"
+#include "Path.h"
 
 namespace config
 {
@@ -14,12 +14,12 @@ namespace config
     {
     public:
         int nId;
-        CPathsList m_Paths;
+        std::vector<CPath> m_Paths;
         unsigned __int64 nSize;
         std::wstring szName;
         std::wstring szExtension;
         std::wstring szFormatId;
-        int nPreset;
+        size_t nPreset;
         std::wstring szOptions;
         bool bChecked;
         std::wstring szTime;

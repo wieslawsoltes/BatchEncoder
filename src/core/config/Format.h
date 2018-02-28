@@ -7,7 +7,7 @@
 #include <algorithm>
 #include <vector>
 #include "utilities\StringHelper.h"
-#include "PresetsList.h"
+#include "Preset.h"
 
 namespace config
 {
@@ -34,8 +34,8 @@ namespace config
         int nPriority;
         std::wstring szInputExtensions;
         std::wstring szOutputExtension;
-        int nDefaultPreset;
-        CPresetsList m_Presets;
+        size_t nDefaultPreset;
+        std::vector<CPreset> m_Presets;
     public:
         static int ToInt(const FormatType value)
         {
@@ -50,6 +50,56 @@ namespace config
         {
             return util::StringHelper::ContainsNoCase(this->szInputExtensions, szExt, token);
         }
+    public:
+        static size_t GetFormatById(std::vector<CFormat>& formats, const std::wstring& szFormatId)
+        {
+            size_t nFormats = formats.size();
+            for (size_t i = 0; i < nFormats; i++)
+            {
+                CFormat& format = formats[i];
+                if (util::StringHelper::CompareNoCase(szFormatId, format.szId))
+                    return i;
+            }
+            return -1;
+        }
+        static size_t GetDecoderByExtension(std::vector<CFormat>& formats, const std::wstring& szExt)
+        {
+            size_t nFormats = formats.size();
+            for (size_t i = 0; i < nFormats; i++)
+            {
+                CFormat& format = formats[i];
+                if (format.nType == FormatType::Decoder && format.IsValidInputExtension(szExt) == true)
+                    return i;
+            }
+            return -1;
+        }
+        static size_t GetDecoderByExtensionAndFormat(std::vector<CFormat>& formats, const std::wstring& szExt, CFormat *pEncoderFormat)
+        {
+            size_t nFormats = formats.size();
+            for (size_t i = 0; i < nFormats; i++)
+            {
+                CFormat& format = formats[i];
+                if (format.nType == FormatType::Decoder && format.IsValidInputExtension(szExt) == true)
+                {
+                    bool bIsValidEncoderInput = pEncoderFormat->IsValidInputExtension(format.szOutputExtension);
+                    if (bIsValidEncoderInput == true)
+                        return i;
+                }
+            }
+            return -1;
+        }
+        static bool IsValidInputExtension(std::vector<CFormat>& formats, const std::wstring& szExt)
+        {
+            size_t nFormats = formats.size();
+            for (size_t i = 0; i < nFormats; i++)
+            {
+                CFormat& format = formats[i];
+                if (format.IsValidInputExtension(szExt) == true)
+                    return true;
+            }
+            return false;
+        }
+        
     public:
         static bool CompareName(const CFormat& a, const CFormat& b)
         {

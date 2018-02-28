@@ -16,8 +16,6 @@
 #include "controls\MyStatic.h"
 #include "controls\MySpinButtonCtrl.h"
 #include "controls\MyDialogEx.h"
-#include "config\ToolsList.h"
-#include "config\FormatsList.h"
 #include "config\Configuration.h"
 #include "utilities\StringHelper.h"
 #include "worker\ToolUtilities.h"
@@ -53,8 +51,8 @@ namespace dialogs
         CString szLastToolsBrowse;
         volatile bool bUpdate;
         int nSelectedTool;
-        config::CToolsList m_Tools;
-        config::CFormatsList m_Formats;
+        std::vector<config::CTool> m_Tools;
+        std::vector<config::CFormat> m_Formats;
         std::thread m_Thread;
         volatile bool bAbort = false;
         worker::CToolUtilities m_Utilities;

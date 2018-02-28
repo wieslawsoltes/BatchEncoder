@@ -5,20 +5,17 @@
 
 #include <string>
 #include <string.h>
+#include <vector>
 #include "tinyxml2\tinyxml2.h" // https://github.com/leethomason/tinyxml2
-#include "utilities\Utf8String.h"
-#include "config\Options.h"
-#include "config\Item.h"
-#include "config\ItemsList.h"
-#include "utilities\Language.h"
-#include "utilities\LanguagesList.h"
 #include "utilities\StringHelper.h"
-#include "config\Preset.h"
-#include "config\PresetsList.h"
+#include "utilities\Utf8String.h"
+#include "config\Item.h"
 #include "config\Format.h"
-#include "config\FormatsList.h"
+#include "config\Language.h"
+#include "config\Options.h"
+#include "config\Path.h"
+#include "config\Preset.h"
 #include "config\Tool.h"
-#include "config\ToolsList.h"
 
 #define VALIDATE(value) if (!value) return false
 
@@ -88,30 +85,38 @@ namespace xml
         }
         int ToInt(const char *pszUtf8)
         {
-            return _wtoi(ToString(pszUtf8).c_str());
+            return std::stoi(pszUtf8);
+        }
+        size_t ToUInt(const char *pszUtf8)
+        {
+            return std::stoul(pszUtf8);
         }
         unsigned __int64 ToUInt64(const char *pszUtf8)
         {
-           return _wcstoui64(ToString(pszUtf8).c_str(), nullptr, 10);
+           return std::strtoull(pszUtf8, nullptr, 10);
         }
         bool ToBool(const char *pszUtf8)
         {
             return _wcsicmp(ToString(pszUtf8).c_str(), m_True.c_str()) == 0;
         }
-        std::wstring ToString(const int nValue)
+        std::wstring IntToString(const int nValue)
         {
             return std::to_wstring(nValue);
         }
-        std::wstring ToString(const unsigned __int64 nValue)
+        std::wstring SizeToString(const size_t nValue)
         {
             return std::to_wstring(nValue);
         }
-        std::wstring ToString(const bool bValue)
+        std::wstring UInt64ToString(const unsigned __int64 nValue)
+        {
+            return std::to_wstring(nValue);
+        }
+        std::wstring BoolToString(const bool bValue)
         {
             return bValue ? m_True : m_False;
         }
     public:
-        bool GetAttributeValue(const XmlElement *element, const char *name, std::wstring *value)
+        bool GetAttributeValueString(const XmlElement *element, const char *name, std::wstring *value)
         {
             const char *pszResult = element->Attribute(name);
             if (pszResult != nullptr)
@@ -121,7 +126,7 @@ namespace xml
             }
             return false;
         }
-        bool GetAttributeValue(const XmlElement *element, const char *name, int *value)
+        bool GetAttributeValueInt(const XmlElement *element, const char *name, int *value)
         {
             const char *pszResult = element->Attribute(name);
             if (pszResult != nullptr)
@@ -131,7 +136,17 @@ namespace xml
             }
             return false;
         }
-        bool GetAttributeValue(const XmlElement *element, const char *name, unsigned __int64 *value)
+        bool GetAttributeValueSizeT(const XmlElement *element, const char *name, size_t *value)
+        {
+            const char *pszResult = element->Attribute(name);
+            if (pszResult != nullptr)
+            {
+                (*value) = ToUInt(pszResult);
+                return true;
+            }
+            return false;
+        }
+        bool GetAttributeValueUInt64(const XmlElement *element, const char *name, unsigned __int64 *value)
         {
             const char *pszResult = element->Attribute(name);
             if (pszResult != nullptr)
@@ -141,7 +156,7 @@ namespace xml
             }
             return false;
         }
-        bool GetAttributeValue(const XmlElement *element, const char *name, bool *value)
+        bool GetAttributeValueBool(const XmlElement *element, const char *name, bool *value)
         {
             const char *pszResult = element->Attribute(name);
             if (pszResult != nullptr)
@@ -152,24 +167,28 @@ namespace xml
             return false;
         }
     public:
-        void SetAttributeValue(XmlElement *element, const char *name, const std::wstring& value)
+        void SetAttributeValueString(XmlElement *element, const char *name, const std::wstring& value)
         {
             element->SetAttribute(name, util::CUtf8String::ToUtf8(value).c_str());
         }
-        void SetAttributeValue(XmlElement *element, const char *name, const int &value)
+        void SetAttributeValueInt(XmlElement *element, const char *name, const int &value)
         {
-            element->SetAttribute(name, util::CUtf8String::ToUtf8(ToString(value)).c_str());
+            element->SetAttribute(name, util::CUtf8String::ToUtf8(IntToString(value)).c_str());
         }
-        void SetAttributeValue(XmlElement *element, const char *name, const unsigned __int64 &value)
+        void SetAttributeValueSizeT(XmlElement *element, const char *name, const size_t &value)
         {
-            element->SetAttribute(name, util::CUtf8String::ToUtf8(ToString(value)).c_str());
+            element->SetAttribute(name, util::CUtf8String::ToUtf8(SizeToString(value)).c_str());
         }
-        void SetAttributeValue(XmlElement *element, const char *name, const bool &value)
+        void SetAttributeValueUInt64(XmlElement *element, const char *name, const unsigned __int64 &value)
         {
-            element->SetAttribute(name, util::CUtf8String::ToUtf8(ToString(value)).c_str());
+            element->SetAttribute(name, util::CUtf8String::ToUtf8(UInt64ToString(value)).c_str());
+        }
+        void SetAttributeValueBool(XmlElement *element, const char *name, const bool &value)
+        {
+            element->SetAttribute(name, util::CUtf8String::ToUtf8(BoolToString(value)).c_str());
         }
     public:
-        bool GetChildValue(const XmlElement *parent, const char *name, std::wstring *value)
+        bool GetChildValueString(const XmlElement *parent, const char *name, std::wstring *value)
         {
             auto element = parent->FirstChildElement(name);
             if (element != nullptr)
@@ -179,7 +198,7 @@ namespace xml
             }
             return false;
         }
-        bool GetChildValue(const XmlElement *parent, const char *name, int *value)
+        bool GetChildValueInt(const XmlElement *parent, const char *name, int *value)
         {
             auto element = parent->FirstChildElement(name);
             if (element != nullptr)
@@ -189,7 +208,17 @@ namespace xml
             }
             return false;
         }
-        bool GetChildValue(const XmlElement *parent, const char *name, unsigned __int64 *value)
+        bool GetChildValueSizeT(const XmlElement *parent, const char *name, size_t *value)
+        {
+            auto element = parent->FirstChildElement(name);
+            if (element != nullptr)
+            {
+                (*value) = ToUInt(element->GetText());
+                return true;
+            }
+            return false;
+        }
+        bool GetChildValueUInt64(const XmlElement *parent, const char *name, unsigned __int64 *value)
         {
             auto element = parent->FirstChildElement(name);
             if (element != nullptr)
@@ -199,7 +228,7 @@ namespace xml
             }
             return false;
         }
-        bool GetChildValue(const XmlElement *parent, const char *name, bool *value)
+        bool GetChildValueBool(const XmlElement *parent, const char *name, bool *value)
         {
             auto element = parent->FirstChildElement(name);
             if (element != nullptr)
@@ -210,28 +239,34 @@ namespace xml
             return false;
         }
     public:
-        void SetChildValue(XmlElement *parent, const char *name, const std::wstring& value)
+        void SetChildValueString(XmlElement *parent, const char *name, const std::wstring& value)
         {
             auto element = m_Document.NewElement(name);
             element->LinkEndChild(m_Document.NewText(util::CUtf8String::ToUtf8(value).c_str()));
             parent->LinkEndChild(element);
         }
-        void SetChildValue(XmlElement *parent, const char *name, const int &value)
+        void SetChildValueInt(XmlElement *parent, const char *name, const int &value)
         {
             auto element = m_Document.NewElement(name);
-            element->LinkEndChild(m_Document.NewText(util::CUtf8String::ToUtf8(ToString(value)).c_str()));
+            element->LinkEndChild(m_Document.NewText(util::CUtf8String::ToUtf8(IntToString(value)).c_str()));
             parent->LinkEndChild(element);
         }
-        void SetChildValue(XmlElement *parent, const char *name, const unsigned __int64 &value)
+        void SetChildValueSizeT(XmlElement *parent, const char *name, const size_t &value)
         {
             auto element = m_Document.NewElement(name);
-            element->LinkEndChild(m_Document.NewText(util::CUtf8String::ToUtf8(ToString(value)).c_str()));
+            element->LinkEndChild(m_Document.NewText(util::CUtf8String::ToUtf8(SizeToString(value)).c_str()));
             parent->LinkEndChild(element);
         }
-        void SetChildValue(XmlElement *parent, const char *name, const bool &value)
+        void SetChildValueUInt64(XmlElement *parent, const char *name, const unsigned __int64 &value)
         {
             auto element = m_Document.NewElement(name);
-            element->LinkEndChild(m_Document.NewText(util::CUtf8String::ToUtf8(ToString(value)).c_str()));
+            element->LinkEndChild(m_Document.NewText(util::CUtf8String::ToUtf8(UInt64ToString(value)).c_str()));
+            parent->LinkEndChild(element);
+        }
+        void SetChildValueBool(XmlElement *parent, const char *name, const bool &value)
+        {
+            auto element = m_Document.NewElement(name);
+            element->LinkEndChild(m_Document.NewText(util::CUtf8String::ToUtf8(BoolToString(value)).c_str()));
             parent->LinkEndChild(element);
         }
     public:
@@ -270,62 +305,62 @@ namespace xml
     public:
         bool GetOptions(const XmlElement *element, config::COptions &m_Options)
         {
-            VALIDATE(GetChildValue(element, "SelectedLanguage", &m_Options.szSelectedLanguage));
-            VALIDATE(GetChildValue(element, "SelectedFormat", &m_Options.nSelectedFormat));
-            VALIDATE(GetChildValue(element, "OutputPath", &m_Options.szOutputPath));
-            VALIDATE(GetChildValue(element, "DeleteSourceFiles", &m_Options.bDeleteSourceFiles));
-            VALIDATE(GetChildValue(element, "RecurseChecked", &m_Options.bRecurseChecked));
-            VALIDATE(GetChildValue(element, "ShutdownWhenFinished", &m_Options.bShutdownWhenFinished));
-            VALIDATE(GetChildValue(element, "DoNotSaveConfiguration", &m_Options.bDoNotSaveConfiguration));
-            VALIDATE(GetChildValue(element, "DeleteOnErrors", &m_Options.bDeleteOnErrors));
-            VALIDATE(GetChildValue(element, "StopOnErrors", &m_Options.bStopOnErrors));
-            VALIDATE(GetChildValue(element, "HideConsoleWindow", &m_Options.bHideConsoleWindow));
-            VALIDATE(GetChildValue(element, "TryToFindDecoder", &m_Options.bTryToFindDecoder));
-            VALIDATE(GetChildValue(element, "EnsureItemIsVisible", &m_Options.bEnsureItemIsVisible));
-            VALIDATE(GetChildValue(element, "ValidateInputFiles", &m_Options.bValidateInputFiles));
-            VALIDATE(GetChildValue(element, "OverwriteExistingFiles", &m_Options.bOverwriteExistingFiles));
-            VALIDATE(GetChildValue(element, "TryToDownloadTools", &m_Options.bTryToDownloadTools));
-            VALIDATE(GetChildValue(element, "ThreadCount", &m_Options.nThreadCount));
-            VALIDATE(GetChildValue(element, "OutputBrowse", &m_Options.szOutputBrowse));
-            VALIDATE(GetChildValue(element, "DirectoryBrowse", &m_Options.szDirectoryBrowse));
-            VALIDATE(GetChildValue(element, "MainWindowResize", &m_Options.szMainWindowResize));
-            VALIDATE(GetChildValue(element, "FileListColumns", &m_Options.szFileListColumns));
-            VALIDATE(GetChildValue(element, "PresetsDialogResize", &m_Options.szPresetsDialogResize));
-            VALIDATE(GetChildValue(element, "PresetsListColumns", &m_Options.szPresetsListColumns));
-            VALIDATE(GetChildValue(element, "FormatsDialogResize", &m_Options.szFormatsDialogResize));
-            VALIDATE(GetChildValue(element, "FormatsListColumns", &m_Options.szFormatsListColumns));
-            VALIDATE(GetChildValue(element, "ToolsDialogResize", &m_Options.szToolsDialogResize));
-            VALIDATE(GetChildValue(element, "ToolsListColumns", &m_Options.szToolsListColumns));
+            VALIDATE(GetChildValueString(element, "SelectedLanguage", &m_Options.szSelectedLanguage));
+            VALIDATE(GetChildValueSizeT(element, "SelectedFormat", &m_Options.nSelectedFormat));
+            VALIDATE(GetChildValueString(element, "OutputPath", &m_Options.szOutputPath));
+            VALIDATE(GetChildValueBool(element, "DeleteSourceFiles", &m_Options.bDeleteSourceFiles));
+            VALIDATE(GetChildValueBool(element, "RecurseChecked", &m_Options.bRecurseChecked));
+            VALIDATE(GetChildValueBool(element, "ShutdownWhenFinished", &m_Options.bShutdownWhenFinished));
+            VALIDATE(GetChildValueBool(element, "DoNotSaveConfiguration", &m_Options.bDoNotSaveConfiguration));
+            VALIDATE(GetChildValueBool(element, "DeleteOnErrors", &m_Options.bDeleteOnErrors));
+            VALIDATE(GetChildValueBool(element, "StopOnErrors", &m_Options.bStopOnErrors));
+            VALIDATE(GetChildValueBool(element, "HideConsoleWindow", &m_Options.bHideConsoleWindow));
+            VALIDATE(GetChildValueBool(element, "TryToFindDecoder", &m_Options.bTryToFindDecoder));
+            VALIDATE(GetChildValueBool(element, "EnsureItemIsVisible", &m_Options.bEnsureItemIsVisible));
+            VALIDATE(GetChildValueBool(element, "ValidateInputFiles", &m_Options.bValidateInputFiles));
+            VALIDATE(GetChildValueBool(element, "OverwriteExistingFiles", &m_Options.bOverwriteExistingFiles));
+            VALIDATE(GetChildValueBool(element, "TryToDownloadTools", &m_Options.bTryToDownloadTools));
+            VALIDATE(GetChildValueInt(element, "ThreadCount", &m_Options.nThreadCount));
+            VALIDATE(GetChildValueString(element, "OutputBrowse", &m_Options.szOutputBrowse));
+            VALIDATE(GetChildValueString(element, "DirectoryBrowse", &m_Options.szDirectoryBrowse));
+            VALIDATE(GetChildValueString(element, "MainWindowResize", &m_Options.szMainWindowResize));
+            VALIDATE(GetChildValueString(element, "FileListColumns", &m_Options.szFileListColumns));
+            VALIDATE(GetChildValueString(element, "PresetsDialogResize", &m_Options.szPresetsDialogResize));
+            VALIDATE(GetChildValueString(element, "PresetsListColumns", &m_Options.szPresetsListColumns));
+            VALIDATE(GetChildValueString(element, "FormatsDialogResize", &m_Options.szFormatsDialogResize));
+            VALIDATE(GetChildValueString(element, "FormatsListColumns", &m_Options.szFormatsListColumns));
+            VALIDATE(GetChildValueString(element, "ToolsDialogResize", &m_Options.szToolsDialogResize));
+            VALIDATE(GetChildValueString(element, "ToolsListColumns", &m_Options.szToolsListColumns));
             return true;
         }
         void SetOptions(XmlElement *element, config::COptions &m_Options)
         {
-            SetChildValue(element, "SelectedLanguage", m_Options.szSelectedLanguage);
-            SetChildValue(element, "SelectedFormat", m_Options.nSelectedFormat);
-            SetChildValue(element, "OutputPath", m_Options.szOutputPath);
-            SetChildValue(element, "DeleteSourceFiles", m_Options.bDeleteSourceFiles);
-            SetChildValue(element, "RecurseChecked", m_Options.bRecurseChecked);
-            SetChildValue(element, "ShutdownWhenFinished", m_Options.bShutdownWhenFinished);
-            SetChildValue(element, "DoNotSaveConfiguration", m_Options.bDoNotSaveConfiguration);
-            SetChildValue(element, "DeleteOnErrors", m_Options.bDeleteOnErrors);
-            SetChildValue(element, "StopOnErrors", m_Options.bStopOnErrors);
-            SetChildValue(element, "HideConsoleWindow", m_Options.bHideConsoleWindow);
-            SetChildValue(element, "TryToFindDecoder", m_Options.bTryToFindDecoder);
-            SetChildValue(element, "EnsureItemIsVisible", m_Options.bEnsureItemIsVisible);
-            SetChildValue(element, "ValidateInputFiles", m_Options.bValidateInputFiles);
-            SetChildValue(element, "OverwriteExistingFiles", m_Options.bOverwriteExistingFiles);
-            SetChildValue(element, "TryToDownloadTools", m_Options.bTryToDownloadTools);
-            SetChildValue(element, "ThreadCount", m_Options.nThreadCount);
-            SetChildValue(element, "OutputBrowse", m_Options.szOutputBrowse);
-            SetChildValue(element, "DirectoryBrowse", m_Options.szDirectoryBrowse);
-            SetChildValue(element, "MainWindowResize", m_Options.szMainWindowResize);
-            SetChildValue(element, "FileListColumns", m_Options.szFileListColumns);
-            SetChildValue(element, "PresetsDialogResize", m_Options.szPresetsDialogResize);
-            SetChildValue(element, "PresetsListColumns", m_Options.szPresetsListColumns);
-            SetChildValue(element, "FormatsDialogResize", m_Options.szFormatsDialogResize);
-            SetChildValue(element, "FormatsListColumns", m_Options.szFormatsListColumns);
-            SetChildValue(element, "ToolsDialogResize", m_Options.szToolsDialogResize);
-            SetChildValue(element, "ToolsListColumns", m_Options.szToolsListColumns);
+            SetChildValueString(element, "SelectedLanguage", m_Options.szSelectedLanguage);
+            SetChildValueSizeT(element, "SelectedFormat", m_Options.nSelectedFormat);
+            SetChildValueString(element, "OutputPath", m_Options.szOutputPath);
+            SetChildValueBool(element, "DeleteSourceFiles", m_Options.bDeleteSourceFiles);
+            SetChildValueBool(element, "RecurseChecked", m_Options.bRecurseChecked);
+            SetChildValueBool(element, "ShutdownWhenFinished", m_Options.bShutdownWhenFinished);
+            SetChildValueBool(element, "DoNotSaveConfiguration", m_Options.bDoNotSaveConfiguration);
+            SetChildValueBool(element, "DeleteOnErrors", m_Options.bDeleteOnErrors);
+            SetChildValueBool(element, "StopOnErrors", m_Options.bStopOnErrors);
+            SetChildValueBool(element, "HideConsoleWindow", m_Options.bHideConsoleWindow);
+            SetChildValueBool(element, "TryToFindDecoder", m_Options.bTryToFindDecoder);
+            SetChildValueBool(element, "EnsureItemIsVisible", m_Options.bEnsureItemIsVisible);
+            SetChildValueBool(element, "ValidateInputFiles", m_Options.bValidateInputFiles);
+            SetChildValueBool(element, "OverwriteExistingFiles", m_Options.bOverwriteExistingFiles);
+            SetChildValueBool(element, "TryToDownloadTools", m_Options.bTryToDownloadTools);
+            SetChildValueInt(element, "ThreadCount", m_Options.nThreadCount);
+            SetChildValueString(element, "OutputBrowse", m_Options.szOutputBrowse);
+            SetChildValueString(element, "DirectoryBrowse", m_Options.szDirectoryBrowse);
+            SetChildValueString(element, "MainWindowResize", m_Options.szMainWindowResize);
+            SetChildValueString(element, "FileListColumns", m_Options.szFileListColumns);
+            SetChildValueString(element, "PresetsDialogResize", m_Options.szPresetsDialogResize);
+            SetChildValueString(element, "PresetsListColumns", m_Options.szPresetsListColumns);
+            SetChildValueString(element, "FormatsDialogResize", m_Options.szFormatsDialogResize);
+            SetChildValueString(element, "FormatsListColumns", m_Options.szFormatsListColumns);
+            SetChildValueString(element, "ToolsDialogResize", m_Options.szToolsDialogResize);
+            SetChildValueString(element, "ToolsListColumns", m_Options.szToolsListColumns);
         }
     public:
         bool GetOptions(config::COptions &m_Options)
@@ -354,16 +389,16 @@ namespace xml
     public:
         bool GetPath(const XmlElement *element, config::CPath &m_Path)
         {
-            VALIDATE(GetAttributeValue(element, "path", &m_Path.szPath));
-            VALIDATE(GetAttributeValue(element, "size", &m_Path.nSize));
+            VALIDATE(GetAttributeValueString(element, "path", &m_Path.szPath));
+            VALIDATE(GetAttributeValueUInt64(element, "size", &m_Path.nSize));
             return true;
         }
         void SetPath(XmlElement *element, config::CPath &m_Path)
         {
-            SetAttributeValue(element, "path", m_Path.szPath);
-            SetAttributeValue(element, "size", m_Path.nSize);
+            SetAttributeValueString(element, "path", m_Path.szPath);
+            SetAttributeValueUInt64(element, "size", m_Path.nSize);
         }
-        bool GetPaths(const XmlElement *parent, config::CPathsList &m_Paths)
+        bool GetPaths(const XmlElement *parent, std::vector<config::CPath> &m_Paths)
         {
             auto element = parent->FirstChildElement("Path");
             if (element != nullptr)
@@ -372,18 +407,18 @@ namespace xml
                 {
                     config::CPath path;
                     VALIDATE(this->GetPath(element, path));
-                    m_Paths.Insert(path);
+                    m_Paths.emplace_back(path);
                 }
                 return true;
             }
             return false;
         }
-        void SetPaths(XmlElement *parent, config::CPathsList &m_Paths)
+        void SetPaths(XmlElement *parent, std::vector<config::CPath> &m_Paths)
         {
-            int nPaths = m_Paths.Count();
-            for (int i = 0; i < nPaths; i++)
+            size_t nPaths = m_Paths.size();
+            for (size_t i = 0; i < nPaths; i++)
             {
-                config::CPath& path = m_Paths.Get(i);
+                config::CPath& path = m_Paths[i];
                 auto element = this->NewElement("Path");
                 parent->LinkEndChild(element);
                 this->SetPath(element, path);
@@ -392,34 +427,34 @@ namespace xml
     public:
         bool GetItem(const XmlElement *element, config::CItem &m_Item)
         {
-            VALIDATE(GetAttributeValue(element, "id", &m_Item.nId));
-            VALIDATE(GetAttributeValue(element, "size", &m_Item.nSize));
-            VALIDATE(GetAttributeValue(element, "name", &m_Item.szName));
-            VALIDATE(GetAttributeValue(element, "extension", &m_Item.szExtension));
-            VALIDATE(GetAttributeValue(element, "format", &m_Item.szFormatId));
-            VALIDATE(GetAttributeValue(element, "preset", &m_Item.nPreset));
-            VALIDATE(GetAttributeValue(element, "options", &m_Item.szOptions));
-            VALIDATE(GetAttributeValue(element, "checked", &m_Item.bChecked));
-            VALIDATE(GetAttributeValue(element, "time", &m_Item.szTime));
-            VALIDATE(GetAttributeValue(element, "status", &m_Item.szStatus));
+            VALIDATE(GetAttributeValueInt(element, "id", &m_Item.nId));
+            VALIDATE(GetAttributeValueUInt64(element, "size", &m_Item.nSize));
+            VALIDATE(GetAttributeValueString(element, "name", &m_Item.szName));
+            VALIDATE(GetAttributeValueString(element, "extension", &m_Item.szExtension));
+            VALIDATE(GetAttributeValueString(element, "format", &m_Item.szFormatId));
+            VALIDATE(GetAttributeValueSizeT(element, "preset", &m_Item.nPreset));
+            VALIDATE(GetAttributeValueString(element, "options", &m_Item.szOptions));
+            VALIDATE(GetAttributeValueBool(element, "checked", &m_Item.bChecked));
+            VALIDATE(GetAttributeValueString(element, "time", &m_Item.szTime));
+            VALIDATE(GetAttributeValueString(element, "status", &m_Item.szStatus));
             VALIDATE(this->GetPaths(element, m_Item.m_Paths));
             return true;
         }
         void SetItem(XmlElement *element, config::CItem &m_Item, int nId)
         {
-            SetAttributeValue(element, "id", nId);
-            SetAttributeValue(element, "size", m_Item.nSize);
-            SetAttributeValue(element, "name", m_Item.szName);
-            SetAttributeValue(element, "extension", m_Item.szExtension);
-            SetAttributeValue(element, "format", m_Item.szFormatId);
-            SetAttributeValue(element, "preset", m_Item.nPreset);
-            SetAttributeValue(element, "options", m_Item.szOptions);
-            SetAttributeValue(element, "checked", m_Item.bChecked);
-            SetAttributeValue(element, "time", m_Item.szTime);
-            SetAttributeValue(element, "status", m_Item.szStatus);
+            SetAttributeValueInt(element, "id", nId);
+            SetAttributeValueUInt64(element, "size", m_Item.nSize);
+            SetAttributeValueString(element, "name", m_Item.szName);
+            SetAttributeValueString(element, "extension", m_Item.szExtension);
+            SetAttributeValueString(element, "format", m_Item.szFormatId);
+            SetAttributeValueSizeT(element, "preset", m_Item.nPreset);
+            SetAttributeValueString(element, "options", m_Item.szOptions);
+            SetAttributeValueBool(element, "checked", m_Item.bChecked);
+            SetAttributeValueString(element, "time", m_Item.szTime);
+            SetAttributeValueString(element, "status", m_Item.szStatus);
             this->SetPaths(element, m_Item.m_Paths);
         }
-        bool GetItems(const XmlElement *parent, config::CItemsList &m_Items)
+        bool GetItems(const XmlElement *parent, std::vector<config::CItem> &m_Items)
         {
             auto element = parent->FirstChildElement("Item");
             if (element != nullptr)
@@ -428,18 +463,18 @@ namespace xml
                 {
                     config::CItem item;
                     VALIDATE(this->GetItem(element, item));
-                    m_Items.Insert(item);
+                    m_Items.emplace_back(item);
                 }
                 return true;
             }
             return false;
         }
-        void SetItems(XmlElement *parent, config::CItemsList &m_Items)
+        void SetItems(XmlElement *parent, std::vector<config::CItem> &m_Items)
         {
-            int nItems = m_Items.Count();
-            for (int i = 0; i < nItems; i++)
+            size_t nItems = m_Items.size();
+            for (size_t i = 0; i < nItems; i++)
             {
-                config::CItem& item = m_Items.Get(i);
+                config::CItem& item = m_Items[i];
                 auto element = this->NewElement("Item");
                 parent->LinkEndChild(element);
                 this->SetItem(element, item, i);
@@ -462,7 +497,7 @@ namespace xml
             this->LinkEndChild(element);
             this->SetItem(element, m_Item, -1);
         }
-        bool GetItems(config::CItemsList &m_Items)
+        bool GetItems(std::vector<config::CItem> &m_Items)
         {
             auto element = this->FirstChildElement("Items");
             if (element != nullptr)
@@ -472,7 +507,7 @@ namespace xml
             }
             return false;
         }
-        void SetItems(config::CItemsList &m_Items)
+        void SetItems(std::vector<config::CItem> &m_Items)
         {
             auto element = this->NewElement("Items");
             this->LinkEndChild(element);
@@ -486,11 +521,11 @@ namespace xml
         XmlLanguages(XmlDocumnent &doc) : XmlDoc(doc) { }
         virtual ~XmlLanguages() { }
     public:
-        bool GetLanguage(const XmlElement *parent, lang::CLanguage &m_Language)
+        bool GetLanguage(const XmlElement *parent, config::CLanguage &m_Language)
         {
-            VALIDATE(GetAttributeValue(parent, "id", &m_Language.szId));
-            VALIDATE(GetAttributeValue(parent, "original", &m_Language.szOriginalName));
-            VALIDATE(GetAttributeValue(parent, "translated", &m_Language.szTranslatedName));
+            VALIDATE(GetAttributeValueString(parent, "id", &m_Language.szId));
+            VALIDATE(GetAttributeValueString(parent, "original", &m_Language.szOriginalName));
+            VALIDATE(GetAttributeValueString(parent, "translated", &m_Language.szTranslatedName));
 
             auto element = parent->FirstChildElement("String");
             if (element != nullptr)
@@ -500,23 +535,23 @@ namespace xml
                     std::wstring szKey;
                     std::wstring szValue;
 
-                    VALIDATE(GetAttributeValue(element, "key", &szKey));
-                    VALIDATE(GetAttributeValue(element, "value", &szValue));
+                    VALIDATE(GetAttributeValueString(element, "key", &szKey));
+                    VALIDATE(GetAttributeValueString(element, "value", &szValue));
 
                     int nKey = util::StringHelper::ToIntFromHex(szKey);
-                    m_Language.m_Strings.Insert(nKey, szValue);
+                    m_Language.m_Strings[nKey] = szValue;
                 }
                 return true;
             }
             return false;
         }
-        void SetLanguage(XmlElement *parent, lang::CLanguage &m_Language)
+        void SetLanguage(XmlElement *parent, config::CLanguage &m_Language)
         {
-            SetAttributeValue(parent, "id", m_Language.szId);
-            SetAttributeValue(parent, "original", m_Language.szOriginalName);
-            SetAttributeValue(parent, "translated", m_Language.szTranslatedName);
+            SetAttributeValueString(parent, "id", m_Language.szId);
+            SetAttributeValueString(parent, "original", m_Language.szOriginalName);
+            SetAttributeValueString(parent, "translated", m_Language.szTranslatedName);
 
-            for (auto& item : m_Language.m_Strings.m_Map)
+            for (auto& item : m_Language.m_Strings)
             {
                 int nKey = item.first;
                 std::wstring szKey = util::StringHelper::ToWStringHex(nKey);
@@ -524,12 +559,12 @@ namespace xml
                 auto element = this->NewElement("String");
                 parent->LinkEndChild(element);
 
-                SetAttributeValue(element, "", szKey);
-                SetAttributeValue(element, "", item.second);
+                SetAttributeValueString(element, "", szKey);
+                SetAttributeValueString(element, "", item.second);
             }
         }
     public:
-        bool GetLanguage(lang::CLanguage &m_Language)
+        bool GetLanguage(config::CLanguage &m_Language)
         {
             auto element = this->FirstChildElement("Language");
             if (element != nullptr)
@@ -539,7 +574,7 @@ namespace xml
             }
             return false;
         }
-        void SetLanguage(lang::CLanguage &m_Language)
+        void SetLanguage(config::CLanguage &m_Language)
         {
             auto element = this->NewElement("Language");
             this->LinkEndChild(element);
@@ -555,16 +590,16 @@ namespace xml
     public:
         bool GetPreset(const XmlElement *element, config::CPreset &m_Preset)
         {
-            VALIDATE(GetAttributeValue(element, "name", &m_Preset.szName));
-            VALIDATE(GetAttributeValue(element, "options", &m_Preset.szOptions));
+            VALIDATE(GetAttributeValueString(element, "name", &m_Preset.szName));
+            VALIDATE(GetAttributeValueString(element, "options", &m_Preset.szOptions));
             return true;
         }
         void SetPreset(XmlElement *element, config::CPreset &m_Preset)
         {
-            SetAttributeValue(element, "name", m_Preset.szName);
-            SetAttributeValue(element, "options", m_Preset.szOptions);
+            SetAttributeValueString(element, "name", m_Preset.szName);
+            SetAttributeValueString(element, "options", m_Preset.szOptions);
         }
-        bool GetPresets(const XmlElement *parent, config::CPresetsList &m_Presets)
+        bool GetPresets(const XmlElement *parent, std::vector<config::CPreset> &m_Presets)
         {
             auto element = parent->FirstChildElement("Preset");
             if (element != nullptr)
@@ -573,18 +608,18 @@ namespace xml
                 {
                     config::CPreset preset;
                     VALIDATE(this->GetPreset(element, preset));
-                    m_Presets.Insert(preset);
+                    m_Presets.emplace_back(preset);
                 }
                 return true;
             }
             return false;
         }
-        void SetPresets(XmlElement *parent, config::CPresetsList &m_Presets)
+        void SetPresets(XmlElement *parent, std::vector<config::CPreset> &m_Presets)
         {
-            int nPresets = m_Presets.Count();
-            for (int i = 0; i < nPresets; i++)
+            size_t nPresets = m_Presets.size();
+            for (size_t i = 0; i < nPresets; i++)
             {
-                config::CPreset& preset = m_Presets.Get(i);
+                config::CPreset& preset = m_Presets[i];
                 auto element = this->NewElement("Preset");
                 this->SetPreset(element, preset);
                 parent->LinkEndChild(element);
@@ -607,7 +642,7 @@ namespace xml
             this->LinkEndChild(element);
             this->SetPreset(element, m_Preset);
         }
-        bool GetPresets(config::CPresetsList &m_Presets)
+        bool GetPresets(std::vector<config::CPreset> &m_Presets)
         {
             auto element = this->FirstChildElement("Presets");
             if (element != nullptr)
@@ -617,7 +652,7 @@ namespace xml
             }
             return false;
         }
-        void SetPresets(config::CPresetsList &m_Presets)
+        void SetPresets(std::vector<config::CPreset> &m_Presets)
         {
             auto element = this->NewElement("Presets");
             this->LinkEndChild(element);
@@ -633,24 +668,24 @@ namespace xml
     public:
         bool GetFormat(const XmlElement *element, config::CFormat &m_Format)
         {
-            VALIDATE(GetAttributeValue(element, "id", &m_Format.szId));
-            VALIDATE(GetAttributeValue(element, "name", &m_Format.szName));
-            VALIDATE(GetAttributeValue(element, "template", &m_Format.szTemplate));
-            VALIDATE(GetAttributeValue(element, "input", &m_Format.bPipeInput));
-            VALIDATE(GetAttributeValue(element, "output", &m_Format.bPipeOutput));
-            VALIDATE(GetAttributeValue(element, "function", &m_Format.szFunction));
-            VALIDATE(GetAttributeValue(element, "path", &m_Format.szPath));
-            VALIDATE(GetAttributeValue(element, "success", &m_Format.nExitCodeSuccess));
+            VALIDATE(GetAttributeValueString(element, "id", &m_Format.szId));
+            VALIDATE(GetAttributeValueString(element, "name", &m_Format.szName));
+            VALIDATE(GetAttributeValueString(element, "template", &m_Format.szTemplate));
+            VALIDATE(GetAttributeValueBool(element, "input", &m_Format.bPipeInput));
+            VALIDATE(GetAttributeValueBool(element, "output", &m_Format.bPipeOutput));
+            VALIDATE(GetAttributeValueString(element, "function", &m_Format.szFunction));
+            VALIDATE(GetAttributeValueString(element, "path", &m_Format.szPath));
+            VALIDATE(GetAttributeValueInt(element, "success", &m_Format.nExitCodeSuccess));
 
             int nType;
-            VALIDATE(GetAttributeValue(element, "type", &nType));
+            VALIDATE(GetAttributeValueInt(element, "type", &nType));
             m_Format.nType = config::CFormat::FromInt(nType);
 
-            VALIDATE(GetAttributeValue(element, "priority", &m_Format.nPriority));
+            VALIDATE(GetAttributeValueInt(element, "priority", &m_Format.nPriority));
 
-            VALIDATE(GetAttributeValue(element, "formats", &m_Format.szInputExtensions));
-            VALIDATE(GetAttributeValue(element, "extension", &m_Format.szOutputExtension));
-            VALIDATE(GetAttributeValue(element, "default", &m_Format.nDefaultPreset));
+            VALIDATE(GetAttributeValueString(element, "formats", &m_Format.szInputExtensions));
+            VALIDATE(GetAttributeValueString(element, "extension", &m_Format.szOutputExtension));
+            VALIDATE(GetAttributeValueSizeT(element, "default", &m_Format.nDefaultPreset));
 
             auto parent = element->FirstChildElement("Presets");
             if (parent != nullptr)
@@ -662,23 +697,23 @@ namespace xml
         }
         void SetFormat(XmlElement *element, config::CFormat &m_Format)
         {
-            SetAttributeValue(element, "id", m_Format.szId);
-            SetAttributeValue(element, "name", m_Format.szName);
-            SetAttributeValue(element, "template", m_Format.szTemplate);
-            SetAttributeValue(element, "input", m_Format.bPipeInput);
-            SetAttributeValue(element, "output", m_Format.bPipeOutput);
-            SetAttributeValue(element, "function", m_Format.szFunction);
-            SetAttributeValue(element, "path", m_Format.szPath);
-            SetAttributeValue(element, "success", m_Format.nExitCodeSuccess);
+            SetAttributeValueString(element, "id", m_Format.szId);
+            SetAttributeValueString(element, "name", m_Format.szName);
+            SetAttributeValueString(element, "template", m_Format.szTemplate);
+            SetAttributeValueBool(element, "input", m_Format.bPipeInput);
+            SetAttributeValueBool(element, "output", m_Format.bPipeOutput);
+            SetAttributeValueString(element, "function", m_Format.szFunction);
+            SetAttributeValueString(element, "path", m_Format.szPath);
+            SetAttributeValueInt(element, "success", m_Format.nExitCodeSuccess);
 
             int nType = config::CFormat::ToInt(m_Format.nType);
-            SetAttributeValue(element, "type", nType);
+            SetAttributeValueInt(element, "type", nType);
 
-            SetAttributeValue(element, "priority", m_Format.nPriority);
+            SetAttributeValueInt(element, "priority", m_Format.nPriority);
 
-            SetAttributeValue(element, "formats", m_Format.szInputExtensions);
-            SetAttributeValue(element, "extension", m_Format.szOutputExtension);
-            SetAttributeValue(element, "default", m_Format.nDefaultPreset);
+            SetAttributeValueString(element, "formats", m_Format.szInputExtensions);
+            SetAttributeValueString(element, "extension", m_Format.szOutputExtension);
+            SetAttributeValueSizeT(element, "default", m_Format.nDefaultPreset);
 
             auto parent = this->NewElement("Presets");
             element->LinkEndChild(parent);
@@ -711,26 +746,26 @@ namespace xml
     public:
         bool GetTool(const XmlElement *element, config::CTool &m_Tool)
         {
-            VALIDATE(GetAttributeValue(element, "name", &m_Tool.szName));
-            VALIDATE(GetAttributeValue(element, "platform", &m_Tool.szPlatform));
-            VALIDATE(GetAttributeValue(element, "priority", &m_Tool.nPriority));
-            VALIDATE(GetAttributeValue(element, "formats", &m_Tool.szFormats));
-            VALIDATE(GetAttributeValue(element, "url", &m_Tool.szUrl));
-            VALIDATE(GetAttributeValue(element, "file", &m_Tool.szFile));
-            VALIDATE(GetAttributeValue(element, "extract", &m_Tool.szExtract));
-            VALIDATE(GetAttributeValue(element, "path", &m_Tool.szPath));
+            VALIDATE(GetAttributeValueString(element, "name", &m_Tool.szName));
+            VALIDATE(GetAttributeValueString(element, "platform", &m_Tool.szPlatform));
+            VALIDATE(GetAttributeValueInt(element, "priority", &m_Tool.nPriority));
+            VALIDATE(GetAttributeValueString(element, "formats", &m_Tool.szFormats));
+            VALIDATE(GetAttributeValueString(element, "url", &m_Tool.szUrl));
+            VALIDATE(GetAttributeValueString(element, "file", &m_Tool.szFile));
+            VALIDATE(GetAttributeValueString(element, "extract", &m_Tool.szExtract));
+            VALIDATE(GetAttributeValueString(element, "path", &m_Tool.szPath));
             return true;
         }
         void SetTool(XmlElement *element, config::CTool &m_Tool)
         {
-            SetAttributeValue(element, "name", m_Tool.szName);
-            SetAttributeValue(element, "platform", m_Tool.szPlatform);
-            SetAttributeValue(element, "priority", m_Tool.nPriority);
-            SetAttributeValue(element, "formats", m_Tool.szFormats);
-            SetAttributeValue(element, "url", m_Tool.szUrl);
-            SetAttributeValue(element, "file", m_Tool.szFile);
-            SetAttributeValue(element, "extract", m_Tool.szExtract);
-            SetAttributeValue(element, "path", m_Tool.szPath);
+            SetAttributeValueString(element, "name", m_Tool.szName);
+            SetAttributeValueString(element, "platform", m_Tool.szPlatform);
+            SetAttributeValueInt(element, "priority", m_Tool.nPriority);
+            SetAttributeValueString(element, "formats", m_Tool.szFormats);
+            SetAttributeValueString(element, "url", m_Tool.szUrl);
+            SetAttributeValueString(element, "file", m_Tool.szFile);
+            SetAttributeValueString(element, "extract", m_Tool.szExtract);
+            SetAttributeValueString(element, "path", m_Tool.szPath);
         }
     public:
         bool GetTool(config::CTool &m_Tool)
@@ -806,19 +841,19 @@ namespace xml
             xml.SetItem(item);
             return xml.Save(szFileXml);
         }
-        static bool LoadItems(XmlDocumnent &doc, config::CItemsList &items)
+        static bool LoadItems(XmlDocumnent &doc, std::vector<config::CItem> &items)
         {
             XmlItems xml(doc);
             return xml.GetItems(items);
         }
-        static bool LoadItems(const std::wstring& szFileXml, config::CItemsList &items)
+        static bool LoadItems(const std::wstring& szFileXml, std::vector<config::CItem> &items)
         {
             XmlDocumnent doc;
             if (XmlDoc::Open(szFileXml, doc) == true)
                 return LoadItems(doc, items);
             return false;
         }
-        static bool SaveItems(const std::wstring& szFileXml, config::CItemsList &items)
+        static bool SaveItems(const std::wstring& szFileXml, std::vector<config::CItem> &items)
         {
             XmlDocumnent doc;
             XmlItems xml(doc);
@@ -827,19 +862,19 @@ namespace xml
             return xml.Save(szFileXml);
         }
     public:
-        static bool LoadLanguage(XmlDocumnent &doc, lang::CLanguage &language)
+        static bool LoadLanguage(XmlDocumnent &doc, config::CLanguage &language)
         {
             XmlLanguages xml(doc);
             return xml.GetLanguage(language);
         }
-        static bool LoadLanguage(const std::wstring& szFileXml, lang::CLanguage &language)
+        static bool LoadLanguage(const std::wstring& szFileXml, config::CLanguage &language)
         {
             XmlDocumnent doc;
             if (XmlDoc::Open(szFileXml, doc) == true)
                 return LoadLanguage(doc, language);
             return false;
         }
-        static bool SaveLanguage(const std::wstring& szFileXml, lang::CLanguage &language)
+        static bool SaveLanguage(const std::wstring& szFileXml, config::CLanguage &language)
         {
             XmlDocumnent doc;
             XmlLanguages xml(doc);
@@ -868,19 +903,19 @@ namespace xml
             xml.SetPreset(preset);
             return xml.Save(szFileXml);
         }
-        static bool LoadPresets(XmlDocumnent &doc, config::CPresetsList &presets)
+        static bool LoadPresets(XmlDocumnent &doc, std::vector<config::CPreset> &presets)
         {
             XmlPresets xml(doc);
             return xml.GetPresets(presets);
         }
-        static bool LoadPresets(const std::wstring& szFileXml, config::CPresetsList &presets)
+        static bool LoadPresets(const std::wstring& szFileXml, std::vector<config::CPreset> &presets)
         {
             XmlDocumnent doc;
             if (XmlDoc::Open(szFileXml, doc) == true)
                 return LoadPresets(doc, presets);
             return false;
         }
-        static bool SavePresets(const std::wstring& szFileXml, config::CPresetsList &presets)
+        static bool SavePresets(const std::wstring& szFileXml, std::vector<config::CPreset> &presets)
         {
             XmlDocumnent doc;
             XmlPresets xml(doc);
