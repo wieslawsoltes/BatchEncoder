@@ -72,8 +72,8 @@ namespace xml
             return false;
         }
     public:
-        const std::wstring m_True = _T("true");
-        const std::wstring m_False = _T("false");
+        const std::wstring m_True = L"true";
+        const std::wstring m_False = L"false";
     public:
         const std::wstring ToString(const char *pszUtf8)
         {
