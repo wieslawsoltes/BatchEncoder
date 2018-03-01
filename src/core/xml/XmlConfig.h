@@ -4,6 +4,7 @@
 #pragma once
 
 #include <string>
+#include <utility>
 #include <string.h>
 #include <vector>
 #include <cstdio>
@@ -125,7 +126,7 @@ namespace xml
             const char *pszResult = element->Attribute(name);
             if (pszResult != nullptr)
             {
-                (*value) = ToString(pszResult).c_str();
+                (*value) = std::move(ToString(pszResult));
                 return true;
             }
             return false;
@@ -197,7 +198,7 @@ namespace xml
             auto element = parent->FirstChildElement(name);
             if (element != nullptr)
             {
-                (*value) = ToString(element->GetText()).c_str();
+                (*value) = std::move(ToString(element->GetText()));
                 return true;
             }
             return false;
@@ -411,7 +412,7 @@ namespace xml
                 {
                     config::CPath path;
                     VALIDATE(this->GetPath(element, path));
-                    m_Paths.emplace_back(path);
+                    m_Paths.emplace_back(std::move(path));
                 }
                 return true;
             }
@@ -467,7 +468,7 @@ namespace xml
                 {
                     config::CItem item;
                     VALIDATE(this->GetItem(element, item));
-                    m_Items.emplace_back(item);
+                    m_Items.emplace_back(std::move(item));
                 }
                 return true;
             }
@@ -543,7 +544,7 @@ namespace xml
                     VALIDATE(GetAttributeValueString(element, "value", &szValue));
 
                     int nKey = util::StringHelper::ToIntFromHex(szKey);
-                    m_Language.m_Strings[nKey] = szValue;
+                    m_Language.m_Strings[nKey] = std::move(szValue);
                 }
                 return true;
             }
@@ -612,7 +613,7 @@ namespace xml
                 {
                     config::CPreset preset;
                     VALIDATE(this->GetPreset(element, preset));
-                    m_Presets.emplace_back(preset);
+                    m_Presets.emplace_back(std::move(preset));
                 }
                 return true;
             }

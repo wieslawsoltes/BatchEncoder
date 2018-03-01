@@ -36,8 +36,8 @@ namespace config
             int nFormatId = nFormat;
             int nPresetId = nPreset;
             std::wstring szExt = util::Utilities::GetFileExtension(szPath);
-            std::wstring szName = util::Utilities::GetOnlyFileName(path.szPath);
-            unsigned __int64 nFileSize = util::Utilities::GetFileSize64(szPath)
+            std::wstring szName = util::Utilities::GetOnlyFileName(szPath);
+            unsigned __int64 nFileSize = util::Utilities::GetFileSize64(szPath);
 
             if ((nFormatId >= 0) && (nFormatId < (int)this->m_Formats.size()))
             {

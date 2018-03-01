@@ -2715,7 +2715,7 @@ namespace dialogs
         config::CFormat format;
         if (xml::XmlConfig::LoadFormat(doc, format))
         {
-            m_Config.m_Formats.emplace_back(format);
+            m_Config.m_Formats.emplace_back(std::move(format));
             config::CFormat::Sort(m_Config.m_Formats);
             this->UpdateFormatComboBox();
             this->UpdatePresetComboBox();
@@ -2829,7 +2829,7 @@ namespace dialogs
         config::CTool tool;
         if (xml::XmlConfig::LoadTool(doc, tool))
         {
-            m_Config.m_Tools.emplace_back(tool);
+            m_Config.m_Tools.emplace_back(std::move(tool));
             config::CTool::Sort(m_Config.m_Tools);
             return true;
         }
