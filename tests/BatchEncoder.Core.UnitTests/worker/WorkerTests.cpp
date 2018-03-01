@@ -23,7 +23,7 @@ namespace BatchEncoderCoreUnitTests
             ctx.nLastItemId = -1;
         }
     public:
-        TEST_METHOD(CWorker_Convert_Nothing)
+        TEST_METHOD(CWorker_Convert_Items_Empty)
         {
             config::CConfiguration m_Config;
             CTestWorkerContext ctx;

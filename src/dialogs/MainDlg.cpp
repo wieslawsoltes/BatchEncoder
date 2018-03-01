@@ -1184,7 +1184,7 @@ namespace dialogs
                     nItemLastRemoved = i;
             }
 
-            this->RemoveItems(keep);
+            m_Config.RemoveItems(keep);
 
             nItems = m_Config.m_Items.size();
             m_LstInputItems.SetItemCount(nItems);
@@ -1225,7 +1225,6 @@ namespace dialogs
                 else
                     this->SelectItem(i);
             }
-
             OnEditRemove();
         }
     }
@@ -1246,7 +1245,7 @@ namespace dialogs
                     keep.emplace_back(i);
             }
 
-            this->RemoveItems(keep);
+            m_Config.RemoveItems(keep);
 
             nItems = m_Config.m_Items.size();
             m_LstInputItems.SetItemCount(nItems);
@@ -1257,7 +1256,6 @@ namespace dialogs
                 m_Config.m_Items = std::vector<config::CItem>();
                 m_LstInputItems.SetItemCount(0);
             }
-
             this->UpdateStatusBar();
         }
     }
@@ -1278,7 +1276,7 @@ namespace dialogs
                     keep.emplace_back(i);
             }
 
-            this->RemoveItems(keep);
+            m_Config.RemoveItems(keep);
 
             nItems = m_Config.m_Items.size();
             m_LstInputItems.SetItemCount(nItems);
@@ -1289,7 +1287,6 @@ namespace dialogs
                 m_Config.m_Items = std::vector<config::CItem>();
                 m_LstInputItems.SetItemCount(0);
             }
-
             this->UpdateStatusBar();
         }
     }
@@ -1313,7 +1310,6 @@ namespace dialogs
                         }
                     }
                 }
-
                 this->UpdateStatusBar();
             }
         }
@@ -2106,48 +2102,7 @@ namespace dialogs
     {
         int nFormat = this->m_CmbFormat.GetCurSel();
         int nPreset = this->m_CmbPresets.GetCurSel();
-
-        std::wstring szFormatId = L"";
-        if (m_Config.m_Formats.size() > 0)
-        {
-            if (m_Config.m_Options.bTryToFindDecoder == true)
-            {
-                int nDecoder = config::CFormat::GetDecoderByExtension(m_Config.m_Formats, util::Utilities::GetFileExtension(szPath));
-                if (nDecoder == -1)
-                {
-                    config::CFormat &format = m_Config.m_Formats[nFormat];
-                    szFormatId = format.szId;
-                }
-                else
-                {
-                    config::CFormat &format = m_Config.m_Formats[nDecoder];
-                    szFormatId = format.szId;
-                    nPreset = format.nDefaultPreset;
-                }
-            }
-            else
-            {
-                config::CFormat &format = m_Config.m_Formats[nFormat];
-                szFormatId = format.szId;
-            }
-        }
-
-        ULONGLONG nFileSize = util::Utilities::GetFileSize64(szPath);
-        config::CItem item;
-        config::CPath path;
-        path.szPath = szPath;
-        path.nSize = nFileSize;
-        item.m_Paths.emplace_back(path);
-        item.nSize = nFileSize;
-        item.szName = util::Utilities::GetOnlyFileName(szPath);
-        item.szExtension = util::StringHelper::ToUpper(util::Utilities::GetFileExtension(szPath));
-        item.szFormatId = szFormatId;
-        item.nPreset = nPreset;
-        item.bChecked = true;
-
-        m_Config.m_Items.emplace_back(item);
-
-        return (int)m_Config.m_Items.size() - 1;
+        return m_Config.AddItem(szPath, nFormat, nPreset);
     }
 
     void CMainDlg::RedrawItem(int nItem)
@@ -2176,18 +2131,6 @@ namespace dialogs
         this->RedrawItem(nItem);
 
         return true;
-    }
-
-    void CMainDlg::RemoveItems(std::vector<int>& keep)
-    {
-        std::vector<config::CItem> items;
-        for (size_t i = 0; i < keep.size(); i++)
-        {
-            int nIndex = keep[i];
-            auto& item = m_Config.m_Items[nIndex];
-            items.emplace_back(std::move(item));
-        }
-        m_Config.m_Items = items;
     }
 
     void CMainDlg::ShowEdtItem()
