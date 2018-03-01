@@ -26,13 +26,9 @@ namespace BatchEncoderCoreUnitTests
         TEST_METHOD(CWorker_Convert_Nothing)
         {
             config::CConfiguration m_Config;
-
             CTestWorkerContext ctx;
-            Assert::IsTrue(ctx.bDone);
-            Assert::IsNull(ctx.pConfig);
 
             Init(ctx);
-
             ctx.nThreadCount = 1;
             ctx.pConfig = &m_Config;
 
@@ -48,6 +44,7 @@ namespace BatchEncoderCoreUnitTests
             Assert::IsTrue(ctx.nProcessedFiles == 0);
             Assert::IsTrue(ctx.nErrors == 0);
             Assert::IsTrue(ctx.nLastItemId == -1);
+
             Assert::AreEqual(1, ctx.nThreadCount);
             Assert::IsNull(ctx.pConfig);
         }

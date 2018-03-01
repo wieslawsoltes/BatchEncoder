@@ -15,10 +15,10 @@ namespace BatchEncoderCoreUnitTests
     public:
         TEST_METHOD(IWorkerContext_Constructor)
         {
-            #pragma warning(push)
-            #pragma warning(disable:4101)
-            CTestWorkerContext m_Context;
-            #pragma warning(pop)
+            CTestWorkerContext ctx;
+            Assert::IsTrue(ctx.bDone);
+            Assert::IsFalse(ctx.bRunning);
+            Assert::IsNull(ctx.pConfig);
         }
     };
 }
