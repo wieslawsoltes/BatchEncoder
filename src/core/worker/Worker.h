@@ -9,7 +9,6 @@
 #include <string>
 #include <mutex>
 #include <thread>
-#include <atlstr.h>
 #include "utilities\TimeCount.h"
 #include "utilities\Utilities.h"
 #include "utilities\Pipe.h"
@@ -119,10 +118,8 @@ namespace worker
                     Stderr.CloseRead();
                     Stderr.CloseWrite();
 
-                    CString szStatus;
-                    szStatus.Format(ctx->GetString(0x00120004).c_str(), ::GetLastError());
-
-                    ctx->ItemStatus(cl.nItemId, ctx->GetString(0x00150001), std::wstring(CT2CW(szStatus)));
+                    std::wstring szStatus = ctx->GetString(0x00120004) + L" (" + std::to_wstring(::GetLastError()) + L")";
+                    ctx->ItemStatus(cl.nItemId, ctx->GetString(0x00150001), szStatus);
                     ctx->ItemProgress(cl.nItemId, -1, true, true);
                     return false;
                 }
@@ -312,10 +309,8 @@ namespace worker
                         Stdout.CloseWrite();
                     }
 
-                    CString szStatus;
-                    szStatus.Format(ctx->GetString(0x00130006).c_str(), ::GetLastError());
-
-                    ctx->ItemStatus(cl.nItemId, ctx->GetString(0x00150001), std::wstring(CT2CW(szStatus)));
+                    std::wstring szStatus = ctx->GetString(0x00130006) + L" (" + std::to_wstring(::GetLastError()) + L")";
+                    ctx->ItemStatus(cl.nItemId, ctx->GetString(0x00150001), szStatus);
                     ctx->ItemProgress(cl.nItemId, -1, true, true);
                     return false;
                 }
@@ -570,10 +565,8 @@ namespace worker
                     Bridge.CloseRead();
                     Bridge.CloseWrite();
 
-                    CString szStatus;
-                    szStatus.Format(ctx->GetString(0x00130006).c_str(), ::GetLastError());
-
-                    ctx->ItemStatus(dcl.nItemId, ctx->GetString(0x00150001), std::wstring(CT2CW(szStatus)));
+                    std::wstring szStatus = ctx->GetString(0x00130006) + L" (" + std::to_wstring(::GetLastError()) + L")";
+                    ctx->ItemStatus(dcl.nItemId, ctx->GetString(0x00150001), szStatus);
                     ctx->ItemProgress(dcl.nItemId, -1, true, true);
                     return false;
                 }
@@ -638,10 +631,8 @@ namespace worker
                     Bridge.CloseRead();
                     Bridge.CloseWrite();
 
-                    CString szStatus;
-                    szStatus.Format(ctx->GetString(0x00130006).c_str(), ::GetLastError());
-
-                    ctx->ItemStatus(dcl.nItemId, ctx->GetString(0x00150001), std::wstring(CT2CW(szStatus)));
+                    std::wstring szStatus = ctx->GetString(0x00130006) + L" (" + std::to_wstring(::GetLastError()) + L")";
+                    ctx->ItemStatus(dcl.nItemId, ctx->GetString(0x00150001), szStatus);
                     ctx->ItemProgress(dcl.nItemId, -1, true, true);
                     return false;
                 }

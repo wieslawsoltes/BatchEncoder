@@ -192,7 +192,7 @@
     <String key="0x00120001" value="Error: invalid format pipe configuration." />
     <String key="0x00120002" value="Error: can not create pipes for stderr." />
     <String key="0x00120003" value="Error: can not duplicate stderr pipe to prevent child process from closing the pipe." />
-    <String key="0x00120004" value="Error: can not create command-line process (%d)." />
+    <String key="0x00120004" value="Error: can not create command-line process." />
     <String key="0x00120005" value="Error: progress did not reach 100%." />
     <String key="0x00120006" value="Done" />
 
@@ -201,7 +201,7 @@
     <String key="0x00130003" value="Error: can not set stdin pipe inherit flag." />
     <String key="0x00130004" value="Error: can not create pipes for stdout." />
     <String key="0x00130005" value="Error: can not set stdout pipe inherit flag." />
-    <String key="0x00130006" value="Error: can not create command-line process (%d)." />
+    <String key="0x00130006" value="Error: can not create command-line process." />
     <String key="0x00130007" value="Error: can not create read thread." />
     <String key="0x00130008" value="Error: can not create write thread." />
     <String key="0x00130009" value="Error: progress did not reach 100%." />

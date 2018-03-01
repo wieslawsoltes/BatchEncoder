@@ -192,7 +192,7 @@
     <String key="0x00120001" value="Error: formato incorrecto de la configuración pipe." />
     <String key="0x00120002" value="Error: no se puede crear pipes para stderr." />
     <String key="0x00120003" value="Error: no se puede duplicar el pipe stderr para evitar que el proceso secundario cierre el pipe." />
-    <String key="0x00120004" value="Error: no se pudo crear el proceso de la línea de comandos (%d)." />
+    <String key="0x00120004" value="Error: no se pudo crear el proceso de la línea de comandos." />
     <String key="0x00120005" value="Error: el progreso no alcanzó el 100%." />
     <String key="0x00120006" value="Hecho" />
 
@@ -201,7 +201,7 @@
     <String key="0x00130003" value="Error: no se pudo establecer el pipe stdin para heredar el marcador." />
     <String key="0x00130004" value="Error: no se pudo crear pipes para stdout." />
     <String key="0x00130005" value="Error: no se pudo establecer el pipe stdout para heredar el marcador." />
-    <String key="0x00130006" value="Error: no se pudo crear el proceso de la línea de comandos (%d)." />
+    <String key="0x00130006" value="Error: no se pudo crear el proceso de la línea de comandos." />
     <String key="0x00130007" value="Error: no se pudo leer el hilo." />
     <String key="0x00130008" value="Error: no se pudo crear el hilo de escritura." />
     <String key="0x00130009" value="Error: el progreso no alcanzó el 100%." />

@@ -192,7 +192,7 @@
     <String key="0x00120001" value="Błąd: nieprawidłowa konfiguracja potoku formatu." />
     <String key="0x00120002" value="Błąd: nie można utworzyć potoku dla stderr." />
     <String key="0x00120003" value="Błąd: nie można powielić potoku stderr aby zapobiec procesowi potomnemu przed zamknięciem potoku." />
-    <String key="0x00120004" value="Błąd: nie można utworzyć procesu z wiersza poleceń (%d)." />
+    <String key="0x00120004" value="Błąd: nie można utworzyć procesu z wiersza poleceń." />
     <String key="0x00120005" value="Błąd: postęp nie osiągnął 100%." />
     <String key="0x00120006" value="Wykonane" />
 
@@ -201,7 +201,7 @@
     <String key="0x00130003" value="Błąd: nie można ustawić flagi dziedziczenia dla potoku stdin." />
     <String key="0x00130004" value="Błąd: nie można utworzyć potoku dla stdout." />
     <String key="0x00130005" value="Błąd: nie można ustawić flagi dziedziczenia dla potoku stdout." />
-    <String key="0x00130006" value="Błąd: nie można utworzyć procesu z wiersza poleceń (%d)." />
+    <String key="0x00130006" value="Błąd: nie można utworzyć procesu z wiersza poleceń." />
     <String key="0x00130007" value="Błąd: nie można utworzyć wątka odczytu." />
     <String key="0x00130008" value="Błąd: nie można utworzyć wątka zapisu." />
     <String key="0x00130009" value="Błąd: postęp nie osiągnął 100%." />

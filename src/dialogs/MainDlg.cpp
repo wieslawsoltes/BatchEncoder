@@ -1005,12 +1005,9 @@ namespace dialogs
     {
         if (this->ctx->bRunning == false)
         {
-            if (this->ctx->bRunning == false)
-            {
-                m_Config.m_Items = std::vector<config::CItem>();
-                m_LstInputItems.SetItemCount(0);
-                this->UpdateStatusBar();
-            }
+            m_Config.m_Items = std::vector<config::CItem>();
+            m_LstInputItems.SetItemCount(0);
+            this->UpdateStatusBar();
         }
     }
 
@@ -2480,6 +2477,8 @@ namespace dialogs
         else
             pSysMenu->EnableMenuItem(SC_CLOSE, MF_ENABLED);
 
+        pSysMenu = nullptr;
+
         UINT nEnable = (bEnable == TRUE) ? MF_ENABLED : MF_GRAYED;
         CMenu *pMainMenu = this->GetMenu();
         UINT nItems = pMainMenu->GetMenuItemCount();
@@ -2493,6 +2492,8 @@ namespace dialogs
                 pSubMenu->EnableMenuItem(nID, nEnable);
             }
         }
+
+        pMainMenu = nullptr;
 
         this->m_CmbPresets.EnableWindow(bEnable);
         this->m_CmbFormat.EnableWindow(bEnable);

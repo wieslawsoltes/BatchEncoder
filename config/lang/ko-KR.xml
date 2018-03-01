@@ -192,7 +192,7 @@
     <String key="0x00120001" value="오류: 잘못된 형식 파일프 구성입니다." />
     <String key="0x00120002" value="오류: stderr에 대한 파이프를 만들 수 없습니다." />
     <String key="0x00120003" value="오류: can not duplicate stderr pipe to prevent child process from closing the pipe." />
-    <String key="0x00120004" value="오류: 명령줄 프로세스를 만들 수 없습니다. (%d)." />
+    <String key="0x00120004" value="오류: 명령줄 프로세스를 만들 수 없습니다." />
     <String key="0x00120005" value="오류: 진행이 100%에 도달하지 않았습니다." />
     <String key="0x00120006" value="Done" />
 
@@ -201,7 +201,7 @@
     <String key="0x00130003" value="오류: stdin pipe inherit flag를 설정할 수 없습니다." />
     <String key="0x00130004" value="오류: stdout에 대한 파이프를 만들 수 없습니다." />
     <String key="0x00130005" value="오류: stdout pipe inherit flag를 설정할 수 없습니다." />
-    <String key="0x00130006" value="오류: 명령줄 프로세스를 만들 수 없습니다. (%d)." />
+    <String key="0x00130006" value="오류: 명령줄 프로세스를 만들 수 없습니다." />
     <String key="0x00130007" value="오류: can not create read thread." />
     <String key="0x00130008" value="오류: can not create write thread." />
     <String key="0x00130009" value="오류: 진행이 100%에 도달하지 않았습니다.." />

@@ -201,7 +201,7 @@ namespace config
         { 0x00120001, L"Error: invalid format pipe configuration." },
         { 0x00120002, L"Error: can not create pipes for stderr." },
         { 0x00120003, L"Error: can not duplicate stderr pipe to prevent child process from closing the pipe." },
-        { 0x00120004, L"Error: can not create command-line process (%d)." },
+        { 0x00120004, L"Error: can not create command-line process." },
         { 0x00120005, L"Error: progress did not reach 100%." },
         { 0x00120006, L"Done" },
 
@@ -210,7 +210,7 @@ namespace config
         { 0x00130003, L"Error: can not set stdin pipe inherit flag." },
         { 0x00130004, L"Error: can not create pipes for stdout." },
         { 0x00130005, L"Error: can not set stdout pipe inherit flag." },
-        { 0x00130006, L"Error: can not create command-line process (%d)." },
+        { 0x00130006, L"Error: can not create command-line process." },
         { 0x00130007, L"Error: can not create read thread." },
         { 0x00130008, L"Error: can not create write thread." },
         { 0x00130009, L"Error: progress did not reach 100%." },
