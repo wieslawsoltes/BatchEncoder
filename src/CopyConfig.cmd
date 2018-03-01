@@ -5,9 +5,9 @@ set ConfigDir=%1
 set OutputDir=%2
 set BuildSystem=%3
 set FormatsFolder=formats
-set LangFolder=formats
-set ProgressFolder=formats
-set ToolsFolder=formats
+set LangFolder=lang
+set ProgressFolder=progress
+set ToolsFolder=tools
 
 echo ConfigDir: %ConfigDir%
 echo OutputDir: %OutputDir%
