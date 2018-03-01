@@ -118,7 +118,7 @@ namespace xml
             return bValue ? u8"true" : u8"false";
         }
     public:
-        static inline bool GetAttributeValueString(const XmlElement *element, const char *name, std::wstring *value)
+        inline bool GetAttributeValueString(const XmlElement *element, const char *name, std::wstring *value)
         {
             const char *pszResult = element->Attribute(name);
             if (pszResult != nullptr)
@@ -128,7 +128,7 @@ namespace xml
             }
             return false;
         }
-        static inline bool GetAttributeValueInt(const XmlElement *element, const char *name, int *value)
+        inline bool GetAttributeValueInt(const XmlElement *element, const char *name, int *value)
         {
             const char *pszResult = element->Attribute(name);
             if (pszResult != nullptr)
@@ -138,7 +138,7 @@ namespace xml
             }
             return false;
         }
-        static inline bool GetAttributeValueSizeT(const XmlElement *element, const char *name, size_t *value)
+        inline bool GetAttributeValueSizeT(const XmlElement *element, const char *name, size_t *value)
         {
             const char *pszResult = element->Attribute(name);
             if (pszResult != nullptr)
@@ -148,7 +148,7 @@ namespace xml
             }
             return false;
         }
-        static inline bool GetAttributeValueUInt64(const XmlElement *element, const char *name, unsigned __int64 *value)
+        inline bool GetAttributeValueUInt64(const XmlElement *element, const char *name, unsigned __int64 *value)
         {
             const char *pszResult = element->Attribute(name);
             if (pszResult != nullptr)
@@ -158,7 +158,7 @@ namespace xml
             }
             return false;
         }
-        static inline bool GetAttributeValueBool(const XmlElement *element, const char *name, bool *value)
+        inline bool GetAttributeValueBool(const XmlElement *element, const char *name, bool *value)
         {
             const char *pszResult = element->Attribute(name);
             if (pszResult != nullptr)
@@ -169,28 +169,28 @@ namespace xml
             return false;
         }
     public:
-        static inline void SetAttributeValueString(XmlElement *element, const char *name, const std::wstring& value)
+        inline void SetAttributeValueString(XmlElement *element, const char *name, const std::wstring& value)
         {
             element->SetAttribute(name, util::CUtf8String::ToUtf8(value).c_str());
         }
-        static inline void SetAttributeValueInt(XmlElement *element, const char *name, const int &value)
+        inline void SetAttributeValueInt(XmlElement *element, const char *name, const int &value)
         {
             element->SetAttribute(name, IntToString(value).c_str());
         }
-        static inline void SetAttributeValueSizeT(XmlElement *element, const char *name, const size_t &value)
+        inline void SetAttributeValueSizeT(XmlElement *element, const char *name, const size_t &value)
         {
             element->SetAttribute(name, SizeToString(value).c_str());
         }
-        static inline void SetAttributeValueUInt64(XmlElement *element, const char *name, const unsigned __int64 &value)
+        inline void SetAttributeValueUInt64(XmlElement *element, const char *name, const unsigned __int64 &value)
         {
             element->SetAttribute(name, UInt64ToString(value).c_str());
         }
-        static inline void SetAttributeValueBool(XmlElement *element, const char *name, const bool &value)
+        inline void SetAttributeValueBool(XmlElement *element, const char *name, const bool &value)
         {
-            element->SetAttribute(name, BoolToString(value).c_str());
+            element->SetAttribute(name, BoolToString(value));
         }
     public:
-        static inline bool GetChildValueString(const XmlElement *parent, const char *name, std::wstring *value)
+        inline bool GetChildValueString(const XmlElement *parent, const char *name, std::wstring *value)
         {
             auto element = parent->FirstChildElement(name);
             if (element != nullptr)
@@ -200,7 +200,7 @@ namespace xml
             }
             return false;
         }
-        static inline bool GetChildValueInt(const XmlElement *parent, const char *name, int *value)
+        inline bool GetChildValueInt(const XmlElement *parent, const char *name, int *value)
         {
             auto element = parent->FirstChildElement(name);
             if (element != nullptr)
@@ -210,7 +210,7 @@ namespace xml
             }
             return false;
         }
-        static inline bool GetChildValueSizeT(const XmlElement *parent, const char *name, size_t *value)
+        inline bool GetChildValueSizeT(const XmlElement *parent, const char *name, size_t *value)
         {
             auto element = parent->FirstChildElement(name);
             if (element != nullptr)
@@ -220,7 +220,7 @@ namespace xml
             }
             return false;
         }
-        static inline bool GetChildValueUInt64(const XmlElement *parent, const char *name, unsigned __int64 *value)
+        inline bool GetChildValueUInt64(const XmlElement *parent, const char *name, unsigned __int64 *value)
         {
             auto element = parent->FirstChildElement(name);
             if (element != nullptr)
@@ -230,7 +230,7 @@ namespace xml
             }
             return false;
         }
-        static inline bool GetChildValueBool(const XmlElement *parent, const char *name, bool *value)
+        inline bool GetChildValueBool(const XmlElement *parent, const char *name, bool *value)
         {
             auto element = parent->FirstChildElement(name);
             if (element != nullptr)
@@ -241,31 +241,31 @@ namespace xml
             return false;
         }
     public:
-        static inline void SetChildValueString(XmlElement *parent, const char *name, const std::wstring& value)
+        inline void SetChildValueString(XmlElement *parent, const char *name, const std::wstring& value)
         {
             auto element = m_Document.NewElement(name);
             element->LinkEndChild(m_Document.NewText(util::CUtf8String::ToUtf8(value).c_str()));
             parent->LinkEndChild(element);
         }
-        static inline void SetChildValueInt(XmlElement *parent, const char *name, const int &value)
+        inline void SetChildValueInt(XmlElement *parent, const char *name, const int &value)
         {
             auto element = m_Document.NewElement(name);
             element->LinkEndChild(m_Document.NewText(IntToString(value).c_str()));
             parent->LinkEndChild(element);
         }
-        static inline void SetChildValueSizeT(XmlElement *parent, const char *name, const size_t &value)
+        inline void SetChildValueSizeT(XmlElement *parent, const char *name, const size_t &value)
         {
             auto element = m_Document.NewElement(name);
             element->LinkEndChild(m_Document.NewText(SizeToString(value).c_str()));
             parent->LinkEndChild(element);
         }
-        static inline void SetChildValueUInt64(XmlElement *parent, const char *name, const unsigned __int64 &value)
+        inline void SetChildValueUInt64(XmlElement *parent, const char *name, const unsigned __int64 &value)
         {
             auto element = m_Document.NewElement(name);
             element->LinkEndChild(m_Document.NewText(UInt64ToString(value).c_str()));
             parent->LinkEndChild(element);
         }
-        static inline void SetChildValueBool(XmlElement *parent, const char *name, const bool &value)
+        inline void SetChildValueBool(XmlElement *parent, const char *name, const bool &value)
         {
             auto element = m_Document.NewElement(name);
             element->LinkEndChild(m_Document.NewText(BoolToString(value)));
