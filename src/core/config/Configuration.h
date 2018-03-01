@@ -39,7 +39,7 @@ namespace config
             std::wstring szName = util::Utilities::GetOnlyFileName(path.szPath);
             unsigned __int64 nFileSize = util::Utilities::GetFileSize64(szPath)
 
-            if ((nFormatId >= 0) && (nFormatId < (int)this->m_Formats.size())
+            if ((nFormatId >= 0) && (nFormatId < (int)this->m_Formats.size()))
             {
                 auto& format = this->m_Formats[nFormatId];
                 szFormatId = format.szId;
@@ -48,7 +48,7 @@ namespace config
             if (this->m_Options.bTryToFindDecoder == true)
             {
                 int nDecoder = CFormat::GetDecoderByExtension(this->m_Formats, szExt);
-                if ((nDecoder >= 0) && (nDecoder < (int)this->m_Formats.size())
+                if ((nDecoder >= 0) && (nDecoder < (int)this->m_Formats.size()))
                 {
                     auto& format = this->m_Formats[nDecoder];
                     szFormatId = format.szId;
