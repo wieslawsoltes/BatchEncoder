@@ -1028,25 +1028,25 @@ namespace worker
 
             ctx->Start();
             ctx->nTotalFiles = 1;
-            ctx->TotalProgress(nId);
+            ctx->TotalProgress(item.nId);
 
             if (ConvertItem(ctx, item, syncDir, syncDown) == true)
             {
                 ctx->nProcessedFiles = 1;
                 ctx->nErrors = 0;
-                ctx->TotalProgress(nId);
+                ctx->TotalProgress(item.nId);
             }
             else
             {
                 ctx->nProcessedFiles = 1;
                 ctx->nErrors = 1;
-                ctx->TotalProgress(nId);
+                ctx->TotalProgress(item.nId);
             }
 
             ctx->Stop();
             ctx->bDone = true;
         }
-        void CWorker::Convert(IWorkerContext* ctx, std::vector<CItem>& items)
+        void CWorker::Convert(IWorkerContext* ctx, std::vector<config::CItem>& items)
         {
             std::queue<int> queue;
             std::mutex syncQueue;
@@ -1075,8 +1075,8 @@ namespace worker
                 {
                     this->ConvertLoop(ctx, queue, syncQueue, syncDir, syncDown);
                 };
-
                 auto threads = std::make_unique<std::thread[]>(ctx->nThreadCount);
+
                 for (int i = 0; i < ctx->nThreadCount; i++)
                     threads[i] = std::thread(convert);
 
