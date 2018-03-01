@@ -973,18 +973,18 @@ namespace worker
 
             return false;
         }
-        bool CWorker::ConvertLoop(IWorkerContext* ctx, std::queue<int> &queue, std::mutex &sync, std::mutex &syncDir, std::mutex &syncDown)
+        bool CWorker::ConvertLoop(IWorkerContext* ctx, std::queue<int> &queue, std::mutex &syncQueue, std::mutex &syncDir, std::mutex &syncDown)
         {
             while (true)
             {
                 try
                 {
-                    sync.lock();
+                    syncQueue.lock();
                     if (!queue.empty())
                     {
                         int nId = queue.front();
                         queue.pop();
-                        sync.unlock();
+                        syncQueue.unlock();
 
                         if (ctx->bRunning == false)
                             return false;
@@ -1010,7 +1010,7 @@ namespace worker
                     }
                     else
                     {
-                        sync.unlock();
+                        syncQueue.unlock();
                         return true;
                     }
                 }
@@ -1024,7 +1024,7 @@ namespace worker
         void CWorker::Convert(IWorkerContext* ctx)
         {
             std::queue<int> queue;
-            std::mutex sync;
+            std::mutex syncQueue;
             std::mutex syncDir;
             std::mutex syncDown;
 
@@ -1042,13 +1042,13 @@ namespace worker
 
             if (ctx->nThreadCount <= 1)
             {
-                this->ConvertLoop(ctx, queue, sync, syncDir, syncDown);
+                this->ConvertLoop(ctx, queue, syncQueue, syncDir, syncDown);
             }
             else
             {
-                auto convert = [this, ctx, &queue, &sync, &syncDir, &syncDown]()
+                auto convert = [this, ctx, &queue, &syncQueue, &syncDir, &syncDown]()
                 {
-                    this->ConvertLoop(ctx, queue, sync, syncDir, syncDown);
+                    this->ConvertLoop(ctx, queue, syncQueue, syncDir, syncDown);
                 };
 
                 auto threads = std::make_unique<std::thread[]>(ctx->nThreadCount);
