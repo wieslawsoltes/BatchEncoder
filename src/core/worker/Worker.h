@@ -1021,7 +1021,32 @@ namespace worker
             }
             return true;
         }
-        void CWorker::Convert(IWorkerContext* ctx)
+        void CWorker::Convert(IWorkerContext* ctx, config::CItem& item)
+        {
+            std::mutex syncDir;
+            std::mutex syncDown;
+
+            ctx->Start();
+            ctx->nTotalFiles = 1;
+            ctx->TotalProgress(nId);
+
+            if (ConvertItem(ctx, item, syncDir, syncDown) == true)
+            {
+                ctx->nProcessedFiles = 1;
+                ctx->nErrors = 0;
+                ctx->TotalProgress(nId);
+            }
+            else
+            {
+                ctx->nProcessedFiles = 1;
+                ctx->nErrors = 1;
+                ctx->TotalProgress(nId);
+            }
+
+            ctx->Stop();
+            ctx->bDone = true;
+        }
+        void CWorker::Convert(IWorkerContext* ctx, std::vector<CItem>& items)
         {
             std::queue<int> queue;
             std::mutex syncQueue;
@@ -1030,7 +1055,7 @@ namespace worker
 
             ctx->Start();
 
-            for (auto& item : ctx->pConfig->m_Items)
+            for (auto& item : items)
             {
                 if (item.bChecked == true)
                 {

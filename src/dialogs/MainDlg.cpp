@@ -2632,7 +2632,7 @@ namespace dialogs
 
             std::thread m_WorkerThread = std::thread([this]()
             {
-                this->m_Worker.Convert(this->ctx);
+                this->m_Worker.Convert(this->ctx, this->m_Config.m_Items);
             });
             m_WorkerThread.detach();
 

@@ -36,7 +36,7 @@ namespace BatchEncoderCoreUnitTests
             Assert::IsNotNull(ctx.pConfig);
 
             worker::CWorker m_Worker;
-            m_Worker.Convert(&ctx);
+            m_Worker.Convert(&ctx, m_Config.m_Items);
 
             Assert::IsFalse(ctx.bRunning);
             Assert::IsTrue(ctx.bDone);
