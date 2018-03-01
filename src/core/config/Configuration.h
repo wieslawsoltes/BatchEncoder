@@ -66,7 +66,7 @@ namespace config
             item.nSize = nFileSize;
             item.szName = std::move(szName);
             item.szExtension = util::StringHelper::ToUpper(szExt);
-            item.szFormatId = szFormatId;
+            item.szFormatId = std::move(szFormatId);
             item.nPreset = nPresetId;
             item.bChecked = true;
 
