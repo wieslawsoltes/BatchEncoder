@@ -720,7 +720,7 @@ namespace worker
                 return true;
             }
         }
-        bool CWorker::ConvertItem(IWorkerContext* ctx, int nId, std::mutex &syncDir, std::mutex &syncDown)
+        bool CWorker::ConvertItem(IWorkerContext* ctx, config::CItem& item, std::mutex &syncDir, std::mutex &syncDown)
         {
             config::CFormat *pEncFormat = nullptr;
             config::CFormat *pDecFormat = nullptr;
@@ -733,7 +733,6 @@ namespace worker
             CCommandLine ecl;
 
             // prepare encoder
-            config::CItem& item = ctx->pConfig->m_Items[nId];
             config::CPath& path = item.m_Paths[0];
 
             szEncInputFile = path.szPath;
@@ -981,19 +980,18 @@ namespace worker
                 try
                 {
                     sync.lock();
-
                     if (!queue.empty())
                     {
                         int nId = queue.front();
                         queue.pop();
-
                         sync.unlock();
 
                         if (ctx->bRunning == false)
                             return false;
 
                         ctx->TotalProgress(nId);
-                        if (ConvertItem(ctx, nId, syncDir, syncDown) == true)
+
+                        if (ConvertItem(ctx, ctx->pConfig->m_Items[nId], syncDir, syncDown) == true)
                         {
                             ctx->nProcessedFiles++;
                             ctx->TotalProgress(nId);
@@ -1015,14 +1013,12 @@ namespace worker
                         sync.unlock();
                         return true;
                     }
-
                 }
                 catch (...)
                 {
                     return false;
                 }
             }
-
             return true;
         }
         void CWorker::Convert(IWorkerContext* ctx)
@@ -1034,26 +1030,19 @@ namespace worker
 
             ctx->Start();
 
-            size_t nItems = ctx->pConfig->m_Items.size();
-            for (size_t i = 0; i < nItems; i++)
+            for (auto& item : ctx->pConfig->m_Items)
             {
-                config::CItem& item = ctx->pConfig->m_Items[i];
                 if (item.bChecked == true)
                 {
                     item.ResetProgress();
                     queue.push(item.nId);
                     ctx->nTotalFiles++;
                 }
-                else
-                {
-                    item.nProgress = 100;
-                    item.nPreviousProgress = 100;
-                }
             }
 
             if (ctx->nThreadCount <= 1)
             {
-                ConvertLoop(ctx, queue, sync, syncDir, syncDown);
+                this->ConvertLoop(ctx, queue, sync, syncDir, syncDown);
             }
             else
             {
