@@ -5,7 +5,7 @@
 
 #include <afxcmn.h>
 #include <afxwin.h>
-#include "config\Configuration.h"
+#include "config\Config.h"
 #include "utilities\StringHelper.h"
 #include "controls\MyHyperlink.h"
 #include "controls\MyButton.h"
@@ -30,7 +30,7 @@ namespace dialogs
         virtual void OnOK();
         virtual void OnCancel();
     public:
-        config::CConfiguration *pConfig;
+        config::CConfig *pConfig;
     public:
         controls::CMyButton m_BtnOK;
         controls::CMyStatic m_StcMainAppName;

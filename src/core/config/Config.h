@@ -19,7 +19,7 @@
 
 namespace config
 {
-    class CConfiguration
+    class CConfig
     {
     public:
         CSettings m_Settings;

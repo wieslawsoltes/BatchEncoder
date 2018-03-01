@@ -3,7 +3,7 @@
 
 #include "stdafx.h"
 #include "CppUnitTest.h"
-#include "config\Configuration.h"
+#include "config\Config.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
@@ -16,7 +16,7 @@ namespace BatchEncoderCoreUnitTests
         {
             #pragma warning(push)
             #pragma warning(disable:4101)
-            config::CConfiguration m_Config;
+            config::CConfig m_Config;
             #pragma warning(pop)
         }
     };

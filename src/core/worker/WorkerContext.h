@@ -5,7 +5,7 @@
 
 #include <string>
 #include <utility>
-#include "config\Configuration.h"
+#include "config\Config.h"
 
 namespace worker
 {
@@ -20,7 +20,7 @@ namespace worker
         volatile int nLastItemId;
     public:
         int nThreadCount;
-        config::CConfiguration* pConfig;
+        config::CConfig* pConfig;
     public:
         virtual ~IWorkerContext() { }
         virtual std::wstring GetString(int nKey) = 0;

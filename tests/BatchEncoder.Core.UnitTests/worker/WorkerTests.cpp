@@ -25,7 +25,7 @@ namespace BatchEncoderCoreUnitTests
     public:
         TEST_METHOD(CWorker_Convert_Items_Empty)
         {
-            config::CConfiguration m_Config;
+            config::CConfig m_Config;
             CTestWorkerContext ctx;
 
             Init(ctx);

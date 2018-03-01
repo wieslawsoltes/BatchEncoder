@@ -10,7 +10,7 @@
 #include "res\resource.h"
 
 #include <string>
-#include "config\Configuration.h"
+#include "config\Config.h"
 
 namespace app
 {
@@ -26,9 +26,9 @@ namespace app
     class CLanguageHelper
     {
     public:
-        config::CConfiguration * pConfig;
+        config::CConfig * pConfig;
     public:
-        CLanguageHelper(config::CConfiguration *pConfig) : pConfig(pConfig) { }
+        CLanguageHelper(config::CConfig *pConfig) : pConfig(pConfig) { }
     public:
         void SetColumnText(CListCtrl& listCtrl, int nCol, int nKey)
         {

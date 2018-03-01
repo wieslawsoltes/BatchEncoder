@@ -21,7 +21,7 @@
 #include "controls\MyDialogEx.h"
 #include "utilities\StringHelper.h"
 #include "utilities\TimeCount.h"
-#include "config\Configuration.h"
+#include "config\Config.h"
 #include "xml\XmlConfig.h"
 #include "worker\OutputPath.h"
 #include "worker\WorkerContext.h"
@@ -63,7 +63,7 @@ namespace dialogs
         HACCEL m_hAccel;
         BOOL PreTranslateMessage(MSG* pMsg);
     public:
-        config::CConfiguration m_Config;
+        config::CConfig m_Config;
     public:
         worker::IWorkerContext* ctx;
         worker::CWorker m_Worker;

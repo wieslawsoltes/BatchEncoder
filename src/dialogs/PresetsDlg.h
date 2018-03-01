@@ -14,7 +14,7 @@
 #include "controls\MyEdit.h"
 #include "controls\MyStatic.h"
 #include "controls\MyDialogEx.h"
-#include "config\Configuration.h"
+#include "config\Config.h"
 #include "utilities\StringHelper.h"
 
 #define PRESET_COLUMN_NAME      0
@@ -41,7 +41,7 @@ namespace dialogs
     public:
         virtual BOOL OnInitDialog();
     public:
-        config::CConfiguration *pConfig;
+        config::CConfig *pConfig;
         std::wstring szPresetsDialogResize;
         std::wstring szPresetsListColumns;
         volatile bool bUpdate;

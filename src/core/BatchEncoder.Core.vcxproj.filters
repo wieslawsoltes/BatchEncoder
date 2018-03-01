@@ -39,9 +39,6 @@
     <ClInclude Include="targetver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="config\Configuration.h">
-      <Filter>Header Files\Config</Filter>
-    </ClInclude>
     <ClInclude Include="config\Format.h">
       <Filter>Header Files\Config</Filter>
     </ClInclude>
@@ -110,6 +107,9 @@
     </ClInclude>
     <ClInclude Include="xml\XmlConfig.h">
       <Filter>Header Files\Xml</Filter>
+    </ClInclude>
+    <ClInclude Include="config\Config.h">
+      <Filter>Header Files\Config</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

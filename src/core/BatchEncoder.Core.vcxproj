@@ -173,7 +173,7 @@
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
-    <ClInclude Include="config\Configuration.h" />
+    <ClInclude Include="config\Config.h" />
     <ClInclude Include="config\Format.h" />
     <ClInclude Include="config\Item.h" />
     <ClInclude Include="config\Language.h" />
