@@ -68,6 +68,21 @@ Converted\\$InputFolder[1]$\\$InputFolder[0]$\\$Name$.$Ext$
 Converted\\$InputFolder[1]$\\$InputFolder[0]$\\$InputName$.$Ext$
 Converted\\$InputFolder[2]$\\$InputFolder[1]$\\$InputFolder[0]$\\$Name$.$Ext$
 Converted\\$InputFolder[2]$\\$InputFolder[1]$\\$InputFolder[0]$\\$InputName$.$Ext$
+
+$InputDrive$\\$Name$.$Ext$
+$InputDrive$\\$InputName$.$Ext$
+
+$InputDrive$\\$InputDir$\\Converted\\$Name$.$Ext$
+$InputDrive$\\$InputDir$\\Converted\\$InputName$.$Ext$
+
+$InputDrive$\\Converted\\$Name$.$Ext$
+$InputDrive$\\Converted\\$InputName$.$Ext$
+
+C:\\$InputDir$\\$Name$.$Ext$
+C:\\$InputDir$\\$InputName$.$Ext$
+
+C:\\Converted\\$InputDir$\\$Name$.$Ext$
+C:\\Converted\\$InputDir$\\$InputName$.$Ext$
 */
 
 namespace BatchEncoderCoreUnitTests
@@ -409,6 +424,136 @@ namespace BatchEncoderCoreUnitTests
             std::wstring szOutputFile = m_Output.CreateFilePath(szOutput, szInputFile, szName, szExt);
 
             Assert::AreEqual(L"C:\\Output\\AlbumFolder\\CustomName.ext", szOutputFile.c_str());
+        }
+
+        TEST_METHOD(CNewOutputPath_CreateFilePath_InputDrive_Name_Ext)
+        {
+            std::wstring szOutput = L"$InputDrive$\\$Name$.$Ext$";
+            std::wstring szInputFile = L"C:\\MusicFolder\\ArtistFolder\\AlbumFolder\\FileName.wav";
+            std::wstring szName = L"CustomName";
+            std::wstring szExt = L"ext";
+
+            CNewOutputPath m_Output;
+            std::wstring szOutputFile = m_Output.CreateFilePath(szOutput, szInputFile, szName, szExt);
+
+            Assert::AreEqual(L"C:\\CustomName.ext", szOutputFile.c_str());
+        }
+
+        TEST_METHOD(CNewOutputPath_CreateFilePath_InputDrive_InputName_Ext)
+        {
+            std::wstring szOutput = L"$InputDrive$\\$InputName$.$Ext$";
+            std::wstring szInputFile = L"C:\\MusicFolder\\ArtistFolder\\AlbumFolder\\FileName.wav";
+            std::wstring szName = L"CustomName";
+            std::wstring szExt = L"ext";
+
+            CNewOutputPath m_Output;
+            std::wstring szOutputFile = m_Output.CreateFilePath(szOutput, szInputFile, szName, szExt);
+
+            Assert::AreEqual(L"C:\\FileName.ext", szOutputFile.c_str());
+        }
+
+        TEST_METHOD(CNewOutputPath_CreateFilePath_InputDrive_InputDir_String_Name_Ext)
+        {
+            std::wstring szOutput = L"$InputDrive$\\$InputDir$\\Converted\\$Name$.$Ext$";
+            std::wstring szInputFile = L"C:\\MusicFolder\\ArtistFolder\\AlbumFolder\\FileName.wav";
+            std::wstring szName = L"CustomName";
+            std::wstring szExt = L"ext";
+
+            CNewOutputPath m_Output;
+            std::wstring szOutputFile = m_Output.CreateFilePath(szOutput, szInputFile, szName, szExt);
+
+            Assert::AreEqual(L"C:\\MusicFolder\\ArtistFolder\\AlbumFolder\\Converted\\CustomName.ext", szOutputFile.c_str());
+        }
+
+        TEST_METHOD(CNewOutputPath_CreateFilePath_InputDrive_InputDir_String_InputName_Ext)
+        {
+            std::wstring szOutput = L"$InputDrive$\\$InputDir$\\Converted\\$InputName$.$Ext$";
+            std::wstring szInputFile = L"C:\\MusicFolder\\ArtistFolder\\AlbumFolder\\FileName.wav";
+            std::wstring szName = L"CustomName";
+            std::wstring szExt = L"ext";
+
+            CNewOutputPath m_Output;
+            std::wstring szOutputFile = m_Output.CreateFilePath(szOutput, szInputFile, szName, szExt);
+
+            Assert::AreEqual(L"C:\\MusicFolder\\ArtistFolder\\AlbumFolder\\Converted\\FileName.ext", szOutputFile.c_str());
+        }
+
+        TEST_METHOD(CNewOutputPath_CreateFilePath_InputDrive_String_Name_Ext)
+        {
+            std::wstring szOutput = L"$InputDrive$\\Converted\\$Name$.$Ext$";
+            std::wstring szInputFile = L"C:\\MusicFolder\\ArtistFolder\\AlbumFolder\\FileName.wav";
+            std::wstring szName = L"CustomName";
+            std::wstring szExt = L"ext";
+
+            CNewOutputPath m_Output;
+            std::wstring szOutputFile = m_Output.CreateFilePath(szOutput, szInputFile, szName, szExt);
+
+            Assert::AreEqual(L"C:\\Converted\\CustomName.ext", szOutputFile.c_str());
+        }
+
+        TEST_METHOD(CNewOutputPath_CreateFilePath_InputDrive_String_InputName_Ext)
+        {
+            std::wstring szOutput = L"$InputDrive$\\Converted\\$InputName$.$Ext$";
+            std::wstring szInputFile = L"C:\\MusicFolder\\ArtistFolder\\AlbumFolder\\FileName.wav";
+            std::wstring szName = L"CustomName";
+            std::wstring szExt = L"ext";
+
+            CNewOutputPath m_Output;
+            std::wstring szOutputFile = m_Output.CreateFilePath(szOutput, szInputFile, szName, szExt);
+
+            Assert::AreEqual(L"C:\\Converted\\FileName.ext", szOutputFile.c_str());
+        }
+
+        TEST_METHOD(CNewOutputPath_CreateFilePath_Prefix_InputDir_Name_Ext)
+        {
+            std::wstring szOutput = L"D:\\$InputDir$\\$Name$.$Ext$";
+            std::wstring szInputFile = L"C:\\MusicFolder\\ArtistFolder\\AlbumFolder\\FileName.wav";
+            std::wstring szName = L"CustomName";
+            std::wstring szExt = L"ext";
+
+            CNewOutputPath m_Output;
+            std::wstring szOutputFile = m_Output.CreateFilePath(szOutput, szInputFile, szName, szExt);
+
+            Assert::AreEqual(L"D:\\MusicFolder\\ArtistFolder\\AlbumFolder\\CustomName.ext", szOutputFile.c_str());
+        }
+
+        TEST_METHOD(CNewOutputPath_CreateFilePath_Prefix_InputDir_InputName_Ext)
+        {
+            std::wstring szOutput = L"D:\\$InputDir$\\$InputName$.$Ext$";
+            std::wstring szInputFile = L"C:\\MusicFolder\\ArtistFolder\\AlbumFolder\\FileName.wav";
+            std::wstring szName = L"CustomName";
+            std::wstring szExt = L"ext";
+
+            CNewOutputPath m_Output;
+            std::wstring szOutputFile = m_Output.CreateFilePath(szOutput, szInputFile, szName, szExt);
+
+            Assert::AreEqual(L"D:\\MusicFolder\\ArtistFolder\\AlbumFolder\\FileName.ext", szOutputFile.c_str());
+        }
+
+        TEST_METHOD(CNewOutputPath_CreateFilePath_Prefix_String_InputDir_Name_Ext)
+        {
+            std::wstring szOutput = L"D:\\Converted\\$InputDir$\\$Name$.$Ext$";
+            std::wstring szInputFile = L"C:\\MusicFolder\\ArtistFolder\\AlbumFolder\\FileName.wav";
+            std::wstring szName = L"CustomName";
+            std::wstring szExt = L"ext";
+
+            CNewOutputPath m_Output;
+            std::wstring szOutputFile = m_Output.CreateFilePath(szOutput, szInputFile, szName, szExt);
+
+            Assert::AreEqual(L"D:\\Converted\\MusicFolder\\ArtistFolder\\AlbumFolder\\CustomName.ext", szOutputFile.c_str());
+        }
+
+        TEST_METHOD(CNewOutputPath_CreateFilePath_Prefix_String_InputDir_InputName_Ext)
+        {
+            std::wstring szOutput = L"D:\\Converted\\$InputDir$\\$InputName$.$Ext$";
+            std::wstring szInputFile = L"C:\\MusicFolder\\ArtistFolder\\AlbumFolder\\FileName.wav";
+            std::wstring szName = L"CustomName";
+            std::wstring szExt = L"ext";
+
+            CNewOutputPath m_Output;
+            std::wstring szOutputFile = m_Output.CreateFilePath(szOutput, szInputFile, szName, szExt);
+
+            Assert::AreEqual(L"D:\\Converted\\MusicFolder\\ArtistFolder\\AlbumFolder\\FileName.ext", szOutputFile.c_str());
         }
     };
 }
