@@ -134,11 +134,9 @@ namespace BatchEncoderCoreUnitTests
             util::StringHelper::ReplaceNoCase(szOutputFile, L"//", L"/");
 
             // make valid full path
-            std::wstring szOutputFileName = util::Utilities::GetFileName(szOutputFile);
-            std::wstring szOutputFilePath = util::Utilities::GetFilePath(szOutputFile);
             wchar_t szValidOutputFilePath[_MAX_PATH];
-            _wmakepath_s(szValidOutputFilePath, nullptr, szOutputFilePath.c_str(), nullptr, nullptr);
-            szOutputFile = szValidOutputFilePath + szOutputFileName;
+            _wfullpath(szValidOutputFilePath, szOutputFile.c_str(), _MAX_PATH);
+            szOutputFile = szValidOutputFilePath;
 
             return szOutputFile;
         }
