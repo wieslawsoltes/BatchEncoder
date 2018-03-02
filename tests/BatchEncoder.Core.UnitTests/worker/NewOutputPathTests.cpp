@@ -21,6 +21,55 @@ using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 #define VAR_OUTPUT_FULL         L"$InputPath$\\$Name$.$Ext$"
 #define VAR_OUTPUT_RELATIVE     L"$Name$.$Ext$"
 
+/*
+$InputPath$
+
+$InputPath$\\$Name$.$Ext$
+$InputPath$\\$Name$_converted.$Ext$
+$InputPath$\\$Name$$InputExt$.$Ext$
+$InputPath$\\$InputName$.$Ext$
+$InputPath$\\$InputName$_converted.$Ext$
+
+$InputPath$\\$Ext$\\$Name$.$Ext$
+$InputPath$\\$Ext$\\$Name$_converted.$Ext$
+$InputPath$\\$Ext$\\$Name$$InputExt$.$Ext$
+$InputPath$\\$Ext$\\$InputName$.$Ext$
+$InputPath$\\$Ext$\\$InputName$_converted.$Ext$
+
+$InputPath$\\Converted\\$Name$.$Ext$
+$InputPath$\\Converted\\$Name$_converted.$Ext$
+$InputPath$\\Converted\\$InputName$.$Ext$
+$InputPath$\\Converted\\$InputName$_converted.$Ext$
+$InputPath$\\Converted\\$Ext$\\$Name$.$Ext$
+$InputPath$\\Converted\\$Ext$\\$Name$_converted.$Ext$
+$InputPath$\\Converted\\$Ext$\\$InputName$.$Ext$
+$InputPath$\\Converted\\$Ext$\\$InputName$_converted.$Ext$
+
+C:\\Output
+C:\\Output\\$Name$.$Ext$
+C:\\Output\\$Name$_converted.$Ext$
+C:\\Output\\$InputName$.$Ext$
+C:\\Output\\$InputName$_converted.$Ext$
+C:\\Output\\$InputFolder[0]$\\$Name$.$Ext$
+C:\\Output\\$InputFolder[0]$\\$InputName$.$Ext$
+C:\\Output\\$InputFolder[1]$\\$InputFolder[0]$\\$Name$.$Ext$
+C:\\Output\\$InputFolder[1]$\\$InputFolder[0]$\\$InputName$.$Ext$
+C:\\Output\\$InputFolder[2]$\\$InputFolder[1]$\\$InputFolder[0]$\\$Name$.$Ext$
+C:\\Output\\$InputFolder[2]$\\$InputFolder[1]$\\$InputFolder[0]$\\$InputName$.$Ext$
+
+Converted
+Converted\\$Name$.$Ext$
+Converted\\$Name$_converted.$Ext$
+Converted\\$InputName$.$Ext$
+Converted\\$InputName$_converted.$Ext$
+Converted\\$InputFolder[0]$\\$Name$.$Ext$
+Converted\\$InputFolder[0]$\\$InputName$.$Ext$
+Converted\\$InputFolder[1]$\\$InputFolder[0]$\\$Name$.$Ext$
+Converted\\$InputFolder[1]$\\$InputFolder[0]$\\$InputName$.$Ext$
+Converted\\$InputFolder[2]$\\$InputFolder[1]$\\$InputFolder[0]$\\$Name$.$Ext$
+Converted\\$InputFolder[2]$\\$InputFolder[1]$\\$InputFolder[0]$\\$InputName$.$Ext$
+*/
+
 namespace BatchEncoderCoreUnitTests
 {
     class CNewOutputPath
@@ -122,7 +171,7 @@ namespace BatchEncoderCoreUnitTests
             Assert::AreEqual(L"C:\\MusicFolder\\ArtistFolder\\AlbumFolder\\CustomName.ext", szOutputFile.c_str());
         }
 
-        TEST_METHOD(CNewOutputPath_CreateFile_Relative)
+        TEST_METHOD(CNewOutputPath_CreateFile_Relative_NoSlash)
         {
             std::wstring szOutput = L"relative\\path";
             std::wstring szInputFile = L"C:\\MusicFolder\\ArtistFolder\\AlbumFolder\\FileName.wav";
@@ -136,6 +185,24 @@ namespace BatchEncoderCoreUnitTests
             ::GetCurrentDirectory(_MAX_PATH, szCurrentDirectory);
             std::wstring szExpectedOutputFile = szCurrentDirectory;
             szExpectedOutputFile += L"\\" + szOutput + L"\\CustomName.ext";
+
+            Assert::AreEqual(szExpectedOutputFile.c_str(), szOutputFile.c_str());
+        }
+
+        TEST_METHOD(CNewOutputPath_CreateFile_Relative_Slash)
+        {
+            std::wstring szOutput = L"relative\\path\\";
+            std::wstring szInputFile = L"C:\\MusicFolder\\ArtistFolder\\AlbumFolder\\FileName.wav";
+            std::wstring szName = L"CustomName";
+            std::wstring szExt = L"ext";
+
+            CNewOutputPath m_Output;
+            std::wstring szOutputFile = m_Output.CreateFilePath(szOutput, szInputFile, szName, szExt);
+
+            wchar_t szCurrentDirectory[_MAX_PATH];
+            ::GetCurrentDirectory(_MAX_PATH, szCurrentDirectory);
+            std::wstring szExpectedOutputFile = szCurrentDirectory;
+            szExpectedOutputFile += L"\\" + szOutput + L"CustomName.ext";
 
             Assert::AreEqual(szExpectedOutputFile.c_str(), szOutputFile.c_str());
         }
@@ -244,7 +311,7 @@ namespace BatchEncoderCoreUnitTests
             Assert::AreEqual(L"C:\\MusicFolder\\ArtistFolder\\AlbumFolder\\CustomName.wav.ext", szOutputFile.c_str());
         }
 
-        TEST_METHOD(CNewOutputPath_CreateFile_InputExt_Ext_ToLower)
+        TEST_METHOD(CNewOutputPath_CreateFilePath_InputExt_Ext_ToLower)
         {
             std::wstring szOutput = L"$InputPath$\\$Name$$InputExt$.$Ext$";
             std::wstring szInputFile = L"C:\\MusicFolder\\ArtistFolder\\AlbumFolder\\FileName.WAV";
