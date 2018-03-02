@@ -584,6 +584,55 @@ namespace xml
         }
     };
 
+    class XmlOutputs : public XmlDoc
+    {
+    public:
+        XmlOutputs(XmlDocumnent &doc) : XmlDoc(doc) { }
+        virtual ~XmlOutputs() { }
+    public:
+        bool GetOutputs(const XmlElement *parent, std::vector<std::wstring> &outputs)
+        {
+            auto element = parent->FirstChildElement("Output");
+            if (element != nullptr)
+            {
+                for (element; element; element = element->NextSiblingElement())
+                {
+                    std::wstring pattern;
+                    VALIDATE(GetAttributeValueString(element, "pattern", &pattern));
+                    outputs.emplace_back(std::move(pattern));
+                }
+                return true;
+            }
+            return false;
+        }
+        void SetOutputs(XmlElement *parent, std::vector<std::wstring> &outputs)
+        {
+            for (auto& output : outputs)
+            {
+                auto element = this->NewElement("Output");
+                parent->LinkEndChild(element);
+                SetAttributeValueString(element, "pattern", output);
+            }
+        }
+    public:
+        bool GetOutputs(std::vector<std::wstring> &outputs)
+        {
+            auto element = this->FirstChildElement("Outputs");
+            if (element != nullptr)
+            {
+                VALIDATE(this->GetOutputs(element, outputs));
+                return true;
+            }
+            return false;
+        }
+        void SetOutputs(std::vector<std::wstring> &outputs)
+        {
+            auto element = this->NewElement("Outputs");
+            this->LinkEndChild(element);
+            this->SetOutputs(element, outputs);
+        }
+    };
+
     class XmlPresets : public XmlDoc
     {
     public:
@@ -882,6 +931,27 @@ namespace xml
             XmlLanguages xml(doc);
             xml.Create();
             xml.SetLanguage(language);
+            return xml.Save(szFileXml);
+        }
+    public:
+        static bool LoadOutputs(XmlDocumnent &doc, std::vector<std::wstring> &outputs)
+        {
+            XmlOutputs xml(doc);
+            return xml.GetOutputs(outputs);
+        }
+        static bool LoadOutputs(const std::wstring& szFileXml, std::vector<std::wstring> &outputs)
+        {
+            XmlDocumnent doc;
+            if (XmlDoc::Open(szFileXml, doc) == true)
+                return LoadOutputs(doc, outputs);
+            return false;
+        }
+        static bool SaveOutputs(const std::wstring& szFileXml, std::vector<std::wstring> &outputs)
+        {
+            XmlDocumnent doc;
+            XmlOutputs xml(doc);
+            xml.Create();
+            xml.SetOutputs(outputs);
             return xml.Save(szFileXml);
         }
     public:

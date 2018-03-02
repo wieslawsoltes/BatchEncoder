@@ -21,6 +21,7 @@ namespace config
     public:
         std::wstring szOptionsFileName;
         std::wstring szItemsFileName;
+        std::wstring szOutputsFileName;
     public:
         std::wstring szSettingsPath;
         std::wstring szFormatsPath;
@@ -30,6 +31,7 @@ namespace config
     public:
         std::wstring szOptionsFile;
         std::wstring szItemsFile;
+        std::wstring szOutputsFile;
     public:
         CSettings()
         {
@@ -41,6 +43,7 @@ namespace config
             this->szToolsDir = L"tools";
             this->szOptionsFileName = L"Options.xml";
             this->szItemsFileName = L"Items.xml";
+            this->szOutputsFileName = L"Outputs.xml";
         }
     public:
         bool IsPortable()
@@ -68,6 +71,7 @@ namespace config
 
             this->szOptionsFile = util::Utilities::CombinePath(this->szSettingsPath, this->szOptionsFileName);
             this->szItemsFile = util::Utilities::CombinePath(this->szSettingsPath, this->szItemsFileName);
+            this->szOutputsFile = util::Utilities::CombinePath(this->szSettingsPath, this->szOutputsFileName);
         }
         void InitUserSettings()
         {
@@ -89,6 +93,7 @@ namespace config
 
             this->szOptionsFile = util::Utilities::GetSettingsFilePath(this->szOptionsFileName, this->szConfigDir);
             this->szItemsFile = util::Utilities::GetSettingsFilePath(this->szItemsFileName, this->szConfigDir);
+            this->szOutputsFile = util::Utilities::GetSettingsFilePath(this->szOutputsFileName, this->szConfigDir);
         }
     public:
         void Init()

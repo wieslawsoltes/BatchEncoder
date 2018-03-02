@@ -464,21 +464,18 @@ namespace dialogs
         // enable drag & drop
         this->DragAcceptFiles(TRUE);
 
-        // output path
-        size_t nOutputPathPresets = config::m_OutpuPathsPresets.size();
-        for (size_t i = 0; i < nOutputPathPresets; i++)
-            this->m_CmbOutPath.InsertString(i, config::m_OutpuPathsPresets[i].c_str());
-
-        util::Utilities::SetComboBoxHeight(this->GetSafeHwnd(), IDC_COMBO_OUTPUT, 15);
-        this->m_CmbOutPath.SetCurSel(1);
-        this->m_CmbOutPath.SetFocus();
-
         try
         {
             this->m_Config.nLangId = -1;
 
             this->LoadTools(this->m_Config.m_Settings.szToolsPath);
             this->LoadFormats(this->m_Config.m_Settings.szFormatsPath);
+
+            if (this->LoadOutputs(this->m_Config.m_Settings.szOutputsFile) == false)
+            {
+                m_Config.m_Outputs = config::m_OutpuPathsPresets;
+                this->UpdateOutputsComboBox();
+            }
 
             if (this->LoadOptions(this->m_Config.m_Settings.szOptionsFile) == false)
             {
@@ -567,6 +564,7 @@ namespace dialogs
             {
                 this->SaveTools(this->m_Config.m_Settings.szToolsPath);
                 this->SaveFormats(this->m_Config.m_Settings.szFormatsPath);
+                this->SaveOutputs(this->m_Config.m_Settings.szOutputsFile);
                 this->SaveOptions(this->m_Config.m_Settings.szOptionsFile);
                 this->SaveItems(this->m_Config.m_Settings.szItemsFile);
             }
@@ -2288,6 +2286,28 @@ namespace dialogs
         }
     }
 
+    void CMainDlg::UpdateOutputsComboBox()
+    {
+        if (this->ctx->bRunning == false)
+        {
+            this->m_CmbOutPath.ResetContent();
+
+            size_t nOutputs = m_Config.m_Outputs.size();
+            for (size_t i = 0; i < nOutputs; i++)
+                this->m_CmbOutPath.InsertString(i, m_Config.m_Outputs[i].c_str());
+
+            static bool bResizeOutputComboBox = false;
+            if (bResizeOutputComboBox == false)
+            {
+                util::Utilities::SetComboBoxHeight(this->GetSafeHwnd(), IDC_COMBO_OUTPUT, 15);
+                bResizeOutputComboBox = true;
+            }
+
+            this->m_CmbOutPath.SetCurSel(1);
+            this->m_CmbOutPath.SetFocus();
+        }
+    }
+
     void CMainDlg::UpdatePresetComboBox()
     {
         if (this->ctx->bRunning == false)
@@ -2607,6 +2627,7 @@ namespace dialogs
                 {
                     this->SaveTools(this->m_Config.m_Settings.szToolsPath);
                     this->SaveFormats(this->m_Config.m_Settings.szFormatsPath);
+                    this->SaveOutputs(this->m_Config.m_Settings.szOutputsFile);
                     this->SaveOptions(this->m_Config.m_Settings.szOptionsFile);
                     this->SaveItems(this->m_Config.m_Settings.szItemsFile);
                 }
@@ -2867,6 +2888,33 @@ namespace dialogs
     {
         this->GetItems();
         return xml::XmlConfig::SaveItems(szFileXml, this->m_Config.m_Items);
+    }
+
+    bool CMainDlg::LoadOutputs(const std::wstring& szFileXml)
+    {
+        xml::XmlDocumnent doc;
+        std::string szName = xml::XmlConfig::GetRootName(szFileXml, doc);
+        if (!szName.empty() && util::StringHelper::CompareNoCase(szName, "Outputs"))
+        {
+            return this->LoadOutputs(doc);
+        }
+        return false;
+    }
+
+    bool CMainDlg::LoadOutputs(xml::XmlDocumnent &doc)
+    {
+        std::vector<std::wstring> outputs;
+        if (xml::XmlConfig::LoadOutputs(doc, outputs))
+        {
+            m_Config.m_Outputs = std::move(outputs);
+            this->UpdateOutputsComboBox();
+        }
+        return false;
+    }
+
+    bool CMainDlg::SaveOutputs(const std::wstring& szFileXml)
+    {
+        return xml::XmlConfig::SaveOutputs(szFileXml, m_Config.m_Outputs);
     }
 
     bool CMainDlg::LoadLanguage(const std::wstring& szFileXml)

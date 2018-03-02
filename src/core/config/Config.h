@@ -29,6 +29,7 @@ namespace config
         std::vector<CTool> m_Tools;
         size_t nLangId;
         std::vector<CLanguage> m_Languages;
+        std::vector<std::wstring> m_Outputs;
     public:
         int AddItem(const std::wstring& szPath, int nFormat, int nPreset)
         {

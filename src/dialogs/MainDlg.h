@@ -171,6 +171,7 @@ namespace dialogs
         void UpdateFormatComboBox();
         void UpdatePresetComboBox();
         void UpdateFormatAndPreset();
+        void UpdateOutputsComboBox();
         void ResetOutput();
         void ResetConvertionTime();
         void ResetConvertionStatus();
@@ -204,6 +205,10 @@ namespace dialogs
         bool LoadItems(const std::wstring& szFileXml);
         bool LoadItems(xml::XmlDocumnent &doc);
         bool SaveItems(const std::wstring& szFileXml);
+    public:
+        bool LoadOutputs(const std::wstring& szFileXml);
+        bool LoadOutputs(xml::XmlDocumnent &doc);
+        bool SaveOutputs(const std::wstring& szFileXml);
     public:
         bool LoadLanguage(const std::wstring& szFileXml);
         bool LoadLanguage(xml::XmlDocumnent &doc);
