@@ -46,7 +46,7 @@ namespace config
         bool IsPortable()
         {
             std::wstring szPath = util::Utilities::GetExeFilePath() + this->szPortableFile;
-            return ::PathFileExists(szPath.c_str()) == TRUE;
+            return util::Utilities::PathFileExists(szPath);
         }
     public:
         void InitPortableSettings()
@@ -59,10 +59,10 @@ namespace config
 
             try
             {
-                ::CreateDirectory(this->szFormatsPath.c_str(), nullptr);
-                ::CreateDirectory(this->szLanguagesPath.c_str(), nullptr);
-                ::CreateDirectory(this->szProgressPath.c_str(), nullptr);
-                ::CreateDirectory(this->szToolsPath.c_str(), nullptr);
+                util::Utilities::CreateDirectory(this->szFormatsPath);
+                util::Utilities::CreateDirectory(this->szLanguagesPath);
+                util::Utilities::CreateDirectory(this->szProgressPath);
+                util::Utilities::CreateDirectory(this->szToolsPath);
             }
             catch (...) {}
 
@@ -79,11 +79,11 @@ namespace config
 
             try
             {
-                ::CreateDirectory(szSettingsPath.c_str(), nullptr);
-                ::CreateDirectory(szFormatsPath.c_str(), nullptr);
-                ::CreateDirectory(szLanguagesPath.c_str(), nullptr);
-                ::CreateDirectory(szProgressPath.c_str(), nullptr);
-                ::CreateDirectory(szToolsPath.c_str(), nullptr);
+                util::Utilities::CreateDirectory(szSettingsPath);
+                util::Utilities::CreateDirectory(szFormatsPath);
+                util::Utilities::CreateDirectory(szLanguagesPath);
+                util::Utilities::CreateDirectory(szProgressPath);
+                util::Utilities::CreateDirectory(szToolsPath);
             }
             catch (...) {}
 

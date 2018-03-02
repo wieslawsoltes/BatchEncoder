@@ -2514,7 +2514,7 @@ namespace dialogs
 
             m_StatusBar.SetText(L"", 1, 0);
 
-            ::SetCurrentDirectory(this->m_Config.m_Settings.szSettingsPath.c_str());
+            util::Utilities::SetCurrentDirectory(this->m_Config.m_Settings.szSettingsPath);
 
             this->GetOptions();
             this->GetItems();
@@ -2690,7 +2690,7 @@ namespace dialogs
 
     bool CMainDlg::SaveFormats(const std::wstring& szPath)
     {
-        ::CreateDirectory(szPath.c_str(), nullptr);
+        util::Utilities::CreateDirectory(szPath);
         for (auto& format : this->m_Config.m_Formats)
         {
             std::wstring path = util::Utilities::CombinePath(szPath, format.szId + L".xml");
@@ -2804,7 +2804,7 @@ namespace dialogs
 
     bool CMainDlg::SaveTools(const std::wstring& szPath)
     {
-        ::CreateDirectory(szPath.c_str(), nullptr);
+        util::Utilities::CreateDirectory(szPath);
         for (auto& tool : this->m_Config.m_Tools)
         {
             std::wstring path = util::Utilities::CombinePath(szPath, tool.szName + L".xml");

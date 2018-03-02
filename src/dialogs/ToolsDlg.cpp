@@ -996,7 +996,7 @@ namespace dialogs
         m_Utilities.bDownload = true;
         EnableUserInterface(FALSE);
 
-        ::SetCurrentDirectory(pConfig->m_Settings.szToolsPath.c_str());
+        util::Utilities::SetCurrentDirectory(pConfig->m_Settings.szToolsPath);
 
         app::CLanguageHelper helper(pConfig);
         helper.SetWndText(&m_BtnDownload, 0x000E0024);

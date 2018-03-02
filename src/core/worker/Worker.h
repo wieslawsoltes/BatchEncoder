@@ -9,11 +9,11 @@
 #include <string>
 #include <mutex>
 #include <thread>
-#include "utilities\TimeCount.h"
-#include "utilities\Utilities.h"
 #include "utilities\Pipe.h"
 #include "utilities\Process.h"
 #include "utilities\StringHelper.h"
+#include "utilities\TimeCount.h"
+#include "utilities\Utilities.h"
 #include "WorkerContext.h"
 #include "CommandLine.h"
 #include "InputPath.h"
@@ -68,7 +68,7 @@ namespace worker
             process.ConnectStdError(Stderr.hWrite);
 
             syncDown.lock();
-            ::SetCurrentDirectory(ctx->pConfig->m_Settings.szSettingsPath.c_str());
+            util::Utilities::SetCurrentDirectory(ctx->pConfig->m_Settings.szSettingsPath);
 
             timer.Start();
             if (process.Start(cl.szCommandLine, ctx->pConfig->m_Options.bHideConsoleWindow) == false)
@@ -99,7 +99,7 @@ namespace worker
 
                         if (bResult == true)
                         {
-                            ::SetCurrentDirectory(ctx->pConfig->m_Settings.szSettingsPath.c_str());
+                            util::Utilities::SetCurrentDirectory(ctx->pConfig->m_Settings.szSettingsPath);
 
                             if (process.Start(cl.szCommandLine, ctx->pConfig->m_Options.bHideConsoleWindow) == true)
                             {
@@ -250,7 +250,7 @@ namespace worker
             }
 
             syncDown.lock();
-            ::SetCurrentDirectory(ctx->pConfig->m_Settings.szSettingsPath.c_str());
+            util::Utilities::SetCurrentDirectory(ctx->pConfig->m_Settings.szSettingsPath);
 
             timer.Start();
             if (process.Start(cl.szCommandLine, ctx->pConfig->m_Options.bHideConsoleWindow) == false)
@@ -281,7 +281,7 @@ namespace worker
 
                         if (bResult == true)
                         {
-                            ::SetCurrentDirectory(ctx->pConfig->m_Settings.szSettingsPath.c_str());
+                            util::Utilities::SetCurrentDirectory(ctx->pConfig->m_Settings.szSettingsPath);
 
                             if (process.Start(cl.szCommandLine, ctx->pConfig->m_Options.bHideConsoleWindow) == true)
                             {
@@ -509,7 +509,7 @@ namespace worker
             timer.Start();
 
             syncDown.lock();
-            ::SetCurrentDirectory(ctx->pConfig->m_Settings.szSettingsPath.c_str());
+            util::Utilities::SetCurrentDirectory(ctx->pConfig->m_Settings.szSettingsPath);
 
             // create decoder process
             if (decoderProcess.Start(dcl.szCommandLine, ctx->pConfig->m_Options.bHideConsoleWindow) == false)
@@ -540,7 +540,7 @@ namespace worker
 
                         if (bResult == true)
                         {
-                            ::SetCurrentDirectory(ctx->pConfig->m_Settings.szSettingsPath.c_str());
+                            util::Utilities::SetCurrentDirectory(ctx->pConfig->m_Settings.szSettingsPath);
 
                             if (decoderProcess.Start(dcl.szCommandLine, ctx->pConfig->m_Options.bHideConsoleWindow) == true)
                             {
@@ -572,7 +572,7 @@ namespace worker
                 }
             }
 
-            ::SetCurrentDirectory(ctx->pConfig->m_Settings.szSettingsPath.c_str());
+            util::Utilities::SetCurrentDirectory(ctx->pConfig->m_Settings.szSettingsPath);
 
             // create encoder process
             if (encoderProcess.Start(ecl.szCommandLine, ctx->pConfig->m_Options.bHideConsoleWindow) == false)
@@ -604,7 +604,7 @@ namespace worker
 
                         if (bResult == true)
                         {
-                            ::SetCurrentDirectory(ctx->pConfig->m_Settings.szSettingsPath.c_str());
+                            util::Utilities::SetCurrentDirectory(ctx->pConfig->m_Settings.szSettingsPath);
 
                             if (encoderProcess.Start(ecl.szCommandLine, ctx->pConfig->m_Options.bHideConsoleWindow) == true)
                             {
@@ -777,7 +777,7 @@ namespace worker
 
             syncDir.unlock();
 
-            ::SetCurrentDirectory(ctx->pConfig->m_Settings.szSettingsPath.c_str());
+            util::Utilities::SetCurrentDirectory(ctx->pConfig->m_Settings.szSettingsPath);
 
             // prepare decoder
             if (bIsValidEncoderInput == false)
@@ -849,14 +849,14 @@ namespace worker
                     if (bResult == true)
                     {
                         if (ctx->pConfig->m_Options.bDeleteSourceFiles == true)
-                            ::DeleteFile(szEncInputFile.c_str());
+                            util::Utilities::DeleteFile(szEncInputFile);
 
                         return true;
                     }
                     else
                     {
                         if (ctx->pConfig->m_Options.bDeleteOnErrors == true)
-                            ::DeleteFile(szEncOutputFile.c_str());
+                            util::Utilities::DeleteFile(szEncOutputFile);
 
                         return false;
                     }
@@ -864,7 +864,7 @@ namespace worker
                 catch (...)
                 {
                     if (ctx->pConfig->m_Options.bDeleteOnErrors == true)
-                        ::DeleteFile(szEncOutputFile.c_str());
+                        util::Utilities::DeleteFile(szEncOutputFile);
 
                     ctx->ItemStatus(item.nId, ctx->GetString(0x00150001), ctx->GetString(0x0014000E));
                     ctx->ItemProgress(item.nId, -1, true, true);
@@ -889,7 +889,7 @@ namespace worker
                         if (bResult == false)
                         {
                             if (ctx->pConfig->m_Options.bDeleteOnErrors == true)
-                                ::DeleteFile(szDecOutputFile.c_str());
+                                util::Utilities::DeleteFile(szDecOutputFile);
 
                             return false;
                         }
@@ -903,7 +903,7 @@ namespace worker
                     catch (...)
                     {
                         if (ctx->pConfig->m_Options.bDeleteOnErrors == true)
-                            ::DeleteFile(szEncOutputFile.c_str());
+                            util::Utilities::DeleteFile(szEncOutputFile);
 
                         ctx->ItemStatus(item.nId, ctx->GetString(0x00150001), ctx->GetString(0x00140009));
                         ctx->ItemProgress(item.nId, -1, true, true);
@@ -931,20 +931,20 @@ namespace worker
                     if (bResult == true)
                     {
                         if (bIsValidEncoderInput == false)
-                            ::DeleteFile(szDecOutputFile.c_str());
+                            util::Utilities::DeleteFile(szDecOutputFile);
 
                         if (ctx->pConfig->m_Options.bDeleteSourceFiles == true)
-                            ::DeleteFile(szEncInputFile.c_str());
+                            util::Utilities::DeleteFile(szEncInputFile);
 
                         return true;
                     }
                     else
                     {
                         if (bIsValidEncoderInput == false)
-                            ::DeleteFile(szDecOutputFile.c_str());
+                            util::Utilities::DeleteFile(szDecOutputFile);
 
                         if (ctx->pConfig->m_Options.bDeleteOnErrors == true)
-                            ::DeleteFile(szEncOutputFile.c_str());
+                            util::Utilities::DeleteFile(szEncOutputFile);
 
                         return false;
                     }
@@ -952,10 +952,10 @@ namespace worker
                 catch (...)
                 {
                     if (bIsValidEncoderInput == false)
-                        ::DeleteFile(szDecOutputFile.c_str());
+                        util::Utilities::DeleteFile(szDecOutputFile);
 
                     if (ctx->pConfig->m_Options.bDeleteOnErrors == true)
-                        ::DeleteFile(szEncOutputFile.c_str());
+                        util::Utilities::DeleteFile(szEncOutputFile);
 
                     ctx->ItemStatus(item.nId, ctx->GetString(0x00150001), ctx->GetString(0x0014000E));
                     ctx->ItemProgress(item.nId, -1, true, true);

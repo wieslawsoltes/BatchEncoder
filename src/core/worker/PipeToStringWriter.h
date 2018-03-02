@@ -7,6 +7,7 @@
 #include <mutex>
 #include "utilities\Pipe.h"
 #include "utilities\Synchronize.h"
+#include "utilities\Utilities.h"
 #include "config\Settings.h"
 #include "OutputParser.h"
 #include "WorkerContext.h"
@@ -29,7 +30,7 @@ namespace worker
             int nLineLen = 0;
 
             syncDown.lock();
-            ::SetCurrentDirectory(ctx->pConfig->m_Settings.szSettingsPath.c_str());
+            util::Utilities::SetCurrentDirectory(ctx->pConfig->m_Settings.szSettingsPath);
 
             if (parser.Init(ctx, &cl) == false)
             {
