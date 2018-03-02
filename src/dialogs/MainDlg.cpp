@@ -2168,7 +2168,6 @@ namespace dialogs
             for (int i = 0; i < nCount; i++)
             {
                 int nReqChars = ::DragQueryFile(hDropInfo, i, nullptr, 0);
-
                 CString szFile;
                 ::DragQueryFile(hDropInfo, i, szFile.GetBuffer(nReqChars * 2 + 8), nReqChars * 2 + 8);
                 if (::GetFileAttributes(szFile) & FILE_ATTRIBUTE_DIRECTORY)
@@ -2252,13 +2251,10 @@ namespace dialogs
                         this->SetItems();
                     }
                 }
-
                 szFile.ReleaseBuffer();
             }
-
             this->UpdateStatusBar();
         }
-
         ::DragFinish(hDropInfo);
     }
 
