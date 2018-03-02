@@ -181,10 +181,8 @@ namespace BatchEncoderCoreUnitTests
             CNewOutputPath m_Output;
             std::wstring szOutputFile = m_Output.CreateFilePath(szOutput, szInputFile, szName, szExt);
 
-            wchar_t szCurrentDirectory[_MAX_PATH];
-            ::GetCurrentDirectory(_MAX_PATH, szCurrentDirectory);
-            std::wstring szExpectedOutputFile = szCurrentDirectory;
-            szExpectedOutputFile += L"\\" + szOutput + L"\\CustomName.ext";
+            std::wstring szCurrentDirectory = util::Utilities::GetCurrentDirectory();
+            std::wstring szExpectedOutputFile = szCurrentDirectory + L"\\" + szOutput + L"\\CustomName.ext";
 
             Assert::AreEqual(szExpectedOutputFile.c_str(), szOutputFile.c_str());
         }
@@ -199,10 +197,8 @@ namespace BatchEncoderCoreUnitTests
             CNewOutputPath m_Output;
             std::wstring szOutputFile = m_Output.CreateFilePath(szOutput, szInputFile, szName, szExt);
 
-            wchar_t szCurrentDirectory[_MAX_PATH];
-            ::GetCurrentDirectory(_MAX_PATH, szCurrentDirectory);
-            std::wstring szExpectedOutputFile = szCurrentDirectory;
-            szExpectedOutputFile += L"\\" + szOutput + L"CustomName.ext";
+            std::wstring szCurrentDirectory = util::Utilities::GetCurrentDirectory();
+            std::wstring szExpectedOutputFile = szCurrentDirectory + L"\\" + szOutput + L"CustomName.ext";
 
             Assert::AreEqual(szExpectedOutputFile.c_str(), szOutputFile.c_str());
         }
