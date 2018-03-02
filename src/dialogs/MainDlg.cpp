@@ -2904,6 +2904,7 @@ namespace dialogs
         {
             m_Config.m_Outputs = std::move(outputs);
             this->UpdateOutputsComboBox();
+            return true;
         }
         return false;
     }
