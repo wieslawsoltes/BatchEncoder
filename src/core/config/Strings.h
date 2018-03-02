@@ -3,11 +3,67 @@
 
 #pragma once
 
-#include <map>
 #include <string>
+#include <map>
+#include <vector>
 
 namespace config
 {
+    const std::std::vector<std::wstring> m_OutpuPathsPresets = 
+    {
+        L"$InputPath$",
+        L"$InputPath$\\$Name$.$Ext$",
+        L"$InputPath$\\$Name$_converted.$Ext$",
+        L"$InputPath$\\$Name$$InputExt$.$Ext$",
+        L"$InputPath$\\$InputName$.$Ext$",
+        L"$InputPath$\\$InputName$_converted.$Ext$",
+        L"$InputPath$\\$Ext$\\$Name$.$Ext$",
+        L"$InputPath$\\$Ext$\\$Name$_converted.$Ext$",
+        L"$InputPath$\\$Ext$\\$Name$$InputExt$.$Ext$",
+        L"$InputPath$\\$Ext$\\$InputName$.$Ext$",
+        L"$InputPath$\\$Ext$\\$InputName$_converted.$Ext$",
+        L"$InputPath$\\Converted\\$Name$.$Ext$",
+        L"$InputPath$\\Converted\\$Name$_converted.$Ext$",
+        L"$InputPath$\\Converted\\$InputName$.$Ext$",
+        L"$InputPath$\\Converted\\$InputName$_converted.$Ext$",
+        L"$InputPath$\\Converted\\$Ext$\\$Name$.$Ext$",
+        L"$InputPath$\\Converted\\$Ext$\\$Name$_converted.$Ext$",
+        L"$InputPath$\\Converted\\$Ext$\\$InputName$.$Ext$",
+        L"$InputPath$\\Converted\\$Ext$\\$InputName$_converted.$Ext$",
+        L"C:\\Output",
+        L"C:\\Output\\$Name$.$Ext$",
+        L"C:\\Output\\$Name$_converted.$Ext$",
+        L"C:\\Output\\$InputName$.$Ext$",
+        L"C:\\Output\\$InputName$_converted.$Ext$",
+        L"C:\\Output\\$InputFolder[0]$\\$Name$.$Ext$",
+        L"C:\\Output\\$InputFolder[0]$\\$InputName$.$Ext$",
+        L"C:\\Output\\$InputFolder[1]$\\$InputFolder[0]$\\$Name$.$Ext$",
+        L"C:\\Output\\$InputFolder[1]$\\$InputFolder[0]$\\$InputName$.$Ext$",
+        L"C:\\Output\\$InputFolder[2]$\\$InputFolder[1]$\\$InputFolder[0]$\\$Name$.$Ext$",
+        L"C:\\Output\\$InputFolder[2]$\\$InputFolder[1]$\\$InputFolder[0]$\\$InputName$.$Ext$",
+        L"Converted",
+        L"Converted\\$Name$.$Ext$",
+        L"Converted\\$Name$_converted.$Ext$",
+        L"Converted\\$InputName$.$Ext$",
+        L"Converted\\$InputName$_converted.$Ext$",
+        L"Converted\\$InputFolder[0]$\\$Name$.$Ext$",
+        L"Converted\\$InputFolder[0]$\\$InputName$.$Ext$",
+        L"Converted\\$InputFolder[1]$\\$InputFolder[0]$\\$Name$.$Ext$",
+        L"Converted\\$InputFolder[1]$\\$InputFolder[0]$\\$InputName$.$Ext$",
+        L"Converted\\$InputFolder[2]$\\$InputFolder[1]$\\$InputFolder[0]$\\$Name$.$Ext$",
+        L"Converted\\$InputFolder[2]$\\$InputFolder[1]$\\$InputFolder[0]$\\$InputName$.$Ext$",
+        L"$InputDrive$\\$Name$.$Ext$",
+        L"$InputDrive$\\$InputName$.$Ext$",
+        L"$InputDrive$\\$InputDir$\\Converted\\$Name$.$Ext$",
+        L"$InputDrive$\\$InputDir$\\Converted\\$InputName$.$Ext$",
+        L"$InputDrive$\\Converted\\$Name$.$Ext$",
+        L"$InputDrive$\\Converted\\$InputName$.$Ext$",
+        L"C:\\$InputDir$\\$Name$.$Ext$",
+        L"C:\\$InputDir$\\$InputName$.$Ext$",
+        L"C:\\Converted\\$InputDir$\\$Name$.$Ext$",
+        L"C:\\Converted\\$InputDir$\\$InputName$.$Ext$"
+    };
+
     const std::map<int, const std::wstring> m_Strings =
     {
         // File Menu

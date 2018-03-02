@@ -41,7 +41,7 @@ namespace config
         {
             this->szSelectedLanguage = L"en-US";
             this->nSelectedFormat = 16;
-            this->szOutputPath = L"$SourceDirectory$\\$Name$.$Ext$";
+            this->szOutputPath = L"$InputPath$\\$Name$.$Ext$";
             this->bDeleteSourceFiles = false;
             this->bRecurseChecked = true;
             this->bShutdownWhenFinished = false;

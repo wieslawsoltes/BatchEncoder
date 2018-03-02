@@ -4,22 +4,21 @@
 #pragma once
 
 #include <string>
+#include "worker\InputPath.h"
 #include "utilities\StringHelper.h"
 #include "utilities\Utilities.h"
 
-#define VAR_OUTPUT_SOURCE_DIRECTORY L"$SourceDirectory$"
-#define VAR_OUTPUT_NAME             L"$Name$"
-#define VAR_OUTPUT_EXTENSION        L"$Ext$"
-
-// Output path:
-// Empty string is same as the $SourceDirectory$\$Name$.$Ext$
-// $SourceDirectory$ is equal to $SourceDirectory$\$Name$.$Ext$
-// $SourceDirectory$\$Name$.$Ext$
-// $SourceDirectory$\$Name$_converted.$Ext$
-// $SourceDirectory$\Converted\$Name$.$Ext$
-// C:\Output (is equal to C:\Output\Path\$Name$.$Ext$)
-// C:\Output\$Name$.$Ext$
-// C:\Output\$Name$_converted.$Ext$
+#define VAR_INPUT_DRIVE         L"$InputDrive$"
+#define VAR_INPUT_DIR           L"$InputDir$"
+#define VAR_INPUT_NAME          L"$InputName$"
+#define VAR_INPUT_EXT           L"$InputExt$"
+#define VAR_INPUT_PATH          L"$InputPath$"
+#define VAR_INPUT_FOLDER_INDEX  L"index"
+#define VAR_INPUT_FOLDER        L"$InputFolder[index]$"
+#define VAR_OUTPUT_NAME         L"$Name$"
+#define VAR_OUTPUT_EXT          L"$Ext$"
+#define VAR_OUTPUT_FULL         L"$InputPath$\\$Name$.$Ext$"
+#define VAR_OUTPUT_RELATIVE     L"$Name$.$Ext$"
 
 namespace worker
 {
@@ -28,27 +27,66 @@ namespace worker
     public:
         std::wstring CreateFilePath(const std::wstring& szOutput, const std::wstring& szInputFile, const std::wstring& szName, const std::wstring& szExt)
         {
-            std::wstring szPattern = szOutput;
-            if (szPattern.length() <= 0)
-                szPattern = L"$SourceDirectory$\\$Name$.$Ext$";
+            worker::CInputPath m_Input(szInputFile.c_str());
 
-            bool bHaveName = util::StringHelper::FindNoCase(szPattern, VAR_OUTPUT_NAME) != std::wstring::npos;
-            bool bHaveExt = util::StringHelper::FindNoCase(szPattern, VAR_OUTPUT_EXTENSION) != std::wstring::npos;
-            if ((bHaveName == false) && (bHaveExt == false))
+            // set output file pattern
+            std::wstring szOutputFile = szOutput;
+
+            if (szOutputFile.empty())
             {
-                if (szPattern.length() >= 1 && szPattern[szPattern.length() - 1] != '\\' && szPattern[szPattern.length() - 1] != '/')
-                    szPattern += L"\\";
-                szPattern += L"$Name$.$Ext$";
+                // empty string
+                szOutputFile = VAR_OUTPUT_FULL;
+            }
+            else if (szOutputFile == VAR_INPUT_PATH)
+            {
+                // input path only
+                szOutputFile += L"\\";
+                szOutputFile += VAR_OUTPUT_RELATIVE;
+            }
+            else
+            {
+                // no variables are present and string is not empty e.g.: "C:\Output", "C:\Output\" or relative path
+                if (szOutputFile.find('$') == std::wstring::npos)
+                {
+                    wchar_t szValidPath[_MAX_PATH];
+                    _wmakepath_s(szValidPath, nullptr, szOutputFile.c_str(), nullptr, nullptr);
+                    szOutputFile = szValidPath;
+                    szOutputFile += VAR_OUTPUT_RELATIVE;
+                }
             }
 
-            std::wstring szOutputFile = szPattern;
-            std::wstring szInputPath = util::Utilities::GetFilePath(szInputFile);
-
-            util::StringHelper::ReplaceNoCase(szOutputFile, VAR_OUTPUT_SOURCE_DIRECTORY, szInputPath);
+            // replace custom name
             util::StringHelper::ReplaceNoCase(szOutputFile, VAR_OUTPUT_NAME, szName);
-            util::StringHelper::ReplaceNoCase(szOutputFile, VAR_OUTPUT_EXTENSION, util::StringHelper::TowLower(szExt));
+
+            // replace custom ext
+            util::StringHelper::ReplaceNoCase(szOutputFile, VAR_OUTPUT_EXT, util::StringHelper::TowLower(szExt));
+
+            // replace input path parts
+            util::StringHelper::ReplaceNoCase(szOutputFile, VAR_INPUT_DRIVE, m_Input.szInputDrive);
+            util::StringHelper::ReplaceNoCase(szOutputFile, VAR_INPUT_DIR, m_Input.szInputDir);
+            util::StringHelper::ReplaceNoCase(szOutputFile, VAR_INPUT_NAME, m_Input.szInputName);
+            util::StringHelper::ReplaceNoCase(szOutputFile, VAR_INPUT_EXT, util::StringHelper::TowLower(m_Input.szInputExt));
+            util::StringHelper::ReplaceNoCase(szOutputFile, VAR_INPUT_PATH, m_Input.szInputPath);
+
+            // replace input path folders
+            size_t nFoldersSize = m_Input.szSourceFolders.size();
+            for (size_t i = nFoldersSize; i > 0; i--)
+            {
+                std::wstring& folder = m_Input.szSourceFolders[i - 1];
+                std::wstring szVarIndex = std::to_wstring(nFoldersSize - i);
+                std::wstring szVarName = VAR_INPUT_FOLDER;
+                util::StringHelper::Replace(szVarName, VAR_INPUT_FOLDER_INDEX, szVarIndex);
+                util::StringHelper::ReplaceNoCase(szOutputFile, szVarName, folder);
+            }
+
+            // fix path after replacements
             util::StringHelper::ReplaceNoCase(szOutputFile, L"\\\\", L"\\");
             util::StringHelper::ReplaceNoCase(szOutputFile, L"//", L"/");
+
+            // make valid full path
+            wchar_t szValidOutputFile[_MAX_PATH];
+            _wfullpath(szValidOutputFile, szOutputFile.c_str(), _MAX_PATH);
+            szOutputFile = szValidOutputFile;
 
             return szOutputFile;
         }

@@ -80,9 +80,6 @@
     <ClCompile Include="worker\LuaProgessTests.cpp">
       <Filter>Source Files\Worker</Filter>
     </ClCompile>
-    <ClCompile Include="worker\NewOutputPathTests.cpp">
-      <Filter>Source Files\Worker</Filter>
-    </ClCompile>
     <ClCompile Include="worker\OutputParserTests.cpp">
       <Filter>Source Files\Worker</Filter>
     </ClCompile>

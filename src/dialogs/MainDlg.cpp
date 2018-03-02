@@ -464,14 +464,10 @@ namespace dialogs
         // enable drag & drop
         this->DragAcceptFiles(TRUE);
 
-        // output path presets
-        this->m_CmbOutPath.InsertString(0, _T("$SourceDirectory$"));
-        this->m_CmbOutPath.InsertString(1, _T("$SourceDirectory$\\$Name$.$Ext$"));
-        this->m_CmbOutPath.InsertString(2, _T("$SourceDirectory$\\$Name$_converted.$Ext$"));
-        this->m_CmbOutPath.InsertString(3, _T("$SourceDirectory$\\Converted\\$Name$.$Ext$"));
-        this->m_CmbOutPath.InsertString(4, _T("C:\\Output"));
-        this->m_CmbOutPath.InsertString(5, _T("C:\\Output\\$Name$.$Ext$"));
-        this->m_CmbOutPath.InsertString(6, _T("C:\\Output\\$Name$_converted.$Ext$"));
+        // output path
+        size_t nOutputPathPresets = config::m_OutpuPathsPresets.size();
+        for (size_t i = 0; i < nOutputPathPresets; i++)
+            this->m_CmbOutPath.InsertString(i, config::m_OutpuPathsPresets[i].c_str());
 
         util::Utilities::SetComboBoxHeight(this->GetSafeHwnd(), IDC_COMBO_OUTPUT, 15);
         this->m_CmbOutPath.SetCurSel(1);

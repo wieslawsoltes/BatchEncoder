@@ -200,7 +200,6 @@
     <ClCompile Include="worker\InputPathTests.cpp" />
     <ClCompile Include="worker\LuaOutputParserTests.cpp" />
     <ClCompile Include="worker\LuaProgessTests.cpp" />
-    <ClCompile Include="worker\NewOutputPathTests.cpp" />
     <ClCompile Include="worker\OutputParserTests.cpp" />
     <ClCompile Include="worker\OutputPathTests.cpp" />
     <ClCompile Include="worker\PipeToFileWriterTests.cpp" />
