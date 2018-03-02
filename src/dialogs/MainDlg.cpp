@@ -2211,6 +2211,10 @@ namespace dialogs
                             {
                                 this->LoadPresets(doc);
                             }
+                            else if (util::StringHelper::CompareNoCase(szName, "Outputs"))
+                            {
+                                this->LoadOutputs(doc);
+                            }
                             else if (util::StringHelper::CompareNoCase(szName, "Options"))
                             {
                                 this->LoadOptions(doc);
