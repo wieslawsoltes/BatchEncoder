@@ -9,7 +9,7 @@
 
 namespace config
 {
-    const std::vector<const std::wstring> m_OutpuPathsPresets = 
+    const std::vector<std::wstring> m_OutpuPathsPresets =
     {
         L"$InputPath$",
         L"$InputPath$\\$Name$.$Ext$",
