@@ -4,7 +4,7 @@
 #pragma once
 
 #include <string>
-#include "worker\InputPath.h"
+#include "InputPath.h"
 #include "utilities\StringHelper.h"
 #include "utilities\Utilities.h"
 
@@ -27,7 +27,7 @@ namespace worker
     public:
         std::wstring CreateFilePath(const std::wstring& szOutput, const std::wstring& szInputFile, const std::wstring& szName, const std::wstring& szExt)
         {
-            worker::CInputPath m_Input(szInputFile.c_str());
+            CInputPath m_Input(szInputFile.c_str());
 
             // set output file pattern
             std::wstring szOutputFile = szOutput;

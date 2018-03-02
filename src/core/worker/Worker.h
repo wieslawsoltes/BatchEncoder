@@ -16,7 +16,6 @@
 #include "utilities\Utilities.h"
 #include "WorkerContext.h"
 #include "CommandLine.h"
-#include "InputPath.h"
 #include "OutputPath.h"
 #include "FileToPipeWriter.h"
 #include "PipeToFileWriter.h"

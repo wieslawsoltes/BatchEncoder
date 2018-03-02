@@ -934,7 +934,7 @@ namespace dialogs
                     szLastOutputBrowse.Format(_T("%s\0"), lpBuffer);
 
                     CString szOutPath;
-                    szOutPath.Format(_T("%s\\%s.%s\0"), lpBuffer, VAR_OUTPUT_NAME, VAR_OUTPUT_EXTENSION);
+                    szOutPath.Format(_T("%s\\%s.%s\0"), lpBuffer, VAR_OUTPUT_NAME, VAR_OUTPUT_EXT);
                     this->m_CmbOutPath.SetWindowText(szOutPath);
                 }
                 pMalloc->Free(pidlBrowse);
