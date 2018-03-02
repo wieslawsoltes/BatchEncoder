@@ -2299,7 +2299,7 @@ namespace dialogs
                 bResizeOutputComboBox = true;
             }
 
-            this->m_CmbOutPath.SetCurSel(1);
+            this->m_CmbOutPath.SetCurSel(0);
             this->m_CmbOutPath.SetFocus();
         }
     }
