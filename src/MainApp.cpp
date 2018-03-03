@@ -19,20 +19,44 @@ namespace app
 
     BOOL CMainApp::InitInstance()
     {
-        INITCOMMONCONTROLSEX InitCtrls;
-        InitCtrls.dwSize = sizeof(InitCtrls);
-        InitCtrls.dwICC = ICC_WIN95_CLASSES;
-        InitCommonControlsEx(&InitCtrls);
-
-        CWinAppEx::InitInstance();
-        AfxEnableControlContainer();
-        InitShellManager();
-
         dialogs::CMainDlg dlg;
+
         dlg.m_Config.m_Settings.Init();
 
-        m_pMainWnd = &dlg;
-        dlg.DoModal();
+        dlg.m_Config.Log = std::make_unique<util::FileLog>(dlg.m_Config.m_Settings.szLogFile);
+        dlg.m_Config.Log->Open();
+
+        std::wstring szConfigMode = dlg.m_Config.m_Settings.IsPortable() ? L"Portable" : L"Roaming";
+        dlg.m_Config.Log->Log(L"[Info] Program started: " + szConfigMode);
+
+        try
+        {
+            INITCOMMONCONTROLSEX InitCtrls;
+            InitCtrls.dwSize = sizeof(InitCtrls);
+            InitCtrls.dwICC = ICC_WIN95_CLASSES;
+            InitCommonControlsEx(&InitCtrls);
+
+            CWinAppEx::InitInstance();
+            AfxEnableControlContainer();
+            InitShellManager();
+        }
+        catch (...)
+        {
+            dlg.m_Config.Log->Log(L"[Error] Failed to init application.");
+        }
+
+        try
+        {
+            m_pMainWnd = &dlg;
+            dlg.DoModal();
+        }
+        catch (...)
+        {
+            dlg.m_Config.Log->Log(L"[Error] Main dialog exception.");
+        }
+
+        dlg.m_Config.Log->Log(L"[Info] Program exited: " + szConfigMode);
+        dlg.m_Config.Log->Close();
 
         return FALSE;
     }

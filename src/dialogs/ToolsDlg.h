@@ -17,6 +17,7 @@
 #include "controls\MySpinButtonCtrl.h"
 #include "controls\MyDialogEx.h"
 #include "config\Config.h"
+#include "utilities\Log.h"
 #include "utilities\StringHelper.h"
 #include "worker\ToolUtilities.h"
 

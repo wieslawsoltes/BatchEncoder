@@ -19,6 +19,7 @@
 #include "controls\MySpinButtonCtrl.h"
 #include "controls\MyProgressCtrl.h"
 #include "controls\MyDialogEx.h"
+#include "utilities\Log.h"
 #include "utilities\StringHelper.h"
 #include "utilities\TimeCount.h"
 #include "config\Config.h"

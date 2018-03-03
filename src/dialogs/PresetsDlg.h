@@ -15,6 +15,7 @@
 #include "controls\MyStatic.h"
 #include "controls\MyDialogEx.h"
 #include "config\Config.h"
+#include "utilities\Log.h"
 #include "utilities\StringHelper.h"
 
 #define PRESET_COLUMN_NAME      0

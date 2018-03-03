@@ -5,6 +5,8 @@
 
 #include <string>
 #include <utility>
+#include <memory>
+#include "utilities\Log.h"
 #include "utilities\StringHelper.h"
 #include "utilities\Utilities.h"
 #include "Format.h"
@@ -22,6 +24,7 @@ namespace config
     class CConfig
     {
     public:
+        std::unique_ptr<util::ILog> Log;
         CSettings m_Settings;
         COptions m_Options;
         std::vector<CFormat> m_Formats;

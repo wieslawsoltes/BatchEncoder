@@ -19,6 +19,7 @@ namespace config
         std::wstring szProgressDir;
         std::wstring szToolsDir;
     public:
+        std::wstring szLogFileName;
         std::wstring szOptionsFileName;
         std::wstring szItemsFileName;
         std::wstring szOutputsFileName;
@@ -29,6 +30,7 @@ namespace config
         std::wstring szProgressPath;
         std::wstring szToolsPath;
     public:
+        std::wstring szLogFile;
         std::wstring szOptionsFile;
         std::wstring szItemsFile;
         std::wstring szOutputsFile;
@@ -41,6 +43,7 @@ namespace config
             this->szLanguagesDir = L"lang";
             this->szProgressDir = L"progress";
             this->szToolsDir = L"tools";
+            this->szLogFileName = L"BatchEncoder.log";
             this->szOptionsFileName = L"Options.xml";
             this->szItemsFileName = L"Items.xml";
             this->szOutputsFileName = L"Outputs.xml";
@@ -69,6 +72,7 @@ namespace config
             }
             catch (...) {}
 
+            this->szLogFile = util::Utilities::CombinePath(this->szSettingsPath, this->szLogFileName);
             this->szOptionsFile = util::Utilities::CombinePath(this->szSettingsPath, this->szOptionsFileName);
             this->szItemsFile = util::Utilities::CombinePath(this->szSettingsPath, this->szItemsFileName);
             this->szOutputsFile = util::Utilities::CombinePath(this->szSettingsPath, this->szOutputsFileName);
@@ -91,6 +95,7 @@ namespace config
             }
             catch (...) {}
 
+            this->szLogFile = util::Utilities::GetSettingsFilePath(this->szLogFileName, this->szConfigDir);
             this->szOptionsFile = util::Utilities::GetSettingsFilePath(this->szOptionsFileName, this->szConfigDir);
             this->szItemsFile = util::Utilities::GetSettingsFilePath(this->szItemsFileName, this->szConfigDir);
             this->szOutputsFile = util::Utilities::GetSettingsFilePath(this->szOutputsFileName, this->szConfigDir);
