@@ -11,6 +11,7 @@ namespace worker
     class IOutputParser
     {
     public:
+        virtual ~IOutputParser() { }
         virtual bool Init(IWorkerContext* ctx, CCommandLine* cl) = 0;
         virtual bool Parse(const char *szLine) = 0;
     };

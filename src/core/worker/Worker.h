@@ -10,6 +10,7 @@
 #include <mutex>
 #include <thread>
 #include "utilities\Log.h"
+#include "utilities\MemoryLog.h"
 #include "utilities\Pipe.h"
 #include "utilities\Process.h"
 #include "utilities\StringHelper.h"
