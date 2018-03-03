@@ -4,8 +4,11 @@
 #pragma once
 
 #include <string>
+#include <memory>
 #include "OutputParser.h"
 #include "LuaProgess.h"
+#include "utilities\Log.h"
+#include "utilities\MemoryLog.h"
 #include "utilities\StringHelper.h"
 
 namespace worker
@@ -14,6 +17,7 @@ namespace worker
     {
         CLuaProgess luaProgress;
     public:
+        std::unique_ptr<util::ILog> Log;
         IWorkerContext *ctx;
         CCommandLine *cl;
         int nProgress;
@@ -45,6 +49,12 @@ namespace worker
         }
         bool Parse(const char *szLine)
         {
+            if (Log != nullptr)
+            {
+                std::wstring szUnicode = util::StringHelper::Convert(szLine);
+                Log->Log(szUnicode, false);
+            }
+
             int nRet = (int)this->luaProgress.GetProgress(szLine);
             if (nRet != -1)
             {

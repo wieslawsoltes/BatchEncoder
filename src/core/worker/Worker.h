@@ -131,6 +131,8 @@ namespace worker
             // close unused pipe handle
             Stderr.CloseWrite();
 
+            //parser.Log = std::make_unique<util::MemoryLog>();
+
             // console progress loop
             if (writer.ReadLoop(ctx, cl, Stderr, parser, syncDown) == false)
             {
