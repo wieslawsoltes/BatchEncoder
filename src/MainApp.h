@@ -9,11 +9,6 @@
 
 #include "res\resource.h"
 
-#include <string>
-#include <memory>
-#include "utilities\FileLog.h"
-#include "config\Config.h"
-
 namespace app
 {
     class CMainApp : public CWinAppEx

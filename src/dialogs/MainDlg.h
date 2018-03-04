@@ -3,31 +3,6 @@
 
 #pragma once
 
-#include <afxwin.h>
-#include <afxcmn.h>
-#include <array>
-#include <vector>
-#include <string>
-#include <utility>
-#include <thread>
-#include "controls\MyListCtrl.h"
-#include "controls\MyButton.h"
-#include "controls\MyComboBox.h"
-#include "controls\MyEdit.h"
-#include "controls\MyStatic.h"
-#include "controls\MyStatusBarCtrl.h"
-#include "controls\MySpinButtonCtrl.h"
-#include "controls\MyProgressCtrl.h"
-#include "controls\MyDialogEx.h"
-#include "utilities\Log.h"
-#include "utilities\StringHelper.h"
-#include "utilities\TimeCount.h"
-#include "config\Config.h"
-#include "xml\XmlConfig.h"
-#include "worker\OutputPath.h"
-#include "worker\WorkerContext.h"
-#include "worker\Worker.h"
-
 #define ITEM_COLUMN_NAME    0
 #define ITEM_COLUMN_INPUT   1
 #define ITEM_COLUMN_SIZE    2

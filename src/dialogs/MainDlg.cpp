@@ -3,8 +3,6 @@
 
 #include "StdAfx.h"
 #include "MainApp.h"
-#include "utilities\Utilities.h"
-#include "xml\XmlConfig.h"
 #include "MainDlg.h"
 #include "PresetsDlg.h"
 #include "AboutDlg.h"

@@ -293,12 +293,6 @@
     <ProjectReference Include="common\tinyxml2\TinyXml2.vcxproj">
       <Project>{284538ac-d315-437e-ad31-d40934a43236}</Project>
     </ProjectReference>
-    <ProjectReference Include="common\utilities\MFC.Utilities.vcxproj">
-      <Project>{4b291d95-c2ca-49e3-9eb5-b9f855d32aa0}</Project>
-    </ProjectReference>
-    <ProjectReference Include="core\BatchEncoder.Core.vcxproj">
-      <Project>{bb512103-dff5-4f13-a790-bbb231a6dad9}</Project>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

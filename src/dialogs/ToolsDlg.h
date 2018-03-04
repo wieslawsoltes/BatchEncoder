@@ -3,24 +3,6 @@
 
 #pragma once
 
-#include <afxcmn.h>
-#include <afxwin.h>
-#include <array>
-#include <string>
-#include <utility>
-#include <thread>
-#include "controls\MyListCtrl.h"
-#include "controls\MyButton.h"
-#include "controls\MyComboBox.h"
-#include "controls\MyEdit.h"
-#include "controls\MyStatic.h"
-#include "controls\MySpinButtonCtrl.h"
-#include "controls\MyDialogEx.h"
-#include "config\Config.h"
-#include "utilities\Log.h"
-#include "utilities\StringHelper.h"
-#include "worker\ToolUtilities.h"
-
 #define TOOL_COLUMN_NAME      0
 #define TOOL_COLUMN_URL       1
 #define TOOL_COLUMN_STATUS    2

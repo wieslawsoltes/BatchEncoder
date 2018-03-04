@@ -3,9 +3,6 @@
 
 #include "StdAfx.h"
 #include "MainApp.h"
-#include "utilities\Utilities.h"
-#include "utilities\Utf8String.h"
-#include "xml\XmlConfig.h"
 #include "FormatsDlg.h"
 #include "PresetsDlg.h"
 

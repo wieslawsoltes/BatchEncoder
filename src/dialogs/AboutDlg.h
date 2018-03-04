@@ -3,16 +3,6 @@
 
 #pragma once
 
-#include <afxcmn.h>
-#include <afxwin.h>
-#include "config\Config.h"
-#include "utilities\Log.h"
-#include "utilities\StringHelper.h"
-#include "controls\MyHyperlink.h"
-#include "controls\MyButton.h"
-#include "controls\MyStatic.h"
-#include "controls\MyDialogEx.h"
-
 namespace dialogs
 {
     class CAboutDlg : public controls::CMyDialogEx

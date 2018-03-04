@@ -3,21 +3,6 @@
 
 #pragma once
 
-#include <afxcmn.h>
-#include <afxwin.h>
-#include <string>
-#include <utility>
-#include <thread>
-#include "controls\MyListCtrl.h"
-#include "controls\MyButton.h"
-#include "controls\MyComboBox.h"
-#include "controls\MyEdit.h"
-#include "controls\MyStatic.h"
-#include "controls\MyDialogEx.h"
-#include "config\Config.h"
-#include "utilities\Log.h"
-#include "utilities\StringHelper.h"
-
 #define PRESET_COLUMN_NAME      0
 #define PRESET_COLUMN_OPTIONS   1
 
