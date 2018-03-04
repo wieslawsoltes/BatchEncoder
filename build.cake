@@ -98,13 +98,30 @@ var packageConfigAction = new Action(() =>
     Zip(outputDir, outputZip);
 });
 
-var packageBinariesAction = new Action<string,string> ((configuration, platform) => 
+var packageGuiBinariesAction = new Action<string,string> ((configuration, platform) => 
 {
     var path = "./src/bin/" + configuration + "/" + platform + "/";
     var output = "BatchEncoder-" + version + suffix + "-" + platform + (configuration == "Release" ? "" : ("-(" + configuration + ")"));
     var outputDir = artifactsDir.Combine(output);
     var outputZip = artifactsDir.CombineWithFilePath(output + ".zip");
     var exeFile = File(path + "BatchEncoder.exe");
+    var portableFile = File("./config/BatchEncoder.portable");
+    CleanDirectory(outputDir);
+    CopyFileToDirectory(File("README.md"), outputDir);
+    CopyFileToDirectory(File("LICENSE.TXT"), outputDir);
+    CopyFileToDirectory(exeFile, outputDir);
+    CopyFileToDirectory(portableFile, outputDir);
+    copyConfigAction(output);
+    Zip(outputDir, outputZip);
+});
+
+var packageCliBinariesAction = new Action<string,string> ((configuration, platform) => 
+{
+    var path = "./src/cli/bin/" + configuration + "/" + platform + "/";
+    var output = "BatchEncoder.CLI-" + version + suffix + "-" + platform + (configuration == "Release" ? "" : ("-(" + configuration + ")"));
+    var outputDir = artifactsDir.Combine(output);
+    var outputZip = artifactsDir.CombineWithFilePath(output + ".zip");
+    var exeFile = File(path + "BatchEncoder.CLI.exe");
     var portableFile = File("./config/BatchEncoder.portable");
     CleanDirectory(outputDir);
     CopyFileToDirectory(File("README.md"), outputDir);
@@ -170,7 +187,8 @@ Task("Package-Binaries")
     .IsDependentOn("Run-Unit-Tests")
     .Does(() =>
 {
-    configurations.ForEach(configuration => platforms.ForEach(platform => packageBinariesAction(configuration, platform)));
+    configurations.ForEach(configuration => platforms.ForEach(platform => packageGuiBinariesAction(configuration, platform)));
+    configurations.ForEach(configuration => platforms.ForEach(platform => packageCliBinariesAction(configuration, platform)));
 });
 
 Task("Package-Installers")
