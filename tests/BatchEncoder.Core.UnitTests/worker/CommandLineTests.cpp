@@ -7,15 +7,15 @@ using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 namespace BatchEncoderCoreUnitTests
 {
-    TEST_CLASS(IWorkerContext_Tests)
+    TEST_CLASS(CCommandLine_Tests)
     {
     public:
-        TEST_METHOD(IWorkerContext_Constructor)
+        TEST_METHOD(CCommandLine_Constructor)
         {
-            CTestWorkerContext ctx;
-            Assert::IsTrue(ctx.bDone);
-            Assert::IsFalse(ctx.bRunning);
-            Assert::IsNull(ctx.pConfig);
+            #pragma warning(push)
+            #pragma warning(disable:4101)
+            worker::CCommandLine m_CommandLine;
+            #pragma warning(pop)
         }
     };
 }

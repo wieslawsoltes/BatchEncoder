@@ -101,5 +101,8 @@
     <ClCompile Include="worker\WorkerContextTests.cpp">
       <Filter>Source Files\Worker</Filter>
     </ClCompile>
+    <ClCompile Include="worker\CommandLineTests.cpp">
+      <Filter>Source Files\Worker</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

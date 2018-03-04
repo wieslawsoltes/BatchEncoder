@@ -2,8 +2,6 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 #include "stdafx.h"
-#include "CppUnitTest.h"
-#include "worker\FileToPipeWriter.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
