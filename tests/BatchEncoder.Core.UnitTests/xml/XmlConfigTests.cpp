@@ -29,6 +29,97 @@ namespace BatchEncoderCoreUnitTests
         }
     };
 
+    TEST_CLASS(XmlOptions_Tests)
+    {
+    public:
+        TEST_METHOD(XmlOptions_Constructor)
+        {
+            #pragma warning(push)
+            #pragma warning(disable:4101)
+            xml::XmlDocumnent doc;
+            xml::XmlOptions xml(doc);
+            #pragma warning(pop)
+        }
+    };
+
+    TEST_CLASS(XmlItems_Tests)
+    {
+    public:
+        TEST_METHOD(XmlItems_Constructor)
+        {
+            #pragma warning(push)
+            #pragma warning(disable:4101)
+            xml::XmlDocumnent doc;
+            xml::XmlItems xml(doc);
+            #pragma warning(pop)
+        }
+    };
+
+    TEST_CLASS(XmlLanguages_Tests)
+    {
+    public:
+        TEST_METHOD(XmlLanguages_Constructor)
+        {
+            #pragma warning(push)
+            #pragma warning(disable:4101)
+            xml::XmlDocumnent doc;
+            xml::XmlLanguages xml(doc);
+            #pragma warning(pop)
+        }
+    };
+
+    TEST_CLASS(XmlOutputs_Tests)
+    {
+    public:
+        TEST_METHOD(XmlOutputs_Constructor)
+        {
+            #pragma warning(push)
+            #pragma warning(disable:4101)
+            xml::XmlDocumnent doc;
+            xml::XmlOutputs xml(doc);
+            #pragma warning(pop)
+        }
+    };
+
+    TEST_CLASS(XmlPresets_Tests)
+    {
+    public:
+        TEST_METHOD(XmlPresets_Constructor)
+        {
+            #pragma warning(push)
+            #pragma warning(disable:4101)
+            xml::XmlDocumnent doc;
+            xml::XmlPresets xml(doc);
+            #pragma warning(pop)
+        }
+    };
+
+    TEST_CLASS(XmlFormats_Tests)
+    {
+    public:
+        TEST_METHOD(XmlFormats_Constructor)
+        {
+            #pragma warning(push)
+            #pragma warning(disable:4101)
+            xml::XmlDocumnent doc;
+            xml::XmlFormats xml(doc);
+            #pragma warning(pop)
+        }
+    };
+
+    TEST_CLASS(XmlTools_Tests)
+    {
+    public:
+        TEST_METHOD(XmlTools_Constructor)
+        {
+            #pragma warning(push)
+            #pragma warning(disable:4101)
+            xml::XmlDocumnent doc;
+            xml::XmlTools xml(doc);
+            #pragma warning(pop)
+        }
+    };
+
     TEST_CLASS(XmlConfig_Tests)
     {
     public:
@@ -36,7 +127,7 @@ namespace BatchEncoderCoreUnitTests
         {
             #pragma warning(push)
             #pragma warning(disable:4101)
-            xml::XmlConfig m_Xml;
+            xml::XmlConfig xml;
             #pragma warning(pop)
         }
     };
