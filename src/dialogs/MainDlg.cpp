@@ -828,7 +828,7 @@ namespace dialogs
                         if (m_Config.m_Formats.size() > 0)
                         {
                             config::CFormat& format = m_Config.m_Formats[this->m_CmbFormat.GetCurSel()];
-                            if (util::StringHelper::CompareNoCase(item.szFormatId, format.szId))
+                            if (util::string::CompareNoCase(item.szFormatId, format.szId))
                             {
                                 format.nDefaultPreset = item.nPreset;
                                 this->m_CmbPresets.SetCurSel(item.nPreset);
@@ -1678,7 +1678,7 @@ namespace dialogs
                 if (xml::XmlDoc::Open(file, doc) == true)
                 {
                     std::string szName = xml::XmlDoc::GetRootName(doc);
-                    if (util::StringHelper::CompareNoCase(szName, "Language"))
+                    if (util::string::CompareNoCase(szName, "Language"))
                     {
                         config::CLanguage language;
                         if (xml::XmlConfig::LoadLanguage(doc, language))
@@ -2035,13 +2035,13 @@ namespace dialogs
         // option: FileListColumns
         if (!m_Config.m_Options.szFileListColumns.empty())
         {
-            auto widths = util::StringHelper::Split(m_Config.m_Options.szFileListColumns.c_str(), ' ');
+            auto widths = util::string::Split(m_Config.m_Options.szFileListColumns.c_str(), ' ');
             if (widths.size() == 8)
             {
                 for (int i = 0; i < 8; i++)
                 {
                     std::wstring szWidth = widths[i];
-                    int nWidth = util::StringHelper::ToInt(szWidth);
+                    int nWidth = util::string::ToInt(szWidth);
                     m_LstInputItems.SetColumnWidth(i, nWidth);
                 }
             }
@@ -2191,43 +2191,43 @@ namespace dialogs
                     std::wstring szPath = szFile;
                     std::wstring szExt = util::Utilities::GetFileExtension(szPath);
 
-                    if (util::StringHelper::CompareNoCase(szExt, L"xml"))
+                    if (util::string::CompareNoCase(szExt, L"xml"))
                     {
                         xml::XmlDocumnent doc;
                         std::string szName = xml::XmlConfig::GetRootName(szPath, doc);
                         if (!szName.empty())
                         {
-                            if (util::StringHelper::CompareNoCase(szName, "Items"))
+                            if (util::string::CompareNoCase(szName, "Items"))
                             {
                                 this->LoadItems(doc);
                             }
-                            else if (util::StringHelper::CompareNoCase(szName, "Format"))
+                            else if (util::string::CompareNoCase(szName, "Format"))
                             {
                                 this->LoadFormat(doc);
                             }
-                            else if (util::StringHelper::CompareNoCase(szName, "Presets"))
+                            else if (util::string::CompareNoCase(szName, "Presets"))
                             {
                                 this->LoadPresets(doc);
                             }
-                            else if (util::StringHelper::CompareNoCase(szName, "Outputs"))
+                            else if (util::string::CompareNoCase(szName, "Outputs"))
                             {
                                 this->LoadOutputs(doc);
                             }
-                            else if (util::StringHelper::CompareNoCase(szName, "Options"))
+                            else if (util::string::CompareNoCase(szName, "Options"))
                             {
                                 this->LoadOptions(doc);
                             }
-                            else if (util::StringHelper::CompareNoCase(szName, "Tool"))
+                            else if (util::string::CompareNoCase(szName, "Tool"))
                             {
                                 this->LoadTool(doc);
                             }
-                            else if (util::StringHelper::CompareNoCase(szName, "Language"))
+                            else if (util::string::CompareNoCase(szName, "Language"))
                             {
                                 this->LoadLanguage(doc);
                             }
                         }
                     }
-                    else if (util::StringHelper::CompareNoCase(szExt, L"exe"))
+                    else if (util::string::CompareNoCase(szExt, L"exe"))
                     {
                         // Set current format exe path.
                         int nFormat = this->m_CmbFormat.GetCurSel();
@@ -2237,7 +2237,7 @@ namespace dialogs
                             format.szPath = szPath;
                         }
                     }
-                    else if (util::StringHelper::CompareNoCase(szExt, L"lua"))
+                    else if (util::string::CompareNoCase(szExt, L"lua"))
                     {
                         // Set current format progress path.
                         int nFormat = this->m_CmbFormat.GetCurSel();
@@ -2641,7 +2641,7 @@ namespace dialogs
     {
         xml::XmlDocumnent doc;
         std::string szName = xml::XmlConfig::GetRootName(szFileXml, doc);
-        if (!szName.empty() && util::StringHelper::CompareNoCase(szName, "Options"))
+        if (!szName.empty() && util::string::CompareNoCase(szName, "Options"))
         {
             return this->LoadOptions(doc);
         }
@@ -2681,7 +2681,7 @@ namespace dialogs
                 if (xml::XmlDoc::Open(file, doc) == true)
                 {
                     std::string szName = xml::XmlDoc::GetRootName(doc);
-                    if (util::StringHelper::CompareNoCase(szName, "Format"))
+                    if (util::string::CompareNoCase(szName, "Format"))
                     {
                         config::CFormat format;
                         if (xml::XmlConfig::LoadFormat(doc, format))
@@ -2719,7 +2719,7 @@ namespace dialogs
     {
         xml::XmlDocumnent doc;
         std::string szName = xml::XmlConfig::GetRootName(szFileXml, doc);
-        if (!szName.empty() && util::StringHelper::CompareNoCase(szName, "Format"))
+        if (!szName.empty() && util::string::CompareNoCase(szName, "Format"))
         {
             return this->LoadFormat(doc);
         }
@@ -2749,7 +2749,7 @@ namespace dialogs
     {
         xml::XmlDocumnent doc;
         std::string szName = xml::XmlConfig::GetRootName(szFileXml, doc);
-        if (!szName.empty() && util::StringHelper::CompareNoCase(szName, "Presets"))
+        if (!szName.empty() && util::string::CompareNoCase(szName, "Presets"))
         {
             return this->LoadPresets(doc);
         }
@@ -2797,7 +2797,7 @@ namespace dialogs
                 if (xml::XmlDoc::Open(file, doc) == true)
                 {
                     std::string szName = xml::XmlDoc::GetRootName(doc);
-                    if (util::StringHelper::CompareNoCase(szName, "Tool"))
+                    if (util::string::CompareNoCase(szName, "Tool"))
                     {
                         config::CTool tool;
                         if (xml::XmlConfig::LoadTool(doc, tool))
@@ -2833,7 +2833,7 @@ namespace dialogs
     {
         xml::XmlDocumnent doc;
         std::string szName = xml::XmlConfig::GetRootName(szFileXml, doc);
-        if (!szName.empty() && util::StringHelper::CompareNoCase(szName, "Tool"))
+        if (!szName.empty() && util::string::CompareNoCase(szName, "Tool"))
         {
             return this->LoadTool(doc);
         }
@@ -2861,7 +2861,7 @@ namespace dialogs
     {
         xml::XmlDocumnent doc;
         std::string szName = xml::XmlConfig::GetRootName(szFileXml, doc);
-        if (!szName.empty() && util::StringHelper::CompareNoCase(szName, "Items"))
+        if (!szName.empty() && util::string::CompareNoCase(szName, "Items"))
         {
             return this->LoadItems(doc);
         }
@@ -2892,7 +2892,7 @@ namespace dialogs
     {
         xml::XmlDocumnent doc;
         std::string szName = xml::XmlConfig::GetRootName(szFileXml, doc);
-        if (!szName.empty() && util::StringHelper::CompareNoCase(szName, "Outputs"))
+        if (!szName.empty() && util::string::CompareNoCase(szName, "Outputs"))
         {
             return this->LoadOutputs(doc);
         }
@@ -2920,7 +2920,7 @@ namespace dialogs
     {
         xml::XmlDocumnent doc;
         std::string szName = xml::XmlConfig::GetRootName(szFileXml, doc);
-        if (!szName.empty() && util::StringHelper::CompareNoCase(szName, "Language"))
+        if (!szName.empty() && util::string::CompareNoCase(szName, "Language"))
         {
             return this->LoadLanguage(doc);
         }

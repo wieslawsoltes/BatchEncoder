@@ -9,7 +9,7 @@
 #include "LuaProgess.h"
 #include "utilities\Log.h"
 #include "utilities\MemoryLog.h"
-#include "utilities\StringHelper.h"
+#include "utilities\String.h"
 
 namespace worker
 {
@@ -30,7 +30,7 @@ namespace worker
             this->nProgress = 0;
             this->nPreviousProgress = 0;
 
-            std::string szFunction = util::StringHelper::StringHelper::Convert(this->cl->pFormat->szFunction);
+            std::string szFunction = util::string::Convert(this->cl->pFormat->szFunction);
             if (this->luaProgress.Open(szFunction.c_str()) == false)
             {
                 this->ctx->ItemStatus(this->cl->nItemId, ctx->GetString(0x00150001), this->ctx->GetString(0x00110001));
@@ -51,7 +51,7 @@ namespace worker
         {
             if (Log != nullptr)
             {
-                std::wstring szUnicode = util::StringHelper::Convert(szLine);
+                std::wstring szUnicode = util::string::Convert(szLine);
                 Log->Log(szUnicode, false);
             }
 

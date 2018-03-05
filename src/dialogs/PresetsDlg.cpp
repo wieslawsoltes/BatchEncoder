@@ -477,13 +477,13 @@ namespace dialogs
         // load columns width for PresetsList
         if (!szPresetsListColumns.empty())
         {
-            auto widths = util::StringHelper::Split(szPresetsListColumns.c_str(), ' ');
+            auto widths = util::string::Split(szPresetsListColumns.c_str(), ' ');
             if (widths.size() == 2)
             {
                 for (int i = 0; i < 2; i++)
                 {
                     std::wstring szWidth = widths[i];
-                    int nWidth = util::StringHelper::ToInt(szWidth);
+                    int nWidth = util::string::ToInt(szWidth);
                     m_LstPresets.SetColumnWidth(i, nWidth);
                 }
             }
@@ -578,13 +578,13 @@ namespace dialogs
                     std::wstring szPath = szFile;
                     std::wstring szExt = util::Utilities::GetFileExtension(szPath);
 
-                    if (util::StringHelper::CompareNoCase(szExt, L"xml"))
+                    if (util::string::CompareNoCase(szExt, L"xml"))
                     {
                         xml::XmlDocumnent doc;
                         std::string szName = xml::XmlConfig::GetRootName(szPath, doc);
                         if (!szName.empty())
                         {
-                            if (util::StringHelper::CompareNoCase(szName, "Presets"))
+                            if (util::string::CompareNoCase(szName, "Presets"))
                             {
                                 this->LoadPresets(doc);
                             }
@@ -635,7 +635,7 @@ namespace dialogs
     {
         xml::XmlDocumnent doc;
         std::string szName = xml::XmlConfig::GetRootName(szFileXml, doc);
-        if (!szName.empty() && util::StringHelper::CompareNoCase(szName, "Presets"))
+        if (!szName.empty() && util::string::CompareNoCase(szName, "Presets"))
         {
             return this->LoadPresets(doc);
         }

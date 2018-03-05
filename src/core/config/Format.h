@@ -6,7 +6,7 @@
 #include <string>
 #include <algorithm>
 #include <vector>
-#include "utilities\StringHelper.h"
+#include "utilities\String.h"
 #include "Preset.h"
 
 namespace config
@@ -48,7 +48,7 @@ namespace config
     public:
         bool IsValidInputExtension(const std::wstring& szExt)
         {
-            return util::StringHelper::ContainsNoCase(this->szInputExtensions, szExt, token);
+            return util::string::ContainsNoCase(this->szInputExtensions, szExt, token);
         }
     public:
         static size_t GetFormatById(std::vector<CFormat>& formats, const std::wstring& szFormatId)
@@ -57,7 +57,7 @@ namespace config
             for (size_t i = 0; i < nFormats; i++)
             {
                 CFormat& format = formats[i];
-                if (util::StringHelper::CompareNoCase(szFormatId, format.szId))
+                if (util::string::CompareNoCase(szFormatId, format.szId))
                     return i;
             }
             return -1;

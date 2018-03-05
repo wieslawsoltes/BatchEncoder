@@ -7,7 +7,7 @@
 #include <utility>
 #include <memory>
 #include "utilities\Log.h"
-#include "utilities\StringHelper.h"
+#include "utilities\String.h"
 #include "utilities\Utilities.h"
 #include "Format.h"
 #include "Item.h"
@@ -69,7 +69,7 @@ namespace config
 
             item.nSize = nFileSize;
             item.szName = std::move(szName);
-            item.szExtension = util::StringHelper::ToUpper(szExt);
+            item.szExtension = util::string::ToUpper(szExt);
             item.szFormatId = std::move(szFormatId);
             item.nPreset = nPresetId;
             item.bChecked = true;

@@ -6,7 +6,7 @@
 #include "targetver.h"
 #include "CppUnitTest.h"
 
-#include "utilities\StringHelper.h"
+#include "utilities\String.h"
 #include "utilities\Utilities.h"
 
 #include "worker\WorkerContext.h"

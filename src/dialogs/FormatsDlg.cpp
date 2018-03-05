@@ -785,13 +785,13 @@ namespace dialogs
         // load columns width for FormatsList
         if (!szFormatsListColumns.empty())
         {
-            auto widths = util::StringHelper::Split(szFormatsListColumns.c_str(), ' ');
+            auto widths = util::string::Split(szFormatsListColumns.c_str(), ' ');
             if (widths.size() == 2)
             {
                 for (int i = 0; i < 2; i++)
                 {
                     std::wstring szWidth = widths[i];
-                    int nWidth = util::StringHelper::ToInt(szWidth);
+                    int nWidth = util::string::ToInt(szWidth);
                     m_LstFormats.SetColumnWidth(i, nWidth);
                 }
             }
@@ -899,23 +899,23 @@ namespace dialogs
                     std::wstring szPath = szFile;
                     std::wstring szExt = util::Utilities::GetFileExtension(szPath);
 
-                    if (util::StringHelper::CompareNoCase(szExt, L"xml"))
+                    if (util::string::CompareNoCase(szExt, L"xml"))
                     {
                         xml::XmlDocumnent doc;
                         std::string szName = xml::XmlConfig::GetRootName(szPath, doc);
                         if (!szName.empty())
                         {
-                            if (util::StringHelper::CompareNoCase(szName, "Format"))
+                            if (util::string::CompareNoCase(szName, "Format"))
                             {
                                 this->LoadFormat(doc);
                             }
-                            else if (util::StringHelper::CompareNoCase(szName, "Presets"))
+                            else if (util::string::CompareNoCase(szName, "Presets"))
                             {
                                 this->LoadPresets(doc);
                             }
                         }
                     }
-                    else if (util::StringHelper::CompareNoCase(szExt, L"exe"))
+                    else if (util::string::CompareNoCase(szExt, L"exe"))
                     {
                         // Set current format exe path.
                         POSITION pos = m_LstFormats.GetFirstSelectedItemPosition();
@@ -927,7 +927,7 @@ namespace dialogs
                             this->m_EdtPath.SetWindowText(format.szPath.c_str());
                         }
                     }
-                    else if (util::StringHelper::CompareNoCase(szExt, L"lua"))
+                    else if (util::string::CompareNoCase(szExt, L"lua"))
                     {
                         // Set current format progress path.
                         POSITION pos = m_LstFormats.GetFirstSelectedItemPosition();
@@ -1125,7 +1125,7 @@ namespace dialogs
     {
         xml::XmlDocumnent doc;
         std::string szName = xml::XmlConfig::GetRootName(szFileXml, doc);
-        if (!szName.empty() && util::StringHelper::CompareNoCase(szName, "Format"))
+        if (!szName.empty() && util::string::CompareNoCase(szName, "Format"))
         {
             return this->LoadFormat(doc);
         }

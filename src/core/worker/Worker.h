@@ -13,7 +13,7 @@
 #include "utilities\MemoryLog.h"
 #include "utilities\Pipe.h"
 #include "utilities\Process.h"
-#include "utilities\StringHelper.h"
+#include "utilities\String.h"
 #include "utilities\TimeCount.h"
 #include "utilities\Utilities.h"
 #include "WorkerContext.h"
@@ -811,7 +811,7 @@ namespace worker
                 szDecOutputFile =
                     util::Utilities::GetFilePath(szEncOutputFile) +
                     util::Utilities::GenerateUuidString() +
-                    L"." + util::StringHelper::TowLower(pDecFormat->szOutputExtension);
+                    L"." + util::string::TowLower(pDecFormat->szOutputExtension);
             }
 
             if (bIsValidEncoderInput == false)

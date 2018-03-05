@@ -5,7 +5,7 @@
 
 #include <string>
 #include "InputPath.h"
-#include "utilities\StringHelper.h"
+#include "utilities\String.h"
 #include "utilities\Utilities.h"
 
 #define VAR_INPUT_DRIVE         L"$InputDrive$"
@@ -56,17 +56,17 @@ namespace worker
             }
 
             // replace custom name
-            util::StringHelper::ReplaceNoCase(szOutputFile, VAR_OUTPUT_NAME, szName);
+            util::string::ReplaceNoCase(szOutputFile, VAR_OUTPUT_NAME, szName);
 
             // replace custom ext
-            util::StringHelper::ReplaceNoCase(szOutputFile, VAR_OUTPUT_EXT, util::StringHelper::TowLower(szExt));
+            util::string::ReplaceNoCase(szOutputFile, VAR_OUTPUT_EXT, util::string::TowLower(szExt));
 
             // replace input path parts
-            util::StringHelper::ReplaceNoCase(szOutputFile, VAR_INPUT_DRIVE, m_Input.szInputDrive);
-            util::StringHelper::ReplaceNoCase(szOutputFile, VAR_INPUT_DIR, m_Input.szInputDir);
-            util::StringHelper::ReplaceNoCase(szOutputFile, VAR_INPUT_NAME, m_Input.szInputName);
-            util::StringHelper::ReplaceNoCase(szOutputFile, VAR_INPUT_EXT, util::StringHelper::TowLower(m_Input.szInputExt));
-            util::StringHelper::ReplaceNoCase(szOutputFile, VAR_INPUT_PATH, m_Input.szInputPath);
+            util::string::ReplaceNoCase(szOutputFile, VAR_INPUT_DRIVE, m_Input.szInputDrive);
+            util::string::ReplaceNoCase(szOutputFile, VAR_INPUT_DIR, m_Input.szInputDir);
+            util::string::ReplaceNoCase(szOutputFile, VAR_INPUT_NAME, m_Input.szInputName);
+            util::string::ReplaceNoCase(szOutputFile, VAR_INPUT_EXT, util::string::TowLower(m_Input.szInputExt));
+            util::string::ReplaceNoCase(szOutputFile, VAR_INPUT_PATH, m_Input.szInputPath);
 
             // replace input path folders
             size_t nFoldersSize = m_Input.szSourceFolders.size();
@@ -75,13 +75,13 @@ namespace worker
                 std::wstring& folder = m_Input.szSourceFolders[i - 1];
                 std::wstring szVarIndex = std::to_wstring(nFoldersSize - i);
                 std::wstring szVarName = VAR_INPUT_FOLDER;
-                util::StringHelper::Replace(szVarName, VAR_INPUT_FOLDER_INDEX, szVarIndex);
-                util::StringHelper::ReplaceNoCase(szOutputFile, szVarName, folder);
+                util::string::Replace(szVarName, VAR_INPUT_FOLDER_INDEX, szVarIndex);
+                util::string::ReplaceNoCase(szOutputFile, szVarName, folder);
             }
 
             // fix path after replacements
-            util::StringHelper::ReplaceNoCase(szOutputFile, L"\\\\", L"\\");
-            util::StringHelper::ReplaceNoCase(szOutputFile, L"//", L"/");
+            util::string::ReplaceNoCase(szOutputFile, L"\\\\", L"\\");
+            util::string::ReplaceNoCase(szOutputFile, L"//", L"/");
 
             // make valid full path
             wchar_t szValidOutputFile[_MAX_PATH];

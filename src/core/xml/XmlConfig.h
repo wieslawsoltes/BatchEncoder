@@ -9,7 +9,7 @@
 #include <vector>
 #include <cstdio>
 #include "tinyxml2\tinyxml2.h" // https://github.com/leethomason/tinyxml2
-#include "utilities\StringHelper.h"
+#include "utilities\String.h"
 #include "utilities\Utf8String.h"
 #include "config\Item.h"
 #include "config\Format.h"
@@ -545,7 +545,7 @@ namespace xml
                     VALIDATE(GetAttributeValueString(element, "key", &szKey));
                     VALIDATE(GetAttributeValueString(element, "value", &szValue));
 
-                    int nKey = util::StringHelper::ToIntFromHex(szKey);
+                    int nKey = util::string::ToIntFromHex(szKey);
                     m_Language.m_Strings[nKey] = std::move(szValue);
                 }
                 return true;
@@ -561,7 +561,7 @@ namespace xml
             for (auto& item : m_Language.m_Strings)
             {
                 int nKey = item.first;
-                std::wstring szKey = util::StringHelper::ToWStringHex(nKey);
+                std::wstring szKey = util::string::ToWStringHex(nKey);
 
                 auto element = this->NewElement("String");
                 parent->LinkEndChild(element);

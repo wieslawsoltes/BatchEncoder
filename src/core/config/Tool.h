@@ -6,7 +6,7 @@
 #include <string>
 #include <algorithm>
 #include <vector>
-#include "utilities\StringHelper.h"
+#include "utilities\String.h"
 
 namespace config
 {
@@ -27,7 +27,7 @@ namespace config
     public:
         bool IsValidFormat(const std::wstring& szFormat)
         {
-            return util::StringHelper::ContainsNoCase(this->szFormats, szFormat, token);
+            return util::string::ContainsNoCase(this->szFormats, szFormat, token);
         }
     public:
         static size_t GetToolByPath(std::vector<CTool>& tools, const std::wstring& szPath)
@@ -36,7 +36,7 @@ namespace config
             for (size_t i = 0; i < nTools; i++)
             {
                 CTool& tool = tools[i];
-                if (util::StringHelper::CompareNoCase(tool.szPath, szPath) == true)
+                if (util::string::CompareNoCase(tool.szPath, szPath) == true)
                     return i;
             }
             return -1;
@@ -58,7 +58,7 @@ namespace config
             for (size_t i = 0; i < nTools; i++)
             {
                 CTool& tool = tools[i];
-                if ((tool.IsValidFormat(szFormat) == true) && (util::StringHelper::CompareNoCase(tool.szPlatform, szPlatform) == true))
+                if ((tool.IsValidFormat(szFormat) == true) && (util::string::CompareNoCase(tool.szPlatform, szPlatform) == true))
                     return i;
             }
             return -1;

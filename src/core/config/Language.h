@@ -6,7 +6,7 @@
 #include <string>
 #include <map>
 #include <vector>
-#include "utilities\StringHelper.h"
+#include "utilities\String.h"
 
 namespace config
 {
@@ -24,7 +24,7 @@ namespace config
             for (size_t i = 0; i < nCount; i++)
             {
                 CLanguage& language = languages[i];
-                if (util::StringHelper::CompareNoCase(szLanguageId, language.szId))
+                if (util::string::CompareNoCase(szLanguageId, language.szId))
                     return i;
             }
             return -1;

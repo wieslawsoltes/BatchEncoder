@@ -73,7 +73,7 @@
 
 #include "utilities\Log.h"
 #include "utilities\FileLog.h"
-#include "utilities\StringHelper.h"
+#include "utilities\String.h"
 #include "utilities\TimeCount.h"
 #include "utilities\Utf8String.h"
 #include "utilities\Utilities.h"
