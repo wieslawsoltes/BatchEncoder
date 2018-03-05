@@ -184,7 +184,7 @@
     <ClInclude Include="TestWorkerContext.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="config\ConfigurationTests.cpp" />
+    <ClCompile Include="config\ConfigTests.cpp" />
     <ClCompile Include="config\FormatTests.cpp" />
     <ClCompile Include="config\ItemTests.cpp" />
     <ClCompile Include="config\OptionsTests.cpp" />

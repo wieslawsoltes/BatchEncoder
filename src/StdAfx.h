@@ -70,6 +70,7 @@
 #include <array>
 #include <vector>
 #include <thread>
+#include <algorithm>
 
 #include "utilities\Log.h"
 #include "utilities\FileLog.h"
@@ -79,7 +80,6 @@
 #include "utilities\Utilities.h"
 
 #include "config\Config.h"
-#include "xml\XmlConfig.h"
 
 #include "worker\WorkerContext.h"
 #include "worker\OutputPath.h"

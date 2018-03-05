@@ -3,7 +3,7 @@
 
 #include "stdafx.h"
 #include "CppUnitTest.h"
-#include "xml\XmlConfig.h"
+#include "config\Config.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 

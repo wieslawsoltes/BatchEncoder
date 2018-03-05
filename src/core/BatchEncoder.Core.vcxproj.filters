@@ -13,9 +13,6 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Header Files\Xml">
-      <UniqueIdentifier>{4813f535-920f-4387-b544-929464db517f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Worker">
       <UniqueIdentifier>{bb989857-60a6-4683-96b4-13acfc42ee6f}</UniqueIdentifier>
     </Filter>
@@ -98,9 +95,6 @@
     </ClInclude>
     <ClInclude Include="worker\WorkerContext.h">
       <Filter>Header Files\Worker</Filter>
-    </ClInclude>
-    <ClInclude Include="xml\XmlConfig.h">
-      <Filter>Header Files\Xml</Filter>
     </ClInclude>
     <ClInclude Include="config\Config.h">
       <Filter>Header Files\Config</Filter>

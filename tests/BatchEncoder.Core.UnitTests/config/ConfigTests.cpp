@@ -9,10 +9,10 @@ using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 namespace BatchEncoderCoreUnitTests
 {
-    TEST_CLASS(CConfiguration_Tests)
+    TEST_CLASS(CConfig_Tests)
     {
     public:
-        TEST_METHOD(CConfiguration_Constructor)
+        TEST_METHOD(CConfig_Constructor)
         {
             #pragma warning(push)
             #pragma warning(disable:4101)

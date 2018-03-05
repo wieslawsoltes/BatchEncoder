@@ -41,9 +41,6 @@
     <ClCompile Include="stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="config\ConfigurationTests.cpp">
-      <Filter>Source Files\Config</Filter>
-    </ClCompile>
     <ClCompile Include="config\FormatTests.cpp">
       <Filter>Source Files\Config</Filter>
     </ClCompile>
@@ -127,6 +124,9 @@
     </ClCompile>
     <ClCompile Include="xml\XmlToolsTests.cpp">
       <Filter>Source Files\Xml</Filter>
+    </ClCompile>
+    <ClCompile Include="config\ConfigTests.cpp">
+      <Filter>Source Files\Config</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

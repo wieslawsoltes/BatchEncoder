@@ -1697,20 +1697,6 @@ namespace dialogs
         return false;
     }
 
-    void CMainDlg::AddLanguageToMenu(int nIndex)
-    {
-        config::CLanguage& language = m_Config.m_Languages[nIndex];
-        std::wstring szText = language.szOriginalName + L" (" + language.szTranslatedName + L")";
-
-        UINT nLangID = ID_LANGUAGE_MIN + nIndex;
-        CMenu *m_hLangMenu = this->GetMenu()->GetSubMenu(4);
-        if (nLangID == ID_LANGUAGE_MIN)
-            m_hLangMenu->DeleteMenu(ID_LANGUAGE_DEFAULT, 0);
-
-        m_hLangMenu->AppendMenu(MF_STRING, nLangID, szText.c_str());
-        m_hLangMenu->CheckMenuItem(nLangID, MF_UNCHECKED);
-    }
-
     void CMainDlg::InitLanguageMenu()
     {
         CMenu *m_hLangMenu = this->GetMenu()->GetSubMenu(4);
@@ -2639,21 +2625,20 @@ namespace dialogs
 
     bool CMainDlg::LoadOptions(const std::wstring& szFileXml)
     {
-        xml::XmlDocumnent doc;
-        std::string szName = xml::XmlConfig::GetRootName(szFileXml, doc);
-        if (!szName.empty() && util::string::CompareNoCase(szName, "Options"))
+        if (this->m_Config.LoadOptions(szFileXml))
         {
-            return this->LoadOptions(doc);
+            this->SetOptions();
+            this->UpdateFormatComboBox();
+            this->UpdatePresetComboBox();
+            return true;
         }
         return false;
     }
 
     bool CMainDlg::LoadOptions(xml::XmlDocumnent &doc)
     {
-        config::COptions options;
-        if (xml::XmlConfig::LoadOptions(doc, options))
+        if (this->m_Config.LoadOptions(doc))
         {
-            this->m_Config.m_Options = std::move(options);
             this->SetOptions();
             this->UpdateFormatComboBox();
             this->UpdatePresetComboBox();
@@ -2665,39 +2650,15 @@ namespace dialogs
     bool CMainDlg::SaveOptions(const std::wstring& szFileXml)
     {
         this->GetOptions();
-        return xml::XmlConfig::SaveOptions(szFileXml, this->m_Config.m_Options);
+        return this->m_Config.SaveOptions(szFileXml);
     }
 
     bool CMainDlg::LoadFormats(const std::wstring& szPath)
     {
-        std::vector<std::wstring> files;
-        bool bResult = util::Utilities::FindFiles(szPath, files, false);
-        if (bResult == true)
+        if (this->m_Config.LoadFormats(szPath))
         {
-            std::vector<config::CFormat> formats;
-            for (auto& file : files)
-            {
-                xml::XmlDocumnent doc;
-                if (xml::XmlDoc::Open(file, doc) == true)
-                {
-                    std::string szName = xml::XmlDoc::GetRootName(doc);
-                    if (util::string::CompareNoCase(szName, "Format"))
-                    {
-                        config::CFormat format;
-                        if (xml::XmlConfig::LoadFormat(doc, format))
-                        {
-                            formats.emplace_back(std::move(format));
-                        }
-                    }
-                }
-            }
-            if (formats.size() > 0)
-            {
-                config::CFormat::Sort(formats);
-                this->m_Config.m_Formats = std::move(formats);
-                this->UpdateFormatComboBox();
-                this->UpdatePresetComboBox();
-            }
+            this->UpdateFormatComboBox();
+            this->UpdatePresetComboBox();
             return true;
         }
         return false;
@@ -2705,34 +2666,24 @@ namespace dialogs
 
     bool CMainDlg::SaveFormats(const std::wstring& szPath)
     {
-        util::Utilities::CreateDirectory(szPath);
-        for (auto& format : this->m_Config.m_Formats)
-        {
-            std::wstring path = util::Utilities::CombinePath(szPath, format.szId + L".xml");
-            if (this->SaveFormat(path, format) == false)
-                return false;
-        }
-        return true;
+        return this->m_Config.SaveFormats(szPath);
     }
 
     bool CMainDlg::LoadFormat(const std::wstring& szFileXml)
     {
-        xml::XmlDocumnent doc;
-        std::string szName = xml::XmlConfig::GetRootName(szFileXml, doc);
-        if (!szName.empty() && util::string::CompareNoCase(szName, "Format"))
+        if (this->m_Config.LoadFormat(szFileXml))
         {
-            return this->LoadFormat(doc);
+            this->UpdateFormatComboBox();
+            this->UpdatePresetComboBox();
+            return true;
         }
         return false;
     }
 
     bool CMainDlg::LoadFormat(xml::XmlDocumnent &doc)
     {
-        config::CFormat format;
-        if (xml::XmlConfig::LoadFormat(doc, format))
+        if (this->m_Config.LoadFormat(doc))
         {
-            m_Config.m_Formats.emplace_back(std::move(format));
-            config::CFormat::Sort(m_Config.m_Formats);
             this->UpdateFormatComboBox();
             this->UpdatePresetComboBox();
             return true;
@@ -2742,30 +2693,30 @@ namespace dialogs
 
     bool CMainDlg::SaveFormat(const std::wstring& szFileXml, config::CFormat& format)
     {
-        return xml::XmlConfig::SaveFormat(szFileXml, format);
+        return this->m_Config.SaveFormat(szFileXml, format);
     }
 
     bool CMainDlg::LoadPresets(const std::wstring& szFileXml)
     {
-        xml::XmlDocumnent doc;
-        std::string szName = xml::XmlConfig::GetRootName(szFileXml, doc);
-        if (!szName.empty() && util::string::CompareNoCase(szName, "Presets"))
+        int nFormat = this->m_CmbFormat.GetCurSel();
+        if (nFormat != -1)
         {
-            return this->LoadPresets(doc);
+            if (this->m_Config.LoadPresets(szFileXml, nFormat))
+            {
+                this->UpdatePresetComboBox();
+                return true;
+            }
         }
         return false;
     }
 
     bool CMainDlg::LoadPresets(xml::XmlDocumnent &doc)
     {
-        std::vector<config::CPreset> presets;
-        if (xml::XmlConfig::LoadPresets(doc, presets))
+        int nFormat = this->m_CmbFormat.GetCurSel();
+        if (nFormat != -1)
         {
-            int nFormat = this->m_CmbFormat.GetCurSel();
-            if (nFormat != -1)
+            if (this->m_Config.LoadPresets(doc, nFormat))
             {
-                config::CFormat& format = m_Config.m_Formats[nFormat];
-                format.m_Presets = std::move(presets);
                 this->UpdatePresetComboBox();
                 return true;
             }
@@ -2778,103 +2729,51 @@ namespace dialogs
         int nFormat = this->m_CmbFormat.GetCurSel();
         if (nFormat != -1)
         {
-            config::CFormat& format = m_Config.m_Formats[nFormat];
-            return xml::XmlConfig::SavePresets(szFileXml, format.m_Presets);
+            return this->m_Config.SavePresets(szFileXml, nFormat);
         }
         return false;
     }
 
     bool CMainDlg::LoadTools(const std::wstring& szPath)
     {
-        std::vector<std::wstring> files;
-        bool bResult = util::Utilities::FindFiles(szPath, files, false);
-        if (bResult == true)
-        {
-            std::vector<config::CTool> tools;
-            for (auto& file : files)
-            {
-                xml::XmlDocumnent doc;
-                if (xml::XmlDoc::Open(file, doc) == true)
-                {
-                    std::string szName = xml::XmlDoc::GetRootName(doc);
-                    if (util::string::CompareNoCase(szName, "Tool"))
-                    {
-                        config::CTool tool;
-                        if (xml::XmlConfig::LoadTool(doc, tool))
-                        {
-                            tools.emplace_back(std::move(tool));
-                        }
-                    }
-                }
-            }
-            if (tools.size() > 0)
-            {
-                config::CTool::Sort(tools);
-                this->m_Config.m_Tools = std::move(tools);
-            }
-            return true;
-        }
-        return false;
+        return this->m_Config.LoadTools(szPath);
     }
 
     bool CMainDlg::SaveTools(const std::wstring& szPath)
     {
-        util::Utilities::CreateDirectory(szPath);
-        for (auto& tool : this->m_Config.m_Tools)
-        {
-            std::wstring path = util::Utilities::CombinePath(szPath, tool.szName + L".xml");
-            if (this->SaveTool(path, tool) == false)
-                return false;
-        }
-        return true;
+        return this->m_Config.SaveTools(szPath);
     }
 
     bool CMainDlg::LoadTool(const std::wstring& szFileXml)
     {
-        xml::XmlDocumnent doc;
-        std::string szName = xml::XmlConfig::GetRootName(szFileXml, doc);
-        if (!szName.empty() && util::string::CompareNoCase(szName, "Tool"))
-        {
-            return this->LoadTool(doc);
-        }
-        return false;
+        return this->m_Config.LoadTool(szFileXml);
     }
 
     bool CMainDlg::LoadTool(xml::XmlDocumnent &doc)
     {
-        config::CTool tool;
-        if (xml::XmlConfig::LoadTool(doc, tool))
-        {
-            m_Config.m_Tools.emplace_back(std::move(tool));
-            config::CTool::Sort(m_Config.m_Tools);
-            return true;
-        }
-        return false;
+        return this->m_Config.LoadTool(doc);
     }
 
     bool CMainDlg::SaveTool(const std::wstring& szFileXml, config::CTool& tool)
     {
-        return xml::XmlConfig::SaveTool(szFileXml, tool);
+        return this->m_Config.SaveTool(szFileXml, tool);
     }
 
     bool CMainDlg::LoadItems(const std::wstring& szFileXml)
     {
-        xml::XmlDocumnent doc;
-        std::string szName = xml::XmlConfig::GetRootName(szFileXml, doc);
-        if (!szName.empty() && util::string::CompareNoCase(szName, "Items"))
+        if (this->m_Config.LoadItems(szFileXml))
         {
-            return this->LoadItems(doc);
+            this->SetItems();
+            this->UpdateStatusBar();
+            return true;
         }
         return false;
     }
 
     bool CMainDlg::LoadItems(xml::XmlDocumnent &doc)
     {
-        std::vector<config::CItem> items;
-        if (xml::XmlConfig::LoadItems(doc, items))
+        if (this->m_Config.LoadItems(doc))
         {
-            m_LstInputItems.SetItemCount(0);
-            this->m_Config.m_Items = std::move(items);
             this->SetItems();
             this->UpdateStatusBar();
             return true;
@@ -2885,26 +2784,23 @@ namespace dialogs
     bool CMainDlg::SaveItems(const std::wstring& szFileXml)
     {
         this->GetItems();
-        return xml::XmlConfig::SaveItems(szFileXml, this->m_Config.m_Items);
+        return this->m_Config.SaveItems(szFileXml);
     }
 
     bool CMainDlg::LoadOutputs(const std::wstring& szFileXml)
     {
-        xml::XmlDocumnent doc;
-        std::string szName = xml::XmlConfig::GetRootName(szFileXml, doc);
-        if (!szName.empty() && util::string::CompareNoCase(szName, "Outputs"))
+        if (this->m_Config.LoadOutputs(szFileXml))
         {
-            return this->LoadOutputs(doc);
+            this->UpdateOutputsComboBox();
+            return true;
         }
         return false;
     }
 
     bool CMainDlg::LoadOutputs(xml::XmlDocumnent &doc)
     {
-        std::vector<std::wstring> outputs;
-        if (xml::XmlConfig::LoadOutputs(doc, outputs))
+        if (this->m_Config.LoadOutputs(doc))
         {
-            m_Config.m_Outputs = std::move(outputs);
             this->UpdateOutputsComboBox();
             return true;
         }
@@ -2913,29 +2809,46 @@ namespace dialogs
 
     bool CMainDlg::SaveOutputs(const std::wstring& szFileXml)
     {
-        return xml::XmlConfig::SaveOutputs(szFileXml, m_Config.m_Outputs);
+        return this->m_Config.SaveOutputs(szFileXml);
     }
 
     bool CMainDlg::LoadLanguage(const std::wstring& szFileXml)
     {
-        xml::XmlDocumnent doc;
-        std::string szName = xml::XmlConfig::GetRootName(szFileXml, doc);
-        if (!szName.empty() && util::string::CompareNoCase(szName, "Language"))
+        if (this->m_Config.LoadLanguage(szFileXml))
         {
-            return this->LoadLanguage(doc);
+            config::CLanguage &language = m_Config.m_Languages.back();
+            int nIndex = m_Config.m_Languages.size() - 1;
+            std::wstring szText = language.szOriginalName + L" (" + language.szTranslatedName + L")";
+
+            UINT nLangID = ID_LANGUAGE_MIN + nIndex;
+            CMenu *m_hLangMenu = this->GetMenu()->GetSubMenu(4);
+            if (nLangID == ID_LANGUAGE_MIN)
+                m_hLangMenu->DeleteMenu(ID_LANGUAGE_DEFAULT, 0);
+
+            m_hLangMenu->AppendMenu(MF_STRING, nLangID, szText.c_str());
+            m_hLangMenu->CheckMenuItem(nLangID, MF_UNCHECKED);
+
+            return true;
         }
         return false;
     }
 
     bool CMainDlg::LoadLanguage(xml::XmlDocumnent &doc)
     {
-        config::CLanguage language;
-        if (xml::XmlConfig::LoadLanguage(doc, language))
+        if (this->m_Config.LoadLanguage(doc))
         {
-            this->m_Config.m_Languages.emplace_back(std::move(language));
-            size_t nLanguages = m_Config.m_Languages.size();
-            size_t nIndex = nLanguages - 1;
-            this->AddLanguageToMenu(nIndex);
+            config::CLanguage &language = m_Config.m_Languages.back();
+            int nIndex = m_Config.m_Languages.size() - 1;
+            std::wstring szText = language.szOriginalName + L" (" + language.szTranslatedName + L")";
+
+            UINT nLangID = ID_LANGUAGE_MIN + nIndex;
+            CMenu *m_hLangMenu = this->GetMenu()->GetSubMenu(4);
+            if (nLangID == ID_LANGUAGE_MIN)
+                m_hLangMenu->DeleteMenu(ID_LANGUAGE_DEFAULT, 0);
+
+            m_hLangMenu->AppendMenu(MF_STRING, nLangID, szText.c_str());
+            m_hLangMenu->CheckMenuItem(nLangID, MF_UNCHECKED);
+
             return true;
         }
         return false;
