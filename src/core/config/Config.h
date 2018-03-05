@@ -112,7 +112,7 @@ namespace config
                 return rValue;
             return szDefault;
         }
-        std::wstring GetString(int nKey)
+        inline std::wstring GetString(int nKey)
         {
             std::wstring rValue;
             if (this->LookupString(nKey, rValue))
