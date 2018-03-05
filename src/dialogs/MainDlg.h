@@ -128,7 +128,6 @@ namespace dialogs
         void InitLanguageMenu();
         void SetLanguage();
         void GetItems();
-        void SetItems();
         void GetOptions();
         void SetOptions();
         bool IsItemSelected(int nItem);
@@ -138,8 +137,8 @@ namespace dialogs
         void ToggleItem(int nItem);
         int AddToItems(const std::wstring& szPath);
         bool AddToList(const std::wstring& szPath);
-        void RedrawItem(int nItem);
-        void RedrawItem(int nStart, int nEnd);
+        void RedrawItems();
+        void RedrawItem(int nId);
         void ShowEdtItem();
         void UpdateEdtItem(BOOL bUpdateText);
         void HandleDropFiles(HDROP hDropInfo);

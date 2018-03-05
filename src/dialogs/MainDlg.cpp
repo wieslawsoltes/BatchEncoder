@@ -998,7 +998,7 @@ namespace dialogs
         if (this->ctx->bRunning == false)
         {
             m_Config.m_Items = std::vector<config::CItem>();
-            m_LstInputItems.SetItemCount(0);
+            this->RedrawItems();
             this->UpdateStatusBar();
         }
     }
@@ -1041,7 +1041,7 @@ namespace dialogs
                             this->AddToList(szFilePath);
                     } while (pos != nullptr);
 
-                    this->SetItems();
+                    this->RedrawItems();
                     this->UpdateStatusBar();
                 }
             }
@@ -1103,7 +1103,7 @@ namespace dialogs
                         {
                             this->AddToList(file);
                         }
-                        this->SetItems();
+                        this->RedrawItems();
                         this->UpdateStatusBar();
                     }
                     else
@@ -1175,8 +1175,9 @@ namespace dialogs
 
             m_Config.RemoveItems(keep);
 
+            this->RedrawItems();
+
             nItems = m_Config.m_Items.size();
-            m_LstInputItems.SetItemCount(nItems);
 
             if (nItemLastRemoved != -1)
             {
@@ -1195,7 +1196,7 @@ namespace dialogs
             if (nItems == 0)
             {
                 m_Config.m_Items = std::vector<config::CItem>();
-                m_LstInputItems.SetItemCount(0);
+                this->RedrawItems();
             }
 
             this->UpdateStatusBar();
@@ -1236,14 +1237,13 @@ namespace dialogs
 
             m_Config.RemoveItems(keep);
 
-            nItems = m_Config.m_Items.size();
-            m_LstInputItems.SetItemCount(nItems);
-            this->RedrawItem(0, nItems - 1);
+            this->RedrawItems();
 
+            nItems = m_Config.m_Items.size();
             if (nItems == 0)
             {
                 m_Config.m_Items = std::vector<config::CItem>();
-                m_LstInputItems.SetItemCount(0);
+                this->RedrawItems();
             }
             this->UpdateStatusBar();
         }
@@ -1267,14 +1267,13 @@ namespace dialogs
 
             m_Config.RemoveItems(keep);
 
-            nItems = m_Config.m_Items.size();
-            m_LstInputItems.SetItemCount(nItems);
-            this->RedrawItem(0, nItems - 1);
+            this->RedrawItems();
 
+            nItems = m_Config.m_Items.size();
             if (nItems == 0)
             {
                 m_Config.m_Items = std::vector<config::CItem>();
-                m_LstInputItems.SetItemCount(0);
+                this->RedrawItems();
             }
             this->UpdateStatusBar();
         }
@@ -1293,12 +1292,10 @@ namespace dialogs
                     {
                         config::CItem& item = m_Config.m_Items[i];
                         if (item.bChecked == false)
-                        {
                             item.bChecked = true;
-                            this->RedrawItem(i);
-                        }
                     }
                 }
+                this->RedrawItems();
                 this->UpdateStatusBar();
             }
         }
@@ -1319,10 +1316,10 @@ namespace dialogs
                         if (item.bChecked == true)
                         {
                             item.bChecked = false;
-                            this->RedrawItem(i);
                         }
                     }
                 }
+                this->RedrawItems();
                 this->UpdateStatusBar();
             }
         }
@@ -1341,9 +1338,9 @@ namespace dialogs
                     {
                         config::CItem& item = m_Config.m_Items[i];
                         item.bChecked = !item.bChecked;
-                        this->RedrawItem(i);
                     }
                 }
+                this->RedrawItems();
                 this->UpdateStatusBar();
             }
         }
@@ -1832,12 +1829,6 @@ namespace dialogs
         }
     }
 
-    void CMainDlg::SetItems()
-    {
-        size_t nItems = m_Config.m_Items.size();
-        m_LstInputItems.SetItemCount(nItems);
-    }
-
     void CMainDlg::GetOptions()
     {
         // option: SelectedFormat
@@ -2070,7 +2061,7 @@ namespace dialogs
     {
         config::CItem& item = m_Config.m_Items[nItem];
         item.bChecked = !item.bChecked;
-        this->RedrawItem(nItem);
+        this->RedrawItems();
     }
 
     int CMainDlg::AddToItems(const std::wstring& szPath)
@@ -2080,14 +2071,15 @@ namespace dialogs
         return m_Config.AddItem(szPath, nFormat, nPreset);
     }
 
-    void CMainDlg::RedrawItem(int nItem)
+    void CMainDlg::RedrawItem(int nId)
     {
-        m_LstInputItems.RedrawItems(nItem, nItem);
+        this->m_LstInputItems.RedrawItems(nId, nId);
     }
 
-    void CMainDlg::RedrawItem(int nStart, int nEnd)
+    void CMainDlg::RedrawItems()
     {
-        m_LstInputItems.RedrawItems(nStart, nEnd);
+        this->m_LstInputItems.RedrawItems(0, m_Config.m_Items.size() - 1);
+        this->m_LstInputItems.SetItemCount(m_Config.m_Items.size());
     }
 
     bool CMainDlg::AddToList(const std::wstring& szPath)
@@ -2103,7 +2095,7 @@ namespace dialogs
         if (nItem == -1)
             return false;
 
-        this->RedrawItem(nItem);
+        this->RedrawItems();
 
         return true;
     }
@@ -2134,7 +2126,7 @@ namespace dialogs
                 {
                     config::CItem& item = m_Config.m_Items[nEdtItem];
                     item.szOptions = szEdtText;
-                    this->RedrawItem(nEdtItem);
+                    this->RedrawItems();
                 }
             }
 
@@ -2165,7 +2157,7 @@ namespace dialogs
                         {
                             this->AddToList(file);
                         }
-                        this->SetItems();
+                        this->RedrawItems();
                     }
                     else
                     {
@@ -2236,7 +2228,7 @@ namespace dialogs
                     else
                     {
                         this->AddToList(szPath);
-                        this->SetItems();
+                        this->RedrawItems();
                     }
                 }
                 szFile.ReleaseBuffer();
@@ -2346,10 +2338,11 @@ namespace dialogs
                         config::CItem& item = m_Config.m_Items[i];
                         item.szFormatId = format.szId;
                         item.nPreset = nPreset;
-                        this->RedrawItem(i);
                         nSelected++;
                     }
                 }
+
+                this->RedrawItems();
 
                 if (nSelected == 0)
                 {
@@ -2359,7 +2352,7 @@ namespace dialogs
                         item.szFormatId = format.szId;
                         item.nPreset = nPreset;
                     }
-                    this->RedrawItem(0, nItems - 1);
+                    this->RedrawItems();
                 }
             }
         }
@@ -2384,10 +2377,12 @@ namespace dialogs
                 {
                     config::CItem& item = m_Config.m_Items[i];
                     item.szTime = szDefaultTime;
-                    this->RedrawItem(i);
+                    
                     nSelected++;
                 }
             }
+
+            this->RedrawItems();
 
             if (nSelected == 0)
             {
@@ -2396,7 +2391,7 @@ namespace dialogs
                     config::CItem& item = m_Config.m_Items[i];
                     item.szTime = szDefaultTime;
                 }
-                this->RedrawItem(0, nItems - 1);
+                this->RedrawItems();
             }
         }
     }
@@ -2415,10 +2410,10 @@ namespace dialogs
                 {
                     config::CItem& item = m_Config.m_Items[i];
                     item.szStatus = szDefaultStatus;
-                    this->RedrawItem(i);
                     nSelected++;
                 }
             }
+            this->RedrawItems();
 
             if (nSelected == 0)
             {
@@ -2427,7 +2422,7 @@ namespace dialogs
                     config::CItem& item = m_Config.m_Items[i];
                     item.szStatus = szDefaultStatus;
                 }
-                this->RedrawItem(0, nItems - 1);
+                this->RedrawItems();
             }
         }
     }
@@ -2537,10 +2532,10 @@ namespace dialogs
                 {
                     item.szTime = szDefaultTime;
                     item.szStatus = szDefaultStatus;
-                    this->RedrawItem(i);
                     nChecked++;
                 }
             }
+            this->RedrawItems();
 
             if (nChecked <= 0)
             {
@@ -2763,7 +2758,7 @@ namespace dialogs
     {
         if (this->m_Config.LoadItems(szFileXml))
         {
-            this->SetItems();
+            this->RedrawItems();
             this->UpdateStatusBar();
             return true;
         }
@@ -2774,7 +2769,7 @@ namespace dialogs
     {
         if (this->m_Config.LoadItems(doc))
         {
-            this->SetItems();
+            this->RedrawItems();
             this->UpdateStatusBar();
             return true;
         }
