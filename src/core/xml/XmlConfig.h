@@ -4,8 +4,8 @@
 #pragma once
 
 #include <string>
+#include <cstring>
 #include <utility>
-#include <string.h>
 #include <vector>
 #include <cstdio>
 #include "tinyxml2\tinyxml2.h" // https://github.com/leethomason/tinyxml2
