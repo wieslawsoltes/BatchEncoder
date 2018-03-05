@@ -9,14 +9,15 @@ using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 namespace BatchEncoderCoreUnitTests
 {
-    TEST_CLASS(XmlConfig_Tests)
+    TEST_CLASS(XmlPresets_Tests)
     {
     public:
-        TEST_METHOD(XmlConfig_Constructor)
+        TEST_METHOD(XmlPresets_Constructor)
         {
             #pragma warning(push)
             #pragma warning(disable:4101)
-            xml::XmlConfig xml;
+            xml::XmlDocumnent doc;
+            xml::XmlPresets xml(doc);
             #pragma warning(pop)
         }
     };

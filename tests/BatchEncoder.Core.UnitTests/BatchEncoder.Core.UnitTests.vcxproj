@@ -209,6 +209,14 @@
     <ClCompile Include="worker\WorkerContextTests.cpp" />
     <ClCompile Include="worker\WorkerTests.cpp" />
     <ClCompile Include="xml\XmlConfigTests.cpp" />
+    <ClCompile Include="xml\XmlDocTests.cpp" />
+    <ClCompile Include="xml\XmlFormatsTests.cpp" />
+    <ClCompile Include="xml\XmlItemsTests.cpp" />
+    <ClCompile Include="xml\XmlLanguagesTests.cpp" />
+    <ClCompile Include="xml\XmlOptionsTests.cpp" />
+    <ClCompile Include="xml\XmlOutputsTests.cpp" />
+    <ClCompile Include="xml\XmlPresetsTests.cpp" />
+    <ClCompile Include="xml\XmlToolsTests.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\common\lua\Lua.vcxproj">

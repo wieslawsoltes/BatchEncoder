@@ -104,5 +104,29 @@
     <ClCompile Include="worker\CommandLineTests.cpp">
       <Filter>Source Files\Worker</Filter>
     </ClCompile>
+    <ClCompile Include="xml\XmlDocTests.cpp">
+      <Filter>Source Files\Xml</Filter>
+    </ClCompile>
+    <ClCompile Include="xml\XmlFormatsTests.cpp">
+      <Filter>Source Files\Xml</Filter>
+    </ClCompile>
+    <ClCompile Include="xml\XmlItemsTests.cpp">
+      <Filter>Source Files\Xml</Filter>
+    </ClCompile>
+    <ClCompile Include="xml\XmlLanguagesTests.cpp">
+      <Filter>Source Files\Xml</Filter>
+    </ClCompile>
+    <ClCompile Include="xml\XmlOptionsTests.cpp">
+      <Filter>Source Files\Xml</Filter>
+    </ClCompile>
+    <ClCompile Include="xml\XmlOutputsTests.cpp">
+      <Filter>Source Files\Xml</Filter>
+    </ClCompile>
+    <ClCompile Include="xml\XmlPresetsTests.cpp">
+      <Filter>Source Files\Xml</Filter>
+    </ClCompile>
+    <ClCompile Include="xml\XmlToolsTests.cpp">
+      <Filter>Source Files\Xml</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
