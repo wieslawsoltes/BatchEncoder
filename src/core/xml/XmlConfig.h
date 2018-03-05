@@ -59,6 +59,11 @@ namespace xml
 
             return result == tinyxml2::XMLError::XML_SUCCESS;
         }
+        static bool Parse(const char* xml, XmlDocumnent & doc)
+        {
+            tinyxml2::XMLError result = doc.Parse(xml);
+            return result == tinyxml2::XMLError::XML_SUCCESS;
+        }
         static bool Save(const std::wstring& szFileName, XmlDocumnent & doc)
         {
             FILE *fs;
