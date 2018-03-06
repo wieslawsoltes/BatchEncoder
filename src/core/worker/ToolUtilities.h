@@ -20,15 +20,14 @@ namespace worker
     public:
         volatile bool bDownload;
     public:
-        bool Download(config::CTool& tool, bool bExtract, bool bInstall, int nIndex, config::CConfig *pConfig, std::function<bool(int, std::wstring)> callback = nullptr)
+        bool Download(config::CTool& tool, bool bExtract, bool bInstall, int nIndex, config::CConfig *config, std::function<bool(int, std::wstring)> callback = nullptr)
         {
             util::CDownload m_Download;
             std::wstring szUrl = tool.szUrl;
-            std::wstring szFilePath = util::Utilities::CombinePath(pConfig->m_Settings.szToolsPath, tool.szFile);
-            std::wstring szFolderPath = util::Utilities::CombinePath(pConfig->m_Settings.szToolsPath, util::Utilities::GetOnlyFileName(tool.szFile));
+            std::wstring szFilePath = util::Utilities::CombinePath(config->m_Settings.szToolsPath, tool.szFile);
+            std::wstring szFolderPath = util::Utilities::CombinePath(config->m_Settings.szToolsPath, util::Utilities::GetOnlyFileName(tool.szFile));
 
-            bool bResult = m_Download.Download(szUrl, szFilePath,
-                [nIndex, pConfig, callback](int nProgress, std::wstring szStatus)
+            auto statusCallback = [&](int nProgress, std::wstring szStatus)
             {
                 if (callback != nullptr)
                 {
@@ -38,16 +37,16 @@ namespace worker
                         auto pos = szStatus.find(str);
                         if (pos != std::string::npos)
                         {
-                            std::wstring szTranslation = pConfig->GetString(0x00400001 + s);
+                            std::wstring szTranslation = config->GetString(0x00400001 + s);
                             szStatus.replace(pos, str.length(), szTranslation);
                         }
                     }
                     return callback(nIndex, szStatus);
                 }
                 return false; // Do not abort.
-            });
+            };
 
-            if (bResult == false)
+            if (m_Download.Download(szUrl, szFilePath, statusCallback) == false)
             {
                 return false;
             }
@@ -74,7 +73,7 @@ namespace worker
                         {
                             if (callback != nullptr)
                             {
-                                std::wstring szStatus = pConfig->GetString(0x00410001);
+                                std::wstring szStatus = config->GetString(0x00410001);
                                 callback(nIndex, szStatus);
                             }
                             return false;
@@ -88,7 +87,7 @@ namespace worker
                         {
                             if (callback != nullptr)
                             {
-                                std::wstring szStatus = pConfig->GetString(0x00410002);
+                                std::wstring szStatus = config->GetString(0x00410002);
                                 callback(nIndex, szStatus);
                             }
                             return true;
@@ -97,7 +96,7 @@ namespace worker
                         {
                             if (callback != nullptr)
                             {
-                                std::wstring szStatus = pConfig->GetString(0x00410003);
+                                std::wstring szStatus = config->GetString(0x00410003);
                                 callback(nIndex, szStatus);
                             }
                             return false;
