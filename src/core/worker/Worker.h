@@ -31,21 +31,22 @@ namespace worker
 {
     class CWorker
     {
-        bool Download(IWorkerContext* ctx, CCommandLine &cl)
+    public:
+        bool Download(IWorkerContext* ctx, config::CFormat& format, int nItemId)
         {
             auto config = ctx->pConfig;
             CToolUtilities m_Utilities;
-            int nTool = config::CTool::GetToolByPath(config->m_Tools, cl.format.szPath);
+            int nTool = config::CTool::GetToolByPath(config->m_Tools, format.szPath);
             if (nTool < 0)
             {
-                nTool = m_Utilities.FindTool(config->m_Tools, cl.format.szId);
+                nTool = m_Utilities.FindTool(config->m_Tools, format.szId);
             }
             if (nTool >= 0)
             {
                 config::CTool& tool = config->m_Tools[nTool];
                 auto callback = [&](int nIndex, std::wstring szStatus) -> bool
                 {
-                    ctx->ItemStatus(cl.nItemId, ctx->GetString(0x00150001), szStatus);
+                    ctx->ItemStatus(nItemId, ctx->GetString(0x00150001), szStatus);
                     if (ctx->bRunning == false)
                         return true;
                     return false;
@@ -101,7 +102,7 @@ namespace worker
                 bool bFailed = true;
                 if (config->m_Options.bTryToDownloadTools == true)
                 {
-                    if (this->Download(ctx, cl) == true)
+                    if (this->Download(ctx, cl.format, cl.nItemId) == true)
                     {
                         util::Utilities::SetCurrentDirectory(config->m_Settings.szSettingsPath);
                         if (process.Start(cl.szCommandLine, config->m_Options.bHideConsoleWindow) == true)
@@ -263,7 +264,7 @@ namespace worker
                 bool bFailed = true;
                 if (config->m_Options.bTryToDownloadTools == true)
                 {
-                    if (this->Download(ctx, cl) == true)
+                    if (this->Download(ctx, cl.format, cl.nItemId) == true)
                     {
                         util::Utilities::SetCurrentDirectory(config->m_Settings.szSettingsPath);
                         if (process.Start(cl.szCommandLine, config->m_Options.bHideConsoleWindow) == true)
@@ -500,7 +501,7 @@ namespace worker
                 bool bFailed = true;
                 if (config->m_Options.bTryToDownloadTools == true)
                 {
-                    if (this->Download(ctx, dcl) == true)
+                    if (this->Download(ctx, dcl.format, dcl.nItemId) == true)
                     {
                         util::Utilities::SetCurrentDirectory(config->m_Settings.szSettingsPath);
                         if (decoderProcess.Start(dcl.szCommandLine, config->m_Options.bHideConsoleWindow) == true)
@@ -540,7 +541,7 @@ namespace worker
                 bool bFailed = true;
                 if (config->m_Options.bTryToDownloadTools == true)
                 {
-                    if (this->Download(ctx, ecl) == true)
+                    if (this->Download(ctx, ecl.format, ecl.nItemId) == true)
                     {
                         util::Utilities::SetCurrentDirectory(config->m_Settings.szSettingsPath);
                         if (encoderProcess.Start(ecl.szCommandLine, config->m_Options.bHideConsoleWindow) == true)
