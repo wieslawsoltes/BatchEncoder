@@ -1,1 +1,127 @@
-﻿
+﻿#include <string>
+#include <utility>
+#include <memory>
+#include <array>
+#include <vector>
+#include <thread>
+#include <algorithm>
+
+#include "utilities\Log.h"
+#include "utilities\ConsoleLog.h"
+#include "utilities\String.h"
+#include "utilities\TimeCount.h"
+#include "utilities\Utf8String.h"
+#include "utilities\Utilities.h"
+
+#include "config\Config.h"
+
+#include "worker\WorkerContext.h"
+#include "worker\OutputPath.h"
+#include "worker\ToolUtilities.h"
+#include "worker\Worker.h"
+
+class CConsoleWorkerContext : public worker::IWorkerContext
+{
+public:
+    CConsoleWorkerContext()
+    {
+        bDone = true;
+        bRunning = false;
+    }
+    virtual ~CConsoleWorkerContext() { }
+public:
+    std::wstring GetString(int nKey)
+    {
+        return this->pConfig->GetString(nKey);
+    }
+    bool IsRunning()
+    {
+        return bRunning;
+    }
+    void Start()
+    {
+    }
+    void Stop()
+    {
+        pConfig = nullptr;
+        bRunning = false;
+    }
+    bool ItemProgress(int nItemId, int nProgress, bool bFinished, bool bError = false)
+    {
+        if (bError == true)
+        {
+            config::CItem &item = this->pConfig->m_Items[nItemId];
+            item.bFinished = true;
+            if (this->pConfig->m_Options.bStopOnErrors == true)
+            {
+                bRunning = false;
+            }
+            return bRunning;
+        }
+
+        if (bFinished == true)
+        {
+            config::CItem &item = this->pConfig->m_Items[nItemId];
+            item.bFinished = true;
+        }
+
+        if ((bFinished == false) && (bRunning == true))
+        {
+            config::CItem &item = this->pConfig->m_Items[nItemId];
+            item.nProgress = nProgress;
+            if (item.nPreviousProgress > nProgress)
+                item.nPreviousProgress = nProgress;
+
+            if (item.bChecked == true)
+            {
+                int nItemProgress = item.nProgress;
+                int nItemPreviousProgress = item.nPreviousProgress;
+                if (item.bFinished == false)
+                {
+                    if (nItemProgress > 0 && nItemProgress < 100 && nItemProgress > nItemPreviousProgress)
+                    {
+                        item.szStatus = std::to_wstring(nItemProgress) + L"%";
+                        item.nPreviousProgress = nItemProgress;
+                    }
+                    else if (nItemProgress == 100 && nItemProgress > nItemPreviousProgress)
+                    {
+                        item.nPreviousProgress = nItemProgress;
+                    }
+                }
+            }
+
+            static volatile bool bSafeCheck = false;
+            if (bSafeCheck == false)
+            {
+                bSafeCheck = true;
+                if (nItemId > nLastItemId)
+                {
+                    nLastItemId = nItemId;
+                    if (this->pConfig->m_Options.bEnsureItemIsVisible == true)
+                    {
+                    }
+                }
+                bSafeCheck = false;
+            }
+        }
+        return bRunning;
+    }
+    void ItemStatus(int nItemId, const std::wstring& szTime, const std::wstring& szStatus)
+    {
+        config::CItem &item = this->pConfig->m_Items[nItemId];
+        item.szTime = szTime;
+        item.szStatus = szStatus;
+    }
+    void TotalProgress(int nItemId)
+    {
+        if (nItemId > nLastItemId)
+        {
+            nLastItemId = nItemId;
+            if (this->pConfig->m_Options.bEnsureItemIsVisible == true)
+            {
+            }
+        }
+
+        int nPos = (int)(100.0f * ((double)nProcessedFiles / (double)nTotalFiles));
+    }
+};
