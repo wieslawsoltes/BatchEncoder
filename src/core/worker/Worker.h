@@ -649,7 +649,7 @@ namespace worker
             }
         }
     public:
-        bool Transcode(worker::IWorkerContext* ctx, config::CItem& item, worker::CCommandLine& dcl, worker::CCommandLine& ecl, std::mutex& m_down)
+        bool Transcode(IWorkerContext* ctx, config::CItem& item, CCommandLine& dcl, CCommandLine& ecl, std::mutex& m_down)
         {
             auto config = ctx->pConfig;
             try
@@ -683,7 +683,7 @@ namespace worker
             }
             return false;
         }
-        bool Decode(worker::IWorkerContext* ctx, config::CItem& item, worker::CCommandLine& cl, std::mutex& m_down)
+        bool Decode(IWorkerContext* ctx, config::CItem& item, CCommandLine& cl, std::mutex& m_down)
         {
             auto config = ctx->pConfig;
             try
@@ -722,7 +722,7 @@ namespace worker
             }
             return false;
         }
-        bool Encode(worker::IWorkerContext* ctx, config::CItem& item, worker::CCommandLine& cl, std::mutex& m_down)
+        bool Encode(IWorkerContext* ctx, config::CItem& item, CCommandLine& cl, std::mutex& m_down)
         {
             auto config = ctx->pConfig;
             try
