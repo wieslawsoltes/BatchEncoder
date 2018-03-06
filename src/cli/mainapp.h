@@ -36,10 +36,6 @@ public:
     {
         return this->pConfig->GetString(nKey);
     }
-    bool IsRunning()
-    {
-        return bRunning;
-    }
     void Start()
     {
     }

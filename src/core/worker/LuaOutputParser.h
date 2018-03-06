@@ -67,13 +67,8 @@ namespace worker
                 bool bRunning = this->ctx->ItemProgress(this->cl->nItemId, nProgress, false);
                 return bRunning;
             }
-            else
-            {
-                bool bRunning = this->ctx->IsRunning();
-                return bRunning;
-            }
 
-            return true;
+            return this->ctx->bRunning;
         }
     };
 }

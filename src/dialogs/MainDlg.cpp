@@ -162,10 +162,6 @@ namespace dialogs
         {
             return pDlg->m_Config.GetString(nKey);
         }
-        bool IsRunning()
-        {
-            return this->bRunning;
-        }
         void Start()
         {
             this->timer.Start();

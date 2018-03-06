@@ -20,10 +20,6 @@ namespace BatchEncoderCoreUnitTests
         {
             return pConfig->GetString(nKey);
         }
-        bool IsRunning()
-        {
-            return this->bRunning;
-        }
         void Start()
         {
         }

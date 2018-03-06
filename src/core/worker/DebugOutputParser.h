@@ -23,7 +23,7 @@ namespace worker
         {
             OutputDebugStringA(szLine);
             OutputDebugStringA("\n");
-            return this->ctx->IsRunning();
+            return this->ctx->bRunning;
         }
     };
 }
