@@ -22,11 +22,13 @@
 
 class CConsoleWorkerContext : public worker::IWorkerContext
 {
+    volatile bool bSafeCheck;
 public:
     CConsoleWorkerContext()
     {
-        bDone = true;
-        bRunning = false;
+        this->bDone = true;
+        this->bRunning = false;
+        this->bSafeCheck = false;
     }
     virtual ~CConsoleWorkerContext() { }
 public:
@@ -43,8 +45,8 @@ public:
     }
     void Stop()
     {
-        pConfig = nullptr;
-        bRunning = false;
+        this->pConfig = nullptr;
+        this->bRunning = false;
     }
     bool ItemProgress(int nItemId, int nProgress, bool bFinished, bool bError = false)
     {
@@ -54,9 +56,9 @@ public:
             item.bFinished = true;
             if (this->pConfig->m_Options.bStopOnErrors == true)
             {
-                bRunning = false;
+                this->bRunning = false;
             }
-            return bRunning;
+            return this->bRunning;
         }
 
         if (bFinished == true)
@@ -90,18 +92,17 @@ public:
                 }
             }
 
-            static volatile bool bSafeCheck = false;
-            if (bSafeCheck == false)
+            if (this->bSafeCheck == false)
             {
-                bSafeCheck = true;
-                if (nItemId > nLastItemId)
+                this->bSafeCheck = true;
+                if (nItemId > this->nLastItemId)
                 {
-                    nLastItemId = nItemId;
+                    this->nLastItemId = nItemId;
                     if (this->pConfig->m_Options.bEnsureItemIsVisible == true)
                     {
                     }
                 }
-                bSafeCheck = false;
+                this->bSafeCheck = false;
             }
         }
         return bRunning;
@@ -111,12 +112,24 @@ public:
         config::CItem &item = this->pConfig->m_Items[nItemId];
         item.szTime = szTime;
         item.szStatus = szStatus;
+        if (bSafeCheck == false)
+        {
+            bSafeCheck = true;
+            if (nItemId > this->nLastItemId)
+            {
+                this->nLastItemId = nItemId;
+                if (pConfig->m_Options.bEnsureItemIsVisible == true)
+                {
+                }
+            }
+            bSafeCheck = false;
+        }
     }
     void TotalProgress(int nItemId)
     {
-        if (nItemId > nLastItemId)
+        if (nItemId > this->nLastItemId)
         {
-            nLastItemId = nItemId;
+            this->nLastItemId = nItemId;
             if (this->pConfig->m_Options.bEnsureItemIsVisible == true)
             {
             }

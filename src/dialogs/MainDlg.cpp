@@ -237,16 +237,16 @@ namespace dialogs
                     }
                 }
 
-                if (bSafeCheck == false)
+                if (this->bSafeCheck == false)
                 {
-                    bSafeCheck = true;
+                    this->bSafeCheck = true;
                     if (nItemId > this->nLastItemId)
                     {
                         this->nLastItemId = nItemId;
                         if (pDlg->m_Config.m_Options.bEnsureItemIsVisible == true)
                             pDlg->MakeItemVisible(nItemId);
                     }
-                    bSafeCheck = false;
+                    this->bSafeCheck = false;
                 }
             }
             return this->bRunning;
@@ -256,16 +256,16 @@ namespace dialogs
             config::CItem &item = pDlg->m_Config.m_Items[nItemId];
             item.szTime = szTime;
             item.szStatus = szStatus;
-            if (bSafeCheck == false)
+            if (this->bSafeCheck == false)
             {
-                bSafeCheck = true;
+                this->bSafeCheck = true;
                 if (nItemId > this->nLastItemId)
                 {
                     this->nLastItemId = nItemId;
                     if (pDlg->m_Config.m_Options.bEnsureItemIsVisible == true)
                         pDlg->MakeItemVisible(nItemId);
                 }
-                bSafeCheck = false;
+                this->bSafeCheck = false;
             }
             pDlg->RedrawItem(nItemId);
         }
