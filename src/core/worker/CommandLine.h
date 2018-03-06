@@ -14,7 +14,7 @@ namespace worker
     {
     public:
         config::CFormat * format;
-        int nPreset;
+        size_t nPreset;
         int nItemId;
         std::wstring szInputFile;
         std::wstring szOutputFile;
@@ -26,7 +26,7 @@ namespace worker
     public:
         void Build(
             config::CFormat *format,
-            int nPreset,
+            size_t nPreset,
             int nItemId,
             const std::wstring& szInputFile,
             const std::wstring& szOutputFile,
