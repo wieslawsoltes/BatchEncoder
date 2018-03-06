@@ -30,7 +30,7 @@ namespace worker
             this->nProgress = 0;
             this->nPreviousProgress = 0;
 
-            std::string szFunction = util::string::Convert(this->cl->pFormat->szFunction);
+            std::string szFunction = util::string::Convert(this->cl->format->szFunction);
             if (this->luaProgress.Open(szFunction.c_str()) == false)
             {
                 this->ctx->ItemStatus(this->cl->nItemId, ctx->GetString(0x00150001), this->ctx->GetString(0x00110001));

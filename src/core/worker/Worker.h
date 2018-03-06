@@ -32,8 +32,9 @@ namespace worker
     class CWorker
     {
     public:
-        bool CWorker::ConvertFileUsingConsole(IWorkerContext* ctx, CCommandLine &cl, std::mutex &syncDown)
+        bool CWorker::ConvertFileUsingConsole(IWorkerContext* ctx, CCommandLine &cl, std::mutex &m_down)
         {
+            config::CConfig* config = ctx->pConfig;
             util::CProcess process;
             util::CPipe Stderr(true);
             util::CTimeCount timer;
@@ -68,28 +69,28 @@ namespace worker
             process.ConnectStdOutput(Stderr.hWrite);
             process.ConnectStdError(Stderr.hWrite);
 
-            syncDown.lock();
-            util::Utilities::SetCurrentDirectory(ctx->pConfig->m_Settings.szSettingsPath);
+            m_down.lock();
+            util::Utilities::SetCurrentDirectory(config->m_Settings.szSettingsPath);
 
             timer.Start();
-            if (process.Start(cl.szCommandLine, ctx->pConfig->m_Options.bHideConsoleWindow) == false)
+            if (process.Start(cl.szCommandLine, config->m_Options.bHideConsoleWindow) == false)
             {
                 bool bFailed = true;
 
-                if (ctx->pConfig->m_Options.bTryToDownloadTools == true)
+                if (config->m_Options.bTryToDownloadTools == true)
                 {
                     CToolUtilities m_Utilities;
 
-                    int nTool = config::CTool::GetToolByPath(ctx->pConfig->m_Tools, cl.pFormat->szPath);
+                    int nTool = config::CTool::GetToolByPath(config->m_Tools, cl.format->szPath);
                     if (nTool < 0)
                     {
-                        nTool = m_Utilities.FindTool(ctx->pConfig->m_Tools, cl.pFormat->szId);
+                        nTool = m_Utilities.FindTool(config->m_Tools, cl.format->szId);
                     }
 
                     if (nTool >= 0)
                     {
-                        config::CTool& tool = ctx->pConfig->m_Tools[nTool];
-                        bool bResult = m_Utilities.Download(tool, true, true, nTool, ctx->pConfig,
+                        config::CTool& tool = config->m_Tools[nTool];
+                        bool bResult = m_Utilities.Download(tool, true, true, nTool, config,
                             [this, ctx, &cl](int nIndex, std::wstring szStatus) -> bool
                         {
                             ctx->ItemStatus(cl.nItemId, ctx->GetString(0x00150001), szStatus);
@@ -100,9 +101,9 @@ namespace worker
 
                         if (bResult == true)
                         {
-                            util::Utilities::SetCurrentDirectory(ctx->pConfig->m_Settings.szSettingsPath);
+                            util::Utilities::SetCurrentDirectory(config->m_Settings.szSettingsPath);
 
-                            if (process.Start(cl.szCommandLine, ctx->pConfig->m_Options.bHideConsoleWindow) == true)
+                            if (process.Start(cl.szCommandLine, config->m_Options.bHideConsoleWindow) == true)
                             {
                                 bFailed = false;
                             }
@@ -112,7 +113,7 @@ namespace worker
 
                 if (bFailed == true)
                 {
-                    syncDown.unlock();
+                    m_down.unlock();
 
                     timer.Stop();
 
@@ -126,7 +127,7 @@ namespace worker
                 }
             }
 
-            syncDown.unlock();
+            m_down.unlock();
 
             // close unused pipe handle
             Stderr.CloseWrite();
@@ -134,17 +135,17 @@ namespace worker
             //parser.Log = std::make_unique<util::MemoryLog>();
 
             // console progress loop
-            if (writer.ReadLoop(ctx, cl, Stderr, parser, syncDown) == false)
+            if (writer.ReadLoop(ctx, cl, Stderr, parser, m_down) == false)
             {
                 timer.Stop();
                 Stderr.CloseRead();
-                process.Stop(false, cl.pFormat->nExitCodeSuccess);
+                process.Stop(false, cl.format->nExitCodeSuccess);
                 return false;
             }
 
             timer.Stop();
             Stderr.CloseRead();
-            if (process.Stop(parser.nProgress == 100, cl.pFormat->nExitCodeSuccess) == false)
+            if (process.Stop(parser.nProgress == 100, cl.format->nExitCodeSuccess) == false)
                 parser.nProgress = -1;
 
             if (parser.nProgress != 100)
@@ -160,8 +161,9 @@ namespace worker
                 return true;
             }
         }
-        bool CWorker::ConvertFileUsingPipes(IWorkerContext* ctx, CCommandLine &cl, std::mutex &syncDown)
+        bool CWorker::ConvertFileUsingPipes(IWorkerContext* ctx, CCommandLine &cl, std::mutex &m_down)
         {
+            config::CConfig* config = ctx->pConfig;
             util::CProcess process;
             util::CPipe Stdin(true);
             util::CPipe Stdout(true);
@@ -252,28 +254,28 @@ namespace worker
                 process.ConnectStdError(GetStdHandle(STD_ERROR_HANDLE));
             }
 
-            syncDown.lock();
-            util::Utilities::SetCurrentDirectory(ctx->pConfig->m_Settings.szSettingsPath);
+            m_down.lock();
+            util::Utilities::SetCurrentDirectory(config->m_Settings.szSettingsPath);
 
             timer.Start();
-            if (process.Start(cl.szCommandLine, ctx->pConfig->m_Options.bHideConsoleWindow) == false)
+            if (process.Start(cl.szCommandLine, config->m_Options.bHideConsoleWindow) == false)
             {
                 bool bFailed = true;
 
-                if (ctx->pConfig->m_Options.bTryToDownloadTools == true)
+                if (config->m_Options.bTryToDownloadTools == true)
                 {
                     CToolUtilities m_Utilities;
 
-                    int nTool = config::CTool::GetToolByPath(ctx->pConfig->m_Tools, cl.pFormat->szPath);
+                    int nTool = config::CTool::GetToolByPath(config->m_Tools, cl.format->szPath);
                     if (nTool < 0)
                     {
-                        nTool = m_Utilities.FindTool(ctx->pConfig->m_Tools, cl.pFormat->szId);
+                        nTool = m_Utilities.FindTool(config->m_Tools, cl.format->szId);
                     }
 
                     if (nTool >= 0)
                     {
-                        config::CTool& tool = ctx->pConfig->m_Tools[nTool];
-                        bool bResult = m_Utilities.Download(tool, true, true, nTool, ctx->pConfig,
+                        config::CTool& tool = config->m_Tools[nTool];
+                        bool bResult = m_Utilities.Download(tool, true, true, nTool, config,
                             [this, ctx, &cl](int nIndex, std::wstring szStatus) -> bool
                         {
                             ctx->ItemStatus(cl.nItemId, ctx->GetString(0x00150001), szStatus);
@@ -284,9 +286,9 @@ namespace worker
 
                         if (bResult == true)
                         {
-                            util::Utilities::SetCurrentDirectory(ctx->pConfig->m_Settings.szSettingsPath);
+                            util::Utilities::SetCurrentDirectory(config->m_Settings.szSettingsPath);
 
-                            if (process.Start(cl.szCommandLine, ctx->pConfig->m_Options.bHideConsoleWindow) == true)
+                            if (process.Start(cl.szCommandLine, config->m_Options.bHideConsoleWindow) == true)
                             {
                                 bFailed = false;
                             }
@@ -296,7 +298,7 @@ namespace worker
 
                 if (bFailed == true)
                 {
-                    syncDown.unlock();
+                    m_down.unlock();
 
                     timer.Stop();
 
@@ -319,7 +321,7 @@ namespace worker
                 }
             }
 
-            syncDown.unlock();
+            m_down.unlock();
 
             // close unused pipe handles
             if (cl.bUseReadPipes == true)
@@ -414,7 +416,7 @@ namespace worker
 
             timer.Stop();
 
-            if (process.Stop(nProgress == 100, cl.pFormat->nExitCodeSuccess) == false)
+            if (process.Stop(nProgress == 100, cl.format->nExitCodeSuccess) == false)
                 nProgress = -1;
 
             if (nProgress != 100)
@@ -430,8 +432,9 @@ namespace worker
                 return true;
             }
         }
-        bool CWorker::ConvertFileUsingOnlyPipes(IWorkerContext* ctx, CCommandLine &dcl, CCommandLine &ecl, std::mutex &syncDown)
+        bool CWorker::ConvertFileUsingOnlyPipes(IWorkerContext* ctx, CCommandLine &dcl, CCommandLine &ecl, std::mutex &m_down)
         {
+            config::CConfig* config = ctx->pConfig;
             util::CProcess decoderProcess;
             util::CProcess encoderProcess;
             util::CPipe Stdin(true);
@@ -511,28 +514,28 @@ namespace worker
 
             timer.Start();
 
-            syncDown.lock();
-            util::Utilities::SetCurrentDirectory(ctx->pConfig->m_Settings.szSettingsPath);
+            m_down.lock();
+            util::Utilities::SetCurrentDirectory(config->m_Settings.szSettingsPath);
 
             // create decoder process
-            if (decoderProcess.Start(dcl.szCommandLine, ctx->pConfig->m_Options.bHideConsoleWindow) == false)
+            if (decoderProcess.Start(dcl.szCommandLine, config->m_Options.bHideConsoleWindow) == false)
             {
                 bool bFailed = true;
 
-                if (ctx->pConfig->m_Options.bTryToDownloadTools == true)
+                if (config->m_Options.bTryToDownloadTools == true)
                 {
                     CToolUtilities m_Utilities;
 
-                    int nTool = config::CTool::GetToolByPath(ctx->pConfig->m_Tools, dcl.pFormat->szPath);
+                    int nTool = config::CTool::GetToolByPath(config->m_Tools, dcl.format->szPath);
                     if (nTool < 0)
                     {
-                        nTool = m_Utilities.FindTool(ctx->pConfig->m_Tools, dcl.pFormat->szId);
+                        nTool = m_Utilities.FindTool(config->m_Tools, dcl.format->szId);
                     }
 
                     if (nTool >= 0)
                     {
-                        config::CTool& tool = ctx->pConfig->m_Tools[nTool];
-                        bool bResult = m_Utilities.Download(tool, true, true, nTool, ctx->pConfig,
+                        config::CTool& tool = config->m_Tools[nTool];
+                        bool bResult = m_Utilities.Download(tool, true, true, nTool, config,
                             [this, ctx, &dcl](int nIndex, std::wstring szStatus) -> bool
                         {
                             ctx->ItemStatus(dcl.nItemId, ctx->GetString(0x00150001), szStatus);
@@ -543,9 +546,9 @@ namespace worker
 
                         if (bResult == true)
                         {
-                            util::Utilities::SetCurrentDirectory(ctx->pConfig->m_Settings.szSettingsPath);
+                            util::Utilities::SetCurrentDirectory(config->m_Settings.szSettingsPath);
 
-                            if (decoderProcess.Start(dcl.szCommandLine, ctx->pConfig->m_Options.bHideConsoleWindow) == true)
+                            if (decoderProcess.Start(dcl.szCommandLine, config->m_Options.bHideConsoleWindow) == true)
                             {
                                 bFailed = false;
                             }
@@ -555,7 +558,7 @@ namespace worker
 
                 if (bFailed == true)
                 {
-                    syncDown.unlock();
+                    m_down.unlock();
 
                     timer.Stop();
 
@@ -575,28 +578,28 @@ namespace worker
                 }
             }
 
-            util::Utilities::SetCurrentDirectory(ctx->pConfig->m_Settings.szSettingsPath);
+            util::Utilities::SetCurrentDirectory(config->m_Settings.szSettingsPath);
 
             // create encoder process
-            if (encoderProcess.Start(ecl.szCommandLine, ctx->pConfig->m_Options.bHideConsoleWindow) == false)
+            if (encoderProcess.Start(ecl.szCommandLine, config->m_Options.bHideConsoleWindow) == false)
             {
                 bool bFailed = true;
 
-                if (ctx->pConfig->m_Options.bTryToDownloadTools == true)
+                if (config->m_Options.bTryToDownloadTools == true)
                 {
                     CToolUtilities m_Utilities;
 
                     int nTool = -1;
-                    nTool = config::CTool::GetToolByPath(ctx->pConfig->m_Tools, ecl.pFormat->szPath);
+                    nTool = config::CTool::GetToolByPath(config->m_Tools, ecl.format->szPath);
                     if (nTool < 0)
                     {
-                        nTool = m_Utilities.FindTool(ctx->pConfig->m_Tools, ecl.pFormat->szId);
+                        nTool = m_Utilities.FindTool(config->m_Tools, ecl.format->szId);
                     }
 
                     if (nTool >= 0)
                     {
-                        config::CTool& tool = ctx->pConfig->m_Tools[nTool];
-                        bool bResult = m_Utilities.Download(tool, true, true, nTool, ctx->pConfig,
+                        config::CTool& tool = config->m_Tools[nTool];
+                        bool bResult = m_Utilities.Download(tool, true, true, nTool, config,
                             [this, ctx, &ecl](int nIndex, std::wstring szStatus) -> bool
                         {
                             ctx->ItemStatus(ecl.nItemId, ctx->GetString(0x00150001), szStatus);
@@ -607,9 +610,9 @@ namespace worker
 
                         if (bResult == true)
                         {
-                            util::Utilities::SetCurrentDirectory(ctx->pConfig->m_Settings.szSettingsPath);
+                            util::Utilities::SetCurrentDirectory(config->m_Settings.szSettingsPath);
 
-                            if (encoderProcess.Start(ecl.szCommandLine, ctx->pConfig->m_Options.bHideConsoleWindow) == true)
+                            if (encoderProcess.Start(ecl.szCommandLine, config->m_Options.bHideConsoleWindow) == true)
                             {
                                 bFailed = false;
                             }
@@ -619,11 +622,11 @@ namespace worker
 
                 if (bFailed == true)
                 {
-                    syncDown.unlock();
+                    m_down.unlock();
 
                     timer.Stop();
 
-                    decoderProcess.Stop(false, dcl.pFormat->nExitCodeSuccess);
+                    decoderProcess.Stop(false, dcl.format->nExitCodeSuccess);
 
                     Stdin.CloseRead();
                     Stdin.CloseWrite();
@@ -641,7 +644,7 @@ namespace worker
                 }
             }
 
-            syncDown.unlock();
+            m_down.unlock();
 
             // close unused pipe handles
             Stdin.CloseRead();
@@ -695,10 +698,10 @@ namespace worker
 
             timer.Stop();
 
-            if (decoderProcess.Stop(nProgress == 100, dcl.pFormat->nExitCodeSuccess) == false)
+            if (decoderProcess.Stop(nProgress == 100, dcl.format->nExitCodeSuccess) == false)
                 nProgress = -1;
 
-            if (encoderProcess.Stop(nProgress == 100, ecl.pFormat->nExitCodeSuccess) == false)
+            if (encoderProcess.Stop(nProgress == 100, ecl.format->nExitCodeSuccess) == false)
                 nProgress = -1;
 
             if (nProgress != 100)
@@ -714,10 +717,11 @@ namespace worker
                 return true;
             }
         }
-        bool CWorker::ConvertItem(IWorkerContext* ctx, config::CItem& item, std::mutex &syncDir, std::mutex &syncDown)
+        bool CWorker::ConvertItem(IWorkerContext* ctx, config::CItem& item, std::mutex &m_dir, std::mutex &m_down)
         {
-            config::CFormat *pEncFormat = nullptr;
-            config::CFormat *pDecFormat = nullptr;
+            config::CConfig* config = ctx->pConfig;
+            config::CFormat *ef = nullptr;
+            config::CFormat *df = nullptr;
             std::wstring szEncInputFile;
             std::wstring szEncOutputFile;
             std::wstring szDecInputFile;
@@ -736,30 +740,26 @@ namespace worker
                 return false;
             }
 
-            int nEncoder = config::CFormat::GetFormatById(ctx->pConfig->m_Formats, item.szFormatId);
+            int nEncoder = config::CFormat::GetFormatById(config->m_Formats, item.szFormatId);
             if (nEncoder == -1)
             {
                 ctx->ItemStatus(item.nId, ctx->GetString(0x00150001), ctx->GetString(0x00140002));
                 return false;
             }
 
-            pEncFormat = &ctx->pConfig->m_Formats[nEncoder];
+            ef = &config->m_Formats[nEncoder];
 
-            if (item.nPreset >= pEncFormat->m_Presets.size())
+            if (item.nPreset >= ef->m_Presets.size())
             {
                 ctx->ItemStatus(item.nId, ctx->GetString(0x00150001), ctx->GetString(0x00140003));
                 return false;
             }
 
-            bool bIsValidEncoderInput = pEncFormat->IsValidInputExtension(util::Utilities::GetFileExtension(szEncInputFile));
+            bool bCanEncode = ef->IsValidInputExtension(util::Utilities::GetFileExtension(szEncInputFile));
 
-            szEncOutputFile = m_Output.CreateFilePath(
-                ctx->pConfig->m_Options.szOutputPath,
-                szEncInputFile,
-                item.szName,
-                pEncFormat->szOutputExtension);
+            szEncOutputFile = m_Output.CreateFilePath(config->m_Options.szOutputPath, szEncInputFile, item.szName, ef->szOutputExtension);
 
-            if (ctx->pConfig->m_Options.bOverwriteExistingFiles == false)
+            if (config->m_Options.bOverwriteExistingFiles == false)
             {
                 if (util::Utilities::FileExists(szEncOutputFile) == true)
                 {
@@ -769,38 +769,38 @@ namespace worker
             }
 
             // create output path
-            syncDir.lock();
+            m_dir.lock();
 
             if (m_Output.CreateOutputPath(szEncOutputFile) == false)
             {
-                syncDir.unlock();
+                m_dir.unlock();
                 ctx->ItemStatus(item.nId, ctx->GetString(0x00150001), ctx->GetString(0x0014000F));
                 return false;
             }
 
-            syncDir.unlock();
+            m_dir.unlock();
 
-            util::Utilities::SetCurrentDirectory(ctx->pConfig->m_Settings.szSettingsPath);
+            util::Utilities::SetCurrentDirectory(config->m_Settings.szSettingsPath);
 
             // prepare decoder
-            if (bIsValidEncoderInput == false)
+            if (bCanEncode == false)
             {
-                int nDecoder = config::CFormat::GetDecoderByExtensionAndFormat(ctx->pConfig->m_Formats, item.szExtension, pEncFormat);
+                int nDecoder = config::CFormat::GetDecoderByExtensionAndFormat(config->m_Formats, item.szExtension, ef);
                 if (nDecoder == -1)
                 {
                     ctx->ItemStatus(item.nId, ctx->GetString(0x00150001), ctx->GetString(0x00140004));
                     return false;
                 }
 
-                pDecFormat = &ctx->pConfig->m_Formats[nDecoder];
+                df = &config->m_Formats[nDecoder];
 
-                if (pDecFormat->nDefaultPreset >= pDecFormat->m_Presets.size())
+                if (df->nDefaultPreset >= df->m_Presets.size())
                 {
                     ctx->ItemStatus(item.nId, ctx->GetString(0x00150001), ctx->GetString(0x00140005));
                     return false;
                 }
 
-                bool bIsValidDecoderOutput = pEncFormat->IsValidInputExtension(pDecFormat->szOutputExtension);
+                bool bIsValidDecoderOutput = ef->IsValidInputExtension(df->szOutputExtension);
                 if (bIsValidDecoderOutput == false)
                 {
                     ctx->ItemStatus(item.nId, ctx->GetString(0x00150001), ctx->GetString(0x00140006));
@@ -808,57 +808,45 @@ namespace worker
                 }
 
                 szDecInputFile = szEncInputFile;
-                szDecOutputFile =
-                    util::Utilities::GetFilePath(szEncOutputFile) +
-                    util::Utilities::GenerateUuidString() +
-                    L"." + util::string::TowLower(pDecFormat->szOutputExtension);
+
+                std::wstring szPath = util::Utilities::GetFilePath(szEncOutputFile);
+                std::wstring szName = util::Utilities::GenerateUuidString();
+                std::wstring szExt = util::string::TowLower(df->szOutputExtension);
+                szDecOutputFile = szPath + szName + L"." + szExt;
             }
 
-            if (bIsValidEncoderInput == false)
+            if (bCanEncode == false)
             {
-                dcl.Build(
-                    pDecFormat,
-                    pDecFormat->nDefaultPreset,
-                    item.nId,
-                    szDecInputFile,
-                    szDecOutputFile,
-                    pDecFormat->bPipeInput,
-                    pDecFormat->bPipeOutput,
-                    L"");
+                dcl.Build(df, df->nDefaultPreset, item.nId, szDecInputFile, szDecOutputFile, df->bPipeInput, df->bPipeOutput, L"");
             }
 
-            ecl.Build(
-                pEncFormat,
-                item.nPreset,
-                item.nId,
-                bIsValidEncoderInput == true ? szEncInputFile : szDecOutputFile,
-                szEncOutputFile,
-                pEncFormat->bPipeInput,
-                pEncFormat->bPipeOutput,
-                item.szOptions);
+            std::wstring szInputFile = bCanEncode == true ? szEncInputFile : szDecOutputFile;
 
-            if (bIsValidEncoderInput == false
-                && dcl.bUseReadPipes == true && dcl.bUseWritePipes == true
-                && ecl.bUseReadPipes == true && ecl.bUseWritePipes == true)
+            ecl.Build(ef, item.nPreset, item.nId, szInputFile, szEncOutputFile, ef->bPipeInput, ef->bPipeOutput, item.szOptions);
+
+            bool bDecoderPipes = dcl.bUseReadPipes && dcl.bUseWritePipes;
+            bool bEncoderPipes = ecl.bUseReadPipes && ecl.bUseWritePipes;
+            bool bCanTranscode = !bCanEncode && bDecoderPipes && bEncoderPipes;
+
+            if (bCanTranscode)
             {
                 // trans-code
                 try
                 {
                     ctx->ItemStatus(item.nId, ctx->GetString(0x00150001), ctx->GetString(0x0014000C));
-
                     item.ResetProgress();
 
-                    bool bResult = ConvertFileUsingOnlyPipes(ctx, dcl, ecl, syncDown);
+                    bool bResult = ConvertFileUsingOnlyPipes(ctx, dcl, ecl, m_down);
                     if (bResult == true)
                     {
-                        if (ctx->pConfig->m_Options.bDeleteSourceFiles == true)
+                        if (config->m_Options.bDeleteSourceFiles == true)
                             util::Utilities::DeleteFile(szEncInputFile);
 
                         return true;
                     }
                     else
                     {
-                        if (ctx->pConfig->m_Options.bDeleteOnErrors == true)
+                        if (config->m_Options.bDeleteOnErrors == true)
                             util::Utilities::DeleteFile(szEncOutputFile);
 
                         return false;
@@ -866,126 +854,126 @@ namespace worker
                 }
                 catch (...)
                 {
-                    if (ctx->pConfig->m_Options.bDeleteOnErrors == true)
+                    if (config->m_Options.bDeleteOnErrors == true)
                         util::Utilities::DeleteFile(szEncOutputFile);
 
                     ctx->ItemStatus(item.nId, ctx->GetString(0x00150001), ctx->GetString(0x0014000E));
                     ctx->ItemProgress(item.nId, -1, true, true);
                 }
+
+                return false;
             }
-            else
+
+            // decode
+            if (bCanEncode == false)
             {
-                // decode
-                if (bIsValidEncoderInput == false)
-                {
-                    try
-                    {
-                        ctx->ItemStatus(item.nId, ctx->GetString(0x00150001), ctx->GetString(0x00140007));
-
-                        item.ResetProgress();
-
-                        bool bResult = false;
-                        if ((dcl.bUseReadPipes == false) && (dcl.bUseWritePipes == false))
-                            bResult = ConvertFileUsingConsole(ctx, dcl, syncDown);
-                        else
-                            bResult = ConvertFileUsingPipes(ctx, dcl, syncDown);
-                        if (bResult == false)
-                        {
-                            if (ctx->pConfig->m_Options.bDeleteOnErrors == true)
-                                util::Utilities::DeleteFile(szDecOutputFile);
-
-                            return false;
-                        }
-
-                        if (util::Utilities::FileExists(szDecOutputFile) == false)
-                        {
-                            ctx->ItemStatus(item.nId, ctx->GetString(0x00150001), ctx->GetString(0x00140008));
-                            return false;
-                        }
-                    }
-                    catch (...)
-                    {
-                        if (ctx->pConfig->m_Options.bDeleteOnErrors == true)
-                            util::Utilities::DeleteFile(szEncOutputFile);
-
-                        ctx->ItemStatus(item.nId, ctx->GetString(0x00150001), ctx->GetString(0x00140009));
-                        ctx->ItemProgress(item.nId, -1, true, true);
-                    }
-                }
-
-                if (ctx->bRunning == false)
-                    return false;
-
-                // encode
                 try
                 {
-                    if (pEncFormat->nType == config::FormatType::Encoder)
-                        ctx->ItemStatus(item.nId, ctx->GetString(0x00150001), ctx->GetString(0x0014000A));
-                    else if (pEncFormat->nType == config::FormatType::Decoder)
-                        ctx->ItemStatus(item.nId, ctx->GetString(0x00150001), ctx->GetString(0x0014000B));
-
+                    ctx->ItemStatus(item.nId, ctx->GetString(0x00150001), ctx->GetString(0x00140007));
                     item.ResetProgress();
 
                     bool bResult = false;
-                    if ((ecl.bUseReadPipes == false) && (ecl.bUseWritePipes == false))
-                        bResult = ConvertFileUsingConsole(ctx, ecl, syncDown);
+                    if ((dcl.bUseReadPipes == false) && (dcl.bUseWritePipes == false))
+                        bResult = ConvertFileUsingConsole(ctx, dcl, m_down);
                     else
-                        bResult = ConvertFileUsingPipes(ctx, ecl, syncDown);
-                    if (bResult == true)
+                        bResult = ConvertFileUsingPipes(ctx, dcl, m_down);
+                    if (bResult == false)
                     {
-                        if (bIsValidEncoderInput == false)
+                        if (config->m_Options.bDeleteOnErrors == true)
                             util::Utilities::DeleteFile(szDecOutputFile);
 
-                        if (ctx->pConfig->m_Options.bDeleteSourceFiles == true)
-                            util::Utilities::DeleteFile(szEncInputFile);
-
-                        return true;
+                        return false;
                     }
-                    else
+
+                    if (util::Utilities::FileExists(szDecOutputFile) == false)
                     {
-                        if (bIsValidEncoderInput == false)
-                            util::Utilities::DeleteFile(szDecOutputFile);
-
-                        if (ctx->pConfig->m_Options.bDeleteOnErrors == true)
-                            util::Utilities::DeleteFile(szEncOutputFile);
-
+                        ctx->ItemStatus(item.nId, ctx->GetString(0x00150001), ctx->GetString(0x00140008));
                         return false;
                     }
                 }
                 catch (...)
                 {
-                    if (bIsValidEncoderInput == false)
-                        util::Utilities::DeleteFile(szDecOutputFile);
-
-                    if (ctx->pConfig->m_Options.bDeleteOnErrors == true)
+                    if (config->m_Options.bDeleteOnErrors == true)
                         util::Utilities::DeleteFile(szEncOutputFile);
 
-                    ctx->ItemStatus(item.nId, ctx->GetString(0x00150001), ctx->GetString(0x0014000E));
+                    ctx->ItemStatus(item.nId, ctx->GetString(0x00150001), ctx->GetString(0x00140009));
                     ctx->ItemProgress(item.nId, -1, true, true);
                 }
+            }
+
+            if (ctx->bRunning == false)
+                return false;
+
+            // encode
+            try
+            {
+                if (ef->nType == config::FormatType::Encoder)
+                    ctx->ItemStatus(item.nId, ctx->GetString(0x00150001), ctx->GetString(0x0014000A));
+                else if (ef->nType == config::FormatType::Decoder)
+                    ctx->ItemStatus(item.nId, ctx->GetString(0x00150001), ctx->GetString(0x0014000B));
+
+                item.ResetProgress();
+
+                bool bResult = false;
+                if ((ecl.bUseReadPipes == false) && (ecl.bUseWritePipes == false))
+                    bResult = ConvertFileUsingConsole(ctx, ecl, m_down);
+                else
+                    bResult = ConvertFileUsingPipes(ctx, ecl, m_down);
+                if (bResult == true)
+                {
+                    if (bCanEncode == false)
+                        util::Utilities::DeleteFile(szDecOutputFile);
+
+                    if (config->m_Options.bDeleteSourceFiles == true)
+                        util::Utilities::DeleteFile(szEncInputFile);
+
+                    return true;
+                }
+                else
+                {
+                    if (bCanEncode == false)
+                        util::Utilities::DeleteFile(szDecOutputFile);
+
+                    if (config->m_Options.bDeleteOnErrors == true)
+                        util::Utilities::DeleteFile(szEncOutputFile);
+
+                    return false;
+                }
+            }
+            catch (...)
+            {
+                if (bCanEncode == false)
+                    util::Utilities::DeleteFile(szDecOutputFile);
+
+                if (config->m_Options.bDeleteOnErrors == true)
+                    util::Utilities::DeleteFile(szEncOutputFile);
+
+                ctx->ItemStatus(item.nId, ctx->GetString(0x00150001), ctx->GetString(0x0014000E));
+                ctx->ItemProgress(item.nId, -1, true, true);
             }
 
             return false;
         }
-        bool CWorker::ConvertLoop(IWorkerContext* ctx, std::queue<int> &queue, std::mutex &syncQueue, std::mutex &syncDir, std::mutex &syncDown)
+        bool CWorker::ConvertLoop(IWorkerContext* ctx, std::queue<int> &queue, std::mutex &m_queue, std::mutex &m_dir, std::mutex &m_down)
         {
+            config::CConfig* config = ctx->pConfig;
             while (true)
             {
                 try
                 {
-                    syncQueue.lock();
+                    m_queue.lock();
                     if (!queue.empty())
                     {
                         int nId = queue.front();
                         queue.pop();
-                        syncQueue.unlock();
+                        m_queue.unlock();
 
                         if (ctx->bRunning == false)
                             return false;
 
                         ctx->TotalProgress(nId);
 
-                        if (ConvertItem(ctx, ctx->pConfig->m_Items[nId], syncDir, syncDown) == true)
+                        if (ConvertItem(ctx, config->m_Items[nId], m_dir, m_down) == true)
                         {
                             ctx->nProcessedFiles++;
                             ctx->TotalProgress(nId);
@@ -995,7 +983,7 @@ namespace worker
                             ctx->nProcessedFiles++;
                             ctx->nErrors++;
                             ctx->TotalProgress(nId);
-                            if (ctx->pConfig->m_Options.bStopOnErrors == true)
+                            if (config->m_Options.bStopOnErrors == true)
                                 return false;
                         }
 
@@ -1004,7 +992,7 @@ namespace worker
                     }
                     else
                     {
-                        syncQueue.unlock();
+                        m_queue.unlock();
                         return true;
                     }
                 }
@@ -1017,14 +1005,14 @@ namespace worker
         }
         void CWorker::Convert(IWorkerContext* ctx, config::CItem& item)
         {
-            std::mutex syncDir;
-            std::mutex syncDown;
+            std::mutex m_dir;
+            std::mutex m_down;
 
             ctx->Start();
             ctx->nTotalFiles = 1;
             ctx->TotalProgress(item.nId);
 
-            if (ConvertItem(ctx, item, syncDir, syncDown) == true)
+            if (ConvertItem(ctx, item, m_dir, m_down) == true)
             {
                 ctx->nProcessedFiles = 1;
                 ctx->nErrors = 0;
@@ -1043,9 +1031,9 @@ namespace worker
         void CWorker::Convert(IWorkerContext* ctx, std::vector<config::CItem>& items)
         {
             std::queue<int> queue;
-            std::mutex syncQueue;
-            std::mutex syncDir;
-            std::mutex syncDown;
+            std::mutex m_queue;
+            std::mutex m_dir;
+            std::mutex m_down;
 
             ctx->Start();
 
@@ -1061,14 +1049,11 @@ namespace worker
 
             if (ctx->nThreadCount <= 1)
             {
-                this->ConvertLoop(ctx, queue, syncQueue, syncDir, syncDown);
+                this->ConvertLoop(ctx, queue, m_queue, m_dir, m_down);
             }
             else
             {
-                auto convert = [this, ctx, &queue, &syncQueue, &syncDir, &syncDown]()
-                {
-                    this->ConvertLoop(ctx, queue, syncQueue, syncDir, syncDown);
-                };
+                auto convert = [&]() { this->ConvertLoop(ctx, queue, m_queue, m_dir, m_down); };
                 auto threads = std::make_unique<std::thread[]>(ctx->nThreadCount);
 
                 for (int i = 0; i < ctx->nThreadCount; i++)
