@@ -36,7 +36,6 @@ namespace app
             InitCommonControlsEx(&InitCtrls);
 
             CWinApp::InitInstance();
-            AfxEnableControlContainer();
         }
         catch (...)
         {
