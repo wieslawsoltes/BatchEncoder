@@ -77,7 +77,10 @@ namespace dialogs
         afx_msg void OnDropFiles(HDROP hDropInfo);
         afx_msg void OnBnClickedOk();
         afx_msg void OnBnClickedCancel();
+        afx_msg void OnLvnGetdispinfoListTools(NMHDR* pNMHDR, LRESULT* pResult);
+        afx_msg void OnOdfindListTools(NMHDR* pNMHDR, LRESULT* pResult);
         afx_msg void OnLvnItemchangedListTools(NMHDR *pNMHDR, LRESULT *pResult);
+        afx_msg LRESULT OnNotifyFormat(WPARAM wParam, LPARAM lParam);
         afx_msg void OnBnClickedButtonImport();
         afx_msg void OnBnClickedButtonExport();
         afx_msg void OnBnClickedButtonDuplicate();
@@ -105,8 +108,8 @@ namespace dialogs
         void LoadWindowSettings();
         void SaveWindowSettings();
         void SetLanguage();
-        void AddToList(config::CTool &tool, int nItem);
-        void InsertToolsToListCtrl();
+        void RedrawTool(int nId);
+        void RedrawTools();
         void HandleDropFiles(HDROP hDropInfo);
         void UpdateFields(config::CTool &format);
         void ListSelectionChange();

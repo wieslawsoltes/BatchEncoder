@@ -137,8 +137,8 @@ namespace dialogs
         void ToggleItem(int nItem);
         int AddToItems(const std::wstring& szPath);
         bool AddToList(const std::wstring& szPath);
-        void RedrawItems();
         void RedrawItem(int nId);
+        void RedrawItems();
         void ShowEdtItem();
         void UpdateEdtItem(BOOL bUpdateText);
         void HandleDropFiles(HDROP hDropInfo);

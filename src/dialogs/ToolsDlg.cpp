@@ -79,6 +79,9 @@ namespace dialogs
         ON_WM_DROPFILES()
         ON_BN_CLICKED(IDOK, OnBnClickedOk)
         ON_BN_CLICKED(IDCANCEL, OnBnClickedCancel)
+        ON_MESSAGE(WM_NOTIFYFORMAT, OnNotifyFormat)
+        ON_NOTIFY(LVN_GETDISPINFO, IDC_LIST_TOOLS, OnLvnGetdispinfoListTools)
+        ON_NOTIFY(LVN_ODFINDITEM, IDC_LIST_TOOLS, OnOdfindListTools)
         ON_NOTIFY(LVN_ITEMCHANGED, IDC_LIST_TOOLS, OnLvnItemchangedListTools)
         ON_EN_CHANGE(IDC_EDIT_TOOL_NAME, OnEnChangeEditToolName)
         ON_EN_CHANGE(IDC_EDIT_TOOL_PLATFORM, OnEnChangeEditToolPlatform)
@@ -117,6 +120,11 @@ namespace dialogs
         // priority spin
         m_SpinPriority.SetRange32(-1000, 1000);
 
+        // OnNotifyFormat WM_NOTIFYFORMAT
+#ifdef _UNICODE
+        m_LstTools.SendMessage(CCM_SETUNICODEFORMAT, (WPARAM)(BOOL)TRUE, 0);
+#endif
+
         // update list style
         DWORD dwExStyle = m_LstTools.GetExtendedStyle();
         dwExStyle |= LVS_EX_FULLROWSELECT | LVS_EX_DOUBLEBUFFER | LVS_EX_GRIDLINES;
@@ -127,17 +135,17 @@ namespace dialogs
         m_LstTools.InsertColumn(TOOL_COLUMN_URL, _T("Url"), LVCFMT_LEFT, 195);
         m_LstTools.InsertColumn(TOOL_COLUMN_STATUS, _T("Status"), LVCFMT_LEFT, 95);
 
-        // insert all ListCtrl items and sub items
-        this->InsertToolsToListCtrl();
-
-        m_LstTools.SetItemState(nSelectedTool, LVIS_SELECTED, LVIS_SELECTED);
-        m_LstTools.EnsureVisible(nSelectedTool, FALSE);
-
         // enable drag & drop
         this->DragAcceptFiles(TRUE);
 
         this->LoadWindowSettings();
         this->SetLanguage();
+
+        this->RedrawTools();
+
+        // select tool
+        m_LstTools.SetItemState(nSelectedTool, LVIS_SELECTED, LVIS_SELECTED);
+        m_LstTools.EnsureVisible(nSelectedTool, FALSE);
 
         return TRUE;
     }
@@ -216,6 +224,77 @@ namespace dialogs
         *pResult = 0;
     }
 
+    LRESULT CToolsDlg::OnNotifyFormat(WPARAM wParam, LPARAM lParam)
+    {
+#ifdef _UNICODE
+        return NFR_UNICODE;
+#else
+        return NFR_ANSI;
+#endif
+    }
+
+    void CToolsDlg::OnLvnGetdispinfoListTools(NMHDR* pNMHDR, LRESULT* pResult)
+    {
+        NMLVDISPINFO *pDispInfo = reinterpret_cast<NMLVDISPINFO*>(pNMHDR);
+        LV_ITEM* pItem = &(pDispInfo)->item;
+        int nItem = pItem->iItem;
+
+        if (pItem->mask & LVIF_TEXT)
+        {
+            config::CTool& tool = m_Tools[nItem];
+            std::wstring szText;
+
+            switch (pItem->iSubItem)
+            {
+            case TOOL_COLUMN_NAME:
+                szText = tool.szName;
+                break;
+            case TOOL_COLUMN_URL:
+                szText = tool.szUrl;
+                break;
+            case TOOL_COLUMN_STATUS:
+                szText = tool.szStatus;
+                break;
+            }
+
+            _tcscpy_s(pItem->pszText, pItem->cchTextMax, szText.c_str());
+        }
+
+        *pResult = 0;
+    }
+
+    void CToolsDlg::OnOdfindListTools(NMHDR* pNMHDR, LRESULT* pResult)
+    {
+        NMLVFINDITEM* pFindInfo = (NMLVFINDITEM*)pNMHDR;
+        *pResult = -1;
+        if ((pFindInfo->lvfi.flags & LVFI_STRING) == 0)
+        {
+            return;
+        }
+
+        if (m_Utilities.bDownload == true)
+            return;
+
+        CString szSearchStr = pFindInfo->lvfi.psz;
+        int startPos = pFindInfo->iStart;
+        if (startPos >= m_LstTools.GetItemCount())
+            startPos = 0;
+
+        int currentPos = startPos;
+        do
+        {
+            config::CTool& tool = m_Tools[currentPos];
+            if (_tcsnicmp(tool.szName.c_str(), szSearchStr, szSearchStr.GetLength()) == 0)
+            {
+                *pResult = currentPos;
+                break;
+            }
+            currentPos++;
+            if (currentPos >= m_LstTools.GetItemCount())
+                currentPos = 0;
+        } while (currentPos != startPos);
+    }
+
     void CToolsDlg::OnBnClickedButtonImport()
     {
         if (m_Utilities.bDownload == true)
@@ -244,6 +323,8 @@ namespace dialogs
                 if (!szFilePath.empty())
                     this->LoadTool(szFilePath);
             } while (pos != nullptr);
+
+            this->RedrawTools();
         }
     }
 
@@ -363,19 +444,17 @@ namespace dialogs
                 config::CTool& tool = m_Tools[nSelected];
                 config::CTool copy = tool;
 
-                m_Tools.emplace_back(copy);
-
-                int nItem = m_LstTools.GetItemCount();
-                AddToList(copy, nItem);
+                m_Tools.insert(m_Tools.begin() + nSelected + 1, copy);
 
                 m_LstTools.SetItemState(-1, 0, LVIS_SELECTED);
-                m_LstTools.SetItemState(nItem, LVIS_SELECTED, LVIS_SELECTED);
-                m_LstTools.EnsureVisible(nItem, FALSE);
+                m_LstTools.SetItemState(nSelected + 1, LVIS_SELECTED, LVIS_SELECTED);
+                m_LstTools.EnsureVisible(nSelected + 1, FALSE);
             }
         }
 
         bUpdate = false;
 
+        this->RedrawTools();
         this->ListSelectionChange();
     }
 
@@ -387,7 +466,8 @@ namespace dialogs
         if (m_Tools.size() > 0)
         {
             m_Tools = std::vector<config::CTool>();
-            m_LstTools.DeleteAllItems();
+            nSelectedTool = -1;
+            this->RedrawTools();
             this->ListSelectionChange();
         }
     }
@@ -412,10 +492,11 @@ namespace dialogs
             if (m_LstTools.GetItemState(i, LVIS_SELECTED) == LVIS_SELECTED)
             {
                 m_Tools.erase(m_Tools.begin() + i);
-                m_LstTools.DeleteItem(i);
                 nItemLastRemoved = i;
             }
         }
+
+        this->RedrawTools();
 
         m_LstTools.SetItemState(-1, 0, LVIS_SELECTED);
 
@@ -435,7 +516,6 @@ namespace dialogs
         }
 
         bUpdate = false;
-
         this->ListSelectionChange();
     }
 
@@ -448,8 +528,6 @@ namespace dialogs
             return;
 
         bUpdate = true;
-
-        int nItem = m_LstTools.GetItemCount();
 
         config::CTool tool;
         tool.szName = pConfig->GetString(0x00240004);
@@ -464,11 +542,12 @@ namespace dialogs
 
         m_Tools.emplace_back(tool);
 
-        AddToList(tool, nItem);
+        this->RedrawTools();
 
+        int nItem = m_LstTools.GetItemCount();
         m_LstTools.SetItemState(-1, 0, LVIS_SELECTED);
-        m_LstTools.SetItemState(nItem, LVIS_SELECTED, LVIS_SELECTED);
-        m_LstTools.EnsureVisible(nItem, FALSE);
+        m_LstTools.SetItemState(nItem - 1, LVIS_SELECTED, LVIS_SELECTED);
+        m_LstTools.EnsureVisible(nItem - 1, FALSE);
 
         bUpdate = false;
 
@@ -496,12 +575,7 @@ namespace dialogs
 
                 std::swap(tool1, tool2);
 
-                m_LstTools.SetItemText(nItem, TOOL_COLUMN_NAME, tool1.szName.c_str());
-                m_LstTools.SetItemText(nItem, TOOL_COLUMN_URL, tool1.szUrl.c_str());
-                m_LstTools.SetItemText(nItem, TOOL_COLUMN_STATUS, tool1.szStatus.c_str());
-                m_LstTools.SetItemText(nItem - 1, TOOL_COLUMN_NAME, tool2.szName.c_str());
-                m_LstTools.SetItemText(nItem - 1, TOOL_COLUMN_URL, tool2.szUrl.c_str());
-                m_LstTools.SetItemText(nItem - 1, TOOL_COLUMN_STATUS, tool2.szStatus.c_str());
+                this->RedrawTools();
 
                 m_LstTools.SetItemState(-1, 0, LVIS_SELECTED);
                 m_LstTools.SetItemState(nItem - 1, LVIS_SELECTED, LVIS_SELECTED);
@@ -534,12 +608,7 @@ namespace dialogs
 
                 std::swap(tool1, tool2);
 
-                m_LstTools.SetItemText(nItem, TOOL_COLUMN_NAME, tool1.szName.c_str());
-                m_LstTools.SetItemText(nItem, TOOL_COLUMN_URL, tool1.szUrl.c_str());
-                m_LstTools.SetItemText(nItem, TOOL_COLUMN_STATUS, tool1.szStatus.c_str());
-                m_LstTools.SetItemText(nItem + 1, TOOL_COLUMN_NAME, tool2.szName.c_str());
-                m_LstTools.SetItemText(nItem + 1, TOOL_COLUMN_URL, tool2.szUrl.c_str());
-                m_LstTools.SetItemText(nItem + 1, TOOL_COLUMN_STATUS, tool2.szStatus.c_str());
+                this->RedrawTools();
 
                 m_LstTools.SetItemState(-1, 0, LVIS_SELECTED);
                 m_LstTools.SetItemState(nItem + 1, LVIS_SELECTED, LVIS_SELECTED);
@@ -595,9 +664,7 @@ namespace dialogs
             tool.szExtract = szExtract;
             tool.szPath = szPath;
 
-            m_LstTools.SetItemText(nItem, TOOL_COLUMN_NAME, szName);
-            m_LstTools.SetItemText(nItem, TOOL_COLUMN_URL, szUrl);
-            m_LstTools.SetItemText(nItem, TOOL_COLUMN_STATUS, tool.szStatus.c_str());
+            this->RedrawTools();
 
             m_LstTools.SetItemState(-1, 0, LVIS_SELECTED);
             m_LstTools.SetItemState(nItem, LVIS_SELECTED, LVIS_SELECTED);
@@ -712,10 +779,9 @@ namespace dialogs
             for (int i = 0; i < nCount; i++)
             {
                 if (m_LstTools.GetItemState(i, LVIS_SELECTED) == LVIS_SELECTED)
-                {
-                    m_LstTools.SetItemText(i, TOOL_COLUMN_STATUS, _T(""));
-                }
+                    m_Tools[i].szStatus = L"";
             }
+            this->RedrawTools();
 
             m_Thread = std::thread([this]() 
             {
@@ -834,38 +900,15 @@ namespace dialogs
         helper.SetWndText(&m_BtnOK, 0x000E0029);
     }
 
-    void CToolsDlg::AddToList(config::CTool &tool, int nItem)
+    void CToolsDlg::RedrawTool(int nId)
     {
-        LVITEM lvi;
-
-        ZeroMemory(&lvi, sizeof(LVITEM));
-
-        lvi.mask = LVIF_TEXT | LVIF_STATE;
-        lvi.state = 0;
-        lvi.stateMask = 0;
-        lvi.iItem = nItem;
-
-        lvi.iSubItem = TOOL_COLUMN_NAME;
-        lvi.pszText = (LPTSTR)(LPCTSTR)(tool.szName.c_str());
-        m_LstTools.InsertItem(&lvi);
-
-        lvi.iSubItem = TOOL_COLUMN_URL;
-        lvi.pszText = (LPTSTR)(LPCTSTR)(tool.szUrl.c_str());
-        m_LstTools.SetItemText(lvi.iItem, TOOL_COLUMN_URL, lvi.pszText);
-
-        lvi.iSubItem = TOOL_COLUMN_STATUS;
-        lvi.pszText = (LPTSTR)(LPCTSTR)(tool.szStatus.c_str());
-        m_LstTools.SetItemText(lvi.iItem, TOOL_COLUMN_STATUS, lvi.pszText);
+        this->m_LstTools.RedrawItems(nId, nId);
     }
 
-    void CToolsDlg::InsertToolsToListCtrl()
+    void CToolsDlg::RedrawTools()
     {
-        size_t nTools = m_Tools.size();
-        for (size_t i = 0; i < nTools; i++)
-        {
-            config::CTool& tool = m_Tools[i];
-            this->AddToList(tool, i);
-        }
+        this->m_LstTools.RedrawItems(0, m_Tools.size() - 1);
+        this->m_LstTools.SetItemCount(m_Tools.size());
     }
 
     void CToolsDlg::HandleDropFiles(HDROP hDropInfo)
@@ -893,6 +936,7 @@ namespace dialogs
                             if (util::string::CompareNoCase(szName, "Tool"))
                             {
                                 this->LoadTool(doc);
+                                this->RedrawTools();
                             }
                         }
                     }
@@ -935,10 +979,11 @@ namespace dialogs
         if (pos != nullptr)
         {
             int nItem = m_LstTools.GetNextSelectedItem(pos);
-
-            config::CTool& tool = this->m_Tools[nItem];
-
-            this->UpdateFields(tool);
+            if (nItem >= 0)
+            {
+                config::CTool& tool = this->m_Tools[nItem];
+                this->UpdateFields(tool);
+            }
         }
         else
         {
@@ -1010,7 +1055,8 @@ namespace dialogs
                     m_Utilities.Download(tool, true, true, i, pConfig,
                         [this](int nIndex, std::wstring szStatus) -> bool
                         {
-                            this->m_LstTools.SetItemText(nIndex, TOOL_COLUMN_STATUS, szStatus.c_str());
+                            this->m_Tools[nIndex].szStatus = szStatus;
+                            this->RedrawTool(nIndex);
                             return this->bAbort;
                         });
                 }
@@ -1040,8 +1086,6 @@ namespace dialogs
         if (xml::XmlConfig::LoadTool(doc, tool))
         {
             m_Tools.emplace_back(tool);
-            size_t nItem = m_Tools.size() - 1;
-            this->AddToList(tool, nItem);
             return true;
         }
         return false;

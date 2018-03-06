@@ -84,6 +84,9 @@ namespace dialogs
         ON_WM_DROPFILES()
         ON_BN_CLICKED(IDOK, OnBnClickedOk)
         ON_BN_CLICKED(IDCANCEL, OnBnClickedCancel)
+        ON_MESSAGE(WM_NOTIFYFORMAT, OnNotifyFormat)
+        ON_NOTIFY(LVN_GETDISPINFO, IDC_LIST_FORMATS, OnLvnGetdispinfoListFormats)
+        ON_NOTIFY(LVN_ODFINDITEM, IDC_LIST_FORMATS, OnOdfindListFormats)
         ON_NOTIFY(LVN_ITEMCHANGED, IDC_LIST_FORMATS, OnLvnItemchangedListFormats)
         ON_BN_CLICKED(IDC_RADIO_TYPE_ENCODER, OnBnClickedRadioTypeEncoder)
         ON_BN_CLICKED(IDC_RADIO_TYPE_DECODER, OnBnClickedRadioTypeDecoder)
@@ -125,6 +128,11 @@ namespace dialogs
         // priority spin
         m_SpinPriority.SetRange32(-1000, 1000);
 
+        // OnNotifyFormat WM_NOTIFYFORMAT
+#ifdef _UNICODE
+        m_LstFormats.SendMessage(CCM_SETUNICODEFORMAT, (WPARAM)(BOOL)TRUE, 0);
+#endif
+
         // update list style
         DWORD dwExStyle = m_LstFormats.GetExtendedStyle();
         dwExStyle |= LVS_EX_FULLROWSELECT | LVS_EX_DOUBLEBUFFER | LVS_EX_GRIDLINES;
@@ -134,17 +142,17 @@ namespace dialogs
         m_LstFormats.InsertColumn(FORMAT_COLUMN_NAME, _T("Name"), LVCFMT_LEFT, 195);
         m_LstFormats.InsertColumn(FORMAT_COLUMN_TEMPLATE, _T("Template"), LVCFMT_LEFT, 295);
 
-        // insert all ListCtrl items and sub items
-        this->InsertFormatsToListCtrl();
-
-        m_LstFormats.SetItemState(nSelectedFormat, LVIS_SELECTED, LVIS_SELECTED);
-        m_LstFormats.EnsureVisible(nSelectedFormat, FALSE);
-
         // enable drag & drop
         this->DragAcceptFiles(TRUE);
 
         this->LoadWindowSettings();
         this->SetLanguage();
+
+        this->RedrawFormats();
+
+        // select format
+        m_LstFormats.SetItemState(nSelectedFormat, LVIS_SELECTED, LVIS_SELECTED);
+        m_LstFormats.EnsureVisible(nSelectedFormat, FALSE);
 
         return TRUE;
     }
@@ -211,6 +219,71 @@ namespace dialogs
         *pResult = 0;
     }
 
+    LRESULT CFormatsDlg::OnNotifyFormat(WPARAM wParam, LPARAM lParam)
+    {
+#ifdef _UNICODE
+        return NFR_UNICODE;
+#else
+        return NFR_ANSI;
+#endif
+    }
+
+    void CFormatsDlg::OnLvnGetdispinfoListFormats(NMHDR* pNMHDR, LRESULT* pResult)
+    {
+        NMLVDISPINFO *pDispInfo = reinterpret_cast<NMLVDISPINFO*>(pNMHDR);
+        LV_ITEM* pItem = &(pDispInfo)->item;
+        int nItem = pItem->iItem;
+
+        if (pItem->mask & LVIF_TEXT)
+        {
+            config::CFormat& format = m_Formats[nItem];
+            std::wstring szText;
+
+            switch (pItem->iSubItem)
+            {
+            case FORMAT_COLUMN_NAME:
+                szText = format.szName;
+                break;
+            case FORMAT_COLUMN_TEMPLATE:
+                szText = format.szTemplate;
+                break;
+            }
+
+            _tcscpy_s(pItem->pszText, pItem->cchTextMax, szText.c_str());
+        }
+
+        *pResult = 0;
+    }
+
+    void CFormatsDlg::OnOdfindListFormats(NMHDR* pNMHDR, LRESULT* pResult)
+    {
+        NMLVFINDITEM* pFindInfo = (NMLVFINDITEM*)pNMHDR;
+        *pResult = -1;
+        if ((pFindInfo->lvfi.flags & LVFI_STRING) == 0)
+        {
+            return;
+        }
+
+        CString szSearchStr = pFindInfo->lvfi.psz;
+        int startPos = pFindInfo->iStart;
+        if (startPos >= m_LstFormats.GetItemCount())
+            startPos = 0;
+
+        int currentPos = startPos;
+        do
+        {
+            config::CFormat& format = m_Formats[currentPos];
+            if (_tcsnicmp(format.szName.c_str(), szSearchStr, szSearchStr.GetLength()) == 0)
+            {
+                *pResult = currentPos;
+                break;
+            }
+            currentPos++;
+            if (currentPos >= m_LstFormats.GetItemCount())
+                currentPos = 0;
+        } while (currentPos != startPos);
+    }
+
     void CFormatsDlg::OnBnClickedButtonImport()
     {
         std::array<TCHAR, (768*(MAX_PATH+1))+1> buffer { 0 };
@@ -236,6 +309,8 @@ namespace dialogs
                 if (!szFilePath.empty())
                     this->LoadFormat(szFilePath);
             } while (pos != nullptr);
+
+            this->RedrawFormats();
         }
     }
 
@@ -349,14 +424,13 @@ namespace dialogs
                 config::CFormat& format = m_Formats[nSelected];
                 config::CFormat copy = format;
 
-                m_Formats.emplace_back(copy);
+                m_Formats.insert(m_Formats.begin() + nSelected + 1, copy);
 
-                int nItem = m_LstFormats.GetItemCount();
-                AddToList(copy, nItem);
+                this->RedrawFormats();
 
                 m_LstFormats.SetItemState(-1, 0, LVIS_SELECTED);
-                m_LstFormats.SetItemState(nItem, LVIS_SELECTED, LVIS_SELECTED);
-                m_LstFormats.EnsureVisible(nItem, FALSE);
+                m_LstFormats.SetItemState(nSelected + 1, LVIS_SELECTED, LVIS_SELECTED);
+                m_LstFormats.EnsureVisible(nSelected + 1, FALSE);
             }
         }
 
@@ -370,7 +444,8 @@ namespace dialogs
         if (m_Formats.size() > 0)
         {
             m_Formats = std::vector<config::CFormat>();
-            m_LstFormats.DeleteAllItems();
+            nSelectedFormat = -1;
+            this->RedrawFormats();
             this->ListSelectionChange();
         }
     }
@@ -392,10 +467,11 @@ namespace dialogs
             if (m_LstFormats.GetItemState(i, LVIS_SELECTED) == LVIS_SELECTED)
             {
                 m_Formats.erase(m_Formats.begin() + i);
-                m_LstFormats.DeleteItem(i);
                 nItemLastRemoved = i;
             }
         }
+
+        this->RedrawFormats();
 
         m_LstFormats.SetItemState(-1, 0, LVIS_SELECTED);
 
@@ -426,8 +502,6 @@ namespace dialogs
 
         bUpdate = true;
 
-        int nItem = m_LstFormats.GetItemCount();
-
         config::CFormat format;
         format.szId = L"ID";
         format.szName = pConfig->GetString(0x00230004);
@@ -450,11 +524,12 @@ namespace dialogs
 
         m_Formats.emplace_back(format);
 
-        AddToList(format, nItem);
+        this->RedrawFormats();
 
+        int nItem = m_LstFormats.GetItemCount();
         m_LstFormats.SetItemState(-1, 0, LVIS_SELECTED);
-        m_LstFormats.SetItemState(nItem, LVIS_SELECTED, LVIS_SELECTED);
-        m_LstFormats.EnsureVisible(nItem, FALSE);
+        m_LstFormats.SetItemState(nItem - 1, LVIS_SELECTED, LVIS_SELECTED);
+        m_LstFormats.EnsureVisible(nItem - 1, FALSE);
 
         bUpdate = false;
 
@@ -479,10 +554,7 @@ namespace dialogs
 
                 std::swap(format1, format2);
 
-                m_LstFormats.SetItemText(nItem, FORMAT_COLUMN_NAME, format1.szName.c_str());
-                m_LstFormats.SetItemText(nItem, FORMAT_COLUMN_TEMPLATE, format1.szTemplate.c_str());
-                m_LstFormats.SetItemText(nItem - 1, FORMAT_COLUMN_NAME, format2.szName.c_str());
-                m_LstFormats.SetItemText(nItem - 1, FORMAT_COLUMN_TEMPLATE, format2.szTemplate.c_str());
+                this->RedrawFormats();
 
                 m_LstFormats.SetItemState(-1, 0, LVIS_SELECTED);
                 m_LstFormats.SetItemState(nItem - 1, LVIS_SELECTED, LVIS_SELECTED);
@@ -512,10 +584,7 @@ namespace dialogs
 
                 std::swap(format1, format2);
 
-                m_LstFormats.SetItemText(nItem, FORMAT_COLUMN_NAME, format1.szName.c_str());
-                m_LstFormats.SetItemText(nItem, FORMAT_COLUMN_TEMPLATE, format1.szTemplate.c_str());
-                m_LstFormats.SetItemText(nItem + 1, FORMAT_COLUMN_NAME, format2.szName.c_str());
-                m_LstFormats.SetItemText(nItem + 1, FORMAT_COLUMN_TEMPLATE, format2.szTemplate.c_str());
+                this->RedrawFormats();
 
                 m_LstFormats.SetItemState(-1, 0, LVIS_SELECTED);
                 m_LstFormats.SetItemState(nItem + 1, LVIS_SELECTED, LVIS_SELECTED);
@@ -597,8 +666,7 @@ namespace dialogs
             format.szPath = szPath;
             format.szFunction = szFunction;
 
-            m_LstFormats.SetItemText(nItem, FORMAT_COLUMN_NAME, szName);
-            m_LstFormats.SetItemText(nItem, FORMAT_COLUMN_TEMPLATE, szTemplate);
+            this->RedrawFormats();
 
             m_LstFormats.SetItemState(-1, 0, LVIS_SELECTED);
             m_LstFormats.SetItemState(nItem, LVIS_SELECTED, LVIS_SELECTED);
@@ -730,14 +798,12 @@ namespace dialogs
             {
                 this->m_Formats = std::move(dlg.m_Formats);
 
-                this->m_LstFormats.DeleteAllItems();
-
-                this->InsertFormatsToListCtrl();
                 m_LstFormats.SetItemState(-1, 0, LVIS_SELECTED);
                 m_LstFormats.SetItemState(nItem, LVIS_SELECTED, LVIS_SELECTED);
                 m_LstFormats.EnsureVisible(nItem, FALSE);
 
                 this->ListSelectionChange();
+                this->RedrawFormats();
             }
 
             pConfig->m_Options.szPresetsDialogResize = dlg.szPresetsDialogResize;
@@ -853,34 +919,15 @@ namespace dialogs
         helper.SetWndText(&m_BtnOK, 0x000C002A);
     }
 
-    void CFormatsDlg::AddToList(config::CFormat &format, int nItem)
+    void CFormatsDlg::RedrawFormat(int nId)
     {
-        LVITEM lvi;
-
-        ZeroMemory(&lvi, sizeof(LVITEM));
-
-        lvi.mask = LVIF_TEXT | LVIF_STATE;
-        lvi.state = 0;
-        lvi.stateMask = 0;
-        lvi.iItem = nItem;
-
-        lvi.iSubItem = FORMAT_COLUMN_NAME;
-        lvi.pszText = (LPTSTR)(LPCTSTR)(format.szName.c_str());
-        m_LstFormats.InsertItem(&lvi);
-
-        lvi.iSubItem = FORMAT_COLUMN_TEMPLATE;
-        lvi.pszText = (LPTSTR)(LPCTSTR)(format.szTemplate.c_str());
-        m_LstFormats.SetItemText(lvi.iItem, FORMAT_COLUMN_TEMPLATE, lvi.pszText);
+        this->m_LstFormats.RedrawItems(nId, nId);
     }
 
-    void CFormatsDlg::InsertFormatsToListCtrl()
+    void CFormatsDlg::RedrawFormats()
     {
-        size_t nFormats = m_Formats.size();
-        for (size_t i = 0; i < nFormats; i++)
-        {
-            config::CFormat& format = m_Formats[i];
-            this->AddToList(format, i);
-        }
+        this->m_LstFormats.RedrawItems(0, m_Formats.size() - 1);
+        this->m_LstFormats.SetItemCount(m_Formats.size());
     }
 
     void CFormatsDlg::HandleDropFiles(HDROP hDropInfo)
@@ -908,6 +955,7 @@ namespace dialogs
                             if (util::string::CompareNoCase(szName, "Format"))
                             {
                                 this->LoadFormat(doc);
+                                this->RedrawFormats();
                             }
                             else if (util::string::CompareNoCase(szName, "Presets"))
                             {
@@ -1030,11 +1078,12 @@ namespace dialogs
         if (pos != nullptr)
         {
             int nItem = m_LstFormats.GetNextSelectedItem(pos);
-
-            config::CFormat& format = this->m_Formats[nItem];
-
-            this->UpdateFields(format);
-            this->UpdateDefaultComboBox(format);
+            if (nItem >= 0)
+            {
+                config::CFormat& format = this->m_Formats[nItem];
+                this->UpdateFields(format);
+                this->UpdateDefaultComboBox(format);
+            }
         }
         else
         {
@@ -1138,8 +1187,6 @@ namespace dialogs
         if (xml::XmlConfig::LoadFormat(doc, format))
         {
             m_Formats.emplace_back(format);
-            size_t nItem = m_Formats.size() - 1;
-            this->AddToList(format, nItem);
             return true;
         }
         return false;

@@ -55,7 +55,10 @@ namespace dialogs
         afx_msg void OnDropFiles(HDROP hDropInfo);
         afx_msg void OnBnClickedOk();
         afx_msg void OnBnClickedCancel();
+        afx_msg void OnLvnGetdispinfoListPresets(NMHDR* pNMHDR, LRESULT* pResult);
+        afx_msg void OnOdfindListPresets(NMHDR* pNMHDR, LRESULT* pResult);
         afx_msg void OnLvnItemchangedListPresets(NMHDR *pNMHDR, LRESULT *pResult);
+        afx_msg LRESULT OnNotifyFormat(WPARAM wParam, LPARAM lParam);
         afx_msg void OnCbnSelchangeComboPresetFormat();
         afx_msg void OnBnClickedButtonDuplicate();
         afx_msg void OnBnClickedButtonRemoveAllPresets();
@@ -73,8 +76,8 @@ namespace dialogs
         void LoadWindowSettings();
         void SaveWindowSettings();
         void SetLanguage();
-        void AddToList(config::CPreset &preset, int nItem);
-        void InsertPresetsToListCtrl();
+        void RedrawPreset(int nId);
+        void RedrawPresets();
         void HandleDropFiles(HDROP hDropInfo);
         void UpdateFields(config::CPreset &preset);
         void ListSelectionChange();

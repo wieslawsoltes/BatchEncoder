@@ -50,6 +50,9 @@ namespace dialogs
         ON_WM_DROPFILES()
         ON_BN_CLICKED(IDOK, OnBnClickedOk)
         ON_BN_CLICKED(IDCANCEL, OnBnClickedCancel)
+        ON_MESSAGE(WM_NOTIFYFORMAT, OnNotifyFormat)
+        ON_NOTIFY(LVN_GETDISPINFO, IDC_LIST_PRESETS, OnLvnGetdispinfoListPresets)
+        ON_NOTIFY(LVN_ODFINDITEM, IDC_LIST_PRESETS, OnOdfindListPresets)
         ON_NOTIFY(LVN_ITEMCHANGED, IDC_LIST_PRESETS, OnLvnItemchangedListPresets)
         ON_CBN_SELCHANGE(IDC_COMBO_PRESET_FORMAT, OnCbnSelchangeComboPresetFormat)
         ON_BN_CLICKED(IDC_BUTTON_PRESET_DUPLICATE, OnBnClickedButtonDuplicate)
@@ -75,6 +78,11 @@ namespace dialogs
         SetIcon(m_hIcon, TRUE);
         SetIcon(m_hIcon, FALSE);
 
+        // OnNotifyFormat WM_NOTIFYFORMAT
+#ifdef _UNICODE
+        m_LstPresets.SendMessage(CCM_SETUNICODEFORMAT, (WPARAM)(BOOL)TRUE, 0);
+#endif
+
         // update list style
         DWORD dwExStyle = m_LstPresets.GetExtendedStyle();
         dwExStyle |= LVS_EX_FULLROWSELECT | LVS_EX_DOUBLEBUFFER | LVS_EX_GRIDLINES;
@@ -96,13 +104,16 @@ namespace dialogs
 
         m_CmbFormat.SetCurSel(nSelectedFormat);
 
-        this->OnCbnSelchangeComboPresetFormat();
-
         // enable drag & drop
         this->DragAcceptFiles(TRUE);
 
         this->LoadWindowSettings();
         this->SetLanguage();
+
+        this->RedrawPresets();
+
+        // select preset
+        this->OnCbnSelchangeComboPresetFormat();
 
         return TRUE;
     }
@@ -163,6 +174,79 @@ namespace dialogs
         *pResult = 0;
     }
 
+    LRESULT CPresetsDlg::OnNotifyFormat(WPARAM wParam, LPARAM lParam)
+    {
+#ifdef _UNICODE
+        return NFR_UNICODE;
+#else
+        return NFR_ANSI;
+#endif
+    }
+
+    void CPresetsDlg::OnLvnGetdispinfoListPresets(NMHDR* pNMHDR, LRESULT* pResult)
+    {
+        NMLVDISPINFO *pDispInfo = reinterpret_cast<NMLVDISPINFO*>(pNMHDR);
+        LV_ITEM* pItem = &(pDispInfo)->item;
+        int nItem = pItem->iItem;
+
+        if (pItem->mask & LVIF_TEXT)
+        {
+            if (this->m_Formats.size() > 0)
+            {
+                config::CFormat& format = this->m_Formats[this->nSelectedFormat];
+                config::CPreset& preset = format.m_Presets[nItem];
+                std::wstring szText;
+
+                switch (pItem->iSubItem)
+                {
+                case PRESET_COLUMN_NAME:
+                    szText = preset.szName;
+                    break;
+                case PRESET_COLUMN_OPTIONS:
+                    szText = preset.szOptions;
+                    break;
+                }
+
+                _tcscpy_s(pItem->pszText, pItem->cchTextMax, szText.c_str());
+            }
+        }
+
+        *pResult = 0;
+    }
+
+    void CPresetsDlg::OnOdfindListPresets(NMHDR* pNMHDR, LRESULT* pResult)
+    {
+        NMLVFINDITEM* pFindInfo = (NMLVFINDITEM*)pNMHDR;
+        *pResult = -1;
+        if ((pFindInfo->lvfi.flags & LVFI_STRING) == 0)
+        {
+            return;
+        }
+
+        if (this->m_Formats.size() <= 0)
+            return;
+
+        CString szSearchStr = pFindInfo->lvfi.psz;
+        int startPos = pFindInfo->iStart;
+        if (startPos >= m_LstPresets.GetItemCount())
+            startPos = 0;
+
+        int currentPos = startPos;
+        do
+        {
+            config::CFormat& format = this->m_Formats[this->nSelectedFormat];
+            config::CPreset& preset = format.m_Presets[currentPos];
+            if (_tcsnicmp(preset.szName.c_str(), szSearchStr, szSearchStr.GetLength()) == 0)
+            {
+                *pResult = currentPos;
+                break;
+            }
+            currentPos++;
+            if (currentPos >= m_LstPresets.GetItemCount())
+                currentPos = 0;
+        } while (currentPos != startPos);
+    }
+
     void CPresetsDlg::OnBnClickedButtonDuplicate()
     {
         if (bUpdate == true)
@@ -182,9 +266,6 @@ namespace dialogs
 
                 format.m_Presets.insert(format.m_Presets.begin() + nSelected + 1, copy);
 
-                this->m_LstPresets.DeleteAllItems();
-                this->InsertPresetsToListCtrl();
-
                 m_LstPresets.SetItemState(-1, 0, LVIS_SELECTED);
                 m_LstPresets.SetItemState(nSelected + 1, LVIS_SELECTED, LVIS_SELECTED);
                 m_LstPresets.EnsureVisible(nSelected + 1, FALSE);
@@ -193,6 +274,7 @@ namespace dialogs
 
         bUpdate = false;
 
+        this->RedrawPresets();
         this->ListSelectionChange();
     }
 
@@ -202,9 +284,7 @@ namespace dialogs
         {
             config::CFormat& format = m_Formats[nSelectedFormat];
             format.m_Presets = std::vector<config::CPreset>();
-
-            m_LstPresets.DeleteAllItems();
-
+            this->RedrawPresets();
             this->ListSelectionChange();
         }
     }
@@ -228,10 +308,11 @@ namespace dialogs
             if (m_LstPresets.GetItemState(i, LVIS_SELECTED) == LVIS_SELECTED)
             {
                 format.m_Presets.erase(format.m_Presets.begin() + i);
-                m_LstPresets.DeleteItem(i);
                 nItemLastRemoved = i;
             }
         }
+
+        this->RedrawPresets();
 
         m_LstPresets.SetItemState(-1, 0, LVIS_SELECTED);
 
@@ -264,19 +345,19 @@ namespace dialogs
 
             bUpdate = true;
 
-            int nItem = m_LstPresets.GetItemCount();
-
             config::CFormat& format = m_Formats[nSelectedFormat];
             config::CPreset preset;
             preset.szName = pConfig->GetString(0x00220004);
             preset.szOptions = L"";
+
             format.m_Presets.emplace_back(preset);
 
-            AddToList(preset, nItem);
+            this->RedrawPresets();
 
+            int nItem = m_LstPresets.GetItemCount();
             m_LstPresets.SetItemState(-1, 0, LVIS_SELECTED);
-            m_LstPresets.SetItemState(nItem, LVIS_SELECTED, LVIS_SELECTED);
-            m_LstPresets.EnsureVisible(nItem, FALSE);
+            m_LstPresets.SetItemState(nItem - 1, LVIS_SELECTED, LVIS_SELECTED);
+            m_LstPresets.EnsureVisible(nItem - 1, FALSE);
 
             bUpdate = false;
 
@@ -303,10 +384,7 @@ namespace dialogs
 
                 std::swap(preset1, preset2);
 
-                m_LstPresets.SetItemText(nItem, PRESET_COLUMN_NAME, preset1.szName.c_str());
-                m_LstPresets.SetItemText(nItem, PRESET_COLUMN_OPTIONS, preset1.szOptions.c_str());
-                m_LstPresets.SetItemText(nItem - 1, PRESET_COLUMN_NAME, preset2.szName.c_str());
-                m_LstPresets.SetItemText(nItem - 1, PRESET_COLUMN_OPTIONS, preset2.szOptions.c_str());
+                this->RedrawPresets();
 
                 m_LstPresets.SetItemState(-1, 0, LVIS_SELECTED);
                 m_LstPresets.SetItemState(nItem - 1, LVIS_SELECTED, LVIS_SELECTED);
@@ -337,10 +415,7 @@ namespace dialogs
 
                 std::swap(preset1, preset2);
 
-                m_LstPresets.SetItemText(nItem, PRESET_COLUMN_NAME, preset1.szName.c_str());
-                m_LstPresets.SetItemText(nItem, PRESET_COLUMN_OPTIONS, preset1.szOptions.c_str());
-                m_LstPresets.SetItemText(nItem + 1, PRESET_COLUMN_NAME, preset2.szName.c_str());
-                m_LstPresets.SetItemText(nItem + 1, PRESET_COLUMN_OPTIONS, preset2.szOptions.c_str());
+                this->RedrawPresets();
 
                 m_LstPresets.SetItemState(-1, 0, LVIS_SELECTED);
                 m_LstPresets.SetItemState(nItem + 1, LVIS_SELECTED, LVIS_SELECTED);
@@ -372,8 +447,7 @@ namespace dialogs
             preset.szName = szName;
             preset.szOptions = szOptions;
 
-            m_LstPresets.SetItemText(nItem, PRESET_COLUMN_NAME, szName);
-            m_LstPresets.SetItemText(nItem, PRESET_COLUMN_OPTIONS, szOptions);
+            this->RedrawPresets();
 
             m_LstPresets.SetItemState(-1, 0, LVIS_SELECTED);
             m_LstPresets.SetItemState(nItem, LVIS_SELECTED, LVIS_SELECTED);
@@ -385,11 +459,8 @@ namespace dialogs
 
     void CPresetsDlg::OnCbnSelchangeComboPresetFormat()
     {
-        m_LstPresets.DeleteAllItems();
-
         nSelectedFormat = this->m_CmbFormat.GetCurSel();
-
-        this->InsertPresetsToListCtrl();
+        this->RedrawPresets();
 
         if (this->m_Formats.size() > 0)
         {
@@ -405,6 +476,8 @@ namespace dialogs
             this->m_EdtName.SetWindowText(szName);
             this->m_EdtOptions.SetWindowText(szOptions);
         }
+
+        this->RedrawPresets();
     }
 
     void CPresetsDlg::OnEnChangeEditPresetName()
@@ -438,6 +511,7 @@ namespace dialogs
         {
             std::wstring szFileXml = fd.GetPathName();
             this->LoadPresets(szFileXml);
+            this->RedrawPresets();
         }
     }
 
@@ -528,37 +602,23 @@ namespace dialogs
         helper.SetWndText(&m_BtnOK, 0x000B001C);
     }
 
-    void CPresetsDlg::AddToList(config::CPreset &preset, int nItem)
+    void CPresetsDlg::RedrawPreset(int nId)
     {
-        LVITEM lvi;
-
-        ZeroMemory(&lvi, sizeof(LVITEM));
-
-        lvi.mask = LVIF_TEXT | LVIF_STATE;
-        lvi.state = 0;
-        lvi.stateMask = 0;
-        lvi.iItem = nItem;
-
-        lvi.iSubItem = PRESET_COLUMN_NAME;
-        lvi.pszText = (LPTSTR)(LPCTSTR)(preset.szName.c_str());
-        m_LstPresets.InsertItem(&lvi);
-
-        lvi.iSubItem = PRESET_COLUMN_OPTIONS;
-        lvi.pszText = (LPTSTR)(LPCTSTR)(preset.szOptions.c_str());
-        m_LstPresets.SetItemText(lvi.iItem, PRESET_COLUMN_OPTIONS, lvi.pszText);
+        this->m_LstPresets.RedrawItems(nId, nId);
     }
 
-    void CPresetsDlg::InsertPresetsToListCtrl()
+    void CPresetsDlg::RedrawPresets()
     {
         if (this->m_Formats.size() > 0)
         {
             config::CFormat& format = this->m_Formats[this->nSelectedFormat];
-            size_t nPresets = format.m_Presets.size();
-            for (size_t i = 0; i < nPresets; i++)
-            {
-                config::CPreset& preset = format.m_Presets[i];
-                this->AddToList(preset, i);
-            }
+            this->m_LstPresets.RedrawItems(0, format.m_Presets.size() - 1);
+            this->m_LstPresets.SetItemCount(format.m_Presets.size());
+        }
+        else
+        {
+            this->m_LstPresets.RedrawItems(0, -1);
+            this->m_LstPresets.SetItemCount(0);
         }
     }
 
@@ -587,6 +647,7 @@ namespace dialogs
                             if (util::string::CompareNoCase(szName, "Presets"))
                             {
                                 this->LoadPresets(doc);
+                                this->RedrawPresets();
                             }
                         }
                     }
@@ -615,12 +676,13 @@ namespace dialogs
         if (pos != nullptr)
         {
             int nItem = m_LstPresets.GetNextSelectedItem(pos);
-
             config::CFormat& format = m_Formats[nSelectedFormat];
-            config::CPreset& preset = format.m_Presets[nItem];
-            format.nDefaultPreset = nItem;
-
-            this->UpdateFields(preset);
+            if (nItem >= 0)
+            {
+                config::CPreset& preset = format.m_Presets[nItem];
+                format.nDefaultPreset = nItem;
+                this->UpdateFields(preset);
+            }
         }
         else
         {
@@ -647,10 +709,8 @@ namespace dialogs
         std::vector<config::CPreset> presets;
         if (xml::XmlConfig::LoadPresets(doc, presets))
         {
-            this->m_LstPresets.DeleteAllItems();
             config::CFormat& format = this->m_Formats[this->nSelectedFormat];
             format.m_Presets = std::move(presets);
-            this->InsertPresetsToListCtrl();
             return true;
         }
         return false;

@@ -77,7 +77,10 @@ namespace dialogs
         afx_msg void OnDropFiles(HDROP hDropInfo);
         afx_msg void OnBnClickedOk();
         afx_msg void OnBnClickedCancel();
+        afx_msg void OnLvnGetdispinfoListFormats(NMHDR* pNMHDR, LRESULT* pResult);
+        afx_msg void OnOdfindListFormats(NMHDR* pNMHDR, LRESULT* pResult);
         afx_msg void OnLvnItemchangedListFormats(NMHDR *pNMHDR, LRESULT *pResult);
+        afx_msg LRESULT OnNotifyFormat(WPARAM wParam, LPARAM lParam);
         afx_msg void OnBnClickedButtonImport();
         afx_msg void OnBnClickedButtonExport();
         afx_msg void OnBnClickedButtonDuplicate();
@@ -108,8 +111,8 @@ namespace dialogs
         void LoadWindowSettings();
         void SaveWindowSettings();
         void SetLanguage();
-        void AddToList(config::CFormat &format, int nItem);
-        void InsertFormatsToListCtrl();
+        void RedrawFormat(int nId);
+        void RedrawFormats();
         void HandleDropFiles(HDROP hDropInfo);
         void UpdateFields(config::CFormat &format);
         void UpdateDefaultComboBox(config::CFormat &format);
