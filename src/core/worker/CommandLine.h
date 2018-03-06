@@ -34,7 +34,7 @@ namespace worker
             bool bUseWritePipes,
             const std::wstring& szAdditionalOptions)
         {
-            config::CPreset& preset = format->m_Presets[nPreset];
+            auto& preset = format->m_Presets[nPreset];
 
             this->format = format;
             this->nPreset = nPreset;
