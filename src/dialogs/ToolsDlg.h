@@ -116,7 +116,6 @@ namespace dialogs
         bool LoadTool(const std::wstring& szFileXml);
         bool LoadTool(xml::XmlDocumnent &doc);
         bool SaveTool(const std::wstring& szFileXml, config::CTool &tool);
-    public:
         bool SaveTools(const std::wstring& szPath);
     };
 }

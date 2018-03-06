@@ -157,33 +157,25 @@ namespace dialogs
         bool LoadOptions(const std::wstring& szFileXml);
         bool LoadOptions(xml::XmlDocumnent &doc);
         bool SaveOptions(const std::wstring& szFileXml);
-    public:
         bool LoadFormats(const std::wstring& szPath);
         bool SaveFormats(const std::wstring& szPath);
-    public:
         bool LoadFormat(const std::wstring& szFileXml);
         bool LoadFormat(xml::XmlDocumnent &doc);
         bool SaveFormat(const std::wstring& szFileXml, config::CFormat& format);
-    public:
         bool LoadPresets(const std::wstring& szFileXml);
         bool LoadPresets(xml::XmlDocumnent &doc);
         bool SavePresets(const std::wstring& szFileXml);
-    public:
         bool LoadTools(const std::wstring& szPath);
         bool SaveTools(const std::wstring& szPath);
-    public:
         bool LoadTool(const std::wstring& szFileXml);
         bool LoadTool(xml::XmlDocumnent &doc);
         bool SaveTool(const std::wstring& szFileXml, config::CTool& tool);
-    public:
         bool LoadItems(const std::wstring& szFileXml);
         bool LoadItems(xml::XmlDocumnent &doc);
         bool SaveItems(const std::wstring& szFileXml);
-    public:
         bool LoadOutputs(const std::wstring& szFileXml);
         bool LoadOutputs(xml::XmlDocumnent &doc);
         bool SaveOutputs(const std::wstring& szFileXml);
-    public:
         bool LoadLanguage(const std::wstring& szFileXml);
         bool LoadLanguage(xml::XmlDocumnent &doc);
     };
