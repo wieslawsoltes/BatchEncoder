@@ -147,12 +147,14 @@ namespace dialogs
     private:
         util::CTimeCount timer;
         CMainDlg *pDlg;
+        volatile bool bSafeCheck;
     public:
         CMainDlgWorkerContext(CMainDlg* pDlg)
         {
             this->bDone = true;
             this->bRunning = false;
             this->pDlg = pDlg;
+            this->bSafeCheck = false;
         }
         virtual ~CMainDlgWorkerContext() { }
     public:
@@ -235,7 +237,6 @@ namespace dialogs
                     }
                 }
 
-                static volatile bool bSafeCheck = false;
                 if (bSafeCheck == false)
                 {
                     bSafeCheck = true;
@@ -255,6 +256,17 @@ namespace dialogs
             config::CItem &item = pDlg->m_Config.m_Items[nItemId];
             item.szTime = szTime;
             item.szStatus = szStatus;
+            if (bSafeCheck == false)
+            {
+                bSafeCheck = true;
+                if (nItemId > this->nLastItemId)
+                {
+                    this->nLastItemId = nItemId;
+                    if (pDlg->m_Config.m_Options.bEnsureItemIsVisible == true)
+                        pDlg->MakeItemVisible(nItemId);
+                }
+                bSafeCheck = false;
+            }
             pDlg->RedrawItem(nItemId);
         }
         void TotalProgress(int nItemId)
