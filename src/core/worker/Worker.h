@@ -31,6 +31,29 @@ namespace worker
 {
     class CWorker
     {
+        bool Download(IWorkerContext* ctx, CCommandLine &cl)
+        {
+            auto config = ctx->pConfig;
+            CToolUtilities m_Utilities;
+            int nTool = config::CTool::GetToolByPath(config->m_Tools, cl.format->szPath);
+            if (nTool < 0)
+            {
+                nTool = m_Utilities.FindTool(config->m_Tools, cl.format->szId);
+            }
+            if (nTool >= 0)
+            {
+                config::CTool& tool = config->m_Tools[nTool];
+                auto callback = [&](int nIndex, std::wstring szStatus) -> bool
+                {
+                    ctx->ItemStatus(cl.nItemId, ctx->GetString(0x00150001), szStatus);
+                    if (ctx->bRunning == false)
+                        return true;
+                    return false;
+                };
+                return m_Utilities.Download(tool, true, true, nTool, config, callback);
+            }
+            return false;
+        }
     public:
         bool CWorker::ConvertFileUsingConsole(IWorkerContext* ctx, CCommandLine &cl, std::mutex &m_down)
         {
@@ -76,37 +99,14 @@ namespace worker
             if (process.Start(cl.szCommandLine, config->m_Options.bHideConsoleWindow) == false)
             {
                 bool bFailed = true;
-
                 if (config->m_Options.bTryToDownloadTools == true)
                 {
-                    CToolUtilities m_Utilities;
-
-                    int nTool = config::CTool::GetToolByPath(config->m_Tools, cl.format->szPath);
-                    if (nTool < 0)
+                    if (this->Download(ctx, cl) == true)
                     {
-                        nTool = m_Utilities.FindTool(config->m_Tools, cl.format->szId);
-                    }
-
-                    if (nTool >= 0)
-                    {
-                        config::CTool& tool = config->m_Tools[nTool];
-                        bool bResult = m_Utilities.Download(tool, true, true, nTool, config,
-                            [this, ctx, &cl](int nIndex, std::wstring szStatus) -> bool
+                        util::Utilities::SetCurrentDirectory(config->m_Settings.szSettingsPath);
+                        if (process.Start(cl.szCommandLine, config->m_Options.bHideConsoleWindow) == true)
                         {
-                            ctx->ItemStatus(cl.nItemId, ctx->GetString(0x00150001), szStatus);
-                            if (ctx->bRunning == false)
-                                return true;
-                            return false;
-                        });
-
-                        if (bResult == true)
-                        {
-                            util::Utilities::SetCurrentDirectory(config->m_Settings.szSettingsPath);
-
-                            if (process.Start(cl.szCommandLine, config->m_Options.bHideConsoleWindow) == true)
-                            {
-                                bFailed = false;
-                            }
+                            bFailed = false;
                         }
                     }
                 }
@@ -261,37 +261,14 @@ namespace worker
             if (process.Start(cl.szCommandLine, config->m_Options.bHideConsoleWindow) == false)
             {
                 bool bFailed = true;
-
                 if (config->m_Options.bTryToDownloadTools == true)
                 {
-                    CToolUtilities m_Utilities;
-
-                    int nTool = config::CTool::GetToolByPath(config->m_Tools, cl.format->szPath);
-                    if (nTool < 0)
+                    if (this->Download(ctx, cl) == true)
                     {
-                        nTool = m_Utilities.FindTool(config->m_Tools, cl.format->szId);
-                    }
-
-                    if (nTool >= 0)
-                    {
-                        config::CTool& tool = config->m_Tools[nTool];
-                        bool bResult = m_Utilities.Download(tool, true, true, nTool, config,
-                            [this, ctx, &cl](int nIndex, std::wstring szStatus) -> bool
+                        util::Utilities::SetCurrentDirectory(config->m_Settings.szSettingsPath);
+                        if (process.Start(cl.szCommandLine, config->m_Options.bHideConsoleWindow) == true)
                         {
-                            ctx->ItemStatus(cl.nItemId, ctx->GetString(0x00150001), szStatus);
-                            if (ctx->bRunning == false)
-                                return true;
-                            return false;
-                        });
-
-                        if (bResult == true)
-                        {
-                            util::Utilities::SetCurrentDirectory(config->m_Settings.szSettingsPath);
-
-                            if (process.Start(cl.szCommandLine, config->m_Options.bHideConsoleWindow) == true)
-                            {
-                                bFailed = false;
-                            }
+                            bFailed = false;
                         }
                     }
                 }
@@ -521,37 +498,14 @@ namespace worker
             if (decoderProcess.Start(dcl.szCommandLine, config->m_Options.bHideConsoleWindow) == false)
             {
                 bool bFailed = true;
-
                 if (config->m_Options.bTryToDownloadTools == true)
                 {
-                    CToolUtilities m_Utilities;
-
-                    int nTool = config::CTool::GetToolByPath(config->m_Tools, dcl.format->szPath);
-                    if (nTool < 0)
+                    if (this->Download(ctx, dcl) == true)
                     {
-                        nTool = m_Utilities.FindTool(config->m_Tools, dcl.format->szId);
-                    }
-
-                    if (nTool >= 0)
-                    {
-                        config::CTool& tool = config->m_Tools[nTool];
-                        bool bResult = m_Utilities.Download(tool, true, true, nTool, config,
-                            [this, ctx, &dcl](int nIndex, std::wstring szStatus) -> bool
+                        util::Utilities::SetCurrentDirectory(config->m_Settings.szSettingsPath);
+                        if (decoderProcess.Start(dcl.szCommandLine, config->m_Options.bHideConsoleWindow) == true)
                         {
-                            ctx->ItemStatus(dcl.nItemId, ctx->GetString(0x00150001), szStatus);
-                            if (ctx->bRunning == false)
-                                return true;
-                            return false;
-                        });
-
-                        if (bResult == true)
-                        {
-                            util::Utilities::SetCurrentDirectory(config->m_Settings.szSettingsPath);
-
-                            if (decoderProcess.Start(dcl.szCommandLine, config->m_Options.bHideConsoleWindow) == true)
-                            {
-                                bFailed = false;
-                            }
+                            bFailed = false;
                         }
                     }
                 }
@@ -584,38 +538,14 @@ namespace worker
             if (encoderProcess.Start(ecl.szCommandLine, config->m_Options.bHideConsoleWindow) == false)
             {
                 bool bFailed = true;
-
                 if (config->m_Options.bTryToDownloadTools == true)
                 {
-                    CToolUtilities m_Utilities;
-
-                    int nTool = -1;
-                    nTool = config::CTool::GetToolByPath(config->m_Tools, ecl.format->szPath);
-                    if (nTool < 0)
+                    if (this->Download(ctx, ecl) == true)
                     {
-                        nTool = m_Utilities.FindTool(config->m_Tools, ecl.format->szId);
-                    }
-
-                    if (nTool >= 0)
-                    {
-                        config::CTool& tool = config->m_Tools[nTool];
-                        bool bResult = m_Utilities.Download(tool, true, true, nTool, config,
-                            [this, ctx, &ecl](int nIndex, std::wstring szStatus) -> bool
+                        util::Utilities::SetCurrentDirectory(config->m_Settings.szSettingsPath);
+                        if (encoderProcess.Start(ecl.szCommandLine, config->m_Options.bHideConsoleWindow) == true)
                         {
-                            ctx->ItemStatus(ecl.nItemId, ctx->GetString(0x00150001), szStatus);
-                            if (ctx->bRunning == false)
-                                return true;
-                            return false;
-                        });
-
-                        if (bResult == true)
-                        {
-                            util::Utilities::SetCurrentDirectory(config->m_Settings.szSettingsPath);
-
-                            if (encoderProcess.Start(ecl.szCommandLine, config->m_Options.bHideConsoleWindow) == true)
-                            {
-                                bFailed = false;
-                            }
+                            bFailed = false;
                         }
                     }
                 }
