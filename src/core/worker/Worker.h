@@ -56,7 +56,7 @@ namespace worker
             return false;
         }
     public:
-        bool ConvertFileUsingConsole(IWorkerContext* ctx, CCommandLine& cl, std::mutex& m_down)
+        bool ConvertUsingConsole(IWorkerContext* ctx, CCommandLine& cl, std::mutex& m_down)
         {
             auto config = ctx->pConfig;
             util::CProcess process;
@@ -162,7 +162,7 @@ namespace worker
                 return true;
             }
         }
-        bool ConvertFileUsingPipes(IWorkerContext* ctx, CCommandLine& cl, std::mutex& m_down)
+        bool ConvertUsingPipes(IWorkerContext* ctx, CCommandLine& cl, std::mutex& m_down)
         {
             auto config = ctx->pConfig;
             util::CProcess process;
@@ -410,7 +410,7 @@ namespace worker
                 return true;
             }
         }
-        bool ConvertFileUsingOnlyPipes(IWorkerContext* ctx, CCommandLine &dcl, CCommandLine& ecl, std::mutex& m_down)
+        bool ConvertUsingPipesOnly(IWorkerContext* ctx, CCommandLine &dcl, CCommandLine& ecl, std::mutex& m_down)
         {
             auto config = ctx->pConfig;
             util::CProcess decoderProcess;
@@ -657,7 +657,7 @@ namespace worker
                 ctx->ItemStatus(item.nId, ctx->GetString(0x00150001), ctx->GetString(0x0014000C));
                 item.ResetProgress();
 
-                bool bResult = ConvertFileUsingOnlyPipes(ctx, dcl, ecl, m_down);
+                bool bResult = ConvertUsingPipesOnly(ctx, dcl, ecl, m_down);
                 if (bResult == true)
                 {
                     if (config->m_Options.bDeleteSourceFiles == true)
@@ -693,9 +693,9 @@ namespace worker
 
                 bool bResult = false;
                 if ((cl.bUseReadPipes == false) && (cl.bUseWritePipes == false))
-                    bResult = ConvertFileUsingConsole(ctx, cl, m_down);
+                    bResult = ConvertUsingConsole(ctx, cl, m_down);
                 else
-                    bResult = ConvertFileUsingPipes(ctx, cl, m_down);
+                    bResult = ConvertUsingPipes(ctx, cl, m_down);
                 if (bResult == false)
                 {
                     if (config->m_Options.bDeleteOnErrors == true)
@@ -736,9 +736,9 @@ namespace worker
 
                 bool bResult = false;
                 if ((cl.bUseReadPipes == false) && (cl.bUseWritePipes == false))
-                    bResult = ConvertFileUsingConsole(ctx, cl, m_down);
+                    bResult = ConvertUsingConsole(ctx, cl, m_down);
                 else
-                    bResult = ConvertFileUsingPipes(ctx, cl, m_down);
+                    bResult = ConvertUsingPipes(ctx, cl, m_down);
                 if (bResult == true)
                 {
                     if (config->m_Options.bDeleteSourceFiles == true)
