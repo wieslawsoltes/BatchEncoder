@@ -9,8 +9,7 @@ namespace app
 {
     CMainApp m_App;
 
-    BEGIN_MESSAGE_MAP(CMainApp, CWinAppEx)
-        ON_COMMAND(ID_HELP, CWinAppEx::OnHelp)
+    BEGIN_MESSAGE_MAP(CMainApp, CWinApp)
     END_MESSAGE_MAP()
 
     CMainApp::CMainApp()
@@ -36,9 +35,8 @@ namespace app
             InitCtrls.dwICC = ICC_WIN95_CLASSES;
             InitCommonControlsEx(&InitCtrls);
 
-            CWinAppEx::InitInstance();
+            CWinApp::InitInstance();
             AfxEnableControlContainer();
-            InitShellManager();
         }
         catch (...)
         {

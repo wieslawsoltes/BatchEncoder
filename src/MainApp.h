@@ -11,7 +11,7 @@
 
 namespace app
 {
-    class CMainApp : public CWinAppEx
+    class CMainApp : public CWinApp
     {
     public:
         CMainApp();
