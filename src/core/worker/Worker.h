@@ -34,7 +34,7 @@ namespace worker
     public:
         bool CWorker::ConvertFileUsingConsole(IWorkerContext* ctx, CCommandLine &cl, std::mutex &m_down)
         {
-            config::CConfig* config = ctx->pConfig;
+            auto config = ctx->pConfig;
             util::CProcess process;
             util::CPipe Stderr(true);
             util::CTimeCount timer;
@@ -163,7 +163,7 @@ namespace worker
         }
         bool CWorker::ConvertFileUsingPipes(IWorkerContext* ctx, CCommandLine &cl, std::mutex &m_down)
         {
-            config::CConfig* config = ctx->pConfig;
+            auto config = ctx->pConfig;
             util::CProcess process;
             util::CPipe Stdin(true);
             util::CPipe Stdout(true);
@@ -434,7 +434,7 @@ namespace worker
         }
         bool CWorker::ConvertFileUsingOnlyPipes(IWorkerContext* ctx, CCommandLine &dcl, CCommandLine &ecl, std::mutex &m_down)
         {
-            config::CConfig* config = ctx->pConfig;
+            auto config = ctx->pConfig;
             util::CProcess decoderProcess;
             util::CProcess encoderProcess;
             util::CPipe Stdin(true);
@@ -719,7 +719,7 @@ namespace worker
         }
         bool CWorker::ConvertItem(IWorkerContext* ctx, config::CItem& item, std::mutex &m_dir, std::mutex &m_down)
         {
-            config::CConfig* config = ctx->pConfig;
+            auto config = ctx->pConfig;
             config::CFormat *ef = nullptr;
             config::CFormat *df = nullptr;
             std::wstring szEncInputFile;
@@ -956,7 +956,7 @@ namespace worker
         }
         bool CWorker::ConvertLoop(IWorkerContext* ctx, std::queue<int> &queue, std::mutex &m_queue, std::mutex &m_dir, std::mutex &m_down)
         {
-            config::CConfig* config = ctx->pConfig;
+            auto config = ctx->pConfig;
             while (true)
             {
                 try
