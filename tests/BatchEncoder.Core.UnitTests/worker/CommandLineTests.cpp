@@ -53,7 +53,7 @@ namespace BatchEncoderCoreUnitTests
             std::wstring szInputFile = L"C:\\Output\\File.WAV";
             std::wstring szOutputFile = L"C:\\Output\\File.MP3";
 
-            worker::CCommandLine cl(format, item.nPreset, item.nId, szInputFile, szOutputFile, format.bPipeInput, format.bPipeOutput, item.szOptions);
+            worker::CCommandLine cl(format, item.nPreset, item.nId, szInputFile, szOutputFile, item.szOptions);
 
             Assert::AreEqual(format.szId, cl.format.szId);
             Assert::AreEqual(item.nPreset, cl.nPreset);
@@ -78,7 +78,7 @@ namespace BatchEncoderCoreUnitTests
 
             item.szOptions = L"--test";
 
-            worker::CCommandLine cl(format, item.nPreset, item.nId, szInputFile, szOutputFile, format.bPipeInput, format.bPipeOutput, item.szOptions);
+            worker::CCommandLine cl(format, item.nPreset, item.nId, szInputFile, szOutputFile, item.szOptions);
 
             Assert::AreEqual(format.szId, cl.format.szId);
             Assert::AreEqual(item.nPreset, cl.nPreset);
@@ -106,7 +106,7 @@ namespace BatchEncoderCoreUnitTests
 
             format.szTemplate = L"$EXE $OPTIONS $INFILE $OUTFILE $OUTPATH";
 
-            worker::CCommandLine cl(format, item.nPreset, item.nId, szInputFile, szOutputFile, format.bPipeInput, format.bPipeOutput, item.szOptions);
+            worker::CCommandLine cl(format, item.nPreset, item.nId, szInputFile, szOutputFile, item.szOptions);
 
             Assert::AreEqual(format.szId, cl.format.szId);
             Assert::AreEqual(item.nPreset, cl.nPreset);
@@ -132,7 +132,7 @@ namespace BatchEncoderCoreUnitTests
             std::wstring szInputFile = L"C:\\Output\\File.WAV";
             std::wstring szOutputFile = L"C:\\Output\\File.MP3";
 
-            worker::CCommandLine cl(format, item.nPreset, item.nId, szInputFile, szOutputFile, format.bPipeInput, format.bPipeOutput, item.szOptions);
+            worker::CCommandLine cl(format, item.nPreset, item.nId, szInputFile, szOutputFile, item.szOptions);
 
             Assert::AreEqual(format.szId, cl.format.szId);
             Assert::AreEqual(item.nPreset, cl.nPreset);
@@ -158,7 +158,7 @@ namespace BatchEncoderCoreUnitTests
             std::wstring szInputFile = L"C:\\Output\\File.WAV";
             std::wstring szOutputFile = L"C:\\Output\\File.MP3";
 
-            worker::CCommandLine cl(format, item.nPreset, item.nId, szInputFile, szOutputFile, format.bPipeInput, format.bPipeOutput, item.szOptions);
+            worker::CCommandLine cl(format, item.nPreset, item.nId, szInputFile, szOutputFile, item.szOptions);
 
             Assert::AreEqual(format.szId, cl.format.szId);
             Assert::AreEqual(item.nPreset, cl.nPreset);
@@ -184,7 +184,7 @@ namespace BatchEncoderCoreUnitTests
             std::wstring szInputFile = L"C:\\Output\\File.WAV";
             std::wstring szOutputFile = L"C:\\Output\\File.MP3";
 
-            worker::CCommandLine cl(format, item.nPreset, item.nId, szInputFile, szOutputFile, format.bPipeInput, format.bPipeOutput, item.szOptions);
+            worker::CCommandLine cl(format, item.nPreset, item.nId, szInputFile, szOutputFile, item.szOptions);
 
             Assert::AreEqual(format.szId, cl.format.szId);
             Assert::AreEqual(item.nPreset, cl.nPreset);
