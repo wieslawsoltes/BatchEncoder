@@ -29,6 +29,7 @@
 
 #include <afxwin.h>
 #include <afxext.h>
+#include <afxdisp.h>
 
 #ifndef _AFX_NO_AFXCMN_SUPPORT
 #include <afxcmn.h>
@@ -43,11 +44,6 @@
 #pragma comment(linker,"/manifestdependency:\"type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
 #endif
 #endif
-
-#ifndef _UNICODE
-#include <direct.h>
-#endif
-#include <afxdhtml.h>
 
 #include "controls\MyButton.h"
 #include "controls\MyComboBox.h"
