@@ -73,7 +73,7 @@ namespace config
             }
             return -1;
         }
-        static size_t GetDecoderByExtensionAndFormat(std::vector<CFormat>& formats, const std::wstring& szExt, CFormat *pEncoderFormat)
+        static size_t GetDecoderByExtensionAndFormat(std::vector<CFormat>& formats, const std::wstring& szExt, CFormat& ef)
         {
             size_t nFormats = formats.size();
             for (size_t i = 0; i < nFormats; i++)
@@ -81,7 +81,7 @@ namespace config
                 CFormat& format = formats[i];
                 if (format.nType == FormatType::Decoder && format.IsValidInputExtension(szExt) == true)
                 {
-                    bool bIsValidEncoderInput = pEncoderFormat->IsValidInputExtension(format.szOutputExtension);
+                    bool bIsValidEncoderInput = ef.IsValidInputExtension(format.szOutputExtension);
                     if (bIsValidEncoderInput == true)
                         return i;
                 }

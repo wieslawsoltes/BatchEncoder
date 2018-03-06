@@ -13,7 +13,7 @@ namespace worker
     class CCommandLine
     {
     public:
-        config::CFormat * format;
+        config::CFormat& format;
         size_t nPreset;
         int nItemId;
         std::wstring szInputFile;
@@ -24,34 +24,29 @@ namespace worker
         std::wstring szOptions;
         std::wstring szCommandLine;
     public:
-        void Build(
-            config::CFormat *format,
+        CCommandLine(
+            config::CFormat& format,
             size_t nPreset,
             int nItemId,
             const std::wstring& szInputFile,
             const std::wstring& szOutputFile,
-            bool bUseReadPipes,
-            bool bUseWritePipes,
-            const std::wstring& szAdditionalOptions)
+            const std::wstring& szAdditionalOptions) : format(format)
         {
-            auto& preset = format->m_Presets[nPreset];
-
-            this->format = format;
             this->nPreset = nPreset;
             this->nItemId = nItemId;
             this->szInputFile = szInputFile;
             this->szOutputFile = szOutputFile;
-            this->bUseReadPipes = bUseReadPipes;
-            this->bUseWritePipes = bUseWritePipes;
+            this->bUseReadPipes = format.bPipeInput;
+            this->bUseWritePipes = format.bPipeOutput;
 
-            this->szOptions = preset.szOptions;
+            this->szOptions = format.m_Presets[nPreset].szOptions;
             if (szAdditionalOptions.length() > 0)
                 this->szOptions += L" " + szAdditionalOptions;
 
-            this->szCommandLine = format->szTemplate;
+            this->szCommandLine = format.szTemplate;
 
             util::string::ReplaceNoCase(this->szCommandLine, L"$EXE", L"\"$EXE\"");
-            util::string::ReplaceNoCase(this->szCommandLine, L"$EXE", format->szPath);
+            util::string::ReplaceNoCase(this->szCommandLine, L"$EXE", format.szPath);
             util::string::ReplaceNoCase(this->szCommandLine, L"$OPTIONS", this->szOptions);
 
             util::string::ReplaceNoCase(this->szCommandLine, L"$INFILE", L"\"$INFILE\"");
