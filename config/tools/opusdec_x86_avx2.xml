@@ -1,2 +1,2 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<Tool name="opusdec_x86_avx2" platform="x86" priority="0" formats="OPUSDEC_OPUS_WAV" url="https://netix.dl.sourceforge.net/project/muldersoft/Opus%20Tools/opus-tools.2017-12-04.zip" file="opus-tools.2017-12-04.zip" extract="zip" path="tools/opus-tools.2017-12-04/opusdec.avx2.exe"/>
+<Tool name="opusdec_x86_avx2" platform="x86" priority="0" formats="OPUSDEC_OPUS_WAV" url="https://netix.dl.sourceforge.net/project/muldersoft/Opus%20Tools/Deprecated/opus-tools.2017-12-04.zip" file="opus-tools.2017-12-04.zip" extract="zip" path="tools/opus-tools.2017-12-04/opusdec.avx2.exe"/>
