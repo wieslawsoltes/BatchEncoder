@@ -9,7 +9,7 @@ namespace BatchEncoderCoreUnitTests
 {
     TEST_CLASS(COutputPath_Tests)
     {
-        worker::Win32FileSystem FileSystem;
+        TestFileSystem FileSystem;
     public:
         TEST_METHOD(COutputPath_CreateFile_Empty)
         {

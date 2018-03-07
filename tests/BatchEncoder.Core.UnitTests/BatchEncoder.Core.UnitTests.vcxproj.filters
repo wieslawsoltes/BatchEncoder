@@ -59,9 +59,6 @@
     <ClCompile Include="xml\XmlConfigTests.cpp">
       <Filter>Source Files\Xml</Filter>
     </ClCompile>
-    <ClCompile Include="worker\DebugOutputParserTests.cpp">
-      <Filter>Source Files\Worker</Filter>
-    </ClCompile>
     <ClCompile Include="worker\FileToPipeReaderTests.cpp">
       <Filter>Source Files\Worker</Filter>
     </ClCompile>

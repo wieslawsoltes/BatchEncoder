@@ -9,7 +9,7 @@ namespace BatchEncoderCoreUnitTests
 {
     TEST_CLASS(CCommandLine_Tests)
     {
-        worker::Win32FileSystem FileSystem;
+        TestFileSystem FileSystem;
         config::CFormat m_Format
         {
             L"TEST_ID",
@@ -30,7 +30,7 @@ namespace BatchEncoderCoreUnitTests
                 { L"Default2", L"--option 2" }
             }
         };
-        config::CItem m_ltItem
+        config::CItem m_Item
         {
             0,
             {
@@ -49,7 +49,7 @@ namespace BatchEncoderCoreUnitTests
         TEST_METHOD(CCommandLine_Build_Default)
         {
             config::CFormat format = m_Format;
-            config::CItem item = m_ltItem;
+            config::CItem item = m_Item;
 
             std::wstring szInputFile = L"C:\\Output\\File.WAV";
             std::wstring szOutputFile = L"C:\\Output\\File.MP3";
@@ -72,7 +72,7 @@ namespace BatchEncoderCoreUnitTests
         TEST_METHOD(CCommandLine_Build_AdditionalOptions)
         {
             config::CFormat format = m_Format;
-            config::CItem item = m_ltItem;
+            config::CItem item = m_Item;
 
             std::wstring szInputFile = L"C:\\Output\\File.WAV";
             std::wstring szOutputFile = L"C:\\Output\\File.MP3";
@@ -100,7 +100,7 @@ namespace BatchEncoderCoreUnitTests
         TEST_METHOD(CCommandLine_Build_OutPath)
         {
             config::CFormat format = m_Format;
-            config::CItem item = m_ltItem;
+            config::CItem item = m_Item;
 
             std::wstring szInputFile = L"C:\\Output\\File.WAV";
             std::wstring szOutputFile = L"C:\\Output\\File.MP3";
@@ -125,7 +125,7 @@ namespace BatchEncoderCoreUnitTests
         TEST_METHOD(CCommandLine_Build_UseReadPipes)
         {
             config::CFormat format = m_Format;
-            config::CItem item = m_ltItem;
+            config::CItem item = m_Item;
 
             format.bPipeInput = true;
             format.bPipeOutput = false;
@@ -151,7 +151,7 @@ namespace BatchEncoderCoreUnitTests
         TEST_METHOD(CCommandLine_Build_UseWritePipes)
         {
             config::CFormat format = m_Format;
-            config::CItem item = m_ltItem;
+            config::CItem item = m_Item;
 
             format.bPipeInput = false;
             format.bPipeOutput = true;
@@ -177,7 +177,7 @@ namespace BatchEncoderCoreUnitTests
         TEST_METHOD(CCommandLine_Build_UseReadWritePipes)
         {
             config::CFormat format = m_Format;
-            config::CItem item = m_ltItem;
+            config::CItem item = m_Item;
 
             format.bPipeInput = true;
             format.bPipeOutput = true;

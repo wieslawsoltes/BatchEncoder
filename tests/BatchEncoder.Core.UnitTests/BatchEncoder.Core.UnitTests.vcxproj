@@ -197,7 +197,6 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="worker\CommandLineTests.cpp" />
-    <ClCompile Include="worker\DebugOutputParserTests.cpp" />
     <ClCompile Include="worker\FileToPipeReaderTests.cpp" />
     <ClCompile Include="worker\InputPathTests.cpp" />
     <ClCompile Include="worker\LuaOutputParserTests.cpp" />
