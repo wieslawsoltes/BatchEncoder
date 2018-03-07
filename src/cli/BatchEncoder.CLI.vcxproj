@@ -107,7 +107,7 @@
       <GenerateDebugInformation>DebugFastLink</GenerateDebugInformation>
     </Link>
     <PostBuildEvent>
-      <Command>..\CopyConfig.cmd ..\..\config\ $(OutDir) $(BuildSystem)</Command>
+      <Command>..\CopyConfig.cmd ..\..\config\ $(OutDir) $(BuildSystem) >NUL</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -127,7 +127,7 @@
       <GenerateDebugInformation>DebugFastLink</GenerateDebugInformation>
     </Link>
     <PostBuildEvent>
-      <Command>..\CopyConfig.cmd ..\..\config\ $(OutDir) $(BuildSystem)</Command>
+      <Command>..\CopyConfig.cmd ..\..\config\ $(OutDir) $(BuildSystem) >NUL</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -152,7 +152,7 @@
       <GenerateDebugInformation>false</GenerateDebugInformation>
     </Link>
     <PostBuildEvent>
-      <Command>..\CopyConfig.cmd ..\..\config\ $(OutDir) $(BuildSystem)</Command>
+      <Command>..\CopyConfig.cmd ..\..\config\ $(OutDir) $(BuildSystem) >NUL</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -177,7 +177,7 @@
       <GenerateDebugInformation>false</GenerateDebugInformation>
     </Link>
     <PostBuildEvent>
-      <Command>..\CopyConfig.cmd ..\..\config\ $(OutDir) $(BuildSystem)</Command>
+      <Command>..\CopyConfig.cmd ..\..\config\ $(OutDir) $(BuildSystem) >NUL</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
