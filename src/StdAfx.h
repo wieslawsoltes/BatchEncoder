@@ -66,6 +66,7 @@
 #include <thread>
 #include <algorithm>
 
+#include "utilities\FileSystem.h"
 #include "utilities\Log.h"
 #include "utilities\FileLog.h"
 #include "utilities\String.h"
