@@ -636,7 +636,7 @@ namespace dialogs
                 if (!(::GetFileAttributes(szFile) & FILE_ATTRIBUTE_DIRECTORY))
                 {
                     std::wstring szPath = szFile;
-                    std::wstring szExt = util::FsGetFileExtension(szPath);
+                    std::wstring szExt = util::GetFileExtension(szPath);
 
                     if (util::string::CompareNoCase(szExt, L"xml"))
                     {

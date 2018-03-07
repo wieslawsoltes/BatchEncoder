@@ -1072,7 +1072,7 @@ namespace config
             std::wstring szFormatId = L"";
             int nFormatId = nFormat;
             int nPresetId = nPreset;
-            std::wstring szExt = FileSystem->FsGetFileExtension(szPath);
+            std::wstring szExt = FileSystem->GetFileExtension(szPath);
             std::wstring szName = FileSystem->GetOnlyFileName(szPath);
             unsigned __int64 nFileSize = FileSystem->GetFileSize64(szPath);
 

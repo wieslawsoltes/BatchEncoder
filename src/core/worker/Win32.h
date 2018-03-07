@@ -474,9 +474,9 @@ namespace worker
         {
             return util::GetFilePath(szFilePath);
         }
-        std::wstring FsGetFileExtension(const std::wstring& szFilePath)
+        std::wstring GetFileExtension(const std::wstring& szFilePath)
         {
-            return util::FsGetFileExtension(szFilePath);
+            return util::GetFileExtension(szFilePath);
         }
         std::wstring GetOnlyFileName(const std::wstring& szFilePath)
         {

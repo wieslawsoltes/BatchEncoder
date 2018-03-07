@@ -2093,7 +2093,7 @@ namespace dialogs
     {
         if (m_Config.m_Options.bValidateInputFiles == true)
         {
-            std::wstring szExt = util::FsGetFileExtension(szPath);
+            std::wstring szExt = util::GetFileExtension(szPath);
             if (config::CFormat::IsValidInputExtension(m_Config.m_Formats, szExt) == false)
                 return false;
         }
@@ -2174,7 +2174,7 @@ namespace dialogs
                 else
                 {
                     std::wstring szPath = szFile;
-                    std::wstring szExt = util::FsGetFileExtension(szPath);
+                    std::wstring szExt = util::GetFileExtension(szPath);
 
                     if (util::string::CompareNoCase(szExt, L"xml"))
                     {

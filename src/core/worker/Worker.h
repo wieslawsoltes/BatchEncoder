@@ -792,7 +792,7 @@ namespace worker
                 return false;
             }
 
-            bool bCanEncode = ef.IsValidInputExtension(config->FileSystem->FsGetFileExtension(szEncInputFile));
+            bool bCanEncode = ef.IsValidInputExtension(config->FileSystem->GetFileExtension(szEncInputFile));
 
             szEncOutputFile = m_Output.CreateFilePath(config->FileSystem.get(), config->m_Options.szOutputPath, szEncInputFile, item.szName, ef.szOutputExtension);
 
