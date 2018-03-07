@@ -7,14 +7,14 @@ using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 namespace BatchEncoderCoreUnitTests
 {
-    TEST_CLASS(CFileToPipeWriter_Tests)
+    TEST_CLASS(CFileToPipeReader_Tests)
     {
     public:
         TEST_METHOD(CFileToPipeWriter_Constructor)
         {
             #pragma warning(push)
             #pragma warning(disable:4101)
-            worker::CFileToPipeWriter m_Writer;
+            worker::CFileToPipeReader m_Reader;
             #pragma warning(pop)
         }
     };

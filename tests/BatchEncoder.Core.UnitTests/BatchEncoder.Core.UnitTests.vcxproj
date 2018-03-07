@@ -199,7 +199,7 @@
     </ClCompile>
     <ClCompile Include="worker\CommandLineTests.cpp" />
     <ClCompile Include="worker\DebugOutputParserTests.cpp" />
-    <ClCompile Include="worker\FileToPipeWriterTests.cpp" />
+    <ClCompile Include="worker\FileToPipeReaderTests.cpp" />
     <ClCompile Include="worker\InputPathTests.cpp" />
     <ClCompile Include="worker\LuaOutputParserTests.cpp" />
     <ClCompile Include="worker\LuaProgessTests.cpp" />

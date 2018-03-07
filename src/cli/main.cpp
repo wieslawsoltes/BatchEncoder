@@ -39,6 +39,7 @@ int wmain(int argc, wchar_t *argv[])
     util::Utilities::SetCurrentDirectory(m_Config.m_Settings.szSettingsPath);
 
     worker::CWorker m_Worker;
+    worker::Win32WorkerFactory m_Factory;
     CConsoleWorkerContext ctx;
 
     size_t nItems = m_Config.m_Items.size();

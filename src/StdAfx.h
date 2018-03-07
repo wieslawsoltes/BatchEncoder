@@ -79,3 +79,4 @@
 #include "worker\OutputPath.h"
 #include "worker\ToolUtilities.h"
 #include "worker\Worker.h"
+#include "worker\Win32.h"

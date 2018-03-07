@@ -60,28 +60,10 @@
     <ClInclude Include="worker\ToolUtilities.h">
       <Filter>Header Files\Worker\Tools</Filter>
     </ClInclude>
-    <ClInclude Include="worker\FileToPipeWriter.h">
-      <Filter>Header Files\Worker\Pipes</Filter>
-    </ClInclude>
     <ClInclude Include="worker\InputPath.h">
       <Filter>Header Files\Worker</Filter>
     </ClInclude>
-    <ClInclude Include="worker\PipeToFileWriter.h">
-      <Filter>Header Files\Worker\Pipes</Filter>
-    </ClInclude>
-    <ClInclude Include="worker\PipeToStringWriter.h">
-      <Filter>Header Files\Worker\Pipes</Filter>
-    </ClInclude>
-    <ClInclude Include="worker\DebugOutputParser.h">
-      <Filter>Header Files\Worker\Parser</Filter>
-    </ClInclude>
-    <ClInclude Include="worker\LuaOutputParser.h">
-      <Filter>Header Files\Worker\Parser</Filter>
-    </ClInclude>
     <ClInclude Include="worker\LuaProgess.h">
-      <Filter>Header Files\Worker\Parser</Filter>
-    </ClInclude>
-    <ClInclude Include="worker\OutputParser.h">
       <Filter>Header Files\Worker\Parser</Filter>
     </ClInclude>
     <ClInclude Include="worker\CommandLine.h">
@@ -98,6 +80,9 @@
     </ClInclude>
     <ClInclude Include="config\Config.h">
       <Filter>Header Files\Config</Filter>
+    </ClInclude>
+    <ClInclude Include="worker\Win32.h">
+      <Filter>Header Files\Worker</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

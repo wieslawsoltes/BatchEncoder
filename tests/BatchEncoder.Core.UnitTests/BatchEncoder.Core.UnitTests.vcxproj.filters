@@ -65,7 +65,7 @@
     <ClCompile Include="worker\DebugOutputParserTests.cpp">
       <Filter>Source Files\Worker</Filter>
     </ClCompile>
-    <ClCompile Include="worker\FileToPipeWriterTests.cpp">
+    <ClCompile Include="worker\FileToPipeReaderTests.cpp">
       <Filter>Source Files\Worker</Filter>
     </ClCompile>
     <ClCompile Include="worker\InputPathTests.cpp">
