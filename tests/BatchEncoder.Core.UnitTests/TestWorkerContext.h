@@ -2,6 +2,7 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 #include "worker\WorkerContext.h"
+#include "worker\Win32.h"
 
 namespace BatchEncoderCoreUnitTests
 {
@@ -13,6 +14,7 @@ namespace BatchEncoderCoreUnitTests
             this->bDone = true;
             this->bRunning = false;
             this->pConfig = nullptr;
+            this->pFactory = std::make_shared<worker::Win32WorkerFactory>();
         }
         virtual ~CTestWorkerContext() { }
     public:

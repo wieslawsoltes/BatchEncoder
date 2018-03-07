@@ -19,6 +19,7 @@
 #include "worker\OutputPath.h"
 #include "worker\ToolUtilities.h"
 #include "worker\Worker.h"
+#include "worker\Win32.h"
 
 class CConsoleWorkerContext : public worker::IWorkerContext
 {
@@ -29,6 +30,7 @@ public:
         this->bDone = true;
         this->bRunning = false;
         this->bSafeCheck = false;
+        this->pFactory = std::make_shared<worker::Win32WorkerFactory>();
     }
     virtual ~CConsoleWorkerContext() { }
 public:

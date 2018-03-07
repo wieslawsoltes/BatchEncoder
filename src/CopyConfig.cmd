@@ -9,11 +9,11 @@ set LangFolder=lang
 set ProgressFolder=progress
 set ToolsFolder=tools
 
+if %BuildSystem% == CI goto done
+
 echo ConfigDir: %ConfigDir%
 echo OutputDir: %OutputDir%
 echo BuildSystem: %BuildSystem%
-
-if %BuildSystem% == CI goto done
 
 copy /Y %ConfigDir%*.ps1 %OutputDir%
 

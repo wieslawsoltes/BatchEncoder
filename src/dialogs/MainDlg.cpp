@@ -155,6 +155,7 @@ namespace dialogs
             this->bRunning = false;
             this->pDlg = pDlg;
             this->bSafeCheck = false;
+            this->pFactory = std::make_shared<worker::Win32WorkerFactory>();
         }
         virtual ~CMainDlgWorkerContext() { }
     public:
@@ -296,13 +297,11 @@ namespace dialogs
     {
         this->m_hIcon = AfxGetApp()->LoadIcon(IDI_ICON_MAIN);
         this->m_Config.m_Options.Defaults();
-        this->ctx = new CMainDlgWorkerContext(this);
+        this->ctx = std::make_shared<CMainDlgWorkerContext>(this);
     }
 
     CMainDlg::~CMainDlg()
     {
-        if (this->ctx != nullptr)
-            delete this->ctx;
     }
 
     void CMainDlg::DoDataExchange(CDataExchange* pDX)
@@ -2579,7 +2578,7 @@ namespace dialogs
 
             std::thread m_WorkerThread = std::thread([this]()
             {
-                this->m_Worker.Convert(this->ctx, this->m_Config.m_Items);
+                this->m_Worker.Convert(this->ctx.get(), this->m_Config.m_Items);
             });
             m_WorkerThread.detach();
 

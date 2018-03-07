@@ -11,59 +11,26 @@
 #include <thread>
 #include "utilities\Log.h"
 #include "utilities\MemoryLog.h"
-#include "utilities\Pipe.h"
-#include "utilities\Process.h"
 #include "utilities\String.h"
 #include "utilities\TimeCount.h"
 #include "utilities\Utilities.h"
 #include "WorkerContext.h"
 #include "CommandLine.h"
 #include "OutputPath.h"
-#include "FileToPipeWriter.h"
-#include "PipeToFileWriter.h"
-#include "PipeToStringWriter.h"
-#include "OutputParser.h"
-#include "LuaOutputParser.h"
-#include "DebugOutputParser.h"
-#include "ToolUtilities.h"
 
 namespace worker
 {
     class CWorker
     {
     public:
-        bool Download(IWorkerContext* ctx, config::CFormat& format, int nItemId)
-        {
-            auto config = ctx->pConfig;
-            CToolUtilities m_Utilities;
-            int nTool = config::CTool::GetToolByPath(config->m_Tools, format.szPath);
-            if (nTool < 0)
-            {
-                nTool = m_Utilities.FindTool(config->m_Tools, format.szId);
-            }
-            if (nTool >= 0)
-            {
-                config::CTool& tool = config->m_Tools[nTool];
-                auto callback = [&](int nIndex, std::wstring szStatus) -> bool
-                {
-                    ctx->ItemStatus(nItemId, ctx->GetString(0x00150001), szStatus);
-                    if (ctx->bRunning == false)
-                        return true;
-                    return false;
-                };
-                return m_Utilities.Download(tool, true, true, nTool, config, callback);
-            }
-            return false;
-        }
-    public:
         bool ConvertUsingConsole(IWorkerContext* ctx, CCommandLine& cl, std::mutex& m_down)
         {
             auto config = ctx->pConfig;
-            util::CProcess process;
-            util::CPipe Stderr(true);
+            auto process = ctx->pFactory->CreateProcessPtr();
+            auto Stderr = ctx->pFactory->CreatePipePtr();
+            auto parser = ctx->pFactory->CreateOutputParserPtr();
+            auto writer = ctx->pFactory->CreateStringWriterPtr();
             util::CTimeCount timer;
-            CLuaOutputParser parser;
-            CPipeToStringWriter writer;
 
             if ((cl.bUseReadPipes == true) || (cl.bUseWritePipes == true))
             {
@@ -73,7 +40,7 @@ namespace worker
             }
 
             // create pipes for stderr
-            if (Stderr.Create() == false)
+            if (Stderr->Create() == false)
             {
                 ctx->ItemStatus(cl.nItemId, ctx->GetString(0x00150001), ctx->GetString(0x00120002));
                 ctx->ItemProgress(cl.nItemId, -1, true, true);
@@ -81,7 +48,7 @@ namespace worker
             }
 
             // duplicate stderr read pipe handle to prevent child process from closing the pipe
-            if (Stderr.DuplicateRead() == false)
+            if (Stderr->DuplicateRead() == false)
             {
                 ctx->ItemStatus(cl.nItemId, ctx->GetString(0x00150001), ctx->GetString(0x00120003));
                 ctx->ItemProgress(cl.nItemId, -1, true, true);
@@ -89,23 +56,24 @@ namespace worker
             }
 
             // connect pipes to process
-            process.ConnectStdInput(nullptr);
-            process.ConnectStdOutput(Stderr.hWrite);
-            process.ConnectStdError(Stderr.hWrite);
+            process->ConnectStdInput(nullptr);
+            process->ConnectStdOutput(Stderr->WriteHandle());
+            process->ConnectStdError(Stderr->WriteHandle());
 
             m_down.lock();
             util::Utilities::SetCurrentDirectory(config->m_Settings.szSettingsPath);
 
             timer.Start();
-            if (process.Start(cl.szCommandLine, config->m_Options.bHideConsoleWindow) == false)
+            if (process->Start(cl.szCommandLine, config->m_Options.bHideConsoleWindow) == false)
             {
                 bool bFailed = true;
                 if (config->m_Options.bTryToDownloadTools == true)
                 {
-                    if (this->Download(ctx, cl.format, cl.nItemId) == true)
+                    auto downloader = ctx->pFactory->CreateDownloaderPtr();
+                    if (downloader->Download(ctx, cl.format, cl.nItemId) == true)
                     {
                         util::Utilities::SetCurrentDirectory(config->m_Settings.szSettingsPath);
-                        if (process.Start(cl.szCommandLine, config->m_Options.bHideConsoleWindow) == true)
+                        if (process->Start(cl.szCommandLine, config->m_Options.bHideConsoleWindow) == true)
                         {
                             bFailed = false;
                         }
@@ -118,8 +86,8 @@ namespace worker
 
                     timer.Stop();
 
-                    Stderr.CloseRead();
-                    Stderr.CloseWrite();
+                    Stderr->CloseRead();
+                    Stderr->CloseWrite();
 
                     std::wstring szStatus = ctx->GetString(0x00120004) + L" (" + std::to_wstring(::GetLastError()) + L")";
                     ctx->ItemStatus(cl.nItemId, ctx->GetString(0x00150001), szStatus);
@@ -131,25 +99,48 @@ namespace worker
             m_down.unlock();
 
             // close unused pipe handle
-            Stderr.CloseWrite();
+            Stderr->CloseWrite();
 
-            //parser.Log = std::make_unique<util::MemoryLog>();
+            // init output parser
+            m_down.lock();
+            util::Utilities::SetCurrentDirectory(config->m_Settings.szSettingsPath);
 
-            // console progress loop
-            if (writer.ReadLoop(ctx, cl, Stderr, parser, m_down) == false)
+            parser->nIndex = cl.nItemId;
+            parser->nProgress = 0;
+            parser->nPreviousProgress = 0;
+
+            //auto log = std::make_unique<util::MemoryLog>();
+            //parser->log = log.get();
+            if (parser->Open(ctx, cl.format.szFunction) == false)
             {
                 timer.Stop();
-                Stderr.CloseRead();
-                process.Stop(false, cl.format.nExitCodeSuccess);
+                Stderr->CloseRead();
+                process->Stop(false, cl.format.nExitCodeSuccess);
+                m_down.unlock();
+                return false;
+            }
+
+            m_down.unlock();
+
+            // console progress loop
+            writer->nIndex = cl.nItemId;
+            writer->bError = false;
+            writer->bFinished = false;
+
+            if (writer->WriteLoop(ctx, Stderr.get(), parser.get()) == false)
+            {
+                timer.Stop();
+                Stderr->CloseRead();
+                process->Stop(false, cl.format.nExitCodeSuccess);
                 return false;
             }
 
             timer.Stop();
-            Stderr.CloseRead();
-            if (process.Stop(parser.nProgress == 100, cl.format.nExitCodeSuccess) == false)
-                parser.nProgress = -1;
+            Stderr->CloseRead();
+            if (process->Stop(parser->nProgress == 100, cl.format.nExitCodeSuccess) == false)
+                parser->nProgress = -1;
 
-            if (parser.nProgress != 100)
+            if (parser->nProgress != 100)
             {
                 ctx->ItemStatus(cl.nItemId, ctx->GetString(0x00150001), ctx->GetString(0x00120005));
                 ctx->ItemProgress(cl.nItemId, -1, true, true);
@@ -165,14 +156,14 @@ namespace worker
         bool ConvertUsingPipes(IWorkerContext* ctx, CCommandLine& cl, std::mutex& m_down)
         {
             auto config = ctx->pConfig;
-            util::CProcess process;
-            util::CPipe Stdin(true);
-            util::CPipe Stdout(true);
-            CFileToPipeWriter readContext;
-            CPipeToFileWriter writeContext;
+            auto process = ctx->pFactory->CreateProcessPtr();
+            auto Stdin = ctx->pFactory->CreatePipePtr();
+            auto Stdout = ctx->pFactory->CreatePipePtr();
+            auto readContext = ctx->pFactory->CreateFileReaderPtr();
+            auto writeContext = ctx->pFactory->CreateFileWriterPtr();
+            int nProgress = 0;
             std::thread readThread;
             std::thread writeThread;
-            int nProgress = 0;
             util::CTimeCount timer;
 
             if ((cl.bUseReadPipes == false) && (cl.bUseWritePipes == false))
@@ -185,7 +176,7 @@ namespace worker
             if (cl.bUseReadPipes == true)
             {
                 // create pipes for stdin
-                if (Stdin.Create() == false)
+                if (Stdin->Create() == false)
                 {
                     ctx->ItemStatus(cl.nItemId, ctx->GetString(0x00150001), ctx->GetString(0x00130002));
                     ctx->ItemProgress(cl.nItemId, -1, true, true);
@@ -193,7 +184,7 @@ namespace worker
                 }
 
                 // set stdin write pipe inherit flag
-                if (Stdin.InheritWrite() == false)
+                if (Stdin->InheritWrite() == false)
                 {
                     ctx->ItemStatus(cl.nItemId, ctx->GetString(0x00150001), ctx->GetString(0x00130003));
                     ctx->ItemProgress(cl.nItemId, -1, true, true);
@@ -204,12 +195,12 @@ namespace worker
             if (cl.bUseWritePipes == true)
             {
                 // create pipes for stdout
-                if (Stdout.Create() == false)
+                if (Stdout->Create() == false)
                 {
                     if (cl.bUseReadPipes == true)
                     {
-                        Stdin.CloseRead();
-                        Stdin.CloseWrite();
+                        Stdin->CloseRead();
+                        Stdin->CloseWrite();
                     }
 
                     ctx->ItemStatus(cl.nItemId, ctx->GetString(0x00150001), ctx->GetString(0x00130004));
@@ -218,16 +209,16 @@ namespace worker
                 }
 
                 // set stdout read pipe inherit flag
-                if (Stdout.InheritRead() == false)
+                if (Stdout->InheritRead() == false)
                 {
                     if (cl.bUseReadPipes == true)
                     {
-                        Stdin.CloseRead();
-                        Stdin.CloseWrite();
+                        Stdin->CloseRead();
+                        Stdin->CloseWrite();
                     }
 
-                    Stdout.CloseRead();
-                    Stdout.CloseWrite();
+                    Stdout->CloseRead();
+                    Stdout->CloseWrite();
 
                     ctx->ItemStatus(cl.nItemId, ctx->GetString(0x00150001), ctx->GetString(0x00130005));
                     ctx->ItemProgress(cl.nItemId, -1, true, true);
@@ -238,36 +229,37 @@ namespace worker
             // connect pipes to process
             if ((cl.bUseReadPipes == true) && (cl.bUseWritePipes == false))
             {
-                process.ConnectStdInput(Stdin.hRead);
-                process.ConnectStdOutput(GetStdHandle(STD_OUTPUT_HANDLE));
-                process.ConnectStdError(GetStdHandle(STD_ERROR_HANDLE));
+                process->ConnectStdInput(Stdin->ReadHandle());
+                process->ConnectStdOutput(process->StdoutHandle());
+                process->ConnectStdError(process->StderrHandle());
             }
             else if ((cl.bUseReadPipes == false) && (cl.bUseWritePipes == true))
             {
-                process.ConnectStdInput(GetStdHandle(STD_INPUT_HANDLE));
-                process.ConnectStdOutput(Stdout.hWrite);
-                process.ConnectStdError(GetStdHandle(STD_ERROR_HANDLE));
+                process->ConnectStdInput(process->StdinHandle());
+                process->ConnectStdOutput(Stdout->WriteHandle());
+                process->ConnectStdError(process->StderrHandle());
             }
             else if ((cl.bUseReadPipes == true) && (cl.bUseWritePipes == true))
             {
-                process.ConnectStdInput(Stdin.hRead);
-                process.ConnectStdOutput(Stdout.hWrite);
-                process.ConnectStdError(GetStdHandle(STD_ERROR_HANDLE));
+                process->ConnectStdInput(Stdin->ReadHandle());
+                process->ConnectStdOutput(Stdout->WriteHandle());
+                process->ConnectStdError(process->StderrHandle());
             }
 
             m_down.lock();
             util::Utilities::SetCurrentDirectory(config->m_Settings.szSettingsPath);
 
             timer.Start();
-            if (process.Start(cl.szCommandLine, config->m_Options.bHideConsoleWindow) == false)
+            if (process->Start(cl.szCommandLine, config->m_Options.bHideConsoleWindow) == false)
             {
                 bool bFailed = true;
                 if (config->m_Options.bTryToDownloadTools == true)
                 {
-                    if (this->Download(ctx, cl.format, cl.nItemId) == true)
+                    auto downloader = ctx->pFactory->CreateDownloaderPtr();
+                    if (downloader->Download(ctx, cl.format, cl.nItemId) == true)
                     {
                         util::Utilities::SetCurrentDirectory(config->m_Settings.szSettingsPath);
-                        if (process.Start(cl.szCommandLine, config->m_Options.bHideConsoleWindow) == true)
+                        if (process->Start(cl.szCommandLine, config->m_Options.bHideConsoleWindow) == true)
                         {
                             bFailed = false;
                         }
@@ -282,14 +274,14 @@ namespace worker
 
                     if (cl.bUseReadPipes == true)
                     {
-                        Stdin.CloseRead();
-                        Stdin.CloseWrite();
+                        Stdin->CloseRead();
+                        Stdin->CloseWrite();
                     }
 
                     if (cl.bUseWritePipes == true)
                     {
-                        Stdout.CloseRead();
-                        Stdout.CloseWrite();
+                        Stdout->CloseRead();
+                        Stdout->CloseWrite();
                     }
 
                     std::wstring szStatus = ctx->GetString(0x00130006) + L" (" + std::to_wstring(::GetLastError()) + L")";
@@ -303,20 +295,20 @@ namespace worker
 
             // close unused pipe handles
             if (cl.bUseReadPipes == true)
-                Stdin.CloseRead();
+                Stdin->CloseRead();
 
             if (cl.bUseWritePipes == true)
-                Stdout.CloseWrite();
+                Stdout->CloseWrite();
 
             // create read thread
             if (cl.bUseReadPipes == true)
             {
-                readContext.bError = false;
-                readContext.bFinished = false;
-                readContext.szFileName = cl.szInputFile;
-                readContext.nIndex = cl.nItemId;
+                readContext->bError = false;
+                readContext->bFinished = false;
+                readContext->szFileName = cl.szInputFile;
+                readContext->nIndex = cl.nItemId;
 
-                readThread = std::thread([this, ctx, &readContext, &Stdin]() { readContext.ReadLoop(ctx, Stdin); });
+                readThread = std::thread([&]() { readContext->ReadLoop(ctx, Stdin.get()); });
 
                 // wait for read thread to finish
                 if (cl.bUseWritePipes == false)
@@ -324,10 +316,10 @@ namespace worker
                     readThread.join();
 
                     // NOTE: Handle is closed in ReadThread.
-                    //Stdin.CloseWrite();
+                    //Stdin->CloseWrite();
 
                     // check for result from read thread
-                    if ((readContext.bError == false) && (readContext.bFinished == true))
+                    if ((readContext->bError == false) && (readContext->bFinished == true))
                         nProgress = 100;
                     else
                         nProgress = -1;
@@ -337,12 +329,12 @@ namespace worker
             // create write thread
             if (cl.bUseWritePipes == true)
             {
-                writeContext.bError = false;
-                writeContext.bFinished = false;
-                writeContext.szFileName = cl.szOutputFile;
-                writeContext.nIndex = cl.nItemId;
+                writeContext->bError = false;
+                writeContext->bFinished = false;
+                writeContext->szFileName = cl.szOutputFile;
+                writeContext->nIndex = cl.nItemId;
 
-                writeThread = std::thread([this, ctx, &writeContext, &Stdout]() { writeContext.WriteLoop(ctx, Stdout); });
+                writeThread = std::thread([&]() { writeContext->WriteLoop(ctx, Stdout.get()); });
 
                 if (cl.bUseReadPipes == true)
                 {
@@ -350,12 +342,12 @@ namespace worker
                     readThread.join();
 
                     // NOTE: Handle is closed in ReadThread.
-                    //Stdin.CloseWrite();
+                    //Stdin->CloseWrite();
 
-                    if ((readContext.bError == true) || (readContext.bFinished == false))
+                    if ((readContext->bError == true) || (readContext->bFinished == false))
                     {
                         // close write thread handle
-                        Stdout.CloseRead();
+                        Stdout->CloseRead();
 
                         // read thread failed so terminate write thread
                         writeThread.join();
@@ -366,12 +358,12 @@ namespace worker
                         writeThread.join();
 
                         // close write thread handle
-                        Stdout.CloseRead();
+                        Stdout->CloseRead();
                     }
 
                     // check for result from read thread
-                    if ((readContext.bError == false) && (readContext.bFinished == true)
-                        && (writeContext.bError == false) && (writeContext.bFinished == true))
+                    if ((readContext->bError == false) && (readContext->bFinished == true)
+                        && (writeContext->bError == false) && (writeContext->bFinished == true))
                         nProgress = 100;
                     else
                         nProgress = -1;
@@ -382,10 +374,10 @@ namespace worker
                     writeThread.join();
 
                     // close write thread handle
-                    Stdout.CloseRead();
+                    Stdout->CloseRead();
 
                     // check for result from write thread
-                    if ((writeContext.bError == false) && (writeContext.bFinished == true))
+                    if ((writeContext->bError == false) && (writeContext->bFinished == true))
                         nProgress = 100;
                     else
                         nProgress = -1;
@@ -394,7 +386,7 @@ namespace worker
 
             timer.Stop();
 
-            if (process.Stop(nProgress == 100, cl.format.nExitCodeSuccess) == false)
+            if (process->Stop(nProgress == 100, cl.format.nExitCodeSuccess) == false)
                 nProgress = -1;
 
             if (nProgress != 100)
@@ -413,20 +405,20 @@ namespace worker
         bool ConvertUsingPipesOnly(IWorkerContext* ctx, CCommandLine &dcl, CCommandLine& ecl, std::mutex& m_down)
         {
             auto config = ctx->pConfig;
-            util::CProcess decoderProcess;
-            util::CProcess encoderProcess;
-            util::CPipe Stdin(true);
-            util::CPipe Stdout(true);
-            util::CPipe Bridge(true);
-            CFileToPipeWriter readContext;
-            CPipeToFileWriter writeContext;
+            auto decoderProcess = ctx->pFactory->CreateProcessPtr();
+            auto encoderProcess = ctx->pFactory->CreateProcessPtr();
+            auto Stdin = ctx->pFactory->CreatePipePtr();
+            auto Stdout = ctx->pFactory->CreatePipePtr();
+            auto Bridge = ctx->pFactory->CreatePipePtr();
+            auto readContext = ctx->pFactory->CreateFileReaderPtr();
+            auto writeContext = ctx->pFactory->CreateFileWriterPtr();;
+            int nProgress = 0;
             std::thread readThread;
             std::thread writeThread;
-            int nProgress = 0;
             util::CTimeCount timer;
 
             // create pipes for stdin
-            if (Stdin.Create() == false)
+            if (Stdin->Create() == false)
             {
                 ctx->ItemStatus(dcl.nItemId, ctx->GetString(0x00150001), ctx->GetString(0x00130002));
                 ctx->ItemProgress(dcl.nItemId, -1, true, true);
@@ -434,7 +426,7 @@ namespace worker
             }
 
             // set stdin write pipe inherit flag
-            if (Stdin.InheritWrite() == false)
+            if (Stdin->InheritWrite() == false)
             {
                 ctx->ItemStatus(dcl.nItemId, ctx->GetString(0x00150001), ctx->GetString(0x00130003));
                 ctx->ItemProgress(dcl.nItemId, -1, true, true);
@@ -442,10 +434,10 @@ namespace worker
             }
 
             // create pipes for stdout
-            if (Stdout.Create() == false)
+            if (Stdout->Create() == false)
             {
-                Stdin.CloseRead();
-                Stdin.CloseWrite();
+                Stdin->CloseRead();
+                Stdin->CloseWrite();
 
                 ctx->ItemStatus(dcl.nItemId, ctx->GetString(0x00150001), ctx->GetString(0x00130004));
                 ctx->ItemProgress(dcl.nItemId, -1, true, true);
@@ -453,13 +445,13 @@ namespace worker
             }
 
             // set stdout read pipe inherit flag
-            if (Stdout.InheritRead() == false)
+            if (Stdout->InheritRead() == false)
             {
-                Stdin.CloseRead();
-                Stdin.CloseWrite();
+                Stdin->CloseRead();
+                Stdin->CloseWrite();
 
-                Stdout.CloseRead();
-                Stdout.CloseWrite();
+                Stdout->CloseRead();
+                Stdout->CloseWrite();
 
                 ctx->ItemStatus(dcl.nItemId, ctx->GetString(0x00150001), ctx->GetString(0x00130005));
                 ctx->ItemProgress(dcl.nItemId, -1, true, true);
@@ -467,13 +459,13 @@ namespace worker
             }
 
             // create pipes for processes bridge
-            if (Bridge.Create() == false)
+            if (Bridge->Create() == false)
             {
-                Stdin.CloseRead();
-                Stdin.CloseWrite();
+                Stdin->CloseRead();
+                Stdin->CloseWrite();
 
-                Stdout.CloseRead();
-                Stdout.CloseWrite();
+                Stdout->CloseRead();
+                Stdout->CloseWrite();
 
                 ctx->ItemStatus(dcl.nItemId, ctx->GetString(0x00150001), ctx->GetString(0x0013000A));
                 ctx->ItemProgress(dcl.nItemId, -1, true, true);
@@ -481,14 +473,14 @@ namespace worker
             }
 
             // connect pipes to decoder process
-            decoderProcess.ConnectStdInput(Stdin.hRead);
-            decoderProcess.ConnectStdOutput(Bridge.hWrite);
-            decoderProcess.ConnectStdError(GetStdHandle(STD_ERROR_HANDLE));
+            decoderProcess->ConnectStdInput(Stdin->ReadHandle());
+            decoderProcess->ConnectStdOutput(Bridge->WriteHandle());
+            decoderProcess->ConnectStdError(decoderProcess->StderrHandle());
 
             // connect pipes to encoder process
-            encoderProcess.ConnectStdInput(Bridge.hRead);
-            encoderProcess.ConnectStdOutput(Stdout.hWrite);
-            encoderProcess.ConnectStdError(GetStdHandle(STD_ERROR_HANDLE));
+            encoderProcess->ConnectStdInput(Bridge->ReadHandle());
+            encoderProcess->ConnectStdOutput(Stdout->WriteHandle());
+            encoderProcess->ConnectStdError(encoderProcess->StderrHandle());
 
             timer.Start();
 
@@ -496,15 +488,16 @@ namespace worker
             util::Utilities::SetCurrentDirectory(config->m_Settings.szSettingsPath);
 
             // create decoder process
-            if (decoderProcess.Start(dcl.szCommandLine, config->m_Options.bHideConsoleWindow) == false)
+            if (decoderProcess->Start(dcl.szCommandLine, config->m_Options.bHideConsoleWindow) == false)
             {
                 bool bFailed = true;
                 if (config->m_Options.bTryToDownloadTools == true)
                 {
-                    if (this->Download(ctx, dcl.format, dcl.nItemId) == true)
+                    auto downloader = ctx->pFactory->CreateDownloaderPtr();
+                    if (downloader->Download(ctx, dcl.format, dcl.nItemId) == true)
                     {
                         util::Utilities::SetCurrentDirectory(config->m_Settings.szSettingsPath);
-                        if (decoderProcess.Start(dcl.szCommandLine, config->m_Options.bHideConsoleWindow) == true)
+                        if (decoderProcess->Start(dcl.szCommandLine, config->m_Options.bHideConsoleWindow) == true)
                         {
                             bFailed = false;
                         }
@@ -517,14 +510,14 @@ namespace worker
 
                     timer.Stop();
 
-                    Stdin.CloseRead();
-                    Stdin.CloseWrite();
+                    Stdin->CloseRead();
+                    Stdin->CloseWrite();
 
-                    Stdout.CloseRead();
-                    Stdout.CloseWrite();
+                    Stdout->CloseRead();
+                    Stdout->CloseWrite();
 
-                    Bridge.CloseRead();
-                    Bridge.CloseWrite();
+                    Bridge->CloseRead();
+                    Bridge->CloseWrite();
 
                     std::wstring szStatus = ctx->GetString(0x00130006) + L" (" + std::to_wstring(::GetLastError()) + L")";
                     ctx->ItemStatus(dcl.nItemId, ctx->GetString(0x00150001), szStatus);
@@ -536,15 +529,16 @@ namespace worker
             util::Utilities::SetCurrentDirectory(config->m_Settings.szSettingsPath);
 
             // create encoder process
-            if (encoderProcess.Start(ecl.szCommandLine, config->m_Options.bHideConsoleWindow) == false)
+            if (encoderProcess->Start(ecl.szCommandLine, config->m_Options.bHideConsoleWindow) == false)
             {
                 bool bFailed = true;
                 if (config->m_Options.bTryToDownloadTools == true)
                 {
-                    if (this->Download(ctx, ecl.format, ecl.nItemId) == true)
+                    auto downloader = ctx->pFactory->CreateDownloaderPtr();
+                    if (downloader->Download(ctx, ecl.format, ecl.nItemId) == true)
                     {
                         util::Utilities::SetCurrentDirectory(config->m_Settings.szSettingsPath);
-                        if (encoderProcess.Start(ecl.szCommandLine, config->m_Options.bHideConsoleWindow) == true)
+                        if (encoderProcess->Start(ecl.szCommandLine, config->m_Options.bHideConsoleWindow) == true)
                         {
                             bFailed = false;
                         }
@@ -557,16 +551,16 @@ namespace worker
 
                     timer.Stop();
 
-                    decoderProcess.Stop(false, dcl.format.nExitCodeSuccess);
+                    decoderProcess->Stop(false, dcl.format.nExitCodeSuccess);
 
-                    Stdin.CloseRead();
-                    Stdin.CloseWrite();
+                    Stdin->CloseRead();
+                    Stdin->CloseWrite();
 
-                    Stdout.CloseRead();
-                    Stdout.CloseWrite();
+                    Stdout->CloseRead();
+                    Stdout->CloseWrite();
 
-                    Bridge.CloseRead();
-                    Bridge.CloseWrite();
+                    Bridge->CloseRead();
+                    Bridge->CloseWrite();
 
                     std::wstring szStatus = ctx->GetString(0x00130006) + L" (" + std::to_wstring(::GetLastError()) + L")";
                     ctx->ItemStatus(dcl.nItemId, ctx->GetString(0x00150001), szStatus);
@@ -578,61 +572,61 @@ namespace worker
             m_down.unlock();
 
             // close unused pipe handles
-            Stdin.CloseRead();
-            Stdout.CloseWrite();
-            Bridge.CloseWrite();
-            Bridge.CloseRead();
+            Stdin->CloseRead();
+            Stdout->CloseWrite();
+            Bridge->CloseWrite();
+            Bridge->CloseRead();
 
             // create read thread
-            readContext.bError = false;
-            readContext.bFinished = false;
-            readContext.szFileName = dcl.szInputFile;
-            readContext.nIndex = dcl.nItemId;
+            readContext->bError = false;
+            readContext->bFinished = false;
+            readContext->szFileName = dcl.szInputFile;
+            readContext->nIndex = dcl.nItemId;
 
-            readThread = std::thread([this, ctx, &readContext, &Stdin]() { readContext.ReadLoop(ctx, Stdin); });
+            readThread = std::thread([&]() { readContext->ReadLoop(ctx, Stdin.get()); });
 
             // create write thread
-            writeContext.bError = false;
-            writeContext.bFinished = false;
-            writeContext.szFileName = ecl.szOutputFile;
-            writeContext.nIndex = ecl.nItemId;
+            writeContext->bError = false;
+            writeContext->bFinished = false;
+            writeContext->szFileName = ecl.szOutputFile;
+            writeContext->nIndex = ecl.nItemId;
 
-            writeThread = std::thread([this, ctx, &writeContext, &Stdout]() { writeContext.WriteLoop(ctx, Stdout); });
+            writeThread = std::thread([&]() { writeContext->WriteLoop(ctx, Stdout.get()); });
 
             // wait for read thread to finish after write thread finished
             readThread.join();
 
             // NOTE: Handle is closed in ReadThread.
-            //Stdin.CloseWrite();
+            //Stdin->CloseWrite();
 
-            if ((readContext.bError == true) || (readContext.bFinished == false))
+            if ((readContext->bError == true) || (readContext->bFinished == false))
             {
-                Stdout.CloseRead();
+                Stdout->CloseRead();
 
                 // read thread failed so terminate write thread
                 writeThread.join();
             }
             else
             {
-                Stdout.CloseRead();
+                Stdout->CloseRead();
 
                 // wait for write thread to finish
                 writeThread.join();
             }
 
             // check for result from read and write thread
-            if ((readContext.bError == false) && (readContext.bFinished == true)
-                && (writeContext.bError == false) && (writeContext.bFinished == true))
+            if ((readContext->bError == false) && (readContext->bFinished == true)
+                && (writeContext->bError == false) && (writeContext->bFinished == true))
                 nProgress = 100;
             else
                 nProgress = -1;
 
             timer.Stop();
 
-            if (decoderProcess.Stop(nProgress == 100, dcl.format.nExitCodeSuccess) == false)
+            if (decoderProcess->Stop(nProgress == 100, dcl.format.nExitCodeSuccess) == false)
                 nProgress = -1;
 
-            if (encoderProcess.Stop(nProgress == 100, ecl.format.nExitCodeSuccess) == false)
+            if (encoderProcess->Stop(nProgress == 100, ecl.format.nExitCodeSuccess) == false)
                 nProgress = -1;
 
             if (nProgress != 100)
@@ -769,7 +763,7 @@ namespace worker
         bool ConvertItem(IWorkerContext* ctx, config::CItem& item, std::mutex& m_dir, std::mutex& m_down)
         {
             auto config = ctx->pConfig;
-            config::CPath& path = item.m_Paths[0];
+            auto& path = item.m_Paths[0];
             std::wstring szEncInputFile;
             std::wstring szEncOutputFile;
             std::wstring szDecInputFile;
@@ -1004,10 +998,14 @@ namespace worker
                 auto threads = std::make_unique<std::thread[]>(ctx->nThreadCount);
 
                 for (int i = 0; i < ctx->nThreadCount; i++)
+                {
                     threads[i] = std::thread(convert);
+                }
 
                 for (int i = 0; i < ctx->nThreadCount; i++)
+                {
                     threads[i].join();
+                }
             }
 
             ctx->Stop();

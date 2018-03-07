@@ -182,16 +182,11 @@
     <ClInclude Include="config\Strings.h" />
     <ClInclude Include="config\Tool.h" />
     <ClInclude Include="worker\CommandLine.h" />
-    <ClInclude Include="worker\DebugOutputParser.h" />
-    <ClInclude Include="worker\FileToPipeWriter.h" />
     <ClInclude Include="worker\InputPath.h" />
-    <ClInclude Include="worker\LuaOutputParser.h" />
     <ClInclude Include="worker\LuaProgess.h" />
-    <ClInclude Include="worker\OutputParser.h" />
     <ClInclude Include="worker\OutputPath.h" />
-    <ClInclude Include="worker\PipeToFileWriter.h" />
-    <ClInclude Include="worker\PipeToStringWriter.h" />
     <ClInclude Include="worker\ToolUtilities.h" />
+    <ClInclude Include="worker\Win32.h" />
     <ClInclude Include="worker\Worker.h" />
     <ClInclude Include="worker\WorkerContext.h" />
   </ItemGroup>
