@@ -122,5 +122,8 @@
     <ClCompile Include="worker\ToolDownloaderTests.cpp">
       <Filter>Source Files\Worker</Filter>
     </ClCompile>
+    <ClCompile Include="MemoryLeakTests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
