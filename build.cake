@@ -16,16 +16,14 @@ var target = Argument("target", "Default");
 // SETTINGS
 ///////////////////////////////////////////////////////////////////////////////
 
-var platforms = new [] { "Win32", "x64" }.ToList();
-var configurations = new [] { "Release" }.ToList();
-var tests = new [] { "BatchEncoder.Core.UnitTests" }.ToList();
+var platforms = new string[] { "Win32", "x64" }.ToList();
+var configurations = new string[] { "Release" }.ToList();
+var tests = new string[] { "BatchEncoder.Core.UnitTests" }.ToList();
 var solution = "./BatchEncoder.sln";
 var versionHeaderPath = (FilePath)File("./src/version.h");
 var installerScript = MakeAbsolute((FilePath)File("./setup/setup.iss"));
 var iscc = @"C:/Program Files (x86)/Inno Setup 5/ISCC.exe";
 var artifactsDir = (DirectoryPath)Directory("./artifacts");
-var binDir = (DirectoryPath)Directory("./src/bin");
-var objDir = (DirectoryPath)Directory("./src/obj");
 
 ///////////////////////////////////////////////////////////////////////////////
 // RELEASE
@@ -57,10 +55,28 @@ Information("Defined Version: {0}.{1}.{2}.{3}", major, minor, revision, build);
 Information("Release Version: {0}", version + suffix);
 
 ///////////////////////////////////////////////////////////////////////////////
+// SETUP
+///////////////////////////////////////////////////////////////////////////////
+
+Setup(context =>
+{
+    context.Log.Verbosity = Verbosity.Normal;
+});
+
+///////////////////////////////////////////////////////////////////////////////
+// TEARDOWN
+///////////////////////////////////////////////////////////////////////////////
+
+Teardown(context =>
+{
+    Information("Finished running tasks.");
+});
+
+///////////////////////////////////////////////////////////////////////////////
 // ACTIONS
 ///////////////////////////////////////////////////////////////////////////////
 
-var buildSolutionAction = new Action<string,string,string> ((solution, configuration, platform) => 
+var buildSolutionAction = new Action<string,string,string> ((solution, configuration, platform) =>
 {
     Information("Building: {0}, {1} / {2}", solution, configuration, platform);
     MSBuild(solution, settings => {
@@ -70,13 +86,24 @@ var buildSolutionAction = new Action<string,string,string> ((solution, configura
         settings.SetVerbosity(Verbosity.Minimal); });
 });
 
-var copyConfigAction = new Action<string> ((output) => 
+var runTestAction = new Action<string,string,string> ((test, configuration, platform) =>
+{
+    Information("Test: {0}, {1} / {2}", test, configuration, platform);
+    var pattern = "./tests/" + test + "/bin/" + configuration + "/" + platform + "/" + test + ".dll";
+    VSTest(pattern, new VSTestSettings() {
+        PlatformArchitecture = (platform == "Win32" || platform == "x86") ? VSTestPlatform.x86 : VSTestPlatform.x64,
+        InIsolation = (platform == "Win32" || platform == "x86") ? false : true,
+        Logger = "AppVeyor" });
+});
+
+var copyConfigAction = new Action<string> ((output) =>
 {
     var outputDir = artifactsDir.Combine(output);
     var formatsDir = outputDir.Combine("formats");
     var langDir = outputDir.Combine("lang");
     var progressDir = outputDir.Combine("progress");
     var toolsDir = outputDir.Combine("tools");
+    Information("Copy config: {0}", output);
     CleanDirectory(formatsDir);
     CleanDirectory(langDir);
     CleanDirectory(progressDir);
@@ -88,17 +115,18 @@ var copyConfigAction = new Action<string> ((output) =>
     CopyFiles("./config/*.ps1", outputDir);
 });
 
-var packageConfigAction = new Action(() => 
+var packageConfigAction = new Action(() =>
 {
     var output = "BatchEncoder-" + version + suffix + "-Config";
     var outputDir = artifactsDir.Combine(output);
     var outputZip = artifactsDir.CombineWithFilePath(output + ".zip");
+    Information("Package config: {0}", output);
     CleanDirectory(outputDir);
     copyConfigAction(output);
     Zip(outputDir, outputZip);
 });
 
-var packageGuiBinariesAction = new Action<string,string> ((configuration, platform) => 
+var packageGuiBinariesAction = new Action<string,string> ((configuration, platform) =>
 {
     var path = "./src/bin/" + configuration + "/" + platform + "/";
     var output = "BatchEncoder-" + version + suffix + "-" + platform + (configuration == "Release" ? "" : ("-(" + configuration + ")"));
@@ -106,6 +134,7 @@ var packageGuiBinariesAction = new Action<string,string> ((configuration, platfo
     var outputZip = artifactsDir.CombineWithFilePath(output + ".zip");
     var exeFile = File(path + "BatchEncoder.exe");
     var portableFile = File("./config/BatchEncoder.portable");
+    Information("Package binaries: {0}, {1} / {2}", output, configuration, platform);
     CleanDirectory(outputDir);
     CopyFileToDirectory(File("README.md"), outputDir);
     CopyFileToDirectory(File("LICENSE.TXT"), outputDir);
@@ -115,7 +144,7 @@ var packageGuiBinariesAction = new Action<string,string> ((configuration, platfo
     Zip(outputDir, outputZip);
 });
 
-var packageCliBinariesAction = new Action<string,string> ((configuration, platform) => 
+var packageCliBinariesAction = new Action<string,string> ((configuration, platform) =>
 {
     var path = "./src/cli/bin/" + configuration + "/" + platform + "/";
     var output = "BatchEncoder.CLI-" + version + suffix + "-" + platform + (configuration == "Release" ? "" : ("-(" + configuration + ")"));
@@ -123,6 +152,7 @@ var packageCliBinariesAction = new Action<string,string> ((configuration, platfo
     var outputZip = artifactsDir.CombineWithFilePath(output + ".zip");
     var exeFile = File(path + "BatchEncoder.CLI.exe");
     var portableFile = File("./config/BatchEncoder.portable");
+    Information("Package binaries: {0}, {1} / {2}", output, configuration, platform);
     CleanDirectory(outputDir);
     CopyFileToDirectory(File("README.md"), outputDir);
     CopyFileToDirectory(File("LICENSE.TXT"), outputDir);
@@ -132,11 +162,13 @@ var packageCliBinariesAction = new Action<string,string> ((configuration, platfo
     Zip(outputDir, outputZip);
 });
 
-var packageInstallersAction = new Action<string,string> ((configuration, platform) => 
+var packageInstallersAction = new Action<string,string> ((configuration, platform) =>
 {
+    Information("Package installer: {0} / {1}", configuration, platform);
     StartProcess(iscc, new ProcessSettings { 
         Arguments = 
-            "\"" + installerScript.FullPath + "\""
+            "/Q "
+            + "\"" + installerScript.FullPath + "\""
             + " /DCONFIGURATION=" + configuration
             + " /DBUILD=" + platform
             + " /DVERSION=" + version
@@ -152,50 +184,37 @@ Task("Clean")
     .Does(() =>
 {
     CleanDirectory(artifactsDir);
-    CleanDirectory(binDir);
-    CleanDirectory(objDir);
+    CleanDirectories("./**/bin/**");
+    CleanDirectories("./**/obj/**");
 });
 
 Task("Build")
     .IsDependentOn("Clean")
     .Does(() =>
 {
-    configurations.ForEach(configuration => platforms.ForEach(platform => buildSolutionAction(solution, configuration, platform)));
+    configurations.ForEach(c => platforms.ForEach(p => buildSolutionAction(solution, c, p)));
 });
 
 Task("Run-Unit-Tests")
     .IsDependentOn("Build")
     .Does(() =>
 {
-    configurations.ForEach(configuration => 
-    {
-        platforms.ForEach(platform => 
-        {
-            tests.ForEach(test => 
-            {
-                var pattern = "./tests/" + test + "/bin/" + configuration + "/" + platform + "/" + test + ".dll";
-                VSTest(pattern, new VSTestSettings() { 
-                    PlatformArchitecture = (platform == "Win32" || platform == "x86") ? VSTestPlatform.x86 : VSTestPlatform.x64,
-                    InIsolation = (platform == "Win32" || platform == "x86") ? false : true,
-                    Logger = "AppVeyor" });
-            });
-        });
-    });
+    configurations.ForEach(c => platforms.ForEach(p => tests.ForEach(t => runTestAction(t, c, p))));
 });
 
 Task("Package-Binaries")
     .IsDependentOn("Run-Unit-Tests")
     .Does(() =>
 {
-    configurations.ForEach(configuration => platforms.ForEach(platform => packageGuiBinariesAction(configuration, platform)));
-    configurations.ForEach(configuration => platforms.ForEach(platform => packageCliBinariesAction(configuration, platform)));
+    configurations.ForEach(c => platforms.ForEach(p => packageGuiBinariesAction(c, p)));
+    configurations.ForEach(c => platforms.ForEach(p => packageCliBinariesAction(c, p)));
 });
 
 Task("Package-Installers")
     .IsDependentOn("Run-Unit-Tests")
     .Does(() =>
 {
-    configurations.ForEach(configuration => platforms.ForEach(platform => packageInstallersAction(configuration, platform)));
+    configurations.ForEach(c => platforms.ForEach(p => packageInstallersAction(c, p)));
 });
 
 Task("Package-Config")
