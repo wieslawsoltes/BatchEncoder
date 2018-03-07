@@ -9,11 +9,11 @@
 #include <string>
 #include <mutex>
 #include <thread>
+#include "utilities\FileSystem.h"
 #include "utilities\Log.h"
 #include "utilities\MemoryLog.h"
 #include "utilities\String.h"
 #include "utilities\TimeCount.h"
-#include "utilities\Utilities.h"
 #include "WorkerContext.h"
 #include "CommandLine.h"
 #include "OutputPath.h"
@@ -61,7 +61,7 @@ namespace worker
             process->ConnectStdError(Stderr->WriteHandle());
 
             m_down.lock();
-            util::Utilities::SetCurrentDirectory(config->m_Settings.szSettingsPath);
+            config->FileSystem->SetCurrentDirectory_(config->m_Settings.szSettingsPath);
 
             timer.Start();
             if (process->Start(cl.szCommandLine, config->m_Options.bHideConsoleWindow) == false)
@@ -72,7 +72,7 @@ namespace worker
                     auto downloader = ctx->pFactory->CreateDownloaderPtr();
                     if (downloader->Download(ctx, cl.format, cl.nItemId) == true)
                     {
-                        util::Utilities::SetCurrentDirectory(config->m_Settings.szSettingsPath);
+                        config->FileSystem->SetCurrentDirectory_(config->m_Settings.szSettingsPath);
                         if (process->Start(cl.szCommandLine, config->m_Options.bHideConsoleWindow) == true)
                         {
                             bFailed = false;
@@ -103,7 +103,7 @@ namespace worker
 
             // init output parser
             m_down.lock();
-            util::Utilities::SetCurrentDirectory(config->m_Settings.szSettingsPath);
+            config->FileSystem->SetCurrentDirectory_(config->m_Settings.szSettingsPath);
 
             parser->nIndex = cl.nItemId;
             parser->nProgress = 0;
@@ -247,7 +247,7 @@ namespace worker
             }
 
             m_down.lock();
-            util::Utilities::SetCurrentDirectory(config->m_Settings.szSettingsPath);
+            config->FileSystem->SetCurrentDirectory_(config->m_Settings.szSettingsPath);
 
             timer.Start();
             if (process->Start(cl.szCommandLine, config->m_Options.bHideConsoleWindow) == false)
@@ -258,7 +258,7 @@ namespace worker
                     auto downloader = ctx->pFactory->CreateDownloaderPtr();
                     if (downloader->Download(ctx, cl.format, cl.nItemId) == true)
                     {
-                        util::Utilities::SetCurrentDirectory(config->m_Settings.szSettingsPath);
+                        config->FileSystem->SetCurrentDirectory_(config->m_Settings.szSettingsPath);
                         if (process->Start(cl.szCommandLine, config->m_Options.bHideConsoleWindow) == true)
                         {
                             bFailed = false;
@@ -485,7 +485,7 @@ namespace worker
             timer.Start();
 
             m_down.lock();
-            util::Utilities::SetCurrentDirectory(config->m_Settings.szSettingsPath);
+            config->FileSystem->SetCurrentDirectory_(config->m_Settings.szSettingsPath);
 
             // create decoder process
             if (decoderProcess->Start(dcl.szCommandLine, config->m_Options.bHideConsoleWindow) == false)
@@ -496,7 +496,7 @@ namespace worker
                     auto downloader = ctx->pFactory->CreateDownloaderPtr();
                     if (downloader->Download(ctx, dcl.format, dcl.nItemId) == true)
                     {
-                        util::Utilities::SetCurrentDirectory(config->m_Settings.szSettingsPath);
+                        config->FileSystem->SetCurrentDirectory_(config->m_Settings.szSettingsPath);
                         if (decoderProcess->Start(dcl.szCommandLine, config->m_Options.bHideConsoleWindow) == true)
                         {
                             bFailed = false;
@@ -526,7 +526,7 @@ namespace worker
                 }
             }
 
-            util::Utilities::SetCurrentDirectory(config->m_Settings.szSettingsPath);
+            config->FileSystem->SetCurrentDirectory_(config->m_Settings.szSettingsPath);
 
             // create encoder process
             if (encoderProcess->Start(ecl.szCommandLine, config->m_Options.bHideConsoleWindow) == false)
@@ -537,7 +537,7 @@ namespace worker
                     auto downloader = ctx->pFactory->CreateDownloaderPtr();
                     if (downloader->Download(ctx, ecl.format, ecl.nItemId) == true)
                     {
-                        util::Utilities::SetCurrentDirectory(config->m_Settings.szSettingsPath);
+                        config->FileSystem->SetCurrentDirectory_(config->m_Settings.szSettingsPath);
                         if (encoderProcess->Start(ecl.szCommandLine, config->m_Options.bHideConsoleWindow) == true)
                         {
                             bFailed = false;
@@ -655,14 +655,14 @@ namespace worker
                 if (bResult == true)
                 {
                     if (config->m_Options.bDeleteSourceFiles == true)
-                        util::Utilities::DeleteFile(dcl.szInputFile);
+                        config->FileSystem->DeleteFile_(dcl.szInputFile);
 
                     return true;
                 }
                 else
                 {
                     if (config->m_Options.bDeleteOnErrors == true)
-                        util::Utilities::DeleteFile(ecl.szOutputFile);
+                        config->FileSystem->DeleteFile_(ecl.szOutputFile);
 
                     return false;
                 }
@@ -670,7 +670,7 @@ namespace worker
             catch (...)
             {
                 if (config->m_Options.bDeleteOnErrors == true)
-                    util::Utilities::DeleteFile(ecl.szOutputFile);
+                    config->FileSystem->DeleteFile_(ecl.szOutputFile);
 
                 ctx->ItemStatus(item.nId, ctx->GetString(0x00150001), ctx->GetString(0x0014000E));
                 ctx->ItemProgress(item.nId, -1, true, true);
@@ -693,12 +693,12 @@ namespace worker
                 if (bResult == false)
                 {
                     if (config->m_Options.bDeleteOnErrors == true)
-                        util::Utilities::DeleteFile(cl.szOutputFile);
+                        config->FileSystem->DeleteFile_(cl.szOutputFile);
 
                     return false;
                 }
 
-                if (util::Utilities::FileExists(cl.szOutputFile) == false)
+                if (config->FileSystem->FileExists(cl.szOutputFile) == false)
                 {
                     ctx->ItemStatus(item.nId, ctx->GetString(0x00150001), ctx->GetString(0x00140008));
                     return false;
@@ -709,7 +709,7 @@ namespace worker
             catch (...)
             {
                 if (config->m_Options.bDeleteOnErrors == true)
-                    util::Utilities::DeleteFile(cl.szOutputFile);
+                    config->FileSystem->DeleteFile_(cl.szOutputFile);
 
                 ctx->ItemStatus(item.nId, ctx->GetString(0x00150001), ctx->GetString(0x00140009));
                 ctx->ItemProgress(item.nId, -1, true, true);
@@ -736,14 +736,14 @@ namespace worker
                 if (bResult == true)
                 {
                     if (config->m_Options.bDeleteSourceFiles == true)
-                        util::Utilities::DeleteFile(cl.szInputFile);
+                        config->FileSystem->DeleteFile_(cl.szInputFile);
 
                     return true;
                 }
                 else
                 {
                     if (config->m_Options.bDeleteOnErrors == true)
-                        util::Utilities::DeleteFile(cl.szOutputFile);
+                        config->FileSystem->DeleteFile_(cl.szOutputFile);
 
                     return false;
                 }
@@ -751,7 +751,7 @@ namespace worker
             catch (...)
             {
                 if (config->m_Options.bDeleteOnErrors == true)
-                    util::Utilities::DeleteFile(cl.szOutputFile);
+                    config->FileSystem->DeleteFile_(cl.szOutputFile);
 
                 ctx->ItemStatus(item.nId, ctx->GetString(0x00150001), ctx->GetString(0x0014000E));
                 ctx->ItemProgress(item.nId, -1, true, true);
@@ -771,7 +771,7 @@ namespace worker
             COutputPath m_Output;
 
             szEncInputFile = path.szPath;
-            if (util::Utilities::FileExists(szEncInputFile) == false)
+            if (config->FileSystem->FileExists(szEncInputFile) == false)
             {
                 ctx->ItemStatus(item.nId, ctx->GetString(0x00150001), ctx->GetString(0x00140001));
                 return false;
@@ -792,13 +792,13 @@ namespace worker
                 return false;
             }
 
-            bool bCanEncode = ef.IsValidInputExtension(util::Utilities::GetFileExtension(szEncInputFile));
+            bool bCanEncode = ef.IsValidInputExtension(config->FileSystem->FsGetFileExtension(szEncInputFile));
 
-            szEncOutputFile = m_Output.CreateFilePath(config->m_Options.szOutputPath, szEncInputFile, item.szName, ef.szOutputExtension);
+            szEncOutputFile = m_Output.CreateFilePath(config->FileSystem.get(), config->m_Options.szOutputPath, szEncInputFile, item.szName, ef.szOutputExtension);
 
             if (config->m_Options.bOverwriteExistingFiles == false)
             {
-                if (util::Utilities::FileExists(szEncOutputFile) == true)
+                if (config->FileSystem->FileExists(szEncOutputFile) == true)
                 {
                     ctx->ItemStatus(item.nId, ctx->GetString(0x00150001), ctx->GetString(0x00140010));
                     return false;
@@ -807,7 +807,7 @@ namespace worker
 
             m_dir.lock();
 
-            if (m_Output.CreateOutputPath(szEncOutputFile) == false)
+            if (m_Output.CreateOutputPath(config->FileSystem.get(), szEncOutputFile) == false)
             {
                 m_dir.unlock();
                 ctx->ItemStatus(item.nId, ctx->GetString(0x00150001), ctx->GetString(0x0014000F));
@@ -816,7 +816,7 @@ namespace worker
 
             m_dir.unlock();
 
-            util::Utilities::SetCurrentDirectory(config->m_Settings.szSettingsPath);
+            config->FileSystem->SetCurrentDirectory_(config->m_Settings.szSettingsPath);
 
             if (bCanEncode == false)
             {
@@ -844,15 +844,15 @@ namespace worker
 
                 szDecInputFile = szEncInputFile;
 
-                std::wstring szPath = util::Utilities::GetFilePath(szEncOutputFile);
-                std::wstring szName = util::Utilities::GenerateUuidString();
+                std::wstring szPath = config->FileSystem->GetFilePath(szEncOutputFile);
+                std::wstring szName = config->FileSystem->GenerateUuidString();
                 std::wstring szExt = util::string::TowLower(df.szOutputExtension);
                 szDecOutputFile = szPath + szName + L"." + szExt;
 
                 std::wstring szInputFile = szDecOutputFile;
 
-                auto dcl = CCommandLine(df, df.nDefaultPreset, item.nId, szDecInputFile, szDecOutputFile, L"");
-                auto ecl = CCommandLine(ef, item.nPreset, item.nId, szDecOutputFile, szEncOutputFile, item.szOptions);
+                auto dcl = CCommandLine(config->FileSystem.get(), df, df.nDefaultPreset, item.nId, szDecInputFile, szDecOutputFile, L"");
+                auto ecl = CCommandLine(config->FileSystem.get(), ef, item.nPreset, item.nId, szDecOutputFile, szEncOutputFile, item.szOptions);
 
                 bool bDecoderPipes = df.bPipeInput && df.bPipeOutput;
                 bool bEncoderPipes = ef.bPipeInput && ef.bPipeOutput;
@@ -877,10 +877,10 @@ namespace worker
                     if (bResult == true)
                     {
                         if (config->m_Options.bDeleteSourceFiles == true)
-                            util::Utilities::DeleteFile(dcl.szInputFile);
+                            config->FileSystem->DeleteFile_(dcl.szInputFile);
                     }
 
-                    util::Utilities::DeleteFile(dcl.szOutputFile);
+                    config->FileSystem->DeleteFile_(dcl.szOutputFile);
                     return bResult;
                 }
             }
@@ -889,7 +889,7 @@ namespace worker
                 if (ctx->bRunning == false)
                     return false;
 
-                auto cl = CCommandLine(ef, item.nPreset, item.nId, szEncInputFile, szEncOutputFile, item.szOptions);
+                auto cl = CCommandLine(config->FileSystem.get(), ef, item.nPreset, item.nId, szEncInputFile, szEncOutputFile, item.szOptions);
 
                 return Encode(ctx, item, cl, m_down);
             }

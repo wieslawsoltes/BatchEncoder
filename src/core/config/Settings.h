@@ -4,7 +4,7 @@
 #pragma once
 
 #include <string>
-#include "utilities\Utilities.h"
+#include "utilities\FileSystem.h"
 
 namespace config
 {
@@ -49,64 +49,64 @@ namespace config
             this->szOutputsFileName = L"Outputs.xml";
         }
     public:
-        bool IsPortable()
+        bool IsPortable(util::IFileSystem* fs)
         {
-            std::wstring szPath = util::Utilities::GetExeFilePath() + this->szPortableFile;
-            return util::Utilities::PathFileExists(szPath);
+            std::wstring szPath = fs->GetExeFilePath() + this->szPortableFile;
+            return fs->PathFileExists_(szPath);
         }
     public:
-        void InitPortableSettings()
+        void InitPortableSettings(util::IFileSystem* fs)
         {
-            this->szSettingsPath = util::Utilities::GetExeFilePath();
-            this->szFormatsPath = util::Utilities::CombinePath(this->szSettingsPath, this->szFormatsDir);
-            this->szLanguagesPath = util::Utilities::CombinePath(this->szSettingsPath, this->szLanguagesDir);
-            this->szProgressPath = util::Utilities::CombinePath(this->szSettingsPath, this->szProgressDir);
-            this->szToolsPath = util::Utilities::CombinePath(this->szSettingsPath, this->szToolsDir);
+            this->szSettingsPath = fs->GetExeFilePath();
+            this->szFormatsPath = fs->CombinePath(this->szSettingsPath, this->szFormatsDir);
+            this->szLanguagesPath = fs->CombinePath(this->szSettingsPath, this->szLanguagesDir);
+            this->szProgressPath = fs->CombinePath(this->szSettingsPath, this->szProgressDir);
+            this->szToolsPath = fs->CombinePath(this->szSettingsPath, this->szToolsDir);
 
             try
             {
-                util::Utilities::CreateDirectory(this->szFormatsPath);
-                util::Utilities::CreateDirectory(this->szLanguagesPath);
-                util::Utilities::CreateDirectory(this->szProgressPath);
-                util::Utilities::CreateDirectory(this->szToolsPath);
+                fs->CreateDirectory_(this->szFormatsPath);
+                fs->CreateDirectory_(this->szLanguagesPath);
+                fs->CreateDirectory_(this->szProgressPath);
+                fs->CreateDirectory_(this->szToolsPath);
             }
             catch (...) {}
 
-            this->szLogFile = util::Utilities::CombinePath(this->szSettingsPath, this->szLogFileName);
-            this->szOptionsFile = util::Utilities::CombinePath(this->szSettingsPath, this->szOptionsFileName);
-            this->szItemsFile = util::Utilities::CombinePath(this->szSettingsPath, this->szItemsFileName);
-            this->szOutputsFile = util::Utilities::CombinePath(this->szSettingsPath, this->szOutputsFileName);
+            this->szLogFile = fs->CombinePath(this->szSettingsPath, this->szLogFileName);
+            this->szOptionsFile = fs->CombinePath(this->szSettingsPath, this->szOptionsFileName);
+            this->szItemsFile = fs->CombinePath(this->szSettingsPath, this->szItemsFileName);
+            this->szOutputsFile = fs->CombinePath(this->szSettingsPath, this->szOutputsFileName);
         }
-        void InitUserSettings()
+        void InitUserSettings(util::IFileSystem* fs)
         {
-            this->szSettingsPath = util::Utilities::GetSettingsFilePath(L"", this->szConfigDir);
-            this->szFormatsPath = util::Utilities::GetSettingsFilePath(L"", this->szConfigDir + L"\\" + this->szFormatsDir);
-            this->szLanguagesPath = util::Utilities::GetSettingsFilePath(L"", this->szConfigDir + L"\\" + this->szLanguagesDir);
-            this->szProgressPath = util::Utilities::GetSettingsFilePath(L"", this->szConfigDir + L"\\" + this->szProgressDir);
-            this->szToolsPath = util::Utilities::GetSettingsFilePath(L"", this->szConfigDir + L"\\" + this->szToolsDir);
+            this->szSettingsPath = fs->GetSettingsFilePath(L"", this->szConfigDir);
+            this->szFormatsPath = fs->GetSettingsFilePath(L"", this->szConfigDir + L"\\" + this->szFormatsDir);
+            this->szLanguagesPath = fs->GetSettingsFilePath(L"", this->szConfigDir + L"\\" + this->szLanguagesDir);
+            this->szProgressPath = fs->GetSettingsFilePath(L"", this->szConfigDir + L"\\" + this->szProgressDir);
+            this->szToolsPath = fs->GetSettingsFilePath(L"", this->szConfigDir + L"\\" + this->szToolsDir);
 
             try
             {
-                util::Utilities::CreateDirectory(szSettingsPath);
-                util::Utilities::CreateDirectory(szFormatsPath);
-                util::Utilities::CreateDirectory(szLanguagesPath);
-                util::Utilities::CreateDirectory(szProgressPath);
-                util::Utilities::CreateDirectory(szToolsPath);
+                fs->CreateDirectory_(szSettingsPath);
+                fs->CreateDirectory_(szFormatsPath);
+                fs->CreateDirectory_(szLanguagesPath);
+                fs->CreateDirectory_(szProgressPath);
+                fs->CreateDirectory_(szToolsPath);
             }
             catch (...) {}
 
-            this->szLogFile = util::Utilities::GetSettingsFilePath(this->szLogFileName, this->szConfigDir);
-            this->szOptionsFile = util::Utilities::GetSettingsFilePath(this->szOptionsFileName, this->szConfigDir);
-            this->szItemsFile = util::Utilities::GetSettingsFilePath(this->szItemsFileName, this->szConfigDir);
-            this->szOutputsFile = util::Utilities::GetSettingsFilePath(this->szOutputsFileName, this->szConfigDir);
+            this->szLogFile = fs->GetSettingsFilePath(this->szLogFileName, this->szConfigDir);
+            this->szOptionsFile = fs->GetSettingsFilePath(this->szOptionsFileName, this->szConfigDir);
+            this->szItemsFile = fs->GetSettingsFilePath(this->szItemsFileName, this->szConfigDir);
+            this->szOutputsFile = fs->GetSettingsFilePath(this->szOutputsFileName, this->szConfigDir);
         }
     public:
-        void Init()
+        void Init(util::IFileSystem* fs)
         {
-            if (this->IsPortable())
-                this->InitPortableSettings();
+            if (this->IsPortable(fs))
+                this->InitPortableSettings(fs);
             else
-                this->InitUserSettings();
+                this->InitUserSettings(fs);
         }
     };
 }

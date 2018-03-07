@@ -5,8 +5,8 @@
 
 #include <string>
 #include "InputPath.h"
+#include "utilities\FileSystem.h"
 #include "utilities\String.h"
-#include "utilities\Utilities.h"
 
 #define VAR_INPUT_DRIVE         L"$InputDrive$"
 #define VAR_INPUT_DIR           L"$InputDir$"
@@ -25,7 +25,7 @@ namespace worker
     class COutputPath
     {
     public:
-        std::wstring CreateFilePath(const std::wstring& szOutput, const std::wstring& szInputFile, const std::wstring& szName, const std::wstring& szExt)
+        std::wstring CreateFilePath(util::IFileSystem* fs, const std::wstring& szOutput, const std::wstring& szInputFile, const std::wstring& szName, const std::wstring& szExt)
         {
             CInputPath m_Input(szInputFile.c_str());
 
@@ -90,14 +90,14 @@ namespace worker
 
             return szOutputFile;
         }
-        bool CreateOutputPath(const std::wstring& szOutputFile)
+        bool CreateOutputPath(util::IFileSystem* fs, const std::wstring& szOutputFile)
         {
-            std::wstring szOutputPath = util::Utilities::GetFilePath(szOutputFile);
+            std::wstring szOutputPath = fs->GetFilePath(szOutputFile);
             if (szOutputPath.length() > 0)
             {
-                if (!util::Utilities::DirectoryExists(szOutputPath.c_str()))
+                if (!fs->DirectoryExists(szOutputPath.c_str()))
                 {
-                    if (util::Utilities::MakeFullPath(szOutputPath) == false)
+                    if (fs->MakeFullPath(szOutputPath) == false)
                         return false;
                 }
             }

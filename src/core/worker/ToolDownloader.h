@@ -29,8 +29,8 @@ namespace worker
         {
             util::CDownload m_Download;
             std::wstring szUrl = tool.szUrl;
-            std::wstring szFilePath = util::Utilities::CombinePath(config->m_Settings.szToolsPath, tool.szFile);
-            std::wstring szFolderPath = util::Utilities::CombinePath(config->m_Settings.szToolsPath, util::Utilities::GetOnlyFileName(tool.szFile));
+            std::wstring szFilePath = util::CombinePath(config->m_Settings.szToolsPath, tool.szFile);
+            std::wstring szFolderPath = util::CombinePath(config->m_Settings.szToolsPath, util::GetOnlyFileName(tool.szFile));
 
             auto statusCallback = [&](int nProgress, std::wstring szStatus)
             {
@@ -60,7 +60,7 @@ namespace worker
             {
                 if (bInstall == true)
                 {
-                    util::Utilities::LaunchAndWait(szFilePath, L"", TRUE);
+                    util::LaunchAndWait(szFilePath, L"", TRUE);
                     return true;
                 }
             }
@@ -72,9 +72,9 @@ namespace worker
                     CComBSTR file(szFilePath.c_str());
                     CComBSTR folder(szFolderPath.c_str());
 
-                    if (!util::Utilities::DirectoryExists(szFolderPath))
+                    if (!util::DirectoryExists(szFolderPath))
                     {
-                        if (util::Utilities::MakeFullPath(szFolderPath) == false)
+                        if (util::MakeFullPath(szFolderPath) == false)
                         {
                             if (callback != nullptr)
                             {
@@ -85,9 +85,9 @@ namespace worker
                         }
                     }
 
-                    if (util::Utilities::DirectoryExists(szFolderPath))
+                    if (util::DirectoryExists(szFolderPath))
                     {
-                        bool bUnzipResult = util::Utilities::Unzip2Folder(file, folder);
+                        bool bUnzipResult = util::Unzip2Folder(file, folder);
                         if (bUnzipResult == true)
                         {
                             if (callback != nullptr)

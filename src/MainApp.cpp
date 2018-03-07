@@ -20,12 +20,14 @@ namespace app
     {
         dialogs::CMainDlg dlg;
 
-        dlg.m_Config.m_Settings.Init();
+        dlg.m_Config.FileSystem = std::make_unique<worker::Win32FileSystem>();
+
+        dlg.m_Config.m_Settings.Init(dlg.m_Config.FileSystem.get());
 
         dlg.m_Config.Log = std::make_unique<util::FileLog>(dlg.m_Config.m_Settings.szLogFile);
         dlg.m_Config.Log->Open();
 
-        std::wstring szConfigMode = dlg.m_Config.m_Settings.IsPortable() ? L"Portable" : L"Roaming";
+        std::wstring szConfigMode = dlg.m_Config.m_Settings.IsPortable(dlg.m_Config.FileSystem.get()) ? L"Portable" : L"Roaming";
         dlg.m_Config.Log->Log(L"[Info] Program started: " + szConfigMode);
 
         try

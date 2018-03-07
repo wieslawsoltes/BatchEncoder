@@ -5,8 +5,7 @@
 
 #include <string>
 #include "utilities\String.h"
-#include "utilities\Utilities.h"
-#include "config\Format.h"
+#include "utilities\FileSystem.h"
 
 namespace worker
 {
@@ -25,6 +24,7 @@ namespace worker
         std::wstring szCommandLine;
     public:
         CCommandLine(
+            util::IFileSystem* fs,
             config::CFormat& format,
             size_t nPreset,
             int nItemId,
@@ -61,7 +61,7 @@ namespace worker
             else
                 util::string::ReplaceNoCase(this->szCommandLine, L"$OUTFILE", this->szOutputFile);
 
-            this->szOutputPath = util::Utilities::GetFilePath(this->szOutputFile);
+            this->szOutputPath = fs->GetFilePath(this->szOutputFile);
 
             util::string::ReplaceNoCase(this->szCommandLine, L"$OUTPATH", L"\"$OUTPATH\"");
             util::string::ReplaceNoCase(this->szCommandLine, L"$OUTPATH", this->szOutputPath);

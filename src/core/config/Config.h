@@ -10,10 +10,10 @@
 #include <memory>
 #include <cstdio>
 #include <functional>
+#include "utilities\FileSystem.h"
 #include "utilities\Log.h"
 #include "utilities\String.h"
 #include "utilities\Utf8String.h"
-#include "utilities\Utilities.h"
 #include "tinyxml2\tinyxml2.h"
 #include "Format.h"
 #include "Item.h"
@@ -94,7 +94,7 @@ namespace xml
                 return std::wstring();
             if (strlen(pszUtf8) == 0)
                 return std::wstring();
-            return std::move(util::CUtf8String::ToUnicode(pszUtf8));
+            return std::move(util::ToUnicode(pszUtf8));
         }
         static inline int ToInt(const char *pszUtf8)
         {
@@ -182,7 +182,7 @@ namespace xml
     public:
         inline void SetAttributeValueString(XmlElement *element, const char *name, const std::wstring& value)
         {
-            element->SetAttribute(name, util::CUtf8String::ToUtf8(value).c_str());
+            element->SetAttribute(name, util::ToUtf8(value).c_str());
         }
         inline void SetAttributeValueInt(XmlElement *element, const char *name, const int &value)
         {
@@ -255,7 +255,7 @@ namespace xml
         inline void SetChildValueString(XmlElement *parent, const char *name, const std::wstring& value)
         {
             auto element = m_Document.NewElement(name);
-            element->LinkEndChild(m_Document.NewText(util::CUtf8String::ToUtf8(value).c_str()));
+            element->LinkEndChild(m_Document.NewText(util::ToUtf8(value).c_str()));
             parent->LinkEndChild(element);
         }
         inline void SetChildValueInt(XmlElement *parent, const char *name, const int &value)
@@ -1056,6 +1056,7 @@ namespace config
     class CConfig
     {
     public:
+        std::unique_ptr<util::IFileSystem> FileSystem;
         std::unique_ptr<util::ILog> Log;
         CSettings m_Settings;
         COptions m_Options;
@@ -1071,9 +1072,9 @@ namespace config
             std::wstring szFormatId = L"";
             int nFormatId = nFormat;
             int nPresetId = nPreset;
-            std::wstring szExt = util::Utilities::GetFileExtension(szPath);
-            std::wstring szName = util::Utilities::GetOnlyFileName(szPath);
-            unsigned __int64 nFileSize = util::Utilities::GetFileSize64(szPath);
+            std::wstring szExt = FileSystem->FsGetFileExtension(szPath);
+            std::wstring szName = FileSystem->GetOnlyFileName(szPath);
+            unsigned __int64 nFileSize = FileSystem->GetFileSize64(szPath);
 
             if ((nFormatId >= 0) && (nFormatId < (int)this->m_Formats.size()))
             {
@@ -1243,7 +1244,7 @@ namespace config
         bool LoadFormats(const std::wstring& szPath)
         {
             std::vector<std::wstring> files;
-            bool bResult = util::Utilities::FindFiles(szPath, files, false);
+            bool bResult = FileSystem->FindFiles(szPath, files, false);
             if (bResult == true)
             {
                 std::vector<config::CFormat> formats;
@@ -1273,10 +1274,10 @@ namespace config
         }
         bool SaveFormats(const std::wstring& szPath)
         {
-            util::Utilities::CreateDirectory(szPath);
+            FileSystem->CreateDirectory_(szPath);
             for (auto& format : this->m_Formats)
             {
-                std::wstring path = util::Utilities::CombinePath(szPath, format.szId + L".xml");
+                std::wstring path = FileSystem->CombinePath(szPath, format.szId + L".xml");
                 if (this->SaveFormat(path, format) == false)
                     return false;
             }
@@ -1336,7 +1337,7 @@ namespace config
         bool LoadTools(const std::wstring& szPath)
         {
             std::vector<std::wstring> files;
-            bool bResult = util::Utilities::FindFiles(szPath, files, false);
+            bool bResult = FileSystem->FindFiles(szPath, files, false);
             if (bResult == true)
             {
                 std::vector<config::CTool> tools;
@@ -1366,10 +1367,10 @@ namespace config
         }
         bool SaveTools(const std::wstring& szPath)
         {
-            util::Utilities::CreateDirectory(szPath);
+            FileSystem->CreateDirectory_(szPath);
             for (auto& tool : this->m_Tools)
             {
-                std::wstring path = util::Utilities::CombinePath(szPath, tool.szName + L".xml");
+                std::wstring path = FileSystem->CombinePath(szPath, tool.szName + L".xml");
                 if (this->SaveTool(path, tool) == false)
                     return false;
             }

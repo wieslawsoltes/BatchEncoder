@@ -100,7 +100,7 @@ namespace dialogs
             m_CmbFormat.InsertString(i, format.szName.c_str());
         }
 
-        util::Utilities::SetComboBoxHeight(this->GetSafeHwnd(), IDC_COMBO_PRESET_FORMAT, 15);
+        util::SetComboBoxHeight(this->GetSafeHwnd(), IDC_COMBO_PRESET_FORMAT, 15);
 
         m_CmbFormat.SetCurSel(nSelectedFormat);
 
@@ -636,7 +636,7 @@ namespace dialogs
                 if (!(::GetFileAttributes(szFile) & FILE_ATTRIBUTE_DIRECTORY))
                 {
                     std::wstring szPath = szFile;
-                    std::wstring szExt = util::Utilities::GetFileExtension(szPath);
+                    std::wstring szExt = util::FsGetFileExtension(szPath);
 
                     if (util::string::CompareNoCase(szExt, L"xml"))
                     {

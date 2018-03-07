@@ -1103,7 +1103,7 @@ namespace dialogs
 
                     std::wstring szPath = std::wstring(lpBuffer);
                     std::vector<std::wstring> files;
-                    bool bResult = util::Utilities::FindFiles(szPath, files, bRecurseChecked);
+                    bool bResult = util::FindFiles(szPath, files, bRecurseChecked);
                     if (bResult == true)
                     {
                         for (auto& file : files)
@@ -1397,7 +1397,7 @@ namespace dialogs
                 int nItem = m_LstInputItems.GetNextSelectedItem(pos);
                 config::CItem& item = m_Config.m_Items[nItem];
                 config::CPath& path = item.m_Paths[0];
-                util::Utilities::LaunchAndWait(path.szPath, L"", FALSE);
+                util::LaunchAndWait(path.szPath, L"", FALSE);
             }
         }
     }
@@ -1412,7 +1412,7 @@ namespace dialogs
                 int nItem = m_LstInputItems.GetNextSelectedItem(pos);
                 config::CItem& item = m_Config.m_Items[nItem];
                 config::CPath& path = item.m_Paths[0];
-                util::Utilities::LaunchAndWait(util::Utilities::GetFilePath(path.szPath), L"", FALSE);
+                util::LaunchAndWait(util::GetFilePath(path.szPath), L"", FALSE);
             }
         }
     }
@@ -1657,7 +1657,7 @@ namespace dialogs
     {
         if (this->ctx->bRunning == false)
         {
-            util::Utilities::LaunchAndWait(L"https://github.com/wieslawsoltes/BatchEncoder", L"", FALSE);
+            util::LaunchAndWait(L"https://github.com/wieslawsoltes/BatchEncoder", L"", FALSE);
         }
     }
 
@@ -1674,7 +1674,7 @@ namespace dialogs
     bool CMainDlg::LoadLanguages(const std::wstring& szPath)
     {
         std::vector<std::wstring> files;
-        if (util::Utilities::FindFiles(szPath, files, false))
+        if (util::FindFiles(szPath, files, false))
         {
             for (auto& file : files)
             {
@@ -2093,7 +2093,7 @@ namespace dialogs
     {
         if (m_Config.m_Options.bValidateInputFiles == true)
         {
-            std::wstring szExt = util::Utilities::GetFileExtension(szPath);
+            std::wstring szExt = util::FsGetFileExtension(szPath);
             if (config::CFormat::IsValidInputExtension(m_Config.m_Formats, szExt) == false)
                 return false;
         }
@@ -2157,7 +2157,7 @@ namespace dialogs
                 {
                     std::wstring szPath = std::wstring(szFile);
                     std::vector<std::wstring> files;
-                    bool bResult = util::Utilities::FindFiles(szPath, files, true);
+                    bool bResult = util::FindFiles(szPath, files, true);
                     if (bResult == true)
                     {
                         for (auto& file : files)
@@ -2174,7 +2174,7 @@ namespace dialogs
                 else
                 {
                     std::wstring szPath = szFile;
-                    std::wstring szExt = util::Utilities::GetFileExtension(szPath);
+                    std::wstring szExt = util::FsGetFileExtension(szPath);
 
                     if (util::string::CompareNoCase(szExt, L"xml"))
                     {
@@ -2261,7 +2261,7 @@ namespace dialogs
             static bool bResizeFormatsComboBox = false;
             if (bResizeFormatsComboBox == false)
             {
-                util::Utilities::SetComboBoxHeight(this->GetSafeHwnd(), IDC_COMBO_FORMAT, 15);
+                util::SetComboBoxHeight(this->GetSafeHwnd(), IDC_COMBO_FORMAT, 15);
                 bResizeFormatsComboBox = true;
             }
 
@@ -2282,7 +2282,7 @@ namespace dialogs
             static bool bResizeOutputComboBox = false;
             if (bResizeOutputComboBox == false)
             {
-                util::Utilities::SetComboBoxHeight(this->GetSafeHwnd(), IDC_COMBO_OUTPUT, 15);
+                util::SetComboBoxHeight(this->GetSafeHwnd(), IDC_COMBO_OUTPUT, 15);
                 bResizeOutputComboBox = true;
             }
 
@@ -2318,7 +2318,7 @@ namespace dialogs
             static bool bResizePresetsComboBox = false;
             if (bResizePresetsComboBox == false)
             {
-                util::Utilities::SetComboBoxHeight(this->GetSafeHwnd(), IDC_COMBO_PRESETS, 15);
+                util::SetComboBoxHeight(this->GetSafeHwnd(), IDC_COMBO_PRESETS, 15);
                 bResizePresetsComboBox = true;
             }
 
@@ -2516,7 +2516,7 @@ namespace dialogs
 
             m_StatusBar.SetText(L"", 1, 0);
 
-            util::Utilities::SetCurrentDirectory(this->m_Config.m_Settings.szSettingsPath);
+            util::SetCurrentDirectory_(this->m_Config.m_Settings.szSettingsPath);
 
             this->GetOptions();
             this->GetItems();
@@ -2567,8 +2567,8 @@ namespace dialogs
             this->ctx->nThreadCount = this->m_Config.m_Options.nThreadCount;
             if (this->ctx->nThreadCount < 1)
             {
-                util::Utilities::LogicalProcessorInformation info;
-                if (util::Utilities::GetLogicalProcessorInformation(&info) == 0)
+                util::LogicalProcessorInformation info;
+                if (util::GetLogicalProcessorInformation(&info) == 0)
                     this->ctx->nThreadCount = info.processorCoreCount;
                 else
                     this->ctx->nThreadCount = 1;
@@ -2621,7 +2621,7 @@ namespace dialogs
             }
 
             this->ctx->bRunning = false;
-            util::Utilities::ShutdownWindows();
+            util::ShutdownWindows();
         }
     }
 

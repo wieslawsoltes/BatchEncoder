@@ -7,10 +7,12 @@
 #include <utility>
 #include <string>
 #include <cstring>
+#include "utilities\FileSystem.h"
 #include "utilities\Log.h"
 #include "utilities\Pipe.h"
 #include "utilities\Process.h"
 #include "utilities\String.h"
+#include "utilities\Utilities.h"
 #include "ToolDownloader.h"
 #include "LuaProgess.h"
 #include "WorkerContext.h"
@@ -239,7 +241,7 @@ namespace worker
                 return false;
             }
 
-            nFileSize = util::Utilities::GetFileSize64(hFile);
+            nFileSize = util::GetFileSize64(hFile);
             if (nFileSize == 0)
             {
                 bError = true;
@@ -450,6 +452,99 @@ namespace worker
             bError = false;
             bFinished = true;
             return true;
+        }
+    };
+
+    class Win32FileSystem : public util::IFileSystem
+    {
+    public:
+        std::wstring GenerateUuidString()
+        {
+            return util::GenerateUuidString();
+        }
+        std::wstring CombinePath(const std::wstring& szPath, const std::wstring& szFile)
+        {
+            return util::CombinePath(szPath, szFile);
+        }
+        std::wstring GetFileName(const std::wstring& szFilePath)
+        {
+            return util::GetFileName(szFilePath);
+        }
+        std::wstring GetFilePath(const std::wstring& szFilePath)
+        {
+            return util::GetFilePath(szFilePath);
+        }
+        std::wstring FsGetFileExtension(const std::wstring& szFilePath)
+        {
+            return util::FsGetFileExtension(szFilePath);
+        }
+        std::wstring GetOnlyFileName(const std::wstring& szFilePath)
+        {
+            return util::GetOnlyFileName(szFilePath);
+        }
+        __int64 GetFileSize64(void* hFile)
+        {
+            return util::GetFileSize64(hFile);
+        }
+        __int64 GetFileSize64(const std::wstring& szFileName)
+        {
+            return util::GetFileSize64(szFileName);
+        }
+        __int64 GetFileSizeInt64(FILE *fp)
+        {
+            return util::GetFileSizeInt64(fp);
+        }
+        std::wstring GetExeFilePath()
+        {
+            return util::GetExeFilePath();
+        }
+        std::wstring GetSettingsFilePath(const std::wstring& szFileName, const std::wstring& szConfigDirectory)
+        {
+            return util::GetSettingsFilePath(szFileName, szConfigDirectory);
+        }
+        std::wstring GetFullPathName_(const std::wstring& szFilePath)
+        {
+            return util::GetFullPathName_(szFilePath);
+        }
+        bool FileExists(const std::wstring& szPath)
+        {
+            return util::FileExists(szPath);
+        }
+        bool PathFileExists_(const std::wstring& szFilePath)
+        {
+            return util::PathFileExists_(szFilePath);
+        }
+        void DeleteFile_(const std::wstring& szFilePath)
+        {
+            util::DeleteFile_(szFilePath);
+        }
+        bool CreateDirectory_(const std::wstring& szPath)
+        {
+            return util::CreateDirectory_(szPath);
+        }
+        std::wstring GetCurrentDirectory_()
+        {
+            return util::GetCurrentDirectory_();
+        }
+        void SetCurrentDirectory_(const std::wstring& szPath)
+        {
+            util::SetCurrentDirectory_(szPath);
+        }
+        bool DirectoryExists(const std::wstring& szPath)
+        {
+            return util::DirectoryExists(szPath);
+        }
+        bool MakeFullPath(const std::wstring& szTargetPath)
+        {
+            return util::MakeFullPath(szTargetPath);
+        }
+        std::vector<std::wstring> FindFiles(const std::wstring& pattern)
+        {
+            return util::FindFiles(pattern);
+        }
+        bool FindFiles(const std::wstring path, std::vector<std::wstring>& files, const bool bRecurse = false)
+        {
+            return util::FindFiles(path, files, bRecurse);
         }
     };
 

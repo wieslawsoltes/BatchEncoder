@@ -8,12 +8,14 @@ int wmain(int argc, wchar_t *argv[])
 {
     config::CConfig m_Config;
 
-    m_Config.m_Settings.Init();
+    m_Config.FileSystem = std::make_unique<worker::Win32FileSystem>();
+
+    m_Config.m_Settings.Init(m_Config.FileSystem.get());
 
     m_Config.Log = std::make_unique<util::ConsoleLog>();
     m_Config.Log->Open();
 
-    std::wstring szConfigMode = m_Config.m_Settings.IsPortable() ? L"Portable" : L"Roaming";
+    std::wstring szConfigMode = m_Config.m_Settings.IsPortable(m_Config.FileSystem.get()) ? L"Portable" : L"Roaming";
     m_Config.Log->Log(L"[Info] Program started: " + szConfigMode);
 
     try
@@ -36,7 +38,7 @@ int wmain(int argc, wchar_t *argv[])
         m_Config.Log->Log(L"[Error] Failed to load config.");
     }
 
-    util::Utilities::SetCurrentDirectory(m_Config.m_Settings.szSettingsPath);
+    m_Config.FileSystem->SetCurrentDirectory_(m_Config.m_Settings.szSettingsPath);
 
     worker::CWorker m_Worker;
     worker::Win32WorkerFactory m_Factory;
@@ -83,8 +85,8 @@ int wmain(int argc, wchar_t *argv[])
     ctx.nThreadCount = m_Config.m_Options.nThreadCount;
     if (ctx.nThreadCount < 1)
     {
-        util::Utilities::LogicalProcessorInformation info;
-        if (util::Utilities::GetLogicalProcessorInformation(&info) == 0)
+        util::LogicalProcessorInformation info;
+        if (util::GetLogicalProcessorInformation(&info) == 0)
             ctx.nThreadCount = info.processorCoreCount;
         else
             ctx.nThreadCount = 1;

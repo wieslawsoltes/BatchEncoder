@@ -944,7 +944,7 @@ namespace dialogs
                 if (!(::GetFileAttributes(szFile) & FILE_ATTRIBUTE_DIRECTORY))
                 {
                     std::wstring szPath = szFile;
-                    std::wstring szExt = util::Utilities::GetFileExtension(szPath);
+                    std::wstring szExt = util::FsGetFileExtension(szPath);
 
                     if (util::string::CompareNoCase(szExt, L"xml"))
                     {
@@ -1060,7 +1060,7 @@ namespace dialogs
         static bool bResizeDefaultComboBox = false;
         if (bResizeDefaultComboBox == false)
         {
-            util::Utilities::SetComboBoxHeight(this->GetSafeHwnd(), IDC_COMBO_FORMAT_DEFAULT, 15);
+            util::SetComboBoxHeight(this->GetSafeHwnd(), IDC_COMBO_FORMAT_DEFAULT, 15);
             bResizeDefaultComboBox = true;
         }
 
@@ -1207,7 +1207,7 @@ namespace dialogs
                 if (m_LstFormats.GetItemState(i, LVIS_SELECTED) == LVIS_SELECTED)
                 {
                     config::CFormat& format = m_Formats[i];
-                    std::wstring path = util::Utilities::CombinePath(szPath, format.szId + L".xml");
+                    std::wstring path = util::CombinePath(szPath, format.szId + L".xml");
                     if (this->SaveFormat(path, format) == false)
                         return false;
                 }

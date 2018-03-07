@@ -6,6 +6,7 @@
 #include "targetver.h"
 #include "CppUnitTest.h"
 
+#include "utilities\FileSystem.h"
 #include "utilities\String.h"
 #include "utilities\Utilities.h"
 

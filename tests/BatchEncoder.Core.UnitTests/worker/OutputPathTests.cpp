@@ -9,6 +9,7 @@ namespace BatchEncoderCoreUnitTests
 {
     TEST_CLASS(COutputPath_Tests)
     {
+        worker::Win32FileSystem FileSystem;
     public:
         TEST_METHOD(COutputPath_CreateFile_Empty)
         {
@@ -18,7 +19,7 @@ namespace BatchEncoderCoreUnitTests
             std::wstring szExt = L"ext";
 
             worker::COutputPath m_Output;
-            std::wstring szOutputFile = m_Output.CreateFilePath(szOutput, szInputFile, szName, szExt);
+            std::wstring szOutputFile = m_Output.CreateFilePath(&FileSystem, szOutput, szInputFile, szName, szExt);
 
             Assert::AreEqual(L"C:\\MusicFolder\\ArtistFolder\\AlbumFolder\\CustomName.ext", szOutputFile.c_str());
         }
@@ -31,9 +32,9 @@ namespace BatchEncoderCoreUnitTests
             std::wstring szExt = L"ext";
 
             worker::COutputPath m_Output;
-            std::wstring szOutputFile = m_Output.CreateFilePath(szOutput, szInputFile, szName, szExt);
+            std::wstring szOutputFile = m_Output.CreateFilePath(&FileSystem, szOutput, szInputFile, szName, szExt);
 
-            std::wstring szCurrentDirectory = util::Utilities::GetCurrentDirectory();
+            std::wstring szCurrentDirectory = FileSystem.GetCurrentDirectory_();
             std::wstring szExpectedOutputFile = szCurrentDirectory + L"\\" + szOutput + L"\\CustomName.ext";
 
             Assert::AreEqual(szExpectedOutputFile.c_str(), szOutputFile.c_str());
@@ -47,9 +48,9 @@ namespace BatchEncoderCoreUnitTests
             std::wstring szExt = L"ext";
 
             worker::COutputPath m_Output;
-            std::wstring szOutputFile = m_Output.CreateFilePath(szOutput, szInputFile, szName, szExt);
+            std::wstring szOutputFile = m_Output.CreateFilePath(&FileSystem, szOutput, szInputFile, szName, szExt);
 
-            std::wstring szCurrentDirectory = util::Utilities::GetCurrentDirectory();
+            std::wstring szCurrentDirectory = FileSystem.GetCurrentDirectory_();
             std::wstring szExpectedOutputFile = szCurrentDirectory + L"\\" + szOutput + L"CustomName.ext";
 
             Assert::AreEqual(szExpectedOutputFile.c_str(), szOutputFile.c_str());
@@ -63,7 +64,7 @@ namespace BatchEncoderCoreUnitTests
             std::wstring szExt = L"ext";
 
             worker::COutputPath m_Output;
-            std::wstring szOutputFile = m_Output.CreateFilePath(szOutput, szInputFile, szName, szExt);
+            std::wstring szOutputFile = m_Output.CreateFilePath(&FileSystem, szOutput, szInputFile, szName, szExt);
 
             Assert::AreEqual(L"C:\\Output\\CustomName.ext", szOutputFile.c_str());
         }
@@ -76,7 +77,7 @@ namespace BatchEncoderCoreUnitTests
             std::wstring szExt = L"ext";
 
             worker::COutputPath m_Output;
-            std::wstring szOutputFile = m_Output.CreateFilePath(szOutput, szInputFile, szName, szExt);
+            std::wstring szOutputFile = m_Output.CreateFilePath(&FileSystem, szOutput, szInputFile, szName, szExt);
 
             Assert::AreEqual(L"C:\\Output\\CustomName.ext", szOutputFile.c_str());
         }
@@ -89,7 +90,7 @@ namespace BatchEncoderCoreUnitTests
             std::wstring szExt = L"ext";
 
             worker::COutputPath m_Output;
-            std::wstring szOutputFile = m_Output.CreateFilePath(szOutput, szInputFile, szName, szExt);
+            std::wstring szOutputFile = m_Output.CreateFilePath(&FileSystem, szOutput, szInputFile, szName, szExt);
 
             Assert::AreEqual(L"C:\\MusicFolder\\ArtistFolder\\AlbumFolder\\CustomName.ext", szOutputFile.c_str());
         }
@@ -102,7 +103,7 @@ namespace BatchEncoderCoreUnitTests
             std::wstring szExt = L"ext";
 
             worker::COutputPath m_Output;
-            std::wstring szOutputFile = m_Output.CreateFilePath(szOutput, szInputFile, szName, szExt);
+            std::wstring szOutputFile = m_Output.CreateFilePath(&FileSystem, szOutput, szInputFile, szName, szExt);
 
             Assert::AreEqual(L"C:\\MusicFolder\\ArtistFolder\\AlbumFolder\\FileName.ext", szOutputFile.c_str());
         }
@@ -115,7 +116,7 @@ namespace BatchEncoderCoreUnitTests
             std::wstring szExt = L"ext";
 
             worker::COutputPath m_Output;
-            std::wstring szOutputFile = m_Output.CreateFilePath(szOutput, szInputFile, szName, szExt);
+            std::wstring szOutputFile = m_Output.CreateFilePath(&FileSystem, szOutput, szInputFile, szName, szExt);
 
             Assert::AreEqual(L"C:\\MusicFolder\\ArtistFolder\\AlbumFolder\\FileName.ext", szOutputFile.c_str());
         }
@@ -128,7 +129,7 @@ namespace BatchEncoderCoreUnitTests
             std::wstring szExt = L"ext";
 
             worker::COutputPath m_Output;
-            std::wstring szOutputFile = m_Output.CreateFilePath(szOutput, szInputFile, szName, szExt);
+            std::wstring szOutputFile = m_Output.CreateFilePath(&FileSystem, szOutput, szInputFile, szName, szExt);
 
             Assert::AreEqual(L"C:\\MusicFolder\\ArtistFolder\\AlbumFolder\\CustomName.ext", szOutputFile.c_str());
         }
@@ -141,7 +142,7 @@ namespace BatchEncoderCoreUnitTests
             std::wstring szExt = L"ext";
 
             worker::COutputPath m_Output;
-            std::wstring szOutputFile = m_Output.CreateFilePath(szOutput, szInputFile, szName, szExt);
+            std::wstring szOutputFile = m_Output.CreateFilePath(&FileSystem, szOutput, szInputFile, szName, szExt);
 
             Assert::AreEqual(L"C:\\Output\\FileName.ext", szOutputFile.c_str());
         }
@@ -154,7 +155,7 @@ namespace BatchEncoderCoreUnitTests
             std::wstring szExt = L"ext";
 
             worker::COutputPath m_Output;
-            std::wstring szOutputFile = m_Output.CreateFilePath(szOutput, szInputFile, szName, szExt);
+            std::wstring szOutputFile = m_Output.CreateFilePath(&FileSystem, szOutput, szInputFile, szName, szExt);
 
             Assert::AreEqual(L"C:\\MusicFolder\\ArtistFolder\\AlbumFolder\\CustomName.wav.ext", szOutputFile.c_str());
         }
@@ -167,7 +168,7 @@ namespace BatchEncoderCoreUnitTests
             std::wstring szExt = L"EXT";
 
             worker::COutputPath m_Output;
-            std::wstring szOutputFile = m_Output.CreateFilePath(szOutput, szInputFile, szName, szExt);
+            std::wstring szOutputFile = m_Output.CreateFilePath(&FileSystem, szOutput, szInputFile, szName, szExt);
 
             Assert::AreEqual(L"C:\\MusicFolder\\ArtistFolder\\AlbumFolder\\CustomName.wav.ext", szOutputFile.c_str());
         }
@@ -180,7 +181,7 @@ namespace BatchEncoderCoreUnitTests
             std::wstring szExt = L"ext";
 
             worker::COutputPath m_Output;
-            std::wstring szOutputFile = m_Output.CreateFilePath(szOutput, szInputFile, szName, szExt);
+            std::wstring szOutputFile = m_Output.CreateFilePath(&FileSystem, szOutput, szInputFile, szName, szExt);
 
             Assert::AreEqual(L"C:\\Output\\CustomName.ext", szOutputFile.c_str());
         }
@@ -193,7 +194,7 @@ namespace BatchEncoderCoreUnitTests
             std::wstring szExt = L"ext";
 
             worker::COutputPath m_Output;
-            std::wstring szOutputFile = m_Output.CreateFilePath(szOutput, szInputFile, szName, szExt);
+            std::wstring szOutputFile = m_Output.CreateFilePath(&FileSystem, szOutput, szInputFile, szName, szExt);
 
             Assert::AreEqual(L"C:\\Output\\FileName_converted.ext", szOutputFile.c_str());
         }
@@ -206,7 +207,7 @@ namespace BatchEncoderCoreUnitTests
             std::wstring szExt = L"ext";
 
             worker::COutputPath m_Output;
-            std::wstring szOutputFile = m_Output.CreateFilePath(szOutput, szInputFile, szName, szExt);
+            std::wstring szOutputFile = m_Output.CreateFilePath(&FileSystem, szOutput, szInputFile, szName, szExt);
 
             Assert::AreEqual(L"C:\\Output\\CustomName_converted.ext", szOutputFile.c_str());
         }
@@ -219,7 +220,7 @@ namespace BatchEncoderCoreUnitTests
             std::wstring szExt = L"ext";
 
             worker::COutputPath m_Output;
-            std::wstring szOutputFile = m_Output.CreateFilePath(szOutput, szInputFile, szName, szExt);
+            std::wstring szOutputFile = m_Output.CreateFilePath(&FileSystem, szOutput, szInputFile, szName, szExt);
             Assert::AreEqual(L"C:\\Output\\ArtistFolder\\AlbumFolder\\FileName.ext", szOutputFile.c_str());
 
         }
@@ -232,7 +233,7 @@ namespace BatchEncoderCoreUnitTests
             std::wstring szExt = L"ext";
 
             worker::COutputPath m_Output;
-            std::wstring szOutputFile = m_Output.CreateFilePath(szOutput, szInputFile, szName, szExt);
+            std::wstring szOutputFile = m_Output.CreateFilePath(&FileSystem, szOutput, szInputFile, szName, szExt);
 
             Assert::AreEqual(L"C:\\Output\\ArtistFolder\\AlbumFolder\\CustomName.ext", szOutputFile.c_str());
         }
@@ -245,7 +246,7 @@ namespace BatchEncoderCoreUnitTests
             std::wstring szExt = L"ext";
 
             worker::COutputPath m_Output;
-            std::wstring szOutputFile = m_Output.CreateFilePath(szOutput, szInputFile, szName, szExt);
+            std::wstring szOutputFile = m_Output.CreateFilePath(&FileSystem, szOutput, szInputFile, szName, szExt);
 
             Assert::AreEqual(L"C:\\Output\\AlbumFolder\\FileName.ext", szOutputFile.c_str());
         }
@@ -258,7 +259,7 @@ namespace BatchEncoderCoreUnitTests
             std::wstring szExt = L"ext";
 
             worker::COutputPath m_Output;
-            std::wstring szOutputFile = m_Output.CreateFilePath(szOutput, szInputFile, szName, szExt);
+            std::wstring szOutputFile = m_Output.CreateFilePath(&FileSystem, szOutput, szInputFile, szName, szExt);
 
             Assert::AreEqual(L"C:\\Output\\AlbumFolder\\CustomName.ext", szOutputFile.c_str());
         }
@@ -271,7 +272,7 @@ namespace BatchEncoderCoreUnitTests
             std::wstring szExt = L"ext";
 
             worker::COutputPath m_Output;
-            std::wstring szOutputFile = m_Output.CreateFilePath(szOutput, szInputFile, szName, szExt);
+            std::wstring szOutputFile = m_Output.CreateFilePath(&FileSystem, szOutput, szInputFile, szName, szExt);
 
             Assert::AreEqual(L"C:\\CustomName.ext", szOutputFile.c_str());
         }
@@ -284,7 +285,7 @@ namespace BatchEncoderCoreUnitTests
             std::wstring szExt = L"ext";
 
             worker::COutputPath m_Output;
-            std::wstring szOutputFile = m_Output.CreateFilePath(szOutput, szInputFile, szName, szExt);
+            std::wstring szOutputFile = m_Output.CreateFilePath(&FileSystem, szOutput, szInputFile, szName, szExt);
 
             Assert::AreEqual(L"C:\\FileName.ext", szOutputFile.c_str());
         }
@@ -297,7 +298,7 @@ namespace BatchEncoderCoreUnitTests
             std::wstring szExt = L"ext";
 
             worker::COutputPath m_Output;
-            std::wstring szOutputFile = m_Output.CreateFilePath(szOutput, szInputFile, szName, szExt);
+            std::wstring szOutputFile = m_Output.CreateFilePath(&FileSystem, szOutput, szInputFile, szName, szExt);
 
             Assert::AreEqual(L"C:\\MusicFolder\\ArtistFolder\\AlbumFolder\\Converted\\CustomName.ext", szOutputFile.c_str());
         }
@@ -310,7 +311,7 @@ namespace BatchEncoderCoreUnitTests
             std::wstring szExt = L"ext";
 
             worker::COutputPath m_Output;
-            std::wstring szOutputFile = m_Output.CreateFilePath(szOutput, szInputFile, szName, szExt);
+            std::wstring szOutputFile = m_Output.CreateFilePath(&FileSystem, szOutput, szInputFile, szName, szExt);
 
             Assert::AreEqual(L"C:\\MusicFolder\\ArtistFolder\\AlbumFolder\\Converted\\FileName.ext", szOutputFile.c_str());
         }
@@ -323,7 +324,7 @@ namespace BatchEncoderCoreUnitTests
             std::wstring szExt = L"ext";
 
             worker::COutputPath m_Output;
-            std::wstring szOutputFile = m_Output.CreateFilePath(szOutput, szInputFile, szName, szExt);
+            std::wstring szOutputFile = m_Output.CreateFilePath(&FileSystem, szOutput, szInputFile, szName, szExt);
 
             Assert::AreEqual(L"C:\\Converted\\CustomName.ext", szOutputFile.c_str());
         }
@@ -336,7 +337,7 @@ namespace BatchEncoderCoreUnitTests
             std::wstring szExt = L"ext";
 
             worker::COutputPath m_Output;
-            std::wstring szOutputFile = m_Output.CreateFilePath(szOutput, szInputFile, szName, szExt);
+            std::wstring szOutputFile = m_Output.CreateFilePath(&FileSystem, szOutput, szInputFile, szName, szExt);
 
             Assert::AreEqual(L"C:\\Converted\\FileName.ext", szOutputFile.c_str());
         }
@@ -349,7 +350,7 @@ namespace BatchEncoderCoreUnitTests
             std::wstring szExt = L"ext";
 
             worker::COutputPath m_Output;
-            std::wstring szOutputFile = m_Output.CreateFilePath(szOutput, szInputFile, szName, szExt);
+            std::wstring szOutputFile = m_Output.CreateFilePath(&FileSystem, szOutput, szInputFile, szName, szExt);
 
             Assert::AreEqual(L"D:\\MusicFolder\\ArtistFolder\\AlbumFolder\\CustomName.ext", szOutputFile.c_str());
         }
@@ -362,7 +363,7 @@ namespace BatchEncoderCoreUnitTests
             std::wstring szExt = L"ext";
 
             worker::COutputPath m_Output;
-            std::wstring szOutputFile = m_Output.CreateFilePath(szOutput, szInputFile, szName, szExt);
+            std::wstring szOutputFile = m_Output.CreateFilePath(&FileSystem, szOutput, szInputFile, szName, szExt);
 
             Assert::AreEqual(L"D:\\MusicFolder\\ArtistFolder\\AlbumFolder\\FileName.ext", szOutputFile.c_str());
         }
@@ -375,7 +376,7 @@ namespace BatchEncoderCoreUnitTests
             std::wstring szExt = L"ext";
 
             worker::COutputPath m_Output;
-            std::wstring szOutputFile = m_Output.CreateFilePath(szOutput, szInputFile, szName, szExt);
+            std::wstring szOutputFile = m_Output.CreateFilePath(&FileSystem, szOutput, szInputFile, szName, szExt);
 
             Assert::AreEqual(L"D:\\Converted\\MusicFolder\\ArtistFolder\\AlbumFolder\\CustomName.ext", szOutputFile.c_str());
         }
@@ -388,7 +389,7 @@ namespace BatchEncoderCoreUnitTests
             std::wstring szExt = L"ext";
 
             worker::COutputPath m_Output;
-            std::wstring szOutputFile = m_Output.CreateFilePath(szOutput, szInputFile, szName, szExt);
+            std::wstring szOutputFile = m_Output.CreateFilePath(&FileSystem, szOutput, szInputFile, szName, szExt);
 
             Assert::AreEqual(L"D:\\Converted\\MusicFolder\\ArtistFolder\\AlbumFolder\\FileName.ext", szOutputFile.c_str());
         }

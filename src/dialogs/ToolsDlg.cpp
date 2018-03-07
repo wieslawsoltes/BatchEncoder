@@ -925,7 +925,7 @@ namespace dialogs
                 if (!(::GetFileAttributes(szFile) & FILE_ATTRIBUTE_DIRECTORY))
                 {
                     std::wstring szPath = szFile;
-                    std::wstring szExt = util::Utilities::GetFileExtension(szPath);
+                    std::wstring szExt = util::FsGetFileExtension(szPath);
 
                     if (util::string::CompareNoCase(szExt, L"xml"))
                     {
@@ -1038,7 +1038,7 @@ namespace dialogs
         m_Downloader.bDownload = true;
         EnableUserInterface(FALSE);
 
-        util::Utilities::SetCurrentDirectory(pConfig->m_Settings.szToolsPath);
+        util::SetCurrentDirectory_(pConfig->m_Settings.szToolsPath);
 
         app::CLanguageHelper helper(pConfig);
         helper.SetWndText(&m_BtnDownload, 0x000E0024);
@@ -1106,7 +1106,7 @@ namespace dialogs
                 if (m_LstTools.GetItemState(i, LVIS_SELECTED) == LVIS_SELECTED)
                 {
                     config::CTool& tool = m_Tools[i];
-                    std::wstring path = util::Utilities::CombinePath(szPath, tool.szName + L".xml");
+                    std::wstring path = util::CombinePath(szPath, tool.szName + L".xml");
                     if (this->SaveTool(path, tool) == false)
                         return false;
                 }
