@@ -1678,14 +1678,14 @@ namespace dialogs
         {
             for (auto& file : files)
             {
-                xml::XmlDocumnent doc;
-                if (xml::XmlDoc::Open(file, doc) == true)
+                config::xml::XmlDocumnent doc;
+                if (config::xml::XmlDoc::Open(file, doc) == true)
                 {
-                    std::string szName = xml::XmlDoc::GetRootName(doc);
+                    std::string szName = config::xml::XmlDoc::GetRootName(doc);
                     if (util::string::CompareNoCase(szName, "Language"))
                     {
                         config::CLanguage language;
-                        if (xml::XmlConfig::LoadLanguage(doc, language))
+                        if (config::xml::XmlConfig::LoadLanguage(doc, language))
                         {
                             this->m_Config.m_Languages.emplace_back(std::move(language));
                         }
@@ -2178,8 +2178,8 @@ namespace dialogs
 
                     if (util::string::CompareNoCase(szExt, L"xml"))
                     {
-                        xml::XmlDocumnent doc;
-                        std::string szName = xml::XmlConfig::GetRootName(szPath, doc);
+                        config::xml::XmlDocumnent doc;
+                        std::string szName = config::xml::XmlConfig::GetRootName(szPath, doc);
                         if (!szName.empty())
                         {
                             if (util::string::CompareNoCase(szName, "Items"))
@@ -2637,7 +2637,7 @@ namespace dialogs
         return false;
     }
 
-    bool CMainDlg::LoadOptions(xml::XmlDocumnent &doc)
+    bool CMainDlg::LoadOptions(config::xml::XmlDocumnent &doc)
     {
         if (this->m_Config.LoadOptions(doc))
         {
@@ -2682,7 +2682,7 @@ namespace dialogs
         return false;
     }
 
-    bool CMainDlg::LoadFormat(xml::XmlDocumnent &doc)
+    bool CMainDlg::LoadFormat(config::xml::XmlDocumnent &doc)
     {
         if (this->m_Config.LoadFormat(doc))
         {
@@ -2712,7 +2712,7 @@ namespace dialogs
         return false;
     }
 
-    bool CMainDlg::LoadPresets(xml::XmlDocumnent &doc)
+    bool CMainDlg::LoadPresets(config::xml::XmlDocumnent &doc)
     {
         int nFormat = this->m_CmbFormat.GetCurSel();
         if (nFormat != -1)
@@ -2751,7 +2751,7 @@ namespace dialogs
         return this->m_Config.LoadTool(szFileXml);
     }
 
-    bool CMainDlg::LoadTool(xml::XmlDocumnent &doc)
+    bool CMainDlg::LoadTool(config::xml::XmlDocumnent &doc)
     {
         return this->m_Config.LoadTool(doc);
     }
@@ -2772,7 +2772,7 @@ namespace dialogs
         return false;
     }
 
-    bool CMainDlg::LoadItems(xml::XmlDocumnent &doc)
+    bool CMainDlg::LoadItems(config::xml::XmlDocumnent &doc)
     {
         if (this->m_Config.LoadItems(doc))
         {
@@ -2799,7 +2799,7 @@ namespace dialogs
         return false;
     }
 
-    bool CMainDlg::LoadOutputs(xml::XmlDocumnent &doc)
+    bool CMainDlg::LoadOutputs(config::xml::XmlDocumnent &doc)
     {
         if (this->m_Config.LoadOutputs(doc))
         {
@@ -2835,7 +2835,7 @@ namespace dialogs
         return false;
     }
 
-    bool CMainDlg::LoadLanguage(xml::XmlDocumnent &doc)
+    bool CMainDlg::LoadLanguage(config::xml::XmlDocumnent &doc)
     {
         if (this->m_Config.LoadLanguage(doc))
         {

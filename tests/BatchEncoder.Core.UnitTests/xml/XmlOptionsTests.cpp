@@ -16,8 +16,8 @@ namespace BatchEncoderCoreUnitTests
         {
             #pragma warning(push)
             #pragma warning(disable:4101)
-            xml::XmlDocumnent doc;
-            xml::XmlOptions xml(doc);
+            config::xml::XmlDocumnent doc;
+            config::xml::XmlOptions xml(doc);
             #pragma warning(pop)
         }
     };

@@ -83,7 +83,7 @@ namespace dialogs
         void ListSelectionChange();
     public:
         bool LoadPresets(const std::wstring& szFileXml);
-        bool LoadPresets(xml::XmlDocumnent &doc);
+        bool LoadPresets(config::xml::XmlDocumnent &doc);
         bool SavePresets(const std::wstring& szFileXml, config::CFormat &format);
     };
 }

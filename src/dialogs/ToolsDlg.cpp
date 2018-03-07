@@ -929,8 +929,8 @@ namespace dialogs
 
                     if (util::string::CompareNoCase(szExt, L"xml"))
                     {
-                        xml::XmlDocumnent doc;
-                        std::string szName = xml::XmlConfig::GetRootName(szPath, doc);
+                        config::xml::XmlDocumnent doc;
+                        std::string szName = config::xml::XmlConfig::GetRootName(szPath, doc);
                         if (!szName.empty())
                         {
                             if (util::string::CompareNoCase(szName, "Tool"))
@@ -1071,8 +1071,8 @@ namespace dialogs
 
     bool CToolsDlg::LoadTool(const std::wstring& szFileXml)
     {
-        xml::XmlDocumnent doc;
-        std::string szName = xml::XmlConfig::GetRootName(szFileXml, doc);
+        config::xml::XmlDocumnent doc;
+        std::string szName = config::xml::XmlConfig::GetRootName(szFileXml, doc);
         if (!szName.empty() && util::string::CompareNoCase(szName, "Tool"))
         {
             return this->LoadTool(doc);
@@ -1080,10 +1080,10 @@ namespace dialogs
         return false;
     }
 
-    bool CToolsDlg::LoadTool(xml::XmlDocumnent &doc)
+    bool CToolsDlg::LoadTool(config::xml::XmlDocumnent &doc)
     {
         config::CTool tool;
-        if (xml::XmlConfig::LoadTool(doc, tool))
+        if (config::xml::XmlConfig::LoadTool(doc, tool))
         {
             m_Tools.emplace_back(tool);
             return true;
@@ -1093,7 +1093,7 @@ namespace dialogs
 
     bool CToolsDlg::SaveTool(const std::wstring& szFileXml, config::CTool &tool)
     {
-        return xml::XmlConfig::SaveTool(szFileXml, tool);
+        return config::xml::XmlConfig::SaveTool(szFileXml, tool);
     }
 
     bool CToolsDlg::SaveTools(const std::wstring& szPath)

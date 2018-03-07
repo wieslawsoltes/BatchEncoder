@@ -27,7 +27,7 @@
 
 #define VALIDATE(value) if (!value) return false
 
-namespace xml
+namespace config::xml
 {
     typedef tinyxml2::XMLNode XmlNode;
     typedef tinyxml2::XMLElement XmlElement;

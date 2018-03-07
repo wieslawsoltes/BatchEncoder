@@ -120,9 +120,9 @@ namespace dialogs
         bool BrowseForPath(CString szDefaultFName, CEdit *pEdit, int nID);
         bool BrowseForFunction(CString szDefaultFName, CEdit *pEdit, int nID);
     public:
-        bool LoadPresets(xml::XmlDocumnent &doc);
+        bool LoadPresets(config::xml::XmlDocumnent &doc);
         bool LoadFormat(const std::wstring& szFileXml);
-        bool LoadFormat(xml::XmlDocumnent &doc);
+        bool LoadFormat(config::xml::XmlDocumnent &doc);
         bool SaveFormat(const std::wstring& szFileXml, config::CFormat &format);
         bool SaveFormats(const std::wstring& szPath);
     };

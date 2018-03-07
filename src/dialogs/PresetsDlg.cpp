@@ -640,8 +640,8 @@ namespace dialogs
 
                     if (util::string::CompareNoCase(szExt, L"xml"))
                     {
-                        xml::XmlDocumnent doc;
-                        std::string szName = xml::XmlConfig::GetRootName(szPath, doc);
+                        config::xml::XmlDocumnent doc;
+                        std::string szName = config::xml::XmlConfig::GetRootName(szPath, doc);
                         if (!szName.empty())
                         {
                             if (util::string::CompareNoCase(szName, "Presets"))
@@ -695,8 +695,8 @@ namespace dialogs
 
     bool CPresetsDlg::LoadPresets(const std::wstring& szFileXml)
     {
-        xml::XmlDocumnent doc;
-        std::string szName = xml::XmlConfig::GetRootName(szFileXml, doc);
+        config::xml::XmlDocumnent doc;
+        std::string szName = config::xml::XmlConfig::GetRootName(szFileXml, doc);
         if (!szName.empty() && util::string::CompareNoCase(szName, "Presets"))
         {
             return this->LoadPresets(doc);
@@ -704,10 +704,10 @@ namespace dialogs
         return false;
     }
 
-    bool CPresetsDlg::LoadPresets(xml::XmlDocumnent &doc)
+    bool CPresetsDlg::LoadPresets(config::xml::XmlDocumnent &doc)
     {
         std::vector<config::CPreset> presets;
-        if (xml::XmlConfig::LoadPresets(doc, presets))
+        if (config::xml::XmlConfig::LoadPresets(doc, presets))
         {
             config::CFormat& format = this->m_Formats[this->nSelectedFormat];
             format.m_Presets = std::move(presets);
@@ -718,6 +718,6 @@ namespace dialogs
 
     bool CPresetsDlg::SavePresets(const std::wstring& szFileXml, config::CFormat &format)
     {
-        return xml::XmlConfig::SavePresets(szFileXml, format.m_Presets);
+        return config::xml::XmlConfig::SavePresets(szFileXml, format.m_Presets);
     }
 }

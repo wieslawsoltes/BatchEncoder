@@ -948,8 +948,8 @@ namespace dialogs
 
                     if (util::string::CompareNoCase(szExt, L"xml"))
                     {
-                        xml::XmlDocumnent doc;
-                        std::string szName = xml::XmlConfig::GetRootName(szPath, doc);
+                        config::xml::XmlDocumnent doc;
+                        std::string szName = config::xml::XmlConfig::GetRootName(szPath, doc);
                         if (!szName.empty())
                         {
                             if (util::string::CompareNoCase(szName, "Format"))
@@ -1152,10 +1152,10 @@ namespace dialogs
         return false;
     }
 
-    bool CFormatsDlg::LoadPresets(xml::XmlDocumnent &doc)
+    bool CFormatsDlg::LoadPresets(config::xml::XmlDocumnent &doc)
     {
         std::vector<config::CPreset> presets;
-        if (xml::XmlConfig::LoadPresets(doc, presets))
+        if (config::xml::XmlConfig::LoadPresets(doc, presets))
         {
             POSITION pos = m_LstFormats.GetFirstSelectedItemPosition();
             if (pos != nullptr)
@@ -1172,8 +1172,8 @@ namespace dialogs
 
     bool CFormatsDlg::LoadFormat(const std::wstring& szFileXml)
     {
-        xml::XmlDocumnent doc;
-        std::string szName = xml::XmlConfig::GetRootName(szFileXml, doc);
+        config::xml::XmlDocumnent doc;
+        std::string szName = config::xml::XmlConfig::GetRootName(szFileXml, doc);
         if (!szName.empty() && util::string::CompareNoCase(szName, "Format"))
         {
             return this->LoadFormat(doc);
@@ -1181,10 +1181,10 @@ namespace dialogs
         return false;
     }
 
-    bool CFormatsDlg::LoadFormat(xml::XmlDocumnent &doc)
+    bool CFormatsDlg::LoadFormat(config::xml::XmlDocumnent &doc)
     {
         config::CFormat format;
-        if (xml::XmlConfig::LoadFormat(doc, format))
+        if (config::xml::XmlConfig::LoadFormat(doc, format))
         {
             m_Formats.emplace_back(format);
             return true;
@@ -1194,7 +1194,7 @@ namespace dialogs
 
     bool CFormatsDlg::SaveFormat(const std::wstring& szFileXml, config::CFormat &format)
     {
-        return xml::XmlConfig::SaveFormat(szFileXml, format);
+        return config::xml::XmlConfig::SaveFormat(szFileXml, format);
     }
 
     bool CFormatsDlg::SaveFormats(const std::wstring& szPath)

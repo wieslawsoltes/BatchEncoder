@@ -155,28 +155,28 @@ namespace dialogs
         void FinishConvert();
     public:
         bool LoadOptions(const std::wstring& szFileXml);
-        bool LoadOptions(xml::XmlDocumnent &doc);
+        bool LoadOptions(config::xml::XmlDocumnent &doc);
         bool SaveOptions(const std::wstring& szFileXml);
         bool LoadFormats(const std::wstring& szPath);
         bool SaveFormats(const std::wstring& szPath);
         bool LoadFormat(const std::wstring& szFileXml);
-        bool LoadFormat(xml::XmlDocumnent &doc);
+        bool LoadFormat(config::xml::XmlDocumnent &doc);
         bool SaveFormat(const std::wstring& szFileXml, config::CFormat& format);
         bool LoadPresets(const std::wstring& szFileXml);
-        bool LoadPresets(xml::XmlDocumnent &doc);
+        bool LoadPresets(config::xml::XmlDocumnent &doc);
         bool SavePresets(const std::wstring& szFileXml);
         bool LoadTools(const std::wstring& szPath);
         bool SaveTools(const std::wstring& szPath);
         bool LoadTool(const std::wstring& szFileXml);
-        bool LoadTool(xml::XmlDocumnent &doc);
+        bool LoadTool(config::xml::XmlDocumnent &doc);
         bool SaveTool(const std::wstring& szFileXml, config::CTool& tool);
         bool LoadItems(const std::wstring& szFileXml);
-        bool LoadItems(xml::XmlDocumnent &doc);
+        bool LoadItems(config::xml::XmlDocumnent &doc);
         bool SaveItems(const std::wstring& szFileXml);
         bool LoadOutputs(const std::wstring& szFileXml);
-        bool LoadOutputs(xml::XmlDocumnent &doc);
+        bool LoadOutputs(config::xml::XmlDocumnent &doc);
         bool SaveOutputs(const std::wstring& szFileXml);
         bool LoadLanguage(const std::wstring& szFileXml);
-        bool LoadLanguage(xml::XmlDocumnent &doc);
+        bool LoadLanguage(config::xml::XmlDocumnent &doc);
     };
 }

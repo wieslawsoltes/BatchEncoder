@@ -16,7 +16,7 @@ namespace BatchEncoderCoreUnitTests
         {
             #pragma warning(push)
             #pragma warning(disable:4101)
-            xml::XmlConfig xml;
+            config::xml::XmlConfig xml;
             #pragma warning(pop)
         }
     };
