@@ -7,20 +7,25 @@
 #include <functional>
 #include "utilities\Download.h"
 #include "utilities\String.h"
-#include "utilities\Utilities.h"
 #include "config\Settings.h"
 #include "config\Tool.h"
-#include "config\Format.h"
 #include "config\Config.h"
 
 namespace worker
 {
-    class CToolUtilities
+    class IToolDownloader
     {
     public:
         volatile bool bDownload;
     public:
-        bool Download(config::CTool& tool, bool bExtract, bool bInstall, int nIndex, config::CConfig *config, std::function<bool(int, std::wstring)> callback = nullptr)
+        virtual ~IToolDownloader() { }
+        virtual bool Download(config::CConfig *config, config::CTool& tool, bool bExtract, bool bInstall, int nIndex, std::function<bool(int, std::wstring)> callback = nullptr) = 0;
+    };
+
+    class CToolDownloader : public IToolDownloader
+    {
+    public:
+        bool Download(config::CConfig *config, config::CTool& tool, bool bExtract, bool bInstall, int nIndex, std::function<bool(int, std::wstring)> callback = nullptr)
         {
             util::CDownload m_Download;
             std::wstring szUrl = tool.szUrl;
@@ -106,65 +111,6 @@ namespace worker
             }
 
             return true;
-        }
-        int FindTool(std::vector<config::CTool>& m_Tools, const std::wstring& szPlatform, const std::wstring& szFormatId)
-        {
-            int nTool = config::CTool::GetToolByFormatAndPlatform(m_Tools, szFormatId, szPlatform);
-            if (nTool >= 0)
-            {
-                return nTool;
-            }
-            return -1;
-        }
-        int FindTool(std::vector<config::CTool>& m_Tools, const std::wstring& szFormatId)
-        {
-            const std::wstring szPlatformX86 = L"x86";
-            const std::wstring szPlatformX64 = L"x64";
-#if defined(_WIN32) & !defined(_WIN64)
-            return FindTool(m_Tools, szPlatformX86, szFormatId);
-#else
-            int nTool = FindTool(m_Tools, szPlatformX64, szFormatId);
-            if (nTool == -1)
-                return FindTool(m_Tools, szPlatformX86, szFormatId);
-            return nTool;
-#endif
-        }
-        void SetFormatPaths(std::vector<config::CFormat>& m_Formats, std::vector<config::CTool>& m_Tools, const std::wstring& szPlatform)
-        {
-            size_t nFormats = m_Formats.size();
-            for (size_t i = 0; i < nFormats; i++)
-            {
-                config::CFormat& format = m_Formats[i];
-                int nTool = config::CTool::GetToolByFormatAndPlatform(m_Tools, format.szId, szPlatform);
-                if (nTool >= 0)
-                {
-                    config::CTool& tool = m_Tools[nTool];
-                    format.szPath = tool.szPath;
-                }
-            }
-        }
-        void SetFormatPaths(std::vector<config::CFormat>& m_Formats, std::vector<config::CTool>& m_Tools, std::function<bool(int, config::CTool&)> filter)
-        {
-            size_t nTools = m_Tools.size();
-            size_t nFormats = m_Formats.size();
-            if ((nTools > 0) && (nFormats > 0))
-            {
-                for (size_t i = 0; i < nTools; i++)
-                {
-                    config::CTool& tool = m_Tools[i];
-                    if (filter(i, tool) == true)
-                    {
-                        for (size_t i = 0; i < nFormats; i++)
-                        {
-                            config::CFormat& format = m_Formats[i];
-                            if (tool.IsValidFormat(format.szId))
-                            {
-                                format.szPath = tool.szPath;
-                            }
-                        }
-                    }
-                }
-            }
         }
     };
 }

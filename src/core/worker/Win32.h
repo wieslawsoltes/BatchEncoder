@@ -11,7 +11,7 @@
 #include "utilities\Pipe.h"
 #include "utilities\Process.h"
 #include "utilities\String.h"
-#include "ToolUtilities.h"
+#include "ToolDownloader.h"
 #include "LuaProgess.h"
 #include "WorkerContext.h"
 
@@ -23,11 +23,11 @@ namespace worker
         bool Download(IWorkerContext* ctx, config::CFormat& format, int nItemId)
         {
             auto config = ctx->pConfig;
-            CToolUtilities m_Utilities;
+            CToolDownloader m_Downloader;
             int nTool = config::CTool::GetToolByPath(config->m_Tools, format.szPath);
             if (nTool < 0)
             {
-                nTool = m_Utilities.FindTool(config->m_Tools, format.szId);
+                nTool = config::CConfig::FindTool(config->m_Tools, format.szId);
             }
             if (nTool >= 0)
             {
@@ -39,7 +39,7 @@ namespace worker
                         return true;
                     return false;
                 };
-                return m_Utilities.Download(tool, true, true, nTool, config, callback);
+                return m_Downloader.Download(config, tool, true, true, nTool, callback);
             }
             return false;
         }

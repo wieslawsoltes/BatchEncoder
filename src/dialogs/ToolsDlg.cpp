@@ -28,7 +28,7 @@ namespace dialogs
         this->szToolsListColumns = L"";
         this->bUpdate = false;
         this->nSelectedTool = 0;
-        m_Utilities.bDownload = false;
+        m_Downloader.bDownload = false;
     }
 
     CToolsDlg::~CToolsDlg()
@@ -177,7 +177,7 @@ namespace dialogs
 
     void CToolsDlg::OnDropFiles(HDROP hDropInfo)
     {
-        if (m_Utilities.bDownload == true)
+        if (m_Downloader.bDownload == true)
             return;
 
         std::thread m_DropThread = std::thread([this, hDropInfo]() { this->HandleDropFiles(hDropInfo); });
@@ -188,7 +188,7 @@ namespace dialogs
 
     void CToolsDlg::OnBnClickedOk()
     {
-        if (m_Utilities.bDownload == true)
+        if (m_Downloader.bDownload == true)
             return;
 
         POSITION pos = m_LstTools.GetFirstSelectedItemPosition();
@@ -204,7 +204,7 @@ namespace dialogs
 
     void CToolsDlg::OnBnClickedCancel()
     {
-        if (m_Utilities.bDownload == true)
+        if (m_Downloader.bDownload == true)
             return;
 
         this->SaveWindowSettings();
@@ -216,7 +216,7 @@ namespace dialogs
     {
         LPNMLISTVIEW pNMLV = reinterpret_cast<LPNMLISTVIEW>(pNMHDR);
 
-        if (m_Utilities.bDownload == false)
+        if (m_Downloader.bDownload == false)
         {
             this->ListSelectionChange();
         }
@@ -272,7 +272,7 @@ namespace dialogs
             return;
         }
 
-        if (m_Utilities.bDownload == true)
+        if (m_Downloader.bDownload == true)
             return;
 
         CString szSearchStr = pFindInfo->lvfi.psz;
@@ -297,7 +297,7 @@ namespace dialogs
 
     void CToolsDlg::OnBnClickedButtonImport()
     {
-        if (m_Utilities.bDownload == true)
+        if (m_Downloader.bDownload == true)
             return;
 
         std::array<TCHAR, (768*(MAX_PATH+1))+1> buffer { 0 };
@@ -330,7 +330,7 @@ namespace dialogs
 
     void CToolsDlg::OnBnClickedButtonExport()
     {
-        if (m_Utilities.bDownload == true)
+        if (m_Downloader.bDownload == true)
             return;
 
         int nCount = m_LstTools.GetItemCount();
@@ -427,7 +427,7 @@ namespace dialogs
 
     void CToolsDlg::OnBnClickedButtonDuplicate()
     {
-        if (m_Utilities.bDownload == true)
+        if (m_Downloader.bDownload == true)
             return;
 
         if (bUpdate == true)
@@ -460,7 +460,7 @@ namespace dialogs
 
     void CToolsDlg::OnBnClickedButtonRemoveAllTools()
     {
-        if (m_Utilities.bDownload == true)
+        if (m_Downloader.bDownload == true)
             return;
 
         if (m_Tools.size() > 0)
@@ -474,7 +474,7 @@ namespace dialogs
 
     void CToolsDlg::OnBnClickedButtonRemoveTool()
     {
-        if (m_Utilities.bDownload == true)
+        if (m_Downloader.bDownload == true)
             return;
 
         if (bUpdate == true)
@@ -521,7 +521,7 @@ namespace dialogs
 
     void CToolsDlg::OnBnClickedButtonAddTool()
     {
-        if (m_Utilities.bDownload == true)
+        if (m_Downloader.bDownload == true)
             return;
 
         if (bUpdate == true)
@@ -556,7 +556,7 @@ namespace dialogs
 
     void CToolsDlg::OnBnClickedButtonToolUp()
     {
-        if (m_Utilities.bDownload == true)
+        if (m_Downloader.bDownload == true)
             return;
 
         if (bUpdate == true)
@@ -588,7 +588,7 @@ namespace dialogs
 
     void CToolsDlg::OnBnClickedButtonToolDown()
     {
-        if (m_Utilities.bDownload == true)
+        if (m_Downloader.bDownload == true)
             return;
 
         if (bUpdate == true)
@@ -621,7 +621,7 @@ namespace dialogs
 
     void CToolsDlg::OnBnClickedButtonUpdateTool()
     {
-        if (m_Utilities.bDownload == true)
+        if (m_Downloader.bDownload == true)
             return;
 
         if (bUpdate == true)
@@ -676,7 +676,7 @@ namespace dialogs
 
     void CToolsDlg::OnEnChangeEditToolName()
     {
-        if (m_Utilities.bDownload == true)
+        if (m_Downloader.bDownload == true)
             return;
 
         if (bUpdate == true)
@@ -687,7 +687,7 @@ namespace dialogs
 
     void CToolsDlg::OnEnChangeEditToolPlatform()
     {
-        if (m_Utilities.bDownload == true)
+        if (m_Downloader.bDownload == true)
             return;
 
         if (bUpdate == true)
@@ -698,7 +698,7 @@ namespace dialogs
 
     void CToolsDlg::OnEnChangeEditToolPriority()
     {
-        if (m_Utilities.bDownload == true)
+        if (m_Downloader.bDownload == true)
             return;
 
         if (bUpdate == true)
@@ -709,7 +709,7 @@ namespace dialogs
 
     void CToolsDlg::OnEnChangeEditToolFormats()
     {
-        if (m_Utilities.bDownload == true)
+        if (m_Downloader.bDownload == true)
             return;
 
         if (bUpdate == true)
@@ -720,7 +720,7 @@ namespace dialogs
 
     void CToolsDlg::OnEnChangeEditToolUrl()
     {
-        if (m_Utilities.bDownload == true)
+        if (m_Downloader.bDownload == true)
             return;
 
         if (bUpdate == true)
@@ -731,7 +731,7 @@ namespace dialogs
 
     void CToolsDlg::OnEnChangeEditToolFile()
     {
-        if (m_Utilities.bDownload == true)
+        if (m_Downloader.bDownload == true)
             return;
 
         if (bUpdate == true)
@@ -742,7 +742,7 @@ namespace dialogs
 
     void CToolsDlg::OnEnChangeEditToolExtract()
     {
-        if (m_Utilities.bDownload == true)
+        if (m_Downloader.bDownload == true)
             return;
 
         if (bUpdate == true)
@@ -753,7 +753,7 @@ namespace dialogs
 
     void CToolsDlg::OnEnChangeEditToolPath()
     {
-        if (m_Utilities.bDownload == true)
+        if (m_Downloader.bDownload == true)
             return;
 
         if (bUpdate == true)
@@ -764,14 +764,14 @@ namespace dialogs
 
     void CToolsDlg::OnBnClickedButtonDownloadSelected()
     {
-        if (m_Utilities.bDownload == true)
+        if (m_Downloader.bDownload == true)
         {
             bAbort = true;
             return;
         }
 
         bAbort = false;
-        m_Utilities.bDownload = true;
+        m_Downloader.bDownload = true;
 
         int nCount = m_LstTools.GetItemCount();
         if (nCount > 0)
@@ -793,21 +793,21 @@ namespace dialogs
 
     void CToolsDlg::OnBnClickedButtonToolSetFormat()
     {
-        m_Utilities.SetFormatPaths(m_Formats, m_Tools,
-            [this](int nIndex, config::CTool& tool) -> bool
+        auto filter = [this](int nIndex, config::CTool& tool) -> bool
         {
             return (this->m_LstTools.GetItemState(nIndex, LVIS_SELECTED) == LVIS_SELECTED);
-        });
+        };
+        config::CConfig::SetFormatPaths(m_Formats, m_Tools, filter);
     }
 
     void CToolsDlg::OnBnClickedButtonToolSetFormatX86()
     {
-        m_Utilities.SetFormatPaths(m_Formats, m_Tools, L"x86");
+        config::CConfig::SetFormatPaths(m_Formats, m_Tools, L"x86");
     }
 
     void CToolsDlg::OnBnClickedButtonToolSetFormatX64()
     {
-        m_Utilities.SetFormatPaths(m_Formats, m_Tools, L"x64");
+        config::CConfig::SetFormatPaths(m_Formats, m_Tools, L"x64");
     }
 
     void CToolsDlg::OnClose()
@@ -821,10 +821,10 @@ namespace dialogs
     {
         CMyDialogEx::OnDestroy();
 
-        if (m_Utilities.bDownload == true)
+        if (m_Downloader.bDownload == true)
         {
             bAbort = true;
-            m_Utilities.bDownload = false;
+            m_Downloader.bDownload = false;
         }
     }
 
@@ -967,7 +967,7 @@ namespace dialogs
 
     void CToolsDlg::ListSelectionChange()
     {
-        if (m_Utilities.bDownload == true)
+        if (m_Downloader.bDownload == true)
             return;
 
         if (bUpdate == true)
@@ -1035,7 +1035,7 @@ namespace dialogs
 
     void CToolsDlg::DownloadTools()
     {
-        m_Utilities.bDownload = true;
+        m_Downloader.bDownload = true;
         EnableUserInterface(FALSE);
 
         util::Utilities::SetCurrentDirectory(pConfig->m_Settings.szToolsPath);
@@ -1052,13 +1052,13 @@ namespace dialogs
                 {
                     m_LstTools.EnsureVisible(i, FALSE);
                     config::CTool& tool = m_Tools[i];
-                    m_Utilities.Download(tool, true, true, i, pConfig,
-                        [this](int nIndex, std::wstring szStatus) -> bool
-                        {
-                            this->m_Tools[nIndex].szStatus = szStatus;
-                            this->RedrawTool(nIndex);
-                            return this->bAbort;
-                        });
+                    auto callback = [this](int nIndex, std::wstring szStatus) -> bool
+                    {
+                        this->m_Tools[nIndex].szStatus = szStatus;
+                        this->RedrawTool(nIndex);
+                        return this->bAbort;
+                    };
+                    m_Downloader.Download(pConfig, tool, true, true, i, callback);
                 }
             }
         }
@@ -1066,7 +1066,7 @@ namespace dialogs
         helper.SetWndText(&m_BtnDownload, 0x000E0023);
         EnableUserInterface(TRUE);
 
-        m_Utilities.bDownload = false;
+        m_Downloader.bDownload = false;
     }
 
     bool CToolsDlg::LoadTool(const std::wstring& szFileXml)

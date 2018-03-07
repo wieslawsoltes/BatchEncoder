@@ -207,7 +207,7 @@
     <ClCompile Include="worker\OutputPathTests.cpp" />
     <ClCompile Include="worker\PipeToFileWriterTests.cpp" />
     <ClCompile Include="worker\PipeToStringWriterTests.cpp" />
-    <ClCompile Include="worker\ToolUtilitiesTests.cpp" />
+    <ClCompile Include="worker\ToolDownloaderTests.cpp" />
     <ClCompile Include="worker\WorkerContextTests.cpp" />
     <ClCompile Include="worker\WorkerTests.cpp" />
     <ClCompile Include="xml\XmlConfigTests.cpp" />

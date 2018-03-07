@@ -89,9 +89,6 @@
     <ClCompile Include="worker\PipeToStringWriterTests.cpp">
       <Filter>Source Files\Worker</Filter>
     </ClCompile>
-    <ClCompile Include="worker\ToolUtilitiesTests.cpp">
-      <Filter>Source Files\Worker</Filter>
-    </ClCompile>
     <ClCompile Include="worker\WorkerTests.cpp">
       <Filter>Source Files\Worker</Filter>
     </ClCompile>
@@ -127,6 +124,9 @@
     </ClCompile>
     <ClCompile Include="config\ConfigTests.cpp">
       <Filter>Source Files\Config</Filter>
+    </ClCompile>
+    <ClCompile Include="worker\ToolDownloaderTests.cpp">
+      <Filter>Source Files\Worker</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

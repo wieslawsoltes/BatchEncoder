@@ -185,7 +185,7 @@
     <ClInclude Include="worker\InputPath.h" />
     <ClInclude Include="worker\LuaProgess.h" />
     <ClInclude Include="worker\OutputPath.h" />
-    <ClInclude Include="worker\ToolUtilities.h" />
+    <ClInclude Include="worker\ToolDownloader.h" />
     <ClInclude Include="worker\Win32.h" />
     <ClInclude Include="worker\Worker.h" />
     <ClInclude Include="worker\WorkerContext.h" />

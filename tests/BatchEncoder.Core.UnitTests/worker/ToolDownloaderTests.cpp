@@ -7,14 +7,14 @@ using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 namespace BatchEncoderCoreUnitTests
 {
-    TEST_CLASS(CToolUtilities_Tests)
+    TEST_CLASS(CToolDownloader_Tests)
     {
     public:
-        TEST_METHOD(CToolUtilities_Constructor)
+        TEST_METHOD(CToolDownloader_Constructor)
         {
             #pragma warning(push)
             #pragma warning(disable:4101)
-            worker::CToolUtilities m_Utilities;
+            worker::CToolDownloader m_Downloader;
             #pragma warning(pop)
         }
     };

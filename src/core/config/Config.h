@@ -9,6 +9,7 @@
 #include <vector>
 #include <memory>
 #include <cstdio>
+#include <functional>
 #include "utilities\Log.h"
 #include "utilities\String.h"
 #include "utilities\Utf8String.h"
@@ -1153,6 +1154,66 @@ namespace config
                 return config::m_Strings.at(nKey);
 
             return L"??";
+        }
+    public:
+        static int FindTool(std::vector<config::CTool>& m_Tools, const std::wstring& szPlatform, const std::wstring& szFormatId)
+        {
+            int nTool = config::CTool::GetToolByFormatAndPlatform(m_Tools, szFormatId, szPlatform);
+            if (nTool >= 0)
+            {
+                return nTool;
+            }
+            return -1;
+        }
+        static int FindTool(std::vector<config::CTool>& m_Tools, const std::wstring& szFormatId)
+        {
+            const std::wstring szPlatformX86 = L"x86";
+            const std::wstring szPlatformX64 = L"x64";
+#if defined(_WIN32) & !defined(_WIN64)
+            return FindTool(m_Tools, szPlatformX86, szFormatId);
+#else
+            int nTool = FindTool(m_Tools, szPlatformX64, szFormatId);
+            if (nTool == -1)
+                return FindTool(m_Tools, szPlatformX86, szFormatId);
+            return nTool;
+#endif
+        }
+        static void SetFormatPaths(std::vector<config::CFormat>& m_Formats, std::vector<config::CTool>& m_Tools, const std::wstring& szPlatform)
+        {
+            size_t nFormats = m_Formats.size();
+            for (size_t i = 0; i < nFormats; i++)
+            {
+                config::CFormat& format = m_Formats[i];
+                int nTool = config::CTool::GetToolByFormatAndPlatform(m_Tools, format.szId, szPlatform);
+                if (nTool >= 0)
+                {
+                    config::CTool& tool = m_Tools[nTool];
+                    format.szPath = tool.szPath;
+                }
+            }
+        }
+        static void SetFormatPaths(std::vector<config::CFormat>& m_Formats, std::vector<config::CTool>& m_Tools, std::function<bool(int, config::CTool&)> filter)
+        {
+            size_t nTools = m_Tools.size();
+            size_t nFormats = m_Formats.size();
+            if ((nTools > 0) && (nFormats > 0))
+            {
+                for (size_t i = 0; i < nTools; i++)
+                {
+                    config::CTool& tool = m_Tools[i];
+                    if (filter(i, tool) == true)
+                    {
+                        for (size_t i = 0; i < nFormats; i++)
+                        {
+                            config::CFormat& format = m_Formats[i];
+                            if (tool.IsValidFormat(format.szId))
+                            {
+                                format.szPath = tool.szPath;
+                            }
+                        }
+                    }
+                }
+            }
         }
     public:
         bool LoadOptions(const std::wstring& szFileXml)

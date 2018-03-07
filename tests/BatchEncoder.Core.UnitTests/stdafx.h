@@ -12,7 +12,7 @@
 #include "worker\WorkerContext.h"
 #include "worker\CommandLine.h"
 #include "worker\OutputPath.h"
-#include "worker\ToolUtilities.h"
+#include "worker\ToolDownloader.h"
 #include "worker\Worker.h"
 
 #include "TestOutputParser.h"

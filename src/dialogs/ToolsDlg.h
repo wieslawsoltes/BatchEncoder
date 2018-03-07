@@ -38,7 +38,7 @@ namespace dialogs
         std::vector<config::CFormat> m_Formats;
         std::thread m_Thread;
         volatile bool bAbort = false;
-        worker::CToolUtilities m_Utilities;
+        worker::CToolDownloader m_Downloader;
     public:
         controls::CMyStatic m_StcName;
         controls::CMyStatic m_StcPlatform;
