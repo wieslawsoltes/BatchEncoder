@@ -6,17 +6,30 @@
 
 namespace BatchEncoderCoreUnitTests
 {
-    class CTestWorkerContext : public worker::IWorkerContext
+    class TestOutputParser : public worker::IOutputParser
     {
     public:
-        CTestWorkerContext()
+        bool Open(worker::IWorkerContext* ctx, const std::wstring& szFunction)
+        {
+            return true;
+        }
+        bool Parse(worker::IWorkerContext* ctx, const char *szLine)
+        {
+            return true;
+        }
+    };
+
+    class TestWorkerContext : public worker::IWorkerContext
+    {
+    public:
+        TestWorkerContext()
         {
             this->bDone = true;
             this->bRunning = false;
             this->pConfig = nullptr;
             this->pFactory = std::make_shared<worker::Win32WorkerFactory>();
         }
-        virtual ~CTestWorkerContext() { }
+        virtual ~TestWorkerContext() { }
     public:
         std::wstring GetString(int nKey)
         {

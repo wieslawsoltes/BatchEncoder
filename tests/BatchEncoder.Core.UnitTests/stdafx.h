@@ -16,5 +16,4 @@
 #include "worker\ToolDownloader.h"
 #include "worker\Worker.h"
 
-#include "TestOutputParser.h"
 #include "TestWorkerContext.h"

@@ -14,7 +14,7 @@ namespace BatchEncoderCoreUnitTests
         {
             #pragma warning(push)
             #pragma warning(disable:4101)
-            CTestOutputParser m_Parser;
+            TestOutputParser m_Parser;
             #pragma warning(pop)
         }
     };

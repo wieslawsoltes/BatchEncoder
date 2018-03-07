@@ -22,7 +22,7 @@ namespace BatchEncoderCoreUnitTests
         TEST_METHOD(CWorker_Convert_Items_Empty)
         {
             config::CConfig m_Config;
-            CTestWorkerContext ctx;
+            TestWorkerContext ctx;
 
             Init(ctx);
             ctx.nThreadCount = 1;

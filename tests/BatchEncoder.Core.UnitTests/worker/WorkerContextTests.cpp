@@ -12,7 +12,7 @@ namespace BatchEncoderCoreUnitTests
     public:
         TEST_METHOD(IWorkerContext_Constructor)
         {
-            CTestWorkerContext ctx;
+            TestWorkerContext ctx;
             Assert::IsTrue(ctx.bDone);
             Assert::IsFalse(ctx.bRunning);
             Assert::IsNull(ctx.pConfig);

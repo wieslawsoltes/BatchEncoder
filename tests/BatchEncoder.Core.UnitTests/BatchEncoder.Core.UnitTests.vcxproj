@@ -180,7 +180,6 @@
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
-    <ClInclude Include="TestOutputParser.h" />
     <ClInclude Include="TestWorkerContext.h" />
   </ItemGroup>
   <ItemGroup>
