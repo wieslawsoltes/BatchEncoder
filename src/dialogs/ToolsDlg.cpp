@@ -951,11 +951,7 @@ namespace dialogs
     {
         this->m_EdtName.SetWindowText(tool.szName.c_str());
         this->m_EdtPlatform.SetWindowText(tool.szPlatform.c_str());
-
-        CString szPriority;
-        szPriority.Format(_T("%d\0"), tool.nPriority);
-        this->m_EdtPriority.SetWindowText(szPriority);
-
+        this->m_EdtPriority.SetWindowText(std::to_wstring(tool.nPriority).c_str());
         this->m_EdtFormats.SetWindowText(tool.szFormats.c_str());
         this->m_EdtUrl.SetWindowText(tool.szUrl.c_str());
         this->m_EdtFile.SetWindowText(tool.szFile.c_str());

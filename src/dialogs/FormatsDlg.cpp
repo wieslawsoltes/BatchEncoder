@@ -996,11 +996,7 @@ namespace dialogs
         this->m_EdtName.SetWindowText(format.szName.c_str());
         this->m_EdtExtension.SetWindowText(format.szOutputExtension.c_str());
         this->m_EdtFormats.SetWindowText(format.szInputExtensions.c_str());
-
-        CString szExitCodeSuccess;
-        szExitCodeSuccess.Format(_T("%d\0"), format.nExitCodeSuccess);
-        this->m_EdtCode.SetWindowText(szExitCodeSuccess);
-
+        this->m_EdtCode.SetWindowText(std::to_wstring(format.nExitCodeSuccess).c_str());
         this->m_EdtTemplate.SetWindowText(format.szTemplate.c_str());
         this->m_EdtPath.SetWindowText(format.szPath.c_str());
 
@@ -1008,31 +1004,16 @@ namespace dialogs
         {
         default:
         case config::FormatType::Encoder:
-            this->CheckRadioButton(IDC_RADIO_TYPE_ENCODER,
-                IDC_RADIO_TYPE_DECODER,
-                IDC_RADIO_TYPE_ENCODER);
+            this->CheckRadioButton(IDC_RADIO_TYPE_ENCODER, IDC_RADIO_TYPE_DECODER, IDC_RADIO_TYPE_ENCODER);
             break;
         case config::FormatType::Decoder:
-            this->CheckRadioButton(IDC_RADIO_TYPE_ENCODER,
-                IDC_RADIO_TYPE_DECODER,
-                IDC_RADIO_TYPE_DECODER);
+            this->CheckRadioButton(IDC_RADIO_TYPE_ENCODER, IDC_RADIO_TYPE_DECODER, IDC_RADIO_TYPE_DECODER);
             break;
         };
 
-        CString szPriority;
-        szPriority.Format(_T("%d\0"), format.nPriority);
-        this->m_EdtPriority.SetWindowText(szPriority);
-
-        if (format.bPipeInput)
-            CheckDlgButton(IDC_CHECK_FORMAT_PIPES_INPUT, BST_CHECKED);
-        else
-            CheckDlgButton(IDC_CHECK_FORMAT_PIPES_INPUT, BST_UNCHECKED);
-
-        if (format.bPipeOutput)
-            CheckDlgButton(IDC_CHECK_FORMAT_PIPES_OUTPUT, BST_CHECKED);
-        else
-            CheckDlgButton(IDC_CHECK_FORMAT_PIPES_OUTPUT, BST_UNCHECKED);
-
+        this->m_EdtPriority.SetWindowText(std::to_wstring(format.nPriority).c_str());
+        this->CheckDlgButton(IDC_CHECK_FORMAT_PIPES_INPUT, format.bPipeInput ? BST_CHECKED : BST_UNCHECKED);
+        this->CheckDlgButton(IDC_CHECK_FORMAT_PIPES_OUTPUT, format.bPipeOutput ? BST_CHECKED : BST_UNCHECKED);
         this->m_EdtFunction.SetWindowText(format.szFunction.c_str());
     }
 
