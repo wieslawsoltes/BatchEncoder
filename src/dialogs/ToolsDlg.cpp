@@ -127,10 +127,10 @@ namespace dialogs
         m_LstTools.SetExtendedStyle(dwExStyle);
 
         // insert all ListCtrl columns
-        m_LstTools.InsertColumn(TOOL_COLUMN_NAME, _T("Name"), LVCFMT_LEFT, 185);
+        m_LstTools.InsertColumn(TOOL_COLUMN_NAME, _T("Name"), LVCFMT_LEFT, 155);
         m_LstTools.InsertColumn(TOOL_COLUMN_PRIORITY, _T("Priority"), LVCFMT_LEFT, 50);
-        m_LstTools.InsertColumn(TOOL_COLUMN_URL, _T("Url"), LVCFMT_LEFT, 125);
-        m_LstTools.InsertColumn(TOOL_COLUMN_STATUS, _T("Status"), LVCFMT_LEFT, 25);
+        m_LstTools.InsertColumn(TOOL_COLUMN_URL, _T("Url"), LVCFMT_LEFT, 185);
+        m_LstTools.InsertColumn(TOOL_COLUMN_STATUS, _T("Status"), LVCFMT_LEFT, 95);
 
         // enable drag & drop
         this->DragAcceptFiles(TRUE);
@@ -825,9 +825,9 @@ namespace dialogs
 
         szToolsListColumns =
             std::to_wstring(nColWidth[0]) + L" " +
+            std::to_wstring(nColWidth[1]) + L" " +
             std::to_wstring(nColWidth[2]) + L" " +
-            std::to_wstring(nColWidth[3]) + L" " +
-            std::to_wstring(nColWidth[4]);
+            std::to_wstring(nColWidth[3]);
     }
 
     void CToolsDlg::SetLanguage()
