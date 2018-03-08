@@ -98,7 +98,7 @@
 #define IDC_EDIT_TOOL_PATH              1107
 #define IDC_BUTTON_TOOL_REMOVE_ALL      1108
 #define IDC_BUTTON_TOOL_REMOVE          1109
-#define IDC_BUTTON_TOOL_ADD             1111
+#define IDC_BUTTON_TOOL_ADD             1110
 #define IDC_BUTTON_TOOL_DOWNLOAD        1111
 #define IDC_BUTTON_TOOL_UPDATE          1112
 #define IDC_BUTTON_TOOL_IMPORT          1113
