@@ -1217,6 +1217,22 @@ namespace config
             }
         }
     public:
+        void CleanFiles(const std::wstring& szPath)
+        {
+            std::vector<std::wstring> files;
+            if (FileSystem->FindFiles(szPath, files, false) == true)
+            {
+                for (auto& file : files)
+                {
+                    std::wstring szExt = FileSystem->GetFileExtension(file);
+                    if (util::string::CompareNoCase(szExt, "xml"))
+                    {
+                        FileSystem->DeleteFile(file);
+                    }
+                }
+            }
+        }
+    public:
         bool LoadOptions(const std::wstring& szFileXml)
         {
             xml::XmlDocumnent doc;
@@ -1275,12 +1291,14 @@ namespace config
         bool SaveFormats(const std::wstring& szPath)
         {
             FileSystem->CreateDirectory_(szPath);
+            this->CleanFiles(szPath);
             for (auto& format : this->m_Formats)
             {
                 std::wstring path = FileSystem->CombinePath(szPath, format.szId + L".xml");
                 if (this->SaveFormat(path, format) == false)
                     return false;
             }
+
             return true;
         }
         bool LoadFormat(const std::wstring& szFileXml)
@@ -1368,12 +1386,14 @@ namespace config
         bool SaveTools(const std::wstring& szPath)
         {
             FileSystem->CreateDirectory_(szPath);
+            this->CleanFiles(szPath);
             for (auto& tool : this->m_Tools)
             {
                 std::wstring path = FileSystem->CombinePath(szPath, tool.szName + L".xml");
                 if (this->SaveTool(path, tool) == false)
                     return false;
             }
+
             return true;
         }
         bool LoadTool(const std::wstring& szFileXml)

@@ -596,27 +596,20 @@ namespace dialogs
 
             config::CTool& tool = m_Tools[nItem];
 
-            int nNewPriority = _tstoi(szPriority);
-            bool bSortTools = nNewPriority != tool.nPriority;
-
             tool.szName = szName;
             tool.szPlatform = szPlatform;
-            tool.nPriority = nNewPriority;
+            tool.nPriority = _tstoi(szPriority);
             tool.szFormats = szFormats;
             tool.szUrl = szUrl;
             tool.szFile = szFile;
             tool.szExtract = szExtract;
             tool.szPath = szPath;
 
-            if (bSortTools)
-                config::CTool::Sort(m_Tools);
-
             this->RedrawTools();
 
-            size_t nSelectedItem = config::CTool::GetToolByName(m_Tools, tool.szName);
             m_LstTools.SetItemState(-1, 0, LVIS_SELECTED);
-            m_LstTools.SetItemState(nSelectedItem, LVIS_SELECTED, LVIS_SELECTED);
-            m_LstTools.EnsureVisible(nSelectedItem, FALSE);
+            m_LstTools.SetItemState(nItem, LVIS_SELECTED, LVIS_SELECTED);
+            m_LstTools.EnsureVisible(nItem, FALSE);
         }
 
         bUpdate = false;
@@ -651,6 +644,34 @@ namespace dialogs
 
         if (bUpdate == true)
             return;
+
+        bUpdate = true;
+
+        POSITION pos = m_LstTools.GetFirstSelectedItemPosition();
+        if (pos != nullptr)
+        {
+            int nItem = m_LstTools.GetNextSelectedItem(pos);
+
+            CString szPriority = _T("");
+            this->m_EdtPriority.GetWindowText(szPriority);
+            int nNewPriority = _tstoi(szPriority);
+
+            config::CTool& tool = m_Tools[nItem];
+            bool bSortTools = nNewPriority != tool.nPriority;
+
+            if (bSortTools)
+            {
+                config::CTool::Sort(m_Tools);
+                this->RedrawTools();
+
+                size_t nSelectedItem = config::CTool::GetToolByName(m_Tools, tool.szName);
+                m_LstTools.SetItemState(-1, 0, LVIS_SELECTED);
+                m_LstTools.SetItemState(nSelectedItem, LVIS_SELECTED, LVIS_SELECTED);
+                m_LstTools.EnsureVisible(nSelectedItem, FALSE);
+            }
+        }
+
+        bUpdate = false;
 
         OnBnClickedButtonUpdateTool();
     }

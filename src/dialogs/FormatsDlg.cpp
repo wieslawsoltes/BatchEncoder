@@ -599,9 +599,6 @@ namespace dialogs
 
             config::CFormat& format = m_Formats[nItem];
 
-            int nNewPriority = _tstoi(szPriority);
-            bool bSortFormats = nNewPriority != format.nPriority;
-
             format.szId = szId;
             format.szName = szName;
             format.szOutputExtension = szExtension;
@@ -610,21 +607,17 @@ namespace dialogs
             format.szTemplate = szTemplate;
             format.nExitCodeSuccess = _tstoi(szExitCodeSuccess);
             format.nType = nType;
-            format.nPriority = nNewPriority;
+            format.nPriority = _tstoi(szPriority);
             format.bPipeInput = bInput;
             format.bPipeOutput = bOutput;
             format.szPath = szPath;
             format.szFunction = szFunction;
 
-            if (bSortFormats)
-                config::CFormat::Sort(m_Formats);
-
             this->RedrawFormats();
 
-            size_t nSelectedItem = config::CFormat::GetFormatById(m_Formats, format.szId);
             m_LstFormats.SetItemState(-1, 0, LVIS_SELECTED);
-            m_LstFormats.SetItemState(nSelectedItem, LVIS_SELECTED, LVIS_SELECTED);
-            m_LstFormats.EnsureVisible(nSelectedItem, FALSE);
+            m_LstFormats.SetItemState(nItem, LVIS_SELECTED, LVIS_SELECTED);
+            m_LstFormats.EnsureVisible(nItem, FALSE);
         }
 
         bUpdate = false;
@@ -682,6 +675,34 @@ namespace dialogs
     {
         if (bUpdate == true)
             return;
+
+        bUpdate = true;
+
+        POSITION pos = m_LstFormats.GetFirstSelectedItemPosition();
+        if (pos != nullptr)
+        {
+            int nItem = m_LstFormats.GetNextSelectedItem(pos);
+
+            CString szPriority = _T("");
+            this->m_EdtPriority.GetWindowText(szPriority);
+            int nNewPriority = _tstoi(szPriority);
+
+            config::CFormat& format = m_Formats[nItem];
+            bool bSortFormats = nNewPriority != format.nPriority;
+
+            if (bSortFormats)
+            {
+                config::CFormat::Sort(m_Formats);
+                this->RedrawFormats();
+
+                size_t nSelectedItem = config::CFormat::GetFormatById(m_Formats, format.szId);
+                m_LstFormats.SetItemState(-1, 0, LVIS_SELECTED);
+                m_LstFormats.SetItemState(nSelectedItem, LVIS_SELECTED, LVIS_SELECTED);
+                m_LstFormats.EnsureVisible(nSelectedItem, FALSE);
+            }
+        }
+
+        bUpdate = false;
 
         OnBnClickedButtonUpdateFormat();
     }
