@@ -1225,9 +1225,9 @@ namespace config
                 for (auto& file : files)
                 {
                     std::wstring szExt = FileSystem->GetFileExtension(file);
-                    if (util::string::CompareNoCase(szExt, "xml"))
+                    if (util::string::CompareNoCase(szExt, L"xml"))
                     {
-                        FileSystem->DeleteFile(file);
+                        FileSystem->DeleteFile_(file);
                     }
                 }
             }
