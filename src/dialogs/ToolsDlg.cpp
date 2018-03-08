@@ -645,6 +645,9 @@ namespace dialogs
         if (m_Downloader.bDownload == true)
             return;
 
+        if (m_LstTools.m_hWnd == nullptr)
+            return;
+
         if (bUpdate == true)
             return;
 

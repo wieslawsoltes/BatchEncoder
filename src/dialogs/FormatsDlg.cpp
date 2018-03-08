@@ -680,6 +680,9 @@ namespace dialogs
         if (bUpdate == true)
             return;
 
+        if (m_LstFormats.m_hWnd == nullptr)
+            return;
+
         bUpdate = true;
 
         //bool bChangedSelection = false;
