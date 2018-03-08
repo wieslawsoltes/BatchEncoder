@@ -480,7 +480,6 @@ namespace dialogs
 
         this->RedrawFormats();
 
-/*
         m_LstFormats.SetItemState(-1, 0, LVIS_SELECTED);
 
         nItems = m_LstFormats.GetItemCount();
@@ -497,7 +496,7 @@ namespace dialogs
                 m_LstFormats.EnsureVisible(nItemLastRemoved, FALSE);
             }
         }
-*/
+
         bUpdate = false;
 
         this->ListSelectionChange();

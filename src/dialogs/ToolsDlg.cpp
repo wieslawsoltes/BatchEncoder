@@ -504,8 +504,8 @@ namespace dialogs
         }
 
         this->RedrawTools();
-/*
-        /m_LstTools.SetItemState(-1, 0, LVIS_SELECTED);
+
+        m_LstTools.SetItemState(-1, 0, LVIS_SELECTED);
 
         nItems = m_LstTools.GetItemCount();
         if (nItemLastRemoved != -1)
@@ -521,8 +521,9 @@ namespace dialogs
                 m_LstTools.EnsureVisible(nItemLastRemoved, FALSE);
             }
         }
-*/
+
         bUpdate = false;
+
         this->ListSelectionChange();
     }
 
