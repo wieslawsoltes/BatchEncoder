@@ -70,8 +70,6 @@ namespace dialogs
         DDX_Control(pDX, IDC_BUTTON_FORMAT_REMOVE_ALL, m_BtnRemoveAll);
         DDX_Control(pDX, IDC_BUTTON_FORMAT_REMOVE, m_BtnRemove);
         DDX_Control(pDX, IDC_BUTTON_FORMAT_ADD, m_BtnAdd);
-        DDX_Control(pDX, IDC_BUTTON_FORMAT_UP, m_BtnMoveUp);
-        DDX_Control(pDX, IDC_BUTTON_FORMAT_DOWN, m_BtnMoveDown);
         DDX_Control(pDX, IDC_BUTTON_FORMAT_UPDATE, m_BtnUpdate);
         DDX_Control(pDX, IDC_BUTTON_EDIT_PRESETS, m_BtnEditPresets);
         DDX_Control(pDX, IDC_BUTTON_BROWSE_PATH, m_BtnBrowsePath);
@@ -533,7 +531,7 @@ namespace dialogs
         config::CFormat::Sort(m_Formats);
         this->RedrawFormats();
 
-        size_t nSelectedItem = config::CFormat::GetFormatById(format.szId);
+        size_t nSelectedItem = config::CFormat::GetFormatById(m_Formats, format.szId);
         m_LstFormats.SetItemState(-1, 0, LVIS_SELECTED);
         m_LstFormats.SetItemState(nSelectedItem, LVIS_SELECTED, LVIS_SELECTED);
         m_LstFormats.EnsureVisible(nSelectedItem, FALSE);
@@ -599,10 +597,11 @@ namespace dialogs
             this->m_EdtPath.GetWindowText(szPath);
             this->m_EdtFunction.GetWindowText(szFunction);
 
+            config::CFormat& format = m_Formats[nItem];
+
             int nNewPriority = _tstoi(szPriority);
             bool bSortFormats = nNewPriority != format.nPriority;
 
-            config::CFormat& format = m_Formats[nItem];
             format.szId = szId;
             format.szName = szName;
             format.szOutputExtension = szExtension;
@@ -622,7 +621,7 @@ namespace dialogs
 
             this->RedrawFormats();
 
-            size_t nSelectedItem = config::CFormat::GetFormatById(format.szId);
+            size_t nSelectedItem = config::CFormat::GetFormatById(m_Formats, format.szId);
             m_LstFormats.SetItemState(-1, 0, LVIS_SELECTED);
             m_LstFormats.SetItemState(nSelectedItem, LVIS_SELECTED, LVIS_SELECTED);
             m_LstFormats.EnsureVisible(nSelectedItem, FALSE);

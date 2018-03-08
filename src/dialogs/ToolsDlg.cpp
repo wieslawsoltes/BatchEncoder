@@ -64,8 +64,6 @@ namespace dialogs
         DDX_Control(pDX, IDC_BUTTON_TOOL_REMOVE_ALL, m_BtnRemoveAll);
         DDX_Control(pDX, IDC_BUTTON_TOOL_REMOVE, m_BtnRemove);
         DDX_Control(pDX, IDC_BUTTON_TOOL_ADD, m_BtnAdd);
-        DDX_Control(pDX, IDC_BUTTON_TOOL_UP, m_BtnMoveUp);
-        DDX_Control(pDX, IDC_BUTTON_TOOL_DOWN, m_BtnMoveDown);
         DDX_Control(pDX, IDC_BUTTON_TOOL_UPDATE, m_BtnUpdate);
         DDX_Control(pDX, IDC_BUTTON_TOOL_DOWNLOAD, m_BtnDownload);
         DDX_Control(pDX, IDC_BUTTON_TOOL_SETFORMAT, m_BtnSetFormat);
@@ -551,7 +549,7 @@ namespace dialogs
         config::CTool::Sort(m_Tools);
         this->RedrawTools();
 
-        size_t nSelectedItem = config::CTool::GetToolByName(tool.szName);
+        size_t nSelectedItem = config::CTool::GetToolByName(m_Tools, tool.szName);
         m_LstTools.SetItemState(-1, 0, LVIS_SELECTED);
         m_LstTools.SetItemState(nSelectedItem, LVIS_SELECTED, LVIS_SELECTED);
         m_LstTools.EnsureVisible(nSelectedItem, FALSE);
@@ -596,10 +594,11 @@ namespace dialogs
             this->m_EdtExtract.GetWindowText(szExtract);
             this->m_EdtPath.GetWindowText(szPath);
 
+            config::CTool& tool = m_Tools[nItem];
+
             int nNewPriority = _tstoi(szPriority);
             bool bSortTools = nNewPriority != tool.nPriority;
 
-            config::CTool& tool = m_Tools[nItem];
             tool.szName = szName;
             tool.szPlatform = szPlatform;
             tool.nPriority = nNewPriority;
@@ -614,7 +613,7 @@ namespace dialogs
 
             this->RedrawTools();
 
-            size_t nSelectedItem = config::CTool::GetToolByName(tool.szName);
+            size_t nSelectedItem = config::CTool::GetToolByName(m_Tools, tool.szName);
             m_LstTools.SetItemState(-1, 0, LVIS_SELECTED);
             m_LstTools.SetItemState(nSelectedItem, LVIS_SELECTED, LVIS_SELECTED);
             m_LstTools.EnsureVisible(nSelectedItem, FALSE);
