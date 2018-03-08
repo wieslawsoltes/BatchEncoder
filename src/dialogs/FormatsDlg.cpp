@@ -432,9 +432,9 @@ namespace dialogs
 
                 this->RedrawFormats();
 
-                //m_LstFormats.SetItemState(-1, 0, LVIS_SELECTED);
-                //m_LstFormats.SetItemState(nSelected + 1, LVIS_SELECTED, LVIS_SELECTED);
-                //m_LstFormats.EnsureVisible(nSelected + 1, FALSE);
+                m_LstFormats.SetItemState(-1, 0, LVIS_SELECTED);
+                m_LstFormats.SetItemState(nSelected + 1, LVIS_SELECTED, LVIS_SELECTED);
+                m_LstFormats.EnsureVisible(nSelected + 1, FALSE);
             }
         }
 

@@ -450,9 +450,9 @@ namespace dialogs
 
                 m_Tools.insert(m_Tools.begin() + nSelected + 1, copy);
 
-                //m_LstTools.SetItemState(-1, 0, LVIS_SELECTED);
-                //m_LstTools.SetItemState(nSelected + 1, LVIS_SELECTED, LVIS_SELECTED);
-                //.EnsureVisible(nSelected + 1, FALSE);
+                m_LstTools.SetItemState(-1, 0, LVIS_SELECTED);
+                m_LstTools.SetItemState(nSelected + 1, LVIS_SELECTED, LVIS_SELECTED);
+                m_LstTools.EnsureVisible(nSelected + 1, FALSE);
             }
         }
 
