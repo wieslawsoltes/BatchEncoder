@@ -4,7 +4,9 @@
 #pragma once
 
 #define FORMAT_COLUMN_NAME      0
-#define FORMAT_COLUMN_TEMPLATE  1
+#define FORMAT_COLUMN_ID        1
+#define FORMAT_COLUMN_PRIORITY  2
+#define FORMAT_COLUMN_TEMPLATE  3
 
 namespace dialogs
 {

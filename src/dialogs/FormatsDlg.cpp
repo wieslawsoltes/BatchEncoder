@@ -135,8 +135,10 @@ namespace dialogs
         m_LstFormats.SetExtendedStyle(dwExStyle);
 
         // insert all ListCtrl columns
-        m_LstFormats.InsertColumn(FORMAT_COLUMN_NAME, _T("Name"), LVCFMT_LEFT, 195);
-        m_LstFormats.InsertColumn(FORMAT_COLUMN_TEMPLATE, _T("Template"), LVCFMT_LEFT, 295);
+        m_LstFormats.InsertColumn(FORMAT_COLUMN_NAME, _T("Name"), LVCFMT_LEFT, 155);
+        m_LstFormats.InsertColumn(FORMAT_COLUMN_ID, _T("Id"), LVCFMT_LEFT, 95);
+        m_LstFormats.InsertColumn(FORMAT_COLUMN_PRIORITY, _T("Priority"), LVCFMT_LEFT, 50);
+        m_LstFormats.InsertColumn(FORMAT_COLUMN_TEMPLATE, _T("Template"), LVCFMT_LEFT, 195);
 
         // enable drag & drop
         this->DragAcceptFiles(TRUE);
@@ -239,6 +241,12 @@ namespace dialogs
             {
             case FORMAT_COLUMN_NAME:
                 szText = format.szName;
+                break;
+            case FORMAT_COLUMN_ID:
+                szText = format.szId;
+                break;
+            case FORMAT_COLUMN_PRIORITY:
+                szText = std::to_wstring(format.nPriority);;
                 break;
             case FORMAT_COLUMN_TEMPLATE:
                 szText = format.szTemplate;
@@ -808,9 +816,9 @@ namespace dialogs
         if (!szFormatsListColumns.empty())
         {
             auto widths = util::string::Split(szFormatsListColumns.c_str(), ' ');
-            if (widths.size() == 2)
+            if (widths.size() == 4)
             {
-                for (int i = 0; i < 2; i++)
+                for (int i = 0; i < 4; i++)
                 {
                     std::wstring szWidth = widths[i];
                     int nWidth = util::string::ToInt(szWidth);
@@ -826,13 +834,15 @@ namespace dialogs
         this->szFormatsDialogResize = this->GetWindowRectStr();
 
         // save columns width from FormatsList
-        int nColWidth[2];
-        for (int i = 0; i < 2; i++)
+        int nColWidth[4];
+        for (int i = 0; i < 4; i++)
             nColWidth[i] = m_LstFormats.GetColumnWidth(i);
 
         szFormatsListColumns = 
             std::to_wstring(nColWidth[0]) + L" " + 
-            std::to_wstring(nColWidth[1]);
+            std::to_wstring(nColWidth[1]) + L" " +
+            std::to_wstring(nColWidth[2]) + L" " +
+            std::to_wstring(nColWidth[3]);
     }
 
     void CFormatsDlg::SetLanguage()
