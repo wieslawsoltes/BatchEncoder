@@ -93,7 +93,7 @@ namespace config
         };
         static bool ComparePriority(const CTool& a, const CTool& b)
         {
-            return a.nPriority < b.nPriority;
+            return a.nPriority > b.nPriority;
         };
         static void Sort(std::vector<CTool>& tools)
         {

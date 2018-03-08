@@ -111,7 +111,7 @@ namespace config
         };
         static bool ComparePriority(const CFormat& a, const CFormat& b)
         {
-            return a.nPriority < b.nPriority;
+            return a.nPriority > b.nPriority;
         };
         static void Sort(std::vector<CFormat>& formats)
         {
