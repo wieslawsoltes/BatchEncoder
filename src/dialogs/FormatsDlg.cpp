@@ -246,7 +246,7 @@ namespace dialogs
                 szText = format.szId;
                 break;
             case FORMAT_COLUMN_PRIORITY:
-                szText = std::to_wstring(format.nPriority);;
+                szText = std::to_wstring(format.nPriority);
                 break;
             case FORMAT_COLUMN_TEMPLATE:
                 szText = format.szTemplate;
