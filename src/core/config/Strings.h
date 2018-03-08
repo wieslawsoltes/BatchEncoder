@@ -172,7 +172,9 @@ namespace config
         // Formats Dialog
 
         { 0x000C0001, L"Name" },
-        { 0x000C0002, L"Template" },
+        { 0x000C0002, L"Id" },
+        { 0x000C0003, L"Priority" },
+        { 0x000C0004, L"Template" },
 
         { 0x000C0010, L"Configure Formats" },
         { 0x000C0011, L"&Cancel" },
@@ -211,8 +213,9 @@ namespace config
         // Tools Dialog
 
         { 0x000E0001, L"Name" },
-        { 0x000E0002, L"Url" },
-        { 0x000E0003, L"Status" },
+        { 0x000C0002, L"Priority" },
+        { 0x000E0003, L"Url" },
+        { 0x000E0004, L"Status" },
 
         { 0x000E0010, L"Configure Tools" },
         { 0x000E0011, L"&Cancel" },

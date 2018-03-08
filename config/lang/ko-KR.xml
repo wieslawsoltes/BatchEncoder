@@ -107,7 +107,9 @@
     <!-- Formats Dialog -->
 
     <String key="0x000C0001" value="이름" />
-    <String key="0x000C0002" value="템플릿" />
+    <String key="0x000C0002" value="Id" />
+    <String key="0x000C0003" value="Priority" />
+    <String key="0x000C0004" value="템플릿" />
 
     <String key="0x000C0010" value="형식 구성" />
     <String key="0x000C0011" value="&amp;취소" />
@@ -146,8 +148,9 @@
     <!-- Tools Dialog -->
 
     <String key="0x000E0001" value="Name" />
-    <String key="0x000E0002" value="Url" />
-    <String key="0x000E0003" value="Status" />
+    <String key="0x000E0002" value="Priority" />
+    <String key="0x000E0003" value="Url" />
+    <String key="0x000E0004" value="Status" />
 
     <String key="0x000E0010" value="Configure Tools" />
     <String key="0x000E0011" value="&amp;Cancel" />

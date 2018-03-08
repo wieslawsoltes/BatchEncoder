@@ -835,8 +835,9 @@ namespace dialogs
         app::CLanguageHelper helper(pConfig);
 
         helper.SetColumnText(m_LstTools, TOOL_COLUMN_NAME, 0x000E0001);
-        helper.SetColumnText(m_LstTools, TOOL_COLUMN_URL, 0x000E0002);
-        helper.SetColumnText(m_LstTools, TOOL_COLUMN_STATUS, 0x000E0003);
+        helper.SetColumnText(m_LstTools, TOOL_COLUMN_PRIORITY, 0x000E0002);
+        helper.SetColumnText(m_LstTools, TOOL_COLUMN_URL, 0x000E0003);
+        helper.SetColumnText(m_LstTools, TOOL_COLUMN_STATUS, 0x000E0004);
 
         helper.SetWndText(this, 0x000E0010);
         helper.SetWndText(&m_BtnCancel, 0x000E0011);

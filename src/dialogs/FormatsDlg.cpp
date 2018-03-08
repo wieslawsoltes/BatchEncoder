@@ -850,7 +850,9 @@ namespace dialogs
         app::CLanguageHelper helper(pConfig);
 
         helper.SetColumnText(m_LstFormats, FORMAT_COLUMN_NAME, 0x000C0001);
-        helper.SetColumnText(m_LstFormats, FORMAT_COLUMN_TEMPLATE, 0x000C0002);
+        helper.SetColumnText(m_LstFormats, FORMAT_COLUMN_ID, 0x000C0002);
+        helper.SetColumnText(m_LstFormats, FORMAT_COLUMN_PRIORITY, 0x000C0003);
+        helper.SetColumnText(m_LstFormats, FORMAT_COLUMN_TEMPLATE, 0x000C0004);
 
         helper.SetWndText(this, 0x000C0010);
         helper.SetWndText(&m_BtnCancel, 0x000C0011);
