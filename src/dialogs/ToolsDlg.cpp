@@ -127,9 +127,10 @@ namespace dialogs
         m_LstTools.SetExtendedStyle(dwExStyle);
 
         // insert all ListCtrl columns
-        m_LstTools.InsertColumn(TOOL_COLUMN_NAME, _T("Name"), LVCFMT_LEFT, 195);
-        m_LstTools.InsertColumn(TOOL_COLUMN_URL, _T("Url"), LVCFMT_LEFT, 195);
-        m_LstTools.InsertColumn(TOOL_COLUMN_STATUS, _T("Status"), LVCFMT_LEFT, 95);
+        m_LstTools.InsertColumn(TOOL_COLUMN_NAME, _T("Name"), LVCFMT_LEFT, 185);
+        m_LstTools.InsertColumn(TOOL_COLUMN_PRIORITY, _T("Priority"), LVCFMT_LEFT, 50);
+        m_LstTools.InsertColumn(TOOL_COLUMN_URL, _T("Url"), LVCFMT_LEFT, 125);
+        m_LstTools.InsertColumn(TOOL_COLUMN_STATUS, _T("Status"), LVCFMT_LEFT, 25);
 
         // enable drag & drop
         this->DragAcceptFiles(TRUE);
@@ -244,6 +245,9 @@ namespace dialogs
             {
             case TOOL_COLUMN_NAME:
                 szText = tool.szName;
+                break;
+            case TOOL_COLUMN_PRIORITY:
+                szText = std::to_wstring(tool.nPriority);
                 break;
             case TOOL_COLUMN_URL:
                 szText = tool.szUrl;
@@ -797,9 +801,9 @@ namespace dialogs
         if (!szToolsListColumns.empty())
         {
             auto widths = util::string::Split(szToolsListColumns.c_str(), ' ');
-            if (widths.size() == 3)
+            if (widths.size() == 4)
             {
-                for (int i = 0; i < 3; i++)
+                for (int i = 0; i < 4; i++)
                 {
                     std::wstring szWidth = widths[i];
                     int nWidth = util::string::ToInt(szWidth);
@@ -815,14 +819,15 @@ namespace dialogs
         this->szToolsDialogResize = this->GetWindowRectStr();
 
         // save columns width from ToolsList
-        int nColWidth[3];
-        for (int i = 0; i < 3; i++)
+        int nColWidth[4];
+        for (int i = 0; i < 4; i++)
             nColWidth[i] = m_LstTools.GetColumnWidth(i);
 
         szToolsListColumns =
             std::to_wstring(nColWidth[0]) + L" " +
-            std::to_wstring(nColWidth[1]) + L" " +
-            std::to_wstring(nColWidth[2]);
+            std::to_wstring(nColWidth[2]) + L" " +
+            std::to_wstring(nColWidth[3]) + L" " +
+            std::to_wstring(nColWidth[4]);
     }
 
     void CToolsDlg::SetLanguage()

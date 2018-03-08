@@ -4,8 +4,9 @@
 #pragma once
 
 #define TOOL_COLUMN_NAME      0
-#define TOOL_COLUMN_URL       1
-#define TOOL_COLUMN_STATUS    2
+#define TOOL_COLUMN_PRIORITY  1
+#define TOOL_COLUMN_URL       2
+#define TOOL_COLUMN_STATUS    3
 
 namespace dialogs
 {
