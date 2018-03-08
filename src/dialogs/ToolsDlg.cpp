@@ -662,13 +662,14 @@ namespace dialogs
             bool bSortTools = nNewPriority != tool.nPriority;
             if (bSortTools)
             {
+                tool.nPriority = nNewPriority;
                 config::CTool::Sort(m_Tools);
                 this->RedrawTools();
 
                 size_t nSelectedItem = config::CTool::GetToolByName(m_Tools, tool.szName);
                 m_LstTools.SetItemState(-1, 0, LVIS_SELECTED);
-                //m_LstTools.SetItemState(nSelectedItem, LVIS_SELECTED, LVIS_SELECTED);
-                //m_LstTools.EnsureVisible(nSelectedItem, FALSE);
+                m_LstTools.SetItemState(nSelectedItem, LVIS_SELECTED, LVIS_SELECTED);
+                m_LstTools.EnsureVisible(nSelectedItem, FALSE);
             }
         }
 

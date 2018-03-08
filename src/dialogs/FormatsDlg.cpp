@@ -693,13 +693,14 @@ namespace dialogs
             bool bSortFormats = nNewPriority != format.nPriority;
             if (bSortFormats)
             {
+                format.nPriority = nNewPriority;
                 config::CFormat::Sort(m_Formats);
                 this->RedrawFormats();
 
-                //size_t nSelectedItem = config::CFormat::GetFormatById(m_Formats, format.szId);
+                size_t nSelectedItem = config::CFormat::GetFormatById(m_Formats, format.szId);
                 m_LstFormats.SetItemState(-1, 0, LVIS_SELECTED);
-                //m_LstFormats.SetItemState(nSelectedItem, LVIS_SELECTED, LVIS_SELECTED);
-                //m_LstFormats.EnsureVisible(nSelectedItem, FALSE);
+                m_LstFormats.SetItemState(nSelectedItem, LVIS_SELECTED, LVIS_SELECTED);
+                m_LstFormats.EnsureVisible(nSelectedItem, FALSE);
             }
         }
 
