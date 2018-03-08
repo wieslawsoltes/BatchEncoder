@@ -31,6 +31,17 @@ namespace config
             return util::string::ContainsNoCase(this->szFormats, szFormat, token);
         }
     public:
+        static size_t GetToolByName(std::vector<CTool>& tools, const std::wstring& szName)
+        {
+            size_t nTools = tools.size();
+            for (size_t i = 0; i < nTools; i++)
+            {
+                CTool& tool = tools[i];
+                if (util::string::CompareNoCase(tool.szName, szName) == true)
+                    return i;
+            }
+            return -1;
+        }
         static size_t GetToolByPath(std::vector<CTool>& tools, const std::wstring& szPath)
         {
             size_t nTools = tools.size();

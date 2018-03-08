@@ -107,8 +107,6 @@ namespace dialogs
         ON_BN_CLICKED(IDC_BUTTON_FORMAT_REMOVE_ALL, OnBnClickedButtonRemoveAllFormats)
         ON_BN_CLICKED(IDC_BUTTON_FORMAT_REMOVE, OnBnClickedButtonRemoveFormat)
         ON_BN_CLICKED(IDC_BUTTON_FORMAT_ADD, OnBnClickedButtonAddFormat)
-        ON_BN_CLICKED(IDC_BUTTON_FORMAT_UP, OnBnClickedButtonFormatUp)
-        ON_BN_CLICKED(IDC_BUTTON_FORMAT_DOWN, OnBnClickedButtonFormatDown)
         ON_BN_CLICKED(IDC_BUTTON_FORMAT_UPDATE, OnBnClickedButtonUpdateFormat)
         ON_BN_CLICKED(IDC_BUTTON_EDIT_PRESETS, OnBnClickedButtonEditPresets)
         ON_BN_CLICKED(IDC_BUTTON_BROWSE_PATH, OnBnClickedButtonBrowsePath)
@@ -302,15 +300,23 @@ namespace dialogs
 
         if (fd.DoModal() == IDOK)
         {
+            bool bNewFormats = false;
             POSITION pos = fd.GetStartPosition();
             do
             {
                 std::wstring szFilePath = fd.GetNextPathName(pos);
                 if (!szFilePath.empty())
+                {
                     this->LoadFormat(szFilePath);
+                    bNewFormats = true;
+                }
             } while (pos != nullptr);
 
-            this->RedrawFormats();
+            if (bNewFormats)
+            {
+                config::CFormat::Sort(m_Formats);
+                this->RedrawFormats();
+            }
         }
     }
 
@@ -524,75 +530,17 @@ namespace dialogs
 
         m_Formats.emplace_back(format);
 
+        config::CFormat::Sort(m_Formats);
         this->RedrawFormats();
 
-        int nItem = m_LstFormats.GetItemCount();
+        size_t nSelectedItem = config::CFormat::GetFormatById(format.szId);
         m_LstFormats.SetItemState(-1, 0, LVIS_SELECTED);
-        m_LstFormats.SetItemState(nItem - 1, LVIS_SELECTED, LVIS_SELECTED);
-        m_LstFormats.EnsureVisible(nItem - 1, FALSE);
+        m_LstFormats.SetItemState(nSelectedItem, LVIS_SELECTED, LVIS_SELECTED);
+        m_LstFormats.EnsureVisible(nSelectedItem, FALSE);
 
         bUpdate = false;
 
         this->ListSelectionChange();
-    }
-
-    void CFormatsDlg::OnBnClickedButtonFormatUp()
-    {
-        if (bUpdate == true)
-            return;
-
-        bUpdate = true;
-
-        POSITION pos = m_LstFormats.GetFirstSelectedItemPosition();
-        if (pos != nullptr)
-        {
-            int nItem = m_LstFormats.GetNextSelectedItem(pos);
-            if (nItem > 0)
-            {
-                config::CFormat& format1 = m_Formats[nItem];
-                config::CFormat& format2 = m_Formats[nItem - 1];
-
-                std::swap(format1, format2);
-
-                this->RedrawFormats();
-
-                m_LstFormats.SetItemState(-1, 0, LVIS_SELECTED);
-                m_LstFormats.SetItemState(nItem - 1, LVIS_SELECTED, LVIS_SELECTED);
-                m_LstFormats.EnsureVisible(nItem - 1, FALSE);
-            }
-        }
-
-        bUpdate = false;
-    }
-
-    void CFormatsDlg::OnBnClickedButtonFormatDown()
-    {
-        if (bUpdate == true)
-            return;
-
-        bUpdate = true;
-
-        POSITION pos = m_LstFormats.GetFirstSelectedItemPosition();
-        if (pos != nullptr)
-        {
-            int nItem = m_LstFormats.GetNextSelectedItem(pos);
-            int nItems = m_LstFormats.GetItemCount();
-            if (nItem != (nItems - 1) && nItem >= 0)
-            {
-                config::CFormat& format1 = m_Formats[nItem];
-                config::CFormat& format2 = m_Formats[nItem + 1];
-
-                std::swap(format1, format2);
-
-                this->RedrawFormats();
-
-                m_LstFormats.SetItemState(-1, 0, LVIS_SELECTED);
-                m_LstFormats.SetItemState(nItem + 1, LVIS_SELECTED, LVIS_SELECTED);
-                m_LstFormats.EnsureVisible(nItem + 1, FALSE);
-            }
-        }
-
-        bUpdate = false;
     }
 
     void CFormatsDlg::OnBnClickedButtonUpdateFormat()
@@ -651,6 +599,9 @@ namespace dialogs
             this->m_EdtPath.GetWindowText(szPath);
             this->m_EdtFunction.GetWindowText(szFunction);
 
+            int nNewPriority = _tstoi(szPriority);
+            bool bSortFormats = nNewPriority != format.nPriority;
+
             config::CFormat& format = m_Formats[nItem];
             format.szId = szId;
             format.szName = szName;
@@ -660,16 +611,21 @@ namespace dialogs
             format.szTemplate = szTemplate;
             format.nExitCodeSuccess = _tstoi(szExitCodeSuccess);
             format.nType = nType;
-            format.nPriority = _tstoi(szPriority);
+            format.nPriority = nNewPriority;
             format.bPipeInput = bInput;
             format.bPipeOutput = bOutput;
             format.szPath = szPath;
             format.szFunction = szFunction;
 
+            if (bSortFormats)
+                config::CFormat::Sort(m_Formats);
+
             this->RedrawFormats();
 
+            size_t nSelectedItem = config::CFormat::GetFormatById(format.szId);
             m_LstFormats.SetItemState(-1, 0, LVIS_SELECTED);
-            m_LstFormats.SetItemState(nItem, LVIS_SELECTED, LVIS_SELECTED);
+            m_LstFormats.SetItemState(nSelectedItem, LVIS_SELECTED, LVIS_SELECTED);
+            m_LstFormats.EnsureVisible(nSelectedItem, FALSE);
         }
 
         bUpdate = false;
@@ -907,8 +863,6 @@ namespace dialogs
         helper.SetWndText(&m_StcTemplate, 0x000C001F);
         helper.SetWndText(&m_StcProgress, 0x000C0020);
         helper.SetWndText(&m_BtnBrowseFunction, 0x000C0021);
-        helper.SetWndText(&m_BtnMoveUp, 0x000C0022);
-        helper.SetWndText(&m_BtnMoveDown, 0x000C0023);
         helper.SetWndText(&m_BtnImport, 0x000C002D);
         helper.SetWndText(&m_BtnExport, 0x000C002E);
         helper.SetWndText(&m_BtnDuplicate, 0x000C002F);
@@ -935,6 +889,7 @@ namespace dialogs
         int nCount = ::DragQueryFile(hDropInfo, (UINT)0xFFFFFFFF, nullptr, 0);
         if (nCount > 0)
         {
+            bool bNewFormats = false;
             for (int i = 0; i < nCount; i++)
             {
                 int nReqChars = ::DragQueryFile(hDropInfo, i, nullptr, 0);
@@ -955,7 +910,7 @@ namespace dialogs
                             if (util::string::CompareNoCase(szName, "Format"))
                             {
                                 this->LoadFormat(doc);
-                                this->RedrawFormats();
+                                bNewFormats = true;
                             }
                             else if (util::string::CompareNoCase(szName, "Presets"))
                             {
@@ -990,6 +945,12 @@ namespace dialogs
                 }
 
                 szFile.ReleaseBuffer();
+            }
+
+            if (bNewFormats)
+            {
+                config::CFormat::Sort(m_Formats);
+                this->RedrawFormats();
             }
         }
 

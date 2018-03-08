@@ -97,8 +97,6 @@ namespace dialogs
         ON_BN_CLICKED(IDC_BUTTON_TOOL_REMOVE_ALL, OnBnClickedButtonRemoveAllTools)
         ON_BN_CLICKED(IDC_BUTTON_TOOL_REMOVE, OnBnClickedButtonRemoveTool)
         ON_BN_CLICKED(IDC_BUTTON_TOOL_ADD, OnBnClickedButtonAddTool)
-        ON_BN_CLICKED(IDC_BUTTON_TOOL_UP, OnBnClickedButtonToolUp)
-        ON_BN_CLICKED(IDC_BUTTON_TOOL_DOWN, OnBnClickedButtonToolDown)
         ON_BN_CLICKED(IDC_BUTTON_TOOL_UPDATE, OnBnClickedButtonUpdateTool)
         ON_BN_CLICKED(IDC_BUTTON_TOOL_DOWNLOAD, OnBnClickedButtonDownloadSelected)
         ON_BN_CLICKED(IDC_BUTTON_TOOL_SETFORMAT, OnBnClickedButtonToolSetFormat)
@@ -316,15 +314,23 @@ namespace dialogs
 
         if (fd.DoModal() == IDOK)
         {
+            bool bNewTools = false;
             POSITION pos = fd.GetStartPosition();
             do
             {
                 std::wstring szFilePath = fd.GetNextPathName(pos);
                 if (!szFilePath.empty())
+                {
                     this->LoadTool(szFilePath);
+                    bNewTools = true;
+                }
             } while (pos != nullptr);
 
-            this->RedrawTools();
+            if (bNewTools)
+            {
+                config::CTool::Sort(m_Tools);
+                this->RedrawTools();
+            }
         }
     }
 
@@ -530,7 +536,7 @@ namespace dialogs
         bUpdate = true;
 
         config::CTool tool;
-        tool.szName = pConfig->GetString(0x00240004);
+        tool.szName = L"ID";
         tool.szPlatform = L"";
         tool.nPriority = -1;
         tool.szFormats = L"";
@@ -542,81 +548,17 @@ namespace dialogs
 
         m_Tools.emplace_back(tool);
 
+        config::CTool::Sort(m_Tools);
         this->RedrawTools();
 
-        int nItem = m_LstTools.GetItemCount();
+        size_t nSelectedItem = config::CTool::GetToolByName(tool.szName);
         m_LstTools.SetItemState(-1, 0, LVIS_SELECTED);
-        m_LstTools.SetItemState(nItem - 1, LVIS_SELECTED, LVIS_SELECTED);
-        m_LstTools.EnsureVisible(nItem - 1, FALSE);
+        m_LstTools.SetItemState(nSelectedItem, LVIS_SELECTED, LVIS_SELECTED);
+        m_LstTools.EnsureVisible(nSelectedItem, FALSE);
 
         bUpdate = false;
 
         this->ListSelectionChange();
-    }
-
-    void CToolsDlg::OnBnClickedButtonToolUp()
-    {
-        if (m_Downloader.bDownload == true)
-            return;
-
-        if (bUpdate == true)
-            return;
-
-        bUpdate = true;
-
-        POSITION pos = m_LstTools.GetFirstSelectedItemPosition();
-        if (pos != nullptr)
-        {
-            int nItem = m_LstTools.GetNextSelectedItem(pos);
-            if (nItem > 0)
-            {
-                config::CTool& tool1 = m_Tools[nItem];
-                config::CTool& tool2 = m_Tools[nItem - 1];
-
-                std::swap(tool1, tool2);
-
-                this->RedrawTools();
-
-                m_LstTools.SetItemState(-1, 0, LVIS_SELECTED);
-                m_LstTools.SetItemState(nItem - 1, LVIS_SELECTED, LVIS_SELECTED);
-                m_LstTools.EnsureVisible(nItem - 1, FALSE);
-            }
-        }
-
-        bUpdate = false;
-    }
-
-    void CToolsDlg::OnBnClickedButtonToolDown()
-    {
-        if (m_Downloader.bDownload == true)
-            return;
-
-        if (bUpdate == true)
-            return;
-
-        bUpdate = true;
-
-        POSITION pos = m_LstTools.GetFirstSelectedItemPosition();
-        if (pos != nullptr)
-        {
-            int nItem = m_LstTools.GetNextSelectedItem(pos);
-            int nItems = m_LstTools.GetItemCount();
-            if (nItem != (nItems - 1) && nItem >= 0)
-            {
-                config::CTool& tool1 = m_Tools[nItem];
-                config::CTool& tool2 = m_Tools[nItem + 1];
-
-                std::swap(tool1, tool2);
-
-                this->RedrawTools();
-
-                m_LstTools.SetItemState(-1, 0, LVIS_SELECTED);
-                m_LstTools.SetItemState(nItem + 1, LVIS_SELECTED, LVIS_SELECTED);
-                m_LstTools.EnsureVisible(nItem + 1, FALSE);
-            }
-        }
-
-        bUpdate = false;
     }
 
     void CToolsDlg::OnBnClickedButtonUpdateTool()
@@ -654,21 +596,28 @@ namespace dialogs
             this->m_EdtExtract.GetWindowText(szExtract);
             this->m_EdtPath.GetWindowText(szPath);
 
+            int nNewPriority = _tstoi(szPriority);
+            bool bSortTools = nNewPriority != tool.nPriority;
+
             config::CTool& tool = m_Tools[nItem];
             tool.szName = szName;
             tool.szPlatform = szPlatform;
-            tool.nPriority = _tstoi(szPriority);
+            tool.nPriority = nNewPriority;
             tool.szFormats = szFormats;
             tool.szUrl = szUrl;
             tool.szFile = szFile;
             tool.szExtract = szExtract;
             tool.szPath = szPath;
 
+            if (bSortTools)
+                config::CTool::Sort(m_Tools);
+
             this->RedrawTools();
 
+            size_t nSelectedItem = config::CTool::GetToolByName(tool.szName);
             m_LstTools.SetItemState(-1, 0, LVIS_SELECTED);
-            m_LstTools.SetItemState(nItem, LVIS_SELECTED, LVIS_SELECTED);
-            m_LstTools.EnsureVisible(nItem, FALSE);
+            m_LstTools.SetItemState(nSelectedItem, LVIS_SELECTED, LVIS_SELECTED);
+            m_LstTools.EnsureVisible(nSelectedItem, FALSE);
         }
 
         bUpdate = false;
@@ -884,8 +833,6 @@ namespace dialogs
         helper.SetWndText(&m_StcFile, 0x000E0016);
         helper.SetWndText(&m_StcExtract, 0x000E0017);
         helper.SetWndText(&m_StcPath, 0x000E0018);
-        helper.SetWndText(&m_BtnMoveUp, 0x000E0019);
-        helper.SetWndText(&m_BtnMoveDown, 0x000E001A);
         helper.SetWndText(&m_BtnImport, 0x000E001B);
         helper.SetWndText(&m_BtnExport, 0x000E001C);
         helper.SetWndText(&m_BtnDuplicate, 0x000E001D);
@@ -916,6 +863,7 @@ namespace dialogs
         int nCount = ::DragQueryFile(hDropInfo, (UINT)0xFFFFFFFF, nullptr, 0);
         if (nCount > 0)
         {
+            bool bNewTools = false;
             for (int i = 0; i < nCount; i++)
             {
                 int nReqChars = ::DragQueryFile(hDropInfo, i, nullptr, 0);
@@ -936,13 +884,19 @@ namespace dialogs
                             if (util::string::CompareNoCase(szName, "Tool"))
                             {
                                 this->LoadTool(doc);
-                                this->RedrawTools();
+                                bNewTools = true;
                             }
                         }
                     }
                 }
 
                 szFile.ReleaseBuffer();
+            }
+
+            if (bNewTools)
+            {
+                config::CTool::Sort(m_Tools);
+                this->RedrawTools();
             }
         }
 

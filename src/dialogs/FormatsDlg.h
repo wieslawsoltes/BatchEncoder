@@ -67,8 +67,6 @@ namespace dialogs
         controls::CMyButton m_BtnRemoveAll;
         controls::CMyButton m_BtnRemove;
         controls::CMyButton m_BtnAdd;
-        controls::CMyButton m_BtnMoveUp;
-        controls::CMyButton m_BtnMoveDown;
         controls::CMyButton m_BtnUpdate;
         controls::CMyButton m_BtnEditPresets;
         controls::CMyButton m_BtnBrowsePath;
@@ -87,8 +85,6 @@ namespace dialogs
         afx_msg void OnBnClickedButtonRemoveAllFormats();
         afx_msg void OnBnClickedButtonRemoveFormat();
         afx_msg void OnBnClickedButtonAddFormat();
-        afx_msg void OnBnClickedButtonFormatUp();
-        afx_msg void OnBnClickedButtonFormatDown();
         afx_msg void OnBnClickedButtonUpdateFormat();
         afx_msg void OnBnClickedRadioTypeEncoder();
         afx_msg void OnBnClickedRadioTypeDecoder();
