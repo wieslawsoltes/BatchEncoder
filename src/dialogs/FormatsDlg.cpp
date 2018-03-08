@@ -534,10 +534,10 @@ namespace dialogs
         config::CFormat::Sort(m_Formats);
         this->RedrawFormats();
 
-        //size_t nSelectedItem = config::CFormat::GetFormatById(m_Formats, format.szId);
-        //m_LstFormats.SetItemState(-1, 0, LVIS_SELECTED);
-        //m_LstFormats.SetItemState(nSelectedItem, LVIS_SELECTED, LVIS_SELECTED);
-        //m_LstFormats.EnsureVisible(nSelectedItem, FALSE);
+        size_t nSelectedItem = config::CFormat::GetFormatById(m_Formats, format.szId);
+        m_LstFormats.SetItemState(-1, 0, LVIS_SELECTED);
+        m_LstFormats.SetItemState(nSelectedItem, LVIS_SELECTED, LVIS_SELECTED);
+        m_LstFormats.EnsureVisible(nSelectedItem, FALSE);
 
         bUpdate = false;
 

@@ -553,10 +553,10 @@ namespace dialogs
         config::CTool::Sort(m_Tools);
         this->RedrawTools();
 
-        //size_t nSelectedItem = config::CTool::GetToolByName(m_Tools, tool.szName);
-        //m_LstTools.SetItemState(-1, 0, LVIS_SELECTED);
-        //m_LstTools.SetItemState(nSelectedItem, LVIS_SELECTED, LVIS_SELECTED);
-        //m_LstTools.EnsureVisible(nSelectedItem, FALSE);
+        size_t nSelectedItem = config::CTool::GetToolByName(m_Tools, tool.szName);
+        m_LstTools.SetItemState(-1, 0, LVIS_SELECTED);
+        m_LstTools.SetItemState(nSelectedItem, LVIS_SELECTED, LVIS_SELECTED);
+        m_LstTools.EnsureVisible(nSelectedItem, FALSE);
 
         bUpdate = false;
 
