@@ -537,8 +537,10 @@ namespace dialogs
 
         bUpdate = true;
 
+        std::wstring szNewName = L"ID";
+
         config::CTool tool;
-        tool.szName = L"ID";
+        tool.szName = szNewName;
         tool.szPlatform = L"";
         tool.nPriority = -1;
         tool.szFormats = L"";
@@ -553,7 +555,7 @@ namespace dialogs
         config::CTool::Sort(m_Tools);
         this->RedrawTools();
 
-        size_t nSelectedItem = config::CTool::GetToolByName(m_Tools, tool.szName);
+        size_t nSelectedItem = config::CTool::GetToolByName(m_Tools, szNewName);
         m_LstTools.SetItemState(-1, 0, LVIS_SELECTED);
         m_LstTools.SetItemState(nSelectedItem, LVIS_SELECTED, LVIS_SELECTED);
         m_LstTools.EnsureVisible(nSelectedItem, FALSE);
@@ -599,6 +601,7 @@ namespace dialogs
             this->m_EdtPath.GetWindowText(szPath);
 
             config::CTool& tool = m_Tools[nItem];
+            std::wstring szNewName = szName;
 
             tool.szName = szName;
             tool.szPlatform = szPlatform;
@@ -609,11 +612,13 @@ namespace dialogs
             tool.szExtract = szExtract;
             tool.szPath = szPath;
 
+            config::CTool::Sort(m_Tools);
             this->RedrawTools();
 
-            //m_LstTools.SetItemState(-1, 0, LVIS_SELECTED);
-            //m_LstTools.SetItemState(nItem, LVIS_SELECTED, LVIS_SELECTED);
-            //m_LstTools.EnsureVisible(nItem, FALSE);
+            size_t nSelectedItem = config::CTool::GetToolByName(m_Tools, szNewName);
+            m_LstTools.SetItemState(-1, 0, LVIS_SELECTED);
+            m_LstTools.SetItemState(nSelectedItem, LVIS_SELECTED, LVIS_SELECTED);
+            m_LstTools.EnsureVisible(nSelectedItem, FALSE);
         }
 
         bUpdate = false;
@@ -646,50 +651,7 @@ namespace dialogs
         if (m_Downloader.bDownload == true)
             return;
 
-        if (m_LstTools.m_hWnd == nullptr)
-            return;
-
-        if (bUpdate == true)
-            return;
-
-        bUpdate = true;
-
-        //bool bChangedSelection = false;
-        POSITION pos = m_LstTools.GetFirstSelectedItemPosition();
-        if (pos != nullptr)
-        {
-            int nItem = m_LstTools.GetNextSelectedItem(pos);
-
-            CString szPriority = _T("");
-            this->m_EdtPriority.GetWindowText(szPriority);
-
-            int nNewPriority = _tstoi(szPriority);
-
-            config::CTool& tool = m_Tools[nItem];
-
-            bool bSortTools = nNewPriority != tool.nPriority;
-            if (bSortTools)
-            {
-                tool.nPriority = nNewPriority;
-                config::CTool::Sort(m_Tools);
-                this->RedrawTools();
-
-                //size_t nSelectedItem = config::CTool::GetToolByName(m_Tools, tool.szName);
-                //m_LstTools.SetItemState(-1, 0, LVIS_SELECTED);
-                //m_LstTools.SetItemState(nSelectedItem, LVIS_SELECTED, LVIS_SELECTED);
-                //m_LstTools.EnsureVisible(nSelectedItem, FALSE);
-                //bChangedSelection = true;
-            }
-        }
-
-        bUpdate = false;
-
-        //if (bChangedSelection)
-        //{
-        //    this->ListSelectionChange();
-        //}
-
-        //OnBnClickedButtonUpdateTool();
+        OnBnClickedButtonUpdateTool();
     }
 
     void CToolsDlg::OnEnChangeEditToolFormats()

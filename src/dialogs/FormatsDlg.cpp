@@ -509,8 +509,10 @@ namespace dialogs
 
         bUpdate = true;
 
+        std::wstring szNewId = L"ID";
+
         config::CFormat format;
-        format.szId = L"ID";
+        format.szId = szNewId;
         format.szName = pConfig->GetString(0x00230004);
         format.szTemplate = L"$EXE $OPTIONS $INFILE $OUTFILE";
         format.bPipeInput = true;
@@ -534,7 +536,7 @@ namespace dialogs
         config::CFormat::Sort(m_Formats);
         this->RedrawFormats();
 
-        size_t nSelectedItem = config::CFormat::GetFormatById(m_Formats, format.szId);
+        size_t nSelectedItem = config::CFormat::GetFormatById(m_Formats, szNewId);
         m_LstFormats.SetItemState(-1, 0, LVIS_SELECTED);
         m_LstFormats.SetItemState(nSelectedItem, LVIS_SELECTED, LVIS_SELECTED);
         m_LstFormats.EnsureVisible(nSelectedItem, FALSE);
@@ -601,6 +603,7 @@ namespace dialogs
             this->m_EdtFunction.GetWindowText(szFunction);
 
             config::CFormat& format = m_Formats[nItem];
+            std::wstring szNewId = szId;
 
             format.szId = szId;
             format.szName = szName;
@@ -616,11 +619,13 @@ namespace dialogs
             format.szPath = szPath;
             format.szFunction = szFunction;
 
+            config::CFormat::Sort(m_Formats);
             this->RedrawFormats();
 
-            //m_LstFormats.SetItemState(-1, 0, LVIS_SELECTED);
-            //m_LstFormats.SetItemState(nItem, LVIS_SELECTED, LVIS_SELECTED);
-            //m_LstFormats.EnsureVisible(nItem, FALSE);
+            size_t nSelectedItem = config::CFormat::GetFormatById(m_Formats, szNewId);
+            m_LstFormats.SetItemState(-1, 0, LVIS_SELECTED);
+            m_LstFormats.SetItemState(nSelectedItem, LVIS_SELECTED, LVIS_SELECTED);
+            m_LstFormats.EnsureVisible(nSelectedItem, FALSE);
         }
 
         bUpdate = false;
@@ -679,47 +684,7 @@ namespace dialogs
         if (bUpdate == true)
             return;
 
-        if (m_LstFormats.m_hWnd == nullptr)
-            return;
-
-        bUpdate = true;
-
-        //bool bChangedSelection = false;
-        POSITION pos = m_LstFormats.GetFirstSelectedItemPosition();
-        if (pos != nullptr)
-        {
-            int nItem = m_LstFormats.GetNextSelectedItem(pos);
-
-            CString szPriority = _T("");
-            this->m_EdtPriority.GetWindowText(szPriority);
-
-            int nNewPriority = _tstoi(szPriority);
-
-            config::CFormat& format = m_Formats[nItem];
-
-            bool bSortFormats = nNewPriority != format.nPriority;
-            if (bSortFormats)
-            {
-                format.nPriority = nNewPriority;
-                config::CFormat::Sort(m_Formats);
-                this->RedrawFormats();
-
-                //size_t nSelectedItem = config::CFormat::GetFormatById(m_Formats, format.szId);
-                //m_LstFormats.SetItemState(-1, 0, LVIS_SELECTED);
-                //m_LstFormats.SetItemState(nSelectedItem, LVIS_SELECTED, LVIS_SELECTED);
-                //m_LstFormats.EnsureVisible(nSelectedItem, FALSE);
-                //bChangedSelection = true;
-            }
-        }
-
-        bUpdate = false;
-
-        //if (bChangedSelection)
-        //{
-        //    this->ListSelectionChange();
-        //}
-
-        //OnBnClickedButtonUpdateFormat();
+        OnBnClickedButtonUpdateFormat();
     }
 
     void CFormatsDlg::OnEnChangeEditFormatExtension()
@@ -789,9 +754,9 @@ namespace dialogs
             {
                 this->m_Formats = std::move(dlg.m_Formats);
 
-                //m_LstFormats.SetItemState(-1, 0, LVIS_SELECTED);
-                //m_LstFormats.SetItemState(nItem, LVIS_SELECTED, LVIS_SELECTED);
-                //m_LstFormats.EnsureVisible(nItem, FALSE);
+                m_LstFormats.SetItemState(-1, 0, LVIS_SELECTED);
+                m_LstFormats.SetItemState(nItem, LVIS_SELECTED, LVIS_SELECTED);
+                m_LstFormats.EnsureVisible(nItem, FALSE);
 
                 this->RedrawFormats();
                 this->ListSelectionChange();
