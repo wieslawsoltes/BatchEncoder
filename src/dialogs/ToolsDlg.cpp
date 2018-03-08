@@ -673,7 +673,7 @@ namespace dialogs
 
         bUpdate = false;
 
-        OnBnClickedButtonUpdateTool();
+        //OnBnClickedButtonUpdateTool();
     }
 
     void CToolsDlg::OnEnChangeEditToolFormats()

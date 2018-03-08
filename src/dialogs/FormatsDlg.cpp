@@ -704,7 +704,7 @@ namespace dialogs
 
         bUpdate = false;
 
-        OnBnClickedButtonUpdateFormat();
+        //OnBnClickedButtonUpdateFormat();
     }
 
     void CFormatsDlg::OnEnChangeEditFormatExtension()
