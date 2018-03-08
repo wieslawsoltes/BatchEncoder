@@ -615,9 +615,9 @@ namespace dialogs
 
             this->RedrawFormats();
 
-            //m_LstFormats.SetItemState(-1, 0, LVIS_SELECTED);
-            //m_LstFormats.SetItemState(nItem, LVIS_SELECTED, LVIS_SELECTED);
-            //m_LstFormats.EnsureVisible(nItem, FALSE);
+            m_LstFormats.SetItemState(-1, 0, LVIS_SELECTED);
+            m_LstFormats.SetItemState(nItem, LVIS_SELECTED, LVIS_SELECTED);
+            m_LstFormats.EnsureVisible(nItem, FALSE);
         }
 
         bUpdate = false;

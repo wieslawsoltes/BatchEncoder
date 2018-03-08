@@ -607,9 +607,9 @@ namespace dialogs
 
             this->RedrawTools();
 
-            //m_LstTools.SetItemState(-1, 0, LVIS_SELECTED);
-            //m_LstTools.SetItemState(nItem, LVIS_SELECTED, LVIS_SELECTED);
-            //m_LstTools.EnsureVisible(nItem, FALSE);
+            m_LstTools.SetItemState(-1, 0, LVIS_SELECTED);
+            m_LstTools.SetItemState(nItem, LVIS_SELECTED, LVIS_SELECTED);
+            m_LstTools.EnsureVisible(nItem, FALSE);
         }
 
         bUpdate = false;
