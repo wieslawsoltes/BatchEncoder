@@ -978,8 +978,6 @@ namespace dialogs
         this->m_BtnRemoveAll.EnableWindow(bEnable);
         this->m_BtnRemove.EnableWindow(bEnable);
         this->m_BtnAdd.EnableWindow(bEnable);
-        this->m_BtnMoveUp.EnableWindow(bEnable);
-        this->m_BtnMoveDown.EnableWindow(bEnable);
         this->m_BtnUpdate.EnableWindow(bEnable);
         this->m_BtnSetFormat.EnableWindow(bEnable);
         this->m_BtnSetFormatX86.EnableWindow(bEnable);

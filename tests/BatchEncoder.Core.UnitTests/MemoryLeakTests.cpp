@@ -44,6 +44,9 @@ namespace BatchEncoderCoreUnitTests
 
         TEST_METHOD_CLEANUP(TestMethodCleanup)
         {
+            #pragma warning(push)
+            #pragma warning(disable:4101)
+
             Logger::WriteMessage(L"Recording memory check point after test.\n");
             _CrtMemCheckpoint(&afterTest);
             _CrtMemState difference;
@@ -54,6 +57,8 @@ namespace BatchEncoderCoreUnitTests
                 _CrtMemDumpStatistics(&difference);
                 Assert::Fail(L"Memory leak found.");
             }
+
+            #pragma warning(pop)
         }
 
         TEST_METHOD(TestMethodLeakingMemory)
