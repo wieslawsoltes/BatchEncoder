@@ -464,7 +464,10 @@ namespace dialogs
         int nItemLastRemoved = -1;
         int nItems = m_LstFormats.GetItemCount();
         if (nItems <= 0)
+        {
+            bUpdate = false;
             return;
+        }
 
         for (int i = (nItems - 1); i >= 0; i--)
         {
@@ -678,6 +681,7 @@ namespace dialogs
 
         bUpdate = true;
 
+        bool bChangedSelection = false;
         POSITION pos = m_LstFormats.GetFirstSelectedItemPosition();
         if (pos != nullptr)
         {
@@ -701,10 +705,16 @@ namespace dialogs
                 m_LstFormats.SetItemState(-1, 0, LVIS_SELECTED);
                 m_LstFormats.SetItemState(nSelectedItem, LVIS_SELECTED, LVIS_SELECTED);
                 m_LstFormats.EnsureVisible(nSelectedItem, FALSE);
+                bChangedSelection = true;
             }
         }
 
         bUpdate = false;
+
+        if (bChangedSelection)
+        {
+            this->ListSelectionChange();
+        }
 
         //OnBnClickedButtonUpdateFormat();
     }

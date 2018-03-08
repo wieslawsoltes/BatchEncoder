@@ -489,7 +489,10 @@ namespace dialogs
         int nItemLastRemoved = -1;
         int nItems = m_LstTools.GetItemCount();
         if (nItems <= 0)
+        {
+            bUpdate = false;
             return;
+        }
 
         for (int i = (nItems - 1); i >= 0; i--)
         {
@@ -647,6 +650,7 @@ namespace dialogs
 
         bUpdate = true;
 
+        bool bChangedSelection = false;
         POSITION pos = m_LstTools.GetFirstSelectedItemPosition();
         if (pos != nullptr)
         {
@@ -670,10 +674,16 @@ namespace dialogs
                 m_LstTools.SetItemState(-1, 0, LVIS_SELECTED);
                 m_LstTools.SetItemState(nSelectedItem, LVIS_SELECTED, LVIS_SELECTED);
                 m_LstTools.EnsureVisible(nSelectedItem, FALSE);
+                bChangedSelection = true;
             }
         }
 
         bUpdate = false;
+
+        if (bChangedSelection)
+        {
+            this->ListSelectionChange();
+        }
 
         //OnBnClickedButtonUpdateTool();
     }
@@ -735,6 +745,9 @@ namespace dialogs
 
     void CToolsDlg::OnBnClickedButtonDownloadSelected()
     {
+        if (bUpdate == true)
+            return;
+
         if (m_Downloader.bDownload == true)
         {
             bAbort = true;
@@ -764,6 +777,9 @@ namespace dialogs
 
     void CToolsDlg::OnBnClickedButtonToolSetFormat()
     {
+        if (bUpdate == true)
+            return;
+
         auto filter = [this](int nIndex, config::CTool& tool) -> bool
         {
             return (this->m_LstTools.GetItemState(nIndex, LVIS_SELECTED) == LVIS_SELECTED);
@@ -773,11 +789,17 @@ namespace dialogs
 
     void CToolsDlg::OnBnClickedButtonToolSetFormatX86()
     {
+        if (bUpdate == true)
+            return;
+
         config::CConfig::SetFormatPaths(m_Formats, m_Tools, L"x86");
     }
 
     void CToolsDlg::OnBnClickedButtonToolSetFormatX64()
     {
+        if (bUpdate == true)
+            return;
+
         config::CConfig::SetFormatPaths(m_Formats, m_Tools, L"x64");
     }
 
