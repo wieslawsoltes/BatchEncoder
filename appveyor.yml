@@ -11,6 +11,8 @@ test: off
 artifacts:
 - path: artifacts\*.zip
 - path: artifacts\*.exe
+- path: artifacts\Release\Win32\*.exe
+- path: artifacts\Release\x64\*.exe
 notifications:
 - provider: Webhook
   url: https://webhooks.gitter.im/e/f2ddd523fe04ad255028

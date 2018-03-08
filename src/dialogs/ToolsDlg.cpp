@@ -654,11 +654,12 @@ namespace dialogs
 
             CString szPriority = _T("");
             this->m_EdtPriority.GetWindowText(szPriority);
+
             int nNewPriority = _tstoi(szPriority);
 
             config::CTool& tool = m_Tools[nItem];
-            bool bSortTools = nNewPriority != tool.nPriority;
 
+            bool bSortTools = nNewPriority != tool.nPriority;
             if (bSortTools)
             {
                 config::CTool::Sort(m_Tools);
@@ -666,8 +667,8 @@ namespace dialogs
 
                 size_t nSelectedItem = config::CTool::GetToolByName(m_Tools, tool.szName);
                 m_LstTools.SetItemState(-1, 0, LVIS_SELECTED);
-                m_LstTools.SetItemState(nSelectedItem, LVIS_SELECTED, LVIS_SELECTED);
-                m_LstTools.EnsureVisible(nSelectedItem, FALSE);
+                //m_LstTools.SetItemState(nSelectedItem, LVIS_SELECTED, LVIS_SELECTED);
+                //m_LstTools.EnsureVisible(nSelectedItem, FALSE);
             }
         }
 

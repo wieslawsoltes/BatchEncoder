@@ -142,6 +142,9 @@ var packageGuiBinariesAction = new Action<string,string> ((configuration, platfo
     CopyFileToDirectory(portableFile, outputDir);
     copyConfigAction(output);
     Zip(outputDir, outputZip);
+    var exeDir = artifactsDir.Combine(configuration).Combine(platform);
+    CleanDirectory(exeDir);
+    CopyFileToDirectory(exeFile, exeDir);
 });
 
 var packageCliBinariesAction = new Action<string,string> ((configuration, platform) =>
@@ -160,6 +163,9 @@ var packageCliBinariesAction = new Action<string,string> ((configuration, platfo
     CopyFileToDirectory(portableFile, outputDir);
     copyConfigAction(output);
     Zip(outputDir, outputZip);
+    var exeDir = artifactsDir.Combine(configuration).Combine(platform);
+    CleanDirectory(exeDir);
+    CopyFileToDirectory(exeFile, exeDir);
 });
 
 var packageInstallersAction = new Action<string,string> ((configuration, platform) =>

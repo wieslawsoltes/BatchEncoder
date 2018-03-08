@@ -685,20 +685,21 @@ namespace dialogs
 
             CString szPriority = _T("");
             this->m_EdtPriority.GetWindowText(szPriority);
+
             int nNewPriority = _tstoi(szPriority);
 
             config::CFormat& format = m_Formats[nItem];
-            bool bSortFormats = nNewPriority != format.nPriority;
 
+            bool bSortFormats = nNewPriority != format.nPriority;
             if (bSortFormats)
             {
                 config::CFormat::Sort(m_Formats);
                 this->RedrawFormats();
 
-                size_t nSelectedItem = config::CFormat::GetFormatById(m_Formats, format.szId);
+                //size_t nSelectedItem = config::CFormat::GetFormatById(m_Formats, format.szId);
                 m_LstFormats.SetItemState(-1, 0, LVIS_SELECTED);
-                m_LstFormats.SetItemState(nSelectedItem, LVIS_SELECTED, LVIS_SELECTED);
-                m_LstFormats.EnsureVisible(nSelectedItem, FALSE);
+                //m_LstFormats.SetItemState(nSelectedItem, LVIS_SELECTED, LVIS_SELECTED);
+                //m_LstFormats.EnsureVisible(nSelectedItem, FALSE);
             }
         }
 
