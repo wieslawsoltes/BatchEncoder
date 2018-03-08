@@ -147,8 +147,8 @@ namespace dialogs
         this->RedrawFormats();
 
         // select format
-        //m_LstFormats.SetItemState(nSelectedFormat, LVIS_SELECTED, LVIS_SELECTED);
-        //m_LstFormats.EnsureVisible(nSelectedFormat, FALSE);
+        m_LstFormats.SetItemState(nSelectedFormat, LVIS_SELECTED, LVIS_SELECTED);
+        m_LstFormats.EnsureVisible(nSelectedFormat, FALSE);
 
         return TRUE;
     }

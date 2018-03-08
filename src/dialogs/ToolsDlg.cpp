@@ -140,8 +140,8 @@ namespace dialogs
         this->RedrawTools();
 
         // select tool
-        //m_LstTools.SetItemState(nSelectedTool, LVIS_SELECTED, LVIS_SELECTED);
-        //m_LstTools.EnsureVisible(nSelectedTool, FALSE);
+        m_LstTools.SetItemState(nSelectedTool, LVIS_SELECTED, LVIS_SELECTED);
+        m_LstTools.EnsureVisible(nSelectedTool, FALSE);
 
         return TRUE;
     }
