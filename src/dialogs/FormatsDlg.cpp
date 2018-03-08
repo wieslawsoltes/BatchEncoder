@@ -122,7 +122,7 @@ namespace dialogs
         SetIcon(m_hIcon, FALSE);
 
         // priority spin
-        m_SpinPriority.SetRange32(-1000, 1000);
+        m_SpinPriority.SetRange32(INT_MIN, INT_MAX);
 
         // OnNotifyFormat WM_NOTIFYFORMAT
 #ifdef _UNICODE

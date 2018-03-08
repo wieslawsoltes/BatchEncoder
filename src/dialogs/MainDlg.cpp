@@ -435,7 +435,7 @@ namespace dialogs
         this->SetWindowText(_T(VER_PRODUCTNAME_STR));
 
         // threads count spin
-        m_SpinThreads.SetRange32(0, 1024);
+        m_SpinThreads.SetRange32(0, INT_MAX);
 
         // progress
         m_Progress.SetRange(0, 100);
