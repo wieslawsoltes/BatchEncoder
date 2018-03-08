@@ -147,8 +147,8 @@ namespace dialogs
         this->RedrawFormats();
 
         // select format
-        m_LstFormats.SetItemState(nSelectedFormat, LVIS_SELECTED, LVIS_SELECTED);
-        m_LstFormats.EnsureVisible(nSelectedFormat, FALSE);
+        //m_LstFormats.SetItemState(nSelectedFormat, LVIS_SELECTED, LVIS_SELECTED);
+        //m_LstFormats.EnsureVisible(nSelectedFormat, FALSE);
 
         return TRUE;
     }
@@ -432,9 +432,9 @@ namespace dialogs
 
                 this->RedrawFormats();
 
-                m_LstFormats.SetItemState(-1, 0, LVIS_SELECTED);
-                m_LstFormats.SetItemState(nSelected + 1, LVIS_SELECTED, LVIS_SELECTED);
-                m_LstFormats.EnsureVisible(nSelected + 1, FALSE);
+                //m_LstFormats.SetItemState(-1, 0, LVIS_SELECTED);
+                //m_LstFormats.SetItemState(nSelected + 1, LVIS_SELECTED, LVIS_SELECTED);
+                //m_LstFormats.EnsureVisible(nSelected + 1, FALSE);
             }
         }
 
@@ -480,6 +480,7 @@ namespace dialogs
 
         this->RedrawFormats();
 
+/*
         m_LstFormats.SetItemState(-1, 0, LVIS_SELECTED);
 
         nItems = m_LstFormats.GetItemCount();
@@ -496,7 +497,7 @@ namespace dialogs
                 m_LstFormats.EnsureVisible(nItemLastRemoved, FALSE);
             }
         }
-
+*/
         bUpdate = false;
 
         this->ListSelectionChange();
@@ -534,10 +535,10 @@ namespace dialogs
         config::CFormat::Sort(m_Formats);
         this->RedrawFormats();
 
-        size_t nSelectedItem = config::CFormat::GetFormatById(m_Formats, format.szId);
-        m_LstFormats.SetItemState(-1, 0, LVIS_SELECTED);
-        m_LstFormats.SetItemState(nSelectedItem, LVIS_SELECTED, LVIS_SELECTED);
-        m_LstFormats.EnsureVisible(nSelectedItem, FALSE);
+        //size_t nSelectedItem = config::CFormat::GetFormatById(m_Formats, format.szId);
+        //m_LstFormats.SetItemState(-1, 0, LVIS_SELECTED);
+        //m_LstFormats.SetItemState(nSelectedItem, LVIS_SELECTED, LVIS_SELECTED);
+        //m_LstFormats.EnsureVisible(nSelectedItem, FALSE);
 
         bUpdate = false;
 
@@ -681,7 +682,7 @@ namespace dialogs
 
         bUpdate = true;
 
-        bool bChangedSelection = false;
+        //bool bChangedSelection = false;
         POSITION pos = m_LstFormats.GetFirstSelectedItemPosition();
         if (pos != nullptr)
         {
@@ -701,20 +702,20 @@ namespace dialogs
                 config::CFormat::Sort(m_Formats);
                 this->RedrawFormats();
 
-                size_t nSelectedItem = config::CFormat::GetFormatById(m_Formats, format.szId);
-                m_LstFormats.SetItemState(-1, 0, LVIS_SELECTED);
-                m_LstFormats.SetItemState(nSelectedItem, LVIS_SELECTED, LVIS_SELECTED);
-                m_LstFormats.EnsureVisible(nSelectedItem, FALSE);
-                bChangedSelection = true;
+                //size_t nSelectedItem = config::CFormat::GetFormatById(m_Formats, format.szId);
+                //m_LstFormats.SetItemState(-1, 0, LVIS_SELECTED);
+                //m_LstFormats.SetItemState(nSelectedItem, LVIS_SELECTED, LVIS_SELECTED);
+                //m_LstFormats.EnsureVisible(nSelectedItem, FALSE);
+                //bChangedSelection = true;
             }
         }
 
         bUpdate = false;
 
-        if (bChangedSelection)
-        {
-            this->ListSelectionChange();
-        }
+        //if (bChangedSelection)
+        //{
+        //    this->ListSelectionChange();
+        //}
 
         //OnBnClickedButtonUpdateFormat();
     }
@@ -786,12 +787,12 @@ namespace dialogs
             {
                 this->m_Formats = std::move(dlg.m_Formats);
 
-                m_LstFormats.SetItemState(-1, 0, LVIS_SELECTED);
-                m_LstFormats.SetItemState(nItem, LVIS_SELECTED, LVIS_SELECTED);
-                m_LstFormats.EnsureVisible(nItem, FALSE);
+                //m_LstFormats.SetItemState(-1, 0, LVIS_SELECTED);
+                //m_LstFormats.SetItemState(nItem, LVIS_SELECTED, LVIS_SELECTED);
+                //m_LstFormats.EnsureVisible(nItem, FALSE);
 
-                this->ListSelectionChange();
                 this->RedrawFormats();
+                this->ListSelectionChange();
             }
 
             pConfig->m_Options.szPresetsDialogResize = dlg.szPresetsDialogResize;

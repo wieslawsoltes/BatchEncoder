@@ -140,8 +140,8 @@ namespace dialogs
         this->RedrawTools();
 
         // select tool
-        m_LstTools.SetItemState(nSelectedTool, LVIS_SELECTED, LVIS_SELECTED);
-        m_LstTools.EnsureVisible(nSelectedTool, FALSE);
+        //m_LstTools.SetItemState(nSelectedTool, LVIS_SELECTED, LVIS_SELECTED);
+        //m_LstTools.EnsureVisible(nSelectedTool, FALSE);
 
         return TRUE;
     }
@@ -450,9 +450,9 @@ namespace dialogs
 
                 m_Tools.insert(m_Tools.begin() + nSelected + 1, copy);
 
-                m_LstTools.SetItemState(-1, 0, LVIS_SELECTED);
-                m_LstTools.SetItemState(nSelected + 1, LVIS_SELECTED, LVIS_SELECTED);
-                m_LstTools.EnsureVisible(nSelected + 1, FALSE);
+                //m_LstTools.SetItemState(-1, 0, LVIS_SELECTED);
+                //m_LstTools.SetItemState(nSelected + 1, LVIS_SELECTED, LVIS_SELECTED);
+                //.EnsureVisible(nSelected + 1, FALSE);
             }
         }
 
@@ -504,8 +504,8 @@ namespace dialogs
         }
 
         this->RedrawTools();
-
-        m_LstTools.SetItemState(-1, 0, LVIS_SELECTED);
+/*
+        /m_LstTools.SetItemState(-1, 0, LVIS_SELECTED);
 
         nItems = m_LstTools.GetItemCount();
         if (nItemLastRemoved != -1)
@@ -521,7 +521,7 @@ namespace dialogs
                 m_LstTools.EnsureVisible(nItemLastRemoved, FALSE);
             }
         }
-
+*/
         bUpdate = false;
         this->ListSelectionChange();
     }
@@ -552,10 +552,10 @@ namespace dialogs
         config::CTool::Sort(m_Tools);
         this->RedrawTools();
 
-        size_t nSelectedItem = config::CTool::GetToolByName(m_Tools, tool.szName);
-        m_LstTools.SetItemState(-1, 0, LVIS_SELECTED);
-        m_LstTools.SetItemState(nSelectedItem, LVIS_SELECTED, LVIS_SELECTED);
-        m_LstTools.EnsureVisible(nSelectedItem, FALSE);
+        //size_t nSelectedItem = config::CTool::GetToolByName(m_Tools, tool.szName);
+        //m_LstTools.SetItemState(-1, 0, LVIS_SELECTED);
+        //m_LstTools.SetItemState(nSelectedItem, LVIS_SELECTED, LVIS_SELECTED);
+        //m_LstTools.EnsureVisible(nSelectedItem, FALSE);
 
         bUpdate = false;
 
@@ -650,7 +650,7 @@ namespace dialogs
 
         bUpdate = true;
 
-        bool bChangedSelection = false;
+        //bool bChangedSelection = false;
         POSITION pos = m_LstTools.GetFirstSelectedItemPosition();
         if (pos != nullptr)
         {
@@ -670,20 +670,20 @@ namespace dialogs
                 config::CTool::Sort(m_Tools);
                 this->RedrawTools();
 
-                size_t nSelectedItem = config::CTool::GetToolByName(m_Tools, tool.szName);
-                m_LstTools.SetItemState(-1, 0, LVIS_SELECTED);
-                m_LstTools.SetItemState(nSelectedItem, LVIS_SELECTED, LVIS_SELECTED);
-                m_LstTools.EnsureVisible(nSelectedItem, FALSE);
-                bChangedSelection = true;
+                //size_t nSelectedItem = config::CTool::GetToolByName(m_Tools, tool.szName);
+                //m_LstTools.SetItemState(-1, 0, LVIS_SELECTED);
+                //m_LstTools.SetItemState(nSelectedItem, LVIS_SELECTED, LVIS_SELECTED);
+                //m_LstTools.EnsureVisible(nSelectedItem, FALSE);
+                //bChangedSelection = true;
             }
         }
 
         bUpdate = false;
 
-        if (bChangedSelection)
-        {
-            this->ListSelectionChange();
-        }
+        //if (bChangedSelection)
+        //{
+        //    this->ListSelectionChange();
+        //}
 
         //OnBnClickedButtonUpdateTool();
     }
