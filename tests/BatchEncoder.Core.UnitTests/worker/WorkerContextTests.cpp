@@ -206,7 +206,7 @@ namespace BatchEncoderCoreUnitTests
         {
             #pragma warning(push)
             #pragma warning(disable:4101)
-            TestFileSystem m_FileSystem
+            TestFileSystem m_FileSystem;
             #pragma warning(pop)
         }
 
