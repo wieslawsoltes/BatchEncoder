@@ -61,34 +61,34 @@ namespace config
             auto predicate = [&name](const CFormat& format) { return format.szName == name; };
             return std::count_if(formats.begin(), formats.end(), predicate) == 0;
         }
-        static size_t GetFormatById(std::vector<CFormat>& formats, const std::wstring& szFormatId)
+        static size_t GetFormatById(sconst td::vector<CFormat>& formats, const std::wstring& szFormatId)
         {
             size_t nFormats = formats.size();
             for (size_t i = 0; i < nFormats; i++)
             {
-                CFormat& format = formats[i];
+                const CFormat& format = formats[i];
                 if (util::string::CompareNoCase(szFormatId, format.szId))
                     return i;
             }
             return -1;
         }
-        static size_t GetDecoderByExtension(std::vector<CFormat>& formats, const std::wstring& szExt)
+        static size_t GetDecoderByExtension(const std::vector<CFormat>& formats, const std::wstring& szExt)
         {
             size_t nFormats = formats.size();
             for (size_t i = 0; i < nFormats; i++)
             {
-                CFormat& format = formats[i];
+                const CFormat& format = formats[i];
                 if (format.nType == FormatType::Decoder && format.IsValidInputExtension(szExt) == true)
                     return i;
             }
             return -1;
         }
-        static size_t GetDecoderByExtensionAndFormat(std::vector<CFormat>& formats, const std::wstring& szExt, CFormat& ef)
+        static size_t GetDecoderByExtensionAndFormat(const std::vector<CFormat>& formats, const std::wstring& szExt, CFormat& ef)
         {
             size_t nFormats = formats.size();
             for (size_t i = 0; i < nFormats; i++)
             {
-                CFormat& format = formats[i];
+                const CFormat& format = formats[i];
                 if (format.nType == FormatType::Decoder && format.IsValidInputExtension(szExt) == true)
                 {
                     bool bIsValidEncoderInput = ef.IsValidInputExtension(format.szOutputExtension);
@@ -98,12 +98,12 @@ namespace config
             }
             return -1;
         }
-        static bool IsValidInputExtension(std::vector<CFormat>& formats, const std::wstring& szExt)
+        static bool IsValidInputExtension(const std::vector<CFormat>& formats, const std::wstring& szExt)
         {
             size_t nFormats = formats.size();
             for (size_t i = 0; i < nFormats; i++)
             {
-                CFormat& format = formats[i];
+                const CFormat& format = formats[i];
                 if (format.IsValidInputExtension(szExt) == true)
                     return true;
             }
