@@ -51,6 +51,16 @@ namespace config
             return util::string::ContainsNoCase(this->szInputExtensions, szExt, token);
         }
     public:
+        static bool IsUniqueId(const std::vector<CFormat>& formats, const std::wstring& id)
+        {
+            auto predicate = [&id](const CFormat& format) { return format.szId == id; };
+            return std::count_if(formats.begin(), formats.end(), predicate) == 0;
+        }
+        static bool IsUniqueName(const std::vector<CFormat>& formats, const std::wstring& name)
+        {
+            auto predicate = [&name](const CFormat& format) { return format.szName == name; };
+            return std::count_if(formats.begin(), formats.end(), predicate) == 0;
+        }
         static size_t GetFormatById(std::vector<CFormat>& formats, const std::wstring& szFormatId)
         {
             size_t nFormats = formats.size();
