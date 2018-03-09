@@ -61,7 +61,7 @@ namespace config
             auto predicate = [&name](const CFormat& format) { return format.szName == name; };
             return std::count_if(formats.begin(), formats.end(), predicate) == 0;
         }
-        static size_t GetFormatById(sconst td::vector<CFormat>& formats, const std::wstring& szFormatId)
+        static size_t GetFormatById(const std::vector<CFormat>& formats, const std::wstring& szFormatId)
         {
             size_t nFormats = formats.size();
             for (size_t i = 0; i < nFormats; i++)
