@@ -31,10 +31,10 @@ namespace BatchEncoderCoreUnitTests
 
         TEST_METHOD(CFormat_FromInt)
         {
-            FormatType encoder = config::CFormat::FromInt(0);
+            config::FormatType encoder = config::CFormat::FromInt(0);
             Assert::AreEqual(config::FormatType::Encoder, encoder);
 
-            FormatType decoder = config::CFormat::FromInt(1);
+            config::FormatType decoder = config::CFormat::FromInt(1);
             Assert::AreEqual(config::FormatType::Decoder, decoder);
         }
 

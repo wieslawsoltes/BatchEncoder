@@ -182,9 +182,11 @@
     <ClCompile Include="config\ConfigTests.cpp" />
     <ClCompile Include="config\FormatTests.cpp" />
     <ClCompile Include="config\ItemTests.cpp" />
+    <ClCompile Include="config\LanguageTests.cpp" />
     <ClCompile Include="config\OptionsTests.cpp" />
     <ClCompile Include="config\PathTests.cpp" />
     <ClCompile Include="config\PresetTests.cpp" />
+    <ClCompile Include="config\SettingsTests.cpp" />
     <ClCompile Include="config\ToolTests.cpp" />
     <ClCompile Include="MemoryLeakTests.cpp" />
     <ClCompile Include="stdafx.cpp">

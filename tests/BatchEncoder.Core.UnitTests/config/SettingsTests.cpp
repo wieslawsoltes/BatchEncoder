@@ -3,27 +3,37 @@
 
 #include "stdafx.h"
 #include "CppUnitTest.h"
-#include "config\Options.h"
+#include "config\Settings.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 namespace BatchEncoderCoreUnitTests
 {
-    TEST_CLASS(COptions_Tests)
+    TEST_CLASS(CSettings_Tests)
     {
     public:
-        TEST_METHOD(COptions_Constructor)
+        TEST_METHOD(CSettings_Constructor)
         {
             #pragma warning(push)
             #pragma warning(disable:4101)
-            config::COptions m_Options;
+            config::CSettings m_Settings;
             #pragma warning(pop)
         }
 
-        TEST_METHOD(COptions_Defaults)
+        TEST_METHOD(CSettings_IsPortable)
         {
-            config::COptions m_Options;
-            m_Options.Defaults();
+        }
+
+        TEST_METHOD(CSettings_InitPortableSettings)
+        {
+        }
+
+        TEST_METHOD(CSettings_InitUserSettings)
+        {
+        }
+
+        TEST_METHOD(CSettings_Init)
+        {
         }
     };
 }
