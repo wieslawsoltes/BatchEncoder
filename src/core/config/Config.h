@@ -1206,7 +1206,7 @@ namespace config
                     {
                         for (size_t i = 0; i < nFormats; i++)
                         {
-                            const config::CFormat& format = m_Formats[i];
+                            config::CFormat& format = m_Formats[i];
                             if (CTool::IsValidFormat(tool.szFormats, format.szId))
                             {
                                 format.szPath = tool.szPath;
