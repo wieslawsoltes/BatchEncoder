@@ -46,11 +46,6 @@ namespace config
             return static_cast<FormatType>(value);
         }
     public:
-        bool IsValidInputExtension(const std::wstring& szExt)
-        {
-            return util::string::ContainsNoCase(this->szInputExtensions, szExt, token);
-        }
-    public:
         static bool IsUniqueId(const std::vector<CFormat>& formats, const std::wstring& id)
         {
             auto predicate = [&id](const CFormat& format) { return format.szId == id; };
@@ -78,7 +73,7 @@ namespace config
             for (size_t i = 0; i < nFormats; i++)
             {
                 const CFormat& format = formats[i];
-                if (format.nType == FormatType::Decoder && format.IsValidInputExtension(szExt) == true)
+                if (format.nType == FormatType::Decoder && IsValidInputExtension(format.szInputExtensions, szExt) == true)
                     return i;
             }
             return -1;
@@ -89,14 +84,18 @@ namespace config
             for (size_t i = 0; i < nFormats; i++)
             {
                 const CFormat& format = formats[i];
-                if (format.nType == FormatType::Decoder && format.IsValidInputExtension(szExt) == true)
+                if (format.nType == FormatType::Decoder && IsValidInputExtension(format.szInputExtensions, szExt) == true)
                 {
-                    bool bIsValidEncoderInput = ef.IsValidInputExtension(format.szOutputExtension);
+                    bool bIsValidEncoderInput = IsValidInputExtension(ef.szInputExtensions, format.szOutputExtension);
                     if (bIsValidEncoderInput == true)
                         return i;
                 }
             }
             return -1;
+        }
+        static bool IsValidInputExtension(const std::wstring& szInputExtensions, const std::wstring& szExt)
+        {
+            return util::string::ContainsNoCase(szInputExtensions, szExt, token);
         }
         static bool IsValidInputExtension(const std::vector<CFormat>& formats, const std::wstring& szExt)
         {
@@ -104,7 +103,7 @@ namespace config
             for (size_t i = 0; i < nFormats; i++)
             {
                 const CFormat& format = formats[i];
-                if (format.IsValidInputExtension(szExt) == true)
+                if (IsValidInputExtension(format.szInputExtensions, szExt) == true)
                     return true;
             }
             return false;

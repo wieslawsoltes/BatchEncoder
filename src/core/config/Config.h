@@ -1078,7 +1078,7 @@ namespace config
 
             if ((nFormatId >= 0) && (nFormatId < (int)this->m_Formats.size()))
             {
-                auto& format = this->m_Formats[nFormatId];
+                const auto& format = this->m_Formats[nFormatId];
                 szFormatId = format.szId;
             }
 
@@ -1087,7 +1087,7 @@ namespace config
                 int nDecoder = CFormat::GetDecoderByExtension(this->m_Formats, szExt);
                 if ((nDecoder >= 0) && (nDecoder < (int)this->m_Formats.size()))
                 {
-                    auto& format = this->m_Formats[nDecoder];
+                    const auto& format = this->m_Formats[nDecoder];
                     szFormatId = format.szId;
                     nPresetId = format.nDefaultPreset;
                 }
@@ -1206,8 +1206,8 @@ namespace config
                     {
                         for (size_t i = 0; i < nFormats; i++)
                         {
-                            config::CFormat& format = m_Formats[i];
-                            if (tool.IsValidFormat(format.szId))
+                            const config::CFormat& format = m_Formats[i];
+                            if (CTool::IsValidFormat(tool.szFormats, format.szId))
                             {
                                 format.szPath = tool.szPath;
                             }

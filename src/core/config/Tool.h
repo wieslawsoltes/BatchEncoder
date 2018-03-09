@@ -26,11 +26,6 @@ namespace config
         std::wstring szPath;
         std::wstring szStatus;
     public:
-        bool IsValidFormat(const std::wstring& szFormat)
-        {
-            return util::string::ContainsNoCase(this->szFormats, szFormat, token);
-        }
-    public:
         static bool IsUniqueName(const std::vector<CTool>& tools, const std::wstring& name)
         {
             auto predicate = [&name](const CTool& tool) { return tool.szName == name; };
@@ -64,7 +59,7 @@ namespace config
             for (size_t i = 0; i < nTools; i++)
             {
                 const CTool& tool = tools[i];
-                if (tool.IsValidFormat(szFormat) == true)
+                if (IsValidFormat(tool.szFormats, szFormat) == true)
                     return i;
             }
             return -1;
@@ -75,10 +70,14 @@ namespace config
             for (size_t i = 0; i < nTools; i++)
             {
                 const CTool& tool = tools[i];
-                if ((tool.IsValidFormat(szFormat) == true) && (util::string::CompareNoCase(tool.szPlatform, szPlatform) == true))
+                if ((IsValidFormat(tool.szFormats, szFormat) == true) && (util::string::CompareNoCase(tool.szPlatform, szPlatform) == true))
                     return i;
             }
             return -1;
+        }
+        static bool IsValidFormat(const std::wstring& szFormats, const std::wstring& szFormat)
+        {
+            return util::string::ContainsNoCase(szFormats, szFormat, token);
         }
         static bool IsValidFormat(const std::vector<CTool>& tools, const std::wstring& szFormat)
         {
@@ -86,7 +85,7 @@ namespace config
             for (size_t i = 0; i < nTools; i++)
             {
                 const CTool& tool = tools[i];
-                if (tool.IsValidFormat(szFormat) == true)
+                if (IsValidFormat(tool.szFormats, szFormat) == true)
                     return true;
             }
             return false;
