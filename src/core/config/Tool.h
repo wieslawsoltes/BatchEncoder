@@ -41,7 +41,7 @@ namespace config
             size_t nTools = tools.size();
             for (size_t i = 0; i < nTools; i++)
             {
-                CTool& tool = tools[i];
+                const CTool& tool = tools[i];
                 if (util::string::CompareNoCase(tool.szName, szName) == true)
                     return i;
             }
@@ -52,7 +52,7 @@ namespace config
             size_t nTools = tools.size();
             for (size_t i = 0; i < nTools; i++)
             {
-                CTool& tool = tools[i];
+                const CTool& tool = tools[i];
                 if (util::string::CompareNoCase(tool.szPath, szPath) == true)
                     return i;
             }
@@ -63,7 +63,7 @@ namespace config
             size_t nTools = tools.size();
             for (size_t i = 0; i < nTools; i++)
             {
-                CTool& tool = tools[i];
+                const CTool& tool = tools[i];
                 if (tool.IsValidFormat(szFormat) == true)
                     return i;
             }
@@ -74,7 +74,7 @@ namespace config
             size_t nTools = tools.size();
             for (size_t i = 0; i < nTools; i++)
             {
-                CTool& tool = tools[i];
+                const CTool& tool = tools[i];
                 if ((tool.IsValidFormat(szFormat) == true) && (util::string::CompareNoCase(tool.szPlatform, szPlatform) == true))
                     return i;
             }
@@ -85,7 +85,7 @@ namespace config
             size_t nTools = tools.size();
             for (size_t i = 0; i < nTools; i++)
             {
-                CTool& tool = tools[i];
+                const CTool& tool = tools[i];
                 if (tool.IsValidFormat(szFormat) == true)
                     return true;
             }
