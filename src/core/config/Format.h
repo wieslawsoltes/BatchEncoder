@@ -83,7 +83,7 @@ namespace config
             }
             return -1;
         }
-        static size_t GetDecoderByExtensionAndFormat(const std::vector<CFormat>& formats, const std::wstring& szExt, CFormat& ef)
+        static size_t GetDecoderByExtensionAndFormat(const std::vector<CFormat>& formats, const std::wstring& szExt, const CFormat& ef)
         {
             size_t nFormats = formats.size();
             for (size_t i = 0; i < nFormats; i++)
