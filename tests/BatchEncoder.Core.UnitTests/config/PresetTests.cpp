@@ -19,5 +19,13 @@ namespace BatchEncoderCoreUnitTests
             config::CPreset m_Preset;
             #pragma warning(pop)
         }
+
+        TEST_METHOD(CPreset_CompareName)
+        {
+        }
+
+        TEST_METHOD(CPreset_Sort)
+        {
+        }
     };
 }

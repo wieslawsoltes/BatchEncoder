@@ -19,5 +19,17 @@ namespace BatchEncoderCoreUnitTests
             config::CItem m_Item;
             #pragma warning(pop)
         }
+
+        TEST_METHOD(CItem_ResetProgress)
+        {
+        }
+
+        TEST_METHOD(CItem_CompareName)
+        {
+        }
+
+        TEST_METHOD(CItem_Sort)
+        {
+        }
     };
 }

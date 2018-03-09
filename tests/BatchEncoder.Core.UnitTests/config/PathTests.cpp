@@ -19,5 +19,13 @@ namespace BatchEncoderCoreUnitTests
             config::CPath m_Path;
             #pragma warning(pop)
         }
+
+        TEST_METHOD(CPath_ComparePath)
+        {
+        }
+
+        TEST_METHOD(CPath_Sort)
+        {
+        }
     };
 }

@@ -19,5 +19,45 @@ namespace BatchEncoderCoreUnitTests
             config::CTool m_Tool;
             #pragma warning(pop)
         }
+
+        TEST_METHOD(CTool_GetToolByFormatAndPlatform)
+        {
+        }
+
+        TEST_METHOD(CTool_GetToolByFormat)
+        {
+        }
+
+        TEST_METHOD(CTool_GetToolByPath)
+        {
+        }
+
+        TEST_METHOD(CTool_GetToolByName)
+        {
+        }
+
+        TEST_METHOD(CTool_IsUniqueName)
+        {
+        }
+
+        TEST_METHOD(CTool_IsValidFormat_string)
+        {
+        }
+
+        TEST_METHOD(CTool_IsValidFormat_vector)
+        {
+        }
+
+        TEST_METHOD(CTool_CompareName)
+        {
+        }
+
+        TEST_METHOD(CTool_ComparePriority)
+        {
+        }
+
+        TEST_METHOD(CTool_Sort)
+        {
+        }
     };
 }

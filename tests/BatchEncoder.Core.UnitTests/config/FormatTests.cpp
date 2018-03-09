@@ -19,5 +19,67 @@ namespace BatchEncoderCoreUnitTests
             config::CFormat m_Format;
             #pragma warning(pop)
         }
+
+        TEST_METHOD(CFormat_ToInt)
+        {
+            int encoder = config::CFormat::ToInt(config::FormatType::Encoder);
+            Assert::AreEqual(0, encoder);
+
+            int decoder = config::CFormat::ToInt(config::FormatType::Decoder);
+            Assert::AreEqual(1, decoder);
+        }
+
+        TEST_METHOD(CFormat_FromInt)
+        {
+            FormatType encoder = config::CFormat::FromInt(0);
+            Assert::AreEqual(config::FormatType::Encoder, encoder);
+
+            FormatType decoder = config::CFormat::FromInt(1);
+            Assert::AreEqual(config::FormatType::Decoder, decoder);
+        }
+
+        TEST_METHOD(CFormat_IsValidInputExtension_vector)
+        {
+        }
+
+        TEST_METHOD(CFormat_IsValidInputExtension_string)
+        {
+        }
+
+        TEST_METHOD(CFormat_GetDecoderByExtensionAndFormat)
+        {
+        }
+
+        TEST_METHOD(CFormat_GetDecoderByExtension)
+        {
+        }
+
+        TEST_METHOD(CFormat_GetFormatById)
+        {
+        }
+
+        TEST_METHOD(CFormat_IsUniqueName)
+        {
+        }
+
+        TEST_METHOD(CFormat_IsUniqueId)
+        {
+        }
+
+        TEST_METHOD(CFormat_CompareName)
+        {
+        }
+
+        TEST_METHOD(CFormat_CompareType)
+        {
+        }
+
+        TEST_METHOD(CFormat_ComparePriority)
+        {
+        }
+
+        TEST_METHOD(CFormat_Sort)
+        {
+        }
     };
 }
