@@ -32,29 +32,13 @@ namespace BatchEncoderCoreUnitTests
         TEST_METHOD(CFormat_FromInt)
         {
             config::FormatType encoder = config::CFormat::FromInt(0);
-            Assert::AreEqual(config::FormatType::Encoder, encoder);
+            Assert::ItTrue(config::FormatType::Encoder == encoder);
 
             config::FormatType decoder = config::CFormat::FromInt(1);
-            Assert::AreEqual(config::FormatType::Decoder, decoder);
+            Assert::ItTrue(config::FormatType::Decoder == decoder);
         }
 
-        TEST_METHOD(CFormat_IsValidInputExtension_vector)
-        {
-        }
-
-        TEST_METHOD(CFormat_IsValidInputExtension_string)
-        {
-        }
-
-        TEST_METHOD(CFormat_GetDecoderByExtensionAndFormat)
-        {
-        }
-
-        TEST_METHOD(CFormat_GetDecoderByExtension)
-        {
-        }
-
-        TEST_METHOD(CFormat_GetFormatById)
+        TEST_METHOD(CFormat_IsUniqueId)
         {
         }
 
@@ -62,7 +46,23 @@ namespace BatchEncoderCoreUnitTests
         {
         }
 
-        TEST_METHOD(CFormat_IsUniqueId)
+        TEST_METHOD(CFormat_GetFormatById)
+        {
+        }
+
+        TEST_METHOD(CFormat_GetDecoderByExtension)
+        {
+        }
+
+        TEST_METHOD(CFormat_GetDecoderByExtensionAndFormat)
+        {
+        }
+
+        TEST_METHOD(CFormat_IsValidInputExtension_string)
+        {
+        }
+
+        TEST_METHOD(CFormat_IsValidInputExtension_vector)
         {
         }
 

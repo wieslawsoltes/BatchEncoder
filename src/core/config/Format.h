@@ -108,7 +108,6 @@ namespace config
             }
             return false;
         }
-        
     public:
         static bool CompareName(const CFormat& a, const CFormat& b)
         {

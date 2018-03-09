@@ -22,7 +22,7 @@ namespace BatchEncoderCoreUnitTests
 
         TEST_METHOD(CLanguage_GetLanguageById)
         {
-            std::vector<CLanguage> languages
+            std::vector<config::CLanguage> languages
             {
                 { L"en-US" },
                 { L"es-ES" },
