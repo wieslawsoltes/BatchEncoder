@@ -835,7 +835,7 @@ namespace worker
                     return false;
                 }
 
-                bool bIsValidDecoderOutput = config::CFormat::IsValidInputExtension::IsValidInputExtension(ef.szInputExtensions, df.szOutputExtension);
+                bool bIsValidDecoderOutput = config::CFormat::IsValidInputExtension(ef.szInputExtensions, df.szOutputExtension);
                 if (bIsValidDecoderOutput == false)
                 {
                     ctx->ItemStatus(item.nId, ctx->GetString(0x00150001), ctx->GetString(0x00140006));
