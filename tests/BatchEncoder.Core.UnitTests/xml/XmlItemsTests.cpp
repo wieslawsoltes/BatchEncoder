@@ -20,5 +20,53 @@ namespace BatchEncoderCoreUnitTests
             config::xml::XmlItems xml(doc);
             #pragma warning(pop)
         }
+
+        TEST_METHOD(XmlItems_GetPath_element)
+        {
+        }
+
+        TEST_METHOD(XmlItems_SetPath_element)
+        {
+        }
+
+        TEST_METHOD(XmlItems_GetPaths_parent)
+        {
+        }
+
+        TEST_METHOD(XmlItems_SetPaths_parent)
+        {
+        }
+
+        TEST_METHOD(XmlItems_GetItem_element)
+        {
+        }
+
+        TEST_METHOD(XmlItems_SetItem_element)
+        {
+        }
+
+        TEST_METHOD(XmlItems_GetItems_parent)
+        {
+        }
+
+        TEST_METHOD(XmlItems_SetItems_parent)
+        {
+        }
+
+        TEST_METHOD(XmlItems_GetItem)
+        {
+        }
+
+        TEST_METHOD(XmlItems_SetItem)
+        {
+        }
+
+        TEST_METHOD(XmlItems_GetItems)
+        {
+        }
+
+        TEST_METHOD(XmlItems_SetItems)
+        {
+        }
     };
 }

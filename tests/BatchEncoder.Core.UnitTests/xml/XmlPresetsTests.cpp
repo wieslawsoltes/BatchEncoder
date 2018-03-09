@@ -20,5 +20,37 @@ namespace BatchEncoderCoreUnitTests
             config::xml::XmlPresets xml(doc);
             #pragma warning(pop)
         }
+
+        TEST_METHOD(XmlPresets_GetPreset_element)
+        {
+        }
+
+        TEST_METHOD(XmlPresets_SetPreset_element)
+        {
+        }
+
+        TEST_METHOD(XmlPresets_GetPresets_parent)
+        {
+        }
+
+        TEST_METHOD(XmlPresets_SetPresets_parent)
+        {
+        }
+
+        TEST_METHOD(XmlPresets_GetPreset)
+        {
+        }
+
+        TEST_METHOD(XmlPresets_SetPreset)
+        {
+        }
+
+        TEST_METHOD(XmlPresets_GetPresets)
+        {
+        }
+
+        TEST_METHOD(XmlPresets_SetPresets)
+        {
+        }
     };
 }

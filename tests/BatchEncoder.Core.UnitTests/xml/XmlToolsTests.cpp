@@ -20,5 +20,21 @@ namespace BatchEncoderCoreUnitTests
             config::xml::XmlTools xml(doc);
             #pragma warning(pop)
         }
+
+        TEST_METHOD(XmlTools_GetTool_element)
+        {
+        }
+
+        TEST_METHOD(XmlTools_SetTool_element)
+        {
+        }
+
+        TEST_METHOD(XmlTools_GetTool)
+        {
+        }
+
+        TEST_METHOD(XmlTools_SetTool)
+        {
+        }
     };
 }

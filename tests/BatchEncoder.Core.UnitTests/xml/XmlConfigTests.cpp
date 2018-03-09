@@ -19,5 +19,117 @@ namespace BatchEncoderCoreUnitTests
             config::xml::XmlConfig xml;
             #pragma warning(pop)
         }
+
+        TEST_METHOD(XmlConfig_GetRootName)
+        {
+        }
+
+        TEST_METHOD(XmlConfig_LoadOptions_doc)
+        {
+        }
+
+        TEST_METHOD(XmlConfig_LoadOptions_file)
+        {
+        }
+
+        TEST_METHOD(XmlConfig_SaveOptions_file)
+        {
+        }
+
+        TEST_METHOD(XmlConfig_LoadItem_doc)
+        {
+        }
+
+        TEST_METHOD(XmlConfig_LoadItem_file)
+        {
+        }
+
+        TEST_METHOD(XmlConfig_SaveItem_file)
+        {
+        }
+
+        TEST_METHOD(XmlConfig_LoadItems_doc)
+        {
+        }
+
+        TEST_METHOD(XmlConfig_LoadItems_file)
+        {
+        }
+
+        TEST_METHOD(XmlConfig_SaveItems_file)
+        {
+        }
+
+        TEST_METHOD(XmlConfig_LoadLanguage_doc)
+        {
+        }
+
+        TEST_METHOD(XmlConfig_LoadLanguage_file)
+        {
+        }
+
+        TEST_METHOD(XmlConfig_SaveLanguage_file)
+        {
+        }
+
+        TEST_METHOD(XmlConfig_LoadOutputs_doc)
+        {
+        }
+
+        TEST_METHOD(XmlConfig_LoadOutputs_file)
+        {
+        }
+
+        TEST_METHOD(XmlConfig_SaveOutputs_file)
+        {
+        }
+
+        TEST_METHOD(XmlConfig_LoadPreset_doc)
+        {
+        }
+
+        TEST_METHOD(XmlConfig_LoadPreset_file)
+        {
+        }
+
+        TEST_METHOD(XmlConfig_SavePreset_file)
+        {
+        }
+
+        TEST_METHOD(XmlConfig_LoadPresets_doc)
+        {
+        }
+
+        TEST_METHOD(XmlConfig_LoadPresets_file)
+        {
+        }
+
+        TEST_METHOD(XmlConfig_SavePresets_file)
+        {
+        }
+
+        TEST_METHOD(XmlConfig_LoadFormat_doc)
+        {
+        }
+
+        TEST_METHOD(XmlConfig_LoadFormat_file)
+        {
+        }
+
+        TEST_METHOD(XmlConfig_SaveFormat_file)
+        {
+        }
+
+        TEST_METHOD(XmlConfig_LoadTool_doc)
+        {
+        }
+
+        TEST_METHOD(XmlConfig_LoadTool_file)
+        {
+        }
+
+        TEST_METHOD(XmlConfig_SaveTool_file)
+        {
+        }
     };
 }

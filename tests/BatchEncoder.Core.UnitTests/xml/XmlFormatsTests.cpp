@@ -20,5 +20,21 @@ namespace BatchEncoderCoreUnitTests
             config::xml::XmlFormats xml(doc);
             #pragma warning(pop)
         }
+
+        TEST_METHOD(XmlFormats_GetFormat_element)
+        {
+        }
+
+        TEST_METHOD(XmlFormats_SetFormat_element)
+        {
+        }
+
+        TEST_METHOD(XmlFormats_GetFormat)
+        {
+        }
+
+        TEST_METHOD(XmlFormats_SetFormat)
+        {
+        }
     };
 }

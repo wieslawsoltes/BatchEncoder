@@ -20,5 +20,21 @@ namespace BatchEncoderCoreUnitTests
             config::xml::XmlOutputs xml(doc);
             #pragma warning(pop)
         }
+
+        TEST_METHOD(XmlOutputs_GetOutputs_parent)
+        {
+        }
+
+        TEST_METHOD(XmlOutputs_SetOutputs_parent)
+        {
+        }
+
+        TEST_METHOD(XmlOutputs_GetOutputs)
+        {
+        }
+
+        TEST_METHOD(XmlOutputs_SetOutputs)
+        {
+        }
     };
 }

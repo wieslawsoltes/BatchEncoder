@@ -20,5 +20,21 @@ namespace BatchEncoderCoreUnitTests
             config::xml::XmlLanguages xml(doc);
             #pragma warning(pop)
         }
+
+        TEST_METHOD(XmlLanguages_GetLanguage_parent)
+        {
+        }
+
+        TEST_METHOD(XmlLanguages_SetLanguage_parent)
+        {
+        }
+
+        TEST_METHOD(XmlLanguages_GetLanguage)
+        {
+        }
+
+        TEST_METHOD(XmlLanguages_SetLanguage)
+        {
+        }
     };
 }

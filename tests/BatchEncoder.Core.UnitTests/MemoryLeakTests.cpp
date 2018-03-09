@@ -9,7 +9,7 @@ namespace BatchEncoderCoreUnitTests
 {
     int LoggerReportHook(int reportType, char *message, int *returnValue)
     {
-        Logger::WriteMessage(message);
+        //Logger::WriteMessage(message);
         return 1;
     }
 
@@ -27,7 +27,7 @@ namespace BatchEncoderCoreUnitTests
     public:
         _CrtMemState beforeTest;
         _CrtMemState afterTest;
-
+    public:
         TEST_CLASS_INITIALIZE(TestClassInitialize)
         {
         }
@@ -38,7 +38,7 @@ namespace BatchEncoderCoreUnitTests
 
         TEST_METHOD_INITIALIZE(TestMethodInitialize)
         {
-            Logger::WriteMessage(L"Recording memory check point before test.\n");
+            //Logger::WriteMessage(L"Recording memory check point before test.\n");
             _CrtMemCheckpoint(&beforeTest);
         }
 
@@ -47,11 +47,11 @@ namespace BatchEncoderCoreUnitTests
             #pragma warning(push)
             #pragma warning(disable:4101)
 
-            Logger::WriteMessage(L"Recording memory check point after test.\n");
+            //Logger::WriteMessage(L"Recording memory check point after test.\n");
             _CrtMemCheckpoint(&afterTest);
             _CrtMemState difference;
 
-            Logger::WriteMessage(L"Calcluating difference between tests.\n");
+            //Logger::WriteMessage(L"Calcluating difference between tests.\n");
             if (_CrtMemDifference(&difference, &beforeTest, &afterTest))
             {
                 _CrtMemDumpStatistics(&difference);
