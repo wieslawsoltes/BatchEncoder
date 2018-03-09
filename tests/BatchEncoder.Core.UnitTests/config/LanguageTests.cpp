@@ -34,7 +34,7 @@ namespace BatchEncoderCoreUnitTests
             size_t index = config::CLanguage::GetLanguageById(languages, L"es-es");
             auto&language = languages[index];
 
-            Assert::AreEqual(L"es-ES", language.szId);
+            Assert::AreEqual(L"es-ES", language.szId.c_str());
         }
     };
 }
