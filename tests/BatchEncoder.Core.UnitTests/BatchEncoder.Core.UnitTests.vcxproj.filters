@@ -77,9 +77,6 @@
     <ClCompile Include="worker\LuaProgessTests.cpp">
       <Filter>Source Files\Worker</Filter>
     </ClCompile>
-    <ClCompile Include="worker\OutputParserTests.cpp">
-      <Filter>Source Files\Worker</Filter>
-    </ClCompile>
     <ClCompile Include="worker\OutputPathTests.cpp">
       <Filter>Source Files\Worker</Filter>
     </ClCompile>

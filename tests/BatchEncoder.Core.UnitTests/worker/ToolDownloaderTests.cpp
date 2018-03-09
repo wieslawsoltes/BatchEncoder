@@ -17,5 +17,9 @@ namespace BatchEncoderCoreUnitTests
             worker::CToolDownloader m_Downloader;
             #pragma warning(pop)
         }
+
+        TEST_METHOD(CToolDownloader_Download)
+        {
+        }
     };
 }

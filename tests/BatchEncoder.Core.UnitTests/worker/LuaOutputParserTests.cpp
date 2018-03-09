@@ -17,5 +17,13 @@ namespace BatchEncoderCoreUnitTests
             worker::CLuaOutputParser m_Parser;
             #pragma warning(pop)
         }
+
+        TEST_METHOD(CLuaOutputParser_Open)
+        {
+        }
+
+        TEST_METHOD(CLuaOutputParser_Parse)
+        {
+        }
     };
 }

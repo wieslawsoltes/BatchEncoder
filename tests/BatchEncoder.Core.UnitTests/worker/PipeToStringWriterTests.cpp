@@ -17,5 +17,9 @@ namespace BatchEncoderCoreUnitTests
             worker::CPipeToStringWriter m_Writer;
             #pragma warning(pop)
         }
+
+        TEST_METHOD(CPipeToStringWriter_WriteLoop)
+        {
+        }
     };
 }

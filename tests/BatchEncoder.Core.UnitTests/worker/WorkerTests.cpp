@@ -55,6 +55,42 @@ namespace BatchEncoderCoreUnitTests
             ctx.nLastItemId = -1;
         }
     public:
+        TEST_METHOD(CWorker_ConvertUsingConsole)
+        {
+        }
+
+        TEST_METHOD(CWorker_ConvertUsingPipes)
+        {
+        }
+
+        TEST_METHOD(CWorker_ConvertUsingPipesOnly)
+        {
+        }
+
+        TEST_METHOD(CWorker_Transcode)
+        {
+        }
+
+        TEST_METHOD(CWorker_Decode)
+        {
+        }
+
+        TEST_METHOD(CWorker_Encode)
+        {
+        }
+
+        TEST_METHOD(CWorker_ConvertItem)
+        {
+        }
+
+        TEST_METHOD(CWorker_ConvertLoop)
+        {
+        }
+
+        TEST_METHOD(CWorker_Convert_Item)
+        {
+        }
+
         TEST_METHOD(CWorker_Convert_Items_Empty)
         {
             config::CConfig m_Config;

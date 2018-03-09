@@ -120,7 +120,6 @@ namespace BatchEncoderCoreUnitTests
     public:
         bool ReadLoop(IWorkerContext* ctx, IPipe* Stdin)
         {
-
             return true;
         }
     };

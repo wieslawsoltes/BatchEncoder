@@ -17,5 +17,17 @@ namespace BatchEncoderCoreUnitTests
             worker::CLuaProgess m_Progess;
             #pragma warning(pop)
         }
+
+        TEST_METHOD(CLuaProgess_Open)
+        {
+        }
+
+        TEST_METHOD(CLuaProgess_Init)
+        {
+        }
+
+        TEST_METHOD(CLuaProgess_GetProgress)
+        {
+        }
     };
 }
