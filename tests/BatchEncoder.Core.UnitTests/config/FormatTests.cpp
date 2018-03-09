@@ -32,10 +32,10 @@ namespace BatchEncoderCoreUnitTests
         TEST_METHOD(CFormat_FromInt)
         {
             config::FormatType encoder = config::CFormat::FromInt(0);
-            Assert::ItTrue(config::FormatType::Encoder == encoder);
+            Assert::IsTrue(config::FormatType::Encoder == encoder);
 
             config::FormatType decoder = config::CFormat::FromInt(1);
-            Assert::ItTrue(config::FormatType::Decoder == decoder);
+            Assert::IsTrue(config::FormatType::Decoder == decoder);
         }
 
         TEST_METHOD(CFormat_IsUniqueId)
