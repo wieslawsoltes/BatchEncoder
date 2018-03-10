@@ -24,14 +24,14 @@ namespace config
     public:
         std::wstring szId;
         std::wstring szName;
+        FormatType nType;
+        int nPriority;
         std::wstring szTemplate;
         bool bPipeInput;
         bool bPipeOutput;
         std::wstring szFunction;
         std::wstring szPath;
         int nExitCodeSuccess;
-        FormatType nType;
-        int nPriority;
         std::wstring szInputExtensions;
         std::wstring szOutputExtension;
         size_t nDefaultPreset;
