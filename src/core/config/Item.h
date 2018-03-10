@@ -35,11 +35,11 @@ namespace config
             this->nPreviousProgress = 0;
         }
     public:
-        static bool CompareName(const CItem& a, const CItem& b)
+        static inline bool CompareName(const CItem& a, const CItem& b)
         {
             return a.szName < b.szName;
         };
-        static void Sort(std::vector<CItem>& items)
+        static inline void Sort(std::vector<CItem>& items)
         {
             std::stable_sort(items.begin(), items.end(), &CompareName);
         }

@@ -46,7 +46,7 @@ namespace config
             return static_cast<FormatType>(value);
         }
     public:
-        static inline inline int CountUniqueIds(const std::vector<CFormat>& formats, const std::wstring& id)
+        static inline int CountUniqueIds(const std::vector<CFormat>& formats, const std::wstring& id)
         {
             auto predicate = [&id](const CFormat& format)
             {
@@ -54,7 +54,7 @@ namespace config
             };
             return std::count_if(formats.begin(), formats.end(), predicate);
         }
-        static inline inline int CountUniqueNames(const std::vector<CFormat>& formats, const std::wstring& name)
+        static inline int CountUniqueNames(const std::vector<CFormat>& formats, const std::wstring& name)
         {
             auto predicate = [&name](const CFormat& format)
             {

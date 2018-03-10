@@ -15,11 +15,11 @@ namespace config
         std::wstring szPath;
         unsigned __int64 nSize;
     public:
-        static bool ComparePath(const CPath& a, const CPath& b)
+        static inline bool ComparePath(const CPath& a, const CPath& b)
         {
             return a.szPath < b.szPath;
         };
-        static void Sort(std::vector<CPath>& paths)
+        static inline void Sort(std::vector<CPath>& paths)
         {
             std::stable_sort(paths.begin(), paths.end(), &ComparePath);
         }

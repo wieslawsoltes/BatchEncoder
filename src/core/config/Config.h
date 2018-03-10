@@ -1157,7 +1157,7 @@ namespace config
             return L"??";
         }
     public:
-        static int FindTool(std::vector<config::CTool>& m_Tools, const std::wstring& szPlatform, const std::wstring& szFormatId)
+        static inline int FindTool(std::vector<config::CTool>& m_Tools, const std::wstring& szPlatform, const std::wstring& szFormatId)
         {
             int nTool = config::CTool::GetToolByFormatAndPlatform(m_Tools, szFormatId, szPlatform);
             if (nTool >= 0)
@@ -1166,7 +1166,7 @@ namespace config
             }
             return -1;
         }
-        static int FindTool(std::vector<config::CTool>& m_Tools, const std::wstring& szFormatId)
+        static inline int FindTool(std::vector<config::CTool>& m_Tools, const std::wstring& szFormatId)
         {
             const std::wstring szPlatformX86 = L"x86";
             const std::wstring szPlatformX64 = L"x64";
@@ -1179,7 +1179,7 @@ namespace config
             return nTool;
 #endif
         }
-        static void SetFormatPaths(std::vector<config::CFormat>& m_Formats, std::vector<config::CTool>& m_Tools, const std::wstring& szPlatform)
+        static inline void SetFormatPaths(std::vector<config::CFormat>& m_Formats, std::vector<config::CTool>& m_Tools, const std::wstring& szPlatform)
         {
             size_t nFormats = m_Formats.size();
             for (size_t i = 0; i < nFormats; i++)
@@ -1193,7 +1193,7 @@ namespace config
                 }
             }
         }
-        static void SetFormatPaths(std::vector<config::CFormat>& m_Formats, std::vector<config::CTool>& m_Tools, std::function<bool(int, config::CTool&)> filter)
+        static inline void SetFormatPaths(std::vector<config::CFormat>& m_Formats, std::vector<config::CTool>& m_Tools, std::function<bool(int, config::CTool&)> filter)
         {
             size_t nTools = m_Tools.size();
             size_t nFormats = m_Formats.size();
