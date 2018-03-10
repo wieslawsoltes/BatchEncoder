@@ -11,6 +11,21 @@ namespace BatchEncoderCoreUnitTests
 {
     TEST_CLASS(CTool_Tests)
     {
+        std::vector<config::CTool> tools
+        {
+            { L"mp2enc_x86", L"x86", 0 },
+            { L"mp2enc_x64", L"x64", 0 },
+            { L"mp3enc_x86", L"x86", 0 },
+            { L"mp3enc_x64", L"x64", 0 },
+            { L"mp4enc_x86", L"x86", 0 },
+            { L"mp4enc_x64", L"x64", 0 },
+            { L"mp2dec_x86", L"x86", 0 },
+            { L"mp2dec_x64", L"x64", 0 },
+            { L"mp3dec_x86", L"x86", 0 },
+            { L"mp3dec_x64", L"x64", 0 },
+            { L"mp4dec_x86", L"x86", 0 },
+            { L"mp4dec_x64", L"x64", 0 }
+        };
     public:
         TEST_METHOD(CTool_Constructor)
         {
@@ -22,16 +37,6 @@ namespace BatchEncoderCoreUnitTests
 
         TEST_METHOD(CTool_IsUniqueName)
         {
-            std::vector<config::CTool> tools
-            {
-                { L"mp2enc_x86" },
-                { L"mp3enc_x86" },
-                { L"mp4enc_x86" },
-                { L"mp2dec_x86" },
-                { L"mp3dec_x86" },
-                { L"mp4dec_x86" }
-            };
-
             bool isUniqueCaseSensitive = config::CTool::IsUniqueName(tools, L"MP2ENC_X86");
             Assert::AreEqual(false, isUniqueCaseSensitive);
 
@@ -41,16 +46,6 @@ namespace BatchEncoderCoreUnitTests
 
         TEST_METHOD(CTool_AreNamesUnique)
         {
-            std::vector<config::CTool> tools
-            {
-                { L"mp2enc_x86" },
-                { L"mp3enc_x86" },
-                { L"mp4enc_x86" },
-                { L"mp2dec_x86" },
-                { L"mp3dec_x86" },
-                { L"mp4dec_x86" }
-            };
-
             bool areUnique = config::CTool::AreNamesUnique(tools);
             Assert::AreEqual(true, areUnique);
         }
