@@ -20,11 +20,42 @@ namespace BatchEncoderCoreUnitTests
             #pragma warning(pop)
         }
 
-        TEST_METHOD(CTool_GetToolByFormatAndPlatform)
+        TEST_METHOD(CTool_IsUniqueName)
         {
+            std::vector<config::CTool> tools
+            {
+                { L"mp2enc_x86" },
+                { L"mp3enc_x86" },
+                { L"mp4enc_x86" },
+                { L"mp2dec_x86" },
+                { L"mp3dec_x86" },
+                { L"mp4dec_x86" }
+            };
+
+            bool isUniqueCaseSensitive = config::CTool::IsUniqueName(tools, L"MP2ENC_X86");
+            Assert::AreEqual(false, isUniqueCaseSensitive);
+
+            bool isUnique = config::CTool::IsUniqueName(tools, L"ac3enc_x86");
+            Assert::AreEqual(true, isUnique);
         }
 
-        TEST_METHOD(CTool_GetToolByFormat)
+        TEST_METHOD(CTool_AreNamesUnique)
+        {
+            std::vector<config::CTool> tools
+            {
+                { L"mp2enc_x86" },
+                { L"mp3enc_x86" },
+                { L"mp4enc_x86" },
+                { L"mp2dec_x86" },
+                { L"mp3dec_x86" },
+                { L"mp4dec_x86" }
+            };
+
+            bool areUnique = config::CTool::AreNamesUnique(tools);
+            Assert::AreEqual(true, areUnique);
+        }
+
+        TEST_METHOD(CTool_GetToolByName)
         {
         }
 
@@ -32,11 +63,11 @@ namespace BatchEncoderCoreUnitTests
         {
         }
 
-        TEST_METHOD(CTool_GetToolByName)
+        TEST_METHOD(CTool_GetToolByFormat)
         {
         }
 
-        TEST_METHOD(CTool_IsUniqueName)
+        TEST_METHOD(CTool_GetToolByFormatAndPlatform)
         {
         }
 

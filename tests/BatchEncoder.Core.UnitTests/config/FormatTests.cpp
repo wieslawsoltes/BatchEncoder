@@ -40,10 +40,72 @@ namespace BatchEncoderCoreUnitTests
 
         TEST_METHOD(CFormat_IsUniqueId)
         {
+            std::vector<config::CFormat> formats
+            {
+                { L"MP2_ENC" },
+                { L"MP3_ENC" },
+                { L"MP4_ENC" },
+                { L"MP2_DEC" },
+                { L"MP3_DEC" },
+                { L"MP4_DEC" }
+            };
+
+            bool isUniqueCaseSensitive = config::CFormat::IsUniqueId(formats, L"mp3_enc");
+            Assert::AreEqual(false, isUniqueCaseSensitive);
+
+            bool isUnique = config::CFormat::IsUniqueId(formats, L"AC3_ENC");
+            Assert::AreEqual(true, isUnique);
         }
 
         TEST_METHOD(CFormat_IsUniqueName)
         {
+            std::vector<config::CFormat> formats
+            {
+                { L"MP2_ENC", L"MP2 Encoder" },
+                { L"MP3_ENC", L"MP3 Encoder" },
+                { L"MP4_ENC", L"MP4 Encoder" },
+                { L"MP2_DEC", L"MP2 Decoder" },
+                { L"MP3_DEC", L"MP3 Decoder" },
+                { L"MP4_DEC", L"MP4 Decoder" }
+            };
+
+            bool isUniqueCaseSensitive = config::CFormat::IsUniqueName(formats, L"mp2 encoder");
+            Assert::AreEqual(false, isUniqueCaseSensitive);
+
+            bool isUnique = config::CFormat::IsUniqueName(formats, L"AC3 Encoder");
+            Assert::AreEqual(true, isUnique);
+        }
+
+        TEST_METHOD(CFormat_AreIdsUnique)
+        {
+            std::vector<config::CFormat> formats
+            {
+                { L"MP2_ENC" },
+                { L"MP3_ENC" },
+                { L"MP4_ENC" },
+                { L"MP2_DEC" },
+                { L"MP3_DEC" },
+                { L"MP4_DEC" }
+            };
+
+            bool areUnique = config::CFormat::AreIdsUnique(formats);
+            Assert::AreEqual(true, areUnique);
+        }
+
+        TEST_METHOD(CFormat_AreNamesUnique)
+        {
+            std::vector<config::CFormat> formats
+            {
+                { L"MP2_ENC", L"MP2 Encoder" },
+                { L"MP3_ENC", L"MP3 Encoder" },
+                { L"MP4_ENC", L"MP4 Encoder" },
+                { L"MP2_DEC", L"MP2 Decoder" },
+                { L"MP3_DEC", L"MP3 Decoder" },
+                { L"MP4_DEC", L"MP4 Decoder" }
+            };
+
+            bool areUnique = config::CFormat::AreNamesUnique(formats);
+            Assert::AreEqual(true, areUnique);
         }
 
         TEST_METHOD(CFormat_GetFormatById)

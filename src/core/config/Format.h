@@ -37,26 +37,58 @@ namespace config
         size_t nDefaultPreset;
         std::vector<CPreset> m_Presets;
     public:
-        static int ToInt(const FormatType value)
+        static inline int ToInt(const FormatType value)
         {
             return static_cast<int>(value);
         }
-        static FormatType FromInt(int value)
+        static inline FormatType FromInt(int value)
         {
             return static_cast<FormatType>(value);
         }
     public:
-        static bool IsUniqueId(const std::vector<CFormat>& formats, const std::wstring& id)
+        static inline inline int CountUniqueIds(const std::vector<CFormat>& formats, const std::wstring& id)
         {
-            auto predicate = [&id](const CFormat& format) { return format.szId == id; };
-            return std::count_if(formats.begin(), formats.end(), predicate) == 0;
+            auto predicate = [&id](const CFormat& format)
+            {
+                return util::string::CompareNoCase(format.szId, id);
+            };
+            return std::count_if(formats.begin(), formats.end(), predicate);
         }
-        static bool IsUniqueName(const std::vector<CFormat>& formats, const std::wstring& name)
+        static inline inline int CountUniqueNames(const std::vector<CFormat>& formats, const std::wstring& name)
         {
-            auto predicate = [&name](const CFormat& format) { return format.szName == name; };
-            return std::count_if(formats.begin(), formats.end(), predicate) == 0;
+            auto predicate = [&name](const CFormat& format)
+            {
+                return util::string::CompareNoCase(format.szName, name);
+            };
+            return std::count_if(formats.begin(), formats.end(), predicate);
         }
-        static size_t GetFormatById(const std::vector<CFormat>& formats, const std::wstring& szFormatId)
+        static inline bool IsUniqueId(const std::vector<CFormat>& formats, const std::wstring& id)
+        {
+            return CountUniqueIds(formats, id) == 0;
+        }
+        static inline bool IsUniqueName(const std::vector<CFormat>& formats, const std::wstring& name)
+        {          
+            return CountUniqueNames(formats, name) == 0;
+        }
+        static inline bool AreIdsUnique(const std::vector<CFormat>& formats)
+        {
+            for (const auto& format : formats)
+            {
+                if (CountUniqueIds(formats, format.szId) != 1)
+                    return false;
+            }
+            return true;
+        }
+        static inline bool AreNamesUnique(const std::vector<CFormat>& formats)
+        {
+            for (const auto& format : formats)
+            {
+                if (CountUniqueNames(formats, format.szName) != 1)
+                    return false;
+            }
+            return true;
+        }
+        static inline size_t GetFormatById(const std::vector<CFormat>& formats, const std::wstring& szFormatId)
         {
             size_t nFormats = formats.size();
             for (size_t i = 0; i < nFormats; i++)
@@ -67,7 +99,7 @@ namespace config
             }
             return -1;
         }
-        static size_t GetDecoderByExtension(const std::vector<CFormat>& formats, const std::wstring& szExt)
+        static inline size_t GetDecoderByExtension(const std::vector<CFormat>& formats, const std::wstring& szExt)
         {
             size_t nFormats = formats.size();
             for (size_t i = 0; i < nFormats; i++)
@@ -78,7 +110,7 @@ namespace config
             }
             return -1;
         }
-        static size_t GetDecoderByExtensionAndFormat(const std::vector<CFormat>& formats, const std::wstring& szExt, const CFormat& ef)
+        static inline size_t GetDecoderByExtensionAndFormat(const std::vector<CFormat>& formats, const std::wstring& szExt, const CFormat& ef)
         {
             size_t nFormats = formats.size();
             for (size_t i = 0; i < nFormats; i++)
@@ -93,11 +125,11 @@ namespace config
             }
             return -1;
         }
-        static bool IsValidInputExtension(const std::wstring& szInputExtensions, const std::wstring& szExt)
+        static inline bool IsValidInputExtension(const std::wstring& szInputExtensions, const std::wstring& szExt)
         {
             return util::string::ContainsNoCase(szInputExtensions, szExt, token);
         }
-        static bool IsValidInputExtension(const std::vector<CFormat>& formats, const std::wstring& szExt)
+        static inline bool IsValidInputExtension(const std::vector<CFormat>& formats, const std::wstring& szExt)
         {
             size_t nFormats = formats.size();
             for (size_t i = 0; i < nFormats; i++)
@@ -109,19 +141,19 @@ namespace config
             return false;
         }
     public:
-        static bool CompareName(const CFormat& a, const CFormat& b)
+        static inline bool CompareName(const CFormat& a, const CFormat& b)
         {
             return a.szName < b.szName;
         };
-        static bool CompareType(const CFormat& a, const CFormat& b)
+        static inline bool CompareType(const CFormat& a, const CFormat& b)
         {
             return a.nType < b.nType;
         };
-        static bool ComparePriority(const CFormat& a, const CFormat& b)
+        static inline bool ComparePriority(const CFormat& a, const CFormat& b)
         {
             return a.nPriority > b.nPriority;
         };
-        static void Sort(std::vector<CFormat>& formats)
+        static inline void Sort(std::vector<CFormat>& formats)
         {
             std::stable_sort(formats.begin(), formats.end(), &CompareName);
             std::stable_sort(formats.begin(), formats.end(), &ComparePriority);

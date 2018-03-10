@@ -26,12 +26,28 @@ namespace config
         std::wstring szPath;
         std::wstring szStatus;
     public:
-        static bool IsUniqueName(const std::vector<CTool>& tools, const std::wstring& name)
+        static inline int CountUniqueNames(const std::vector<CTool>& tools, const std::wstring& name)
         {
-            auto predicate = [&name](const CTool& tool) { return tool.szName == name; };
-            return std::count_if(tools.begin(), tools.end(), predicate) == 0;
+            auto predicate = [&name](const CTool& tool)
+            {
+                return util::string::CompareNoCase(tool.szName, name);
+            };
+            return std::count_if(tools.begin(), tools.end(), predicate);
         }
-        static size_t GetToolByName(const std::vector<CTool>& tools, const std::wstring& szName)
+        static inline bool IsUniqueName(const std::vector<CTool>& tools, const std::wstring& name)
+        {
+            return CountUniqueNames(tools, name) == 0;
+        }
+        static inline bool AreNamesUnique(const std::vector<CTool>& tools)
+        {
+            for (const auto& tool : tools)
+            {
+                if (CountUniqueNames(tools, tool.szName) != 1)
+                    return false;
+            }
+            return true;
+        }
+        static inline size_t GetToolByName(const std::vector<CTool>& tools, const std::wstring& szName)
         {
             size_t nTools = tools.size();
             for (size_t i = 0; i < nTools; i++)
@@ -42,7 +58,7 @@ namespace config
             }
             return -1;
         }
-        static size_t GetToolByPath(const std::vector<CTool>& tools, const std::wstring& szPath)
+        static inline size_t GetToolByPath(const std::vector<CTool>& tools, const std::wstring& szPath)
         {
             size_t nTools = tools.size();
             for (size_t i = 0; i < nTools; i++)
@@ -53,7 +69,7 @@ namespace config
             }
             return -1;
         }
-        static size_t GetToolByFormat(const std::vector<CTool>& tools, const std::wstring& szFormat)
+        static inline size_t GetToolByFormat(const std::vector<CTool>& tools, const std::wstring& szFormat)
         {
             size_t nTools = tools.size();
             for (size_t i = 0; i < nTools; i++)
@@ -64,7 +80,7 @@ namespace config
             }
             return -1;
         }
-        static size_t GetToolByFormatAndPlatform(const std::vector<CTool>& tools, const std::wstring& szFormat, const std::wstring& szPlatform)
+        static inline size_t GetToolByFormatAndPlatform(const std::vector<CTool>& tools, const std::wstring& szFormat, const std::wstring& szPlatform)
         {
             size_t nTools = tools.size();
             for (size_t i = 0; i < nTools; i++)
@@ -75,11 +91,11 @@ namespace config
             }
             return -1;
         }
-        static bool IsValidFormat(const std::wstring& szFormats, const std::wstring& szFormat)
+        static inline bool IsValidFormat(const std::wstring& szFormats, const std::wstring& szFormat)
         {
             return util::string::ContainsNoCase(szFormats, szFormat, token);
         }
-        static bool IsValidFormat(const std::vector<CTool>& tools, const std::wstring& szFormat)
+        static inline bool IsValidFormat(const std::vector<CTool>& tools, const std::wstring& szFormat)
         {
             size_t nTools = tools.size();
             for (size_t i = 0; i < nTools; i++)
@@ -91,15 +107,15 @@ namespace config
             return false;
         }
     public:
-        static bool CompareName(const CTool& a, const CTool& b)
+        static inline bool CompareName(const CTool& a, const CTool& b)
         {
             return a.szName < b.szName;
         };
-        static bool ComparePriority(const CTool& a, const CTool& b)
+        static inline bool ComparePriority(const CTool& a, const CTool& b)
         {
             return a.nPriority > b.nPriority;
         };
-        static void Sort(std::vector<CTool>& tools)
+        static inline void Sort(std::vector<CTool>& tools)
         {
             std::stable_sort(tools.begin(), tools.end(), &CompareName);
             std::stable_sort(tools.begin(), tools.end(), &ComparePriority);
