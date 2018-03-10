@@ -86,9 +86,8 @@ namespace dialogs
                 ::SendMessage(hWndBtnRecurse, WM_SETFONT, (WPARAM)hFont, MAKELPARAM(TRUE, 0));
             }
 
-            TCHAR szPath[MAX_PATH + 1] = _T("");
-            wsprintf(szPath, _T("%s\0"), szLastDirectoryBrowse);
-            ::SendMessage(hWnd, BFFM_SETSELECTION, TRUE, (LPARAM)szPath);
+            std::wstring szPath = szLastDirectoryBrowse;
+            ::SendMessage(hWnd, BFFM_SETSELECTION, TRUE, (LPARAM)szPath.c_str());
         }
         return(0);
     }
@@ -135,9 +134,8 @@ namespace dialogs
                 ::SendMessage(hWndStaticText, WM_SETFONT, (WPARAM)hFont, MAKELPARAM(TRUE, 0));
             }
 
-            TCHAR szPath[MAX_PATH + 1] = _T("");
-            wsprintf(szPath, _T("%s\0"), szLastOutputBrowse);
-            ::SendMessage(hWnd, BFFM_SETSELECTION, TRUE, (LPARAM)szPath);
+            std::wstring szPath = szLastOutputBrowse;
+            ::SendMessage(hWnd, BFFM_SETSELECTION, TRUE, (LPARAM)szPath.c_str());
         }
         return(0);
     }
@@ -1024,7 +1022,8 @@ namespace dialogs
         {
             try
             {
-                std::array<TCHAR, (768*(MAX_PATH+1))+1> buffer { 0 };
+                int nSize = (768 * (MAX_PATH + 1)) + 1;
+                auto buffer = std::make_unique<TCHAR[]>(nSize);
 
                 CString szFilter;
                 szFilter.Format(_T("%s (*.*)|*.*||"),
@@ -1035,8 +1034,8 @@ namespace dialogs
                     szFilter,
                     this);
 
-                fd.m_ofn.lpstrFile = buffer.data();
-                fd.m_ofn.nMaxFile = buffer.size();
+                fd.m_ofn.lpstrFile = buffer.get();
+                fd.m_ofn.nMaxFile = nSize;
 
                 if (fd.DoModal() != IDCANCEL)
                 {

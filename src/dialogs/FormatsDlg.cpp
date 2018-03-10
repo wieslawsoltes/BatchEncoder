@@ -13,9 +13,8 @@ namespace dialogs
         if (uMsg == BFFM_INITIALIZED)
         {
             CFormatsDlg* pDlg = (CFormatsDlg*)pData;
-            TCHAR szPath[MAX_PATH + 1] = _T("");
-            wsprintf(szPath, _T("%s\0"), pDlg->szLastFormatsBrowse);
-            ::SendMessage(hWnd, BFFM_SETSELECTION, TRUE, (LPARAM)szPath);
+            std::wstring szPath = pDlg->szLastFormatsBrowse;
+            ::SendMessage(hWnd, BFFM_SETSELECTION, TRUE, (LPARAM)szPath.c_str());
         }
         return(0);
     }
@@ -290,8 +289,9 @@ namespace dialogs
 
     void CFormatsDlg::OnBnClickedButtonImport()
     {
-        std::array<TCHAR, (768*(MAX_PATH+1))+1> buffer { 0 };
-        
+        int nSize = (768 * (MAX_PATH + 1)) + 1;
+        auto buffer = std::make_unique<TCHAR[]>(nSize);
+
         CString szFilter;
         szFilter.Format(_T("%s (*.xml)|*.xml|%s (*.*)|*.*||"),
             pConfig->GetString(0x00310008).c_str(),
@@ -301,8 +301,8 @@ namespace dialogs
             OFN_ALLOWMULTISELECT | OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER,
             szFilter, this);
 
-        fd.m_ofn.lpstrFile = buffer.data();
-        fd.m_ofn.nMaxFile = buffer.size();
+        fd.m_ofn.lpstrFile = buffer.get();
+        fd.m_ofn.nMaxFile = nSize;
 
         if (fd.DoModal() == IDOK)
         {

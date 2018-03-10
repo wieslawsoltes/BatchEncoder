@@ -26,7 +26,9 @@ namespace worker
             wcscpy_s(this->szInputFile, szInputFile);
 
             // make full path
-            _wfullpath(this->szInputFilePath, this->szInputFile, _MAX_PATH);
+            wchar_t *absPath = _wfullpath(this->szInputFilePath, this->szInputFile, _MAX_PATH);
+            if (absPath == nullptr)
+                throw "Failed to create an absolute or full path name.";
 
             // split full path
             _wsplitpath_s(this->szInputFilePath, this->szInputDrive, this->szInputDir, this->szInputName, this->szInputExt);

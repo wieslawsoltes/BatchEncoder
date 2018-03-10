@@ -48,7 +48,7 @@ namespace worker
                 // no variables are present and string is not empty e.g.: "C:\Output", "C:\Output\" or relative path
                 if (szOutputFile.find('$') == std::wstring::npos)
                 {
-                    wchar_t szValidPath[_MAX_PATH];
+                    wchar_t szValidPath[_MAX_PATH]{ 0 };
                     _wmakepath_s(szValidPath, nullptr, szOutputFile.c_str(), nullptr, nullptr);
                     szOutputFile = szValidPath;
                     szOutputFile += VAR_OUTPUT_RELATIVE;
@@ -85,7 +85,10 @@ namespace worker
 
             // make valid full path
             wchar_t szValidOutputFile[_MAX_PATH];
-            _wfullpath(szValidOutputFile, szOutputFile.c_str(), _MAX_PATH);
+            wchar_t *absPath = _wfullpath(szValidOutputFile, szOutputFile.c_str(), _MAX_PATH);
+            if (absPath == nullptr)
+                throw "Failed to create an absolute or full path name.";
+
             szOutputFile = szValidOutputFile;
 
             return szOutputFile;

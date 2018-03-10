@@ -55,9 +55,9 @@ namespace config::xml
         }
         static bool Open(const std::wstring& szFileName, XmlDocumnent & doc)
         {
-            FILE *fs;
+            FILE *fs = nullptr;
             errno_t error = _wfopen_s(&fs, szFileName.c_str(), L"rb");
-            if (error != 0)
+            if (error != 0 || fs == nullptr)
                 return false;
 
             tinyxml2::XMLError result = doc.LoadFile(fs);
@@ -72,9 +72,9 @@ namespace config::xml
         }
         static bool Save(const std::wstring& szFileName, XmlDocumnent & doc)
         {
-            FILE *fs;
+            FILE *fs = nullptr;
             errno_t error = _wfopen_s(&fs, szFileName.c_str(), L"wt");
-            if (error != 0)
+            if (error != 0 || fs == nullptr)
                 return false;
 
             fputc(0xefU, fs);

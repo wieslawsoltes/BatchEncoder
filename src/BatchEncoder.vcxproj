@@ -22,32 +22,32 @@
     <ProjectGuid>{746662AD-C2A1-43B7-87D2-BC45FE80B52B}</ProjectGuid>
     <RootNamespace>BatchEncoder</RootNamespace>
     <Keyword>MFCProj</Keyword>
-    <WindowsTargetPlatformVersion>7.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
-    <PlatformToolset>v141_xp</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <UseOfMfc>Static</UseOfMfc>
     <CharacterSet>Unicode</CharacterSet>
     <WholeProgramOptimization>true</WholeProgramOptimization>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
-    <PlatformToolset>v141_xp</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <UseOfMfc>Static</UseOfMfc>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
-    <PlatformToolset>v141_xp</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <UseOfMfc>Static</UseOfMfc>
     <CharacterSet>Unicode</CharacterSet>
     <WholeProgramOptimization>true</WholeProgramOptimization>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
-    <PlatformToolset>v141_xp</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <UseOfMfc>Static</UseOfMfc>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
@@ -78,25 +78,21 @@
     <OutDir>bin\$(Configuration)\$(Platform)\</OutDir>
     <IntDir>obj\$(Configuration)\$(Platform)\</IntDir>
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(VC_IncludePath);$(WindowsSdk_71A_IncludePath);</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>bin\$(Configuration)\$(Platform)\</OutDir>
     <IntDir>obj\$(Configuration)\$(Platform)\</IntDir>
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(IncludePath);$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>bin\$(Configuration)\$(Platform)\</OutDir>
     <IntDir>obj\$(Configuration)\$(Platform)\</IntDir>
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(VC_IncludePath);$(WindowsSdk_71A_IncludePath);</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>bin\$(Configuration)\$(Platform)\</OutDir>
     <IntDir>obj\$(Configuration)\$(Platform)\</IntDir>
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(IncludePath);$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Midl>
