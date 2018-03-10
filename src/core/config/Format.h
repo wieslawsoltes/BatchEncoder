@@ -26,14 +26,16 @@ namespace config
         std::wstring szName;
         FormatType nType;
         int nPriority;
+        std::wstring szInputExtensions;
+        std::wstring szOutputExtension;
+    public:
         std::wstring szTemplate;
         bool bPipeInput;
         bool bPipeOutput;
         std::wstring szFunction;
         std::wstring szPath;
         int nExitCodeSuccess;
-        std::wstring szInputExtensions;
-        std::wstring szOutputExtension;
+    public:
         size_t nDefaultPreset;
         std::vector<CPreset> m_Presets;
     public:
@@ -99,6 +101,21 @@ namespace config
             }
             return -1;
         }
+        static inline bool IsValidInputExtension(const std::wstring& szInputExtensions, const std::wstring& szExt)
+        {
+            return util::string::ContainsNoCase(szInputExtensions, szExt, token);
+        }
+        static inline bool IsValidInputExtension(const std::vector<CFormat>& formats, const std::wstring& szExt)
+        {
+            size_t nFormats = formats.size();
+            for (size_t i = 0; i < nFormats; i++)
+            {
+                const CFormat& format = formats[i];
+                if (IsValidInputExtension(format.szInputExtensions, szExt) == true)
+                    return true;
+            }
+            return false;
+        }
         static inline size_t GetDecoderByExtension(const std::vector<CFormat>& formats, const std::wstring& szExt)
         {
             size_t nFormats = formats.size();
@@ -124,21 +141,6 @@ namespace config
                 }
             }
             return -1;
-        }
-        static inline bool IsValidInputExtension(const std::wstring& szInputExtensions, const std::wstring& szExt)
-        {
-            return util::string::ContainsNoCase(szInputExtensions, szExt, token);
-        }
-        static inline bool IsValidInputExtension(const std::vector<CFormat>& formats, const std::wstring& szExt)
-        {
-            size_t nFormats = formats.size();
-            for (size_t i = 0; i < nFormats; i++)
-            {
-                const CFormat& format = formats[i];
-                if (IsValidInputExtension(format.szInputExtensions, szExt) == true)
-                    return true;
-            }
-            return false;
         }
     public:
         static inline bool CompareName(const CFormat& a, const CFormat& b)

@@ -20,6 +20,7 @@ namespace config
         std::wstring szPlatform;
         int nPriority;
         std::wstring szFormats;
+    public:
         std::wstring szUrl;
         std::wstring szFile;
         std::wstring szExtract;
@@ -58,6 +59,21 @@ namespace config
             }
             return -1;
         }
+        static inline bool IsValidFormat(const std::wstring& szFormats, const std::wstring& szFormat)
+        {
+            return util::string::ContainsNoCase(szFormats, szFormat, token);
+        }
+        static inline bool IsValidFormat(const std::vector<CTool>& tools, const std::wstring& szFormat)
+        {
+            size_t nTools = tools.size();
+            for (size_t i = 0; i < nTools; i++)
+            {
+                const CTool& tool = tools[i];
+                if (IsValidFormat(tool.szFormats, szFormat) == true)
+                    return true;
+            }
+            return false;
+        }
         static inline size_t GetToolByPath(const std::vector<CTool>& tools, const std::wstring& szPath)
         {
             size_t nTools = tools.size();
@@ -90,21 +106,6 @@ namespace config
                     return i;
             }
             return -1;
-        }
-        static inline bool IsValidFormat(const std::wstring& szFormats, const std::wstring& szFormat)
-        {
-            return util::string::ContainsNoCase(szFormats, szFormat, token);
-        }
-        static inline bool IsValidFormat(const std::vector<CTool>& tools, const std::wstring& szFormat)
-        {
-            size_t nTools = tools.size();
-            for (size_t i = 0; i < nTools; i++)
-            {
-                const CTool& tool = tools[i];
-                if (IsValidFormat(tool.szFormats, szFormat) == true)
-                    return true;
-            }
-            return false;
         }
     public:
         static inline bool CompareName(const CTool& a, const CTool& b)

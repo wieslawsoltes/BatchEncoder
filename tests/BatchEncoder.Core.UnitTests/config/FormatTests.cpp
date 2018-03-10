@@ -13,12 +13,12 @@ namespace BatchEncoderCoreUnitTests
     {
         std::vector<config::CFormat> formats
         {
-            { L"MP2_ENC", L"MP2 Encoder", config::FormatType::Encoder, 0 },
-            { L"MP3_ENC", L"MP3 Encoder", config::FormatType::Encoder, 0 },
-            { L"MP4_ENC", L"MP4 Encoder", config::FormatType::Encoder, 0 },
-            { L"MP2_DEC", L"MP2 Decoder", config::FormatType::Decoder, 0 },
-            { L"MP3_DEC", L"MP3 Decoder", config::FormatType::Decoder, 0 },
-            { L"MP4_DEC", L"MP4 Decoder", config::FormatType::Decoder, 0 }
+            { L"MP2_ENC", L"MP2 Encoder", config::FormatType::Encoder, 0, L"WAV", L"MP2" },
+            { L"MP3_ENC", L"MP3 Encoder", config::FormatType::Encoder, 0, L"WAV", L"MP3" },
+            { L"MP4_ENC", L"MP4 Encoder", config::FormatType::Encoder, 0, L"WAV", L"MP4" },
+            { L"MP2_DEC", L"MP2 Decoder", config::FormatType::Decoder, 0, L"MP2", L"WAV" },
+            { L"MP3_DEC", L"MP3 Decoder", config::FormatType::Decoder, 0, L"MP3", L"WAV" },
+            { L"MP4_DEC", L"MP4 Decoder", config::FormatType::Decoder, 0, L"MP4", L"WAV" }
         };
     public:
         TEST_METHOD(CFormat_Constructor)
@@ -79,14 +79,11 @@ namespace BatchEncoderCoreUnitTests
 
         TEST_METHOD(CFormat_GetFormatById)
         {
-        }
+            int index = config::CFormat::GetFormatById(formats, L"MP4_ENC");
+            Assert::AreEqual(2, index);
 
-        TEST_METHOD(CFormat_GetDecoderByExtension)
-        {
-        }
-
-        TEST_METHOD(CFormat_GetDecoderByExtensionAndFormat)
-        {
+            const auto& format = formats[index];
+            Assert::AreEqual(L"MP4_ENC", format.szId.c_str());
         }
 
         TEST_METHOD(CFormat_IsValidInputExtension_string)
@@ -94,6 +91,14 @@ namespace BatchEncoderCoreUnitTests
         }
 
         TEST_METHOD(CFormat_IsValidInputExtension_vector)
+        {
+        }
+
+        TEST_METHOD(CFormat_GetDecoderByExtension)
+        {
+        }
+
+        TEST_METHOD(CFormat_GetDecoderByExtensionAndFormat)
         {
         }
 

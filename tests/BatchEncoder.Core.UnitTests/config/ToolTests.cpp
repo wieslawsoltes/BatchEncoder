@@ -13,18 +13,18 @@ namespace BatchEncoderCoreUnitTests
     {
         std::vector<config::CTool> tools
         {
-            { L"mp2enc_x86", L"x86", 0 },
-            { L"mp2enc_x64", L"x64", 0 },
-            { L"mp3enc_x86", L"x86", 0 },
-            { L"mp3enc_x64", L"x64", 0 },
-            { L"mp4enc_x86", L"x86", 0 },
-            { L"mp4enc_x64", L"x64", 0 },
-            { L"mp2dec_x86", L"x86", 0 },
-            { L"mp2dec_x64", L"x64", 0 },
-            { L"mp3dec_x86", L"x86", 0 },
-            { L"mp3dec_x64", L"x64", 0 },
-            { L"mp4dec_x86", L"x86", 0 },
-            { L"mp4dec_x64", L"x64", 0 }
+            { L"mp2enc_x86", L"x86", 0, L"MP2_ENC" },
+            { L"mp2enc_x64", L"x64", 0, L"MP2_ENC" },
+            { L"mp3enc_x86", L"x86", 0, L"MP3_ENC" },
+            { L"mp3enc_x64", L"x64", 0, L"MP3_ENC" },
+            { L"mp4enc_x86", L"x86", 0, L"MP4_ENC" },
+            { L"mp4enc_x64", L"x64", 0, L"MP4_ENC" },
+            { L"mp2dec_x86", L"x86", 0, L"MP2_DEC" },
+            { L"mp2dec_x64", L"x64", 0, L"MP2_DEC" },
+            { L"mp3dec_x86", L"x86", 0, L"MP3_DEC" },
+            { L"mp3dec_x64", L"x64", 0, L"MP3_DEC" },
+            { L"mp4dec_x86", L"x86", 0, L"MP4_DEC" },
+            { L"mp4dec_x64", L"x64", 0, L"MP4_DEC" }
         };
     public:
         TEST_METHOD(CTool_Constructor)
@@ -52,6 +52,19 @@ namespace BatchEncoderCoreUnitTests
 
         TEST_METHOD(CTool_GetToolByName)
         {
+            int index = config::CTool::GetToolByName(tools, L"mp3enc_x86");
+            Assert::AreEqual(2, index);
+
+            const auto& tool = tools[index];
+            Assert::AreEqual(L"mp3enc_x86", tool.szName.c_str());
+        }
+
+        TEST_METHOD(CTool_IsValidFormat_string)
+        {
+        }
+
+        TEST_METHOD(CTool_IsValidFormat_vector)
+        {
         }
 
         TEST_METHOD(CTool_GetToolByPath)
@@ -63,14 +76,6 @@ namespace BatchEncoderCoreUnitTests
         }
 
         TEST_METHOD(CTool_GetToolByFormatAndPlatform)
-        {
-        }
-
-        TEST_METHOD(CTool_IsValidFormat_string)
-        {
-        }
-
-        TEST_METHOD(CTool_IsValidFormat_vector)
         {
         }
 
