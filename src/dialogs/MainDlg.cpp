@@ -2433,6 +2433,45 @@ namespace dialogs
         this->m_BtnBrowse.EnableWindow(bEnable);
     }
 
+    void CMainDlg::LoadingItems(BOOL bEnable)
+    {
+        this->m_StcOutPath.EnableWindow(bEnable);
+        this->m_CmbOutPath.EnableWindow(bEnable);
+        this->m_BtnBrowse.EnableWindow(bEnable);
+        this->m_StcThreads.EnableWindow(bEnable);
+        this->m_EdtThreads.EnableWindow(bEnable);
+        this->m_SpinThreads.EnableWindow(bEnable);
+        this->m_Progress.EnableWindow(bEnable);
+        this->m_LstInputItems.EnableWindow(bEnable);
+        this->m_BtnConvert.EnableWindow(bEnable);
+
+        CMenu* pSysMenu = GetSystemMenu(FALSE);
+        pSysMenu->EnableMenuItem(SC_CLOSE, bEnable == FALSE ? MF_GRAYED : MF_ENABLED);
+        pSysMenu = nullptr;
+
+        UINT nEnable = (bEnable == TRUE) ? MF_ENABLED : MF_GRAYED;
+        CMenu *pMainMenu = this->GetMenu();
+        UINT nItems = pMainMenu->GetMenuItemCount();
+        for (UINT i = 0; i < nItems; i++)
+        {
+            CMenu *pSubMenu = pMainMenu->GetSubMenu(i);
+            UINT nSubItems = pSubMenu->GetMenuItemCount();
+            for (UINT j = 0; j < nSubItems; j++)
+            {
+                UINT nID = pSubMenu->GetMenuItemID(j);
+                pSubMenu->EnableMenuItem(nID, nEnable);
+            }
+        }
+
+        pMainMenu = nullptr;
+
+        this->m_CmbPresets.EnableWindow(bEnable);
+        this->m_CmbFormat.EnableWindow(bEnable);
+
+        this->m_CmbOutPath.EnableWindow(bEnable);
+        this->m_BtnBrowse.EnableWindow(bEnable);
+    }
+
     void CMainDlg::StartConvert()
     {
         static volatile bool bSafeCheck = false;
