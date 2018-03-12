@@ -18,6 +18,21 @@ namespace app
 
     BOOL CMainApp::InitInstance()
     {
+        HANDLE hMutex = ::CreateMutex(nullptr, TRUE, L"BatchEncoder");
+        if (hMutex == nullptr || ::GetLastError() == ERROR_ALREADY_EXISTS)
+        {
+            if (hMutex != nullptr)
+                ::ReleaseMutex(hMutex);
+
+            HWND m_Hwnd = ::FindWindow(0, L"BatchEncoder");
+            if (m_Hwnd)
+                ::SetForegroundWindow(m_Hwnd);
+            else
+                ::MessageBox(nullptr, L"You can only run one instance of the BatchEncoder.", L"Error", MB_ICONERROR | MB_OK);
+
+            return FALSE;
+        }
+
         dialogs::CMainDlg dlg;
 
         dlg.m_Config.FileSystem = std::make_unique<worker::Win32FileSystem>();
@@ -99,6 +114,7 @@ namespace app
         dlg.m_Config.Log->Log(L"[Info] Program exited: " + szConfigMode);
         dlg.m_Config.Log->Close();
 
+        ::ReleaseMutex(hMutex);
         return FALSE;
     }
 }
