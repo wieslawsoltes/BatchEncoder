@@ -2403,10 +2403,8 @@ namespace dialogs
         }
 
         CMenu* pSysMenu = GetSystemMenu(FALSE);
-        if (bEnable == FALSE)
-            pSysMenu->EnableMenuItem(SC_CLOSE, MF_GRAYED);
-        else
-            pSysMenu->EnableMenuItem(SC_CLOSE, MF_ENABLED);
+        pSysMenu->EnableMenuItem(SC_CLOSE, bEnable == FALSE ? MF_GRAYED : MF_ENABLED);
+        pSysMenu = nullptr;
 
         pSysMenu = nullptr;
 
