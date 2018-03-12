@@ -57,10 +57,10 @@ namespace app
             if (dlg.m_Config.LoadOptions(dlg.m_Config.m_Settings.szOptionsFile) == false)
                 dlg.m_Config.m_Options.Defaults();
 
-            dlg.m_Config.LoadItems(dlg.m_Config.m_Settings.szItemsFile);
-
             dlg.m_Config.LoadLanguages(dlg.m_Config.m_Settings.szSettingsPath);
             dlg.m_Config.LoadLanguages(dlg.m_Config.m_Settings.szLanguagesPath);
+
+            dlg.m_Config.LoadItems(dlg.m_Config.m_Settings.szItemsFile);
         }
         catch (...)
         {
