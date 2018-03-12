@@ -2695,4 +2695,52 @@ namespace dialogs
         }
         return false;
     }
+
+    void CMainDlg::LoadConfig()
+    {
+        try
+        {
+            this->m_Config.nLangId = -1;
+
+            this->m_Config.LoadTools(this->m_Config.m_Settings.szToolsPath);
+            this->m_Config.LoadFormats(this->m_Config.m_Settings.szFormatsPath);
+
+            if (this->m_Config.LoadOutputs(this->m_Config.m_Settings.szOutputsFile) == false)
+                this->m_Config.m_Outputs = config::m_OutpuPathsPresets;
+
+            if (this->m_Config.LoadOptions(this->m_Config.m_Settings.szOptionsFile) == false)
+                this->m_Config.m_Options.Defaults();
+
+            this->m_Config.LoadItems(this->m_Config.m_Settings.szItemsFile);
+
+            this->m_Config.LoadLanguages(this->m_Config.m_Settings.szSettingsPath);
+            this->m_Config.LoadLanguages(this->m_Config.m_Settings.szLanguagesPath);
+        }
+        catch (...)
+        {
+            this->m_Config.Log->Log(L"[Error] Failed to load config.");
+        }
+    }
+
+    void CMainDlg::SaveConfig()
+    {
+        try
+        {
+            if (this->m_Config.m_Options.bDoNotSaveConfiguration == false)
+            {
+                this->m_Config.SaveTools(this->m_Config.m_Settings.szToolsPath);
+                this->m_Config.SaveFormats(this->m_Config.m_Settings.szFormatsPath);
+                this->m_Config.SaveOutputs(this->m_Config.m_Settings.szOutputsFile);
+
+                this->m_Config.SaveOptions(this->m_Config.m_Settings.szOptionsFile);
+
+                config::CItem::SetIds(this->m_Config.m_Items);
+                this->m_Config.SaveItems(this->m_Config.m_Settings.szItemsFile);
+            }
+        }
+        catch (...)
+        {
+            this->m_Config.Log->Log(L"[Error] Failed to save config.");
+        }
+    }
 }

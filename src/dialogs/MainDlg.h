@@ -162,5 +162,7 @@ namespace dialogs
         bool SaveItems(const std::wstring& szFileXml);
         bool LoadOutputs(config::xml::XmlDocumnent &doc);
         bool LoadLanguage(config::xml::XmlDocumnent &doc);
+        void LoadConfig();
+        void SaveConfig();
     };
 }
