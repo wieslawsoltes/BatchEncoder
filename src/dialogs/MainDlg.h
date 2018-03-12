@@ -149,7 +149,7 @@ namespace dialogs
         void ResetConvertionStatus();
         void UpdateStatusBar();
         void EnableUserInterface(BOOL bEnable = TRUE);
-        void LoadingItems(BOOL bEnable = TRUE);
+        void LoadingConfig(BOOL bEnable = TRUE);
         void StartConvert();
         void FinishConvert();
     public:

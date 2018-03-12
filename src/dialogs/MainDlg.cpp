@@ -468,15 +468,16 @@ namespace dialogs
         this->DragAcceptFiles(TRUE);
 
         // init config
+        this->LoadConfig();
         this->UpdateFormatComboBox();
         this->UpdatePresetComboBox();
         this->UpdateOutputsComboBox();
+        this->RedrawItems();
+        this->UpdateStatusBar();
         this->SetOptions();
         this->InitLanguageMenu();
         this->SetLanguage();
 
-        this->RedrawItems();
-        this->UpdateStatusBar();
         return TRUE;
     }
 
@@ -543,6 +544,11 @@ namespace dialogs
         CMyDialogEx::OnClose();
 
         this->GetOptions();
+
+        if (this->m_Config.m_Options.bDoNotSaveConfiguration == false)
+        {
+            this->SaveConfig();
+        }
 
         CMyDialogEx::OnOK();
     }
@@ -2431,7 +2437,7 @@ namespace dialogs
         this->m_BtnBrowse.EnableWindow(bEnable);
     }
 
-    void CMainDlg::LoadingItems(BOOL bEnable)
+    void CMainDlg::LoadingConfig(BOOL bEnable)
     {
         this->m_StcOutPath.EnableWindow(bEnable);
         this->m_CmbOutPath.EnableWindow(bEnable);
@@ -2574,20 +2580,11 @@ namespace dialogs
 
         if (this->m_Config.m_Options.bShutdownWhenFinished == true)
         {
+            this->GetOptions();
+
             if (this->m_Config.m_Options.bDoNotSaveConfiguration == false)
             {
-                try
-                {
-                    this->m_Config.SaveTools(this->m_Config.m_Settings.szToolsPath);
-                    this->m_Config.SaveFormats(this->m_Config.m_Settings.szFormatsPath);
-                    this->m_Config.SaveOutputs(this->m_Config.m_Settings.szOutputsFile);
-
-                    config::CItem::SetIds(this->m_Config.m_Items);
-                    this->m_Config.SaveItems(this->m_Config.m_Settings.szItemsFile);
-
-                    this->m_Config.SaveOptions(this->m_Config.m_Settings.szOptionsFile);
-                }
-                catch (...) {}
+                this->SaveConfig();
             }
 
             this->ctx->bRunning = false;
@@ -2726,17 +2723,14 @@ namespace dialogs
     {
         try
         {
-            if (this->m_Config.m_Options.bDoNotSaveConfiguration == false)
-            {
-                this->m_Config.SaveTools(this->m_Config.m_Settings.szToolsPath);
-                this->m_Config.SaveFormats(this->m_Config.m_Settings.szFormatsPath);
-                this->m_Config.SaveOutputs(this->m_Config.m_Settings.szOutputsFile);
+            this->m_Config.SaveTools(this->m_Config.m_Settings.szToolsPath);
+            this->m_Config.SaveFormats(this->m_Config.m_Settings.szFormatsPath);
+            this->m_Config.SaveOutputs(this->m_Config.m_Settings.szOutputsFile);
 
-                this->m_Config.SaveOptions(this->m_Config.m_Settings.szOptionsFile);
+            this->m_Config.SaveOptions(this->m_Config.m_Settings.szOptionsFile);
 
-                config::CItem::SetIds(this->m_Config.m_Items);
-                this->m_Config.SaveItems(this->m_Config.m_Settings.szItemsFile);
-            }
+            config::CItem::SetIds(this->m_Config.m_Items);
+            this->m_Config.SaveItems(this->m_Config.m_Settings.szItemsFile);
         }
         catch (...)
         {
