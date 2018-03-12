@@ -52,16 +52,12 @@ namespace app
             dlg.m_Config.LoadFormats(dlg.m_Config.m_Settings.szFormatsPath);
 
             if (dlg.m_Config.LoadOutputs(dlg.m_Config.m_Settings.szOutputsFile) == false)
-            {
                 dlg.m_Config.m_Outputs = config::m_OutpuPathsPresets;
-            }
-
-            dlg.m_Config.LoadItems(dlg.m_Config.m_Settings.szItemsFile)
 
             if (dlg.m_Config.LoadOptions(dlg.m_Config.m_Settings.szOptionsFile) == false)
-            {
                 dlg.m_Config.m_Options.Defaults();
-            }
+
+            dlg.m_Config.LoadItems(dlg.m_Config.m_Settings.szItemsFile);
 
             dlg.m_Config.LoadLanguages(dlg.m_Config.m_Settings.szSettingsPath);
             dlg.m_Config.LoadLanguages(dlg.m_Config.m_Settings.szLanguagesPath);
@@ -89,10 +85,10 @@ namespace app
                 dlg.m_Config.SaveFormats(dlg.m_Config.m_Settings.szFormatsPath);
                 dlg.m_Config.SaveOutputs(dlg.m_Config.m_Settings.szOutputsFile);
 
+                dlg.m_Config.SaveOptions(dlg.m_Config.m_Settings.szOptionsFile);
+
                 config::CItem::SetIds(dlg.m_Config.m_Items);
                 dlg.m_Config.SaveItems(dlg.m_Config.m_Settings.szItemsFile);
-
-                dlg.m_Config.SaveOptions(dlg.m_Config.m_Settings.szOptionsFile);
             }
         }
         catch (...)

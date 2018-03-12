@@ -33,16 +33,16 @@ namespace BatchEncoderCoreUnitTests
         config::CItem m_Item
         {
             0,
-            {
-                { L"C:\\Output\\File.WAV" }
-            },
-            1024,
             L"File",
             L"WAV",
             L"TEST_ID",
             0,
             L"",
             true,
+            1024,
+            {
+                { L"C:\\Output\\File.WAV" }
+            },
             L"", L"", false, 0, 0
         };
     public:
