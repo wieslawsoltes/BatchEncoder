@@ -471,12 +471,12 @@ namespace dialogs
         this->UpdateFormatComboBox();
         this->UpdatePresetComboBox();
         this->UpdateOutputsComboBox();
-        this->RedrawItems();
-        this->UpdateStatusBar();
         this->SetOptions();
         this->InitLanguageMenu();
         this->SetLanguage();
 
+        this->RedrawItems();
+        this->UpdateStatusBar();
         return TRUE;
     }
 
