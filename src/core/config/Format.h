@@ -69,7 +69,7 @@ namespace config
             return CountUniqueIds(formats, id) == 0;
         }
         static inline bool IsUniqueName(const std::vector<CFormat>& formats, const std::wstring& name)
-        {          
+        {
             return CountUniqueNames(formats, name) == 0;
         }
         static inline bool AreIdsUnique(const std::vector<CFormat>& formats)
