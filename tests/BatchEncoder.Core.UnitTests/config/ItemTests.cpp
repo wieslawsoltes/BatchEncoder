@@ -24,6 +24,10 @@ namespace BatchEncoderCoreUnitTests
         {
         }
 
+        TEST_METHOD(CItem_SetIds)
+        {
+        }
+
         TEST_METHOD(CItem_CompareName)
         {
         }

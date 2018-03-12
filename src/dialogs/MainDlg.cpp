@@ -467,34 +467,15 @@ namespace dialogs
         // enable drag & drop
         this->DragAcceptFiles(TRUE);
 
-        try
-        {
-            this->m_Config.nLangId = -1;
-
-            this->LoadTools(this->m_Config.m_Settings.szToolsPath);
-            this->LoadFormats(this->m_Config.m_Settings.szFormatsPath);
-
-            if (this->LoadOutputs(this->m_Config.m_Settings.szOutputsFile) == false)
-            {
-                m_Config.m_Outputs = config::m_OutpuPathsPresets;
-                this->UpdateOutputsComboBox();
-            }
-
-            if (this->LoadOptions(this->m_Config.m_Settings.szOptionsFile) == false)
-            {
-                this->m_Config.m_Options.Defaults();
-                this->SetOptions();
-                this->UpdateFormatComboBox();
-                this->UpdatePresetComboBox();
-            }
-
-            this->LoadLanguages(this->m_Config.m_Settings.szSettingsPath);
-            this->LoadLanguages(this->m_Config.m_Settings.szLanguagesPath);
-            this->InitLanguageMenu();
-            this->SetLanguage();
-            this->LoadItems(this->m_Config.m_Settings.szItemsFile);
-        }
-        catch (...) {}
+        // init config
+        this->UpdateFormatComboBox();
+        this->UpdatePresetComboBox();
+        this->UpdateOutputsComboBox();
+        this->RedrawItems();
+        this->UpdateStatusBar();
+        this->SetOptions();
+        this->InitLanguageMenu();
+        this->SetLanguage();
 
         return TRUE;
     }
@@ -561,18 +542,7 @@ namespace dialogs
     {
         CMyDialogEx::OnClose();
 
-        if (this->GetMenu()->GetMenuState(ID_OPTIONS_DO_NOT_SAVE, MF_BYCOMMAND) != MF_CHECKED)
-        {
-            try
-            {
-                this->SaveTools(this->m_Config.m_Settings.szToolsPath);
-                this->SaveFormats(this->m_Config.m_Settings.szFormatsPath);
-                this->SaveOutputs(this->m_Config.m_Settings.szOutputsFile);
-                this->SaveOptions(this->m_Config.m_Settings.szOptionsFile);
-                this->SaveItems(this->m_Config.m_Settings.szItemsFile);
-            }
-            catch (...) {}
-        }
+        this->GetOptions();
 
         CMyDialogEx::OnOK();
     }
@@ -1670,36 +1640,6 @@ namespace dialogs
         }
     }
 
-    bool CMainDlg::LoadLanguages(const std::wstring& szPath)
-    {
-        std::vector<std::wstring> files;
-        if (util::FindFiles(szPath, files, false))
-        {
-            for (auto& file : files)
-            {
-                config::xml::XmlDocumnent doc;
-                if (config::xml::XmlDoc::Open(file, doc) == true)
-                {
-                    std::string szName = config::xml::XmlDoc::GetRootName(doc);
-                    if (util::string::CompareNoCase(szName, "Language"))
-                    {
-                        config::CLanguage language;
-                        if (config::xml::XmlConfig::LoadLanguage(doc, language))
-                        {
-                            this->m_Config.m_Languages.emplace_back(std::move(language));
-                        }
-                    }
-                }
-            }
-            return true;
-        }
-        else
-        {
-            m_StatusBar.SetText(m_Config.GetString(0x0021000B).c_str(), 1, 0);
-        }
-        return false;
-    }
-
     void CMainDlg::InitLanguageMenu()
     {
         CMenu *m_hLangMenu = this->GetMenu()->GetSubMenu(4);
@@ -1823,16 +1763,6 @@ namespace dialogs
         helper.SetWndText(&m_BtnBrowse, 0x000A0015);
         helper.SetWndText(&m_StcThreads, 0x000A0016);
         helper.SetWndText(&m_BtnConvert, 0x000A0017);
-    }
-
-    void CMainDlg::GetItems()
-    {
-        int nItems = this->m_LstInputItems.GetItemCount();
-        for (int i = 0; i < nItems; i++)
-        {
-            config::CItem& item = m_Config.m_Items[i];
-            item.nId = i;
-        }
     }
 
     void CMainDlg::GetOptions()
@@ -2518,7 +2448,6 @@ namespace dialogs
             util::SetCurrentDirectory_(this->m_Config.m_Settings.szSettingsPath);
 
             this->GetOptions();
-            this->GetItems();
 
             size_t nItems = this->m_Config.m_Items.size();
             if (nItems <= 0)
@@ -2527,6 +2456,8 @@ namespace dialogs
                 this->ctx->bDone = true;
                 return;
             }
+
+            config::CItem::SetIds(this->m_Config.m_Items);
 
             std::wstring szDefaultTime = m_Config.GetString(0x00150001);
             std::wstring szDefaultStatus = m_Config.GetString(0x00210001);
@@ -2610,11 +2541,14 @@ namespace dialogs
             {
                 try
                 {
-                    this->SaveTools(this->m_Config.m_Settings.szToolsPath);
-                    this->SaveFormats(this->m_Config.m_Settings.szFormatsPath);
-                    this->SaveOutputs(this->m_Config.m_Settings.szOutputsFile);
-                    this->SaveOptions(this->m_Config.m_Settings.szOptionsFile);
-                    this->SaveItems(this->m_Config.m_Settings.szItemsFile);
+                    this->m_Config.SaveTools(this->m_Config.m_Settings.szToolsPath);
+                    this->m_Config.SaveFormats(this->m_Config.m_Settings.szFormatsPath);
+                    this->m_Config.SaveOutputs(this->m_Config.m_Settings.szOutputsFile);
+
+                    config::CItem::SetIds(this->m_Config.m_Items);
+                    this->m_Config.SaveItems(this->m_Config.m_Settings.szItemsFile);
+
+                    this->m_Config.SaveOptions(this->m_Config.m_Settings.szOptionsFile);
                 }
                 catch (...) {}
             }
@@ -2624,56 +2558,11 @@ namespace dialogs
         }
     }
 
-    bool CMainDlg::LoadOptions(const std::wstring& szFileXml)
-    {
-        if (this->m_Config.LoadOptions(szFileXml))
-        {
-            this->SetOptions();
-            this->UpdateFormatComboBox();
-            this->UpdatePresetComboBox();
-            return true;
-        }
-        return false;
-    }
-
     bool CMainDlg::LoadOptions(config::xml::XmlDocumnent &doc)
     {
         if (this->m_Config.LoadOptions(doc))
         {
             this->SetOptions();
-            this->UpdateFormatComboBox();
-            this->UpdatePresetComboBox();
-            return true;
-        }
-        return false;
-    }
-
-    bool CMainDlg::SaveOptions(const std::wstring& szFileXml)
-    {
-        this->GetOptions();
-        return this->m_Config.SaveOptions(szFileXml);
-    }
-
-    bool CMainDlg::LoadFormats(const std::wstring& szPath)
-    {
-        if (this->m_Config.LoadFormats(szPath))
-        {
-            this->UpdateFormatComboBox();
-            this->UpdatePresetComboBox();
-            return true;
-        }
-        return false;
-    }
-
-    bool CMainDlg::SaveFormats(const std::wstring& szPath)
-    {
-        return this->m_Config.SaveFormats(szPath);
-    }
-
-    bool CMainDlg::LoadFormat(const std::wstring& szFileXml)
-    {
-        if (this->m_Config.LoadFormat(szFileXml))
-        {
             this->UpdateFormatComboBox();
             this->UpdatePresetComboBox();
             return true;
@@ -2692,25 +2581,6 @@ namespace dialogs
         return false;
     }
 
-    bool CMainDlg::SaveFormat(const std::wstring& szFileXml, config::CFormat& format)
-    {
-        return this->m_Config.SaveFormat(szFileXml, format);
-    }
-
-    bool CMainDlg::LoadPresets(const std::wstring& szFileXml)
-    {
-        int nFormat = this->m_CmbFormat.GetCurSel();
-        if (nFormat != -1)
-        {
-            if (this->m_Config.LoadPresets(szFileXml, nFormat))
-            {
-                this->UpdatePresetComboBox();
-                return true;
-            }
-        }
-        return false;
-    }
-
     bool CMainDlg::LoadPresets(config::xml::XmlDocumnent &doc)
     {
         int nFormat = this->m_CmbFormat.GetCurSel();
@@ -2725,39 +2595,9 @@ namespace dialogs
         return false;
     }
 
-    bool CMainDlg::SavePresets(const std::wstring& szFileXml)
-    {
-        int nFormat = this->m_CmbFormat.GetCurSel();
-        if (nFormat != -1)
-        {
-            return this->m_Config.SavePresets(szFileXml, nFormat);
-        }
-        return false;
-    }
-
-    bool CMainDlg::LoadTools(const std::wstring& szPath)
-    {
-        return this->m_Config.LoadTools(szPath);
-    }
-
-    bool CMainDlg::SaveTools(const std::wstring& szPath)
-    {
-        return this->m_Config.SaveTools(szPath);
-    }
-
-    bool CMainDlg::LoadTool(const std::wstring& szFileXml)
-    {
-        return this->m_Config.LoadTool(szFileXml);
-    }
-
     bool CMainDlg::LoadTool(config::xml::XmlDocumnent &doc)
     {
         return this->m_Config.LoadTool(doc);
-    }
-
-    bool CMainDlg::SaveTool(const std::wstring& szFileXml, config::CTool& tool)
-    {
-        return this->m_Config.SaveTool(szFileXml, tool);
     }
 
     bool CMainDlg::LoadItems(const std::wstring& szFileXml)
@@ -2784,18 +2624,8 @@ namespace dialogs
 
     bool CMainDlg::SaveItems(const std::wstring& szFileXml)
     {
-        this->GetItems();
+        config::CItem::SetIds(this->m_Config.m_Items);
         return this->m_Config.SaveItems(szFileXml);
-    }
-
-    bool CMainDlg::LoadOutputs(const std::wstring& szFileXml)
-    {
-        if (this->m_Config.LoadOutputs(szFileXml))
-        {
-            this->UpdateOutputsComboBox();
-            return true;
-        }
-        return false;
     }
 
     bool CMainDlg::LoadOutputs(config::xml::XmlDocumnent &doc)
@@ -2803,32 +2633,6 @@ namespace dialogs
         if (this->m_Config.LoadOutputs(doc))
         {
             this->UpdateOutputsComboBox();
-            return true;
-        }
-        return false;
-    }
-
-    bool CMainDlg::SaveOutputs(const std::wstring& szFileXml)
-    {
-        return this->m_Config.SaveOutputs(szFileXml);
-    }
-
-    bool CMainDlg::LoadLanguage(const std::wstring& szFileXml)
-    {
-        if (this->m_Config.LoadLanguage(szFileXml))
-        {
-            config::CLanguage &language = m_Config.m_Languages.back();
-            int nIndex = m_Config.m_Languages.size() - 1;
-            std::wstring szText = language.szOriginalName + L" (" + language.szTranslatedName + L")";
-
-            UINT nLangID = ID_LANGUAGE_MIN + nIndex;
-            CMenu *m_hLangMenu = this->GetMenu()->GetSubMenu(4);
-            if (nLangID == ID_LANGUAGE_MIN)
-                m_hLangMenu->DeleteMenu(ID_LANGUAGE_DEFAULT, 0);
-
-            m_hLangMenu->AppendMenu(MF_STRING, nLangID, szText.c_str());
-            m_hLangMenu->CheckMenuItem(nLangID, MF_UNCHECKED);
-
             return true;
         }
         return false;

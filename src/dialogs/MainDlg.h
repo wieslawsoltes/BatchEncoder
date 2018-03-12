@@ -124,10 +124,8 @@ namespace dialogs
         afx_msg void OnHelpWebsite();
         afx_msg void OnHelpAbout();
     public:
-        bool LoadLanguages(const std::wstring& szPath);
         void InitLanguageMenu();
         void SetLanguage();
-        void GetItems();
         void GetOptions();
         void SetOptions();
         bool IsItemSelected(int nItem);
@@ -154,29 +152,14 @@ namespace dialogs
         void StartConvert();
         void FinishConvert();
     public:
-        bool LoadOptions(const std::wstring& szFileXml);
         bool LoadOptions(config::xml::XmlDocumnent &doc);
-        bool SaveOptions(const std::wstring& szFileXml);
-        bool LoadFormats(const std::wstring& szPath);
-        bool SaveFormats(const std::wstring& szPath);
-        bool LoadFormat(const std::wstring& szFileXml);
         bool LoadFormat(config::xml::XmlDocumnent &doc);
-        bool SaveFormat(const std::wstring& szFileXml, config::CFormat& format);
-        bool LoadPresets(const std::wstring& szFileXml);
         bool LoadPresets(config::xml::XmlDocumnent &doc);
-        bool SavePresets(const std::wstring& szFileXml);
-        bool LoadTools(const std::wstring& szPath);
-        bool SaveTools(const std::wstring& szPath);
-        bool LoadTool(const std::wstring& szFileXml);
         bool LoadTool(config::xml::XmlDocumnent &doc);
-        bool SaveTool(const std::wstring& szFileXml, config::CTool& tool);
         bool LoadItems(const std::wstring& szFileXml);
         bool LoadItems(config::xml::XmlDocumnent &doc);
         bool SaveItems(const std::wstring& szFileXml);
-        bool LoadOutputs(const std::wstring& szFileXml);
         bool LoadOutputs(config::xml::XmlDocumnent &doc);
-        bool SaveOutputs(const std::wstring& szFileXml);
-        bool LoadLanguage(const std::wstring& szFileXml);
         bool LoadLanguage(config::xml::XmlDocumnent &doc);
     };
 }

@@ -148,6 +148,10 @@ namespace BatchEncoderCoreUnitTests
         {
         }
 
+        TEST_METHOD(CConfig_LoadLanguages_path)
+        {
+        }
+
         TEST_METHOD(CConfig_LoadLanguage_file)
         {
         }

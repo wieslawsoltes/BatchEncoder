@@ -1469,6 +1469,36 @@ namespace config
         {
             return xml::XmlConfig::SaveOutputs(szFileXml, this->m_Outputs);
         }
+        bool LoadLanguages(const std::wstring& szPath)
+        {
+            std::vector<std::wstring> files;
+            bool bResult = FileSystem->FindFiles(szPath, files, false);
+            if (bResult == true)
+            {
+                std::vector<config::CLanguage> languages;
+                for (auto& file : files)
+                {
+                    xml::XmlDocumnent doc;
+                    if (xml::XmlDoc::Open(file, doc) == true)
+                    {
+                        std::string szName = xml::XmlDoc::GetRootName(doc);
+                        if (util::string::CompareNoCase(szName, "Language"))
+                        {
+                            config::CLanguage language;
+                            if (xml::XmlConfig::LoadLanguage(doc, language))
+                            {
+                                languages.emplace_back(std::move(language));
+                            }
+                        }
+                    }
+                }
+
+                this->m_Languages = std::move(languages);
+
+                return true;
+            }
+            return false;
+        }
         bool LoadLanguage(const std::wstring& szFileXml)
         {
             xml::XmlDocumnent doc;

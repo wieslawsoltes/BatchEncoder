@@ -14,14 +14,16 @@ namespace config
     {
     public:
         int nId;
-        std::vector<CPath> m_Paths;
-        unsigned __int64 nSize;
         std::wstring szName;
         std::wstring szExtension;
         std::wstring szFormatId;
         size_t nPreset;
         std::wstring szOptions;
         bool bChecked;
+    public:
+        unsigned __int64 nSize;
+        std::vector<CPath> m_Paths;
+    public:
         std::wstring szTime;
         std::wstring szStatus;
         bool bFinished;
@@ -33,6 +35,16 @@ namespace config
             this->bFinished = false;
             this->nProgress = 0;
             this->nPreviousProgress = 0;
+        }
+    public:
+        static inline void SetIds(std::vector<CItem>& items)
+        {
+            int nItems = (int)items.size();
+            for (int i = 0; i < nItems; i++)
+            {
+                auto& item = items[i];
+                item.nId = i;
+            }
         }
     public:
         static inline bool CompareName(const CItem& a, const CItem& b)
