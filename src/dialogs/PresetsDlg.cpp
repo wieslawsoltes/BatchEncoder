@@ -135,6 +135,34 @@ namespace dialogs
 
     void CPresetsDlg::OnDropFiles(HDROP hDropInfo)
     {
+        bool bNewPresets = false;
+
+        auto HandleFile = [&](const std::wstring& file)
+        {
+            std::wstring szExt = util::GetFileExtension(file);
+            if (util::string::CompareNoCase(szExt, L"xml"))
+            {
+                config::xml::XmlDocumnent doc;
+                std::string szName = config::xml::XmlConfig::GetRootName(file, doc);
+                if (!szName.empty())
+                {
+                    if (util::string::CompareNoCase(szName, "Presets"))
+                    {
+                        this->LoadPresets(doc);
+                        bNewPresets = true;
+                    }
+                }
+            }
+        };
+
+        auto HandleFinish = [&]()
+        {
+            if (bNewPresets)
+            {
+                this->RedrawPresets();
+            }
+        };
+
         std::thread m_DropThread = std::thread([&]()
         {
             int nCount = ::DragQueryFile(hDropInfo, (UINT)0xFFFFFFFF, nullptr, 0);
@@ -145,26 +173,24 @@ namespace dialogs
                     int nReqChars = ::DragQueryFile(hDropInfo, i, nullptr, 0);
                     CString szFile;
                     ::DragQueryFile(hDropInfo, i, szFile.GetBuffer(nReqChars * 2 + 8), nReqChars * 2 + 8);
-                    if (!(::GetFileAttributes(szFile) & FILE_ATTRIBUTE_DIRECTORY))
+                    if (::GetFileAttributes(szFile) & FILE_ATTRIBUTE_DIRECTORY)
                     {
                         std::wstring szPath = szFile;
-                        std::wstring szExt = util::GetFileExtension(szPath);
-                        if (util::string::CompareNoCase(szExt, L"xml"))
+                        std::vector<std::wstring> files;
+                        if (util::FindFiles(szPath, files, true) == true)
                         {
-                            config::xml::XmlDocumnent doc;
-                            std::string szName = config::xml::XmlConfig::GetRootName(szPath, doc);
-                            if (!szName.empty())
-                            {
-                                if (util::string::CompareNoCase(szName, "Presets"))
-                                {
-                                    this->LoadPresets(doc);
-                                    this->RedrawPresets();
-                                }
-                            }
+                            for (auto& file : files)
+                                HandleFile(file);
                         }
+                    }
+                    else
+                    {
+                        std::wstring file = szFile;
+                        HandleFile(file);
                     }
                     szFile.ReleaseBuffer();
                 }
+                HandleFinish();
             }
             ::DragFinish(hDropInfo);
         });

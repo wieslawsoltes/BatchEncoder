@@ -168,42 +168,63 @@ namespace dialogs
         if (m_Downloader.bDownload == true)
             return;
 
+        bool bNewTools = false;
+
+        auto HandleFile = [&](const std::wstring& file)
+        {
+            std::wstring szExt = util::GetFileExtension(file);
+            if (util::string::CompareNoCase(szExt, L"xml"))
+            {
+                config::xml::XmlDocumnent doc;
+                std::string szName = config::xml::XmlConfig::GetRootName(file, doc);
+                if (!szName.empty())
+                {
+                    if (util::string::CompareNoCase(szName, "Tool"))
+                    {
+                        this->LoadTool(doc);
+                        bNewTools = true;
+                    }
+                }
+            }
+        };
+
+        auto HandleFinish = [&]()
+        {
+            if (bNewTools)
+            {
+                config::CTool::Sort(m_Tools);
+                this->RedrawTools();
+            }
+        };
+
         std::thread m_DropThread = std::thread([&]()
         {
             int nCount = ::DragQueryFile(hDropInfo, (UINT)0xFFFFFFFF, nullptr, 0);
             if (nCount > 0)
             {
-                bool bNewTools = false;
                 for (int i = 0; i < nCount; i++)
                 {
                     int nReqChars = ::DragQueryFile(hDropInfo, i, nullptr, 0);
                     CString szFile;
                     ::DragQueryFile(hDropInfo, i, szFile.GetBuffer(nReqChars * 2 + 8), nReqChars * 2 + 8);
-                    if (!(::GetFileAttributes(szFile) & FILE_ATTRIBUTE_DIRECTORY))
+                    if (::GetFileAttributes(szFile) & FILE_ATTRIBUTE_DIRECTORY)
                     {
                         std::wstring szPath = szFile;
-                        std::wstring szExt = util::GetFileExtension(szPath);
-                        if (util::string::CompareNoCase(szExt, L"xml"))
+                        std::vector<std::wstring> files;
+                        if (util::FindFiles(szPath, files, true) == true)
                         {
-                            config::xml::XmlDocumnent doc;
-                            std::string szName = config::xml::XmlConfig::GetRootName(szPath, doc);
-                            if (!szName.empty())
-                            {
-                                if (util::string::CompareNoCase(szName, "Tool"))
-                                {
-                                    this->LoadTool(doc);
-                                    bNewTools = true;
-                                }
-                            }
+                            for (auto& file : files)
+                                HandleFile(file);
                         }
+                    }
+                    else
+                    {
+                        std::wstring file = szFile;
+                        HandleFile(file);
                     }
                     szFile.ReleaseBuffer();
                 }
-                if (bNewTools)
-                {
-                    config::CTool::Sort(m_Tools);
-                    this->RedrawTools();
-                }
+                HandleFinish();
             }
             ::DragFinish(hDropInfo);
         });
