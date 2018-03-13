@@ -120,34 +120,26 @@ namespace dialogs
         SetIcon(m_hIcon, TRUE);
         SetIcon(m_hIcon, FALSE);
 
-        // priority spin
         m_SpinPriority.SetRange32(INT_MIN, INT_MAX);
 
-        // OnNotifyFormat WM_NOTIFYFORMAT
 #ifdef _UNICODE
         m_LstFormats.SendMessage(CCM_SETUNICODEFORMAT, (WPARAM)(BOOL)TRUE, 0);
 #endif
 
-        // update list style
         DWORD dwExStyle = m_LstFormats.GetExtendedStyle();
         dwExStyle |= LVS_EX_FULLROWSELECT | LVS_EX_DOUBLEBUFFER | LVS_EX_GRIDLINES;
         m_LstFormats.SetExtendedStyle(dwExStyle);
 
-        // insert all ListCtrl columns
         m_LstFormats.InsertColumn(FORMAT_COLUMN_NAME, _T("Name"), LVCFMT_LEFT, 155);
         m_LstFormats.InsertColumn(FORMAT_COLUMN_ID, _T("Id"), LVCFMT_LEFT, 95);
         m_LstFormats.InsertColumn(FORMAT_COLUMN_PRIORITY, _T("Priority"), LVCFMT_LEFT, 50);
         m_LstFormats.InsertColumn(FORMAT_COLUMN_TEMPLATE, _T("Template"), LVCFMT_LEFT, 195);
 
-        // enable drag & drop
         this->DragAcceptFiles(TRUE);
-
         this->LoadWindowSettings();
         this->SetLanguage();
-
         this->RedrawFormats();
 
-        // select format
         m_LstFormats.SetItemState(nSelectedFormat, LVIS_SELECTED, LVIS_SELECTED);
         m_LstFormats.EnsureVisible(nSelectedFormat, FALSE);
 
@@ -808,11 +800,9 @@ namespace dialogs
 
     void CFormatsDlg::LoadWindowSettings()
     {
-        // set window rectangle and position
         if (!szFormatsDialogResize.empty())
             this->SetWindowRectStr(szFormatsDialogResize.c_str());
 
-        // load columns width for FormatsList
         if (!szFormatsListColumns.empty())
         {
             auto widths = util::string::Split(szFormatsListColumns.c_str(), ' ');
@@ -830,10 +820,8 @@ namespace dialogs
 
     void CFormatsDlg::SaveWindowSettings()
     {
-        // save window rectangle and position
         this->szFormatsDialogResize = this->GetWindowRectStr();
 
-        // save columns width from FormatsList
         int nColWidth[4];
         for (int i = 0; i < 4; i++)
             nColWidth[i] = m_LstFormats.GetColumnWidth(i);

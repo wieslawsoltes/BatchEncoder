@@ -78,21 +78,17 @@ namespace dialogs
         SetIcon(m_hIcon, TRUE);
         SetIcon(m_hIcon, FALSE);
 
-        // OnNotifyFormat WM_NOTIFYFORMAT
 #ifdef _UNICODE
         m_LstPresets.SendMessage(CCM_SETUNICODEFORMAT, (WPARAM)(BOOL)TRUE, 0);
 #endif
 
-        // update list style
         DWORD dwExStyle = m_LstPresets.GetExtendedStyle();
         dwExStyle |= LVS_EX_FULLROWSELECT | LVS_EX_DOUBLEBUFFER | LVS_EX_GRIDLINES;
         m_LstPresets.SetExtendedStyle(dwExStyle);
 
-        // insert listView columns
         m_LstPresets.InsertColumn(PRESET_COLUMN_NAME, _T("Name"), LVCFMT_LEFT, 200);
         m_LstPresets.InsertColumn(PRESET_COLUMN_OPTIONS, _T("Options"), LVCFMT_LEFT, 290);
 
-        // file format combo-box
         size_t nFormats = m_Formats.size();
         for (size_t i = 0; i < nFormats; i++)
         {
@@ -101,18 +97,12 @@ namespace dialogs
         }
 
         util::SetComboBoxHeight(this->GetSafeHwnd(), IDC_COMBO_PRESET_FORMAT, 15);
-
         m_CmbFormat.SetCurSel(nSelectedFormat);
 
-        // enable drag & drop
         this->DragAcceptFiles(TRUE);
-
         this->LoadWindowSettings();
         this->SetLanguage();
-
         this->RedrawPresets();
-
-        // select preset
         this->OnCbnSelchangeComboPresetFormat();
 
         return TRUE;
@@ -544,11 +534,9 @@ namespace dialogs
 
     void CPresetsDlg::LoadWindowSettings()
     {
-        // set window rectangle and position
         if (!szPresetsDialogResize.empty())
             this->SetWindowRectStr(szPresetsDialogResize.c_str());
 
-        // load columns width for PresetsList
         if (!szPresetsListColumns.empty())
         {
             auto widths = util::string::Split(szPresetsListColumns.c_str(), ' ');
@@ -566,10 +554,8 @@ namespace dialogs
 
     void CPresetsDlg::SaveWindowSettings()
     {
-        // save window rectangle and position
         this->szPresetsDialogResize = this->GetWindowRectStr();
 
-        // save columns width from PresetsList
         int nColWidth[2];
         for (int i = 0; i < 2; i++)
             nColWidth[i] = m_LstPresets.GetColumnWidth(i);

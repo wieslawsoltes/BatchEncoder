@@ -112,34 +112,26 @@ namespace dialogs
         SetIcon(m_hIcon, TRUE);
         SetIcon(m_hIcon, FALSE);
 
-        // priority spin
         m_SpinPriority.SetRange32(INT_MIN, INT_MAX);
 
-        // OnNotifyFormat WM_NOTIFYFORMAT
 #ifdef _UNICODE
         m_LstTools.SendMessage(CCM_SETUNICODEFORMAT, (WPARAM)(BOOL)TRUE, 0);
 #endif
 
-        // update list style
         DWORD dwExStyle = m_LstTools.GetExtendedStyle();
         dwExStyle |= LVS_EX_FULLROWSELECT | LVS_EX_DOUBLEBUFFER | LVS_EX_GRIDLINES;
         m_LstTools.SetExtendedStyle(dwExStyle);
 
-        // insert all ListCtrl columns
         m_LstTools.InsertColumn(TOOL_COLUMN_NAME, _T("Name"), LVCFMT_LEFT, 155);
         m_LstTools.InsertColumn(TOOL_COLUMN_PRIORITY, _T("Priority"), LVCFMT_LEFT, 50);
         m_LstTools.InsertColumn(TOOL_COLUMN_URL, _T("Url"), LVCFMT_LEFT, 185);
         m_LstTools.InsertColumn(TOOL_COLUMN_STATUS, _T("Status"), LVCFMT_LEFT, 95);
 
-        // enable drag & drop
         this->DragAcceptFiles(TRUE);
-
         this->LoadWindowSettings();
         this->SetLanguage();
-
         this->RedrawTools();
 
-        // select tool
         m_LstTools.SetItemState(nSelectedTool, LVIS_SELECTED, LVIS_SELECTED);
         m_LstTools.EnsureVisible(nSelectedTool, FALSE);
 
@@ -793,11 +785,9 @@ namespace dialogs
 
     void CToolsDlg::LoadWindowSettings()
     {
-        // set window rectangle and position
         if (!szToolsDialogResize.empty())
             this->SetWindowRectStr(szToolsDialogResize.c_str());
 
-        // load columns width for ToolsList
         if (!szToolsListColumns.empty())
         {
             auto widths = util::string::Split(szToolsListColumns.c_str(), ' ');
@@ -815,10 +805,8 @@ namespace dialogs
 
     void CToolsDlg::SaveWindowSettings()
     {
-        // save window rectangle and position
         this->szToolsDialogResize = this->GetWindowRectStr();
 
-        // save columns width from ToolsList
         int nColWidth[4];
         for (int i = 0; i < 4; i++)
             nColWidth[i] = m_LstTools.GetColumnWidth(i);

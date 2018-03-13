@@ -412,7 +412,6 @@ namespace dialogs
         SetIcon(m_hIcon, TRUE);
         SetIcon(m_hIcon, FALSE);
 
-        // status-bar
         m_StatusBar.Create(WS_CHILD | WS_VISIBLE | CCS_BOTTOM | SBARS_SIZEGRIP, CRect(0, 0, 0, 0), this, IDC_STATUSBAR);
 
         int nStatusBarParts[2] = { 100, -1 };
@@ -421,31 +420,24 @@ namespace dialogs
         CMFCDynamicLayout* layout = this->GetDynamicLayout();
         layout->AddItem(IDC_STATUSBAR, CMFCDynamicLayout::MoveVertical(100), CMFCDynamicLayout::SizeHorizontal(100));
 
-        // accelerators
         m_hAccel = ::LoadAccelerators(::GetModuleHandle(nullptr), MAKEINTRESOURCE(IDR_ACCELERATOR_MAIN));
 
-        // OnNotifyFormat WM_NOTIFYFORMAT
 #ifdef _UNICODE
         m_LstInputItems.SendMessage(CCM_SETUNICODEFORMAT, (WPARAM)(BOOL)TRUE, 0);
 #endif
 
-        // dialog title
         this->SetWindowText(_T(VER_PRODUCTNAME_STR));
 
-        // threads count spin
         m_SpinThreads.SetRange32(0, INT_MAX);
 
-        // progress
         m_Progress.SetRange(0, 100);
         m_Progress.SetPos(0);
         m_Progress.ShowWindow(SW_HIDE);
 
-        // list style
         DWORD dwExStyle = m_LstInputItems.GetExtendedStyle();
         dwExStyle |= LVS_EX_FULLROWSELECT | LVS_EX_CHECKBOXES | LVS_EX_DOUBLEBUFFER | LVS_EX_GRIDLINES;
         m_LstInputItems.SetExtendedStyle(dwExStyle);
 
-        // list columns
         m_LstInputItems.InsertColumn(ITEM_COLUMN_NAME, _T("Name"), LVCFMT_LEFT, 200);
         m_LstInputItems.InsertColumn(ITEM_COLUMN_INPUT, _T("Input"), LVCFMT_LEFT, 50);
         m_LstInputItems.InsertColumn(ITEM_COLUMN_SIZE, _T("Size (bytes)"), LVCFMT_LEFT, 80);
@@ -455,19 +447,14 @@ namespace dialogs
         m_LstInputItems.InsertColumn(ITEM_COLUMN_TIME, _T("Time"), LVCFMT_LEFT, 90);
         m_LstInputItems.InsertColumn(ITEM_COLUMN_STATUS, _T("Status"), LVCFMT_LEFT, 80);
 
-        // edit item
         m_EdtItem.Create(ES_AUTOHSCROLL | WS_CHILD, CRect(0, 0, 1, 1), &m_LstInputItems, IDC_EDIT_ITEM);
         m_EdtItem.SetFont(this->GetFont());
 
-        // bold style
         m_StcFormat.SetBold(true);
         m_StcPreset.SetBold(true);
         m_BtnConvert.SetBold(true);
 
-        // enable drag & drop
         this->DragAcceptFiles(TRUE);
-
-        // init config
         this->LoadConfig();
         this->UpdateFormatComboBox();
         this->UpdatePresetComboBox();
@@ -774,8 +761,12 @@ namespace dialogs
         {
             POINT point;
             GetCursorPos(&point);
-            CMenu *subMenu = this->GetMenu()->GetSubMenu(1);
-            subMenu->TrackPopupMenu(0, point.x, point.y, this, nullptr);
+
+            CMenu *m_hMenu = this->GetMenu();
+            CMenu *m_hEditMenu = m_hMenu->GetSubMenu(1);
+            m_hEditMenu->TrackPopupMenu(0, point.x, point.y, this, nullptr);
+            m_hEditMenu = nullptr;
+            m_hMenu = nullptr;
         }
         *pResult = 0;
     }
@@ -1496,8 +1487,11 @@ namespace dialogs
     {
         if (this->ctx->bRunning == false)
         {
-            BOOL bChecked = this->GetMenu()->GetMenuState(ID_OPTIONS_DELETE_SOURCE, MF_BYCOMMAND) == MF_CHECKED;
-            this->GetMenu()->CheckMenuItem(ID_OPTIONS_DELETE_SOURCE, (bChecked == TRUE) ? MF_UNCHECKED : MF_CHECKED);
+            CMenu *m_hMenu = this->GetMenu();
+            bool bChecked = m_hMenu->GetMenuState(ID_OPTIONS_DELETE_SOURCE, MF_BYCOMMAND) == MF_CHECKED;
+            m_hMenu->CheckMenuItem(ID_OPTIONS_DELETE_SOURCE, (bChecked == true) ? MF_UNCHECKED : MF_CHECKED);
+            m_hMenu = nullptr;
+
             this->m_Config.m_Options.bDeleteSourceFiles = !bChecked;
         }
     }
@@ -1506,8 +1500,11 @@ namespace dialogs
     {
         if (this->ctx->bRunning == false)
         {
-            BOOL bChecked = this->GetMenu()->GetMenuState(ID_OPTIONS_SHUTDOWN_WINDOWS, MF_BYCOMMAND) == MF_CHECKED;
-            this->GetMenu()->CheckMenuItem(ID_OPTIONS_SHUTDOWN_WINDOWS, (bChecked == TRUE) ? MF_UNCHECKED : MF_CHECKED);
+            CMenu *m_hMenu = this->GetMenu();
+            bool bChecked = m_hMenu->GetMenuState(ID_OPTIONS_SHUTDOWN_WINDOWS, MF_BYCOMMAND) == MF_CHECKED;
+            m_hMenu->CheckMenuItem(ID_OPTIONS_SHUTDOWN_WINDOWS, (bChecked == true) ? MF_UNCHECKED : MF_CHECKED);
+            m_hMenu = nullptr;
+
             this->m_Config.m_Options.bShutdownWhenFinished = !bChecked;
         }
     }
@@ -1516,8 +1513,11 @@ namespace dialogs
     {
         if (this->ctx->bRunning == false)
         {
-            BOOL bChecked = this->GetMenu()->GetMenuState(ID_OPTIONS_DO_NOT_SAVE, MF_BYCOMMAND) == MF_CHECKED;
-            this->GetMenu()->CheckMenuItem(ID_OPTIONS_DO_NOT_SAVE, (bChecked == TRUE) ? MF_UNCHECKED : MF_CHECKED);
+            CMenu *m_hMenu = this->GetMenu();
+            bool bChecked = m_hMenu->GetMenuState(ID_OPTIONS_DO_NOT_SAVE, MF_BYCOMMAND) == MF_CHECKED;
+            m_hMenu->CheckMenuItem(ID_OPTIONS_DO_NOT_SAVE, (bChecked == true) ? MF_UNCHECKED : MF_CHECKED);
+            m_hMenu = nullptr;
+
             this->m_Config.m_Options.bDoNotSaveConfiguration = !bChecked;
         }
     }
@@ -1526,8 +1526,11 @@ namespace dialogs
     {
         if (this->ctx->bRunning == false)
         {
-            BOOL bChecked = this->GetMenu()->GetMenuState(ID_OPTIONS_DELETE_ON_ERRORS, MF_BYCOMMAND) == MF_CHECKED;
-            this->GetMenu()->CheckMenuItem(ID_OPTIONS_DELETE_ON_ERRORS, (bChecked == TRUE) ? MF_UNCHECKED : MF_CHECKED);
+            CMenu *m_hMenu = this->GetMenu();
+            bool bChecked = m_hMenu->GetMenuState(ID_OPTIONS_DELETE_ON_ERRORS, MF_BYCOMMAND) == MF_CHECKED;
+            m_hMenu->CheckMenuItem(ID_OPTIONS_DELETE_ON_ERRORS, (bChecked == true) ? MF_UNCHECKED : MF_CHECKED);
+            m_hMenu = nullptr;
+
             this->m_Config.m_Options.bDeleteOnErrors = !bChecked;
         }
     }
@@ -1536,8 +1539,11 @@ namespace dialogs
     {
         if (this->ctx->bRunning == false)
         {
-            BOOL bChecked = this->GetMenu()->GetMenuState(ID_OPTIONS_STOP_ON_ERRORS, MF_BYCOMMAND) == MF_CHECKED;
-            this->GetMenu()->CheckMenuItem(ID_OPTIONS_STOP_ON_ERRORS, (bChecked == TRUE) ? MF_UNCHECKED : MF_CHECKED);
+            CMenu *m_hMenu = this->GetMenu();
+            bool bChecked = m_hMenu->GetMenuState(ID_OPTIONS_STOP_ON_ERRORS, MF_BYCOMMAND) == MF_CHECKED;
+            m_hMenu->CheckMenuItem(ID_OPTIONS_STOP_ON_ERRORS, (bChecked == true) ? MF_UNCHECKED : MF_CHECKED);
+            m_hMenu = nullptr;
+
             this->m_Config.m_Options.bStopOnErrors = !bChecked;
         }
     }
@@ -1546,8 +1552,11 @@ namespace dialogs
     {
         if (this->ctx->bRunning == false)
         {
-            BOOL bChecked = this->GetMenu()->GetMenuState(ID_OPTIONS_HIDE_CONSOLE, MF_BYCOMMAND) == MF_CHECKED;
-            this->GetMenu()->CheckMenuItem(ID_OPTIONS_HIDE_CONSOLE, (bChecked == TRUE) ? MF_UNCHECKED : MF_CHECKED);
+            CMenu *m_hMenu = this->GetMenu();
+            bool bChecked = m_hMenu->GetMenuState(ID_OPTIONS_HIDE_CONSOLE, MF_BYCOMMAND) == MF_CHECKED;
+            m_hMenu->CheckMenuItem(ID_OPTIONS_HIDE_CONSOLE, (bChecked == true) ? MF_UNCHECKED : MF_CHECKED);
+            m_hMenu = nullptr;
+
             this->m_Config.m_Options.bHideConsoleWindow = !bChecked;
         }
     }
@@ -1556,8 +1565,11 @@ namespace dialogs
     {
         if (this->ctx->bRunning == false)
         {
-            BOOL bChecked = this->GetMenu()->GetMenuState(ID_OPTIONS_ENSURE_VISIBLE, MF_BYCOMMAND) == MF_CHECKED;
-            this->GetMenu()->CheckMenuItem(ID_OPTIONS_ENSURE_VISIBLE, (bChecked == TRUE) ? MF_UNCHECKED : MF_CHECKED);
+            CMenu *m_hMenu = this->GetMenu();
+            bool bChecked = m_hMenu->GetMenuState(ID_OPTIONS_ENSURE_VISIBLE, MF_BYCOMMAND) == MF_CHECKED;
+            m_hMenu->CheckMenuItem(ID_OPTIONS_ENSURE_VISIBLE, (bChecked == true) ? MF_UNCHECKED : MF_CHECKED);
+            m_hMenu = nullptr;
+
             this->m_Config.m_Options.bEnsureItemIsVisible = !bChecked;
         }
     }
@@ -1566,8 +1578,11 @@ namespace dialogs
     {
         if (this->ctx->bRunning == false)
         {
-            BOOL bChecked = this->GetMenu()->GetMenuState(ID_OPTIONS_FIND_DECODER, MF_BYCOMMAND) == MF_CHECKED;
-            this->GetMenu()->CheckMenuItem(ID_OPTIONS_FIND_DECODER, (bChecked == TRUE) ? MF_UNCHECKED : MF_CHECKED);
+            CMenu *m_hMenu = this->GetMenu();
+            bool bChecked = m_hMenu->GetMenuState(ID_OPTIONS_FIND_DECODER, MF_BYCOMMAND) == MF_CHECKED;
+            m_hMenu->CheckMenuItem(ID_OPTIONS_FIND_DECODER, (bChecked == true) ? MF_UNCHECKED : MF_CHECKED);
+            m_hMenu = nullptr;
+
             this->m_Config.m_Options.bTryToFindDecoder = !bChecked;
         }
     }
@@ -1576,8 +1591,11 @@ namespace dialogs
     {
         if (this->ctx->bRunning == false)
         {
-            BOOL bChecked = this->GetMenu()->GetMenuState(ID_OPTIONS_VALIDATE_FILES, MF_BYCOMMAND) == MF_CHECKED;
-            this->GetMenu()->CheckMenuItem(ID_OPTIONS_VALIDATE_FILES, (bChecked == TRUE) ? MF_UNCHECKED : MF_CHECKED);
+            CMenu *m_hMenu = this->GetMenu();
+            bool bChecked = m_hMenu->GetMenuState(ID_OPTIONS_VALIDATE_FILES, MF_BYCOMMAND) == MF_CHECKED;
+            m_hMenu->CheckMenuItem(ID_OPTIONS_VALIDATE_FILES, (bChecked == true) ? MF_UNCHECKED : MF_CHECKED);
+            m_hMenu = nullptr;
+
             this->m_Config.m_Options.bValidateInputFiles = !bChecked;
         }
     }
@@ -1586,8 +1604,11 @@ namespace dialogs
     {
         if (this->ctx->bRunning == false)
         {
-            BOOL bChecked = this->GetMenu()->GetMenuState(ID_OPTIONS_OVERWRITE_FILES, MF_BYCOMMAND) == MF_CHECKED;
-            this->GetMenu()->CheckMenuItem(ID_OPTIONS_OVERWRITE_FILES, (bChecked == TRUE) ? MF_UNCHECKED : MF_CHECKED);
+            CMenu *m_hMenu = this->GetMenu();
+            bool bChecked = m_hMenu->GetMenuState(ID_OPTIONS_OVERWRITE_FILES, MF_BYCOMMAND) == MF_CHECKED;
+            m_hMenu->CheckMenuItem(ID_OPTIONS_OVERWRITE_FILES, (bChecked == true) ? MF_UNCHECKED : MF_CHECKED);
+            m_hMenu = nullptr;
+
             this->m_Config.m_Options.bOverwriteExistingFiles = !bChecked;
         }
     }
@@ -1596,8 +1617,11 @@ namespace dialogs
     {
         if (this->ctx->bRunning == false)
         {
-            BOOL bChecked = this->GetMenu()->GetMenuState(ID_OPTIONS_DOWNLOAD_TOOLS, MF_BYCOMMAND) == MF_CHECKED;
-            this->GetMenu()->CheckMenuItem(ID_OPTIONS_DOWNLOAD_TOOLS, (bChecked == TRUE) ? MF_UNCHECKED : MF_CHECKED);
+            CMenu *m_hMenu = this->GetMenu();
+            bool bChecked = m_hMenu->GetMenuState(ID_OPTIONS_DOWNLOAD_TOOLS, MF_BYCOMMAND) == MF_CHECKED;
+            m_hMenu->CheckMenuItem(ID_OPTIONS_DOWNLOAD_TOOLS, (bChecked == true) ? MF_UNCHECKED : MF_CHECKED);
+            m_hMenu = nullptr;
+
             this->m_Config.m_Options.bTryToDownloadTools = !bChecked;
         }
     }
@@ -1623,6 +1647,7 @@ namespace dialogs
         }
 
         m_hLangMenu->CheckMenuItem(nID, MF_CHECKED);
+        m_hLangMenu = nullptr;
 
         this->SetLanguage();
         this->UpdateStatusBar();
@@ -1686,6 +1711,7 @@ namespace dialogs
             m_hLangMenu->CheckMenuItem(ID_LANGUAGE_DEFAULT, MF_CHECKED);
             m_hLangMenu->EnableMenuItem(ID_LANGUAGE_DEFAULT, MF_DISABLED);
         }
+        m_hLangMenu = nullptr;
     }
 
     void CMainDlg::SetLanguage()
@@ -1749,6 +1775,8 @@ namespace dialogs
         helper.SetMenuItemText(m_hMenu, ID_HELP_WEBSITE, 0x00060002);
         helper.SetMenuItemText(m_hMenu, ID_HELP_ABOUT, 0x00060003);
 
+        m_hMenu = nullptr;
+
         this->DrawMenuBar();
 
         // Main Dialog
@@ -1773,49 +1801,34 @@ namespace dialogs
 
     void CMainDlg::GetOptions()
     {
-        // option: SelectedFormat
         m_Config.m_Options.nSelectedFormat = this->m_CmbFormat.GetCurSel();
 
-        // option: OutputPath
         CString szOutputPath;
         m_CmbOutPath.GetWindowText(szOutputPath);
         m_Config.m_Options.szOutputPath = szOutputPath;
 
-        // option: DeleteSourceFiles
-        m_Config.m_Options.bDeleteSourceFiles = this->GetMenu()->GetMenuState(ID_OPTIONS_DELETE_SOURCE, MF_BYCOMMAND) == MF_CHECKED;
+        CMenu *m_hMenu = this->GetMenu();
 
-        // option: RecurseChecked
+        m_Config.m_Options.bDeleteSourceFiles = m_hMenu->GetMenuState(ID_OPTIONS_DELETE_SOURCE, MF_BYCOMMAND) == MF_CHECKED;
         m_Config.m_Options.bRecurseChecked = bRecurseChecked;
-
-        // option: ShutdownWhenFinished
-        m_Config.m_Options.bShutdownWhenFinished = this->GetMenu()->GetMenuState(ID_OPTIONS_SHUTDOWN_WINDOWS, MF_BYCOMMAND) == MF_CHECKED;
-
-        // option: DoNotSaveConfiguration
-        m_Config.m_Options.bDoNotSaveConfiguration = this->GetMenu()->GetMenuState(ID_OPTIONS_DO_NOT_SAVE, MF_BYCOMMAND) == MF_CHECKED;
-
-        // option: DeleteOnErrors
-        m_Config.m_Options.bDeleteOnErrors = this->GetMenu()->GetMenuState(ID_OPTIONS_DELETE_ON_ERRORS, MF_BYCOMMAND) == MF_CHECKED;
-
-        // option: StopOnErrors
-        m_Config.m_Options.bStopOnErrors = this->GetMenu()->GetMenuState(ID_OPTIONS_STOP_ON_ERRORS, MF_BYCOMMAND) == MF_CHECKED;
-
-        // option: HideConsoleWindow
-        m_Config.m_Options.bHideConsoleWindow = this->GetMenu()->GetMenuState(ID_OPTIONS_HIDE_CONSOLE, MF_BYCOMMAND) == MF_CHECKED;
-
-        // option: EnsureItemIsVisible
-        m_Config.m_Options.bEnsureItemIsVisible = this->GetMenu()->GetMenuState(ID_OPTIONS_ENSURE_VISIBLE, MF_BYCOMMAND) == MF_CHECKED;
-
-        // option: TryToFindDecoder
-        m_Config.m_Options.bTryToFindDecoder = this->GetMenu()->GetMenuState(ID_OPTIONS_FIND_DECODER, MF_BYCOMMAND) == MF_CHECKED;
+        m_Config.m_Options.bShutdownWhenFinished = m_hMenu->GetMenuState(ID_OPTIONS_SHUTDOWN_WINDOWS, MF_BYCOMMAND) == MF_CHECKED;
+        m_Config.m_Options.bDoNotSaveConfiguration = m_hMenu->GetMenuState(ID_OPTIONS_DO_NOT_SAVE, MF_BYCOMMAND) == MF_CHECKED;
+        m_Config.m_Options.bDeleteOnErrors = m_hMenu->GetMenuState(ID_OPTIONS_DELETE_ON_ERRORS, MF_BYCOMMAND) == MF_CHECKED;
+        m_Config.m_Options.bStopOnErrors = m_hMenu->GetMenuState(ID_OPTIONS_STOP_ON_ERRORS, MF_BYCOMMAND) == MF_CHECKED;
+        m_Config.m_Options.bHideConsoleWindow = m_hMenu->GetMenuState(ID_OPTIONS_HIDE_CONSOLE, MF_BYCOMMAND) == MF_CHECKED;
+        m_Config.m_Options.bEnsureItemIsVisible = m_hMenu->GetMenuState(ID_OPTIONS_ENSURE_VISIBLE, MF_BYCOMMAND) == MF_CHECKED;
+        m_Config.m_Options.bTryToFindDecoder = m_hMenu->GetMenuState(ID_OPTIONS_FIND_DECODER, MF_BYCOMMAND) == MF_CHECKED;
 
         // option: ValidateInputFiles
-        m_Config.m_Options.bValidateInputFiles = this->GetMenu()->GetMenuState(ID_OPTIONS_VALIDATE_FILES, MF_BYCOMMAND) == MF_CHECKED;
+        m_Config.m_Options.bValidateInputFiles = m_hMenu->GetMenuState(ID_OPTIONS_VALIDATE_FILES, MF_BYCOMMAND) == MF_CHECKED;
 
         // option: OverwriteExistingFiles
-        m_Config.m_Options.bOverwriteExistingFiles = this->GetMenu()->GetMenuState(ID_OPTIONS_OVERWRITE_FILES, MF_BYCOMMAND) == MF_CHECKED;
+        m_Config.m_Options.bOverwriteExistingFiles = m_hMenu->GetMenuState(ID_OPTIONS_OVERWRITE_FILES, MF_BYCOMMAND) == MF_CHECKED;
 
         // option: TryToDownloadTools
-        m_Config.m_Options.bTryToDownloadTools = this->GetMenu()->GetMenuState(ID_OPTIONS_DOWNLOAD_TOOLS, MF_BYCOMMAND) == MF_CHECKED;
+        m_Config.m_Options.bTryToDownloadTools = m_hMenu->GetMenuState(ID_OPTIONS_DOWNLOAD_TOOLS, MF_BYCOMMAND) == MF_CHECKED;
+
+        m_hMenu = nullptr;
 
         // option: ThreadCount
         CString szThreadCount;
@@ -1849,8 +1862,6 @@ namespace dialogs
 
     void CMainDlg::SetOptions()
     {
-        // option: SelectedFormat
-
         // option: OutputPath
         if (!m_Config.m_Options.szOutputPath.empty())
         {
@@ -1862,11 +1873,13 @@ namespace dialogs
             this->m_CmbOutPath.SetWindowText(m_Config.m_Options.szOutputPath.c_str());
         }
 
+        CMenu *m_hMenu = this->GetMenu();
+
         // option: DeleteSourceFiles
         if (m_Config.m_Options.bDeleteSourceFiles)
-            this->GetMenu()->CheckMenuItem(ID_OPTIONS_DELETE_SOURCE, MF_CHECKED);
+            m_hMenu->CheckMenuItem(ID_OPTIONS_DELETE_SOURCE, MF_CHECKED);
         else
-            this->GetMenu()->CheckMenuItem(ID_OPTIONS_DELETE_SOURCE, MF_UNCHECKED);
+            m_hMenu->CheckMenuItem(ID_OPTIONS_DELETE_SOURCE, MF_UNCHECKED);
 
         // option: RecurseChecked
         if (m_Config.m_Options.bRecurseChecked)
@@ -1876,63 +1889,65 @@ namespace dialogs
 
         // option: ShutdownWhenFinished
         if (m_Config.m_Options.bShutdownWhenFinished)
-            this->GetMenu()->CheckMenuItem(ID_OPTIONS_SHUTDOWN_WINDOWS, MF_CHECKED);
+            m_hMenu->CheckMenuItem(ID_OPTIONS_SHUTDOWN_WINDOWS, MF_CHECKED);
         else
-            this->GetMenu()->CheckMenuItem(ID_OPTIONS_SHUTDOWN_WINDOWS, MF_UNCHECKED);
+            m_hMenu->CheckMenuItem(ID_OPTIONS_SHUTDOWN_WINDOWS, MF_UNCHECKED);
 
         // option: DoNotSaveConfiguration
         if (m_Config.m_Options.bDoNotSaveConfiguration)
-            this->GetMenu()->CheckMenuItem(ID_OPTIONS_DO_NOT_SAVE, MF_CHECKED);
+            m_hMenu->CheckMenuItem(ID_OPTIONS_DO_NOT_SAVE, MF_CHECKED);
         else
-            this->GetMenu()->CheckMenuItem(ID_OPTIONS_DO_NOT_SAVE, MF_UNCHECKED);
+            m_hMenu->CheckMenuItem(ID_OPTIONS_DO_NOT_SAVE, MF_UNCHECKED);
 
         // option: DeleteOnErrors
         if (m_Config.m_Options.bDeleteOnErrors)
-            this->GetMenu()->CheckMenuItem(ID_OPTIONS_DELETE_ON_ERRORS, MF_CHECKED);
+            m_hMenu->CheckMenuItem(ID_OPTIONS_DELETE_ON_ERRORS, MF_CHECKED);
         else
-            this->GetMenu()->CheckMenuItem(ID_OPTIONS_DELETE_ON_ERRORS, MF_UNCHECKED);
+            m_hMenu->CheckMenuItem(ID_OPTIONS_DELETE_ON_ERRORS, MF_UNCHECKED);
 
         // option: StopOnErrors
         if (m_Config.m_Options.bStopOnErrors)
-            this->GetMenu()->CheckMenuItem(ID_OPTIONS_STOP_ON_ERRORS, MF_CHECKED);
+            m_hMenu->CheckMenuItem(ID_OPTIONS_STOP_ON_ERRORS, MF_CHECKED);
         else
-            this->GetMenu()->CheckMenuItem(ID_OPTIONS_STOP_ON_ERRORS, MF_UNCHECKED);
+            m_hMenu->CheckMenuItem(ID_OPTIONS_STOP_ON_ERRORS, MF_UNCHECKED);
 
         // option: HideConsoleWindow
         if (m_Config.m_Options.bHideConsoleWindow)
-            this->GetMenu()->CheckMenuItem(ID_OPTIONS_HIDE_CONSOLE, MF_CHECKED);
+            m_hMenu->CheckMenuItem(ID_OPTIONS_HIDE_CONSOLE, MF_CHECKED);
         else
-            this->GetMenu()->CheckMenuItem(ID_OPTIONS_HIDE_CONSOLE, MF_UNCHECKED);
+            m_hMenu->CheckMenuItem(ID_OPTIONS_HIDE_CONSOLE, MF_UNCHECKED);
 
         // option: EnsureItemIsVisible
         if (m_Config.m_Options.bEnsureItemIsVisible)
-            this->GetMenu()->CheckMenuItem(ID_OPTIONS_ENSURE_VISIBLE, MF_CHECKED);
+            m_hMenu->CheckMenuItem(ID_OPTIONS_ENSURE_VISIBLE, MF_CHECKED);
         else
-            this->GetMenu()->CheckMenuItem(ID_OPTIONS_ENSURE_VISIBLE, MF_UNCHECKED);
+            m_hMenu->CheckMenuItem(ID_OPTIONS_ENSURE_VISIBLE, MF_UNCHECKED);
 
         // option: TryToFindDecoder
         if (m_Config.m_Options.bTryToFindDecoder)
-            this->GetMenu()->CheckMenuItem(ID_OPTIONS_FIND_DECODER, MF_CHECKED);
+            m_hMenu->CheckMenuItem(ID_OPTIONS_FIND_DECODER, MF_CHECKED);
         else
-            this->GetMenu()->CheckMenuItem(ID_OPTIONS_FIND_DECODER, MF_UNCHECKED);
+            m_hMenu->CheckMenuItem(ID_OPTIONS_FIND_DECODER, MF_UNCHECKED);
 
         // option: ValidateInputFiles
         if (m_Config.m_Options.bValidateInputFiles)
-            this->GetMenu()->CheckMenuItem(ID_OPTIONS_VALIDATE_FILES, MF_CHECKED);
+            m_hMenu->CheckMenuItem(ID_OPTIONS_VALIDATE_FILES, MF_CHECKED);
         else
-            this->GetMenu()->CheckMenuItem(ID_OPTIONS_VALIDATE_FILES, MF_UNCHECKED);
+            m_hMenu->CheckMenuItem(ID_OPTIONS_VALIDATE_FILES, MF_UNCHECKED);
 
         // option: OverwriteExistingFiles
         if (m_Config.m_Options.bOverwriteExistingFiles)
-            this->GetMenu()->CheckMenuItem(ID_OPTIONS_OVERWRITE_FILES, MF_CHECKED);
+            m_hMenu->CheckMenuItem(ID_OPTIONS_OVERWRITE_FILES, MF_CHECKED);
         else
-            this->GetMenu()->CheckMenuItem(ID_OPTIONS_OVERWRITE_FILES, MF_UNCHECKED);
+            m_hMenu->CheckMenuItem(ID_OPTIONS_OVERWRITE_FILES, MF_UNCHECKED);
 
         // option: TryToDownloadTools
         if (m_Config.m_Options.bTryToDownloadTools)
-            this->GetMenu()->CheckMenuItem(ID_OPTIONS_DOWNLOAD_TOOLS, MF_CHECKED);
+            m_hMenu->CheckMenuItem(ID_OPTIONS_DOWNLOAD_TOOLS, MF_CHECKED);
         else
-            this->GetMenu()->CheckMenuItem(ID_OPTIONS_DOWNLOAD_TOOLS, MF_UNCHECKED);
+            m_hMenu->CheckMenuItem(ID_OPTIONS_DOWNLOAD_TOOLS, MF_UNCHECKED);
+
+        m_hMenu = nullptr;
 
         // option: ThreadCount
         CString szThreadCount;
@@ -1965,18 +1980,6 @@ namespace dialogs
                 }
             }
         }
-
-        // option: PresetsDialogResize
-
-        // option: PresetsListColumns
-
-        // option: FormatsDialogResize
-
-        // option: FormatsListColumns
-
-        // option: ToolsDialogResize
-
-        // option: ToolsListColumns
     }
 
     bool CMainDlg::IsItemSelected(int nItem)
@@ -2528,7 +2531,10 @@ namespace dialogs
 
             m_StatusBar.SetText(L"", 1, 0);
             m_BtnConvert.SetWindowText(m_Config.GetString(0x000A0018).c_str());
-            this->GetMenu()->ModifyMenu(ID_ACTION_CONVERT, MF_BYCOMMAND, ID_ACTION_CONVERT, m_Config.GetString(0x00030003).c_str());
+
+            CMenu *m_hMenu = this->GetMenu();
+            m_hMenu->ModifyMenu(ID_ACTION_CONVERT, MF_BYCOMMAND, ID_ACTION_CONVERT, m_Config.GetString(0x00030003).c_str());
+            m_hMenu = nullptr;
 
             this->ctx->bRunning = true;
             this->ctx->bDone = false;
@@ -2562,7 +2568,11 @@ namespace dialogs
             bSafeCheck = true;
 
             m_BtnConvert.SetWindowText(m_Config.GetString(0x000A0017).c_str());
-            this->GetMenu()->ModifyMenu(ID_ACTION_CONVERT, MF_BYCOMMAND, ID_ACTION_CONVERT, m_Config.GetString(0x00030002).c_str());
+
+            CMenu *m_hMenu = this->GetMenu();
+            m_hMenu->ModifyMenu(ID_ACTION_CONVERT, MF_BYCOMMAND, ID_ACTION_CONVERT, m_Config.GetString(0x00030002).c_str());
+            m_hMenu = nullptr;
+
             this->EnableUserInterface(TRUE);
 
             this->ctx->bRunning = false;
@@ -2573,7 +2583,11 @@ namespace dialogs
     void CMainDlg::FinishConvert()
     {
         this->m_BtnConvert.SetWindowText(m_Config.GetString(0x000A0017).c_str());
-        this->GetMenu()->ModifyMenu(ID_ACTION_CONVERT, MF_BYCOMMAND, ID_ACTION_CONVERT, m_Config.GetString(0x00030002).c_str());
+
+        CMenu *m_hMenu = this->GetMenu();
+        m_hMenu->ModifyMenu(ID_ACTION_CONVERT, MF_BYCOMMAND, ID_ACTION_CONVERT, m_Config.GetString(0x00030002).c_str());
+        m_hMenu = nullptr;
+
         this->EnableUserInterface(TRUE);
 
         this->m_Progress.SetPos(0);
@@ -2681,12 +2695,15 @@ namespace dialogs
             std::wstring szText = language.szOriginalName + L" (" + language.szTranslatedName + L")";
 
             UINT nLangID = ID_LANGUAGE_MIN + nIndex;
-            CMenu *m_hLangMenu = this->GetMenu()->GetSubMenu(4);
+            CMenu *m_hMenu = this->GetMenu();
+            CMenu *m_hLangMenu = m_hMenu->GetSubMenu(4);
             if (nLangID == ID_LANGUAGE_MIN)
                 m_hLangMenu->DeleteMenu(ID_LANGUAGE_DEFAULT, 0);
 
             m_hLangMenu->AppendMenu(MF_STRING, nLangID, szText.c_str());
             m_hLangMenu->CheckMenuItem(nLangID, MF_UNCHECKED);
+            m_hLangMenu = nullptr;
+            m_hMenu = nullptr;
 
             return true;
         }
