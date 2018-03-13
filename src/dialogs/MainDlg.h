@@ -139,7 +139,6 @@ namespace dialogs
         void RedrawItems();
         void ShowEdtItem();
         void UpdateEdtItem(BOOL bUpdateText);
-        void HandleDropFiles(HDROP hDropInfo);
         void UpdateFormatComboBox();
         void UpdatePresetComboBox();
         void UpdateFormatAndPreset();

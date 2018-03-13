@@ -168,7 +168,45 @@ namespace dialogs
         if (m_Downloader.bDownload == true)
             return;
 
-        std::thread m_DropThread = std::thread([this, hDropInfo]() { this->HandleDropFiles(hDropInfo); });
+        std::thread m_DropThread = std::thread([&]()
+        {
+            int nCount = ::DragQueryFile(hDropInfo, (UINT)0xFFFFFFFF, nullptr, 0);
+            if (nCount > 0)
+            {
+                bool bNewTools = false;
+                for (int i = 0; i < nCount; i++)
+                {
+                    int nReqChars = ::DragQueryFile(hDropInfo, i, nullptr, 0);
+                    CString szFile;
+                    ::DragQueryFile(hDropInfo, i, szFile.GetBuffer(nReqChars * 2 + 8), nReqChars * 2 + 8);
+                    if (!(::GetFileAttributes(szFile) & FILE_ATTRIBUTE_DIRECTORY))
+                    {
+                        std::wstring szPath = szFile;
+                        std::wstring szExt = util::GetFileExtension(szPath);
+                        if (util::string::CompareNoCase(szExt, L"xml"))
+                        {
+                            config::xml::XmlDocumnent doc;
+                            std::string szName = config::xml::XmlConfig::GetRootName(szPath, doc);
+                            if (!szName.empty())
+                            {
+                                if (util::string::CompareNoCase(szName, "Tool"))
+                                {
+                                    this->LoadTool(doc);
+                                    bNewTools = true;
+                                }
+                            }
+                        }
+                    }
+                    szFile.ReleaseBuffer();
+                }
+                if (bNewTools)
+                {
+                    config::CTool::Sort(m_Tools);
+                    this->RedrawTools();
+                }
+            }
+            ::DragFinish(hDropInfo);
+        });
         m_DropThread.detach();
 
         CMyDialogEx::OnDropFiles(hDropInfo);
@@ -869,51 +907,6 @@ namespace dialogs
     {
         this->m_LstTools.RedrawItems(0, m_Tools.size() - 1);
         this->m_LstTools.SetItemCount(m_Tools.size());
-    }
-
-    void CToolsDlg::HandleDropFiles(HDROP hDropInfo)
-    {
-        int nCount = ::DragQueryFile(hDropInfo, (UINT)0xFFFFFFFF, nullptr, 0);
-        if (nCount > 0)
-        {
-            bool bNewTools = false;
-            for (int i = 0; i < nCount; i++)
-            {
-                int nReqChars = ::DragQueryFile(hDropInfo, i, nullptr, 0);
-
-                CString szFile;
-                ::DragQueryFile(hDropInfo, i, szFile.GetBuffer(nReqChars * 2 + 8), nReqChars * 2 + 8);
-                if (!(::GetFileAttributes(szFile) & FILE_ATTRIBUTE_DIRECTORY))
-                {
-                    std::wstring szPath = szFile;
-                    std::wstring szExt = util::GetFileExtension(szPath);
-
-                    if (util::string::CompareNoCase(szExt, L"xml"))
-                    {
-                        config::xml::XmlDocumnent doc;
-                        std::string szName = config::xml::XmlConfig::GetRootName(szPath, doc);
-                        if (!szName.empty())
-                        {
-                            if (util::string::CompareNoCase(szName, "Tool"))
-                            {
-                                this->LoadTool(doc);
-                                bNewTools = true;
-                            }
-                        }
-                    }
-                }
-
-                szFile.ReleaseBuffer();
-            }
-
-            if (bNewTools)
-            {
-                config::CTool::Sort(m_Tools);
-                this->RedrawTools();
-            }
-        }
-
-        ::DragFinish(hDropInfo);
     }
 
     void CToolsDlg::UpdateFields(config::CTool &tool)

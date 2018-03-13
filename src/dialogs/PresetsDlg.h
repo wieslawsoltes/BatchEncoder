@@ -78,7 +78,6 @@ namespace dialogs
         void SetLanguage();
         void RedrawPreset(int nId);
         void RedrawPresets();
-        void HandleDropFiles(HDROP hDropInfo);
         void UpdateFields(config::CPreset &preset);
         void ListSelectionChange();
     public:

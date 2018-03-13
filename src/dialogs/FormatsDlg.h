@@ -111,7 +111,6 @@ namespace dialogs
         void SetLanguage();
         void RedrawFormat(int nId);
         void RedrawFormats();
-        void HandleDropFiles(HDROP hDropInfo);
         void UpdateFields(config::CFormat &format);
         void UpdateDefaultComboBox(config::CFormat &format);
         void ListSelectionChange();

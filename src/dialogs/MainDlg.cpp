@@ -548,7 +548,105 @@ namespace dialogs
         if (this->ctx->bRunning == true)
             return;
 
-        std::thread m_DropThread = std::thread([this, hDropInfo]() { this->HandleDropFiles(hDropInfo); });
+        std::thread m_DropThread = std::thread([&]()
+        {
+            int nCount = ::DragQueryFile(hDropInfo, (UINT)0xFFFFFFFF, nullptr, 0);
+            if (nCount > 0)
+            {
+                int nFormat = this->m_CmbFormat.GetCurSel();
+                int nPreset = this->m_CmbPresets.GetCurSel();
+                for (int i = 0; i < nCount; i++)
+                {
+                    int nReqChars = ::DragQueryFile(hDropInfo, i, nullptr, 0);
+                    CString szFile;
+                    ::DragQueryFile(hDropInfo, i, szFile.GetBuffer(nReqChars * 2 + 8), nReqChars * 2 + 8);
+                    if (::GetFileAttributes(szFile) & FILE_ATTRIBUTE_DIRECTORY)
+                    {
+                        std::wstring szPath = std::wstring(szFile);
+                        std::vector<std::wstring> files;
+                        bool bResult = util::FindFiles(szPath, files, true);
+                        if (bResult == true)
+                        {
+                            for (auto& file : files)
+                            {
+                                this->AddToList(file, nFormat, nPreset);
+                            }
+                        }
+                        else
+                        {
+                            m_StatusBar.SetText(m_Config.GetString(0x0021000C).c_str(), 1, 0);
+                        }
+                    }
+                    else
+                    {
+                        std::wstring szPath = szFile;
+                        std::wstring szExt = util::GetFileExtension(szPath);
+                        if (util::string::CompareNoCase(szExt, L"xml"))
+                        {
+                            config::xml::XmlDocumnent doc;
+                            std::string szName = config::xml::XmlConfig::GetRootName(szPath, doc);
+                            if (!szName.empty())
+                            {
+                                if (util::string::CompareNoCase(szName, "Items"))
+                                {
+                                    this->LoadItems(doc);
+                                }
+                                else if (util::string::CompareNoCase(szName, "Format"))
+                                {
+                                    this->LoadFormat(doc);
+                                }
+                                else if (util::string::CompareNoCase(szName, "Presets"))
+                                {
+                                    this->LoadPresets(doc);
+                                }
+                                else if (util::string::CompareNoCase(szName, "Outputs"))
+                                {
+                                    this->LoadOutputs(doc);
+                                }
+                                else if (util::string::CompareNoCase(szName, "Options"))
+                                {
+                                    this->LoadOptions(doc);
+                                }
+                                else if (util::string::CompareNoCase(szName, "Tool"))
+                                {
+                                    this->LoadTool(doc);
+                                }
+                                else if (util::string::CompareNoCase(szName, "Language"))
+                                {
+                                    this->LoadLanguage(doc);
+                                }
+                            }
+                        }
+                        else if (util::string::CompareNoCase(szExt, L"exe"))
+                        {
+                            int nFormat = this->m_CmbFormat.GetCurSel();
+                            if (nFormat != -1)
+                            {
+                                config::CFormat& format = m_Config.m_Formats[nFormat];
+                                format.szPath = szPath;
+                            }
+                        }
+                        else if (util::string::CompareNoCase(szExt, L"lua"))
+                        {
+                            int nFormat = this->m_CmbFormat.GetCurSel();
+                            if (nFormat != -1)
+                            {
+                                config::CFormat& format = m_Config.m_Formats[nFormat];
+                                format.szFunction = szPath;
+                            }
+                        }
+                        else
+                        {
+                            this->AddToList(szPath, nFormat, nPreset);
+                        }
+                    }
+                    szFile.ReleaseBuffer();
+                }
+                this->RedrawItems();
+                this->UpdateStatusBar();
+            }
+            ::DragFinish(hDropInfo);
+        });
         m_DropThread.detach();
 
         CMyDialogEx::OnDropFiles(hDropInfo);
@@ -2005,108 +2103,6 @@ namespace dialogs
             m_EdtItem.ShowWindow(SW_HIDE);
             m_LstInputItems.SetFocus();
         }
-    }
-
-    void CMainDlg::HandleDropFiles(HDROP hDropInfo)
-    {
-        int nCount = ::DragQueryFile(hDropInfo, (UINT)0xFFFFFFFF, nullptr, 0);
-        if (nCount > 0)
-        {
-            int nFormat = this->m_CmbFormat.GetCurSel();
-            int nPreset = this->m_CmbPresets.GetCurSel();
-
-            for (int i = 0; i < nCount; i++)
-            {
-                int nReqChars = ::DragQueryFile(hDropInfo, i, nullptr, 0);
-                CString szFile;
-                ::DragQueryFile(hDropInfo, i, szFile.GetBuffer(nReqChars * 2 + 8), nReqChars * 2 + 8);
-                if (::GetFileAttributes(szFile) & FILE_ATTRIBUTE_DIRECTORY)
-                {
-                    std::wstring szPath = std::wstring(szFile);
-                    std::vector<std::wstring> files;
-                    bool bResult = util::FindFiles(szPath, files, true);
-                    if (bResult == true)
-                    {
-                        for (auto& file : files)
-                        {
-                            this->AddToList(file, nFormat, nPreset);
-                        }
-                    }
-                    else
-                    {
-                        m_StatusBar.SetText(m_Config.GetString(0x0021000C).c_str(), 1, 0);
-                    }
-                }
-                else
-                {
-                    std::wstring szPath = szFile;
-                    std::wstring szExt = util::GetFileExtension(szPath);
-
-                    if (util::string::CompareNoCase(szExt, L"xml"))
-                    {
-                        config::xml::XmlDocumnent doc;
-                        std::string szName = config::xml::XmlConfig::GetRootName(szPath, doc);
-                        if (!szName.empty())
-                        {
-                            if (util::string::CompareNoCase(szName, "Items"))
-                            {
-                                this->LoadItems(doc);
-                            }
-                            else if (util::string::CompareNoCase(szName, "Format"))
-                            {
-                                this->LoadFormat(doc);
-                            }
-                            else if (util::string::CompareNoCase(szName, "Presets"))
-                            {
-                                this->LoadPresets(doc);
-                            }
-                            else if (util::string::CompareNoCase(szName, "Outputs"))
-                            {
-                                this->LoadOutputs(doc);
-                            }
-                            else if (util::string::CompareNoCase(szName, "Options"))
-                            {
-                                this->LoadOptions(doc);
-                            }
-                            else if (util::string::CompareNoCase(szName, "Tool"))
-                            {
-                                this->LoadTool(doc);
-                            }
-                            else if (util::string::CompareNoCase(szName, "Language"))
-                            {
-                                this->LoadLanguage(doc);
-                            }
-                        }
-                    }
-                    else if (util::string::CompareNoCase(szExt, L"exe"))
-                    {
-                        int nFormat = this->m_CmbFormat.GetCurSel();
-                        if (nFormat != -1)
-                        {
-                            config::CFormat& format = m_Config.m_Formats[nFormat];
-                            format.szPath = szPath;
-                        }
-                    }
-                    else if (util::string::CompareNoCase(szExt, L"lua"))
-                    {
-                        int nFormat = this->m_CmbFormat.GetCurSel();
-                        if (nFormat != -1)
-                        {
-                            config::CFormat& format = m_Config.m_Formats[nFormat];
-                            format.szFunction = szPath;
-                        }
-                    }
-                    else
-                    {
-                        this->AddToList(szPath, nFormat, nPreset);
-                    }
-                }
-                szFile.ReleaseBuffer();
-            }
-            this->RedrawItems();
-            this->UpdateStatusBar();
-        }
-        ::DragFinish(hDropInfo);
     }
 
     void CMainDlg::UpdateFormatComboBox()

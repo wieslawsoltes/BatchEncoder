@@ -135,7 +135,39 @@ namespace dialogs
 
     void CPresetsDlg::OnDropFiles(HDROP hDropInfo)
     {
-        std::thread m_DropThread = std::thread([this, hDropInfo]() { this->HandleDropFiles(hDropInfo); });
+        std::thread m_DropThread = std::thread([&]()
+        {
+            int nCount = ::DragQueryFile(hDropInfo, (UINT)0xFFFFFFFF, nullptr, 0);
+            if (nCount > 0)
+            {
+                for (int i = 0; i < nCount; i++)
+                {
+                    int nReqChars = ::DragQueryFile(hDropInfo, i, nullptr, 0);
+                    CString szFile;
+                    ::DragQueryFile(hDropInfo, i, szFile.GetBuffer(nReqChars * 2 + 8), nReqChars * 2 + 8);
+                    if (!(::GetFileAttributes(szFile) & FILE_ATTRIBUTE_DIRECTORY))
+                    {
+                        std::wstring szPath = szFile;
+                        std::wstring szExt = util::GetFileExtension(szPath);
+                        if (util::string::CompareNoCase(szExt, L"xml"))
+                        {
+                            config::xml::XmlDocumnent doc;
+                            std::string szName = config::xml::XmlConfig::GetRootName(szPath, doc);
+                            if (!szName.empty())
+                            {
+                                if (util::string::CompareNoCase(szName, "Presets"))
+                                {
+                                    this->LoadPresets(doc);
+                                    this->RedrawPresets();
+                                }
+                            }
+                        }
+                    }
+                    szFile.ReleaseBuffer();
+                }
+            }
+            ::DragFinish(hDropInfo);
+        });
         m_DropThread.detach();
 
         CMyDialogEx::OnDropFiles(hDropInfo);
@@ -616,43 +648,6 @@ namespace dialogs
             this->m_LstPresets.RedrawItems(0, -1);
             this->m_LstPresets.SetItemCount(0);
         }
-    }
-
-    void CPresetsDlg::HandleDropFiles(HDROP hDropInfo)
-    {
-        int nCount = ::DragQueryFile(hDropInfo, (UINT)0xFFFFFFFF, nullptr, 0);
-        if (nCount > 0)
-        {
-            for (int i = 0; i < nCount; i++)
-            {
-                int nReqChars = ::DragQueryFile(hDropInfo, i, nullptr, 0);
-
-                CString szFile;
-                ::DragQueryFile(hDropInfo, i, szFile.GetBuffer(nReqChars * 2 + 8), nReqChars * 2 + 8);
-                if (!(::GetFileAttributes(szFile) & FILE_ATTRIBUTE_DIRECTORY))
-                {
-                    std::wstring szPath = szFile;
-                    std::wstring szExt = util::GetFileExtension(szPath);
-
-                    if (util::string::CompareNoCase(szExt, L"xml"))
-                    {
-                        config::xml::XmlDocumnent doc;
-                        std::string szName = config::xml::XmlConfig::GetRootName(szPath, doc);
-                        if (!szName.empty())
-                        {
-                            if (util::string::CompareNoCase(szName, "Presets"))
-                            {
-                                this->LoadPresets(doc);
-                                this->RedrawPresets();
-                            }
-                        }
-                    }
-                }
-                szFile.ReleaseBuffer();
-            }
-        }
-
-        ::DragFinish(hDropInfo);
     }
 
     void CPresetsDlg::UpdateFields(config::CPreset& preset)

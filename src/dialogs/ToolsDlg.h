@@ -107,7 +107,6 @@ namespace dialogs
         void SetLanguage();
         void RedrawTool(int nId);
         void RedrawTools();
-        void HandleDropFiles(HDROP hDropInfo);
         void UpdateFields(config::CTool &format);
         void ListSelectionChange();
         void EnableUserInterface(BOOL bEnable = TRUE);

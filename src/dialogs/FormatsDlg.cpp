@@ -173,7 +173,71 @@ namespace dialogs
 
     void CFormatsDlg::OnDropFiles(HDROP hDropInfo)
     {
-        std::thread m_DropThread = std::thread([this, hDropInfo]() { this->HandleDropFiles(hDropInfo); });
+        std::thread m_DropThread = std::thread([&]()
+        {
+            int nCount = ::DragQueryFile(hDropInfo, (UINT)0xFFFFFFFF, nullptr, 0);
+            if (nCount > 0)
+            {
+                bool bNewFormats = false;
+                for (int i = 0; i < nCount; i++)
+                {
+                    int nReqChars = ::DragQueryFile(hDropInfo, i, nullptr, 0);
+                    CString szFile;
+                    ::DragQueryFile(hDropInfo, i, szFile.GetBuffer(nReqChars * 2 + 8), nReqChars * 2 + 8);
+                    if (!(::GetFileAttributes(szFile) & FILE_ATTRIBUTE_DIRECTORY))
+                    {
+                        std::wstring szPath = szFile;
+                        std::wstring szExt = util::GetFileExtension(szPath);
+                        if (util::string::CompareNoCase(szExt, L"xml"))
+                        {
+                            config::xml::XmlDocumnent doc;
+                            std::string szName = config::xml::XmlConfig::GetRootName(szPath, doc);
+                            if (!szName.empty())
+                            {
+                                if (util::string::CompareNoCase(szName, "Format"))
+                                {
+                                    this->LoadFormat(doc);
+                                    bNewFormats = true;
+                                }
+                                else if (util::string::CompareNoCase(szName, "Presets"))
+                                {
+                                    this->LoadPresets(doc);
+                                }
+                            }
+                        }
+                        else if (util::string::CompareNoCase(szExt, L"exe"))
+                        {
+                            POSITION pos = m_LstFormats.GetFirstSelectedItemPosition();
+                            if (pos != nullptr)
+                            {
+                                int nItem = m_LstFormats.GetNextSelectedItem(pos);
+                                config::CFormat& format = this->m_Formats[nItem];
+                                format.szPath = szPath;
+                                this->m_EdtPath.SetWindowText(format.szPath.c_str());
+                            }
+                        }
+                        else if (util::string::CompareNoCase(szExt, L"lua"))
+                        {
+                            POSITION pos = m_LstFormats.GetFirstSelectedItemPosition();
+                            if (pos != nullptr)
+                            {
+                                int nItem = m_LstFormats.GetNextSelectedItem(pos);
+                                config::CFormat& format = this->m_Formats[nItem];
+                                format.szFunction = szPath;
+                                this->m_EdtFunction.SetWindowText(format.szFunction.c_str());
+                            }
+                        }
+                    }
+                    szFile.ReleaseBuffer();
+                }
+                if (bNewFormats)
+                {
+                    config::CFormat::Sort(m_Formats);
+                    this->RedrawFormats();
+                }
+            }
+            ::DragFinish(hDropInfo);
+        });
         m_DropThread.detach();
 
         CMyDialogEx::OnDropFiles(hDropInfo);
@@ -891,77 +955,6 @@ namespace dialogs
     {
         this->m_LstFormats.RedrawItems(0, m_Formats.size() - 1);
         this->m_LstFormats.SetItemCount(m_Formats.size());
-    }
-
-    void CFormatsDlg::HandleDropFiles(HDROP hDropInfo)
-    {
-        int nCount = ::DragQueryFile(hDropInfo, (UINT)0xFFFFFFFF, nullptr, 0);
-        if (nCount > 0)
-        {
-            bool bNewFormats = false;
-            for (int i = 0; i < nCount; i++)
-            {
-                int nReqChars = ::DragQueryFile(hDropInfo, i, nullptr, 0);
-
-                CString szFile;
-                ::DragQueryFile(hDropInfo, i, szFile.GetBuffer(nReqChars * 2 + 8), nReqChars * 2 + 8);
-                if (!(::GetFileAttributes(szFile) & FILE_ATTRIBUTE_DIRECTORY))
-                {
-                    std::wstring szPath = szFile;
-                    std::wstring szExt = util::GetFileExtension(szPath);
-
-                    if (util::string::CompareNoCase(szExt, L"xml"))
-                    {
-                        config::xml::XmlDocumnent doc;
-                        std::string szName = config::xml::XmlConfig::GetRootName(szPath, doc);
-                        if (!szName.empty())
-                        {
-                            if (util::string::CompareNoCase(szName, "Format"))
-                            {
-                                this->LoadFormat(doc);
-                                bNewFormats = true;
-                            }
-                            else if (util::string::CompareNoCase(szName, "Presets"))
-                            {
-                                this->LoadPresets(doc);
-                            }
-                        }
-                    }
-                    else if (util::string::CompareNoCase(szExt, L"exe"))
-                    {
-                        POSITION pos = m_LstFormats.GetFirstSelectedItemPosition();
-                        if (pos != nullptr)
-                        {
-                            int nItem = m_LstFormats.GetNextSelectedItem(pos);
-                            config::CFormat& format = this->m_Formats[nItem];
-                            format.szPath = szPath;
-                            this->m_EdtPath.SetWindowText(format.szPath.c_str());
-                        }
-                    }
-                    else if (util::string::CompareNoCase(szExt, L"lua"))
-                    {
-                        POSITION pos = m_LstFormats.GetFirstSelectedItemPosition();
-                        if (pos != nullptr)
-                        {
-                            int nItem = m_LstFormats.GetNextSelectedItem(pos);
-                            config::CFormat& format = this->m_Formats[nItem];
-                            format.szFunction = szPath;
-                            this->m_EdtFunction.SetWindowText(format.szFunction.c_str());
-                        }
-                    }
-                }
-
-                szFile.ReleaseBuffer();
-            }
-
-            if (bNewFormats)
-            {
-                config::CFormat::Sort(m_Formats);
-                this->RedrawFormats();
-            }
-        }
-
-        ::DragFinish(hDropInfo);
     }
 
     void CFormatsDlg::UpdateFields(config::CFormat &format)
