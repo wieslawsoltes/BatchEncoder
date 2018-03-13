@@ -54,11 +54,11 @@ namespace worker
             }
         }
     public:
-        std::wstring AppendInputName(std::wstring& szSuffix)
+        std::wstring AppendInputName(const std::wstring& szSuffix)
         {
             wchar_t szFile[_MAX_PATH];
-            std::wstring szName = m_Input.szInputName + szSuffix;
-            _wmakepath_s(szFile, m_Input.szInputDrive, m_Input.szInputDir, szName.c_str(), m_Input.szInputExt);
+            std::wstring szAppendedInputName = this->szInputName + szSuffix;
+            _wmakepath_s(szFile, this->szInputDrive, this->szInputDir, szAppendedInputName.c_str(), this->szInputExt);
             return szFile;
         }
     };
