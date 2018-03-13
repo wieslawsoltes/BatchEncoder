@@ -254,6 +254,11 @@ namespace dialogs
                 config::CPreset& preset = format.m_Presets[nSelected];
                 config::CPreset copy = preset;
 
+                while (config::CPreset::IsUniqueName(format.m_Presets, copy.szName) == false)
+                {
+                    copy.szName += pConfig->GetString(0x00220005);
+                }
+
                 format.m_Presets.insert(format.m_Presets.begin() + nSelected + 1, copy);
 
                 m_LstPresets.SetItemState(-1, 0, LVIS_SELECTED);
@@ -339,6 +344,11 @@ namespace dialogs
             config::CPreset preset;
             preset.szName = pConfig->GetString(0x00220004);
             preset.szOptions = L"";
+
+            while (config::CPreset::IsUniqueName(format.m_Presets, preset.szName) == false)
+            {
+                preset.szName += pConfig->GetString(0x00220005);
+            }
 
             format.m_Presets.emplace_back(preset);
 

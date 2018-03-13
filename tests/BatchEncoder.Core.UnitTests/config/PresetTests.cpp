@@ -20,6 +20,14 @@ namespace BatchEncoderCoreUnitTests
             #pragma warning(pop)
         }
 
+        TEST_METHOD(CPreset_IsUniqueName)
+        {
+        }
+
+        TEST_METHOD(CPreset_AreNamesUnique)
+        {
+        }
+
         TEST_METHOD(CPreset_CompareName)
         {
         }

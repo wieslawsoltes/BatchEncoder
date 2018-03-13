@@ -6,6 +6,7 @@
 #include <string>
 #include <algorithm>
 #include <vector>
+#include "utilities\String.h"
 
 namespace config
 {
@@ -14,6 +15,28 @@ namespace config
     public:
         std::wstring szName;
         std::wstring szOptions;
+    public:
+        static inline int CountUniqueNames(const std::vector<CPreset>& presets, const std::wstring& name)
+        {
+            auto predicate = [&name](const CPreset& preset)
+            {
+                return util::string::CompareNoCase(preset.szName, name);
+            };
+            return std::count_if(presets.begin(), presets.end(), predicate);
+        }
+        static inline bool IsUniqueName(const std::vector<CPreset>& presets, const std::wstring& name)
+        {
+            return CountUniqueNames(presets, name) == 0;
+        }
+        static inline bool AreNamesUnique(const std::vector<CPreset>& presets)
+        {
+            for (const auto& preset : presets)
+            {
+                if (CountUniqueNames(presets, preset.szName) != 1)
+                    return false;
+            }
+            return true;
+        }
     public:
         static inline bool CompareName(const CPreset& a, const CPreset& b)
         {

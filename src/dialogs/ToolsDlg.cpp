@@ -444,6 +444,11 @@ namespace dialogs
                 config::CTool& tool = m_Tools[nSelected];
                 config::CTool copy = tool;
 
+                while (config::CTool::IsUniqueName(m_Tools, copy.szName) == false)
+                {
+                    copy.szName += pConfig->GetString(0x00240005);
+                }
+
                 m_Tools.insert(m_Tools.begin() + nSelected + 1, copy);
 
                 m_LstTools.SetItemState(-1, 0, LVIS_SELECTED);
@@ -533,10 +538,8 @@ namespace dialogs
 
         bUpdate = true;
 
-        std::wstring szNewName = L"ID";
-
         config::CTool tool;
-        tool.szName = szNewName;
+        tool.szName = pConfig->GetString(0x00240004);
         tool.szPlatform = L"";
         tool.nPriority = -1;
         tool.szFormats = L"";
@@ -545,6 +548,11 @@ namespace dialogs
         tool.szExtract = L"";
         tool.szPath = L"";
         tool.szStatus = L"";
+
+        while (config::CTool::IsUniqueName(m_Tools, tool.szName) == false)
+        {
+            tool.szName += pConfig->GetString(0x00240005);
+        }
 
         m_Tools.emplace_back(tool);
 

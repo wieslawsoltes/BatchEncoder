@@ -329,6 +329,7 @@ namespace config
         { 0x00220002, L"Failed to load file!" },
         { 0x00220003, L"Failed to save file!" },
         { 0x00220004, L"Default" },
+        { 0x00220005, L"-copy" },
 
         // Strings Formats Dialog
 
@@ -337,6 +338,7 @@ namespace config
         { 0x00230003, L"Failed to save file!" },
         { 0x00230004, L"Format" },
         { 0x00230005, L"Default" },
+        { 0x00230006, L"-copy" },
 
         // Strings Tools Dialog
 
@@ -344,6 +346,7 @@ namespace config
         { 0x00240002, L"Failed to load file!" },
         { 0x00240003, L"Failed to save file!" },
         { 0x00240004, L"Tool" },
+        { 0x00240005, L"-copy" },
 
         // Strings File Dialogs
 

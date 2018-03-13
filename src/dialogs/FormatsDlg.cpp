@@ -428,6 +428,11 @@ namespace dialogs
                 config::CFormat& format = m_Formats[nSelected];
                 config::CFormat copy = format;
 
+                while (config::CFormat::IsUniqueId(m_Formats, copy.szId) == false)
+                {
+                    copy.szId += pConfig->GetString(0x00230006);
+                }
+
                 m_Formats.insert(m_Formats.begin() + nSelected + 1, copy);
 
                 this->RedrawFormats();
@@ -509,10 +514,8 @@ namespace dialogs
 
         bUpdate = true;
 
-        std::wstring szNewId = L"ID";
-
         config::CFormat format;
-        format.szId = szNewId;
+        format.szId = pConfig->GetString(0x00230004);
         format.szName = pConfig->GetString(0x00230004);
         format.szTemplate = L"$EXE $OPTIONS $INFILE $OUTFILE";
         format.bPipeInput = true;
@@ -530,6 +533,11 @@ namespace dialogs
         preset.szName = pConfig->GetString(0x00230005);
         preset.szOptions = L"";
         format.m_Presets.emplace_back(preset);
+
+        while (config::CFormat::IsUniqueId(m_Formats, format.szId) == false)
+        {
+            format.szId += pConfig->GetString(0x00230006);
+        }
 
         m_Formats.emplace_back(format);
 

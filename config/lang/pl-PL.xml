@@ -264,6 +264,7 @@
     <String key="0x00220002" value="Nie udało się wczytać pliku!" />
     <String key="0x00220003" value="Nie udało się zapisać pliku!" />
     <String key="0x00220004" value="Domyślny" />
+    <String key="0x00220005" value="-kopia" />
 
     <!-- Strings Formats Dialog -->
 
@@ -272,6 +273,7 @@
     <String key="0x00230003" value="Nie udało się zapisać pliku!" />
     <String key="0x00230004" value="Format" />
     <String key="0x00230005" value="Domyślny" />
+    <String key="0x00230006" value="-kopia" />
 
     <!-- Strings Tools Dialog -->
 
@@ -279,6 +281,7 @@
     <String key="0x00240002" value="Nie udało się wczytać pliku!" />
     <String key="0x00240003" value="Nie udało się zapisać pliku!" />
     <String key="0x00240004" value="Narzędzie" />
+    <String key="0x00240005" value="-kopia" />
 
     <!-- Strings File Dialogs -->
 

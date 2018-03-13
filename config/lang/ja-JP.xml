@@ -264,6 +264,7 @@
     <String key="0x00220002" value="ファイルの読み込みに失敗しました。" />
     <String key="0x00220003" value="ファイルの保存に失敗しました。" />
     <String key="0x00220004" value="デフォルト" />
+    <String key="0x00220005" value="-copy" />
 
     <!-- Strings Formats Dialog -->
 
@@ -272,6 +273,7 @@
     <String key="0x00230003" value="ファイルの保存に失敗しました。" />
     <String key="0x00230004" value="形式" />
     <String key="0x00230005" value="デフォルト" />
+    <String key="0x00230006" value="-copy" />
 
     <!-- Strings Tools Dialog -->
 
@@ -279,6 +281,7 @@
     <String key="0x00240002" value="ファイルの読み込みに失敗しました。" />
     <String key="0x00240003" value="ファイルの保存に失敗しました。" />
     <String key="0x00240004" value="ツール" />
+    <String key="0x00240005" value="-copy" />
 
     <!-- Strings File Dialogs -->
 
