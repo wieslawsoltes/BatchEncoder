@@ -599,35 +599,27 @@ namespace dialogs
             switch (pItem->iSubItem)
             {
             case ITEM_COLUMN_NAME:
-                // [Name] : item name
                 szText = item.szName;
                 break;
             case ITEM_COLUMN_INPUT:
-                // [Type] : input extension 
                 szText = item.szExtension;
                 break;
             case ITEM_COLUMN_SIZE:
-                // [Size (bytes)] : file size
                 szText = std::to_wstring(item.nSize);
                 break;
             case ITEM_COLUMN_OUTPUT:
-                // [Output] : output format
                 szText = item.szFormatId;
                 break;
             case ITEM_COLUMN_PRESET:
-                // [Preset] : selected preset index
                 szText = std::to_wstring(item.nPreset);
                 break;
             case ITEM_COLUMN_OPTIONS:
-                // [Options] : additional options
                 szText = item.szOptions;
                 break;
             case ITEM_COLUMN_TIME:
-                // [Time] : encoder/decoder conversion time
                 szText = item.szTime.empty() ? m_Config.GetString(0x00150001) : item.szTime;
                 break;
             case ITEM_COLUMN_STATUS:
-                // [Status] : encoder/decoder progress status
                 szText = item.szStatus.empty() ? m_Config.GetString(0x00210001) : item.szStatus;
                 break;
             }
@@ -1818,33 +1810,20 @@ namespace dialogs
         m_Config.m_Options.bHideConsoleWindow = m_hMenu->GetMenuState(ID_OPTIONS_HIDE_CONSOLE, MF_BYCOMMAND) == MF_CHECKED;
         m_Config.m_Options.bEnsureItemIsVisible = m_hMenu->GetMenuState(ID_OPTIONS_ENSURE_VISIBLE, MF_BYCOMMAND) == MF_CHECKED;
         m_Config.m_Options.bTryToFindDecoder = m_hMenu->GetMenuState(ID_OPTIONS_FIND_DECODER, MF_BYCOMMAND) == MF_CHECKED;
-
-        // option: ValidateInputFiles
         m_Config.m_Options.bValidateInputFiles = m_hMenu->GetMenuState(ID_OPTIONS_VALIDATE_FILES, MF_BYCOMMAND) == MF_CHECKED;
-
-        // option: OverwriteExistingFiles
         m_Config.m_Options.bOverwriteExistingFiles = m_hMenu->GetMenuState(ID_OPTIONS_OVERWRITE_FILES, MF_BYCOMMAND) == MF_CHECKED;
-
-        // option: TryToDownloadTools
         m_Config.m_Options.bTryToDownloadTools = m_hMenu->GetMenuState(ID_OPTIONS_DOWNLOAD_TOOLS, MF_BYCOMMAND) == MF_CHECKED;
 
         m_hMenu = nullptr;
 
-        // option: ThreadCount
         CString szThreadCount;
         m_EdtThreads.GetWindowText(szThreadCount);
         m_Config.m_Options.nThreadCount = _tstoi(szThreadCount);
 
-        // options: OutputBrowse
         m_Config.m_Options.szOutputBrowse = szLastOutputBrowse;
-
-        // options: DirectoryBrowse
         m_Config.m_Options.szDirectoryBrowse = szLastDirectoryBrowse;
-
-        // option: MainWindowResize
         m_Config.m_Options.szMainWindowResize = this->GetWindowRectStr();
 
-        // option: FileListColumns
         int nColWidth[8];
         for (int i = 0; i < 8; i++)
             nColWidth[i] = m_LstInputItems.GetColumnWidth(i);
@@ -1862,7 +1841,6 @@ namespace dialogs
 
     void CMainDlg::SetOptions()
     {
-        // option: OutputPath
         if (!m_Config.m_Options.szOutputPath.empty())
         {
             this->m_CmbOutPath.SetWindowText(m_Config.m_Options.szOutputPath.c_str());
@@ -1875,98 +1853,35 @@ namespace dialogs
 
         CMenu *m_hMenu = this->GetMenu();
 
-        // option: DeleteSourceFiles
-        if (m_Config.m_Options.bDeleteSourceFiles)
-            m_hMenu->CheckMenuItem(ID_OPTIONS_DELETE_SOURCE, MF_CHECKED);
-        else
-            m_hMenu->CheckMenuItem(ID_OPTIONS_DELETE_SOURCE, MF_UNCHECKED);
+        m_hMenu->CheckMenuItem(ID_OPTIONS_DELETE_SOURCE, m_Config.m_Options.bDeleteSourceFiles  ? MF_CHECKED : MF_UNCHECKED);
 
-        // option: RecurseChecked
-        if (m_Config.m_Options.bRecurseChecked)
-            bRecurseChecked = true;
-        else
-            bRecurseChecked = false;
+        bRecurseChecked = m_Config.m_Options.bRecurseChecked;
 
-        // option: ShutdownWhenFinished
-        if (m_Config.m_Options.bShutdownWhenFinished)
-            m_hMenu->CheckMenuItem(ID_OPTIONS_SHUTDOWN_WINDOWS, MF_CHECKED);
-        else
-            m_hMenu->CheckMenuItem(ID_OPTIONS_SHUTDOWN_WINDOWS, MF_UNCHECKED);
-
-        // option: DoNotSaveConfiguration
-        if (m_Config.m_Options.bDoNotSaveConfiguration)
-            m_hMenu->CheckMenuItem(ID_OPTIONS_DO_NOT_SAVE, MF_CHECKED);
-        else
-            m_hMenu->CheckMenuItem(ID_OPTIONS_DO_NOT_SAVE, MF_UNCHECKED);
-
-        // option: DeleteOnErrors
-        if (m_Config.m_Options.bDeleteOnErrors)
-            m_hMenu->CheckMenuItem(ID_OPTIONS_DELETE_ON_ERRORS, MF_CHECKED);
-        else
-            m_hMenu->CheckMenuItem(ID_OPTIONS_DELETE_ON_ERRORS, MF_UNCHECKED);
-
-        // option: StopOnErrors
-        if (m_Config.m_Options.bStopOnErrors)
-            m_hMenu->CheckMenuItem(ID_OPTIONS_STOP_ON_ERRORS, MF_CHECKED);
-        else
-            m_hMenu->CheckMenuItem(ID_OPTIONS_STOP_ON_ERRORS, MF_UNCHECKED);
-
-        // option: HideConsoleWindow
-        if (m_Config.m_Options.bHideConsoleWindow)
-            m_hMenu->CheckMenuItem(ID_OPTIONS_HIDE_CONSOLE, MF_CHECKED);
-        else
-            m_hMenu->CheckMenuItem(ID_OPTIONS_HIDE_CONSOLE, MF_UNCHECKED);
-
-        // option: EnsureItemIsVisible
-        if (m_Config.m_Options.bEnsureItemIsVisible)
-            m_hMenu->CheckMenuItem(ID_OPTIONS_ENSURE_VISIBLE, MF_CHECKED);
-        else
-            m_hMenu->CheckMenuItem(ID_OPTIONS_ENSURE_VISIBLE, MF_UNCHECKED);
-
-        // option: TryToFindDecoder
-        if (m_Config.m_Options.bTryToFindDecoder)
-            m_hMenu->CheckMenuItem(ID_OPTIONS_FIND_DECODER, MF_CHECKED);
-        else
-            m_hMenu->CheckMenuItem(ID_OPTIONS_FIND_DECODER, MF_UNCHECKED);
-
-        // option: ValidateInputFiles
-        if (m_Config.m_Options.bValidateInputFiles)
-            m_hMenu->CheckMenuItem(ID_OPTIONS_VALIDATE_FILES, MF_CHECKED);
-        else
-            m_hMenu->CheckMenuItem(ID_OPTIONS_VALIDATE_FILES, MF_UNCHECKED);
-
-        // option: OverwriteExistingFiles
-        if (m_Config.m_Options.bOverwriteExistingFiles)
-            m_hMenu->CheckMenuItem(ID_OPTIONS_OVERWRITE_FILES, MF_CHECKED);
-        else
-            m_hMenu->CheckMenuItem(ID_OPTIONS_OVERWRITE_FILES, MF_UNCHECKED);
-
-        // option: TryToDownloadTools
-        if (m_Config.m_Options.bTryToDownloadTools)
-            m_hMenu->CheckMenuItem(ID_OPTIONS_DOWNLOAD_TOOLS, MF_CHECKED);
-        else
-            m_hMenu->CheckMenuItem(ID_OPTIONS_DOWNLOAD_TOOLS, MF_UNCHECKED);
+        m_hMenu->CheckMenuItem(ID_OPTIONS_SHUTDOWN_WINDOWS, m_Config.m_Options.bShutdownWhenFinished ? MF_CHECKED : MF_UNCHECKED);
+        m_hMenu->CheckMenuItem(ID_OPTIONS_DO_NOT_SAVE, m_Config.m_Options.bDoNotSaveConfiguration ? MF_CHECKED : MF_UNCHECKED);
+        m_hMenu->CheckMenuItem(ID_OPTIONS_DELETE_ON_ERRORS, m_Config.m_Options.bDeleteOnErrors ? MF_CHECKED : MF_UNCHECKED);
+        m_hMenu->CheckMenuItem(ID_OPTIONS_STOP_ON_ERRORS, m_Config.m_Options.bStopOnErrors ? MF_CHECKED : MF_UNCHECKED);
+        m_hMenu->CheckMenuItem(ID_OPTIONS_HIDE_CONSOLE, m_Config.m_Options.bHideConsoleWindow ? MF_CHECKED : MF_UNCHECKED);
+        m_hMenu->CheckMenuItem(ID_OPTIONS_ENSURE_VISIBLE, m_Config.m_Options.bEnsureItemIsVisible ? MF_CHECKED : MF_UNCHECKED);
+        m_hMenu->CheckMenuItem(ID_OPTIONS_FIND_DECODER, m_Config.m_Options.bTryToFindDecoder ? MF_CHECKED : MF_UNCHECKED);
+        m_hMenu->CheckMenuItem(ID_OPTIONS_VALIDATE_FILES, m_Config.m_Options.bValidateInputFiles ? MF_CHECKED : MF_UNCHECKED);
+        m_hMenu->CheckMenuItem(ID_OPTIONS_OVERWRITE_FILES, m_Config.m_Options.bOverwriteExistingFiles ? MF_CHECKED : MF_UNCHECKED);
+        m_hMenu->CheckMenuItem(ID_OPTIONS_DOWNLOAD_TOOLS, m_Config.m_Options.bTryToDownloadTools ? MF_CHECKED : MF_UNCHECKED);
 
         m_hMenu = nullptr;
 
-        // option: ThreadCount
         CString szThreadCount;
         szThreadCount.Format(_T("%d\0"), m_Config.m_Options.nThreadCount);
         m_EdtThreads.SetWindowText(szThreadCount);
 
-        // options: OutputBrowse
         szLastOutputBrowse = m_Config.m_Options.szOutputBrowse.c_str();
-
-        // options: DirectoryBrowse
         szLastDirectoryBrowse = m_Config.m_Options.szDirectoryBrowse.c_str();
 
-        // option: MainWindowResize
         if (!m_Config.m_Options.szMainWindowResize.empty())
         {
             this->SetWindowRectStr(m_Config.m_Options.szMainWindowResize.c_str());
         }
 
-        // option: FileListColumns
         if (!m_Config.m_Options.szFileListColumns.empty())
         {
             auto widths = util::string::Split(m_Config.m_Options.szFileListColumns.c_str(), ' ');
@@ -2152,7 +2067,6 @@ namespace dialogs
                     }
                     else if (util::string::CompareNoCase(szExt, L"exe"))
                     {
-                        // Set current format exe path.
                         int nFormat = this->m_CmbFormat.GetCurSel();
                         if (nFormat != -1)
                         {
@@ -2162,7 +2076,6 @@ namespace dialogs
                     }
                     else if (util::string::CompareNoCase(szExt, L"lua"))
                     {
-                        // Set current format progress path.
                         int nFormat = this->m_CmbFormat.GetCurSel();
                         if (nFormat != -1)
                         {
@@ -2389,32 +2302,16 @@ namespace dialogs
 
     void CMainDlg::EnableUserInterface(BOOL bEnable)
     {
-        if (bEnable == FALSE)
-        {
-            this->m_StcOutPath.ShowWindow(SW_HIDE);
-            this->m_CmbOutPath.ShowWindow(SW_HIDE);
-            this->m_BtnBrowse.ShowWindow(SW_HIDE);
-            this->m_StcThreads.ShowWindow(SW_HIDE);
-            this->m_EdtThreads.ShowWindow(SW_HIDE);
-            this->m_SpinThreads.ShowWindow(SW_HIDE);
-            this->m_Progress.ShowWindow(SW_SHOW);
-        }
-        else
-        {
-            this->m_Progress.ShowWindow(SW_HIDE);
-            this->m_StcOutPath.ShowWindow(SW_SHOW);
-            this->m_CmbOutPath.ShowWindow(SW_SHOW);
-            this->m_BtnBrowse.ShowWindow(SW_SHOW);
-            this->m_StcThreads.ShowWindow(SW_SHOW);
-            this->m_EdtThreads.ShowWindow(SW_SHOW);
-            this->m_SpinThreads.ShowWindow(SW_SHOW);
-            this->m_LstInputItems.ShowWindow(SW_SHOW);
-        }
+        this->m_StcOutPath.ShowWindow(bEnable == FALSE ? SW_HIDE : SW_SHOW);
+        this->m_CmbOutPath.ShowWindow(bEnable == FALSE ? SW_HIDE : SW_SHOW);
+        this->m_BtnBrowse.ShowWindow(bEnable == FALSE ? SW_HIDE : SW_SHOW);
+        this->m_StcThreads.ShowWindow(bEnable == FALSE ? SW_HIDE : SW_SHOW);
+        this->m_EdtThreads.ShowWindow(bEnable == FALSE ? SW_HIDE : SW_SHOW);
+        this->m_SpinThreads.ShowWindow(bEnable == FALSE ? SW_HIDE : SW_SHOW);
+        this->m_Progress.ShowWindow(bEnable == FALSE ? SW_SHOW : SW_HIDE);
 
         CMenu* pSysMenu = GetSystemMenu(FALSE);
         pSysMenu->EnableMenuItem(SC_CLOSE, bEnable == FALSE ? MF_GRAYED : MF_ENABLED);
-        pSysMenu = nullptr;
-
         pSysMenu = nullptr;
 
         UINT nEnable = (bEnable == TRUE) ? MF_ENABLED : MF_GRAYED;
@@ -2429,13 +2326,12 @@ namespace dialogs
                 UINT nID = pSubMenu->GetMenuItemID(j);
                 pSubMenu->EnableMenuItem(nID, nEnable);
             }
+            pSubMenu = nullptr;
         }
-
         pMainMenu = nullptr;
 
         this->m_CmbPresets.EnableWindow(bEnable);
         this->m_CmbFormat.EnableWindow(bEnable);
-
         this->m_CmbOutPath.EnableWindow(bEnable);
         this->m_BtnBrowse.EnableWindow(bEnable);
     }
@@ -2468,13 +2364,13 @@ namespace dialogs
                 UINT nID = pSubMenu->GetMenuItemID(j);
                 pSubMenu->EnableMenuItem(nID, nEnable);
             }
+            pSubMenu = nullptr;
         }
 
         pMainMenu = nullptr;
 
         this->m_CmbPresets.EnableWindow(bEnable);
         this->m_CmbFormat.EnableWindow(bEnable);
-
         this->m_CmbOutPath.EnableWindow(bEnable);
         this->m_BtnBrowse.EnableWindow(bEnable);
     }
