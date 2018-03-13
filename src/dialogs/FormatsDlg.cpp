@@ -538,6 +538,7 @@ namespace dialogs
         {
             format.szId += pConfig->GetString(0x00230006);
         }
+        std::wstring szNewId = format.szId;
 
         m_Formats.emplace_back(format);
 

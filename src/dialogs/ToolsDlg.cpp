@@ -553,6 +553,7 @@ namespace dialogs
         {
             tool.szName += pConfig->GetString(0x00240005);
         }
+        std::wstring szNewName = tool.szName;
 
         m_Tools.emplace_back(tool);
 
