@@ -373,6 +373,7 @@ namespace dialogs
         ON_COMMAND(ID_OPTIONS_FIND_DECODER, OnOptionsFindDecoder)
         ON_COMMAND(ID_OPTIONS_VALIDATE_FILES, OnOptionsValidateFiles)
         ON_COMMAND(ID_OPTIONS_OVERWRITE_FILES, OnOptionsOverwriteFiles)
+        ON_COMMAND(ID_OPTIONS_RENAME_FILES, OnOptionsRenameFiles)
         ON_COMMAND(ID_OPTIONS_DOWNLOAD_TOOLS, OnOptionsDownloadTools)
         ON_COMMAND(ID_LANGUAGE_DEFAULT, OnLanguageDefault)
         ON_COMMAND_RANGE(ID_LANGUAGE_MIN, ID_LANGUAGE_MAX, OnLanguageChange)
@@ -1602,6 +1603,19 @@ namespace dialogs
         }
     }
 
+    void CMainDlg::OnOptionsRenameFiles()
+    {
+        if (this->ctx->bRunning == false)
+        {
+            CMenu *m_hMenu = this->GetMenu();
+            bool bChecked = m_hMenu->GetMenuState(ID_OPTIONS_RENAME_FILES, MF_BYCOMMAND) == MF_CHECKED;
+            m_hMenu->CheckMenuItem(ID_OPTIONS_RENAME_FILES, (bChecked == true) ? MF_UNCHECKED : MF_CHECKED);
+            m_hMenu = nullptr;
+
+            this->m_Config.m_Options.bRenameExistingFiles = !bChecked;
+        }
+    }
+
     void CMainDlg::OnOptionsDownloadTools()
     {
         if (this->ctx->bRunning == false)
@@ -1752,8 +1766,9 @@ namespace dialogs
         helper.SetMenuItemText(m_hMenu, ID_OPTIONS_FIND_DECODER, 0x0004000B);
         helper.SetMenuItemText(m_hMenu, ID_OPTIONS_VALIDATE_FILES, 0x0004000C);
         helper.SetMenuItemText(m_hMenu, ID_OPTIONS_OVERWRITE_FILES, 0x0004000D);
-        helper.SetMenuItemText(m_hMenu, ID_OPTIONS_DOWNLOAD_TOOLS, 0x0004000F);
+        helper.SetMenuItemText(m_hMenu, ID_OPTIONS_RENAME_FILES, 0x00040010);
         helper.SetMenuItemText(m_hMenu, ID_OPTIONS_CONFIGURETOOLS, 0x0004000E);
+        helper.SetMenuItemText(m_hMenu, ID_OPTIONS_DOWNLOAD_TOOLS, 0x0004000F);
 
         // Language Menu
         helper.SetMenuPopupText(m_hMenu, 4, 0x00050001);
@@ -1809,6 +1824,7 @@ namespace dialogs
         m_Config.m_Options.bTryToFindDecoder = m_hMenu->GetMenuState(ID_OPTIONS_FIND_DECODER, MF_BYCOMMAND) == MF_CHECKED;
         m_Config.m_Options.bValidateInputFiles = m_hMenu->GetMenuState(ID_OPTIONS_VALIDATE_FILES, MF_BYCOMMAND) == MF_CHECKED;
         m_Config.m_Options.bOverwriteExistingFiles = m_hMenu->GetMenuState(ID_OPTIONS_OVERWRITE_FILES, MF_BYCOMMAND) == MF_CHECKED;
+        m_Config.m_Options.bRenameExistingFiles = m_hMenu->GetMenuState(ID_OPTIONS_RENAME_FILES, MF_BYCOMMAND) == MF_CHECKED;
         m_Config.m_Options.bTryToDownloadTools = m_hMenu->GetMenuState(ID_OPTIONS_DOWNLOAD_TOOLS, MF_BYCOMMAND) == MF_CHECKED;
 
         m_hMenu = nullptr;
@@ -1863,6 +1879,7 @@ namespace dialogs
         m_hMenu->CheckMenuItem(ID_OPTIONS_FIND_DECODER, m_Config.m_Options.bTryToFindDecoder ? MF_CHECKED : MF_UNCHECKED);
         m_hMenu->CheckMenuItem(ID_OPTIONS_VALIDATE_FILES, m_Config.m_Options.bValidateInputFiles ? MF_CHECKED : MF_UNCHECKED);
         m_hMenu->CheckMenuItem(ID_OPTIONS_OVERWRITE_FILES, m_Config.m_Options.bOverwriteExistingFiles ? MF_CHECKED : MF_UNCHECKED);
+        m_hMenu->CheckMenuItem(ID_OPTIONS_RENAME_FILES, m_Config.m_Options.bRenameExistingFiles ? MF_CHECKED : MF_UNCHECKED);
         m_hMenu->CheckMenuItem(ID_OPTIONS_DOWNLOAD_TOOLS, m_Config.m_Options.bTryToDownloadTools ? MF_CHECKED : MF_UNCHECKED);
 
         m_hMenu = nullptr;

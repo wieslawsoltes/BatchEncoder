@@ -53,5 +53,13 @@ namespace worker
                     this->szSourceFolders.emplace_back(szToken);
             }
         }
+    public:
+        std::wstring AppendInputName(std::wstring& szSuffix)
+        {
+            wchar_t szFile[_MAX_PATH];
+            std::wstring szName = m_Input.szInputName + szSuffix;
+            _wmakepath_s(szFile, m_Input.szInputDrive, m_Input.szInputDir, szName.c_str(), m_Input.szInputExt);
+            return szFile;
+        }
     };
 }

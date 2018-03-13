@@ -332,6 +332,8 @@ namespace config::xml
             VALIDATE(GetChildValueBool(element, "EnsureItemIsVisible", &m_Options.bEnsureItemIsVisible));
             VALIDATE(GetChildValueBool(element, "ValidateInputFiles", &m_Options.bValidateInputFiles));
             VALIDATE(GetChildValueBool(element, "OverwriteExistingFiles", &m_Options.bOverwriteExistingFiles));
+            VALIDATE(GetChildValueBool(element, "RenameExistingFiles", &m_Options.bRenameExistingFiles));
+            VALIDATE(GetChildValueBool(element, "RenameExistingFilesLimit", &m_Options.nRenameExistingFilesLimit));
             VALIDATE(GetChildValueBool(element, "TryToDownloadTools", &m_Options.bTryToDownloadTools));
             VALIDATE(GetChildValueInt(element, "ThreadCount", &m_Options.nThreadCount));
             VALIDATE(GetChildValueString(element, "OutputBrowse", &m_Options.szOutputBrowse));
@@ -362,6 +364,8 @@ namespace config::xml
             SetChildValueBool(element, "EnsureItemIsVisible", m_Options.bEnsureItemIsVisible);
             SetChildValueBool(element, "ValidateInputFiles", m_Options.bValidateInputFiles);
             SetChildValueBool(element, "OverwriteExistingFiles", m_Options.bOverwriteExistingFiles);
+            SetChildValueBool(element, "RenameExistingFiles", m_Options.bRenameExistingFiles);
+            SetChildValueBool(element, "RenameExistingFilesLimit", m_Options.nRenameExistingFilesLimit);
             SetChildValueBool(element, "TryToDownloadTools", m_Options.bTryToDownloadTools);
             SetChildValueInt(element, "ThreadCount", m_Options.nThreadCount);
             SetChildValueString(element, "OutputBrowse", m_Options.szOutputBrowse);

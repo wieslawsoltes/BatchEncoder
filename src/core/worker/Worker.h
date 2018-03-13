@@ -798,10 +798,30 @@ namespace worker
 
             if (config->m_Options.bOverwriteExistingFiles == false)
             {
-                if (config->FileSystem->FileExists(szEncOutputFile) == true)
+                if (config->m_Options.bRenameExistingFiles == true)
                 {
-                    ctx->ItemStatus(item.nId, ctx->GetString(0x00150001), ctx->GetString(0x00140010));
-                    return false;
+                    int nCounter = 0;
+                    while (config->FileSystem->FileExists(szEncOutputFile) == true)
+                    {
+                        if (nCounter >= config->m_Options.nRenameExistingFilesLimit)
+                        {
+                            ctx->ItemStatus(item.nId, ctx->GetString(0x00150001), ctx->GetString(0x00140010));
+                            return false;
+                        }
+
+                        CInputPath m_Input(szEncOutputFile.c_str());
+                        szEncOutputFile = m_Input.AppendInputName(L"_");
+
+                        nCounter++;
+                    }
+                }
+                else
+                {
+                    if (config->FileSystem->FileExists(szEncOutputFile) == true)
+                    {
+                        ctx->ItemStatus(item.nId, ctx->GetString(0x00150001), ctx->GetString(0x00140010));
+                        return false;
+                    }
                 }
             }
 

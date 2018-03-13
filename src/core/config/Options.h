@@ -24,6 +24,8 @@ namespace config
         bool bEnsureItemIsVisible;
         bool bValidateInputFiles;
         bool bOverwriteExistingFiles;
+        bool bRenameExistingFiles;
+        int nRenameExistingFilesLimit;
         bool bTryToDownloadTools;
         int nThreadCount;
         std::wstring szOutputBrowse;
@@ -53,6 +55,8 @@ namespace config
             this->bEnsureItemIsVisible = true;
             this->bValidateInputFiles = true;
             this->bOverwriteExistingFiles = true;
+            this->bRenameExistingFiles = true;
+            this->nRenameExistingFilesLimit = 100;
             this->bTryToDownloadTools = true;
             this->nThreadCount = 0;
             this->szOutputBrowse = L"";

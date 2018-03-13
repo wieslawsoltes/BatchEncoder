@@ -61,5 +61,14 @@ namespace BatchEncoderCoreUnitTests
             Assert::AreEqual(L"ArtistFolder", m_Input.szSourceFolders[1].c_str());
             Assert::AreEqual(L"AlbumFolder", m_Input.szSourceFolders[2].c_str());
         }
+
+        TEST_METHOD(CInputPath_AppendInputName)
+        {
+            std::wstring szInputFile = L"C:\\MusicFolder\\ArtistFolder\\AlbumFolder\\FileName.wav";
+            worker::CInputPath m_Input(szInputFile.c_str());
+            std::wstring szAppendedInputFile = m_Input.AppendInputName(L"_");
+
+            Assert::AreEqual(L"C:\\MusicFolder\\ArtistFolder\\AlbumFolder\\FileName_.wav", szAppendedInputFile.c_str());
+        }
     };
 }

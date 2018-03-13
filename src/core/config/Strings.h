@@ -117,6 +117,7 @@ namespace config
         { 0x0004000D, L"Ove&rwrite Existing Files" },
         { 0x0004000E, L"Configure Too&ls...\tF10" },
         { 0x0004000F, L"Tr&y To Download Tools" },
+        { 0x00040010, L"Rena&me Existing Files" },
 
         // Language Menu
 
