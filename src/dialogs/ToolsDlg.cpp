@@ -168,9 +168,17 @@ namespace dialogs
         if (m_Downloader.bDownload == true)
             return;
 
-        bool bNewTools = false;
+        static volatile bool bSafeCheck = false;
+        static HDROP hDropInfoLocal;
+        static bool bNewTools;
 
-        auto HandleFile = [&](const std::wstring& file)
+        if (bSafeCheck == true)
+            return;
+
+        hDropInfoLocal = hDropInfo;
+        bNewTools = false;
+
+        static auto HandleFile = [&](const std::wstring& file)
         {
             std::wstring szExt = util::GetFileExtension(file);
             if (util::string::CompareNoCase(szExt, L"xml"))
@@ -188,7 +196,7 @@ namespace dialogs
             }
         };
 
-        auto HandleFinish = [&]()
+        static auto HandleFinish = [&]()
         {
             if (bNewTools)
             {
@@ -197,16 +205,21 @@ namespace dialogs
             }
         };
 
-        std::thread m_DropThread = std::thread([&]()
+        auto m_DropThread = std::thread([&]()
         {
-            int nCount = ::DragQueryFile(hDropInfo, (UINT)0xFFFFFFFF, nullptr, 0);
+            if (bSafeCheck == true)
+                return;
+
+            bSafeCheck = true;
+
+            int nCount = ::DragQueryFile(hDropInfoLocal, (UINT)0xFFFFFFFF, nullptr, 0);
             if (nCount > 0)
             {
                 for (int i = 0; i < nCount; i++)
                 {
-                    int nReqChars = ::DragQueryFile(hDropInfo, i, nullptr, 0);
+                    int nReqChars = ::DragQueryFile(hDropInfoLocal, i, nullptr, 0);
                     CString szFile;
-                    ::DragQueryFile(hDropInfo, i, szFile.GetBuffer(nReqChars * 2 + 8), nReqChars * 2 + 8);
+                    ::DragQueryFile(hDropInfoLocal, i, szFile.GetBuffer(nReqChars * 2 + 8), nReqChars * 2 + 8);
                     if (::GetFileAttributes(szFile) & FILE_ATTRIBUTE_DIRECTORY)
                     {
                         std::wstring szPath = szFile;
@@ -226,11 +239,13 @@ namespace dialogs
                 }
                 HandleFinish();
             }
-            ::DragFinish(hDropInfo);
+            ::DragFinish(hDropInfoLocal);
+
+            bSafeCheck = false;
         });
         m_DropThread.detach();
 
-        CMyDialogEx::OnDropFiles(hDropInfo);
+        CMyDialogEx::OnDropFiles(hDropInfoLocal);
     }
 
     void CToolsDlg::OnBnClickedOk()

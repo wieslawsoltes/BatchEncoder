@@ -548,10 +548,19 @@ namespace dialogs
         if (this->ctx->bRunning == true)
             return;
 
-        int nFormat = this->m_CmbFormat.GetCurSel();
-        int nPreset = this->m_CmbPresets.GetCurSel();
+        static volatile bool bSafeCheck = false;
+        static HDROP hDropInfoLocal;
+        static int nFormat;
+        static int nPreset;
 
-        auto HandleFile = [&](const std::wstring& file)
+        if (bSafeCheck == true)
+            return;
+
+        hDropInfoLocal = hDropInfo;
+        nFormat = this->m_CmbFormat.GetCurSel();
+        nPreset = this->m_CmbPresets.GetCurSel();
+
+        static auto HandleFile = [&](const std::wstring& file)
         {
             std::wstring szExt = util::GetFileExtension(file);
             if (util::string::CompareNoCase(szExt, L"xml"))
@@ -598,22 +607,27 @@ namespace dialogs
             }
         };
 
-        auto HandleFinish = [&]()
+        static auto HandleFinish = [&]()
         {
             this->RedrawItems();
             this->UpdateStatusBar();
         };
 
-        std::thread m_DropThread = std::thread([&]()
+        auto m_DropThread = std::thread([&]()
         {
-            int nCount = ::DragQueryFile(hDropInfo, (UINT)0xFFFFFFFF, nullptr, 0);
+            if (bSafeCheck == true)
+                return;
+
+            bSafeCheck = true;
+
+            int nCount = ::DragQueryFile(hDropInfoLocal, (UINT)0xFFFFFFFF, nullptr, 0);
             if (nCount > 0)
             {
                 for (int i = 0; i < nCount; i++)
                 {
-                    int nReqChars = ::DragQueryFile(hDropInfo, i, nullptr, 0);
+                    int nReqChars = ::DragQueryFile(hDropInfoLocal, i, nullptr, 0);
                     CString szFile;
-                    ::DragQueryFile(hDropInfo, i, szFile.GetBuffer(nReqChars * 2 + 8), nReqChars * 2 + 8);
+                    ::DragQueryFile(hDropInfoLocal, i, szFile.GetBuffer(nReqChars * 2 + 8), nReqChars * 2 + 8);
                     if (::GetFileAttributes(szFile) & FILE_ATTRIBUTE_DIRECTORY)
                     {
                         std::wstring szPath = szFile;
@@ -633,11 +647,13 @@ namespace dialogs
                 }
                 HandleFinish();
             }
-            ::DragFinish(hDropInfo);
+            ::DragFinish(hDropInfoLocal);
+
+            bSafeCheck = false;
         });
         m_DropThread.detach();
 
-        CMyDialogEx::OnDropFiles(hDropInfo);
+        CMyDialogEx::OnDropFiles(hDropInfoLocal);
     }
 
     BOOL CMainDlg::OnHelpInfo(HELPINFO* pHelpInfo)
