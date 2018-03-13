@@ -920,7 +920,6 @@ namespace dialogs
                     }
                     else if (util::string::CompareNoCase(szExt, L"exe"))
                     {
-                        // Set current format exe path.
                         POSITION pos = m_LstFormats.GetFirstSelectedItemPosition();
                         if (pos != nullptr)
                         {
@@ -932,7 +931,6 @@ namespace dialogs
                     }
                     else if (util::string::CompareNoCase(szExt, L"lua"))
                     {
-                        // Set current format progress path.
                         POSITION pos = m_LstFormats.GetFirstSelectedItemPosition();
                         if (pos != nullptr)
                         {
