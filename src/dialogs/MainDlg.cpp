@@ -9,17 +9,14 @@
 #include "FormatsDlg.h"
 #include "ToolsDlg.h"
 
-#define WM_TRAY (WM_USER + 0x10)
-#define IDC_STATUSBAR 1500
-
+#define IDC_STATUSBAR           1500
 #define IDC_FOLDERTREE          0x3741
 #define IDC_TITLE               0x3742
 #define IDC_STATUSTEXT          0x3743
 #define IDC_CHECK_RECURSE       0x3744
 #define IDC_BROWSE_NEW_FOLDER   0x3746
-
-#define ID_LANGUAGE_MIN 2000
-#define ID_LANGUAGE_MAX 2999
+#define ID_LANGUAGE_MIN         2000
+#define ID_LANGUAGE_MAX         2999
 
 namespace dialogs
 {
