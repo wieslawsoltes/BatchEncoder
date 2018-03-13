@@ -996,12 +996,16 @@ namespace dialogs
 
                 if (fd.DoModal() != IDCANCEL)
                 {
+                    int nFormat = this->m_CmbFormat.GetCurSel();
+                    int nPreset = this->m_CmbPresets.GetCurSel();
                     POSITION pos = fd.GetStartPosition();
                     do
                     {
                         std::wstring szFilePath = fd.GetNextPathName(pos);
                         if (!szFilePath.empty())
-                            this->AddToList(szFilePath);
+                        {
+                            this->AddToList(szFilePath, nFormat, nPreset);
+                        }
                     } while (pos != nullptr);
 
                     this->RedrawItems();
@@ -1062,9 +1066,11 @@ namespace dialogs
                     bool bResult = util::FindFiles(szPath, files, bRecurseChecked);
                     if (bResult == true)
                     {
+                        int nFormat = this->m_CmbFormat.GetCurSel();
+                        int nPreset = this->m_CmbPresets.GetCurSel();
                         for (auto& file : files)
                         {
-                            this->AddToList(file);
+                            this->AddToList(file, nFormat, nPreset);
                         }
                         this->RedrawItems();
                         this->UpdateStatusBar();
@@ -1938,13 +1944,6 @@ namespace dialogs
         this->RedrawItems();
     }
 
-    int CMainDlg::AddToItems(const std::wstring& szPath)
-    {
-        int nFormat = this->m_CmbFormat.GetCurSel();
-        int nPreset = this->m_CmbPresets.GetCurSel();
-        return m_Config.AddItem(szPath, nFormat, nPreset);
-    }
-
     void CMainDlg::RedrawItem(int nId)
     {
         this->m_LstInputItems.RedrawItems(nId, nId);
@@ -1956,7 +1955,7 @@ namespace dialogs
         this->m_LstInputItems.SetItemCount(m_Config.m_Items.size());
     }
 
-    bool CMainDlg::AddToList(const std::wstring& szPath)
+    bool CMainDlg::AddToList(const std::wstring& szPath, int nFormat, int nPreset)
     {
         if (m_Config.m_Options.bValidateInputFiles == true)
         {
@@ -1965,11 +1964,9 @@ namespace dialogs
                 return false;
         }
 
-        int nItem = this->AddToItems(szPath);
+        int nItem = m_Config.AddItem(szPath, nFormat, nPreset);
         if (nItem == -1)
             return false;
-
-        this->RedrawItems();
 
         return true;
     }
@@ -2015,6 +2012,9 @@ namespace dialogs
         int nCount = ::DragQueryFile(hDropInfo, (UINT)0xFFFFFFFF, nullptr, 0);
         if (nCount > 0)
         {
+            int nFormat = this->m_CmbFormat.GetCurSel();
+            int nPreset = this->m_CmbPresets.GetCurSel();
+
             for (int i = 0; i < nCount; i++)
             {
                 int nReqChars = ::DragQueryFile(hDropInfo, i, nullptr, 0);
@@ -2029,9 +2029,8 @@ namespace dialogs
                     {
                         for (auto& file : files)
                         {
-                            this->AddToList(file);
+                            this->AddToList(file, nFormat, nPreset);
                         }
-                        this->RedrawItems();
                     }
                     else
                     {
@@ -2099,12 +2098,12 @@ namespace dialogs
                     }
                     else
                     {
-                        this->AddToList(szPath);
-                        this->RedrawItems();
+                        this->AddToList(szPath, nFormat, nPreset);
                     }
                 }
                 szFile.ReleaseBuffer();
             }
+            this->RedrawItems();
             this->UpdateStatusBar();
         }
         ::DragFinish(hDropInfo);

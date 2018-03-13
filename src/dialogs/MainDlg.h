@@ -134,8 +134,7 @@ namespace dialogs
         void DeselectItem(int nItem);
         void MakeItemVisible(int nItem);
         void ToggleItem(int nItem);
-        int AddToItems(const std::wstring& szPath);
-        bool AddToList(const std::wstring& szPath);
+        bool AddToList(const std::wstring& szPath, int nFormat, int nPreset);
         void RedrawItem(int nId);
         void RedrawItems();
         void ShowEdtItem();
