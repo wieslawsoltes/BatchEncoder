@@ -1,4 +1,4 @@
-﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
+// Copyright (c) Wiesław Šoltés. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 #include "stdafx.h"
@@ -50,9 +50,9 @@ namespace BatchEncoderCoreUnitTests
 
             config::CItem::SetIds(items);
 
-            Assert::AreEqual(0, items[0]);
-            Assert::AreEqual(1, items[1]);
-            Assert::AreEqual(2, items[2]);
+            Assert::AreEqual(0, items[0].nId);
+            Assert::AreEqual(1, items[1].nId);
+            Assert::AreEqual(2, items[2].nId);
         }
 
         TEST_METHOD(CItem_CompareName)
