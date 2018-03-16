@@ -28,10 +28,10 @@ namespace BatchEncoderCoreUnitTests
                 { L"C:\\Music\\Ghj.wav", 0 }
             };
 
-            bool bResult01 = config::CPath::CompareName(paths[0], paths[1]);
+            bool bResult01 = config::CPath::ComparePath(paths[0], paths[1]);
             Assert::IsTrue(bResult01);
 
-            bool bResult10 = config::CPath::CompareName(paths[1], paths[0]);
+            bool bResult10 = config::CPath::ComparePath(paths[1], paths[0]);
             Assert::IsFalse(bResult10);
         }
 
