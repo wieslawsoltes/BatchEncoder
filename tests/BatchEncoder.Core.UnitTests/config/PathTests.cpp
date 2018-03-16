@@ -22,10 +22,33 @@ namespace BatchEncoderCoreUnitTests
 
         TEST_METHOD(CPath_ComparePath)
         {
+            std::vector<config::CPath> paths
+            {
+                { L"C:\\Music\\Abc.wav", 0 },
+                { L"C:\\Music\\Ghj.wav", 0 }
+            };
+
+            bool bResult01 = config::CPath::CompareName(paths[0], paths[1]);
+            Assert::IsTrue(bResult01);
+
+            bool bResult10 = config::CPath::CompareName(paths[1], paths[0]);
+            Assert::IsFalse(bResult10);
         }
 
         TEST_METHOD(CPath_Sort)
         {
+            std::vector<config::CPath> paths
+            {
+                { L"C:\\Music\\Dfg.wav", 0 },
+                { L"C:\\Music\\Abc.wav", 0 },
+                { L"C:\\Music\\Ghj.wav", 0 }
+            };
+
+            config::CPath::Sort(paths);
+
+            Assert::AreEqual(L"C:\\Music\\Abc.wav", paths[0].szPath.c_str());
+            Assert::AreEqual(L"C:\\Music\\Dfg.wav", paths[1].szPath.c_str());
+            Assert::AreEqual(L"C:\\Music\\Ghj.wav", paths[2].szPath.c_str());
         }
     };
 }
