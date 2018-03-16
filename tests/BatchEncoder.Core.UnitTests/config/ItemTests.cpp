@@ -24,9 +24,9 @@ namespace BatchEncoderCoreUnitTests
         {
             std::vector<config::CItem> items
             {
-                { -1, L"", L"", L"", 0, L"", true, 0, { L"" }, L"", L"", true, 50, 40 },
-                { -1, L"", L"", L"", 0, L"", true, 0, { L"" }, L"", L"", true, 50, 40 },
-                { -1, L"", L"", L"", 0, L"", true, 0, { L"" }, L"", L"", true, 50, 40 }
+                { -1, L"", L"", L"", 0, L"", true, 0, { { L"" } }, L"", L"", true, 50, 40 },
+                { -1, L"", L"", L"", 0, L"", true, 0, { { L"" } }, L"", L"", true, 50, 40 },
+                { -1, L"", L"", L"", 0, L"", true, 0, { { L"" } }, L"", L"", true, 50, 40 }
             };
 
             for (auto& item : items)
