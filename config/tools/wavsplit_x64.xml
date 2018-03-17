@@ -1,0 +1,2 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Tool name="wavsplit_x64" platform="x64" priority="0" formats="WAVSPLIT_WAV" url="https://github.com/wieslawsoltes/AvsDec/releases/download/2.4/WavSplit-2.4-x64-UNICODE.zip" file="WavSplit-2.4-x64-UNICODE.zip" extract="zip" path="tools/WavSplit-2.4-x64-UNICODE/WavSplit.exe"/>

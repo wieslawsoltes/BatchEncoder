@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Format id="WAVSPLIT_WAV" name="Split multi-channel WAV file - wavsplit" template="$EXE -s $INFILE $OUTPATH" input="false" output="false" function="progress\GetProgress_WavSplit.lua" path="tools/WavSplit-2.4-Win32-UNICODE/WavSplit.exe" success="0" type="0" priority="0" formats="WAV" extension="" default="0">
+    <Presets>
+        <Preset name="Default" options=""/>
+    </Presets>
+</Format>

@@ -496,6 +496,16 @@ p = GetProgress("creating 1.wv,  77% done...")
 print(p)
 assert(p == "77")
 
+--- GetProgress_WavSplit
+
+function GetProgress(s) 
+  return string.match(s, '^Progress: (%d+)%%');
+end
+
+p = GetProgress("Progress: 100% (265533250/265533250)")
+print(p)
+assert(p == "100")
+
 -- GetProgress_WvUnpackDec
 
 function GetProgress(s) 
