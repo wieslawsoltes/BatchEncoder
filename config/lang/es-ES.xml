@@ -51,8 +51,8 @@
     <String key="0x0004000C" value="&amp;Validar archivos de entrada" />
     <String key="0x0004000D" value="Sob&amp;reescribir archivos existentes" />
     <String key="0x0004000E" value="Configurar Herramientas...	F10" />
-    <String key="0x0004000F" value="Tr&amp;y To Download Tools" />
-    <String key="0x00040010" value="Rena&amp;me Existing Files" />
+    <String key="0x0004000F" value="&amp;Intentar Descargar Herramientas" />
+    <String key="0x00040010" value="Reno&amp;mbrar Archivos Existentes" />
 
     <!-- Language Menu -->
 
@@ -109,7 +109,7 @@
 
     <String key="0x000C0001" value="Nombre" />
     <String key="0x000C0002" value="Id" />
-    <String key="0x000C0003" value="Priority" />
+    <String key="0x000C0003" value="Prioridad" />
     <String key="0x000C0004" value="Plantilla" />
 
     <String key="0x000C0010" value="Configurar formatos" />
@@ -144,12 +144,12 @@
     <String key="0x000C002D" value="&amp;Importar" />
     <String key="0x000C002E" value="E&amp;xportar" />
     <String key="0x000C002F" value="Du&amp;plicar" />
-    <String key="0x000C0030" value="Priority" />
+    <String key="0x000C0030" value="Prioridad" />
 
     <!-- Tools Dialog -->
 
     <String key="0x000E0001" value="Nombre" />
-    <String key="0x000E0002" value="Priority" />
+    <String key="0x000E0002" value="Prioridad" />
     <String key="0x000E0003" value="Enlace" />
     <String key="0x000E0004" value="Estado" />
 
@@ -179,7 +179,7 @@
     <String key="0x000E0027" value="Fijar Rutas x&amp;64" />
     <String key="0x000E0028" value="Ca&amp;mbiar" />
     <String key="0x000E0029" value="&amp;OK" />
-    <String key="0x000E002A" value="Priority" />
+    <String key="0x000E002A" value="Prioridad" />
 
     <!-- About Dialog -->
 
@@ -211,9 +211,9 @@
     <String key="0x00130009" value="Error: el progreso no alcanzó el 100%." />
     <String key="0x0013000A" value="Error: no se pudo crear pipes para el proceso de conexión." />
     <String key="0x0013000B" value="Hecho" />
-    <String key="0x0013000C" value="Error: can not create pipes for stderr." />
-    <String key="0x0013000D" value="Error: can not set stderr pipe inherit flag." />
-    <String key="0x0013000E" value="Error: can not create output thread." />
+    <String key="0x0013000C" value="Error: no puedo crear 'pipes' para 'stderr'." />
+    <String key="0x0013000D" value="Error: no puedo poner indicador de herencia de 'pipe' para 'stderr'." />
+    <String key="0x0013000E" value="Error: no puedo crear hilo de salida." />
 
     <String key="0x00140001" value="Error: no se pudo encontrar el archivo de entrada." />
     <String key="0x00140002" value="Error: no se pudo encontrar un codificador válido para ese id." />
@@ -265,7 +265,7 @@
     <String key="0x00220002" value="¡Fallo al cargar archivo!" />
     <String key="0x00220003" value="¡Fallo al guardar archivo!" />
     <String key="0x00220004" value="Predeterminado" />
-    <String key="0x00220005" value="-copy" />
+    <String key="0x00220005" value="-copiar" />
 
     <!-- Strings Formats Dialog -->
 
@@ -274,7 +274,7 @@
     <String key="0x00230003" value="¡Fallo al guardar archivo!" />
     <String key="0x00230004" value="Formato" />
     <String key="0x00230005" value="Predeterminado" />
-    <String key="0x00230006" value="-copy" />
+    <String key="0x00230006" value="-copiar" />
 
     <!-- Strings Tools Dialog -->
 
@@ -282,7 +282,7 @@
     <String key="0x00240002" value="Fallo cargando archivo" />
     <String key="0x00240003" value="Fallo guardando archivo" />
     <String key="0x00240004" value="Herramienta" />
-    <String key="0x00240005" value="-copy" />
+    <String key="0x00240005" value="-copiar" />
 
     <!-- Strings File Dialogs -->
 
