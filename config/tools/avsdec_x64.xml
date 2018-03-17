@@ -1,2 +1,2 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<Tool name="avsdec_x64" platform="x64" priority="0" formats="AVSDEC_AVS_RAW" url="https://github.com/wieslawsoltes/AvsDec/releases/download/2.4/AvsDec-2.4-x64-UNICODE.zip" file="AvsDec-2.4-x64-UNICODE.zip" extract="zip" path="tools/AvsDec-2.4-x64-UNICODE/AvsDec.exe"/>
+<Tool name="avsdec_x64" platform="x64" priority="0" formats="AVSDEC_AVS_RAW" url="https://github.com/wieslawsoltes/AvsDec/releases/download/2.5/AvsDec-2.5-x64-UNICODE.zip" file="AvsDec-2.5-x64-UNICODE.zip" extract="zip" path="tools/AvsDec-2.5-x64-UNICODE/AvsDec.exe"/>

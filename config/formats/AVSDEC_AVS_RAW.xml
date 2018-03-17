@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<Format id="AVSDEC_AVS_RAW" name="Decode AVS to RAW - avsdec" template="$EXE -d $INFILE $OUTFILE" input="false" output="false" function="progress\GetProgress_AvsDec.lua" path="tools/AvsDec-2.4-Win32-UNICODE/AvsDec.exe" success="0" type="1" priority="0" formats="AVS" extension="RAW" default="0">
+<Format id="AVSDEC_AVS_RAW" name="Decode AVS to RAW - avsdec" template="$EXE -d $INFILE $OUTFILE" input="false" output="false" function="progress\GetProgress_AvsDec.lua" path="tools/AvsDec-2.5-Win32-UNICODE/AvsDec.exe" success="0" type="1" priority="0" formats="AVS" extension="RAW" default="0">
     <Presets>
         <Preset name="Default" options=""/>
     </Presets>
