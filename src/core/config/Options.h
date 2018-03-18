@@ -32,6 +32,8 @@ namespace config
         std::wstring szDirectoryBrowse;
         std::wstring szMainWindowResize;
         std::wstring szFileListColumns;
+        std::wstring szPathsDialogResize;
+        std::wstring szPathsListColumns;
         std::wstring szPresetsDialogResize;
         std::wstring szPresetsListColumns;
         std::wstring szFormatsDialogResize;
@@ -63,6 +65,8 @@ namespace config
             this->szDirectoryBrowse = L"";
             this->szMainWindowResize = L"";
             this->szFileListColumns = L"";
+            this->szPathsDialogResize = L"";
+            this->szPathsListColumns = L"";
             this->szPresetsDialogResize = L"";
             this->szPresetsListColumns = L"";
             this->szFormatsDialogResize = L"";

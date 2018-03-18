@@ -150,6 +150,26 @@ namespace config
         { 0x000A0017, L"Conve&rt" },
         { 0x000A0018, L"S&top" },
 
+        // Paths Dialog
+
+        { 0x000F0001, L"Path" },
+        { 0x000F0002, L"Size (bytes)" },
+
+        { 0x000F0010, L"Edit Paths" },
+        { 0x000F0011, L"&Cancel" },
+        { 0x000F0012, L"Path:" },
+        { 0x000F0013, L"Size:" },
+        { 0x000F0014, L"move &Up" },
+        { 0x000F0015, L"move Dow&n" },
+        { 0x000F0016, L"Dele&te All" },
+        { 0x000F0017, L"&Delete" },
+        { 0x000F0018, L"&Add" },
+        { 0x000F0019, L"&Import" },
+        { 0x000F001A, L"E&xport" },
+        { 0x000F001B, L"C&hange" },
+        { 0x000F001C, L"&OK" },
+        { 0x000F001D, L"Du&plicate" },
+
         // Presets Dialog
 
         { 0x000B0001, L"Name" },
@@ -361,6 +381,7 @@ namespace config
         { 0x00310008, L"Format Files" },
         { 0x00310009, L"Tools Files" },
         { 0x0031000A, L"Tool Files" },
+        { 0x0031000B, L"Paths Files" },
 
         // Strings Download Status
 

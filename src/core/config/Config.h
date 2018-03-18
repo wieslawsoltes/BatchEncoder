@@ -340,6 +340,8 @@ namespace config::xml
             GetChildValueString(element, "DirectoryBrowse", &m_Options.szDirectoryBrowse);
             GetChildValueString(element, "MainWindowResize", &m_Options.szMainWindowResize);
             GetChildValueString(element, "FileListColumns", &m_Options.szFileListColumns);
+            GetChildValueString(element, "PathsDialogResize", &m_Options.szPathsDialogResize);
+            GetChildValueString(element, "PathsListColumns", &m_Options.szPathsListColumns);
             GetChildValueString(element, "PresetsDialogResize", &m_Options.szPresetsDialogResize);
             GetChildValueString(element, "PresetsListColumns", &m_Options.szPresetsListColumns);
             GetChildValueString(element, "FormatsDialogResize", &m_Options.szFormatsDialogResize);
@@ -372,6 +374,8 @@ namespace config::xml
             SetChildValueString(element, "DirectoryBrowse", m_Options.szDirectoryBrowse);
             SetChildValueString(element, "MainWindowResize", m_Options.szMainWindowResize);
             SetChildValueString(element, "FileListColumns", m_Options.szFileListColumns);
+            SetChildValueString(element, "PathsDialogResize", m_Options.szPathsDialogResize);
+            SetChildValueString(element, "PathsListColumns", m_Options.szPathsListColumns);
             SetChildValueString(element, "PresetsDialogResize", m_Options.szPresetsDialogResize);
             SetChildValueString(element, "PresetsListColumns", m_Options.szPresetsListColumns);
             SetChildValueString(element, "FormatsDialogResize", m_Options.szFormatsDialogResize);

@@ -77,6 +77,7 @@ namespace dialogs
         afx_msg void OnEnKillfocusEditItem();
         afx_msg void OnLvnKeydownListInputItems(NMHDR *pNMHDR, LRESULT *pResult);
         afx_msg void OnNMRclickListInputItems(NMHDR *pNMHDR, LRESULT *pResult);
+        afx_msg void OnNMDblclkListInputItems(NMHDR *pNMHDR, LRESULT *pResult);
         afx_msg void OnLvnItemchangingListInputItems(NMHDR* pNMHDR, LRESULT* pResult);
         afx_msg void OnLvnItemchangedListInputItems(NMHDR *pNMHDR, LRESULT *pResult);
         afx_msg void OnCbnSelchangeComboPresets();

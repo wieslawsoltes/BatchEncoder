@@ -85,6 +85,26 @@
     <String key="0x000A0017" value="Konwe&amp;rtuj" />
     <String key="0x000A0018" value="Za&amp;trzymaj" />
 
+    <!-- Paths Dialog -->
+
+    <String key="0x000F0001" value="Ścieżka" />
+    <String key="0x000F0002" value="Rozmiar (bajty)" />
+
+    <String key="0x000F0010" value="Edytuj Ścieżki" />
+    <String key="0x000F0011" value="&amp;Anuluj" />
+    <String key="0x000F0012" value="Ścieżka:" />
+    <String key="0x000F0013" value="Rozmiar:" />
+    <String key="0x000F0014" value="przesuń &amp;w Górę" />
+    <String key="0x000F0015" value="prz&amp;esuń w Dół" />
+    <String key="0x000F0016" value="Usuń Wszys&amp;tkie" />
+    <String key="0x000F0017" value="&amp;Usuń" />
+    <String key="0x000F0018" value="&amp;Dodaj" />
+    <String key="0x000F0019" value="&amp;Importuj" />
+    <String key="0x000F001A" value="E&amp;ksportuj" />
+    <String key="0x000F001B" value="Z&amp;mień" />
+    <String key="0x000F001C" value="&amp;OK" />
+    <String key="0x000F001D" value="Dup&amp;likuj" />
+
     <!-- Presets Dialog -->
 
     <String key="0x000B0001" value="Nazwa" />
@@ -296,6 +316,7 @@
     <String key="0x00310008" value="Pliki Format" />
     <String key="0x00310009" value="Pliki Tools" />
     <String key="0x0031000A" value="Pliki Tool" />
+    <String key="0x0031000B" value="Pliki Ścieżek" />
 
     <!-- Strings Download Status -->
 

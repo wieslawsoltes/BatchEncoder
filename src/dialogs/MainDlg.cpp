@@ -4,6 +4,7 @@
 #include "StdAfx.h"
 #include "MainApp.h"
 #include "MainDlg.h"
+#include "PathsDlg.h"
 #include "PresetsDlg.h"
 #include "AboutDlg.h"
 #include "FormatsDlg.h"
@@ -333,6 +334,7 @@ namespace dialogs
         ON_EN_KILLFOCUS(IDC_EDIT_ITEM, OnEnKillfocusEditItem)
         ON_NOTIFY(LVN_KEYDOWN, IDC_LIST_ITEMS, OnLvnKeydownListInputItems)
         ON_NOTIFY(NM_RCLICK, IDC_LIST_ITEMS, OnNMRclickListInputItems)
+        ON_NOTIFY(NM_DBLCLK, IDC_LIST_ITEMS, OnNMDblclkListInputItems)
         ON_NOTIFY(LVN_ITEMCHANGING, IDC_LIST_ITEMS, OnLvnItemchangingListInputItems)
         ON_NOTIFY(LVN_ITEMCHANGED, IDC_LIST_ITEMS, OnLvnItemchangedListInputItems)
         ON_CBN_SELCHANGE(IDC_COMBO_PRESETS, OnCbnSelchangeComboPresets)
@@ -859,6 +861,45 @@ namespace dialogs
             m_hEditMenu->TrackPopupMenu(0, point.x, point.y, this, nullptr);
             m_hEditMenu = nullptr;
             m_hMenu = nullptr;
+        }
+        *pResult = 0;
+    }
+
+    void CMainDlg::OnNMDblclkListInputItems(NMHDR *pNMHDR, LRESULT *pResult)
+    {
+        if (this->ctx->bRunning == false)
+        {
+            POSITION pos = m_LstInputItems.GetFirstSelectedItemPosition();
+            if (pos != nullptr)
+            {
+                size_t nItem = this->m_LstInputItems.GetNextSelectedItem(pos);
+                if (nItem < m_Config.m_Items.size())
+                {
+                    config::CItem& item = m_Config.m_Items[nItem];
+
+                    CPathsDlg dlg;
+                    dlg.pConfig = &m_Config;
+                    dlg.m_Paths = item.m_Paths;
+                    dlg.szPathsDialogResize = m_Config.m_Options.szPathsDialogResize;
+                    dlg.szPathsListColumns = m_Config.m_Options.szPathsListColumns;
+
+                    INT_PTR nRet = dlg.DoModal();
+                    if (nRet == IDOK)
+                    {
+                        item.m_Paths = std::move(dlg.m_Paths);
+
+                        item.nSize = 0;
+                        for (auto& path : item.m_Paths)
+                            item.nSize += path.nSize;
+
+                        this->RedrawItems();
+                        this->UpdateStatusBar();
+                    }
+
+                    m_Config.m_Options.szPathsDialogResize = dlg.szPathsDialogResize;
+                    m_Config.m_Options.szPathsListColumns = dlg.szPathsListColumns;
+                }
+            }
         }
         *pResult = 0;
     }

@@ -65,6 +65,10 @@ adds input and output file paths. For specific options for each format use help 
 
 [![Configure Tools](screenshots/ConfigureTools.png)](https://github.com/wieslawsoltes/BatchEncoder/blob/master/screenshots/ConfigureTools.png)
 
+### Edit paths
+
+[![Edit paths](screenshots/EditPaths.png)](https://github.com/wieslawsoltes/BatchEncoder/blob/master/screenshots/EditPaths.png)
+
 ## Sources
 
 Sources are available in the [git source code repository](https://github.com/wieslawsoltes/BatchEncoder/).
