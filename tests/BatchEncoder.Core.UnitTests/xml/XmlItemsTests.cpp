@@ -53,6 +53,14 @@ namespace BatchEncoderCoreUnitTests
         {
         }
 
+        TEST_METHOD(XmlItems_GetPaths)
+        {
+        }
+
+        TEST_METHOD(XmlItems_SetPaths)
+        {
+        }
+
         TEST_METHOD(XmlItems_GetItem)
         {
         }

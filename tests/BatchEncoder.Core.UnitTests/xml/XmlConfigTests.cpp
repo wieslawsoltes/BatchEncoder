@@ -36,6 +36,18 @@ namespace BatchEncoderCoreUnitTests
         {
         }
 
+        TEST_METHOD(XmlConfig_LoadPaths_doc)
+        {
+        }
+
+        TEST_METHOD(XmlConfig_LoadPaths_file)
+        {
+        }
+
+        TEST_METHOD(XmlConfig_SavePaths_file)
+        {
+        }
+
         TEST_METHOD(XmlConfig_LoadItem_doc)
         {
         }
