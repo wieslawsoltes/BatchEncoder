@@ -318,34 +318,34 @@ namespace config::xml
     public:
         bool GetOptions(const XmlElement *element, config::COptions &m_Options)
         {
-            VALIDATE(GetChildValueString(element, "SelectedLanguage", &m_Options.szSelectedLanguage));
-            VALIDATE(GetChildValueSizeT(element, "SelectedFormat", &m_Options.nSelectedFormat));
-            VALIDATE(GetChildValueString(element, "OutputPath", &m_Options.szOutputPath));
-            VALIDATE(GetChildValueBool(element, "DeleteSourceFiles", &m_Options.bDeleteSourceFiles));
-            VALIDATE(GetChildValueBool(element, "RecurseChecked", &m_Options.bRecurseChecked));
-            VALIDATE(GetChildValueBool(element, "ShutdownWhenFinished", &m_Options.bShutdownWhenFinished));
-            VALIDATE(GetChildValueBool(element, "DoNotSaveConfiguration", &m_Options.bDoNotSaveConfiguration));
-            VALIDATE(GetChildValueBool(element, "DeleteOnErrors", &m_Options.bDeleteOnErrors));
-            VALIDATE(GetChildValueBool(element, "StopOnErrors", &m_Options.bStopOnErrors));
-            VALIDATE(GetChildValueBool(element, "HideConsoleWindow", &m_Options.bHideConsoleWindow));
-            VALIDATE(GetChildValueBool(element, "TryToFindDecoder", &m_Options.bTryToFindDecoder));
-            VALIDATE(GetChildValueBool(element, "EnsureItemIsVisible", &m_Options.bEnsureItemIsVisible));
-            VALIDATE(GetChildValueBool(element, "ValidateInputFiles", &m_Options.bValidateInputFiles));
-            VALIDATE(GetChildValueBool(element, "OverwriteExistingFiles", &m_Options.bOverwriteExistingFiles));
-            VALIDATE(GetChildValueBool(element, "RenameExistingFiles", &m_Options.bRenameExistingFiles));
-            VALIDATE(GetChildValueInt(element, "RenameExistingFilesLimit", &m_Options.nRenameExistingFilesLimit));
-            VALIDATE(GetChildValueBool(element, "TryToDownloadTools", &m_Options.bTryToDownloadTools));
-            VALIDATE(GetChildValueInt(element, "ThreadCount", &m_Options.nThreadCount));
-            VALIDATE(GetChildValueString(element, "OutputBrowse", &m_Options.szOutputBrowse));
-            VALIDATE(GetChildValueString(element, "DirectoryBrowse", &m_Options.szDirectoryBrowse));
-            VALIDATE(GetChildValueString(element, "MainWindowResize", &m_Options.szMainWindowResize));
-            VALIDATE(GetChildValueString(element, "FileListColumns", &m_Options.szFileListColumns));
-            VALIDATE(GetChildValueString(element, "PresetsDialogResize", &m_Options.szPresetsDialogResize));
-            VALIDATE(GetChildValueString(element, "PresetsListColumns", &m_Options.szPresetsListColumns));
-            VALIDATE(GetChildValueString(element, "FormatsDialogResize", &m_Options.szFormatsDialogResize));
-            VALIDATE(GetChildValueString(element, "FormatsListColumns", &m_Options.szFormatsListColumns));
-            VALIDATE(GetChildValueString(element, "ToolsDialogResize", &m_Options.szToolsDialogResize));
-            VALIDATE(GetChildValueString(element, "ToolsListColumns", &m_Options.szToolsListColumns));
+            GetChildValueString(element, "SelectedLanguage", &m_Options.szSelectedLanguage);
+            GetChildValueSizeT(element, "SelectedFormat", &m_Options.nSelectedFormat);
+            GetChildValueString(element, "OutputPath", &m_Options.szOutputPath);
+            GetChildValueBool(element, "DeleteSourceFiles", &m_Options.bDeleteSourceFiles);
+            GetChildValueBool(element, "RecurseChecked", &m_Options.bRecurseChecked);
+            GetChildValueBool(element, "ShutdownWhenFinished", &m_Options.bShutdownWhenFinished);
+            GetChildValueBool(element, "DoNotSaveConfiguration", &m_Options.bDoNotSaveConfiguration);
+            GetChildValueBool(element, "DeleteOnErrors", &m_Options.bDeleteOnErrors);
+            GetChildValueBool(element, "StopOnErrors", &m_Options.bStopOnErrors);
+            GetChildValueBool(element, "HideConsoleWindow", &m_Options.bHideConsoleWindow);
+            GetChildValueBool(element, "TryToFindDecoder", &m_Options.bTryToFindDecoder);
+            GetChildValueBool(element, "EnsureItemIsVisible", &m_Options.bEnsureItemIsVisible);
+            GetChildValueBool(element, "ValidateInputFiles", &m_Options.bValidateInputFiles);
+            GetChildValueBool(element, "OverwriteExistingFiles", &m_Options.bOverwriteExistingFiles);
+            GetChildValueBool(element, "RenameExistingFiles", &m_Options.bRenameExistingFiles);
+            GetChildValueInt(element, "RenameExistingFilesLimit", &m_Options.nRenameExistingFilesLimit);
+            GetChildValueBool(element, "TryToDownloadTools", &m_Options.bTryToDownloadTools);
+            GetChildValueInt(element, "ThreadCount", &m_Options.nThreadCount);
+            GetChildValueString(element, "OutputBrowse", &m_Options.szOutputBrowse);
+            GetChildValueString(element, "DirectoryBrowse", &m_Options.szDirectoryBrowse);
+            GetChildValueString(element, "MainWindowResize", &m_Options.szMainWindowResize);
+            GetChildValueString(element, "FileListColumns", &m_Options.szFileListColumns);
+            GetChildValueString(element, "PresetsDialogResize", &m_Options.szPresetsDialogResize);
+            GetChildValueString(element, "PresetsListColumns", &m_Options.szPresetsListColumns);
+            GetChildValueString(element, "FormatsDialogResize", &m_Options.szFormatsDialogResize);
+            GetChildValueString(element, "FormatsListColumns", &m_Options.szFormatsListColumns);
+            GetChildValueString(element, "ToolsDialogResize", &m_Options.szToolsDialogResize);
+            GetChildValueString(element, "ToolsListColumns", &m_Options.szToolsListColumns);
             return true;
         }
         void SetOptions(XmlElement *element, config::COptions &m_Options)
