@@ -1501,8 +1501,11 @@ namespace dialogs
             {
                 int nItem = m_LstInputItems.GetNextSelectedItem(pos);
                 config::CItem& item = m_Config.m_Items[nItem];
-                config::CPath& path = item.m_Paths[0];
-                util::LaunchAndWait(path.szPath, L"", FALSE);
+                if (item.m_Paths.size() > 0)
+                {
+                    config::CPath& path = item.m_Paths[0];
+                    util::LaunchAndWait(path.szPath, L"", FALSE);
+                }
             }
         }
     }
@@ -1516,8 +1519,11 @@ namespace dialogs
             {
                 int nItem = m_LstInputItems.GetNextSelectedItem(pos);
                 config::CItem& item = m_Config.m_Items[nItem];
-                config::CPath& path = item.m_Paths[0];
-                util::LaunchAndWait(util::GetFilePath(path.szPath), L"", FALSE);
+                if (item.m_Paths.size() > 0)
+                {
+                    config::CPath& path = item.m_Paths[0];
+                    util::LaunchAndWait(util::GetFilePath(path.szPath), L"", FALSE);
+                }
             }
         }
     }

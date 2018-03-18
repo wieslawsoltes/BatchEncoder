@@ -763,12 +763,19 @@ namespace worker
         bool ConvertItem(IWorkerContext* ctx, config::CItem& item, std::mutex& m_dir, std::mutex& m_down)
         {
             auto config = ctx->pConfig;
-            auto& path = item.m_Paths[0];
             std::wstring szEncInputFile;
             std::wstring szEncOutputFile;
             std::wstring szDecInputFile;
             std::wstring szDecOutputFile;
             COutputPath m_Output;
+
+            if (item.m_Paths.size() <= 0)
+            {
+                ctx->ItemStatus(item.nId, ctx->GetString(0x00150001), ctx->GetString(0x00140001));
+                return false;
+            }
+
+            auto& path = item.m_Paths[0];
 
             szEncInputFile = path.szPath;
             if (config->FileSystem->FileExists(szEncInputFile) == false)
