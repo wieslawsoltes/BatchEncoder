@@ -498,6 +498,23 @@ namespace config::xml
             }
         }
     public:
+        bool GetPaths(std::vector<config::CPath> &m_Paths)
+        {
+            auto element = this->FirstChildElement("Paths");
+            if (element != nullptr)
+            {
+                VALIDATE(this->GetPaths(element, m_Paths));
+                return true;
+            }
+            return false;
+        }
+        void SetPaths(std::vector<config::CPath> &m_Paths)
+        {
+            auto element = this->NewElement("Paths");
+            this->LinkEndChild(element);
+            this->SetPaths(element, m_Paths);
+        }
+    public:
         bool GetItem(config::CItem &m_Item)
         {
             auto element = this->FirstChildElement("Item");
@@ -884,6 +901,27 @@ namespace config::xml
             XmlOptions xml(doc);
             xml.Create();
             xml.SetOptions(options);
+            return xml.Save(szFileXml);
+        }
+    public:
+        static bool LoadPaths(XmlDocumnent &doc, std::vector<config::CPath> &paths)
+        {
+            XmlItems xml(doc);
+            return xml.GetPaths(paths);
+        }
+        static bool LoadPaths(const std::wstring& szFileXml, std::vector<config::CPath> &paths)
+        {
+            XmlDocumnent doc;
+            if (XmlDoc::Open(szFileXml, doc) == true)
+                return LoadPaths(doc, paths);
+            return false;
+        }
+        static bool SavePaths(const std::wstring& szFileXml, std::vector<config::CPath> &paths)
+        {
+            XmlDocumnent doc;
+            XmlItems xml(doc);
+            xml.Create();
+            xml.SetPaths(paths);
             return xml.Save(szFileXml);
         }
     public:
