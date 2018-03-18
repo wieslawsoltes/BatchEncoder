@@ -40,6 +40,7 @@ namespace dialogs
         DDX_Control(pDX, IDC_BUTTON_PATH_UPDATE, m_BtnUpdate);
         DDX_Control(pDX, IDC_BUTTON_PATH_IMPORT, m_BtnImport);
         DDX_Control(pDX, IDC_BUTTON_PATH_EXPORT, m_BtnExport);
+        DDX_Control(pDX, IDC_BUTTON_PATH_BROWSE, m_BtnBrowse);
     }
 
     BEGIN_MESSAGE_MAP(CPathsDlg, CMyDialogEx)
@@ -63,6 +64,7 @@ namespace dialogs
         ON_EN_CHANGE(IDC_EDIT_PATH_SIZE, OnEnChangeEditPathSize)
         ON_BN_CLICKED(IDC_BUTTON_PATH_IMPORT, OnBnClickedButtonImportPaths)
         ON_BN_CLICKED(IDC_BUTTON_PATH_EXPORT, OnBnClickedButtonExportPaths)
+        ON_BN_CLICKED(IDC_BUTTON_PATH_BROWSE, OnBnClickedButtonBrowsePath)
         ON_WM_CLOSE()
     END_MESSAGE_MAP()
 
@@ -549,6 +551,40 @@ namespace dialogs
         }
     }
 
+    void CPathsDlg::OnBnClickedButtonBrowsePath()
+    {
+        POSITION pos = m_LstPaths.GetFirstSelectedItemPosition();
+        if (pos != nullptr)
+        {
+            int nItem = m_LstPaths.GetNextSelectedItem(pos);
+            config::CPath& path = m_Paths[nItem];
+
+            CString szFilter;
+            szFilter.Format(_T("%s (*.*)|*.*||"),
+                pConfig->GetString(0x00310001).c_str());
+
+            CFileDialog fd(TRUE, _T(""), path.szPath.c_str(),
+                OFN_HIDEREADONLY | OFN_ENABLESIZING | OFN_EXPLORER,
+                szFilter, this);
+
+            if (fd.DoModal() == IDOK)
+            {
+                std::wstring szPath = fd.GetPathName();
+
+                bUpdate = true;
+
+                unsigned __int64 nFileSize = pConfig->FileSystem->GetFileSize64(szPath);
+                path.szPath = szPath;
+                path.nSize = nFileSize;
+
+                RedrawPath(nItem);
+                UpdateFields(path);
+
+                bUpdate = false;
+            }
+        }
+    }
+
     void CPathsDlg::OnClose()
     {
         this->SaveWindowSettings();
@@ -610,6 +646,7 @@ namespace dialogs
         helper.SetWndText(&m_BtnExport, 0x000F001A);
         helper.SetWndText(&m_BtnUpdate, 0x000F001B);
         helper.SetWndText(&m_BtnOK, 0x000F001C);
+        helper.SetWndText(&m_BtnBrowse, 0x000F001E);
     }
 
     bool CPathsDlg::AddToList(const std::wstring& szPath)

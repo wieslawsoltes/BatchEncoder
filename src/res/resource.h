@@ -40,6 +40,7 @@
 #define IDC_BUTTON_PATH_EXPORT          1041
 #define IDC_BUTTON_PATH_UPDATE          1042
 #define IDC_BUTTON_PATH_DUPLICATE       1043
+#define IDC_BUTTON_PATH_BROWSE          1044
 #define IDC_COMBO_PRESET_FORMAT         1060
 #define IDC_LIST_PRESETS                1061
 #define IDC_STATIC_PRESET_NAME          1062

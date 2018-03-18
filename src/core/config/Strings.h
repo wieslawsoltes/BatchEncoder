@@ -169,6 +169,7 @@ namespace config
         { 0x000F001B, L"C&hange" },
         { 0x000F001C, L"&OK" },
         { 0x000F001D, L"Du&plicate" },
+        { 0x000F001E, L"&..." },
 
         // Presets Dialog
 

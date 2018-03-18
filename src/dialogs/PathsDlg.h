@@ -49,6 +49,7 @@ namespace dialogs
         controls::CMyButton m_BtnUpdate;
         controls::CMyButton m_BtnImport;
         controls::CMyButton m_BtnExport;
+        controls::CMyButton m_BtnBrowse;
     public:
         afx_msg void OnDropFiles(HDROP hDropInfo);
         afx_msg void OnBnClickedOk();
@@ -68,6 +69,7 @@ namespace dialogs
         afx_msg void OnEnChangeEditPathSize();
         afx_msg void OnBnClickedButtonImportPaths();
         afx_msg void OnBnClickedButtonExportPaths();
+        afx_msg void OnBnClickedButtonBrowsePath();
         afx_msg void OnClose();
     public:
         void LoadWindowSettings();

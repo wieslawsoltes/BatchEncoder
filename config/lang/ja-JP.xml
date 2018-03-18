@@ -104,6 +104,7 @@
     <String key="0x000F001B" value="C&amp;hange" />
     <String key="0x000F001C" value="&amp;OK" />
     <String key="0x000F001D" value="Du&amp;plicate" />
+    <String key="0x000F001E" value="&amp;..." />
 
     <!-- Presets Dialog -->
 
