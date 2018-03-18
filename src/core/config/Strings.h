@@ -214,7 +214,7 @@ namespace config
         // Tools Dialog
 
         { 0x000E0001, L"Name" },
-        { 0x000C0002, L"Priority" },
+        { 0x000E0002, L"Priority" },
         { 0x000E0003, L"Url" },
         { 0x000E0004, L"Status" },
 
