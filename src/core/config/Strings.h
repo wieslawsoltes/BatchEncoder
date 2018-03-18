@@ -360,7 +360,7 @@ namespace config
         { 0x00310007, L"Progress Files" },
         { 0x00310008, L"Format Files" },
         { 0x00310009, L"Tools Files" },
-        { 0x00310010, L"Tool Files" },
+        { 0x0031000A, L"Tool Files" },
 
         // Strings Download Status
 

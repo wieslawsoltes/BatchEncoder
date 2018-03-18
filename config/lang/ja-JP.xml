@@ -295,7 +295,7 @@
     <String key="0x00310007" value="進捗ファイル" />
     <String key="0x00310008" value="形式ファイル" />
     <String key="0x00310009" value="ツールファイル" />
-    <String key="0x00310010" value="ツールファイル" />
+    <String key="0x0031000A" value="ツールファイル" />
 
     <!-- Strings Download Status -->
 

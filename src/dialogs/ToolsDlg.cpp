@@ -370,7 +370,7 @@ namespace dialogs
 
         CString szFilter;
         szFilter.Format(_T("%s (*.xml)|*.xml|%s (*.*)|*.*||"),
-            pConfig->GetString(0x00310010).c_str(),
+            pConfig->GetString(0x0031000A).c_str(),
             pConfig->GetString(0x00310001).c_str());
 
         CFileDialog fd(TRUE, _T("xml"), _T(""),
@@ -430,7 +430,7 @@ namespace dialogs
 
                     CString szFilter;
                     szFilter.Format(_T("%s (*.xml)|*.xml|%s (*.*)|*.*||"),
-                        pConfig->GetString(0x00310010).c_str(),
+                        pConfig->GetString(0x0031000A).c_str(),
                         pConfig->GetString(0x00310001).c_str());
 
                     CFileDialog fd(FALSE, _T("xml"), tool.szName.c_str(),

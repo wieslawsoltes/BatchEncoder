@@ -295,7 +295,7 @@
     <String key="0x00310007" value="Archivos de progreso" />
     <String key="0x00310008" value="Formato de archivo" />
     <String key="0x00310009" value="Herramientas Archivos" />
-    <String key="0x00310010" value="Herramienta Archivos" />
+    <String key="0x0031000A" value="Herramienta Archivos" />
 
     <!-- Strings Download Status -->
 
