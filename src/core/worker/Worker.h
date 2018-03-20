@@ -37,10 +37,6 @@ namespace worker
     class IWorker
     {
     public:
-        std::unique_ptr<IConverter> ConsoleConverter;
-        std::unique_ptr<IConverter> PipesConverter;
-        std::unique_ptr<ITranscoder> PipesTranscoder;
-    public:
         virtual ~IWorker() { };
         virtual bool Transcode(IWorkerContext* ctx, config::CItem& item, CCommandLine& dcl, CCommandLine& ecl, std::mutex& m_down) = 0;
         virtual bool Decode(IWorkerContext* ctx, config::CItem& item, CCommandLine& cl, std::mutex& m_down) = 0;
@@ -687,6 +683,10 @@ namespace worker
 
     class CWorker : public IWorker
     {
+    public:
+        std::unique_ptr<IConverter> ConsoleConverter;
+        std::unique_ptr<IConverter> PipesConverter;
+        std::unique_ptr<ITranscoder> PipesTranscoder;
     public:
         bool Transcode(IWorkerContext* ctx, config::CItem& item, CCommandLine& dcl, CCommandLine& ecl, std::mutex& m_down)
         {
