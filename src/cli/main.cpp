@@ -43,7 +43,6 @@ int wmain(int argc, wchar_t *argv[])
 
     m_Config.FileSystem->SetCurrentDirectory_(m_Config.m_Settings.szSettingsPath);
 
-    worker::CWorker m_Worker;
     worker::Win32WorkerFactory m_Factory;
     CConsoleWorkerContext ctx;
 
@@ -97,8 +96,9 @@ int wmain(int argc, wchar_t *argv[])
 
     ctx.pConfig = &m_Config;
 
-    std::thread m_WorkerThread = std::thread([&m_Worker, &ctx, &m_Config]()
+    std::thread m_WorkerThread = std::thread([&ctx, &m_Config]()
     {
+        worker::CWorker m_Worker;
         m_Worker.Convert(&ctx, m_Config.m_Items);
     });
     m_WorkerThread.join();

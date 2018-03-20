@@ -7,6 +7,22 @@ using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 namespace BatchEncoderCoreUnitTests
 {
+    TEST_CLASS(CConverter_Tests)
+    {
+    public:
+        TEST_METHOD(CConverter_ConvertUsingConsole)
+        {
+        }
+
+        TEST_METHOD(CConverter_ConvertUsingPipes)
+        {
+        }
+
+        TEST_METHOD(CConverter_ConvertUsingPipesOnly)
+        {
+        }
+    };
+
     TEST_CLASS(CWorker_Tests)
     {
         config::CFormat m_Format
@@ -55,18 +71,6 @@ namespace BatchEncoderCoreUnitTests
             ctx.nLastItemId = -1;
         }
     public:
-        TEST_METHOD(CWorker_ConvertUsingConsole)
-        {
-        }
-
-        TEST_METHOD(CWorker_ConvertUsingPipes)
-        {
-        }
-
-        TEST_METHOD(CWorker_ConvertUsingPipesOnly)
-        {
-        }
-
         TEST_METHOD(CWorker_Transcode)
         {
         }
@@ -79,19 +83,19 @@ namespace BatchEncoderCoreUnitTests
         {
         }
 
-        TEST_METHOD(CWorker_ConvertItem)
+        TEST_METHOD(CWorker_Convert_item_mutex)
         {
         }
 
-        TEST_METHOD(CWorker_ConvertLoop)
+        TEST_METHOD(CWorker_Convert_queue)
         {
         }
 
-        TEST_METHOD(CWorker_Convert_Item)
+        TEST_METHOD(CWorker_Convert_item)
         {
         }
 
-        TEST_METHOD(CWorker_Convert_Items_Empty)
+        TEST_METHOD(CWorker_Convert_items_Empty)
         {
             config::CConfig m_Config;
 
@@ -124,7 +128,7 @@ namespace BatchEncoderCoreUnitTests
             Assert::IsNull(ctx.pConfig);
         }
 
-        TEST_METHOD(CWorker_Convert_Items_One_Error)
+        TEST_METHOD(CWorker_Convert_items_One_Error)
         {
             config::CConfig m_Config;
 

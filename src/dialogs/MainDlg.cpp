@@ -2513,7 +2513,8 @@ namespace dialogs
 
             std::thread m_WorkerThread = std::thread([this]()
             {
-                this->m_Worker.Convert(this->ctx.get(), this->m_Config.m_Items);
+                worker::CWorker m_Worker;
+                m_Worker.Convert(this->ctx.get(), this->m_Config.m_Items);
             });
             m_WorkerThread.detach();
 

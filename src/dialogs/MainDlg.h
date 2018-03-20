@@ -42,7 +42,6 @@ namespace dialogs
         config::CConfig m_Config;
     public:
         std::shared_ptr<worker::IWorkerContext> ctx;
-        worker::CWorker m_Worker;
     public:
         int nEdtItem;
         int nEdtSubItem;

@@ -20,10 +20,23 @@
 
 namespace worker
 {
-    class CWorker
+    class IWorker
     {
     public:
-        bool ConvertUsingConsole(IWorkerContext* ctx, CCommandLine& cl, std::mutex& m_down)
+        virtual ~IWorker() { };
+        virtual bool Transcode(IWorkerContext* ctx, config::CItem& item, CCommandLine& dcl, CCommandLine& ecl, std::mutex& m_down) = 0;
+        virtual bool Decode(IWorkerContext* ctx, config::CItem& item, CCommandLine& cl, std::mutex& m_down) = 0;
+        virtual bool Encode(IWorkerContext* ctx, config::CItem& item, CCommandLine& cl, std::mutex& m_down) = 0;
+        virtual bool Convert(IWorkerContext* ctx, config::CItem& item, std::mutex& m_dir, std::mutex& m_down) = 0;
+        virtual bool Convert(IWorkerContext* ctx, std::queue<int>& queue, std::mutex& m_queue, std::mutex &m_dir, std::mutex &m_down) = 0;
+        virtual void Convert(IWorkerContext* ctx, config::CItem& item) = 0;
+        virtual void Convert(IWorkerContext* ctx, std::vector<config::CItem>& items) = 0;
+    };
+
+    class CConverter
+    {
+    public:
+        static bool ConvertUsingConsole(IWorkerContext* ctx, CCommandLine& cl, std::mutex& m_down)
         {
             auto config = ctx->pConfig;
             auto process = ctx->pFactory->CreateProcessPtr();
@@ -153,7 +166,7 @@ namespace worker
                 return true;
             }
         }
-        bool ConvertUsingPipes(IWorkerContext* ctx, CCommandLine& cl, std::mutex& m_down)
+        static bool ConvertUsingPipes(IWorkerContext* ctx, CCommandLine& cl, std::mutex& m_down)
         {
             auto config = ctx->pConfig;
             auto process = ctx->pFactory->CreateProcessPtr();
@@ -402,7 +415,7 @@ namespace worker
                 return true;
             }
         }
-        bool ConvertUsingPipesOnly(IWorkerContext* ctx, CCommandLine &dcl, CCommandLine& ecl, std::mutex& m_down)
+        static bool ConvertUsingPipesOnly(IWorkerContext* ctx, CCommandLine &dcl, CCommandLine& ecl, std::mutex& m_down)
         {
             auto config = ctx->pConfig;
             auto decoderProcess = ctx->pFactory->CreateProcessPtr();
@@ -642,6 +655,10 @@ namespace worker
                 return true;
             }
         }
+    };
+
+    class CWorker : public IWorker
+    {
     public:
         bool Transcode(IWorkerContext* ctx, config::CItem& item, CCommandLine& dcl, CCommandLine& ecl, std::mutex& m_down)
         {
@@ -651,7 +668,7 @@ namespace worker
                 ctx->ItemStatus(item.nId, ctx->GetString(0x00150001), ctx->GetString(0x0014000C));
                 item.ResetProgress();
 
-                bool bResult = ConvertUsingPipesOnly(ctx, dcl, ecl, m_down);
+                bool bResult = CConverter::ConvertUsingPipesOnly(ctx, dcl, ecl, m_down);
                 if (bResult == true)
                 {
                     if (config->m_Options.bDeleteSourceFiles == true)
@@ -687,9 +704,9 @@ namespace worker
 
                 bool bResult = false;
                 if ((cl.bUseReadPipes == false) && (cl.bUseWritePipes == false))
-                    bResult = ConvertUsingConsole(ctx, cl, m_down);
+                    bResult = CConverter::ConvertUsingConsole(ctx, cl, m_down);
                 else
-                    bResult = ConvertUsingPipes(ctx, cl, m_down);
+                    bResult = CConverter::ConvertUsingPipes(ctx, cl, m_down);
                 if (bResult == false)
                 {
                     if (config->m_Options.bDeleteOnErrors == true)
@@ -730,9 +747,9 @@ namespace worker
 
                 bool bResult = false;
                 if ((cl.bUseReadPipes == false) && (cl.bUseWritePipes == false))
-                    bResult = ConvertUsingConsole(ctx, cl, m_down);
+                    bResult = CConverter::ConvertUsingConsole(ctx, cl, m_down);
                 else
-                    bResult = ConvertUsingPipes(ctx, cl, m_down);
+                    bResult = CConverter::ConvertUsingPipes(ctx, cl, m_down);
                 if (bResult == true)
                 {
                     if (config->m_Options.bDeleteSourceFiles == true)
@@ -760,7 +777,7 @@ namespace worker
             return false;
         }
     public:
-        bool ConvertItem(IWorkerContext* ctx, config::CItem& item, std::mutex& m_dir, std::mutex& m_down)
+        bool Convert(IWorkerContext* ctx, config::CItem& item, std::mutex& m_dir, std::mutex& m_down)
         {
             auto config = ctx->pConfig;
             std::wstring szEncInputFile;
@@ -922,7 +939,7 @@ namespace worker
             }
         }
     public:
-        bool ConvertLoop(IWorkerContext* ctx, std::queue<int>& queue, std::mutex& m_queue, std::mutex &m_dir, std::mutex &m_down)
+        bool Convert(IWorkerContext* ctx, std::queue<int>& queue, std::mutex& m_queue, std::mutex &m_dir, std::mutex &m_down)
         {
             auto config = ctx->pConfig;
             while (true)
@@ -941,7 +958,7 @@ namespace worker
 
                         ctx->TotalProgress(nId);
 
-                        if (ConvertItem(ctx, config->m_Items[nId], m_dir, m_down) == true)
+                        if (Convert(ctx, config->m_Items[nId], m_dir, m_down) == true)
                         {
                             ctx->nProcessedFiles++;
                             ctx->TotalProgress(nId);
@@ -980,7 +997,7 @@ namespace worker
             ctx->nTotalFiles = 1;
             ctx->TotalProgress(item.nId);
 
-            if (ConvertItem(ctx, item, m_dir, m_down) == true)
+            if (Convert(ctx, item, m_dir, m_down) == true)
             {
                 ctx->nProcessedFiles = 1;
                 ctx->nErrors = 0;
@@ -1017,11 +1034,11 @@ namespace worker
 
             if (ctx->nThreadCount <= 1)
             {
-                this->ConvertLoop(ctx, queue, m_queue, m_dir, m_down);
+                this->Convert(ctx, queue, m_queue, m_dir, m_down);
             }
             else
             {
-                auto convert = [&]() { this->ConvertLoop(ctx, queue, m_queue, m_dir, m_down); };
+                auto convert = [&]() { this->Convert(ctx, queue, m_queue, m_dir, m_down); };
                 auto threads = std::make_unique<std::thread[]>(ctx->nThreadCount);
 
                 for (int i = 0; i < ctx->nThreadCount; i++)
