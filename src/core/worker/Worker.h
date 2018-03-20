@@ -20,19 +20,6 @@
 
 namespace worker
 {
-    class IWorker
-    {
-    public:
-        virtual ~IWorker() { };
-        virtual bool Transcode(IWorkerContext* ctx, config::CItem& item, CCommandLine& dcl, CCommandLine& ecl, std::mutex& m_down) = 0;
-        virtual bool Decode(IWorkerContext* ctx, config::CItem& item, CCommandLine& cl, std::mutex& m_down) = 0;
-        virtual bool Encode(IWorkerContext* ctx, config::CItem& item, CCommandLine& cl, std::mutex& m_down) = 0;
-        virtual bool Convert(IWorkerContext* ctx, config::CItem& item, std::mutex& m_dir, std::mutex& m_down) = 0;
-        virtual bool Convert(IWorkerContext* ctx, std::queue<int>& queue, std::mutex& m_queue, std::mutex &m_dir, std::mutex &m_down) = 0;
-        virtual void Convert(IWorkerContext* ctx, config::CItem& item) = 0;
-        virtual void Convert(IWorkerContext* ctx, std::vector<config::CItem>& items) = 0;
-    };
-
     class IConverter
     {
     public:
@@ -45,6 +32,23 @@ namespace worker
     public:
         virtual ~ITranscoder() { };
         virtual bool Run(IWorkerContext* ctx, CCommandLine &dcl, CCommandLine& ecl, std::mutex& m_down) = 0;
+    };
+
+    class IWorker
+    {
+    public:
+        std::unique_ptr<IConverter> ConsoleConverter;
+        std::unique_ptr<IConverter> PipesConverter;
+        std::unique_ptr<ITranscoder> PipesTranscoder;
+    public:
+        virtual ~IWorker() { };
+        virtual bool Transcode(IWorkerContext* ctx, config::CItem& item, CCommandLine& dcl, CCommandLine& ecl, std::mutex& m_down) = 0;
+        virtual bool Decode(IWorkerContext* ctx, config::CItem& item, CCommandLine& cl, std::mutex& m_down) = 0;
+        virtual bool Encode(IWorkerContext* ctx, config::CItem& item, CCommandLine& cl, std::mutex& m_down) = 0;
+        virtual bool Convert(IWorkerContext* ctx, config::CItem& item, std::mutex& m_dir, std::mutex& m_down) = 0;
+        virtual bool Convert(IWorkerContext* ctx, std::queue<int>& queue, std::mutex& m_queue, std::mutex &m_dir, std::mutex &m_down) = 0;
+        virtual void Convert(IWorkerContext* ctx, config::CItem& item) = 0;
+        virtual void Convert(IWorkerContext* ctx, std::vector<config::CItem>& items) = 0;
     };
 
     class CConsoleConverter : public IConverter
@@ -683,17 +687,6 @@ namespace worker
 
     class CWorker : public IWorker
     {
-    public:
-        std::unique_ptr<IConverter> ConsoleConverter;
-        std::unique_ptr<IConverter> PipesConverter;
-        std::unique_ptr<ITranscoder> PipesTranscoder;
-    public:
-        CWorker()
-        {
-            this->ConsoleConverter = std::make_unique<CConsoleConverter>();
-            this->PipesConverter = std::make_unique<CPipesConverter>();
-            this->PipesTranscoder = std::make_unique<CPipesTranscoder>();
-        }
     public:
         bool Transcode(IWorkerContext* ctx, config::CItem& item, CCommandLine& dcl, CCommandLine& ecl, std::mutex& m_down)
         {

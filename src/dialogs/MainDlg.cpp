@@ -2511,10 +2511,13 @@ namespace dialogs
 
             this->ctx->pConfig = &this->m_Config;
 
-            std::thread m_WorkerThread = std::thread([this]()
+            auto m_WorkerThread = std::thread([this]()
             {
-                worker::CWorker m_Worker;
-                m_Worker.Convert(this->ctx.get(), this->m_Config.m_Items);
+                auto pWorker = std::make_unique<worker::CWorker>();
+                pWorker->ConsoleConverter = std::make_unique<worker::CConsoleConverter>();
+                pWorker->PipesConverter = std::make_unique<worker::CPipesConverter>();
+                pWorker->PipesTranscoder = std::make_unique<worker::CPipesTranscoder>();
+                pWorker->Convert(this->ctx.get(), this->m_Config.m_Items);
             });
             m_WorkerThread.detach();
 

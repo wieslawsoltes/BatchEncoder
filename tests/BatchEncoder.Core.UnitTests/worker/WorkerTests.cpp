@@ -120,9 +120,12 @@ namespace BatchEncoderCoreUnitTests
 
             Assert::AreEqual(1, ctx.nThreadCount);
             Assert::IsNotNull(ctx.pConfig);
-
-            worker::CWorker m_Worker;
-            m_Worker.Convert(&ctx, m_Config.m_Items);
+            
+            auto pWorker = std::make_unique<worker::CWorker>();
+            pWorker->ConsoleConverter = std::make_unique<worker::CConsoleConverter>();
+            pWorker->PipesConverter = std::make_unique<worker::CPipesConverter>();
+            pWorker->PipesTranscoder = std::make_unique<worker::CPipesTranscoder>();
+            pWorker->Convert(&ctx, m_Config.m_Items);
             m_Config.Log->Close();
 
             Assert::IsFalse(ctx.bRunning);
@@ -160,8 +163,11 @@ namespace BatchEncoderCoreUnitTests
             Assert::AreEqual(1, ctx.nThreadCount);
             Assert::IsNotNull(ctx.pConfig);
 
-            worker::CWorker m_Worker;
-            m_Worker.Convert(&ctx, m_Config.m_Items);
+            auto pWorker = std::make_unique<worker::CWorker>();
+            pWorker->ConsoleConverter = std::make_unique<worker::CConsoleConverter>();
+            pWorker->PipesConverter = std::make_unique<worker::CPipesConverter>();
+            pWorker->PipesTranscoder = std::make_unique<worker::CPipesTranscoder>();
+            pWorker->Convert(&ctx, m_Config.m_Items);
             m_Config.Log->Close();
 
             Assert::IsFalse(ctx.bRunning);
