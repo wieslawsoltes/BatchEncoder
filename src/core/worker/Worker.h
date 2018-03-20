@@ -33,10 +33,10 @@ namespace worker
         virtual void Convert(IWorkerContext* ctx, std::vector<config::CItem>& items) = 0;
     };
 
-    class CConverter
+    class CConsoleConverter
     {
     public:
-        static bool ConvertUsingConsole(IWorkerContext* ctx, CCommandLine& cl, std::mutex& m_down)
+        static bool Run(IWorkerContext* ctx, CCommandLine& cl, std::mutex& m_down)
         {
             auto config = ctx->pConfig;
             auto process = ctx->pFactory->CreateProcessPtr();
@@ -166,7 +166,12 @@ namespace worker
                 return true;
             }
         }
-        static bool ConvertUsingPipes(IWorkerContext* ctx, CCommandLine& cl, std::mutex& m_down)
+    };
+
+    class CPipesConverter
+    {
+    public:
+        static bool Run(IWorkerContext* ctx, CCommandLine& cl, std::mutex& m_down)
         {
             auto config = ctx->pConfig;
             auto process = ctx->pFactory->CreateProcessPtr();
@@ -415,7 +420,12 @@ namespace worker
                 return true;
             }
         }
-        static bool ConvertUsingPipesOnly(IWorkerContext* ctx, CCommandLine &dcl, CCommandLine& ecl, std::mutex& m_down)
+    };
+
+    class CPipesOnlyConverter
+    {
+    public:
+        static bool Run(IWorkerContext* ctx, CCommandLine &dcl, CCommandLine& ecl, std::mutex& m_down)
         {
             auto config = ctx->pConfig;
             auto decoderProcess = ctx->pFactory->CreateProcessPtr();
@@ -668,7 +678,7 @@ namespace worker
                 ctx->ItemStatus(item.nId, ctx->GetString(0x00150001), ctx->GetString(0x0014000C));
                 item.ResetProgress();
 
-                bool bResult = CConverter::ConvertUsingPipesOnly(ctx, dcl, ecl, m_down);
+                bool bResult = CPipesOnlyConverter::Run(ctx, dcl, ecl, m_down);
                 if (bResult == true)
                 {
                     if (config->m_Options.bDeleteSourceFiles == true)
@@ -704,9 +714,9 @@ namespace worker
 
                 bool bResult = false;
                 if ((cl.bUseReadPipes == false) && (cl.bUseWritePipes == false))
-                    bResult = CConverter::ConvertUsingConsole(ctx, cl, m_down);
+                    bResult = CConsoleConverter::Run(ctx, cl, m_down);
                 else
-                    bResult = CConverter::ConvertUsingPipes(ctx, cl, m_down);
+                    bResult = CPipesConverter::Run(ctx, cl, m_down);
                 if (bResult == false)
                 {
                     if (config->m_Options.bDeleteOnErrors == true)
@@ -747,9 +757,9 @@ namespace worker
 
                 bool bResult = false;
                 if ((cl.bUseReadPipes == false) && (cl.bUseWritePipes == false))
-                    bResult = CConverter::ConvertUsingConsole(ctx, cl, m_down);
+                    bResult = CConsoleConverter::Run(ctx, cl, m_down);
                 else
-                    bResult = CConverter::ConvertUsingPipes(ctx, cl, m_down);
+                    bResult = CPipesConverter::Run(ctx, cl, m_down);
                 if (bResult == true)
                 {
                     if (config->m_Options.bDeleteSourceFiles == true)
@@ -776,7 +786,6 @@ namespace worker
 
             return false;
         }
-    public:
         bool Convert(IWorkerContext* ctx, config::CItem& item, std::mutex& m_dir, std::mutex& m_down)
         {
             auto config = ctx->pConfig;
@@ -938,7 +947,6 @@ namespace worker
                 return Encode(ctx, item, cl, m_down);
             }
         }
-    public:
         bool Convert(IWorkerContext* ctx, std::queue<int>& queue, std::mutex& m_queue, std::mutex &m_dir, std::mutex &m_down)
         {
             auto config = ctx->pConfig;

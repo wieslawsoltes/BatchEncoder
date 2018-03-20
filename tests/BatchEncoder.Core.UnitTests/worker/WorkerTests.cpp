@@ -7,18 +7,26 @@ using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 namespace BatchEncoderCoreUnitTests
 {
-    TEST_CLASS(CConverter_Tests)
+    TEST_CLASS(CConsoleConverter_Tests)
     {
     public:
-        TEST_METHOD(CConverter_ConvertUsingConsole)
+        TEST_METHOD(CConsoleConverter_Run)
         {
         }
+    };
 
-        TEST_METHOD(CConverter_ConvertUsingPipes)
+    TEST_CLASS(CPipesConverter_Tests)
+    {
+    public:
+        TEST_METHOD(CPipesConverter_Run)
         {
         }
+    };
 
-        TEST_METHOD(CConverter_ConvertUsingPipesOnly)
+    TEST_CLASS(CPipesOnlyConverter_Tests)
+    {
+    public:
+        TEST_METHOD(CPipesOnlyConverter_Run)
         {
         }
     };
