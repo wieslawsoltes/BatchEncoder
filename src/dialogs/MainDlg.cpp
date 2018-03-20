@@ -2435,6 +2435,47 @@ namespace dialogs
         this->m_BtnBrowse.EnableWindow(bEnable);
     }
 
+#if 0
+    class CDebugConsoleConverter : public worker::IConverter
+    {
+    public:
+        bool Run(worker::IWorkerContext* ctx, worker::CCommandLine& cl, std::mutex& m_down)
+        {
+            ::OutputDebugStringW((cl.szCommandLine + L"\n").c_str());
+            ctx->ItemStatus(cl.nItemId, ctx->GetString(0x00150001), ctx->GetString(0x00120006));
+            ctx->ItemProgress(cl.nItemId, 100, true, false);
+            return true;
+
+        }
+    };
+
+    class CDebugPipesConverter : public worker::IConverter
+    {
+    public:
+        bool Run(worker::IWorkerContext* ctx, worker::CCommandLine& cl, std::mutex& m_down)
+        {
+            ::OutputDebugStringW((cl.szCommandLine + L"\n").c_str());
+            ctx->ItemStatus(cl.nItemId, ctx->GetString(0x00150001), ctx->GetString(0x0013000B));
+            ctx->ItemProgress(cl.nItemId, 100, true, false);
+            return true;
+
+        }
+    };
+
+    class CDebugPipesTranscoder : public worker::ITranscoder
+    {
+    public:
+        bool Run(worker::IWorkerContext* ctx, worker::CCommandLine &dcl, worker::CCommandLine& ecl, std::mutex& m_down)
+        {
+            ::OutputDebugStringW((dcl.szCommandLine + L"\n").c_str());
+            ::OutputDebugStringW((ecl.szCommandLine + L"\n").c_str());
+            ctx->ItemStatus(dcl.nItemId, ctx->GetString(0x00150001), ctx->GetString(0x0013000B));
+            ctx->ItemProgress(dcl.nItemId, 100, true, false);
+            return true;
+        }
+    };
+#endif
+
     void CMainDlg::StartConvert()
     {
         static volatile bool bSafeCheck = false;
@@ -2514,9 +2555,15 @@ namespace dialogs
             auto m_WorkerThread = std::thread([this]()
             {
                 auto pWorker = std::make_unique<worker::CWorker>();
+            #if 0
+                pWorker->ConsoleConverter = std::make_unique<CDebugConsoleConverter>();
+                pWorker->PipesConverter = std::make_unique<CDebugPipesConverter>();
+                pWorker->PipesTranscoder = std::make_unique<CDebugPipesTranscoder>();
+            #else
                 pWorker->ConsoleConverter = std::make_unique<worker::CConsoleConverter>();
                 pWorker->PipesConverter = std::make_unique<worker::CPipesConverter>();
                 pWorker->PipesTranscoder = std::make_unique<worker::CPipesTranscoder>();
+            #endif
                 pWorker->Convert(this->ctx.get(), this->m_Config.m_Items);
             });
             m_WorkerThread.detach();
