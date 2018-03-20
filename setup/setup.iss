@@ -47,7 +47,6 @@ UserInfoPage        =no
 
 Name: main; Description: Main Program; Types: full compact custom
 Name: docs; Description: Documents; Types: full
-Name: config; Description: Configuration; Types: full compact
 Name: formats; Description: Format Definitions; Types: full compact
 Name: lang; Description: Languages; Types: full
 Name: progress; Description: Progress Functions; Types: full compact
