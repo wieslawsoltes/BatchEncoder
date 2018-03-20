@@ -683,6 +683,7 @@ namespace worker
 
     class CWorker : public IWorker
     {
+    public:
         std::unique_ptr<IConverter> ConsoleConverter;
         std::unique_ptr<IConverter> PipesConverter;
         std::unique_ptr<ITranscoder> PipesTranscoder;
