@@ -23,10 +23,10 @@ namespace BatchEncoderCoreUnitTests
         }
     };
 
-    TEST_CLASS(CPipesOnlyConverter_Tests)
+    TEST_CLASS(CPipesTranscoder_Tests)
     {
     public:
-        TEST_METHOD(CPipesOnlyConverter_Run)
+        TEST_METHOD(CPipesTranscoder_Run)
         {
         }
     };

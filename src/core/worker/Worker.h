@@ -33,10 +33,24 @@ namespace worker
         virtual void Convert(IWorkerContext* ctx, std::vector<config::CItem>& items) = 0;
     };
 
-    class CConsoleConverter
+    class IConverter
     {
     public:
-        static bool Run(IWorkerContext* ctx, CCommandLine& cl, std::mutex& m_down)
+        virtual ~IConverter() { };
+        virtual bool Run(IWorkerContext* ctx, CCommandLine& cl, std::mutex& m_down) = 0;
+    };
+
+    class ITranscoder
+    {
+    public:
+        virtual ~ITranscoder() { };
+        virtual bool Run(IWorkerContext* ctx, CCommandLine &dcl, CCommandLine& ecl, std::mutex& m_down) = 0;
+    };
+
+    class CConsoleConverter : public IConverter
+    {
+    public:
+        bool Run(IWorkerContext* ctx, CCommandLine& cl, std::mutex& m_down)
         {
             auto config = ctx->pConfig;
             auto process = ctx->pFactory->CreateProcessPtr();
@@ -168,10 +182,10 @@ namespace worker
         }
     };
 
-    class CPipesConverter
+    class CPipesConverter : public IConverter
     {
     public:
-        static bool Run(IWorkerContext* ctx, CCommandLine& cl, std::mutex& m_down)
+        bool Run(IWorkerContext* ctx, CCommandLine& cl, std::mutex& m_down)
         {
             auto config = ctx->pConfig;
             auto process = ctx->pFactory->CreateProcessPtr();
@@ -422,10 +436,10 @@ namespace worker
         }
     };
 
-    class CPipesOnlyConverter
+    class CPipesTranscoder : public ITranscoder
     {
     public:
-        static bool Run(IWorkerContext* ctx, CCommandLine &dcl, CCommandLine& ecl, std::mutex& m_down)
+        bool Run(IWorkerContext* ctx, CCommandLine &dcl, CCommandLine& ecl, std::mutex& m_down)
         {
             auto config = ctx->pConfig;
             auto decoderProcess = ctx->pFactory->CreateProcessPtr();
@@ -669,6 +683,16 @@ namespace worker
 
     class CWorker : public IWorker
     {
+        std::unique_ptr<IConverter> pConsoleConverter;
+        std::unique_ptr<IConverter> pPipesConverter;
+        std::unique_ptr<ITranscoder> pPipesTranscoder;
+    public:
+        CWorker()
+        {
+            this->pConsoleConverter = std::make_unique<CConsoleConverter>();
+            this->pPipesConverter = std::make_unique<CPipesConverter>();
+            this->pPipesTranscoder = std::make_unique<CPipesTranscoder>();
+        }
     public:
         bool Transcode(IWorkerContext* ctx, config::CItem& item, CCommandLine& dcl, CCommandLine& ecl, std::mutex& m_down)
         {
@@ -678,7 +702,7 @@ namespace worker
                 ctx->ItemStatus(item.nId, ctx->GetString(0x00150001), ctx->GetString(0x0014000C));
                 item.ResetProgress();
 
-                bool bResult = CPipesOnlyConverter::Run(ctx, dcl, ecl, m_down);
+                bool bResult = pPipesTranscoder->Run(ctx, dcl, ecl, m_down);
                 if (bResult == true)
                 {
                     if (config->m_Options.bDeleteSourceFiles == true)
@@ -714,9 +738,9 @@ namespace worker
 
                 bool bResult = false;
                 if ((cl.bUseReadPipes == false) && (cl.bUseWritePipes == false))
-                    bResult = CConsoleConverter::Run(ctx, cl, m_down);
+                    bResult = pConsoleConverter->Run(ctx, cl, m_down);
                 else
-                    bResult = CPipesConverter::Run(ctx, cl, m_down);
+                    bResult = pPipesConverter->Run(ctx, cl, m_down);
                 if (bResult == false)
                 {
                     if (config->m_Options.bDeleteOnErrors == true)
@@ -757,9 +781,9 @@ namespace worker
 
                 bool bResult = false;
                 if ((cl.bUseReadPipes == false) && (cl.bUseWritePipes == false))
-                    bResult = CConsoleConverter::Run(ctx, cl, m_down);
+                    bResult = pConsoleConverter->Run(ctx, cl, m_down);
                 else
-                    bResult = CPipesConverter::Run(ctx, cl, m_down);
+                    bResult = pPipesConverter->Run(ctx, cl, m_down);
                 if (bResult == true)
                 {
                     if (config->m_Options.bDeleteSourceFiles == true)
