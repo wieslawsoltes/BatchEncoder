@@ -683,15 +683,15 @@ namespace worker
 
     class CWorker : public IWorker
     {
-        std::unique_ptr<IConverter> pConsoleConverter;
-        std::unique_ptr<IConverter> pPipesConverter;
-        std::unique_ptr<ITranscoder> pPipesTranscoder;
+        std::unique_ptr<IConverter> ConsoleConverter;
+        std::unique_ptr<IConverter> PipesConverter;
+        std::unique_ptr<ITranscoder> PipesTranscoder;
     public:
         CWorker()
         {
-            this->pConsoleConverter = std::make_unique<CConsoleConverter>();
-            this->pPipesConverter = std::make_unique<CPipesConverter>();
-            this->pPipesTranscoder = std::make_unique<CPipesTranscoder>();
+            this->ConsoleConverter = std::make_unique<CConsoleConverter>();
+            this->PipesConverter = std::make_unique<CPipesConverter>();
+            this->PipesTranscoder = std::make_unique<CPipesTranscoder>();
         }
     public:
         bool Transcode(IWorkerContext* ctx, config::CItem& item, CCommandLine& dcl, CCommandLine& ecl, std::mutex& m_down)
@@ -702,7 +702,7 @@ namespace worker
                 ctx->ItemStatus(item.nId, ctx->GetString(0x00150001), ctx->GetString(0x0014000C));
                 item.ResetProgress();
 
-                bool bResult = pPipesTranscoder->Run(ctx, dcl, ecl, m_down);
+                bool bResult = PipesTranscoder->Run(ctx, dcl, ecl, m_down);
                 if (bResult == true)
                 {
                     if (config->m_Options.bDeleteSourceFiles == true)
@@ -738,9 +738,9 @@ namespace worker
 
                 bool bResult = false;
                 if ((cl.bUseReadPipes == false) && (cl.bUseWritePipes == false))
-                    bResult = pConsoleConverter->Run(ctx, cl, m_down);
+                    bResult = ConsoleConverter->Run(ctx, cl, m_down);
                 else
-                    bResult = pPipesConverter->Run(ctx, cl, m_down);
+                    bResult = PipesConverter->Run(ctx, cl, m_down);
                 if (bResult == false)
                 {
                     if (config->m_Options.bDeleteOnErrors == true)
@@ -781,9 +781,9 @@ namespace worker
 
                 bool bResult = false;
                 if ((cl.bUseReadPipes == false) && (cl.bUseWritePipes == false))
-                    bResult = pConsoleConverter->Run(ctx, cl, m_down);
+                    bResult = ConsoleConverter->Run(ctx, cl, m_down);
                 else
-                    bResult = pPipesConverter->Run(ctx, cl, m_down);
+                    bResult = PipesConverter->Run(ctx, cl, m_down);
                 if (bResult == true)
                 {
                     if (config->m_Options.bDeleteSourceFiles == true)
