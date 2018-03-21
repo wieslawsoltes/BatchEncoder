@@ -704,13 +704,11 @@ namespace worker
 
                     return true;
                 }
-                else
-                {
-                    if (config->m_Options.bDeleteOnErrors == true)
-                        config->FileSystem->DeleteFile_(ecl.szOutputFile);
 
-                    return false;
-                }
+                if (config->m_Options.bDeleteOnErrors == true)
+                    config->FileSystem->DeleteFile_(ecl.szOutputFile);
+
+                return false;
             }
             catch (...)
             {
@@ -730,8 +728,9 @@ namespace worker
                 ctx->ItemStatus(item.nId, ctx->GetString(0x00150001), ctx->GetString(0x00140007));
                 item.ResetProgress();
 
+                bool bUseConsole = (cl.bUseReadPipes == false) && (cl.bUseWritePipes == false);
                 bool bResult = false;
-                if ((cl.bUseReadPipes == false) && (cl.bUseWritePipes == false))
+                if (bUseConsole)
                     bResult = ConsoleConverter->Run(ctx, cl, m_down);
                 else
                     bResult = PipesConverter->Run(ctx, cl, m_down);
@@ -773,8 +772,9 @@ namespace worker
 
                 item.ResetProgress();
 
+                bool bUseConsole = (cl.bUseReadPipes == false) && (cl.bUseWritePipes == false);
                 bool bResult = false;
-                if ((cl.bUseReadPipes == false) && (cl.bUseWritePipes == false))
+                if (bUseConsole)
                     bResult = ConsoleConverter->Run(ctx, cl, m_down);
                 else
                     bResult = PipesConverter->Run(ctx, cl, m_down);
@@ -785,13 +785,11 @@ namespace worker
 
                     return true;
                 }
-                else
-                {
-                    if (config->m_Options.bDeleteOnErrors == true)
-                        config->FileSystem->DeleteFile_(cl.szOutputFile);
 
-                    return false;
-                }
+                if (config->m_Options.bDeleteOnErrors == true)
+                    config->FileSystem->DeleteFile_(cl.szOutputFile);
+
+                return false;
             }
             catch (...)
             {
@@ -801,16 +799,11 @@ namespace worker
                 ctx->ItemStatus(item.nId, ctx->GetString(0x00150001), ctx->GetString(0x0014000E));
                 ctx->ItemProgress(item.nId, -1, true, true);
             }
-
             return false;
         }
         bool Convert(IWorkerContext* ctx, config::CItem& item, std::mutex& m_dir, std::mutex& m_down)
         {
             auto config = ctx->pConfig;
-            std::wstring szEncInputFile;
-            std::wstring szEncOutputFile;
-            std::wstring szDecInputFile;
-            std::wstring szDecOutputFile;
             COutputPath m_Output;
 
             if (item.m_Paths.size() <= 0)
@@ -819,9 +812,8 @@ namespace worker
                 return false;
             }
 
-            auto& path = item.m_Paths[0];
+            std::wstring szEncInputFile = item.m_Paths[0].szPath;
 
-            szEncInputFile = path.szPath;
             if (config->FileSystem->FileExists(szEncInputFile) == false)
             {
                 ctx->ItemStatus(item.nId, ctx->GetString(0x00150001), ctx->GetString(0x00140001));
@@ -844,8 +836,7 @@ namespace worker
             }
 
             bool bCanEncode = config::CFormat::IsValidInputExtension(ef.szInputExtensions, config->FileSystem->GetFileExtension(szEncInputFile));
-
-            szEncOutputFile = m_Output.CreateFilePath(config->FileSystem.get(), config->m_Options.szOutputPath, szEncInputFile, item.szName, ef.szOutputExtension);
+            std::wstring szEncOutputFile = m_Output.CreateFilePath(config->FileSystem.get(), config->m_Options.szOutputPath, szEncInputFile, item.szName, ef.szOutputExtension);
 
             if (config->m_Options.bOverwriteExistingFiles == false)
             {
@@ -913,57 +904,46 @@ namespace worker
                     return false;
                 }
 
-                szDecInputFile = szEncInputFile;
-
+                std::wstring szDecInputFile = szEncInputFile;
                 std::wstring szPath = config->FileSystem->GetFilePath(szEncOutputFile);
                 std::wstring szName = config->FileSystem->GenerateUuidString();
                 std::wstring szExt = util::string::TowLower(df.szOutputExtension);
-                szDecOutputFile = szPath + szName + L"." + szExt;
-
-                std::wstring szInputFile = szDecOutputFile;
+                std::wstring szDecOutputFile = szPath + szName + L"." + szExt;
 
                 auto dcl = CCommandLine(config->FileSystem.get(), df, df.nDefaultPreset, item.nId, szDecInputFile, szDecOutputFile, L"");
                 auto ecl = CCommandLine(config->FileSystem.get(), ef, item.nPreset, item.nId, szDecOutputFile, szEncOutputFile, item.szOptions);
 
-                bool bDecoderPipes = df.bPipeInput && df.bPipeOutput;
-                bool bEncoderPipes = ef.bPipeInput && ef.bPipeOutput;
-                bool bCanTranscode = !bCanEncode && bDecoderPipes && bEncoderPipes;
-
                 if (ctx->bRunning == false)
                     return false;
 
-                if (bCanTranscode)
+                if (df.bPipeInput && df.bPipeOutput && ef.bPipeInput && ef.bPipeOutput)
                 {
                     return Transcode(ctx, item, dcl, ecl, m_down);
                 }
-                else
-                {
-                    if (Decode(ctx, item, dcl, m_down) == false)
-                        return false;
 
-                    if (ctx->bRunning == false)
-                        return false;
+                if (Decode(ctx, item, dcl, m_down) == false)
+                    return false;
 
-                    bool bResult = Encode(ctx, item, ecl, m_down);
-                    if (bResult == true)
-                    {
-                        if (config->m_Options.bDeleteSourceFiles == true)
-                            config->FileSystem->DeleteFile_(dcl.szInputFile);
-                    }
-
-                    config->FileSystem->DeleteFile_(dcl.szOutputFile);
-                    return bResult;
-                }
-            }
-            else
-            {
                 if (ctx->bRunning == false)
                     return false;
 
-                auto cl = CCommandLine(config->FileSystem.get(), ef, item.nPreset, item.nId, szEncInputFile, szEncOutputFile, item.szOptions);
+                bool bResult = Encode(ctx, item, ecl, m_down);
+                if (bResult == true)
+                {
+                    if (config->m_Options.bDeleteSourceFiles == true)
+                        config->FileSystem->DeleteFile_(dcl.szInputFile);
+                }
 
-                return Encode(ctx, item, cl, m_down);
+                config->FileSystem->DeleteFile_(dcl.szOutputFile);
+                return bResult;
             }
+
+            if (ctx->bRunning == false)
+                return false;
+
+            auto cl = CCommandLine(config->FileSystem.get(), ef, item.nPreset, item.nId, szEncInputFile, szEncOutputFile, item.szOptions);
+
+            return Encode(ctx, item, cl, m_down);
         }
         bool Convert(IWorkerContext* ctx, std::queue<int>& queue, std::mutex& m_queue, std::mutex &m_dir, std::mutex &m_down)
         {
