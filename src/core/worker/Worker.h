@@ -826,16 +826,14 @@ namespace worker
                 return false;
             }
 
-            config::CFormat& ef = config->m_Formats[nEncoder];
+            auto& ef = config->m_Formats[nEncoder];
             if (item.nPreset >= ef.m_Presets.size())
             {
                 ctx->ItemStatus(item.nId, ctx->GetString(0x00150001), ctx->GetString(0x00140003));
                 return false;
             }
 
-            bool bCanEncode = config::CFormat::IsValidInputExtension(ef.szInputExtensions, config->FileSystem->GetFileExtension(szInputFile));
             std::wstring szOutputFile = m_Output.CreateFilePath(config->FileSystem.get(), config->m_Options.szOutputPath, szInputFile, item.szName, ef.szOutputExtension);
-
             if (config->m_Options.bOverwriteExistingFiles == false)
             {
                 if (config->m_Options.bRenameExistingFiles == true)
@@ -876,6 +874,7 @@ namespace worker
 
             config->FileSystem->SetCurrentDirectory_(config->m_Settings.szSettingsPath);
 
+            bool bCanEncode = config::CFormat::IsValidInputExtension(ef.szInputExtensions, config->FileSystem->GetFileExtension(szInputFile));
             if (bCanEncode == false)
             {
                 int nDecoder = config::CFormat::GetDecoderByExtensionAndFormat(config->m_Formats, item.szExtension, ef);
@@ -885,16 +884,15 @@ namespace worker
                     return false;
                 }
 
-                config::CFormat& df = config->m_Formats[nDecoder];
-
+                auto& df = config->m_Formats[nDecoder];
                 if (df.nDefaultPreset >= df.m_Presets.size())
                 {
                     ctx->ItemStatus(item.nId, ctx->GetString(0x00150001), ctx->GetString(0x00140005));
                     return false;
                 }
 
-                bool bIsValidDecoderOutput = config::CFormat::IsValidInputExtension(ef.szInputExtensions, df.szOutputExtension);
-                if (bIsValidDecoderOutput == false)
+                bool bCanDecode = config::CFormat::IsValidInputExtension(ef.szInputExtensions, df.szOutputExtension);
+                if (bCanDecode == false)
                 {
                     ctx->ItemStatus(item.nId, ctx->GetString(0x00150001), ctx->GetString(0x00140006));
                     return false;
