@@ -95,6 +95,10 @@ namespace BatchEncoderCoreUnitTests
         {
         }
 
+        TEST_METHOD(CWorker_Convert_vector)
+        {
+        }
+
         TEST_METHOD(CWorker_Convert_queue)
         {
         }

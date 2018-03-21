@@ -938,6 +938,42 @@ namespace worker
 
             return Encode(ctx, item, cl, m_down);
         }
+        bool Convert(IWorkerContext* ctx, std::vector<int>& ids, std::mutex &m_dir, std::mutex &m_down)
+        {
+            auto config = ctx->pConfig;
+            try
+            {
+                for (int id : ids)
+                {
+                    if (ctx->bRunning == false)
+                        return false;
+
+                    ctx->TotalProgress(id);
+
+                    if (Convert(ctx, config->m_Items[id], m_dir, m_down) == true)
+                    {
+                        ctx->nProcessedFiles++;
+                        ctx->TotalProgress(id);
+                    }
+                    else
+                    {
+                        ctx->nProcessedFiles++;
+                        ctx->nErrors++;
+                        ctx->TotalProgress(id);
+                        if (config->m_Options.bStopOnErrors == true)
+                            return false;
+                    }
+
+                    if (ctx->bRunning == false)
+                        return false;
+                }
+            }
+            catch (...)
+            {
+                return false;
+            }
+            return true;
+        }
         bool Convert(IWorkerContext* ctx, std::queue<int>& queue, std::mutex& m_queue, std::mutex &m_dir, std::mutex &m_down)
         {
             auto config = ctx->pConfig;
@@ -948,25 +984,25 @@ namespace worker
                     m_queue.lock();
                     if (!queue.empty())
                     {
-                        int nId = queue.front();
+                        int id = queue.front();
                         queue.pop();
                         m_queue.unlock();
 
                         if (ctx->bRunning == false)
                             return false;
 
-                        ctx->TotalProgress(nId);
+                        ctx->TotalProgress(id);
 
-                        if (Convert(ctx, config->m_Items[nId], m_dir, m_down) == true)
+                        if (Convert(ctx, config->m_Items[id], m_dir, m_down) == true)
                         {
                             ctx->nProcessedFiles++;
-                            ctx->TotalProgress(nId);
+                            ctx->TotalProgress(id);
                         }
                         else
                         {
                             ctx->nProcessedFiles++;
                             ctx->nErrors++;
-                            ctx->TotalProgress(nId);
+                            ctx->TotalProgress(id);
                             if (config->m_Options.bStopOnErrors == true)
                                 return false;
                         }
@@ -1014,29 +1050,48 @@ namespace worker
         }
         void Convert(IWorkerContext* ctx, std::vector<config::CItem>& items)
         {
-            std::queue<int> queue;
-            std::mutex m_queue;
-            std::mutex m_dir;
-            std::mutex m_down;
-
-            ctx->Start();
-
-            for (auto& item : items)
-            {
-                if (item.bChecked == true)
-                {
-                    item.ResetProgress();
-                    queue.push(item.nId);
-                    ctx->nTotalFiles++;
-                }
-            }
-
             if (ctx->nThreadCount <= 1)
             {
-                this->Convert(ctx, queue, m_queue, m_dir, m_down);
+                std::mutex m_dir;
+                std::mutex m_down;
+                std::vector<int> ids;
+
+                ctx->Start();
+
+                for (auto& item : items)
+                {
+                    if (item.bChecked == true)
+                    {
+                        item.ResetProgress();
+                        ids.emplace_back(item.nId);
+                        ctx->nTotalFiles++;
+                    }
+                }
+
+                this->Convert(ctx, ids, m_dir, m_down);
+
+                ctx->Stop();
+                ctx->bDone = true;
             }
             else
             {
+                std::mutex m_dir;
+                std::mutex m_down;
+                std::mutex m_queue;
+                std::queue<int> queue;
+
+                ctx->Start();
+
+                for (auto& item : items)
+                {
+                    if (item.bChecked == true)
+                    {
+                        item.ResetProgress();
+                        queue.push(item.nId);
+                        ctx->nTotalFiles++;
+                    }
+                }
+
                 auto convert = [&]() { this->Convert(ctx, queue, m_queue, m_dir, m_down); };
                 auto threads = std::make_unique<std::thread[]>(ctx->nThreadCount);
 
@@ -1049,10 +1104,10 @@ namespace worker
                 {
                     threads[i].join();
                 }
-            }
 
-            ctx->Stop();
-            ctx->bDone = true;
+                ctx->Stop();
+                ctx->bDone = true;
+            }
         }
     };
 }
