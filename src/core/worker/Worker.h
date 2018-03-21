@@ -812,9 +812,8 @@ namespace worker
                 return false;
             }
 
-            std::wstring szEncInputFile = item.m_Paths[0].szPath;
-
-            if (config->FileSystem->FileExists(szEncInputFile) == false)
+            std::wstring szInputFile = item.m_Paths[0].szPath;
+            if (config->FileSystem->FileExists(szInputFile) == false)
             {
                 ctx->ItemStatus(item.nId, ctx->GetString(0x00150001), ctx->GetString(0x00140001));
                 return false;
@@ -828,22 +827,21 @@ namespace worker
             }
 
             config::CFormat& ef = config->m_Formats[nEncoder];
-
             if (item.nPreset >= ef.m_Presets.size())
             {
                 ctx->ItemStatus(item.nId, ctx->GetString(0x00150001), ctx->GetString(0x00140003));
                 return false;
             }
 
-            bool bCanEncode = config::CFormat::IsValidInputExtension(ef.szInputExtensions, config->FileSystem->GetFileExtension(szEncInputFile));
-            std::wstring szEncOutputFile = m_Output.CreateFilePath(config->FileSystem.get(), config->m_Options.szOutputPath, szEncInputFile, item.szName, ef.szOutputExtension);
+            bool bCanEncode = config::CFormat::IsValidInputExtension(ef.szInputExtensions, config->FileSystem->GetFileExtension(szInputFile));
+            std::wstring szOutputFile = m_Output.CreateFilePath(config->FileSystem.get(), config->m_Options.szOutputPath, szInputFile, item.szName, ef.szOutputExtension);
 
             if (config->m_Options.bOverwriteExistingFiles == false)
             {
                 if (config->m_Options.bRenameExistingFiles == true)
                 {
                     int nCounter = 0;
-                    while (config->FileSystem->FileExists(szEncOutputFile) == true)
+                    while (config->FileSystem->FileExists(szOutputFile) == true)
                     {
                         if (nCounter >= config->m_Options.nRenameExistingFilesLimit)
                         {
@@ -851,15 +849,15 @@ namespace worker
                             return false;
                         }
 
-                        CInputPath m_Input(szEncOutputFile.c_str());
-                        szEncOutputFile = m_Input.AppendInputName(L"_");
+                        CInputPath m_Input(szOutputFile.c_str());
+                        szOutputFile = m_Input.AppendInputName(L"_");
 
                         nCounter++;
                     }
                 }
                 else
                 {
-                    if (config->FileSystem->FileExists(szEncOutputFile) == true)
+                    if (config->FileSystem->FileExists(szOutputFile) == true)
                     {
                         ctx->ItemStatus(item.nId, ctx->GetString(0x00150001), ctx->GetString(0x00140010));
                         return false;
@@ -868,14 +866,12 @@ namespace worker
             }
 
             m_dir.lock();
-
-            if (m_Output.CreateOutputPath(config->FileSystem.get(), szEncOutputFile) == false)
+            if (m_Output.CreateOutputPath(config->FileSystem.get(), szOutputFile) == false)
             {
                 m_dir.unlock();
                 ctx->ItemStatus(item.nId, ctx->GetString(0x00150001), ctx->GetString(0x0014000F));
                 return false;
             }
-
             m_dir.unlock();
 
             config->FileSystem->SetCurrentDirectory_(config->m_Settings.szSettingsPath);
@@ -904,14 +900,13 @@ namespace worker
                     return false;
                 }
 
-                std::wstring szDecInputFile = szEncInputFile;
-                std::wstring szPath = config->FileSystem->GetFilePath(szEncOutputFile);
+                std::wstring szPath = config->FileSystem->GetFilePath(szOutputFile);
                 std::wstring szName = config->FileSystem->GenerateUuidString();
                 std::wstring szExt = util::string::TowLower(df.szOutputExtension);
-                std::wstring szDecOutputFile = szPath + szName + L"." + szExt;
+                std::wstring szDecodedFile = szPath + szName + L"." + szExt;
 
-                auto dcl = CCommandLine(config->FileSystem.get(), df, df.nDefaultPreset, item.nId, szDecInputFile, szDecOutputFile, L"");
-                auto ecl = CCommandLine(config->FileSystem.get(), ef, item.nPreset, item.nId, szDecOutputFile, szEncOutputFile, item.szOptions);
+                auto dcl = CCommandLine(config->FileSystem.get(), df, df.nDefaultPreset, item.nId, szInputFile, szDecodedFile, L"");
+                auto ecl = CCommandLine(config->FileSystem.get(), ef, item.nPreset, item.nId, szDecodedFile, szOutputFile, item.szOptions);
 
                 if (ctx->bRunning == false)
                     return false;
@@ -941,7 +936,7 @@ namespace worker
             if (ctx->bRunning == false)
                 return false;
 
-            auto cl = CCommandLine(config->FileSystem.get(), ef, item.nPreset, item.nId, szEncInputFile, szEncOutputFile, item.szOptions);
+            auto cl = CCommandLine(config->FileSystem.get(), ef, item.nPreset, item.nId, szInputFile, szOutputFile, item.szOptions);
 
             return Encode(ctx, item, cl, m_down);
         }
