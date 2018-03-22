@@ -345,6 +345,7 @@ namespace BatchEncoderCoreUnitTests
         TEST_METHOD(TestWorkerContext_Constructor)
         {
             TestWorkerContext ctx;
+
             Assert::IsTrue(ctx.bDone);
             Assert::IsFalse(ctx.bRunning);
             Assert::IsNull(ctx.pConfig);
@@ -352,6 +353,19 @@ namespace BatchEncoderCoreUnitTests
 
         TEST_METHOD(TestWorkerContext_GetString)
         {
+        }
+
+        TEST_METHOD(TestWorkerContext_Init)
+        {
+            TestWorkerContext ctx;
+            ctx.Init();
+
+            Assert::IsTrue(ctx.bRunning);
+            Assert::IsFalse(ctx.bDone);
+            Assert::AreEqual(0, ctx.nTotalFiles);
+            Assert::AreEqual(0, ctx.nProcessedFiles);
+            Assert::AreEqual(0, ctx.nErrors);
+            Assert::AreEqual(-1, ctx.nLastItemId);
         }
 
         TEST_METHOD(TestWorkerContext_Start)
