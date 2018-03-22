@@ -33,14 +33,24 @@ public:
     {
         this->bDone = true;
         this->bRunning = false;
-        this->bSafeCheck = false;
+        this->pConfig = nullptr;
         this->pFactory = std::make_shared<worker::Win32WorkerFactory>();
+        this->bSafeCheck = false;
     }
     virtual ~CConsoleWorkerContext() { }
 public:
     std::wstring GetString(int nKey)
     {
         return this->pConfig->GetString(nKey);
+    }
+    void Init()
+    {
+        this->bRunning = true;
+        this->bDone = false;
+        this->nTotalFiles = 0;
+        this->nProcessedFiles = 0;
+        this->nErrors = 0;
+        this->nLastItemId = -1;
     }
     void Start()
     {

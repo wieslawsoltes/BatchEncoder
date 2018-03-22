@@ -141,9 +141,9 @@ namespace dialogs
     class CMainDlgWorkerContext : public worker::IWorkerContext
     {
     private:
-        util::CTimeCount timer;
-        CMainDlg *pDlg;
         volatile bool bSafeCheck;
+        CMainDlg *pDlg;
+        util::CTimeCount timer;
     public:
         CMainDlgWorkerContext(CMainDlg* pDlg)
         {
@@ -151,8 +151,8 @@ namespace dialogs
             this->bRunning = false;
             this->pConfig = nullptr;
             this->pFactory = std::make_shared<worker::Win32WorkerFactory>();
-            this->pDlg = pDlg;
             this->bSafeCheck = false;
+            this->pDlg = pDlg;
         }
         virtual ~CMainDlgWorkerContext() { }
     public:
