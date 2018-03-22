@@ -149,15 +149,25 @@ namespace dialogs
         {
             this->bDone = true;
             this->bRunning = false;
+            this->pConfig = nullptr;
+            this->pFactory = std::make_shared<worker::Win32WorkerFactory>();
             this->pDlg = pDlg;
             this->bSafeCheck = false;
-            this->pFactory = std::make_shared<worker::Win32WorkerFactory>();
         }
         virtual ~CMainDlgWorkerContext() { }
     public:
         std::wstring GetString(int nKey)
         {
             return pDlg->m_Config.GetString(nKey);
+        }
+        void Init()
+        {
+            this->bRunning = true;
+            this->bDone = false;
+            this->nTotalFiles = 0;
+            this->nProcessedFiles = 0;
+            this->nErrors = 0;
+            this->nLastItemId = -1;
         }
         void Start()
         {
@@ -2533,12 +2543,7 @@ namespace dialogs
             m_hMenu->ModifyMenu(ID_ACTION_CONVERT, MF_BYCOMMAND, ID_ACTION_CONVERT, m_Config.GetString(0x00030003).c_str());
             m_hMenu = nullptr;
 
-            this->ctx->bRunning = true;
-            this->ctx->bDone = false;
-            this->ctx->nTotalFiles = 0;
-            this->ctx->nProcessedFiles = 0;
-            this->ctx->nErrors = 0;
-            this->ctx->nLastItemId = -1;
+            this->ctx->Init();
 
             this->ctx->nThreadCount = this->m_Config.m_Options.nThreadCount;
             if (this->ctx->nThreadCount < 1)

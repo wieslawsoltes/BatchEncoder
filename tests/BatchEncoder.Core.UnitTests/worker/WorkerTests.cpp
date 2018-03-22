@@ -69,16 +69,6 @@ namespace BatchEncoderCoreUnitTests
             L"", L"", false, 0, 0
         };
     public:
-        void Init(worker::IWorkerContext& ctx)
-        {
-            ctx.bRunning = true;
-            ctx.bDone = false;
-            ctx.nTotalFiles = 0;
-            ctx.nProcessedFiles = 0;
-            ctx.nErrors = 0;
-            ctx.nLastItemId = -1;
-        }
-    public:
         TEST_METHOD(CWorker_Transcode)
         {
         }
@@ -118,13 +108,13 @@ namespace BatchEncoderCoreUnitTests
 
             TestWorkerContext ctx;
 
-            Init(ctx);
+            ctx.Init();
             ctx.nThreadCount = 1;
             ctx.pConfig = &m_Config;
 
             Assert::AreEqual(1, ctx.nThreadCount);
             Assert::IsNotNull(ctx.pConfig);
-            
+
             auto pWorker = std::make_unique<worker::CWorker>();
             pWorker->ConsoleConverter = std::make_unique<worker::CConsoleConverter>();
             pWorker->PipesConverter = std::make_unique<worker::CPipesConverter>();
@@ -160,7 +150,7 @@ namespace BatchEncoderCoreUnitTests
 
             TestWorkerContext ctx;
 
-            Init(ctx);
+            ctx.Init();
             ctx.nThreadCount = 1;
             ctx.pConfig = &m_Config;
 

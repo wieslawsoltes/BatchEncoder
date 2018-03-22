@@ -77,12 +77,7 @@ int wmain(int argc, wchar_t *argv[])
         return -1;
     }
 
-    ctx.bRunning = true;
-    ctx.bDone = false;
-    ctx.nTotalFiles = 0;
-    ctx.nProcessedFiles = 0;
-    ctx.nErrors = 0;
-    ctx.nLastItemId = -1;
+    ctx.Init();
 
     ctx.nThreadCount = m_Config.m_Options.nThreadCount;
     if (ctx.nThreadCount < 1)

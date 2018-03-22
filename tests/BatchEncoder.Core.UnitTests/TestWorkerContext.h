@@ -288,6 +288,15 @@ namespace BatchEncoderCoreUnitTests
         {
             return pConfig->GetString(nKey);
         }
+        void Init()
+        {
+            this->bRunning = true;
+            this->bDone = false;
+            this->nTotalFiles = 0;
+            this->nProcessedFiles = 0;
+            this->nErrors = 0;
+            this->nLastItemId = -1;
+        }
         void Start()
         {
         }
