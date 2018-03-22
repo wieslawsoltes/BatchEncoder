@@ -362,10 +362,10 @@ namespace BatchEncoderCoreUnitTests
 
             Assert::IsTrue(ctx.bRunning);
             Assert::IsFalse(ctx.bDone);
-            Assert::AreEqual(0, ctx.nTotalFiles);
-            Assert::AreEqual(0, ctx.nProcessedFiles);
-            Assert::AreEqual(0, ctx.nErrors);
-            Assert::AreEqual(-1, ctx.nLastItemId);
+            Assert::IsTrue(ctx.nTotalFiles == 0);
+            Assert::IsTrue(ctx.nProcessedFiles == 0);
+            Assert::IsTrue(ctx.nErrors == 0);
+            Assert::IsTrue(ctx.nLastItemId == -1);
         }
 
         TEST_METHOD(TestWorkerContext_Start)
