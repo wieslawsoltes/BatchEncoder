@@ -87,23 +87,23 @@
 
     <!-- Paths Dialog -->
 
-    <String key="0x000F0001" value="Path" />
-    <String key="0x000F0002" value="Size (bytes)" />
+    <String key="0x000F0001" value="Ruta" />
+    <String key="0x000F0002" value="Tamaño (bytes)" />
 
-    <String key="0x000F0010" value="Edit Paths" />
-    <String key="0x000F0011" value="&amp;Cancel" />
-    <String key="0x000F0012" value="Path:" />
-    <String key="0x000F0013" value="Size:" />
-    <String key="0x000F0014" value="move &amp;Up" />
-    <String key="0x000F0015" value="move Dow&amp;n" />
-    <String key="0x000F0016" value="Dele&amp;te All" />
-    <String key="0x000F0017" value="&amp;Delete" />
-    <String key="0x000F0018" value="&amp;Add" />
-    <String key="0x000F0019" value="&amp;Import" />
-    <String key="0x000F001A" value="E&amp;xport" />
-    <String key="0x000F001B" value="C&amp;hange" />
+    <String key="0x000F0010" value="Editar rutas" />
+    <String key="0x000F0011" value="&amp;Cancelar" />
+    <String key="0x000F0012" value="Ruta:" />
+    <String key="0x000F0013" value="Tamaño:" />
+    <String key="0x000F0014" value="S&amp;ubir" />
+    <String key="0x000F0015" value="Bajar" />
+    <String key="0x000F0016" value="Borrar todo" />
+    <String key="0x000F0017" value="Borrar" />
+    <String key="0x000F0018" value="&amp;Añadir" />
+    <String key="0x000F0019" value="&amp;Importar" />
+    <String key="0x000F001A" value="E&amp;xportar" />
+    <String key="0x000F001B" value="C&amp;ambiar" />
     <String key="0x000F001C" value="&amp;OK" />
-    <String key="0x000F001D" value="Du&amp;plicate" />
+    <String key="0x000F001D" value="Du&amp;plicar" />
     <String key="0x000F001E" value="&amp;..." />
 
     <!-- Presets Dialog -->
@@ -317,7 +317,7 @@
     <String key="0x00310008" value="Formato de archivo" />
     <String key="0x00310009" value="Herramientas Archivos" />
     <String key="0x0031000A" value="Herramienta Archivos" />
-    <String key="0x0031000B" value="Paths Files" />
+    <String key="0x0031000B" value="Rutas Archivos" /> 
 
     <!-- Strings Download Status -->
 
