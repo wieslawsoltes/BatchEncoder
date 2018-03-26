@@ -165,7 +165,7 @@
     <String key="0x000C002D" value="インポート(&amp;I)" />
     <String key="0x000C002E" value="エクスポート(&amp;X)" />
     <String key="0x000C002F" value="複製(&amp;P)" />
-    <String key="0x000C0030" value="Priority" />
+    <String key="0x000C0030" value="Priority:" />
 
     <!-- Tools Dialog -->
 
@@ -200,7 +200,7 @@
     <String key="0x000E0027" value="x64パスのセット(&amp;6)" />
     <String key="0x000E0028" value="変更(&amp;H)" />
     <String key="0x000E0029" value="OK(&amp;O)" />
-    <String key="0x000E002A" value="Priority" />
+    <String key="0x000E002A" value="Priority:" />
 
     <!-- About Dialog -->
 

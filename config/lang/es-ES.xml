@@ -165,7 +165,7 @@
     <String key="0x000C002D" value="&amp;Importar" />
     <String key="0x000C002E" value="E&amp;xportar" />
     <String key="0x000C002F" value="Du&amp;plicar" />
-    <String key="0x000C0030" value="Prioridad" />
+    <String key="0x000C0030" value="Prioridad:" />
 
     <!-- Tools Dialog -->
 
@@ -200,7 +200,7 @@
     <String key="0x000E0027" value="Fijar Rutas x&amp;64" />
     <String key="0x000E0028" value="Ca&amp;mbiar" />
     <String key="0x000E0029" value="&amp;OK" />
-    <String key="0x000E002A" value="Prioridad" />
+    <String key="0x000E002A" value="Prioridad:" />
 
     <!-- About Dialog -->
 
