@@ -181,6 +181,24 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\core\config\Config.h" />
+    <ClInclude Include="..\core\config\Format.h" />
+    <ClInclude Include="..\core\config\Item.h" />
+    <ClInclude Include="..\core\config\Language.h" />
+    <ClInclude Include="..\core\config\Options.h" />
+    <ClInclude Include="..\core\config\Path.h" />
+    <ClInclude Include="..\core\config\Preset.h" />
+    <ClInclude Include="..\core\config\Settings.h" />
+    <ClInclude Include="..\core\config\Strings.h" />
+    <ClInclude Include="..\core\config\Tool.h" />
+    <ClInclude Include="..\core\worker\CommandLine.h" />
+    <ClInclude Include="..\core\worker\InputPath.h" />
+    <ClInclude Include="..\core\worker\LuaProgess.h" />
+    <ClInclude Include="..\core\worker\OutputPath.h" />
+    <ClInclude Include="..\core\worker\ToolDownloader.h" />
+    <ClInclude Include="..\core\worker\Win32.h" />
+    <ClInclude Include="..\core\worker\Worker.h" />
+    <ClInclude Include="..\core\worker\WorkerContext.h" />
     <ClInclude Include="mainapp.h" />
   </ItemGroup>
   <ItemGroup>
