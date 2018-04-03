@@ -40,19 +40,19 @@
     <String key="0x00040001" value="&amp;옵션" />
     <String key="0x00040002" value="&amp;프리셋 구성...	F7" />
     <String key="0x00040003" value="&amp;형식 구성...	F8" />
-    <String key="0x00040004" value="&amp;Delete Source Files" />
+    <String key="0x00040004" value="&amp;원본 파일 삭제" />
     <String key="0x00040005" value="&amp;작업을 마치면 시스템 종료" />
     <String key="0x00040006" value="&amp;프로그램 종료 시 구성 저장 안함" />
     <String key="0x00040007" value="&amp;오류난 출력 파일 삭제" />
     <String key="0x00040008" value="&amp;오류 시 변환 중지" />
-    <String key="0x00040009" value="&amp;Hide Console Window" />
-    <String key="0x0004000A" value="&amp;Ensure Item Is Visible" />
-    <String key="0x0004000B" value="&amp;Try To Find Decoder" />
-    <String key="0x0004000C" value="&amp;Validate Input Files" />
-    <String key="0x0004000D" value="Ove&amp;rwrite Existing Files" />
-    <String key="0x0004000E" value="Configure Too&amp;ls...	F10" />
-    <String key="0x0004000F" value="Tr&amp;y To Download Tools" />
-    <String key="0x00040010" value="Rena&amp;me Existing Files" />
+    <String key="0x00040009" value="&amp;콘솔 창 숨김" />
+    <String key="0x0004000A" value="&amp;항목이 보이는지 확인" />
+    <String key="0x0004000B" value="&amp;디코더 찾기" />
+    <String key="0x0004000C" value="&amp;입력 파일 유효성 검사" />
+    <String key="0x0004000D" value="&amp;기본 파일 대체" />
+    <String key="0x0004000E" value="&amp;도구 구성...	F10" />
+    <String key="0x0004000F" value="&amp;도구 다운로드" />
+    <String key="0x00040010" value="&amp;기존 파일 이름 바꾸기" />
 
     <!-- Language Menu -->
 
@@ -87,23 +87,23 @@
 
     <!-- Paths Dialog -->
 
-    <String key="0x000F0001" value="Path" />
-    <String key="0x000F0002" value="Size (bytes)" />
+    <String key="0x000F0001" value="경로" />
+    <String key="0x000F0002" value="크기 (bytes)" />
 
-    <String key="0x000F0010" value="Edit Paths" />
-    <String key="0x000F0011" value="&amp;Cancel" />
-    <String key="0x000F0012" value="Path:" />
-    <String key="0x000F0013" value="Size:" />
-    <String key="0x000F0014" value="move &amp;Up" />
-    <String key="0x000F0015" value="move Dow&amp;n" />
-    <String key="0x000F0016" value="Dele&amp;te All" />
-    <String key="0x000F0017" value="&amp;Delete" />
-    <String key="0x000F0018" value="&amp;Add" />
-    <String key="0x000F0019" value="&amp;Import" />
-    <String key="0x000F001A" value="E&amp;xport" />
-    <String key="0x000F001B" value="C&amp;hange" />
-    <String key="0x000F001C" value="&amp;OK" />
-    <String key="0x000F001D" value="Du&amp;plicate" />
+    <String key="0x000F0010" value="경로 편집" />
+    <String key="0x000F0011" value="&amp;취소" />
+    <String key="0x000F0012" value="경로:" />
+    <String key="0x000F0013" value="크기:" />
+    <String key="0x000F0014" value="&amp;위로 이동" />
+    <String key="0x000F0015" value="&amp;아래로 이동" />
+    <String key="0x000F0016" value="&amp;모두 삭제" />
+    <String key="0x000F0017" value="&amp;삭제" />
+    <String key="0x000F0018" value="&amp;추가" />
+    <String key="0x000F0019" value="&amp;가져오기" />
+    <String key="0x000F001A" value="&amp;내보내기" />
+    <String key="0x000F001B" value="&amp;변경" />
+    <String key="0x000F001C" value="&amp;확인" />
+    <String key="0x000F001D" value="&amp;복사" />
     <String key="0x000F001E" value="&amp;..." />
 
     <!-- Presets Dialog -->
@@ -120,17 +120,17 @@
     <String key="0x000B0016" value="&amp;모두 삭제" />
     <String key="0x000B0017" value="&amp;삭제" />
     <String key="0x000B0018" value="&amp;추가" />
-    <String key="0x000B0019" value="&amp;Import" />
-    <String key="0x000B001A" value="E&amp;xport" />
+    <String key="0x000B0019" value="&amp;가져오기" />
+    <String key="0x000B001A" value="&amp;내보내기" />
     <String key="0x000B001B" value="&amp;변경" />
     <String key="0x000B001C" value="&amp;확인" />
-    <String key="0x000B001D" value="Du&amp;plicate" />
+    <String key="0x000B001D" value="&amp;복사" />
 
     <!-- Formats Dialog -->
 
     <String key="0x000C0001" value="이름" />
     <String key="0x000C0002" value="Id" />
-    <String key="0x000C0003" value="Priority" />
+    <String key="0x000C0003" value="우선 순위" />
     <String key="0x000C0004" value="템플릿" />
 
     <String key="0x000C0010" value="형식 구성" />
@@ -160,81 +160,81 @@
     <String key="0x000C0028" value="&amp;따로 저장" />
     <String key="0x000C0029" value="&amp;변경" />
     <String key="0x000C002A" value="&amp;확인" />
-    <String key="0x000C002B" value="Exit code on success:" />
-    <String key="0x000C002C" value="&amp;Edit Presets" />
-    <String key="0x000C002D" value="&amp;Import" />
-    <String key="0x000C002E" value="E&amp;xport" />
-    <String key="0x000C002F" value="Du&amp;plicate" />
-    <String key="0x000C0030" value="Priority:" />
+    <String key="0x000C002B" value="성공시 종료 코드:" />
+    <String key="0x000C002C" value="&amp;프리셋 편집" />
+    <String key="0x000C002D" value="&amp;가져오기" />
+    <String key="0x000C002E" value="&amp;내보내기" />
+    <String key="0x000C002F" value="&amp;복사" />
+    <String key="0x000C0030" value="우선 순위" />
 
     <!-- Tools Dialog -->
 
-    <String key="0x000E0001" value="Name" />
-    <String key="0x000E0002" value="Priority" />
-    <String key="0x000E0003" value="Url" />
-    <String key="0x000E0004" value="Status" />
+    <String key="0x000E0001" value="이름" />
+    <String key="0x000E0002" value="우선 순위" />
+    <String key="0x000E0003" value="URL" />
+    <String key="0x000E0004" value="상태" />
 
-    <String key="0x000E0010" value="Configure Tools" />
-    <String key="0x000E0011" value="&amp;Cancel" />
-    <String key="0x000E0012" value="Name:" />
-    <String key="0x000E0013" value="Platform:" />
-    <String key="0x000E0014" value="Supported formats (separated by comma):" />
-    <String key="0x000E0015" value="Download URL:" />
-    <String key="0x000E0016" value="Download file name:" />
-    <String key="0x000E0017" value="Extract method:" />
-    <String key="0x000E0018" value="Extract path:" />
-    <String key="0x000E0019" value="move &amp;Up" />
-    <String key="0x000E001A" value="move Dow&amp;n" />
-    <String key="0x000E001B" value="&amp;Import" />
-    <String key="0x000E001C" value="E&amp;xport" />
-    <String key="0x000E001D" value="Du&amp;plicate" />
-    <String key="0x000E001E" value="Dele&amp;te All" />
-    <String key="0x000E001F" value="&amp;Delete" />
-    <String key="0x000E0020" value="&amp;Add" />
-    <String key="0x000E0021" value="&amp;Load" />
-    <String key="0x000E0022" value="&amp;Save As" />
-    <String key="0x000E0023" value="Do&amp;wnload Selected" />
-    <String key="0x000E0024" value="Stop Do&amp;wnload" />
-    <String key="0x000E0025" value="S&amp;et Selected Paths" />
-    <String key="0x000E0026" value="Set x&amp;86 Paths" />
-    <String key="0x000E0027" value="Set x&amp;64 Paths" />
-    <String key="0x000E0028" value="C&amp;hange" />
-    <String key="0x000E0029" value="&amp;OK" />
-    <String key="0x000E002A" value="Priority:" />
+    <String key="0x000E0010" value="도구 구성" />
+    <String key="0x000E0011" value="&amp;취소" />
+    <String key="0x000E0012" value="이름:" />
+    <String key="0x000E0013" value="플랫폼:" />
+    <String key="0x000E0014" value="지원되는 형식 (콤마로 구분):" />
+    <String key="0x000E0015" value="다운로드 URL:" />
+    <String key="0x000E0016" value="다운로드 파일 이름:" />
+    <String key="0x000E0017" value="추출 방식:" />
+    <String key="0x000E0018" value="추출 경로:" />
+    <String key="0x000E0019" value="&amp;위로 이동" />
+    <String key="0x000E001A" value="w&amp;아래로 이동" />
+    <String key="0x000E001B" value="&amp;가져오기" />
+    <String key="0x000E001C" value="&amp;내보내기" />
+    <String key="0x000E001D" value="&amp;복사" />
+    <String key="0x000E001E" value="&amp;모두 삭제" />
+    <String key="0x000E001F" value="&amp;삭제" />
+    <String key="0x000E0020" value="&amp;추가" />
+    <String key="0x000E0021" value="&amp;불러오기" />
+    <String key="0x000E0022" value="&amp;따로 저장" />
+    <String key="0x000E0023" value="&amp;선택 항목 다운로드" />
+    <String key="0x000E0024" value="&amp;다운로드 중지" />
+    <String key="0x000E0025" value="&amp;선택한 경로 설정" />
+    <String key="0x000E0026" value="&amp;x86 경로 설정" />
+    <String key="0x000E0027" value="&amp;x64 경로 설정" />
+    <String key="0x000E0028" value="&amp;변경" />
+    <String key="0x000E0029" value="&amp;확인" />
+    <String key="0x000E002A" value="우선 순위" />
 
     <!-- About Dialog -->
 
     <String key="0x000D0010" value="BatchEncoder에 대해" />
     <String key="0x000D0011" value="&amp;확인" />
-    <String key="0x000D0012" value="MIT 라이센스에 따라 사용 허가됩니다. 전체 약관 정보를 보려면 응용 프로그램의 루트 폴더에 있는 LICENSE.TXT 파일을 읽어 보십오." />
+    <String key="0x000D0012" value="MIT 라이센스에 따라 사용 허가됨. 약관을 보려면 루트 폴더의 LICENSE.TXT 파일을 읽어 보십오." />
 
     <!-- Strings Work Thread -->
 
-    <String key="0x00110001" value="Error: can not load progress script." />
-    <String key="0x00110002" value="Error: can not find progress function." />
+    <String key="0x00110001" value="오류: 진행 스크립트를 불러올 수 없습니다." />
+    <String key="0x00110002" value="오류: 진행 기능을 찾을 수 없습니다." />
     <String key="0x00110003" value="오류: 읽기 버퍼를 위한 콘솔 라인이 너무 큽니다." />
 
     <String key="0x00120001" value="오류: 잘못된 형식 파일프 구성입니다." />
-    <String key="0x00120002" value="오류: stderr에 대한 파이프를 만들 수 없습니다." />
-    <String key="0x00120003" value="오류: can not duplicate stderr pipe to prevent child process from closing the pipe." />
-    <String key="0x00120004" value="오류: 명령줄 프로세스를 만들 수 없습니다." />
+    <String key="0x00120002" value="오류: stderr(표준 오류)에 대한 파이프를 생성할 수 없습니다." />
+    <String key="0x00120003" value="오류: 하위 프로세스가 파이프를 종료하지 못하도록 Stderr(표준 오류) 파이프를 복제할 수 없습니다." />
+    <String key="0x00120004" value="오류: 명령줄 프로세스를 생성할 수 없습니다." />
     <String key="0x00120005" value="오류: 진행이 100%에 도달하지 않았습니다." />
-    <String key="0x00120006" value="Done" />
+    <String key="0x00120006" value="완료" />
 
     <String key="0x00130001" value="오류: 잘못된 형식 파일프 구성입니다." />
-    <String key="0x00130002" value="오류: stdin에 대한 파이프를 만들 수 없습니다." />
-    <String key="0x00130003" value="오류: stdin pipe inherit flag를 설정할 수 없습니다." />
-    <String key="0x00130004" value="오류: stdout에 대한 파이프를 만들 수 없습니다." />
-    <String key="0x00130005" value="오류: stdout pipe inherit flag를 설정할 수 없습니다." />
-    <String key="0x00130006" value="오류: 명령줄 프로세스를 만들 수 없습니다." />
-    <String key="0x00130007" value="오류: can not create read thread." />
-    <String key="0x00130008" value="오류: can not create write thread." />
+    <String key="0x00130002" value="오류: stdin(표준 입력)에 대한 파이프를 생성할 수 없습니다." />
+    <String key="0x00130003" value="오류: stdin(표준 입력) 파이프 상속 플래그를 설정할 수 없습니다." />
+    <String key="0x00130004" value="오류: stdout(표준 출력)에 대한 파이프를 생성할 수 없습니다." />
+    <String key="0x00130005" value="오류: stdout(표준 출력) 파이프 상속 플래그를 설정할 수 없습니다." />
+    <String key="0x00130006" value="오류: 명령줄 프로세스를 생성할 수 없습니다." />
+    <String key="0x00130007" value="오류: 읽기 스레드를 생성할 수 없습니다." />
+    <String key="0x00130008" value="오류: 쓰기 스레드를 생성할 수 없습니다." />
     <String key="0x00130009" value="오류: 진행이 100%에 도달하지 않았습니다.." />
-    <String key="0x0013000A" value="Error: can not create pipes for process connection." />
+    <String key="0x0013000A" value="오류: 프로세스 연결을 위해 파이프를 생성할 수 없습니다." />
     <String key="0x0013000B" value="완료" />
-    <String key="0x0013000C" value="Error: can not create pipes for stderr." />
-    <String key="0x0013000D" value="Error: can not set stderr pipe inherit flag." />
-    <String key="0x0013000E" value="Error: can not create output thread." />
+    <String key="0x0013000C" value="오류: stderr(표준 오류)에 대한 파이프를 생성할 수 없습니다." />
+    <String key="0x0013000D" value="오류: stderr(표준 오류) 파이프 상속 플래그를 설정할 수 없습니다." />
+    <String key="0x0013000E" value="오류: 출력 스레드를 생성할 수 없습니다." />
 
     <String key="0x00140001" value="오류: 입력 파일을 찾을 수 없습니다." />
     <String key="0x00140002" value="오류: ID로 유효한 인코더를 찾을 수 없습니다." />
@@ -244,14 +244,14 @@
     <String key="0x00140006" value="오류: 인코더에 의해 지원되지 않는 디코더 출력입니다." />
     <String key="0x00140007" value="디코딩 중..." />
     <String key="0x00140008" value="오류: 디코딩된 파일을 찾을 수 없습니다." />
-    <String key="0x00140009" value="오류: exception thrown while converting file." />
+    <String key="0x00140009" value="오류: 파일을 변환하는 동안 예기치 않은 문제가 발생했습니다." />
     <String key="0x0014000A" value="인코딩 중..." />
     <String key="0x0014000B" value="디코딩 중..." />
-    <String key="0x0014000C" value="Transcoding..." />
+    <String key="0x0014000C" value="트랜스코딩..." />
     <String key="0x0014000D" value="오류: 인코딩된 파일을 찾을 수 없습니다." />
-    <String key="0x0014000E" value="오류: exception thrown while converting file." />
-    <String key="0x0014000F" value="출력 경로를 만들 수 없습니다.!" />
-    <String key="0x00140010" value="Output file already exists." />
+    <String key="0x0014000E" value="오류: 파일을 변환하는 동안 예기치 않은 문제가 발생했습니다." />
+    <String key="0x0014000F" value="출력 경로를 생성할 수 없습니다.!" />
+    <String key="0x00140010" value="출력 파일이 이미 존재합니다." />
 
     <String key="0x00150001" value="--:--" />
 
@@ -268,7 +268,7 @@
     <String key="0x00210002" value="항목" />
     <String key="0x00210003" value="항목" />
     <String key="0x00210004" value="항목 없음" />
-    <String key="0x00210005" value="Recurse subdirectories" />
+    <String key="0x00210005" value="하위 디렉터리 반복" />
     <String key="0x00210006" value="출력 경로:" />
     <String key="0x00210007" value="파일 불러오기가 실패되었습니다.!" />
     <String key="0x00210008" value="파일 저장이 실패되었습니다.!" />
@@ -276,9 +276,9 @@
     <String key="0x0021000A" value="폴더 선택:" />
     <String key="0x0021000B" value="언어 파일들을 검색하는 동안에 오류 발생했습니다.!" />
     <String key="0x0021000C" value="항목 파일들을 검색하는 동안에 오류가 발생했습니다.!" />
-    <String key="0x0021000D" value="출력 경로를 만들 수 없습니다.!" />
+    <String key="0x0021000D" value="출력 경로를 생성할 수 없습니다.!" />
     <String key="0x0021000E" value="스레드 생성 시 중대한 오류 발생!" />
-    <String key="0x0021000F" value="Invalid output path format!" />
+    <String key="0x0021000F" value="잘못된 출력 경로 형식입니다!" />
 
     <!-- Strings Presets Dialog -->
 
@@ -286,7 +286,7 @@
     <String key="0x00220002" value="파일 불러오기가 실패되었습니다.!" />
     <String key="0x00220003" value="파일 저장이 실패되었습니다.!" />
     <String key="0x00220004" value="기본" />
-    <String key="0x00220005" value="-copy" />
+    <String key="0x00220005" value="-복사" />
 
     <!-- Strings Formats Dialog -->
 
@@ -295,15 +295,15 @@
     <String key="0x00230003" value="파일 저장이 실패되었습니다.!" />
     <String key="0x00230004" value="형식" />
     <String key="0x00230005" value="기본" />
-    <String key="0x00230006" value="-copy" />
+    <String key="0x00230006" value="-복사" />
 
     <!-- Strings Tools Dialog -->
 
-    <String key="0x00240001" value="ERROR" />
-    <String key="0x00240002" value="Failed to load file!" />
-    <String key="0x00240003" value="Failed to save file!" />
-    <String key="0x00240004" value="Tool" />
-    <String key="0x00240005" value="-copy" />
+    <String key="0x00240001" value="오류" />
+    <String key="0x00240002" value="파일 불러오기가 실패되었습니다!" />
+    <String key="0x00240003" value="파일 저장이 실패되었습니다!" />
+    <String key="0x00240004" value="도구" />
+    <String key="0x00240005" value="-복사" />
 
     <!-- Strings File Dialogs -->
 
@@ -314,26 +314,26 @@
     <String key="0x00310005" value="형식 파일" />
     <String key="0x00310006" value="Exe 파일" />
     <String key="0x00310007" value="진행 파일" />
-    <String key="0x00310008" value="Format Files" />
-    <String key="0x00310009" value="Tools Files" />
-    <String key="0x0031000A" value="Tool Files" />
-    <String key="0x0031000B" value="Paths Files" />
+    <String key="0x00310008" value="형식 파일" />
+    <String key="0x00310009" value="도구 파일" />
+    <String key="0x0031000A" value="도구 파일" />
+    <String key="0x0031000B" value="경로 파일" />
 
     <!-- Strings Download Status -->
 
-    <String key="0x00400001" value="Finding resource..." />
-    <String key="0x00400002" value="Connecting..." />
-    <String key="0x00400003" value="Sending request..." />
-    <String key="0x00400004" value="Mime type available" />
-    <String key="0x00400005" value="Cache filename available" />
-    <String key="0x00400006" value="Begin download" />
-    <String key="0x00400007" value="End download" />
-    <String key="0x00400008" value="Status code : " />
+    <String key="0x00400001" value="리소스 찾는 중..." />
+    <String key="0x00400002" value="연결 중..." />
+    <String key="0x00400003" value="요청 전송 중..." />
+    <String key="0x00400004" value="사용 가능한 MIME 형식" />
+    <String key="0x00400005" value="사용 가능한 캐시 파일명" />
+    <String key="0x00400006" value="다운로드 시작" />
+    <String key="0x00400007" value="다운로드 종료" />
+    <String key="0x00400008" value="상태 코드 : " />
 
     <!-- Strings Extract Status -->
 
-    <String key="0x00410001" value="Failed to create unzip folder." />
-    <String key="0x00410002" value="Unziped downloaded file." />
-    <String key="0x00410003" value="Failed to unzip downloaded file." />
+    <String key="0x00410001" value="압축 풀기 폴더 만들기가 실패되었습니다." />
+    <String key="0x00410002" value="내려받은 파일의 압축을 풀었습니다." />
+    <String key="0x00410003" value="내려받은 파일의 압축 풀기가 실패되었습니다." />
 
 </Language>
