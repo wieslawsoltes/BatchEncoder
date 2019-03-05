@@ -90,8 +90,9 @@ var runTestAction = new Action<string,string,string> ((test, configuration, plat
 {
     Information("Test: {0}, {1} / {2}", test, configuration, platform);
     var pattern = "./tests/" + test + "/bin/" + configuration + "/" + platform + "/" + test + ".dll";
-    Information("pattern: {0}", pattern);
-    VSTest(pattern, new VSTestSettings() {
+    var file = (FilePath)File(pattern);
+    Information("pattern: {0}", file.FullPath);
+    VSTest(file.FullPath, new VSTestSettings() {
         PlatformArchitecture = (platform == "Win32" || platform == "x86") ? VSTestPlatform.x86 : VSTestPlatform.x64,
         InIsolation = (platform == "Win32" || platform == "x86") ? false : true,
         Logger = "AppVeyor" });
