@@ -80,13 +80,14 @@ var buildSolutionAction = new Action<string,string,string> ((solution, configura
 var runTestAction = new Action<string,string,string> ((test, configuration, platform) =>
 {
     Information("Test: {0}, {1} / {2}", test, configuration, platform);
-    var logFileName = artifactsDir.Combine("tests").CombineWithFilePath("VsTestResults-" + test + "-" + configuration + "-" + platform + ".xml").FullPath;
+    var logFileName = "VsTestResults-" + test + "-" + configuration + "-" + platform + ".xml";
+    var resultsDirectory = artifactsDir.Combine("TestResults").FullPath;
     var pattern = "./tests/" + test + "/bin/" + configuration + "/" + platform + "/" + test + ".dll";
     VSTest(pattern, new VSTestSettings() {
         ToolPath = Context.Tools.Resolve("vstest.console.exe"),
         PlatformArchitecture = (platform == "Win32" || platform == "x86") ? VSTestPlatform.x86 : VSTestPlatform.x64,
         InIsolation = (platform == "Win32" || platform == "x86") ? false : true,
-        ArgumentCustomization = arg => arg.Append("/logger:trx;LogFileName=" + logFileName) });
+        ArgumentCustomization = arg => arg.Append("/logger:trx;LogFileName=" + logFileName + ",ResultsDirectory=" + resultsDirectory) });
 });
 
 var copyConfigAction = new Action<string> ((output) =>
