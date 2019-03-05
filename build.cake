@@ -88,7 +88,7 @@ var runTestAction = new Action<string,string,string> ((test, configuration, plat
         ToolPath = Context.Tools.Resolve("vstest.console.exe"),
         PlatformArchitecture = (platform == "Win32" || platform == "x86") ? VSTestPlatform.x86 : VSTestPlatform.x64,
         InIsolation = (platform == "Win32" || platform == "x86") ? false : true,
-        ArgumentCustomization = arg => arg.Append("/logger:trx;LogFileName=" + logFileName + ",ResultsDirectory=" + resultsDirectory) });
+        ArgumentCustomization = arg => arg.Append("/logger:trx;LogFileName=" + logFileName + " /ResultsDirectory:" + resultsDirectory) });
 });
 
 var copyConfigAction = new Action<string> ((output) =>
