@@ -30,6 +30,7 @@ var versionHeaderPath = (FilePath)File("./src/version.h");
 var installerScript = MakeAbsolute((FilePath)File("./setup/setup.iss"));
 var iscc = @"C:/Program Files (x86)/Inno Setup 5/ISCC.exe";
 var artifactsDir = (DirectoryPath)Directory("./artifacts");
+var zipDir = artifactsDir.Combine("Zip");
 
 ///////////////////////////////////////////////////////////////////////////////
 // VERSION
@@ -113,7 +114,7 @@ var packageConfigAction = new Action(() =>
 {
     var output = "BatchEncoder-" + version + "-Config";
     var outputDir = artifactsDir.Combine(output);
-    var outputZip = artifactsDir.CombineWithFilePath(output + ".zip");
+    var outputZip = zipDir.CombineWithFilePath(output + ".zip");
     Information("Package config: {0}", output);
     CleanDirectory(outputDir);
     copyConfigAction(output);
@@ -125,7 +126,7 @@ var packageGuiBinariesAction = new Action<string,string> ((configuration, platfo
     var path = "./src/bin/" + configuration + "/" + platform + "/";
     var output = "BatchEncoder-" + version + "-" + platform + (configuration == "Release" ? "" : ("-(" + configuration + ")"));
     var outputDir = artifactsDir.Combine(output);
-    var outputZip = artifactsDir.CombineWithFilePath(output + ".zip");
+    var outputZip = zipDir.CombineWithFilePath(output + ".zip");
     var exeFile = File(path + "BatchEncoder.exe");
     var portableFile = File("./config/BatchEncoder.portable");
     Information("Package binaries: {0}, {1} / {2}", output, configuration, platform);
@@ -146,7 +147,7 @@ var packageCliBinariesAction = new Action<string,string> ((configuration, platfo
     var path = "./src/cli/bin/" + configuration + "/" + platform + "/";
     var output = "BatchEncoder.CLI-" + version + "-" + platform + (configuration == "Release" ? "" : ("-(" + configuration + ")"));
     var outputDir = artifactsDir.Combine(output);
-    var outputZip = artifactsDir.CombineWithFilePath(output + ".zip");
+    var outputZip = zipDir.CombineWithFilePath(output + ".zip");
     var exeFile = File(path + "BatchEncoder.CLI.exe");
     var portableFile = File("./config/BatchEncoder.portable");
     Information("Package binaries: {0}, {1} / {2}", output, configuration, platform);
