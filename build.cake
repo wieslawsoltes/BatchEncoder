@@ -28,7 +28,6 @@ var tests = new string[] { "BatchEncoder.Core.UnitTests" }.ToList();
 var solution = "./BatchEncoder.sln";
 var versionHeaderPath = (FilePath)File("./src/version.h");
 var installerScript = MakeAbsolute((FilePath)File("./setup/setup.iss"));
-var iscc = @"C:/Program Files (x86)/Inno Setup 5/ISCC.exe";
 var artifactsDir = (DirectoryPath)Directory("./artifacts");
 var zipDir = artifactsDir.Combine("Zip");
 
@@ -166,14 +165,15 @@ var packageCliBinariesAction = new Action<string,string> ((configuration, platfo
 var packageInstallersAction = new Action<string,string> ((configuration, platform) =>
 {
     Information("Package installer: {0} / {1}", configuration, platform);
-    StartProcess(iscc, new ProcessSettings { 
-        Arguments = 
-            "/Q "
-            + "\"" + installerScript.FullPath + "\""
-            + " /DCONFIGURATION=" + configuration
-            + " /DBUILD=" + platform
-            + " /DVERSION=" + version,
-        WorkingDirectory = MakeAbsolute(zipDir) });
+    InnoSetup(installerScript.FullPath, new InnoSetupSettings {
+        OutputDirectory = MakeAbsolute(zipDir),
+        QuietMode = InnoSetupQuietMode.QuietWithProgress,
+        Defines = new Dictionary<string, string>
+        {
+            ["CONFIGURATION"] = configuration,
+            ["BUILD"] = platform,
+            ["VERSION"] = version
+        });
 });
 
 ///////////////////////////////////////////////////////////////////////////////
