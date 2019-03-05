@@ -168,11 +168,10 @@ var packageInstallersAction = new Action<string,string> ((configuration, platfor
     InnoSetup(installerScript.FullPath, new InnoSetupSettings {
         OutputDirectory = MakeAbsolute(zipDir),
         QuietMode = InnoSetupQuietMode.QuietWithProgress,
-        Defines = new Dictionary<string, string>
-        {
+        Defines = new Dictionary<string, string> {
             ["CONFIGURATION"] = configuration,
             ["BUILD"] = platform,
-            ["VERSION"] = version
+            ["VERSION"] = version }
         });
 });
 
