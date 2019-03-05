@@ -184,6 +184,7 @@ Task("Clean")
     .Does(() =>
 {
     CleanDirectory(artifactsDir);
+    CleanDirectory(zipDir);
     CleanDirectories("./**/bin/**");
     CleanDirectories("./**/obj/**");
 });
