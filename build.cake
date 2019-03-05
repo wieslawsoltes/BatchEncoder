@@ -173,7 +173,7 @@ var packageInstallersAction = new Action<string,string> ((configuration, platfor
             + " /DCONFIGURATION=" + configuration
             + " /DBUILD=" + platform
             + " /DVERSION=" + version,
-        WorkingDirectory = MakeAbsolute(outputZip) });
+        WorkingDirectory = MakeAbsolute(zipDir) });
 });
 
 ///////////////////////////////////////////////////////////////////////////////
