@@ -1,4 +1,10 @@
 ///////////////////////////////////////////////////////////////////////////////
+// TOOLS
+///////////////////////////////////////////////////////////////////////////////
+
+#tool "nuget:?package=Microsoft.TestPlatform&version=15.9.0"
+
+///////////////////////////////////////////////////////////////////////////////
 // USINGS
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -26,19 +32,6 @@ var iscc = @"C:/Program Files (x86)/Inno Setup 5/ISCC.exe";
 var artifactsDir = (DirectoryPath)Directory("./artifacts");
 
 ///////////////////////////////////////////////////////////////////////////////
-// RELEASE
-///////////////////////////////////////////////////////////////////////////////
-
-var isAppVeyorBuild = AppVeyor.IsRunningOnAppVeyor;
-var isLocalBuild = BuildSystem.IsLocalBuild;
-var isPullRequest = BuildSystem.AppVeyor.Environment.PullRequest.IsPullRequest;
-var isMainRepo = StringComparer.OrdinalIgnoreCase.Equals("wieslawsoltes/BatchEncoder", BuildSystem.AppVeyor.Environment.Repository.Name);
-var isMasterBranch = StringComparer.OrdinalIgnoreCase.Equals("master", BuildSystem.AppVeyor.Environment.Repository.Branch);
-var isTagged = BuildSystem.AppVeyor.Environment.Repository.Tag.IsTag 
-               && !string.IsNullOrWhiteSpace(BuildSystem.AppVeyor.Environment.Repository.Tag.Name);
-var isRelease =  !isLocalBuild && !isPullRequest && isMainRepo && isMasterBranch && isTagged;
-
-///////////////////////////////////////////////////////////////////////////////
 // VERSION
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -49,10 +42,8 @@ var minor = split[1].Split(new char [] { ' ' }, StringSplitOptions.RemoveEmptyEn
 var revision = split[2].Split(new char [] { ' ' }, StringSplitOptions.RemoveEmptyEntries)[2];
 var build = split[3].Split(new char [] { ' ' }, StringSplitOptions.RemoveEmptyEntries)[2];
 var version = major + "." + minor;
-var suffix = (isRelease || !isAppVeyorBuild) ? "" : "-build" + EnvironmentVariable("APPVEYOR_BUILD_NUMBER") + "-alpha";
 
 Information("Defined Version: {0}.{1}.{2}.{3}", major, minor, revision, build);
-Information("Release Version: {0}", version + suffix);
 
 ///////////////////////////////////////////////////////////////////////////////
 // SETUP
@@ -90,11 +81,11 @@ var runTestAction = new Action<string,string,string> ((test, configuration, plat
 {
     Information("Test: {0}, {1} / {2}", test, configuration, platform);
     var pattern = "./tests/" + test + "/bin/" + configuration + "/" + platform + "/" + test + ".dll";
-    Information("pattern: {0}", pattern);
     VSTest(pattern, new VSTestSettings() {
+        ToolPath = Context.Tools.Resolve("vstest.console.exe"),
         PlatformArchitecture = (platform == "Win32" || platform == "x86") ? VSTestPlatform.x86 : VSTestPlatform.x64,
         InIsolation = (platform == "Win32" || platform == "x86") ? false : true,
-        Logger = "AppVeyor" });
+        Logger = "trx" });
 });
 
 var copyConfigAction = new Action<string> ((output) =>
@@ -118,7 +109,7 @@ var copyConfigAction = new Action<string> ((output) =>
 
 var packageConfigAction = new Action(() =>
 {
-    var output = "BatchEncoder-" + version + suffix + "-Config";
+    var output = "BatchEncoder-" + version + "-Config";
     var outputDir = artifactsDir.Combine(output);
     var outputZip = artifactsDir.CombineWithFilePath(output + ".zip");
     Information("Package config: {0}", output);
@@ -130,7 +121,7 @@ var packageConfigAction = new Action(() =>
 var packageGuiBinariesAction = new Action<string,string> ((configuration, platform) =>
 {
     var path = "./src/bin/" + configuration + "/" + platform + "/";
-    var output = "BatchEncoder-" + version + suffix + "-" + platform + (configuration == "Release" ? "" : ("-(" + configuration + ")"));
+    var output = "BatchEncoder-" + version + "-" + platform + (configuration == "Release" ? "" : ("-(" + configuration + ")"));
     var outputDir = artifactsDir.Combine(output);
     var outputZip = artifactsDir.CombineWithFilePath(output + ".zip");
     var exeFile = File(path + "BatchEncoder.exe");
@@ -151,7 +142,7 @@ var packageGuiBinariesAction = new Action<string,string> ((configuration, platfo
 var packageCliBinariesAction = new Action<string,string> ((configuration, platform) =>
 {
     var path = "./src/cli/bin/" + configuration + "/" + platform + "/";
-    var output = "BatchEncoder.CLI-" + version + suffix + "-" + platform + (configuration == "Release" ? "" : ("-(" + configuration + ")"));
+    var output = "BatchEncoder.CLI-" + version + "-" + platform + (configuration == "Release" ? "" : ("-(" + configuration + ")"));
     var outputDir = artifactsDir.Combine(output);
     var outputZip = artifactsDir.CombineWithFilePath(output + ".zip");
     var exeFile = File(path + "BatchEncoder.CLI.exe");
@@ -178,8 +169,7 @@ var packageInstallersAction = new Action<string,string> ((configuration, platfor
             + "\"" + installerScript.FullPath + "\""
             + " /DCONFIGURATION=" + configuration
             + " /DBUILD=" + platform
-            + " /DVERSION=" + version
-            + " /DSUFFIX=" + suffix, 
+            + " /DVERSION=" + version,
         WorkingDirectory = MakeAbsolute(artifactsDir) });
 });
 
