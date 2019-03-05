@@ -1,7 +1,7 @@
 ﻿# BatchEncoder (Audio Conversion GUI)
 
 [![Gitter](https://badges.gitter.im/wieslawsoltes/BatchEncoder.svg)](https://gitter.im/wieslawsoltes/BatchEncoder?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
-[![Build status](https://ci.appveyor.com/api/projects/status/gf82ojfu97e7udx7/branch/master?svg=true)](https://ci.appveyor.com/project/wieslawsoltes/batchencoder/branch/master)
+[![Build status](https://dev.azure.com/wieslawsoltes/GitHub/_apis/build/status/Old/BatchEncoder)](https://dev.azure.com/wieslawsoltes/GitHub/_build/latest?definitionId=71)
 
 [![Github All Releases](https://img.shields.io/github/downloads/wieslawsoltes/batchencoder/total.svg)](https://github.com/wieslawsoltes/BatchEncoder/releases)
 [![GitHub Release](https://img.shields.io/github/release/wieslawsoltes/batchencoder.svg)](https://github.com/wieslawsoltes/batchencoder/releases/latest)
