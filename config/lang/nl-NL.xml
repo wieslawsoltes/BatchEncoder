@@ -1,0 +1,339 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Language id="nl-NL" original="Dutch" translated="Nederlands">
+
+    <!-- File Menu -->
+
+    <String key="0x00010001" value="&amp;Bestand" />
+    <String key="0x00010002" value="Lijst (.xml) &amp;laden...	Ctrl+L" />
+    <String key="0x00010003" value="Lijst (.xml) op&amp;slaan...	Ctrl+S" />
+    <String key="0x00010004" value="Takenvenster wiss&amp;en	Ctrl+E" />
+    <String key="0x00010005" value="BatchEncoder &amp;afsluiten	Alt+F4" />
+
+    <!-- Edit Menu -->
+
+    <String key="0x00020001" value="Be&amp;werken" />
+    <String key="0x00020002" value="Muziekbest&amp;and(en) toevoegen...	F5" />
+    <String key="0x00020003" value="&amp;Map toevoegen...	F6" />
+    <String key="0x00020004" value="Item &amp;hernoemen	F2" />
+    <String key="0x00020005" value="&amp;Tijd/status herstellen	F3" />
+    <String key="0x00020006" value="Uitgang/inste&amp;llingen herstellen	F4" />
+    <String key="0x00020007" value="Ve&amp;rwijder	DEL" />
+    <String key="0x00020008" value="Bijsni&amp;jden	INS" />
+    <String key="0x00020009" value="Verwijder aangevin&amp;kt(e) item(s)	Ctrl++" />
+    <String key="0x0002000A" value="Verwijder niet aan&amp;gevinkt(e) item(s)	Ctrl+-" />
+    <String key="0x0002000B" value="Vink g&amp;eselecteerde item(s) aan	Shift++" />
+    <String key="0x0002000C" value="&amp;Vink geselecteerde item(s) uit	Shift+-" />
+    <String key="0x0002000D" value="&amp;Selecteer alles	Ctrl+A" />
+    <String key="0x0002000E" value="Selecteer &amp;niets	Ctrl+N" />
+    <String key="0x0002000F" value="Keer select&amp;ie om	Ctrl+I" />
+    <String key="0x00020010" value="&amp;Speel bestand af met systeem ingestelde speler..." />
+    <String key="0x00020011" value="O&amp;pen map van geselecteerd bestand in verkenner..." />
+
+    <!-- Action Menu -->
+
+    <String key="0x00030001" value="&amp;Actie" />
+    <String key="0x00030002" value="Conve&amp;rteren starten	F9" />
+    <String key="0x00030003" value="Converteren s&amp;topen	F9" />
+
+    <!-- Options Menu -->
+
+    <String key="0x00040001" value="&amp;Opties" />
+    <String key="0x00040002" value="&amp;Configureer codec-voorinstellingen...	F7" />
+    <String key="0x00040003" value="Configureer extentie&amp;formaten...	F8" />
+    <String key="0x00040004" value="&amp;Bronbestand(en) verwijderen na conversie" />
+    <String key="0x00040005" value="PC af&amp;sluiten wanneer taken zijn beëindigd" />
+    <String key="0x00040006" value="Configuratie NIET bewaren bij afsl&amp;uiten" />
+    <String key="0x00040007" value="Bij f&amp;out verwijder uitgangsbestand" />
+    <String key="0x00040008" value="Stop &amp;conversie bij fout" />
+    <String key="0x00040009" value="Verber&amp;g console venster" />
+    <String key="0x0004000A" value="Zorg ervoor dat het it&amp;em zichtbaar is" />
+    <String key="0x0004000B" value="Probeer decoder &amp;te Vinden" />
+    <String key="0x0004000C" value="&amp;Valideer bronbestanden" />
+    <String key="0x0004000D" value="Ove&amp;rschrijf bestaande bestanden" />
+    <String key="0x0004000E" value="Configureer (en-)codeertoo&amp;ls...	F10" />
+    <String key="0x0004000F" value="&amp;Download (en)codeertools" />
+    <String key="0x00040010" value="Hernoe&amp;m bestaande bestanden" />
+
+    <!-- Language Menu -->
+
+    <String key="0x00050001" value="&amp;Taal" />
+    <String key="0x00050002" value="&amp;Default (English)" />
+
+    <!-- Help Menu -->
+
+    <String key="0x00060001" value="&amp;Help" />
+    <String key="0x00060002" value="&amp;Website..." />
+    <String key="0x00060003" value="&amp;Over..." />
+
+    <!-- Main Dialog -->
+
+    <String key="0x000A0001" value="Naam" />
+    <String key="0x000A0002" value="Muziekbestand (Ext.)" />
+    <String key="0x000A0003" value="Grootte (bytes)" />
+    <String key="0x000A0004" value="Uitgangsdecoder" />
+    <String key="0x000A0005" value="Voorinstelling#" />
+    <String key="0x000A0006" value="Tijd" />
+    <String key="0x000A0007" value="Status" />
+
+    <String key="0x000A0010" value="BatchEncoder" />
+    <String key="0x000A0011" value="Uitgangsformaat" />
+    <String key="0x000A0012" value="Formaat:" />
+    <String key="0x000A0013" value="Kwaliteit:" />
+    <String key="0x000A0014" value="Opslaan in:" />
+    <String key="0x000A0015" value="&amp;Selecteer Map..." />
+    <String key="0x000A0016" value="Proces (0=auto):" />
+    <String key="0x000A0017" value="Conve&amp;rteer" />
+    <String key="0x000A0018" value="S&amp;top" />
+
+    <!-- Paths Dialog -->
+
+    <String key="0x000F0001" value="Map" />
+    <String key="0x000F0002" value="Grootte (bytes)" />
+
+    <String key="0x000F0010" value="Stel mappen in" />
+    <String key="0x000F0011" value="An&amp;nuleer" />
+    <String key="0x000F0012" value="Map:" />
+    <String key="0x000F0013" value="Grootte:" />
+    <String key="0x000F0014" value="Verschuif om&amp;hoog" />
+    <String key="0x000F0015" value="Verschuif om&amp;laag" />
+    <String key="0x000F0016" value="Ver&amp;wijder Alles" />
+    <String key="0x000F0017" value="&amp;Verwijder" />
+    <String key="0x000F0018" value="Voeg &amp;toe" />
+    <String key="0x000F0019" value="&amp;Importeer" />
+    <String key="0x000F001A" value="E&amp;xporteer" />
+    <String key="0x000F001B" value="Ver&amp;ander" />
+    <String key="0x000F001C" value="&amp;OK" />
+    <String key="0x000F001D" value="Du&amp;pliceren" />
+    <String key="0x000F001E" value="&amp;..." />
+
+    <!-- Presets Dialog -->
+
+    <String key="0x000B0001" value="Naam" />
+    <String key="0x000B0002" value="Opties" />
+
+    <String key="0x000B0010" value="Configureer Codec Voorinstelling" />
+    <String key="0x000B0011" value="An&amp;nuleer" />
+    <String key="0x000B0012" value="Naam:" />
+    <String key="0x000B0013" value="Opdrachtregel opties:" />
+    <String key="0x000B0014" value="Verschuif om&amp;hoog" />
+    <String key="0x000B0015" value="Verschuif om&amp;laag" />
+    <String key="0x000B0016" value="Ver&amp;wijder Alles" />
+    <String key="0x000B0017" value="&amp;Verwijder" />
+    <String key="0x000B0018" value="Voeg &amp;toe" />
+    <String key="0x000B0019" value="&amp;Importeer" />
+    <String key="0x000B001A" value="E&amp;xporteer" />
+    <String key="0x000B001B" value="Ver&amp;ander" />
+    <String key="0x000B001C" value="&amp;OK" />
+    <String key="0x000B001D" value="Du&amp;pliceren" />
+
+    <!-- Formats Dialog -->
+
+    <String key="0x000C0001" value="Naam" />
+    <String key="0x000C0002" value="Id" />
+    <String key="0x000C0003" value="Prioriteit" />
+    <String key="0x000C0004" value="Sjabloon" />
+
+    <String key="0x000C0010" value="Configureer Extentieformaten" />
+    <String key="0x000C0011" value="An&amp;nuleer" />
+    <String key="0x000C0012" value="Encodeer" />
+    <String key="0x000C0013" value="Decodeer" />
+    <String key="0x000C0014" value="Type:" />
+    <String key="0x000C0015" value="Ingang" />
+    <String key="0x000C0016" value="Uitgang" />
+    <String key="0x000C0017" value="Pipes:" />
+    <String key="0x000C0018" value="Id:" />
+    <String key="0x000C0019" value="Naam:" />
+    <String key="0x000C001A" value="Uitgangsextensie:" />
+    <String key="0x000C001B" value="Ingangsextensies (scheiden met komma):" />
+    <String key="0x000C001C" value="Standaard instelling:" />
+    <String key="0x000C001D" value="Uitvoerbaar pad via opdrachtregel:" />
+    <String key="0x000C001E" value="&amp;..." />
+    <String key="0x000C001F" value="opdrachtregel voorbeeld:" />
+    <String key="0x000C0020" value="Voortuitgangsfunctie:" />
+    <String key="0x000C0021" value="..." />
+    <String key="0x000C0022" value="Verschuif om&amp;hoog" />
+    <String key="0x000C0023" value="Verschuif om&amp;laag" />
+    <String key="0x000C0024" value="Ver&amp;wijder Alles" />
+    <String key="0x000C0025" value="&amp;Verwijder" />
+    <String key="0x000C0026" value="Voeg &amp;toe" />
+    <String key="0x000C0027" value="&amp;Laden" />
+    <String key="0x000C0028" value="Op&amp;slaan als" />
+    <String key="0x000C0029" value="Ver&amp;ander" />
+    <String key="0x000C002A" value="&amp;OK" />
+    <String key="0x000C002B" value="Afsluitcode bij succes:" />
+    <String key="0x000C002C" value="&amp;Bewerk instelling" />
+    <String key="0x000C002D" value="&amp;Importeer" />
+    <String key="0x000C002E" value="E&amp;xporteer" />
+    <String key="0x000C002F" value="Du&amp;pliceren" />
+    <String key="0x000C0030" value="Prioriteit" />
+
+    <!-- Tools Dialog -->
+
+    <String key="0x000E0001" value="Naam" />
+    <String key="0x000E0002" value="Prioriteit" />
+    <String key="0x000E0003" value="Url" />
+    <String key="0x000E0004" value="Status" />
+
+    <String key="0x000E0010" value="Configureer (En)codeertools" />
+    <String key="0x000E0011" value="An&amp;nuleer" />
+    <String key="0x000E0012" value="Naam:" />
+    <String key="0x000E0013" value="Platform:" />
+    <String key="0x000E0014" value="Ondersteunde formaten (scheiden met komma):" />
+    <String key="0x000E0015" value="Download URL:" />
+    <String key="0x000E0016" value="Download bestandsnaam:" />
+    <String key="0x000E0017" value="Extract methode:" />
+    <String key="0x000E0018" value="Extract Map:" />
+    <String key="0x000E0019" value="Verschuif om&amp;hoog" />
+    <String key="0x000E001A" value="Verschuif om&amp;laag" />
+    <String key="0x000E001B" value="&amp;Importeer" />
+    <String key="0x000E001C" value="E&amp;xporteer" />
+    <String key="0x000E001D" value="Du&amp;pliceren" />
+    <String key="0x000E001E" value="Ver&amp;wijder Alles" />
+    <String key="0x000E001F" value="&amp;Verwijder" />
+    <String key="0x000E0020" value="Voeg &amp;toe" />
+    <String key="0x000E0021" value="&amp;Laden" />
+    <String key="0x000E0022" value="Op&amp;slaan als" />
+    <String key="0x000E0023" value="Do&amp;wnload aanvraag" />
+    <String key="0x000E0024" value="Stop Do&amp;wnload" />
+    <String key="0x000E0025" value="St&amp;el Mappen in" />
+    <String key="0x000E0026" value="Stel x&amp;x86 Map in" />
+    <String key="0x000E0027" value="Stel x&amp;x64 Map in" />
+    <String key="0x000E0028" value="Ver&amp;ander" />
+    <String key="0x000E0029" value="&amp;OK" />
+    <String key="0x000E002A" value="Prioriteit" />
+
+    <!-- About Dialog -->
+
+    <String key="0x000D0010" value="Over BatchEncoder" />
+    <String key="0x000D0011" value="&amp;OK" />
+    <String key="0x000D0012" value="Gelicenseerd onder de MIT licentie. Zie licentiebestand in de map van BatchEncoder voor volledige licentie-info." />
+
+    <!-- Strings Work Thread -->
+
+    <String key="0x00110001" value="fout: kan voortgangsscript niet laden." />
+    <String key="0x00110002" value="fout: kan voortgangsfunctie niet vinden." />
+    <String key="0x00110003" value="fout: consolelijn is te groot voor leesbuffer." />
+
+    <String key="0x00120001" value="fout: ongeldige indeling voor pijpconfiguratie." />
+    <String key="0x00120002" value="fout: kan geen pijpconfiguratie aanmaken voor stderr." />
+    <String key="0x00120003" value="fout: kan stderr-pijp niet dupliceren om te voorkomen dat het beginproces de pijpindex sluit." />
+    <String key="0x00120004" value="fout: kan geen opdrachtregelproces maken." />
+    <String key="0x00120005" value="fout: vooruitgang bereikt niet de 100%." />
+    <String key="0x00120006" value="Beëndigd" />
+
+    <String key="0x00130001" value="fout: ongeldige indeling voor pijpconfiguratie." />
+    <String key="0x00130002" value="fout: kan geen pijpconfiguratie aanmaken voor stderr." />
+    <String key="0x00130003" value="fout: kan stdin-pipe inherit-vlag niet instellen." />
+    <String key="0x00130004" value="fout: kan geen pijpconfiguratie maken voor stdout." />
+    <String key="0x00130005" value="fout: kan stdout-pipe inherit-vlag niet instellen." />
+    <String key="0x00130006" value="fout: kan geen opdrachtregelproces maken." />
+    <String key="0x00130007" value="fout: kan geen gelezen proces maken." />
+    <String key="0x00130008" value="fout: kan geen schrijf proces maken." />
+    <String key="0x00130009" value="fout: vooruitgang bereikte niet de 100%." />
+    <String key="0x0013000A" value="fout: kan geen pijpconfiguratie maken voor procesaansluiting." />
+    <String key="0x0013000B" value="Beëndigd" />
+    <String key="0x0013000C" value="fout: kan geen pijpconfiguratie aanmaken voor stderr." />
+    <String key="0x0013000D" value="fout: kan stdin-pipe inherit-vlag niet instellen." />
+    <String key="0x0013000E" value="fout: kan geen outputthread creëren." />
+
+    <String key="0x00140001" value="fout: kan invoerbestand niet vinden." />
+    <String key="0x00140002" value="fout: kan geen geldige encoder vinden met identificatie." />
+    <String key="0x00140003" value="fout: kan voorinstelling voor encoderformaat niet vinden." />
+    <String key="0x00140004" value="fout: kan bij uitbreiding geen geldige decoder vinden." />
+    <String key="0x00140005" value="fout: kan de voorinstelling van het decoderformaat niet vinden." />
+    <String key="0x00140006" value="fout: decoderuitgang wordt niet ondersteund door encoder." />
+    <String key="0x00140007" value="Decodering..." />
+    <String key="0x00140008" value="fout: kan gedecodeerd bestand niet vinden." />
+    <String key="0x00140009" value="fout: uitzondering opgetreden tijdens converteren van bestand." />
+    <String key="0x0014000A" value="Encodering..." />
+    <String key="0x0014000B" value="Decodering..." />
+    <String key="0x0014000C" value="Transcodering..." />
+    <String key="0x0014000D" value="fout: kan gecodeerd bestand niet vinden." />
+    <String key="0x0014000E" value="fout: uitzondering opgetreden tijdens converteren van bestand." />
+    <String key="0x0014000F" value="Kan geen uitvoerpad maken!" />
+    <String key="0x00140010" value="Het uitvoerbestand bestaat al." />
+
+    <String key="0x00150001" value="--:--" />
+
+    <!-- Strings Worker Context -->
+
+    <String key="0x00190001" value="Fout" />
+    <String key="0x00190002" value="Fouten" />
+    <String key="0x00190003" value="Verwerken item %d van %d (%d Beëndigd, %d %s)" />
+    <String key="0x00190004" value="Verwerkt %d van %d (%d Beëndigd, %d %s) in %s" />
+
+    <!-- Strings Main Dialog -->
+
+    <String key="0x00210001" value="Niet Beëndigd" />
+    <String key="0x00210002" value="Item" />
+    <String key="0x00210003" value="Items" />
+    <String key="0x00210004" value="Geen Items" />
+    <String key="0x00210005" value="Herleide submappen" />
+    <String key="0x00210006" value="Uitgang map:" />
+    <String key="0x00210007" value="Kan bestand niet laden!" />
+    <String key="0x00210008" value="Kan bestand niet opslaan!" />
+    <String key="0x00210009" value="Kan geen geheugen toewijzen voor de bestandsnamenbuffer!" />
+    <String key="0x0021000A" value="Selecteer map:" />
+    <String key="0x0021000B" value="fout tijdens het zoeken naar taalbestanden!" />
+    <String key="0x0021000C" value="fout while searching for item Bestanden!" />
+    <String key="0x0021000D" value="Kan geen uitvoerpad maken!" />
+    <String key="0x0021000E" value="Fatale fout bij het maken van een thread!" />
+    <String key="0x0021000F" value="Ongeldig uitvoerpadformaat!" />
+
+    <!-- Strings Presets Dialog -->
+
+    <String key="0x00220001" value="fout" />
+    <String key="0x00220002" value="Kan bestand niet laden!" />
+    <String key="0x00220003" value="Kan bestand niet opslaan!" />
+    <String key="0x00220004" value="Standaard" />
+    <String key="0x00220005" value="-kopie" />
+
+    <!-- Strings Formats Dialog -->
+
+    <String key="0x00230001" value="fout" />
+    <String key="0x00230002" value="Kan bestand niet laden!" />
+    <String key="0x00230003" value="Kan bestand niet opslaan!" />
+    <String key="0x00230004" value="Formaat" />
+    <String key="0x00230005" value="Standaard" />
+    <String key="0x00230006" value="-kopie" />
+
+    <!-- Strings Tools Dialog -->
+
+    <String key="0x00240001" value="fout" />
+    <String key="0x00240002" value="Kan bestand niet laden!" />
+    <String key="0x00240003" value="Kan bestand niet opslaan!" />
+    <String key="0x00240004" value="Tool" />
+    <String key="0x00240005" value="-kopie" />
+
+    <!-- Strings File Dialogs -->
+
+    <String key="0x00310001" value="Alle Bestanden" />
+    <String key="0x00310002" value="Xml Bestanden" />
+    <String key="0x00310003" value="Items Bestanden" />
+    <String key="0x00310004" value="Instellingsbestanden" />
+    <String key="0x00310005" value="Formaatsbestanden" />
+    <String key="0x00310006" value="Exe Bestanden" />
+    <String key="0x00310007" value="Vooruitgang Bestanden" />
+    <String key="0x00310008" value="Formaat Bestanden" />
+    <String key="0x00310009" value="Tools Bestanden" />
+    <String key="0x0031000A" value="Tool Bestanden" />
+    <String key="0x0031000B" value="Map Bestanden" />
+
+    <!-- Strings Download Status -->
+
+    <String key="0x00400001" value="Bron zoeken..." />
+    <String key="0x00400002" value="Verbinden..." />
+    <String key="0x00400003" value="Verzoek verzenden..." />
+    <String key="0x00400004" value="Mime-type beschikbaar" />
+    <String key="0x00400005" value="Cache bestandsnaam beschikbaar" />
+    <String key="0x00400006" value="Begin download" />
+    <String key="0x00400007" value="Einde download" />
+    <String key="0x00400008" value="Status code : " />
+
+    <!-- Strings Extract Status -->
+
+    <String key="0x00410001" value="Kan unzip-map niet maken." />
+    <String key="0x00410002" value="uitgepakt, gedownload bestand." />
+    <String key="0x00410003" value="Het gedownloade bestand kan niet worden uitgepakt." />
+
+</Language>
