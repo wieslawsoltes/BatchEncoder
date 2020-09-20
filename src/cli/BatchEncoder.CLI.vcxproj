@@ -181,6 +181,33 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\common\lua\lua\src\lapi.h" />
+    <ClInclude Include="..\common\lua\lua\src\lauxlib.h" />
+    <ClInclude Include="..\common\lua\lua\src\lcode.h" />
+    <ClInclude Include="..\common\lua\lua\src\lctype.h" />
+    <ClInclude Include="..\common\lua\lua\src\ldebug.h" />
+    <ClInclude Include="..\common\lua\lua\src\ldo.h" />
+    <ClInclude Include="..\common\lua\lua\src\lfunc.h" />
+    <ClInclude Include="..\common\lua\lua\src\lgc.h" />
+    <ClInclude Include="..\common\lua\lua\src\llex.h" />
+    <ClInclude Include="..\common\lua\lua\src\llimits.h" />
+    <ClInclude Include="..\common\lua\lua\src\lmem.h" />
+    <ClInclude Include="..\common\lua\lua\src\lobject.h" />
+    <ClInclude Include="..\common\lua\lua\src\lopcodes.h" />
+    <ClInclude Include="..\common\lua\lua\src\lparser.h" />
+    <ClInclude Include="..\common\lua\lua\src\lprefix.h" />
+    <ClInclude Include="..\common\lua\lua\src\lstate.h" />
+    <ClInclude Include="..\common\lua\lua\src\lstring.h" />
+    <ClInclude Include="..\common\lua\lua\src\ltable.h" />
+    <ClInclude Include="..\common\lua\lua\src\ltm.h" />
+    <ClInclude Include="..\common\lua\lua\src\lua.h" />
+    <ClInclude Include="..\common\lua\lua\src\lua.hpp" />
+    <ClInclude Include="..\common\lua\lua\src\luaconf.h" />
+    <ClInclude Include="..\common\lua\lua\src\lualib.h" />
+    <ClInclude Include="..\common\lua\lua\src\lundump.h" />
+    <ClInclude Include="..\common\lua\lua\src\lvm.h" />
+    <ClInclude Include="..\common\lua\lua\src\lzio.h" />
+    <ClInclude Include="..\common\tinyxml2\tinyxml2.h" />
     <ClInclude Include="..\core\config\Config.h" />
     <ClInclude Include="..\core\config\Format.h" />
     <ClInclude Include="..\core\config\Item.h" />
@@ -202,15 +229,41 @@
     <ClInclude Include="mainapp.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\common\lua\lua\src\lapi.c" />
+    <ClCompile Include="..\common\lua\lua\src\lauxlib.c" />
+    <ClCompile Include="..\common\lua\lua\src\lbaselib.c" />
+    <ClCompile Include="..\common\lua\lua\src\lbitlib.c" />
+    <ClCompile Include="..\common\lua\lua\src\lcode.c" />
+    <ClCompile Include="..\common\lua\lua\src\lcorolib.c" />
+    <ClCompile Include="..\common\lua\lua\src\lctype.c" />
+    <ClCompile Include="..\common\lua\lua\src\ldblib.c" />
+    <ClCompile Include="..\common\lua\lua\src\ldebug.c" />
+    <ClCompile Include="..\common\lua\lua\src\ldo.c" />
+    <ClCompile Include="..\common\lua\lua\src\ldump.c" />
+    <ClCompile Include="..\common\lua\lua\src\lfunc.c" />
+    <ClCompile Include="..\common\lua\lua\src\lgc.c" />
+    <ClCompile Include="..\common\lua\lua\src\linit.c" />
+    <ClCompile Include="..\common\lua\lua\src\liolib.c" />
+    <ClCompile Include="..\common\lua\lua\src\llex.c" />
+    <ClCompile Include="..\common\lua\lua\src\lmathlib.c" />
+    <ClCompile Include="..\common\lua\lua\src\lmem.c" />
+    <ClCompile Include="..\common\lua\lua\src\loadlib.c" />
+    <ClCompile Include="..\common\lua\lua\src\lobject.c" />
+    <ClCompile Include="..\common\lua\lua\src\lopcodes.c" />
+    <ClCompile Include="..\common\lua\lua\src\loslib.c" />
+    <ClCompile Include="..\common\lua\lua\src\lparser.c" />
+    <ClCompile Include="..\common\lua\lua\src\lstate.c" />
+    <ClCompile Include="..\common\lua\lua\src\lstring.c" />
+    <ClCompile Include="..\common\lua\lua\src\lstrlib.c" />
+    <ClCompile Include="..\common\lua\lua\src\ltable.c" />
+    <ClCompile Include="..\common\lua\lua\src\ltablib.c" />
+    <ClCompile Include="..\common\lua\lua\src\ltm.c" />
+    <ClCompile Include="..\common\lua\lua\src\lundump.c" />
+    <ClCompile Include="..\common\lua\lua\src\lutf8lib.c" />
+    <ClCompile Include="..\common\lua\lua\src\lvm.c" />
+    <ClCompile Include="..\common\lua\lua\src\lzio.c" />
+    <ClCompile Include="..\common\tinyxml2\tinyxml2.cpp" />
     <ClCompile Include="main.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\common\lua\Lua.vcxproj">
-      <Project>{d3051aac-8129-45f9-a755-9cbb7c61d91d}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\common\tinyxml2\TinyXml2.vcxproj">
-      <Project>{284538ac-d315-437e-ad31-d40934a43236}</Project>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
