@@ -1,0 +1,339 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Language id="zh-CN" original="Simplified Chinese" translated="简体中文">
+    <!-- Simplified Chinese Translation By 大眼仔~旭（Anan）wcxu21@126.com -->
+    <!-- File Menu -->
+
+    <String key="0x00010001" value="文件(&amp;F)" />
+    <String key="0x00010002" value="加载列表(&amp;L)...	Ctrl+L" />
+    <String key="0x00010003" value="保存列表(&amp;S)...	Ctrl+S" />
+    <String key="0x00010004" value="清除列表(&amp;E)	Ctrl+E" />
+    <String key="0x00010005" value="退出(&amp;X)	Alt+F4" />
+
+    <!-- Edit Menu -->
+
+    <String key="0x00020001" value="编辑(&amp;E)" />
+    <String key="0x00020002" value="添加文件(&amp;A)...	F5" />
+    <String key="0x00020003" value="添加目录(&amp;C)...	F6" />
+    <String key="0x00020004" value="重命名(&amp;M)	F2" />
+    <String key="0x00020005" value="重置时间/状态(&amp;T)	F3" />
+    <String key="0x00020006" value="重置输出/预设(&amp;P)	F4" />
+    <String key="0x00020007" value="移除(&amp;R)	DEL" />
+    <String key="0x00020008" value="裁剪(&amp;P)	INS" />
+    <String key="0x00020009" value="删除选中(&amp;K)	Ctrl++" />
+    <String key="0x0002000A" value="删除取消选中(&amp;H)	Ctrl+-" />
+    <String key="0x0002000B" value="检查所选(&amp;E)	Shift++" />
+    <String key="0x0002000C" value="取消检查所选(&amp;U)	Shift+-" />
+    <String key="0x0002000D" value="全选(&amp;S)	Ctrl+A" />
+    <String key="0x0002000E" value="选择无(&amp;N)	Ctrl+N" />
+    <String key="0x0002000F" value="反选(&amp;I)	Ctrl+I" />
+    <String key="0x00020010" value="打开文件(&amp;O)..." />
+    <String key="0x00020011" value="打开目录(&amp;D)..." />
+
+    <!-- Action Menu -->
+
+    <String key="0x00030001" value="操作(&amp;A)" />
+    <String key="0x00030002" value="转换(&amp;R)	F9" />
+    <String key="0x00030003" value="停止(&amp;T)	F9" />
+
+    <!-- Options Menu -->
+
+    <String key="0x00040001" value="选项(&amp;O)" />
+    <String key="0x00040002" value="配置预设(&amp;P)...	F7" />
+    <String key="0x00040003" value="配置格式(&amp;F)...	F8" />
+    <String key="0x00040004" value="删除源文件(&amp;D)" />
+    <String key="0x00040005" value="完成后关机(&amp;S)" />
+    <String key="0x00040006" value="退出时不保存配置(&amp;X)" />
+    <String key="0x00040007" value="错误时删除输出文件(&amp;O)" />
+    <String key="0x00040008" value="发生错误时停止转换(&amp;C)" />
+    <String key="0x00040009" value="隐藏控制台窗口(&amp;H)" />
+    <String key="0x0004000A" value="确保项目可见(&amp;E)" />
+    <String key="0x0004000B" value="尝试查找解码器(&amp;T)" />
+    <String key="0x0004000C" value="验证输入文件(&amp;V)" />
+    <String key="0x0004000D" value="覆盖现有文件(&amp;R)" />
+    <String key="0x0004000E" value="配置工具(&amp;L)...	F10" />
+    <String key="0x0004000F" value="尝试下载工具(&amp;Y)" />
+    <String key="0x00040010" value="重命名现有文件(&amp;M)" />
+
+    <!-- Language Menu -->
+
+    <String key="0x00050001" value="语言(&amp;L)" />
+    <String key="0x00050002" value="默认(English)(&amp;D)" />
+
+    <!-- Help Menu -->
+
+    <String key="0x00060001" value="帮助(&amp;H)" />
+    <String key="0x00060002" value="网站(&amp;W)..." />
+    <String key="0x00060003" value="关于(&amp;A)..." />
+
+    <!-- Main Dialog -->
+
+    <String key="0x000A0001" value="名称" />
+    <String key="0x000A0002" value="输入" />
+    <String key="0x000A0003" value="大小（字节）" />
+    <String key="0x000A0004" value="输出" />
+    <String key="0x000A0005" value="预设#" />
+    <String key="0x000A0006" value="时间" />
+    <String key="0x000A0007" value="状态" />
+
+    <String key="0x000A0010" value="BatchEncoder" />
+    <String key="0x000A0011" value="输出" />
+    <String key="0x000A0012" value="格式:" />
+    <String key="0x000A0013" value="预设:" />
+    <String key="0x000A0014" value="输出路径:" />
+    <String key="0x000A0015" value="&amp;..." />
+    <String key="0x000A0016" value="线程 (0=自动):" />
+    <String key="0x000A0017" value="转换(&amp;R)" />
+    <String key="0x000A0018" value="停止(&amp;T)" />
+
+    <!-- Paths Dialog -->
+
+    <String key="0x000F0001" value="路径" />
+    <String key="0x000F0002" value="大小（字节）" />
+
+    <String key="0x000F0010" value="编辑路径" />
+    <String key="0x000F0011" value="取消(&amp;C)" />
+    <String key="0x000F0012" value="路径:" />
+    <String key="0x000F0013" value="大小:" />
+    <String key="0x000F0014" value="上移(&amp;U)" />
+    <String key="0x000F0015" value="下移(&amp;N)" />
+    <String key="0x000F0016" value="删除全部(&amp;T)" />
+    <String key="0x000F0017" value="删除(&amp;D)" />
+    <String key="0x000F0018" value="添加(&amp;A)" />
+    <String key="0x000F0019" value="导入(&amp;I)" />
+    <String key="0x000F001A" value="导出(&amp;X)" />
+    <String key="0x000F001B" value="更改(&amp;H)" />
+    <String key="0x000F001C" value="确定(&amp;O)" />
+    <String key="0x000F001D" value="重复(&amp;P)" />
+    <String key="0x000F001E" value="&amp;..." />
+
+    <!-- Presets Dialog -->
+
+    <String key="0x000B0001" value="名称" />
+    <String key="0x000B0002" value="选项" />
+
+    <String key="0x000B0010" value="配置预设" />
+    <String key="0x000B0011" value="取消(&amp;C)" />
+    <String key="0x000B0012" value="名称:" />
+    <String key="0x000B0013" value="命令行选项:" />
+    <String key="0x000B0014" value="上移(&amp;U)" />
+    <String key="0x000B0015" value="下移(&amp;N)" />
+    <String key="0x000B0016" value="删除全部(&amp;T)" />
+    <String key="0x000B0017" value="删除(&amp;D)" />
+    <String key="0x000B0018" value="添加(&amp;A)" />
+    <String key="0x000B0019" value="导入(&amp;I)" />
+    <String key="0x000B001A" value="导出(&amp;X)" />
+    <String key="0x000B001B" value="更改(&amp;H)" />
+    <String key="0x000B001C" value="确定(&amp;O)" />
+    <String key="0x000B001D" value="重复(&amp;P)" />
+
+    <!-- Formats Dialog -->
+
+    <String key="0x000C0001" value="名称" />
+    <String key="0x000C0002" value="Id" />
+    <String key="0x000C0003" value="优先级" />
+    <String key="0x000C0004" value="模板" />
+
+    <String key="0x000C0010" value="配置格式" />
+    <String key="0x000C0011" value="取消(&amp;C)" />
+    <String key="0x000C0012" value="编码器" />
+    <String key="0x000C0013" value="解码器" />
+    <String key="0x000C0014" value="类型:" />
+    <String key="0x000C0015" value="输入" />
+    <String key="0x000C0016" value="输出" />
+    <String key="0x000C0017" value="管道:" />
+    <String key="0x000C0018" value="Id:" />
+    <String key="0x000C0019" value="名称:" />
+    <String key="0x000C001A" value="输出扩展名:" />
+    <String key="0x000C001B" value="输入扩展名（用逗号分隔）:" />
+    <String key="0x000C001C" value="默认预设:" />
+    <String key="0x000C001D" value="命令行可执行路径:" />
+    <String key="0x000C001E" value="&amp;..." />
+    <String key="0x000C001F" value="命令行模板:" />
+    <String key="0x000C0020" value="进度函数:" />
+    <String key="0x000C0021" value="..." />
+    <String key="0x000C0022" value="上移(&amp;U)" />
+    <String key="0x000C0023" value="下移(&amp;N)" />
+    <String key="0x000C0024" value="删除全部(&amp;T)" />
+    <String key="0x000C0025" value="删除(&amp;D)" />
+    <String key="0x000C0026" value="添加(&amp;A)" />
+    <String key="0x000C0027" value="加载(&amp;L)" />
+    <String key="0x000C0028" value="另存为(&amp;S)" />
+    <String key="0x000C0029" value="更改(&amp;H)" />
+    <String key="0x000C002A" value="确定(&amp;O)" />
+    <String key="0x000C002B" value="成功退出代码:" />
+    <String key="0x000C002C" value="编辑预设(&amp;E)" />
+    <String key="0x000C002D" value="导入(&amp;I)" />
+    <String key="0x000C002E" value="导出(&amp;X)" />
+    <String key="0x000C002F" value="重复(&amp;P)" />
+    <String key="0x000C0030" value="优先级:" />
+
+    <!-- Tools Dialog -->
+
+    <String key="0x000E0001" value="名称" />
+    <String key="0x000E0002" value="优先级" />
+    <String key="0x000E0003" value="Url" />
+    <String key="0x000E0004" value="状态" />
+
+    <String key="0x000E0010" value="配置工具" />
+    <String key="0x000E0011" value="取消(&amp;C)" />
+    <String key="0x000E0012" value="名称:" />
+    <String key="0x000E0013" value="平台:" />
+    <String key="0x000E0014" value="支持的格式（以逗号分隔）:" />
+    <String key="0x000E0015" value="下载 URL:" />
+    <String key="0x000E0016" value="下载文件名:" />
+    <String key="0x000E0017" value="提取方法:" />
+    <String key="0x000E0018" value="提取路径:" />
+    <String key="0x000E0019" value="上移(&amp;U)" />
+    <String key="0x000E001A" value="下移(&amp;N)" />
+    <String key="0x000E001B" value="导入(&amp;I)" />
+    <String key="0x000E001C" value="导出(&amp;X)" />
+    <String key="0x000E001D" value="重复(&amp;P)" />
+    <String key="0x000E001E" value="删除全部(&amp;T)" />
+    <String key="0x000E001F" value="删除(&amp;D)" />
+    <String key="0x000E0020" value="添加(&amp;A)" />
+    <String key="0x000E0021" value="加载(&amp;L)" />
+    <String key="0x000E0022" value="另存为(&amp;S)" />
+    <String key="0x000E0023" value="下载所选(&amp;W)" />
+    <String key="0x000E0024" value="停止下载(&amp;W)" />
+    <String key="0x000E0025" value="设置所选路径(&amp;E)" />
+    <String key="0x000E0026" value="设置 x86 路径(&amp;H)" />
+    <String key="0x000E0027" value="设置 x64 路径(&amp;A)" />
+    <String key="0x000E0028" value="更改(&amp;H)" />
+    <String key="0x000E0029" value="确定(&amp;O)" />
+    <String key="0x000E002A" value="优先级:" />
+
+    <!-- About Dialog -->
+
+    <String key="0x000D0010" value="关于 BatchEncoder" />
+    <String key="0x000D0011" value="确定(&amp;O)" />
+    <String key="0x000D0012" value="根据 MIT 许可获得许可。 有关完整的许可证信息，请参阅应用程序根目录中的 LICENSE 文件。" />
+
+    <!-- Strings Work Thread -->
+
+    <String key="0x00110001" value="错误:无法加载进度脚本。" />
+    <String key="0x00110002" value="错误:找不到进度功能。" />
+    <String key="0x00110003" value="错误:控制台行对于读取缓冲区而言太大。" />
+
+    <String key="0x00120001" value="错误:格式管道配置无效。" />
+    <String key="0x00120002" value="错误:无法为 stderr 创建管道。" />
+    <String key="0x00120003" value="错误:无法复制 stderr 管道，以防止子进程关闭管道。" />
+    <String key="0x00120004" value="错误:无法创建命令行进程。" />
+    <String key="0x00120005" value="错误:进度未达到 100%。" />
+    <String key="0x00120006" value="完成" />
+
+    <String key="0x00130001" value="错误:格式管道配置无效。" />
+    <String key="0x00130002" value="错误:无法为 stdin 创建管道。" />
+    <String key="0x00130003" value="错误:无法设置 stdin 管道继承标志。" />
+    <String key="0x00130004" value="错误:无法为 stdout 创建管道。" />
+    <String key="0x00130005" value="错误:无法设置 stdout 管道继承标志。" />
+    <String key="0x00130006" value="错误:无法创建命令行进程。" />
+    <String key="0x00130007" value="错误:无法创建读取线程。" />
+    <String key="0x00130008" value="错误:无法创建写入线程。" />
+    <String key="0x00130009" value="错误:进度未达到 100%。" />
+    <String key="0x0013000A" value="错误:无法为进程连接创建管道。" />
+    <String key="0x0013000B" value="完成" />
+    <String key="0x0013000C" value="错误:无法为 stderr 创建管道。" />
+    <String key="0x0013000D" value="错误:无法设置 stderr 管道继承标志。" />
+    <String key="0x0013000E" value="错误:无法创建输出线程。" />
+
+    <String key="0x00140001" value="错误:找不到输入文件。" />
+    <String key="0x00140002" value="错误:无法通过 ID 查找有效的编码器。" />
+    <String key="0x00140003" value="错误:找不到编码器格式预设。" />
+    <String key="0x00140004" value="错误:无法通过扩展名找到有效的解码器。" />
+    <String key="0x00140005" value="错误:找不到解码器格式预设。" />
+    <String key="0x00140006" value="错误:编码器不支持解码器输出。" />
+    <String key="0x00140007" value="正在解码..." />
+    <String key="0x00140008" value="错误:找不到解码的文件。" />
+    <String key="0x00140009" value="错误:转换文件时引发异常。" />
+    <String key="0x0014000A" value="正在编码..." />
+    <String key="0x0014000B" value="正在解码..." />
+    <String key="0x0014000C" value="正在转码..." />
+    <String key="0x0014000D" value="错误:找不到编码文件。" />
+    <String key="0x0014000E" value="错误:转换文件时引发异常。" />
+    <String key="0x0014000F" value="无法创建输出路径！" />
+    <String key="0x00140010" value="输出文件已存在。" />
+
+    <String key="0x00150001" value="--:--" />
+
+    <!-- Strings Worker Context -->
+
+    <String key="0x00190001" value="错误" />
+    <String key="0x00190002" value="错误" />
+    <String key="0x00190003" value="正在处理 %d of %d (%d 已完成, %d %s)" />
+    <String key="0x00190004" value="正在处理 %d of %d (%d 已完成, %d %s) 在 %s" />
+
+    <!-- Strings Main Dialog -->
+
+    <String key="0x00210001" value="未完成" />
+    <String key="0x00210002" value="项目" />
+    <String key="0x00210003" value="项目" />
+    <String key="0x00210004" value="无项目" />
+    <String key="0x00210005" value="递归子目录" />
+    <String key="0x00210006" value="输出路径:" />
+    <String key="0x00210007" value="无法加载文件！" />
+    <String key="0x00210008" value="保存文件失败！" />
+    <String key="0x00210009" value="无法为文件名缓冲区分配内存！" />
+    <String key="0x0021000A" value="选择文件夹:" />
+    <String key="0x0021000B" value="搜索语言文件时出错！" />
+    <String key="0x0021000C" value="搜索项目文件时出错！" />
+    <String key="0x0021000D" value="无法创建输出路径！" />
+    <String key="0x0021000E" value="创建线程时发生致命错误！" />
+    <String key="0x0021000F" value="输出路径格式无效！" />
+
+    <!-- Strings Presets Dialog -->
+
+    <String key="0x00220001" value="错误" />
+    <String key="0x00220002" value="无法加载文件！" />
+    <String key="0x00220003" value="保存文件失败！" />
+    <String key="0x00220004" value="默认" />
+    <String key="0x00220005" value="-copy" />
+
+    <!-- Strings Formats Dialog -->
+
+    <String key="0x00230001" value="错误" />
+    <String key="0x00230002" value="无法加载文件！" />
+    <String key="0x00230003" value="保存文件失败！" />
+    <String key="0x00230004" value="格式" />
+    <String key="0x00230005" value="默认" />
+    <String key="0x00230006" value="-copy" />
+
+    <!-- Strings Tools Dialog -->
+
+    <String key="0x00240001" value="错误" />
+    <String key="0x00240002" value="无法加载文件！" />
+    <String key="0x00240003" value="保存文件失败！" />
+    <String key="0x00240004" value="工具" />
+    <String key="0x00240005" value="-copy" />
+
+    <!-- Strings File Dialogs -->
+
+    <String key="0x00310001" value="所有文件" />
+    <String key="0x00310002" value="Xml 文件" />
+    <String key="0x00310003" value="项目文件" />
+    <String key="0x00310004" value="预设文件" />
+    <String key="0x00310005" value="格式化文件" />
+    <String key="0x00310006" value="Exe 文件" />
+    <String key="0x00310007" value="进度文件" />
+    <String key="0x00310008" value="格式化文件" />
+    <String key="0x00310009" value="工具文件" />
+    <String key="0x0031000A" value="工具文件" />
+    <String key="0x0031000B" value="路径文件" />
+
+    <!-- Strings Download Status -->
+
+    <String key="0x00400001" value="正在查找资源..." />
+    <String key="0x00400002" value="正在连接..." />
+    <String key="0x00400003" value="发送请求..." />
+    <String key="0x00400004" value="MIME 类型可用" />
+    <String key="0x00400005" value="缓存文件名可用" />
+    <String key="0x00400006" value="开始下载" />
+    <String key="0x00400007" value="结束下载" />
+    <String key="0x00400008" value="状态代码: " />
+
+    <!-- Strings Extract Status -->
+
+    <String key="0x00410001" value="无法创建解压缩文件夹。" />
+    <String key="0x00410002" value="解压缩已下载文件。" />
+    <String key="0x00410003" value="无法解压缩下载的文件。" />
+
+</Language>
