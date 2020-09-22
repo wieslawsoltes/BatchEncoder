@@ -13,11 +13,11 @@ BatchEncoder is an audio files conversion software.
 
 | Platform              | Type        | Version       | Download                                                                                                                               |
 |-----------------------|-------------|---------------|----------------------------------------------------------------------------------------------------------------------------------------|
-| Windows 32-bit        | Installer   | 5.0           | [BatchEncoder-5.0-Win32.exe](https://github.com/wieslawsoltes/BatchEncoder/releases/download/5.0/BatchEncoder-5.0-Win32.exe)           |
-| Windows 64-bit        | Installer   | 5.0           | [BatchEncoder-5.0-x64.exe](https://github.com/wieslawsoltes/BatchEncoder/releases/download/5.0/BatchEncoder-5.0-x64.exe)               |
-| Windows 32-bit        | Portable    | 5.0           | [BatchEncoder-5.0-Win32.zip](https://github.com/wieslawsoltes/BatchEncoder/releases/download/5.0/BatchEncoder-5.0-Win32.zip)           |
-| Windows 64-bit        | Portable    | 5.0           | [BatchEncoder-5.0-x64.zip](https://github.com/wieslawsoltes/BatchEncoder/releases/download/5.0/BatchEncoder-5.0-x64.zip)               |
-| All                   | Config      | 5.0           | [BatchEncoder-5.0-Config.zip](https://github.com/wieslawsoltes/BatchEncoder/releases/download/5.0/BatchEncoder-5.0-Config.zip)         |
+| Windows 32-bit        | Installer   | 5.1           | [BatchEncoder-5.1-Win32.exe](https://github.com/wieslawsoltes/BatchEncoder/releases/download/5.1/BatchEncoder-5.1-Win32.exe)           |
+| Windows 64-bit        | Installer   | 5.1           | [BatchEncoder-5.1-x64.exe](https://github.com/wieslawsoltes/BatchEncoder/releases/download/5.1/BatchEncoder-5.1-x64.exe)               |
+| Windows 32-bit        | Portable    | 5.1           | [BatchEncoder-5.1-Win32.zip](https://github.com/wieslawsoltes/BatchEncoder/releases/download/5.1/BatchEncoder-5.1-Win32.zip)           |
+| Windows 64-bit        | Portable    | 5.1           | [BatchEncoder-5.1-x64.zip](https://github.com/wieslawsoltes/BatchEncoder/releases/download/5.1/BatchEncoder-5.1-x64.zip)               |
+| All                   | Config      | 5.1           | [BatchEncoder-5.1-Config.zip](https://github.com/wieslawsoltes/BatchEncoder/releases/download/5.1/BatchEncoder-5.1-Config.zip)         |
 
 ## Support BatchEncoder
 
