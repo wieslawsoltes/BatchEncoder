@@ -1,7 +1,4 @@
-﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
-// Licensed under the MIT license. See LICENSE file in the project root for full license information.
-
-#pragma once
+﻿#pragma once
 
 #define PATH_COLUMN_PATH    0
 #define PATH_COLUMN_SIZE    1

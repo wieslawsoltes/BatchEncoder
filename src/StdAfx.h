@@ -1,7 +1,4 @@
-﻿// Copyright (c) Wiesław Šoltés. All rights reserved.
-// Licensed under the MIT license. See LICENSE file in the project root for full license information.
-
-#pragma once
+﻿#pragma once
 
 #ifndef _SECURE_ATL
 #define _SECURE_ATL 1
