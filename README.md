@@ -79,4 +79,4 @@ The documentation is available in in the [wiki](https://github.com/wieslawsoltes
 
 ## License
 
-BatchEncoder (Audio Conversion GUI) is licensed under the [MIT license](LICENSE.TXT).
+BatchEncoder (Audio Conversion GUI) is licensed under the [GPL](LICENSE.TXT).
